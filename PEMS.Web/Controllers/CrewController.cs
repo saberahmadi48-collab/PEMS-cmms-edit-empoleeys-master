@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
 using PEMS.Web.Security;
@@ -36,10 +37,13 @@ public class CrewController : Controller
     private readonly ICrewService _crewService;
     private readonly ICurrentUserService _currentUser;
     private readonly IPermissionService _permissionService;
+    private readonly IWorkOrderSectionGuard? _sectionGuard;
 
+    // sectionGuard اختیاری است تا سازنده‌ی ۴-پارامتری قبلی (تست‌ها) سازگار بماند؛ DI همیشه آن را تأمین می‌کند.
     public CrewController(PEMSDbContext context, ICrewService crewService,
-        ICurrentUserService currentUser, IPermissionService permissionService)
+        ICurrentUserService currentUser, IPermissionService permissionService, IWorkOrderSectionGuard? sectionGuard = null)
     {
+        _sectionGuard = sectionGuard;
         _context = context;
         _crewService = crewService;
         _currentUser = currentUser;
@@ -74,7 +78,11 @@ public class CrewController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Crew", "Create"))
             return Forbid();
 
-        var (success, error, _) = await _crewService.CreateAsync(code, name, workOrderId);
+        var denied = await GuardWorkOrderCrewAsync(workOrderId, WoSectionAction.Add, code);
+        if (denied != null) return denied;
+
+        var (success, error, crewId) = await _crewService.CreateAsync(code, name, workOrderId);
+        if (success) await RecordCrewChangeAsync(workOrderId, WoSectionAction.Add, crewId?.ToString(), null, $"Code={code}; Name={name}");
 
         TempData[success ? "Message" : "Error"] = success ? "Crew ساخته شد." : error;
         return RedirectToAction(nameof(Index));
@@ -87,9 +95,14 @@ public class CrewController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Crew", "Edit"))
             return Forbid();
 
+        var crewWorkOrderId = await _context.Crews.Where(x => x.CrewId == crewId).Select(x => x.WorkOrderId).FirstOrDefaultAsync();
+        var denied = await GuardWorkOrderCrewAsync(crewWorkOrderId, WoSectionAction.Add, crewId.ToString());
+        if (denied != null) return denied;
+
         try
         {
             await _crewService.AddOrReactivateMemberAsync(crewId, employeeId, roleId);
+            await RecordCrewChangeAsync(crewWorkOrderId, WoSectionAction.Add, crewId.ToString(), null, $"EmployeeId={employeeId}; RoleId={roleId}");
             TempData["Message"] = "عضو اضافه شد.";
         }
         catch (Exception ex)
@@ -107,9 +120,14 @@ public class CrewController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Crew", "Edit"))
             return Forbid();
 
+        var crewWorkOrderId = await _context.CrewMembers.Where(x => x.CrewMemberId == crewMemberId).Select(x => x.Crew!.WorkOrderId).FirstOrDefaultAsync();
+        var denied = await GuardWorkOrderCrewAsync(crewWorkOrderId, WoSectionAction.Remove, crewMemberId.ToString());
+        if (denied != null) return denied;
+
         try
         {
             await _crewService.RemoveMemberAsync(crewMemberId);
+            await RecordCrewChangeAsync(crewWorkOrderId, WoSectionAction.Remove, crewMemberId.ToString(), $"CrewMemberId={crewMemberId}; Active=true", "Active=false");
             TempData["Message"] = "عضو از Crew خارج شد.";
         }
         catch (Exception ex)
@@ -118,6 +136,47 @@ public class CrewController : Controller
         }
 
         return RedirectToAction(nameof(Index));
+    }
+
+    /// <summary>
+    /// H27: Crew وصل به یک Work Order همان ماتریس «بخش × فاز × مجوز» Work Order را رعایت می‌کند (پس از Operations Issue و پس از Closed فقط‌خواندنی).
+    /// Crew مستقل (بدون Work Order) دست‌نخورده می‌ماند. null = مجاز؛ در غیر این صورت پیام مشخص + Toast (و 400/403 برای JSON).
+    /// </summary>
+    private async Task<IActionResult?> GuardWorkOrderCrewAsync(int? workOrderId, WoSectionAction action, string? recordRef)
+    {
+        if (workOrderId == null || _sectionGuard == null) return null;
+
+        int? employeeId = null;
+        if (_currentUser.UserId is int uid)
+            employeeId = await _context.Users.Where(u => u.Id == uid).Select(u => u.EmployeeId).FirstOrDefaultAsync();
+
+        var caller = new WoCaller(_currentUser.UserId, _currentUser.UserName, employeeId, _currentUser.Roles, HttpContext.Connection.RemoteIpAddress?.ToString());
+        var result = await _sectionGuard.AuthorizeAsync(workOrderId.Value, WoSection.Crew, action, caller, null, recordRef);
+        if (result.Allowed) return null;
+
+        var fa = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+        var message = result.Message(fa);
+        Response.Headers["X-PEMS-Policy"] = result.Code;
+        var wantsJson = Request.Headers.XRequestedWith == "XMLHttpRequest" || Request.Headers.Accept.ToString().Contains("application/json", StringComparison.OrdinalIgnoreCase);
+        if (wantsJson) return StatusCode(result.HttpStatus, new { code = result.Code, error = message, phase = result.Phase.ToString() });
+
+        TempData["Error"] = message;
+        TempData["PolicyCode"] = result.Code;
+        return RedirectToAction(nameof(Index));
+    }
+
+    private async Task RecordCrewChangeAsync(int? workOrderId, WoSectionAction action, string? recordRef, string? before, string? after)
+    {
+        if (workOrderId == null || _sectionGuard == null) return;
+        try
+        {
+            int? employeeId = null;
+            if (_currentUser.UserId is int uid)
+                employeeId = await _context.Users.Where(u => u.Id == uid).Select(u => u.EmployeeId).FirstOrDefaultAsync();
+            var caller = new WoCaller(_currentUser.UserId, _currentUser.UserName, employeeId, _currentUser.Roles, HttpContext.Connection.RemoteIpAddress?.ToString());
+            await _sectionGuard.RecordChangeAsync(workOrderId.Value, WoSection.Crew, action, caller, recordRef, null, before, after);
+        }
+        catch (Exception) { _context.ChangeTracker.Clear(); /* ممیزی بهترین‌تلاش است؛ جهش قبلاً ذخیره شده */ }
     }
 
     private async Task LoadDropdownsAsync()

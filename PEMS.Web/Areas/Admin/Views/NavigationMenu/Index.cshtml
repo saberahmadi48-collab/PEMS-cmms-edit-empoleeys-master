@@ -1,0 +1,108 @@
+@model List<PEMS.Web.Areas.Admin.Models.NavigationMenuAdminRow>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Navigation
+@using PEMS.Domain.Entities
+@inject IStringLocalizer<SharedResource> Localizer
+
+<div class="admin-page-shell">
+    <div class="admin-hero">
+        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
+            <p class="mb-0">@Localizer["Nav_Admin_Intro"]</p>
+            <a class="btn btn-primary btn-sm" asp-action="Create"><i class="bi bi-plus-lg me-1"></i>@Localizer["Nav_Admin_AddLink"]</a>
+        </div>
+    </div>
+
+    <div class="content-card">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success py-2" role="status">@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger py-2" role="alert">@TempData["Error"]</div>
+        }
+
+        <div class="permission-intro mb-3">
+            <i class="bi bi-info-circle me-1"></i>@Localizer["Nav_Admin_RuleNote"]
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-sm align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">@Localizer["Nav_Col_Item"]</th>
+                        <th scope="col">@Localizer["Nav_Col_Route"]</th>
+                        <th scope="col">@Localizer["Nav_Col_Rule"]</th>
+                        <th scope="col">@Localizer["Nav_Col_Badge"]</th>
+                        <th scope="col">@Localizer["Nav_Col_Status"]</th>
+                        <th scope="col" class="text-end">@Localizer["Nav_Col_Actions"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model)
+                    {
+                        var i = row.Item;
+                        var badge = NavigationBadges.Find(i.BadgeKey);
+                        <tr id="row-@i.Key" class="@(i.IsActive ? "" : "text-body-tertiary")">
+                            <td>
+                                <div class="d-flex align-items-center gap-2" style="padding-inline-start:@(row.Depth * 1.5)rem">
+                                    @if (!string.IsNullOrEmpty(i.Icon))
+                                    {
+                                        <i class="bi @i.Icon" aria-hidden="true"></i>
+                                    }
+                                    <span class="@(i.Kind == NavigationMenuItemKinds.Link ? "" : "fw-semibold")">@row.Title</span>
+                                    <span class="badge text-bg-light border">@Localizer["Nav_Kind_" + i.Kind]</span>
+                                    @if (!i.IsSystem)
+                                    {
+                                        <span class="badge text-bg-info">@Localizer["Nav_Custom"]</span>
+                                    }
+                                </div>
+                                <div class="small text-body-tertiary" style="padding-inline-start:@(row.Depth * 1.5)rem" dir="ltr">@i.Key</div>
+                            </td>
+                            <td class="small" dir="ltr">@row.Route</td>
+                            <td class="small">
+                                <code dir="ltr">@i.VisibilityRule</code>
+                                @if (row.NoPermissionSignal)
+                                {
+                                    <div><span class="badge text-bg-warning">@Localizer["Nav_NoPermissionSignal"]</span></div>
+                                }
+                            </td>
+                            <td class="small">@(badge != null ? Localizer[badge.TitleKey].Value : "")</td>
+                            <td>
+                                @if (i.IsActive)
+                                {
+                                    <span class="badge text-bg-success">@Localizer["Nav_Visible"]</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-secondary">@Localizer["Nav_Hidden"]</span>
+                                }
+                            </td>
+                            <td class="text-end text-nowrap">
+                                <form method="post" asp-action="Move" class="d-inline">
+                                    <input type="hidden" name="key" value="@i.Key" />
+                                    <input type="hidden" name="up" value="true" />
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm" disabled="@row.IsFirst" aria-label="@Localizer["Nav_MoveUp"]: @row.Title" title="@Localizer["Nav_MoveUp"]"><i class="bi bi-arrow-up"></i></button>
+                                </form>
+                                <form method="post" asp-action="Move" class="d-inline">
+                                    <input type="hidden" name="key" value="@i.Key" />
+                                    <input type="hidden" name="up" value="false" />
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm" disabled="@row.IsLast" aria-label="@Localizer["Nav_MoveDown"]: @row.Title" title="@Localizer["Nav_MoveDown"]"><i class="bi bi-arrow-down"></i></button>
+                                </form>
+                                <a class="btn btn-outline-primary btn-sm" asp-action="Edit" asp-route-key="@i.Key" aria-label="@Localizer["Edit"]: @row.Title"><i class="bi bi-pencil"></i></a>
+                                @if (!i.IsSystem)
+                                {
+                                    <form method="post" asp-action="Delete" class="d-inline" onsubmit="return confirm('@Localizer["Nav_ConfirmDelete"]');">
+                                        <input type="hidden" name="key" value="@i.Key" />
+                                        <button type="submit" class="btn btn-outline-danger btn-sm" aria-label="@Localizer["Delete"]: @row.Title"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

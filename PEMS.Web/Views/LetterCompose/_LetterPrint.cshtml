@@ -1,0 +1,52 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@model PEMS.Web.Controllers.LetterPrintModel
+@inject IStringLocalizer<SharedResource> Localizer
+@* سربرگ + بلوک گیرنده/فرستنده + متن + امضا؛ BCC هرگز چاپ نمی‌شود. متن نامه قبلاً Sanitize شده است. *@
+<article class="lp-sheet" aria-label="@Localizer["Lc_Preview"]">
+    @if (Model.IsPreview)
+    {
+        <div class="lp-draft">@Localizer["Lc_DraftWatermark"]</div>
+    }
+    <header class="lp-head">
+        <div>
+            <div class="lp-company">@Model.Letterhead.CompanyName</div>
+            <div class="lp-contact">
+                @if (!string.IsNullOrWhiteSpace(Model.Letterhead.Address)) { <div>@Model.Letterhead.Address</div> }
+                @if (!string.IsNullOrWhiteSpace(Model.Letterhead.Phone) || !string.IsNullOrWhiteSpace(Model.Letterhead.Website)) { <div>@Model.Letterhead.Phone @Model.Letterhead.Website</div> }
+            </div>
+        </div>
+        <div class="lp-meta">
+            <div>@Localizer["Lc_PrintNumber"]: <strong>@(Model.LetterNumber ?? Localizer["Lc_NumberPending"].Value)</strong></div>
+            <div>@Localizer["Lt_Date"]: <strong>@Model.LetterDate.ToString("yyyy-MM-dd")</strong></div>
+            @if (!string.IsNullOrWhiteSpace(Model.ReferenceNumber)) { <div>@Localizer["Lc_Reference"]: <strong>@Model.ReferenceNumber</strong></div> }
+            @if (!string.IsNullOrWhiteSpace(Model.Category)) { <div>@Localizer["Lc_Category"]: <strong>@Localizer["Lc_Cat_" + Model.Category]</strong></div> }
+        </div>
+    </header>
+
+    <section class="lp-block">
+        <div><b>@Localizer["Lc_PrintFrom"]:</b> @Model.Sender.FullName@(string.IsNullOrWhiteSpace(Model.Sender.Title) ? "" : " — " + Model.Sender.Title)@(string.IsNullOrWhiteSpace(Model.Sender.DepartmentName) ? "" : " (" + Model.Sender.DepartmentName + ")")</div>
+        @if (Model.To.Any()) { <div><b>@Localizer["Lc_PrintTo"]:</b> @string.Join(" ، ", Model.To)</div> }
+        @if (!string.IsNullOrWhiteSpace(Model.ExternalReceiver)) { <div><b>@Localizer["Lc_PrintTo"]:</b> @Model.ExternalReceiver</div> }
+        @if (Model.Cc.Any()) { <div><b>@Localizer["Lc_PrintCc"]:</b> @string.Join(" ، ", Model.Cc)</div> }
+    </section>
+
+    <div class="lp-subject">@Localizer["Lt_Subject"]: @Model.Subject</div>
+
+    <div class="lp-body">@Html.Raw(Model.BodyHtml)</div>
+
+    <footer>
+        <div class="lp-sign">
+            <div>@Localizer["Lc_PrintRegards"]</div>
+            @if (!string.IsNullOrWhiteSpace(Model.Sender.SignaturePath)) { <img src="@Model.Sender.SignaturePath" alt="@Localizer["Lc_Signature"]" /> }
+            <div><strong>@Model.Sender.FullName</strong></div>
+            @if (!string.IsNullOrWhiteSpace(Model.Sender.Title)) { <div>@Model.Sender.Title</div> }
+            @if (!string.IsNullOrWhiteSpace(Model.Sender.DepartmentName)) { <div>@Model.Sender.DepartmentName</div> }
+        </div>
+        <div class="lp-foot">
+            @if (!string.IsNullOrWhiteSpace(Model.Confidentiality)) { <span>@Localizer["Lt_Confidentiality"]: @Localizer["Lt_C_" + Model.Confidentiality]</span> }
+            @if (!string.IsNullOrWhiteSpace(Model.Priority)) { <span>@Localizer["Lt_Priority"]: @Localizer["Lt_P_" + Model.Priority]</span> }
+            @if (Model.ResponseDueDate.HasValue) { <span>@Localizer["Lt_ResponseDueDate"]: @Model.ResponseDueDate.Value.ToString("yyyy-MM-dd")</span> }
+        </div>
+    </footer>
+</article>

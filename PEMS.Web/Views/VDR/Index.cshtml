@@ -7,72 +7,73 @@
     var dash = (PEMS.Application.DTOs.VDRDashboardDto)ViewBag.Dashboard;
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
+
+    // تعداد فیلترهای فعال برای نشان کنار آیکون فیلتر
+    var activeFilters = (ViewBag.SelectedProjectId != null ? 1 : 0)
+        + (ViewBag.SelectedVendorId != null ? 1 : 0)
+        + (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus) ? 1 : 0);
 }
 
-@{ ViewData["Title"] = Localizer["Vs_VdrTitle"].Value; }
+@{ ViewData["Title"] = Localizer["Vs_VdrRegisterHeading"].Value; ViewData["HidePageTitle"] = true; }
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
 }
 
 <div class="vs-page">
 
-    @* Stitch: vdr_management_dashboard - page header + primary actions (all actions are the pre-existing PEMS routes) *@
     <div class="vs-header">
-        <div class="vs-chips" style="margin:0;">
-            <span class="vs-chip">@Localizer["Vs_TotalItems"] <strong>@dash.TotalItems</strong></span>
-            <span class="vs-chip">@Localizer["Vs_UnderReview"] <strong>@dash.UnderReviewItems</strong></span>
-            <span class="vs-chip">@Localizer["Vs_PendingResubmission"] <strong>@dash.PendingResubmissionItems</strong></span>
-            <span class="vs-chip @(dash.OverdueItems > 0 ? "vs-chip--danger" : "")">@Localizer["Vs_Overdue"] <strong>@dash.OverdueItems</strong></span>
-            <span class="vs-chip">@Localizer["Vs_Closed"] <strong>@dash.ClosedItems</strong></span>
-            <span class="vs-chip">@Localizer["Vs_OnTimeRate"] <strong>@dash.OnTimePercentage%</strong></span>
-            <span class="vs-chip @(dash.SlaOverdueItems > 0 ? "vs-chip--danger" : "")">@Localizer["Vs_SlaOverdue"] <strong>@dash.SlaOverdueItems</strong></span>
+        <div>
+            <h1 class="vs-title">@Localizer["Vs_VdrRegisterHeading"]</h1>
+            <p class="small text-muted mb-0">@Localizer["Vs_VdrSubtitle"]</p>
         </div>
-        <div class="vs-actions">
-            <a asp-action="Create" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-plus-lg"></i> @Localizer["Vs_ManualEntry"]</a>
+        <div class="vs-actions d-flex align-items-center gap-2">
+            @if (activeFilters > 0)
+            {
+                <a asp-action="Index" class="small">@Localizer["Reset"]</a>
+            }
+            <button type="button" class="btn btn-sm btn-outline-secondary position-relative" data-bs-toggle="collapse" data-bs-target="#vdrFilterPanel"
+                    aria-expanded="@(activeFilters > 0 ? "true" : "false")" aria-controls="vdrFilterPanel" title="@Localizer["Vs_FilterToggle"]">
+                <i class="bi bi-funnel" aria-hidden="true"></i>
+                <span class="visually-hidden">@Localizer["Vs_FilterToggle"]</span>
+                @if (activeFilters > 0)
+                {
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">@activeFilters<span class="visually-hidden"> @Localizer["Vs_ActiveFilters"]</span></span>
+                }
+            </button>
+            <a asp-action="Create" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Vs_NewVendorDocument"]</a>
         </div>
     </div>
 
-    <form method="get" class="vs-filters">
-        <div class="vs-filters__search vs-search">
-            <label>@Localizer["Search"]</label>
-            <i class="bi bi-search"></i>
-            <input type="text" class="form-control form-control-sm" id="vdrQuickSearch" aria-label="@Localizer["Vs_QuickSearchLabel"]"
-                   placeholder="@Localizer["Vs_QuickSearchPlaceholder"]"
-                   data-pems-search data-search-type="VDRItem" autocomplete="off" />
-        </div>
-        <div>
-            <label>@Localizer["Vs_Project"]</label>
-            <select name="projectId" class="form-select form-select-sm">
-                <option value="">@Localizer["All"]</option>
-                @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
-            </select>
-        </div>
-        <div>
-            <label>@Localizer["Vendor"]</label>
-            <select name="vendorId" class="form-select form-select-sm">
-                <option value="">@Localizer["All"]</option>
-                @foreach (var v in vendors) { <option value="@v.VendorId" selected="@(v.VendorId == (int?)ViewBag.SelectedVendorId)">@v.Name</option> }
-            </select>
-        </div>
-        <div>
-            <label>@Localizer["Status"]</label>
-            <select name="status" class="form-select form-select-sm">
-                <option value="">@Localizer["All"]</option>
-                @foreach (var s in new[] { "Planned", "Submitted", "UnderReview", "PendingResubmission", "Closed" })
-                { <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@VdrUi.Loc(Localizer, "St_", s)</option> }
-            </select>
-        </div>
-        <div class="vs-filters__end">
-            <button type="submit" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-funnel"></i> @Localizer["Filter"]</button>
-            <a asp-action="Index" class="vs-btn vs-btn--danger vs-btn--sm" title="@Localizer["Reset"]"><i class="bi bi-x-lg"></i></a>
-        </div>
-    </form>
-
-    <script>
-        document.getElementById('vdrQuickSearch').addEventListener('pems:search-select', function (e) {
-            if (e.detail && e.detail.url) window.location.href = e.detail.url;
-        });
-    </script>
+    <div class="collapse @(activeFilters > 0 ? "show" : "")" id="vdrFilterPanel">
+        <form method="get" class="vs-filters mb-3">
+            <div>
+                <label for="vdrFltProject">@Localizer["Vs_Project"]</label>
+                <select id="vdrFltProject" name="projectId" class="form-select form-select-sm">
+                    <option value="">@Localizer["All"]</option>
+                    @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
+                </select>
+            </div>
+            <div>
+                <label for="vdrFltVendor">@Localizer["Vendor"]</label>
+                <select id="vdrFltVendor" name="vendorId" class="form-select form-select-sm">
+                    <option value="">@Localizer["All"]</option>
+                    @foreach (var v in vendors) { <option value="@v.VendorId" selected="@(v.VendorId == (int?)ViewBag.SelectedVendorId)">@v.Name</option> }
+                </select>
+            </div>
+            <div>
+                <label for="vdrFltStatus">@Localizer["Status"]</label>
+                <select id="vdrFltStatus" name="status" class="form-select form-select-sm">
+                    <option value="">@Localizer["All"]</option>
+                    @foreach (var s in new[] { "Planned", "Submitted", "UnderReview", "PendingResubmission", "Closed" })
+                    { <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@VdrUi.Loc(Localizer, "St_", s)</option> }
+                </select>
+            </div>
+            <div class="vs-filters__end">
+                <button type="submit" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Filter"]</button>
+                <a asp-action="Index" class="vs-btn vs-btn--danger vs-btn--sm" title="@Localizer["Reset"]"><i class="bi bi-x-lg" aria-hidden="true"></i><span class="visually-hidden">@Localizer["Reset"]</span></a>
+            </div>
+        </form>
+    </div>
 
     @* the register is the primary working surface *@
     <div>
@@ -91,6 +92,8 @@
                             <th data-col-key="description" data-resizable="true" data-min-width="180" data-max-width="500" style="width:280px">@Localizer["Vs_Description"]</th>
                             <th data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="180" style="width:110px">@Localizer["Type"]</th>
                             <th data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="240" style="width:160px">@Localizer["Vendor"]</th>
+                            <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="260" style="width:170px">@Localizer["Vs_Project"]</th>
+                            <th data-col-key="discipline" data-resizable="true" data-min-width="90" data-max-width="200" style="width:130px">@Localizer["Vs_Discipline"]</th>
                             <th data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="110" style="width:80px">@Localizer["Vs_Rev"]</th>
                             <th data-col-key="latestCategory" data-resizable="true" data-min-width="90" data-max-width="180" style="width:130px">@Localizer["Vs_LatestCategory"]</th>
                             <th data-col-key="status" data-resizable="true" data-min-width="110" data-max-width="220" style="width:150px">@Localizer["Status"]</th>
@@ -105,6 +108,8 @@
                                 <td class="vs-cell-strong" title="@i.DocumentDescription">@i.DocumentDescription</td>
                                 <td title="@i.DocumentTypeCode">@i.DocumentTypeCode</td>
                                 <td title="@i.VendorName">@i.VendorName</td>
+                                <td title="@i.ProjectName">@i.ProjectName</td>
+                                <td title="@i.DisciplineName">@(string.IsNullOrEmpty(i.DisciplineName) ? "—" : i.DisciplineName)</td>
                                 <td>@i.LatestRevisionNo</td>
                                 <td title="@i.LatestReviewCategory">@i.LatestReviewCategory</td>
                                 <td>

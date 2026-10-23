@@ -19,6 +19,7 @@
     const DEBOUNCE_MS = 300;
     const MIN_CHARS = 1; // طبق درخواست: "به محض تایپ اولین کاراکتر"
     const PAGE_SIZE = 10;
+    const SEARCH_TIMEOUT_MS = 15000;
 
     function debounce(fn, delay) {
         let timer = null;
@@ -138,7 +139,12 @@
             }
 
             if (this.abortController) this.abortController.abort();
-            this.abortController = new AbortController();
+            const controller = new AbortController();
+            this.abortController = controller;
+
+            // هیچ جستجویی نباید برای همیشه روی «در حال جستجو» بماند: پس از SEARCH_TIMEOUT_MS خطا نمایش داده می‌شود
+            let timedOut = false;
+            const timeoutId = setTimeout(() => { timedOut = true; controller.abort(); }, SEARCH_TIMEOUT_MS);
 
             this._renderLoading();
 
@@ -151,12 +157,14 @@
             if (this.projectId) params.set('projectId', this.projectId);
 
             try {
-                const res = await fetch('/SearchApi?' + params.toString(), { signal: this.abortController.signal });
+                const res = await fetch('/SearchApi?' + params.toString(), { signal: controller.signal });
+                if (controller !== this.abortController) return; // پاسخ کهنه‌ی یک جستجوی قدیمی
                 if (!res.ok) {
                     this._renderError();
                     return;
                 }
                 const data = await res.json();
+                if (controller !== this.abortController) return;
 
                 if (resetPage) {
                     this.items = data.items || [];
@@ -167,7 +175,10 @@
                 this.hasMore = !!data.hasMore;
                 this._render();
             } catch (err) {
-                if (err.name !== 'AbortError') this._renderError();
+                if (controller !== this.abortController && !timedOut) return;
+                if (err.name !== 'AbortError' || timedOut) this._renderError();
+            } finally {
+                clearTimeout(timeoutId);
             }
         }
 

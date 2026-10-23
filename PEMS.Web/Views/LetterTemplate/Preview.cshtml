@@ -1,0 +1,24 @@
+@model PEMS.Application.DTOs.LetterTemplateDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+
+<div class="content-card" style="max-width:800px;">
+    <p class="text-muted small"><i class="bi bi-info-circle" aria-hidden="true"></i> @Localizer["LtT_PreviewNote"]</p>
+
+    <dl class="row small mb-3">
+        <dt class="col-sm-3">@Localizer["LtT_Name"]</dt><dd class="col-sm-9">@Model.Name</dd>
+        <dt class="col-sm-3">@Localizer["Type"]</dt><dd class="col-sm-9">@(Model.LetterType ?? Localizer["LtT_AllTypes"].Value)</dd>
+        <dt class="col-sm-3">@Localizer["Lt_Priority"]</dt><dd class="col-sm-9">@Localizer["Lt_P_" + Model.Priority]</dd>
+        <dt class="col-sm-3">@Localizer["Lt_Confidentiality"]</dt><dd class="col-sm-9">@Model.ConfidentialityLevel</dd>
+    </dl>
+
+    <h2 class="vs-section__title">@Localizer["Lt_Subject"]</h2>
+    <p class="fw-semibold">@ViewBag.Subject</p>
+
+    <h2 class="vs-section__title">@Localizer["Lt_Body"]</h2>
+    <div class="border rounded p-3 mb-3">@Html.Raw((string?)ViewBag.Body)</div>
+
+    <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
+    <a asp-action="Edit" asp-route-id="@Model.LetterTemplateId" class="btn btn-pems-solid"><i class="bi bi-pencil" aria-hidden="true"></i> @Localizer["Edit"]</a>
+</div>

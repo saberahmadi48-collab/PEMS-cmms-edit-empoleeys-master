@@ -85,7 +85,17 @@ public class PurchaseOrderController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "PurchaseOrder", "Create"))
             return Forbid();
 
-        var id = await _service.CreateAsync(poNumber, projectId, vendorId, contractId, description, value);
+        int id;
+        try
+        {
+            id = await _service.CreateAsync(poNumber, projectId, vendorId, contractId, description, value);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // P0: شماره‌ی تکراری/خالی یا مبلغ نامعتبر - ردِ قابل‌فهم به‌جای HTTP 500 یا ثبت رکورد نامعتبر
+            TempData["Error"] = ex.Message;
+            return RedirectToAction(nameof(Create));
+        }
 
         // ثبت Allow در AuthorizationAuditLog تا سیاست SoD «Create ↔ Approve» بتواند صادرکننده را
         // با سازنده‌ی همان PO مقایسه کند (همان الگوی ProcurementPackage)

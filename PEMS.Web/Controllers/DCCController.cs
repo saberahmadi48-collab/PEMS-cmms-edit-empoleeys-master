@@ -1,8 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Globalization;
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using PEMS.Application.Common;
+using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
+using PEMS.Web.Models;
+using PEMS.Web.Resources;
 using PEMS.Web.Security;
 
 namespace PEMS.Web.Controllers;
@@ -12,29 +19,29 @@ namespace PEMS.Web.Controllers;
 // درخواست صریح: "این بخش باید کاملاً جدا ساخته بشه". این کنترلر جای عملیاتی‌شدن طراحی
 // سازمانی DCC (که قبلاً بدون کد ارائه شد) است:
 //   - داشبورد: کارهای در انتظار DCC (مدارک آماده‌ی صدور، مکاتبات وارده‌ی وصل‌نشده)
-//   - ثبت نامه‌ی وارده: در یک مرحله - پیوست فایل + لینک MR/VDR - نه فرم عمومی نامه که این
-//     دو تا را در دو مرحله‌ی جدا می‌خواست
+//   - ثبت نامه‌ی وارده: صفحه‌ی دو-پنلی (فرم + پیش‌نمایش/رشته‌ی مکاتبه‌ی طرف)؛ تمام منطق در IIncomingCorrespondenceService است
+//     و این کنترلر فقط ورودی را به DTO تبدیل و کدهای خطا را ترجمه می‌کند.
 // ==============================================================================
 public class DCCController : Controller
 {
     private readonly PEMSDbContext _context;
-    private readonly ILetterService _letterService;
-    private readonly ILetterNumberingService _numberingService;
+    private readonly IIncomingCorrespondenceService _incoming;
     private readonly ICurrentUserService _currentUser;
-    private readonly IFileStorageService _fileStorage;
+    private readonly IPermissionService _permissions;
+    private readonly IStringLocalizer<SharedResource> _localizer;
 
     public DCCController(
         PEMSDbContext context,
-        ILetterService letterService,
-        ILetterNumberingService numberingService,
+        IIncomingCorrespondenceService incoming,
         ICurrentUserService currentUser,
-        IFileStorageService fileStorage)
+        IPermissionService permissions,
+        IStringLocalizer<SharedResource> localizer)
     {
         _context = context;
-        _letterService = letterService;
-        _numberingService = numberingService;
+        _incoming = incoming;
         _currentUser = currentUser;
-        _fileStorage = fileStorage;
+        _permissions = permissions;
+        _localizer = localizer;
     }
 
 
@@ -55,16 +62,18 @@ public class DCCController : Controller
             .ToListAsync();
         ViewBag.PendingIssueDocs = pendingIssueDocs;
 
-        // مکاتبات وارده‌ای که هنوز به هیچ مدرک/MR وصل نشده‌اند - نیاز به بررسی DCC دارند
-        var unlinkedIncoming = await _context.Letters
+        // مکاتبات وارده‌ای که هنوز به هیچ مدرک/MR/ترنسمیتال وصل نشده‌اند - نیاز به بررسی DCC دارند
+        var unlinked = _context.Letters
             .Where(l => l.IsActive && l.LetterType == "Incoming"
-                        && l.RelatedDocumentId == null && l.RelatedMRId == null)
+                        && l.RelatedDocumentId == null && l.RelatedMRId == null && !l.Links.Any());
+
+        // شمارش واقعی (قبلاً شمارنده همان ۱۵ ردیف نمایش‌داده‌شده بود)
+        ViewBag.UnlinkedIncomingCount = await unlinked.CountAsync();
+        ViewBag.UnlinkedIncoming = await unlinked
             .OrderByDescending(l => l.LetterDate)
             .Take(15)
             .Select(l => new { l.LetterId, l.LetterNumber, l.Sender, l.Subject, l.LetterDate })
             .ToListAsync();
-        ViewBag.UnlinkedIncomingCount = unlinkedIncoming.Count;
-        ViewBag.UnlinkedIncoming = unlinkedIncoming;
 
         // آخرین مکاتبات وارده (لینک‌شده یا نشده) برای دید کلی
         ViewBag.RecentIncoming = await _context.Letters
@@ -78,92 +87,227 @@ public class DCCController : Controller
     }
 
 
+    // ------------------------------------------------------------------ صفحه‌ی ثبت
+
     [HttpGet]
-    public async Task<IActionResult> RegisterIncoming()
+    [RequirePermission("Correspondence", "Create")]
+    public async Task<IActionResult> RegisterIncoming(int? partyId = null, int? replyTo = null)
     {
-        ViewData["Title"] = "ثبت مکاتبه‌ی وارده - DCC";
+        ViewData["Title"] = _localizer["Dcc_PageTitle"].Value;
         ViewData["Section"] = "DCC";
 
-        await LoadDropdownsAsync();
+        ViewBag.Projects = await _context.Projects.AsNoTracking().Where(x => x.IsActive)
+            .OrderBy(x => x.ProjectName).Select(x => new { x.ProjectId, x.ProjectName, x.ProjectCode }).ToListAsync();
+        ViewBag.Disciplines = await _context.Disciplines.AsNoTracking().Where(x => x.IsActive)
+            .OrderBy(x => x.Name).Select(x => new { x.DisciplineId, x.Name }).ToListAsync();
 
+        // «در پاسخ به» از صفحه‌ی نامه‌ی صادره: طرف و نامه از قبل انتخاب می‌شوند (فقط اگر نامه‌ی صادره‌ی قابل‌مشاهده‌ی همان طرف باشد)
+        if (replyTo.HasValue)
+        {
+            var parent = await _context.Letters.AsNoTracking()
+                .Where(l => l.LetterId == replyTo.Value && l.IsActive && l.LetterType == "Outgoing")
+                .Select(l => new { l.LetterId, l.LetterNumber, l.Subject, l.CorrespondentPartyId, l.ProjectId })
+                .FirstOrDefaultAsync();
+            if (parent != null)
+            {
+                ViewBag.ReplyTo = parent;
+                partyId ??= parent.CorrespondentPartyId;
+            }
+        }
+
+        if (partyId.HasValue)
+        {
+            var party = (await _incoming.SearchPartiesAsync(null, null, 200)).FirstOrDefault(p => p.Id == partyId.Value);
+            ViewBag.PresetParty = party;
+        }
+
+        ViewBag.CurrentUserName = _currentUser.UserName;
         return View();
     }
 
 
-    // ==============================================================================
-    // طبق درخواست: نامه‌ی وارده ممکن است ایمیل، نامه‌ی رسمی، یا مکاتبه‌ی وندور باشد - همه در
-    // یک فرم واحد، با امکان پیوست فایل و لینک مستقیم MR/VDR در همین مرحله (نه دو مرحله‌ی جدا).
-    // ==============================================================================
+    // ------------------------------------------------------------------ ثبت (JSON)
+
     [HttpPost]
     [ValidateAntiForgeryToken]
-    [RequestSizeLimit(50_000_000)]
-    public async Task<IActionResult> RegisterIncoming(
-        string sourceType, string sender, string subject, string? body,
-        int? projectId, int? disciplineId, string priority,
-        int? relatedDocumentId, int? relatedVdrItemId, int? relatedMRId,
-        IFormFile? attachment)
+    [RequirePermission("Correspondence", "Create")]
+    [RequestSizeLimit(110_000_000)]
+    public async Task<IActionResult> RegisterIncoming(IncomingRegisterRequest request)
     {
-        if (string.IsNullOrWhiteSpace(sender) || string.IsNullOrWhiteSpace(subject))
+        var errors = new List<LetterComposeIssue>();
+        var input = Map(request, errors);
+
+        var streams = new List<Stream>();
+        try
         {
-            TempData["Error"] = "فرستنده و موضوع الزامی است.";
-            return RedirectToAction(nameof(RegisterIncoming));
-        }
-
-        var employeeId = await GetCurrentEmployeeIdAsync();
-
-        var letterNumber = await _numberingService.GenerateNextNumberAsync("Incoming", projectId);
-
-        // منبع (ایمیل/نامه‌ی رسمی/مکاتبه‌ی وندور) در ابتدای متن ثبت می‌شود - طبق تصمیم فعلی
-        // بدون افزودن ستون جدید به Letter (Priority/Subject/Body برای این سطح دسته‌بندی کافی‌اند)
-        var sourceLabel = sourceType switch
-        {
-            "Email" => "ایمیل",
-            "VendorCommunication" => "مکاتبه‌ی وندور",
-            _ => "نامه‌ی رسمی"
-        };
-        var fullBody = $"[منبع: {sourceLabel}]\n\n{body}";
-
-        // اگر مدرک وندور (VDR) انتخاب شده، همان‌جا لینک می‌شود (VDRItem خودش یک Document است)
-        var effectiveDocumentId = relatedVdrItemId ?? relatedDocumentId;
-
-        var letterId = await _letterService.CreateAsync(
-            letterType: "Incoming",
-            letterNumber: letterNumber,
-            letterDate: DateTime.Now,
-            sender: sender,
-            receiver: null,
-            subject: subject,
-            body: fullBody,
-            priority: string.IsNullOrWhiteSpace(priority) ? "Normal" : priority,
-            confidentialityLevel: "Internal",
-            projectId: projectId,
-            disciplineId: disciplineId,
-            relatedDocumentId: effectiveDocumentId,
-            relatedMRId: relatedMRId,
-            registeredById: _currentUser.UserId);
-
-        if (attachment != null && attachment.Length > 0)
-        {
-            string storageKey;
-            await using (var uploadStream = attachment.OpenReadStream())
+            var files = request.Files ?? new List<IFormFile>();
+            var roles = request.FileRoles ?? new List<string>();
+            for (var i = 0; i < files.Count; i++)
             {
-                storageKey = await _fileStorage.SaveAsync("letters", attachment.FileName, uploadStream);
+                var stream = files[i].OpenReadStream();
+                streams.Add(stream);
+                input.Files.Add(new IncomingFileInput
+                {
+                    FileName = Path.GetFileName(files[i].FileName),
+                    ContentType = files[i].ContentType,
+                    Length = files[i].Length,
+                    Role = i < roles.Count ? roles[i] : "Attachment",
+                    Content = stream
+                });
             }
 
-            await _letterService.AddAttachmentAsync(
-                letterId,
-                attachment.FileName,
-                Path.GetExtension(attachment.FileName),
-                storageKey,
-                attachment.Length,
-                attachment.ContentType,
-                employeeId);
-        }
+            var actorEmployeeId = await GetCurrentEmployeeIdAsync();
+            var result = errors.Count > 0
+                ? new IncomingRegistrationResult { Issues = errors }
+                : await _incoming.RegisterAsync(input, _currentUser.UserId, actorEmployeeId);
 
-        TempData["Message"] = $"مکاتبه‌ی وارده با شماره‌ی {letterNumber} ثبت شد.";
-        return RedirectToAction("Details", "Letter", new { id = letterId });
+            if (result.Success)
+            {
+                var url = Url.Action("Details", "Letter", new { id = result.LetterId });
+                return Json(new { success = true, letterId = result.LetterId, letterNumber = result.LetterNumber, detailsUrl = url });
+            }
+
+            object? duplicate = result.DuplicateLetterId.HasValue
+                ? new { letterId = result.DuplicateLetterId, letterNumber = result.DuplicateLetterNumber, url = Url.Action("Details", "Letter", new { id = result.DuplicateLetterId }) }
+                : null;
+
+            Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+            return Json(new
+            {
+                success = false,
+                errors = result.Issues.Select(i => new { field = i.Field, code = i.Code, message = Translate(i) }),
+                duplicate
+            });
+        }
+        finally
+        {
+            foreach (var s in streams) await s.DisposeAsync();
+        }
     }
 
+
+    // ------------------------------------------------------------------ جستجوها (JSON)
+
+    [HttpGet]
+    [RequirePermission("Correspondence", "Create")]
+    public async Task<IActionResult> Parties(string? q, int? projectId)
+        => Json(await _incoming.SearchPartiesAsync(q, projectId));
+
+    [HttpGet]
+    [RequirePermission("Correspondence", "Create")]
+    public async Task<IActionResult> PartyThread(int partyId)
+    {
+        var thread = await _incoming.GetPartyThreadAsync(partyId, await CanViewConfidentialAsync(), _currentUser.UserId);
+        return thread == null ? NotFound() : Json(thread);
+    }
+
+    [HttpGet]
+    [RequirePermission("Correspondence", "Create")]
+    public async Task<IActionResult> OutgoingForReply(int partyId)
+        => Json(await _incoming.GetOutgoingForReplyAsync(partyId, await CanViewConfidentialAsync(), _currentUser.UserId));
+
+    [HttpGet]
+    [RequirePermission("Correspondence", "Create")]
+    public async Task<IActionResult> Links(string type, string? q, int? projectId)
+        => Json(await _incoming.SearchLinksAsync(type, q, projectId));
+
+    [HttpGet]
+    [RequirePermission("Correspondence", "Create")]
+    public async Task<IActionResult> People(string? q)
+        => Json(await _incoming.SearchPeopleAsync(q));
+
+    [HttpGet]
+    [RequirePermission("Correspondence", "Create")]
+    public async Task<IActionResult> NextNumber(int? projectId, string? receivedDate)
+    {
+        var received = TryParseIsoDate(receivedDate) ?? DateTime.Today;
+        return Json(new { number = await _incoming.PeekNextNumberAsync(projectId, received) });
+    }
+
+    [HttpGet]
+    [RequirePermission("Correspondence", "Create")]
+    public async Task<IActionResult> CheckDuplicate(int partyId, string? reference)
+    {
+        var hit = await _incoming.FindDuplicateAsync(partyId, reference ?? "");
+        return Json(hit == null
+            ? null
+            : new { letterId = hit.Value.LetterId, letterNumber = hit.Value.LetterNumber, url = Url.Action("Details", "Letter", new { id = hit.Value.LetterId }) });
+    }
+
+
+    // ------------------------------------------------------------------ کمکی
+
+    private IncomingRegistrationInput Map(IncomingRegisterRequest r, List<LetterComposeIssue> errors)
+    {
+        DateTime? Date(string? text, string field)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return null;
+            var parsed = TryParseIsoDate(text);
+            if (parsed == null) errors.Add(new LetterComposeIssue("DateInvalid", field));
+            return parsed;
+        }
+
+        var links = new List<IncomingLinkInput>();
+        if (!string.IsNullOrWhiteSpace(r.Links))
+        {
+            try
+            {
+                var parsed = JsonSerializer.Deserialize<List<LinkJson>>(r.Links, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                links = (parsed ?? new()).Select(l => new IncomingLinkInput(l.LinkType ?? "", l.TargetId)).ToList();
+            }
+            catch (JsonException)
+            {
+                errors.Add(new LetterComposeIssue("LinkInvalid", "links"));
+            }
+        }
+
+        return new IncomingRegistrationInput
+        {
+            ProjectId = r.ProjectId,
+            ContractId = r.ContractId,
+            CorrespondentPartyId = r.CorrespondentPartyId,
+            NewPartyName = r.NewPartyName,
+            NewPartyType = r.NewPartyType,
+            SenderReference = r.SenderReference,
+            DocumentDate = Date(r.DocumentDate, "documentDate"),
+            ReceivedDate = Date(r.ReceivedDate, "receivedDate"),
+            ReceiptChannel = string.IsNullOrWhiteSpace(r.ReceiptChannel) ? "OfficialLetter" : r.ReceiptChannel,
+            Subject = r.Subject ?? "",
+            Summary = r.Summary,
+            Priority = string.IsNullOrWhiteSpace(r.Priority) ? "Normal" : r.Priority,
+            Category = string.IsNullOrWhiteSpace(r.Category) ? null : r.Category,
+            ConfidentialityLevel = string.IsNullOrWhiteSpace(r.ConfidentialityLevel) ? "Internal" : r.ConfidentialityLevel,
+            DisciplineId = r.DisciplineId,
+            ParentLetterId = r.ParentLetterId,
+            ResponseRequired = r.ResponseRequired,
+            ResponseDueDate = Date(r.ResponseDueDate, "responseDueDate"),
+            OwnerEmployeeId = r.OwnerEmployeeId,
+            CcEmployeeIds = r.CcEmployeeIds ?? new List<int>(),
+            Instruction = r.Instruction,
+            Links = links,
+            ConfirmDuplicate = r.ConfirmDuplicate
+        };
+    }
+
+    private sealed class LinkJson
+    {
+        public string? LinkType { get; set; }
+        public int TargetId { get; set; }
+    }
+
+    private static DateTime? TryParseIsoDate(string? text)
+        => DateTime.TryParseExact(text?.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var d) ? d : null;
+
+    private string Translate(LetterComposeIssue issue)
+    {
+        var localized = _localizer["Dcc_Err_" + issue.Code];
+        var message = localized.ResourceNotFound ? issue.Code : localized.Value;
+        return message.Replace("{0}", issue.Detail ?? "").Trim();
+    }
+
+    private async Task<bool> CanViewConfidentialAsync()
+        => _currentUser.Roles.Contains("SystemAdmin")
+           || await _permissions.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Approve");
 
     private async Task<int?> GetCurrentEmployeeIdAsync()
     {
@@ -173,36 +317,5 @@ public class DCCController : Controller
             .Where(u => u.Id == _currentUser.UserId.Value)
             .Select(u => u.EmployeeId)
             .FirstOrDefaultAsync();
-    }
-
-    private async Task LoadDropdownsAsync()
-    {
-        ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)
-            .Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();
-
-        ViewBag.Disciplines = await _context.Disciplines.Where(x => x.IsActive)
-            .Select(x => new { x.DisciplineId, x.Name }).ToListAsync();
-
-        // طبق درخواست: مدرک مهندسی و مدرک وندور (VDR) جدا از هم لیست می‌شوند - نه یک
-        // Dropdown مشترک بزرگ که پیدا کردن VDR توش سخت باشه
-        ViewBag.RelatedEngineeringDocuments = await _context.Set<EngineeringDocument>()
-            .Where(x => x.IsActive)
-            .OrderByDescending(x => x.CreatedDate)
-            .Take(200)
-            .Select(x => new { x.DocumentId, x.DocumentNo, x.Title })
-            .ToListAsync();
-
-        ViewBag.RelatedVdrItems = await _context.Set<VDRItem>()
-            .Where(x => x.IsActive)
-            .OrderByDescending(x => x.CreatedDate)
-            .Take(200)
-            .Select(x => new { x.DocumentId, x.DocumentNo, x.Title })
-            .ToListAsync();
-
-        ViewBag.RelatedMRs = await _context.MaterialRequisitions
-            .OrderByDescending(x => x.CreatedDate)
-            .Take(200)
-            .Select(x => new { x.MRId, x.MRNumber })
-            .ToListAsync();
     }
 }

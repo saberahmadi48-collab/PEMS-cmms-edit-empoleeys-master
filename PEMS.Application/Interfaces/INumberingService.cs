@@ -13,4 +13,11 @@ public interface INumberingService
     /// تجهیز برای MaintenancePlan. اگر داده نشود، بسته به نوع سند پیش‌فرض محاسبه می‌شود.
     /// </summary>
     Task<string> GetNextNumberAsync(string documentType, string? scopeKey = null);
+
+    /// <summary>
+    /// همان شمارنده‌ی اتمیک، ولی فقط مقدار عددی (برای کلیدهایی که قالبشان را خود ماژول می‌سازد، مثل کلید وظیفه‌ی
+    /// Task Manager «{کلید فضا}-{n}»). پیاده‌سازی پیش‌فرض فقط برای سازگاری پیاده‌سازی‌های قدیمی/جعلی است.
+    /// </summary>
+    Task<int> GetNextValueAsync(string documentType, string scopeKey) =>
+        throw new NotSupportedException("GetNextValueAsync is not supported by this numbering implementation.");
 }

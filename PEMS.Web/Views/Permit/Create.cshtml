@@ -39,7 +39,7 @@
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Functional Location (optional)"]</label>
                 <select name="functionalLocationId" class="form-select">
-                    <option value="">@Localizer["-- none --"]</option>
+                    <option value="">@Localizer["-- None --"]</option>
                     @foreach (var fl in functionalLocations)
                     {
                         <option value="@fl.FunctionalLocationId">@fl.PathBreadcrumb</option>
@@ -57,7 +57,7 @@
             <div class="col-md-6">
                 <label class="form-label">Permit Receiver (optional)</label>
                 <select name="permitReceiverEmployeeId" class="form-select">
-                    <option value="">@Localizer["-- none --"]</option>
+                    <option value="">@Localizer["-- None --"]</option>
                     @foreach (var r in receivers) { <option value="@r.EmployeeId">@r.Label</option> }
                 </select>
                 <div class="form-text small">@Localizer["می‌تواند پرسنل Internal یا Contractor باشد."]</div>

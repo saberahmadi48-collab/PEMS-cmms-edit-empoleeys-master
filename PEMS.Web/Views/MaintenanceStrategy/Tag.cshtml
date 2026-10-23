@@ -1,0 +1,63 @@
+@model PEMS.Application.DTOs.TagMaintenanceViewDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Helpers
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-tag"></i> @Localizer["Rcm_TagMaintenance"] — @Model.Equipment.Tag</h5>
+    <a asp-action="Index" asp-route-equipmentId="@Model.Equipment.EquipmentId" class="btn btn-outline-secondary btn-sm">@Localizer["Rcm_Back"]</a>
+</div>
+
+@await Html.PartialAsync("_EquipmentIdentity", Model.Equipment)
+
+<div class="content-card mb-3">
+    <h6 class="small fw-bold">@Localizer["Rcm_AssignedStrategies"]</h6>
+    <table class="table table-sm table-enterprise">
+        <thead><tr><th>@Localizer["Rcm_Strategy"]</th><th>@Localizer["Rcm_Version"]</th><th>@Localizer["Rcm_Override"]</th><th>@Localizer["Rcm_Plans"]</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var a in Model.Assignments)
+        {
+            <tr>
+                <td><a asp-action="Details" asp-route-id="@a.MaintenanceStrategyId">#@a.MaintenanceStrategyId</a></td>
+                <td>v@(a.StrategyVersion)</td>
+                <td class="small">@Localizer.Label("OverrideStatus", a.OverrideStatus)</td>
+                <td>@a.PlanCount</td>
+                <td class="text-end"><a asp-controller="MaintenancePlan" asp-action="Create" asp-route-assignmentId="@a.AssignmentId" class="btn btn-sm btn-outline-primary py-0"><i class="bi bi-calendar-plus"></i></a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    @if (!Model.Assignments.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoAssignments"]</p> }
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="content-card mb-3">
+            <h6 class="small fw-bold">@Localizer["Rcm_Plans"]</h6>
+            <table class="table table-sm table-enterprise">
+                <tbody>
+                @foreach (var p in Model.Plans)
+                {
+                    <tr><td>@p.PlanNumber</td><td class="small">@p.Title</td><td class="small">v@(p.StrategyVersion)</td><td class="small">@(p.NextDueDate?.ToString("yyyy-MM-dd"))</td></tr>
+                }
+                </tbody>
+            </table>
+            @if (!Model.Plans.Any()) { <p class="text-muted small text-center">@Localizer["Rcm_NoPlans"]</p> }
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="content-card mb-3">
+            <h6 class="small fw-bold">@Localizer["Rcm_OpenWorkOrders"]</h6>
+            <table class="table table-sm table-enterprise">
+                <tbody>
+                @foreach (var w in Model.OpenWorkOrders)
+                {
+                    <tr><td><a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNumber</a></td><td class="small">@w.Status</td><td class="small">@w.Priority</td></tr>
+                }
+                </tbody>
+            </table>
+            @if (!Model.OpenWorkOrders.Any()) { <p class="text-muted small text-center">@Localizer["Rcm_NoOpenWorkOrders"]</p> }
+        </div>
+    </div>
+</div>

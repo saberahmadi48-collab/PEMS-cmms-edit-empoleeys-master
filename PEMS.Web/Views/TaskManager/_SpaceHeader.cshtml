@@ -1,0 +1,30 @@
+@model PEMS.Application.DTOs.WorkSpaceViewDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var mode = (string)ViewBag.ViewMode;
+}
+<section class="vs-panel mb-3">
+    <nav aria-label="breadcrumb" class="small mb-1">
+        <a asp-action="Index">@Localizer["Tm_Title"]</a> / <span class="tm-key">@Model.Space.Key</span>
+    </nav>
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <h2 class="h5 mb-0">@TaskManagerUi.Name(Model.Space.Name, Model.Space.NameFa)
+            @if (Model.Space.IsLead) { <span class="badge bg-primary-subtle text-primary-emphasis ms-1">@Localizer["Tm_Role_Lead"]</span> }
+        </h2>
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+            <div class="btn-group btn-group-sm" role="group" aria-label="@Localizer["Tm_View"]">
+                <a class="btn @(mode == "backlog" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Space" asp-route-key="@Model.Space.Key" asp-route-view="backlog" aria-current="@(mode == "backlog" ? "page" : null)"><i class="bi bi-list-ol" aria-hidden="true"></i> @Localizer["Tm_Backlog"]</a>
+                <a class="btn @(mode == "board" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Space" asp-route-key="@Model.Space.Key" asp-route-view="board" aria-current="@(mode == "board" ? "page" : null)"><i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Board"]</a>
+            </div>
+            <a class="btn btn-sm btn-outline-secondary" asp-action="AllWork" asp-route-WorkSpaceId="@Model.Space.Id" asp-route-StatusCategory="NotDone"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Tm_AllWork"]</a>
+            @if (Model.CanCreate)
+            {
+                <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#tmCreateModal"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Tm_Create"]</button>
+            }
+        </div>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Model.Space.Description)) { <p class="small text-muted mb-0 mt-2">@Model.Space.Description</p> }
+</section>

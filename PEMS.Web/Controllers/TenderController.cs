@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
 using PEMS.Web.Security;
@@ -19,15 +20,18 @@ public class TenderController : Controller
     private readonly IPermissionService _permissionService;
     private readonly ICurrentUserService _currentUser;
     private readonly PEMSDbContext _context;
+    private readonly IAccessControlService _accessControl;
 
     public TenderController(ITenderService service, IProcurementPackageService packageService,
-        IPermissionService permissionService, ICurrentUserService currentUser, PEMSDbContext context)
+        IPermissionService permissionService, ICurrentUserService currentUser, PEMSDbContext context,
+        IAccessControlService accessControl)
     {
         _service = service;
         _packageService = packageService;
         _permissionService = permissionService;
         _currentUser = currentUser;
         _context = context;
+        _accessControl = accessControl;
     }
 
     public async Task<IActionResult> Index(int? procurementPackageId)
@@ -223,6 +227,9 @@ public class TenderController : Controller
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "Approve"))
             return Forbid();
+        // P0-10: مناقصه از خودِ مذاکره تعیین می‌شود، نه از tenderId فرم
+        var separation = await EnforceCreatorSeparationAsync(null, bidNegotiationId, tenderId);
+        if (separation != null) return separation;
 
         var employeeId = await GetCurrentEmployeeIdAsync();
         var result = await _service.ApproveNegotiationAsync(bidNegotiationId, employeeId);
@@ -235,8 +242,19 @@ public class TenderController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> SelectWinner(int tenderId, int bidId)
     {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "Approve"))
+        // P0 / F-02+F-03: انتخاب برنده یک تایید مستقل است؛ گارد مشترک Fail-Closed (نقش + هویت کاربر + Scope/SoD + ثبت در
+        // AuthorizationAuditLog) به‌جای بررسی فقط-نقش. هر نتیجه‌ی غیر از Allowed انتخاب را متوقف می‌کند.
+        var outcome = await ProtectedActionGuard.EvaluateAsync(
+            HttpContext, _permissionService, _accessControl, _currentUser, "Tender", "Approve", tenderId.ToString());
+        if (outcome == ProtectedActionOutcome.DeniedBySoD)
+        {
+            TempData["Error"] = "طبق سیاست تفکیک وظایف، این اقدام برای شما مجاز نیست.";
+            return RedirectToAction(nameof(Details), new { id = tenderId });
+        }
+        if (outcome != ProtectedActionOutcome.Allowed)
             return Forbid();
+        var separation = await EnforceCreatorSeparationAsync(tenderId, null, tenderId);
+        if (separation != null) return separation;
 
         var employeeId = await GetCurrentEmployeeIdAsync();
         var result = await _service.SelectWinnerAsync(tenderId, bidId, employeeId);
@@ -249,18 +267,99 @@ public class TenderController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateContract(int tenderId, string contractNo, DateTime? startDate, DateTime? endDate)
     {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "Approve"))
-            return Forbid();
-
-        var result = await _service.CreateContractFromWinningBidAsync(tenderId, contractNo, startDate, endDate);
-        if (!result.Success)
+        // P0 / F-03: ساخت قرارداد از برنده، علاوه بر تایید مناقصه، خودش ایجاد یک قرارداد است و باید مجوز Contracts.Create
+        // داشته باشد (همان شرط ContractController.Create) - وگرنه Tender.Approve به‌تنهایی قرارداد می‌ساخت.
+        var outcome = await ProtectedActionGuard.EvaluateAsync(
+            HttpContext, _permissionService, _accessControl, _currentUser, "Tender", "Approve", tenderId.ToString());
+        if (outcome == ProtectedActionOutcome.DeniedBySoD)
         {
+            TempData["Error"] = "طبق سیاست تفکیک وظایف، این اقدام برای شما مجاز نیست.";
+            return RedirectToAction(nameof(Details), new { id = tenderId });
+        }
+        if (outcome != ProtectedActionOutcome.Allowed)
+            return Forbid();
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Create"))
+            return Forbid();
+        var separation = await EnforceCreatorSeparationAsync(tenderId, null, tenderId);
+        if (separation != null) return separation;
+
+        // P0.1 / R-01: رویداد «Contracts.Create» (که SoD «ایجادکننده ≠ تاییدکننده» به آن تکیه دارد) دیگر اینجا و با AuthorizeAsync نوشته نمی‌شود.
+        // P0.3: سرویس قرارداد، هر دو AuditLog عمومی و این رویداد را روی SQL Server در یک تراکنش می‌نویسد؛ شکست هرکدام کل عملیات را Rollback می‌کند.
+        // رکوردهای گارد Tender.Approve (بالا) جدا و پیش از آن Commit می‌شوند و بعد از Rollback ساخت قرارداد باقی می‌مانند (تصمیم مجوز، نه رویداد ایجاد).
+        var ip = HttpContext?.Connection.RemoteIpAddress?.ToString();
+        var result = await _service.CreateContractFromWinningBidAsync(tenderId, contractNo, startDate, endDate, _currentUser.UserId, ip);
+
+        if (result.OutcomeUnknown)
+        {
+            // Commit نامطمئن بود و بررسی بعدی هم وضعیت را روشن نکرد: هرگز «ساخته نشد» نمی‌گوییم
             TempData["Error"] = result.Error;
             return RedirectToAction(nameof(Details), new { id = tenderId });
         }
 
-        TempData["Message"] = "Contract draft created from winning bid";
-        return RedirectToAction("Details", "Contract", new { id = result.ContractId });
+        if (result.Success)
+        {
+            var problems = new List<string>();
+            if (result.GenericAuditFailed)
+                problems.Add("ثبت AuditLog عمومی این عملیات با خطا مواجه شد (در لاگ سیستم ثبت شده است)");
+            if (result.CreatorEvent == ContractCreatorEventStatus.NotRecorded)
+                problems.Add("رویداد «ایجادکننده‌ی قرارداد» ثبت نشد؛ برای ترمیم، همین عملیات را دوباره اجرا کنید (قرارداد تکراری ساخته نمی‌شود)");
+
+            if (problems.Count > 0)
+                TempData["Error"] = "قرارداد ساخته و ذخیره شد، اما " + string.Join("؛ ", problems) + ".";
+            else if (result.RecoveredAfterUncertainCommit)
+                TempData["Message"] = "Contract draft created from winning bid (the commit result was uncertain and was confirmed by re-reading the database; no duplicate was created)";
+            else
+                TempData["Message"] = "Contract draft created from winning bid";
+
+            return RedirectToAction("Details", "Contract", new { id = result.ContractId });
+        }
+
+        if (result.Committed && result.ContractId.HasValue)
+        {
+            // قرارداد از قبل ساخته شده است؛ تلاش مجدد هیچ قرارداد تکراری نمی‌سازد و فقط رویداد ناقصِ ایجادکننده‌ی اصلی را ترمیم می‌کند
+            switch (result.CreatorEvent)
+            {
+                case ContractCreatorEventStatus.Repaired:
+                    TempData["Message"] = "قرارداد از قبل ساخته شده بود؛ رویداد ناقص «ایجادکننده‌ی قرارداد» برای ایجادکننده‌ی اصلی ترمیم شد. قرارداد تکراری ساخته نشد.";
+                    break;
+                case ContractCreatorEventStatus.NotRecorded:
+                    TempData["Error"] = "قرارداد از قبل ساخته شده است، اما ترمیم رویداد «ایجادکننده‌ی قرارداد» ناموفق بود؛ دوباره تلاش کنید.";
+                    break;
+                case ContractCreatorEventStatus.OutcomeUnknown:
+                    TempData["Error"] = "قرارداد از قبل ساخته شده است، اما وضعیت رویداد «ایجادکننده‌ی قرارداد» قابل تأیید نبود؛ گزارش تشخیص را بررسی کنید.";
+                    break;
+                case ContractCreatorEventStatus.CreatorUnidentified:
+                    TempData["Error"] = "قرارداد از قبل ساخته شده است، اما ایجادکننده‌ی اصلی آن قابل شناسایی نیست؛ رویداد نوشته نشد و نیاز به بررسی دستی دارد.";
+                    break;
+                default:
+                    TempData["Error"] = result.Error;
+                    break;
+            }
+            return RedirectToAction(nameof(Details), new { id = tenderId });
+        }
+
+        TempData["Error"] = result.Error;
+        return RedirectToAction(nameof(Details), new { id = tenderId });
+    }
+
+    /// <summary>
+    /// P0-10 / D-OPEN-04: ایجادکننده‌ی مناقصه نمی‌تواند آن را تأیید کند (SystemAdmin مستثنا، با ثبت ممیزی). null = ادامه مجاز است.
+    /// </summary>
+    private async Task<IActionResult?> EnforceCreatorSeparationAsync(int? tenderId, int? bidNegotiationId, int redirectTenderId)
+    {
+        var result = await _service.CheckCreatorApproverSeparationAsync(tenderId, bidNegotiationId, _currentUser.UserId, _currentUser.UserName,
+            _currentUser.Roles.Contains(PEMS.Persistence.Identity.SystemRoles.SystemAdmin), HttpContext?.Connection.RemoteIpAddress?.ToString());
+
+        switch (result)
+        {
+            case TenderApprovalSeparation.DeniedCreator:
+                TempData["Error"] = "طبق سیاست تفکیک وظایف، ایجادکننده‌ی مناقصه نمی‌تواند همان مناقصه را تأیید کند.";
+                return RedirectToAction(nameof(Details), new { id = redirectTenderId });
+            case TenderApprovalSeparation.DeniedUnverifiable:
+                return Forbid();
+            default:
+                return null;
+        }
     }
 
     private async Task<int?> GetCurrentEmployeeIdAsync()

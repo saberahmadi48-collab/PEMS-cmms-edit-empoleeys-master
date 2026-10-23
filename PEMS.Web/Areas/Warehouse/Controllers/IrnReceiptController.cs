@@ -44,8 +44,13 @@ public class IrnReceiptController : Controller
         _runtime = runtime;
     }
 
+    // P0-09 (D-OPEN-02، تصمیم مالک): صفحات فقط-خواندنی هم مجوز View می‌خواهند.
+    private Task<bool> CanViewAsync() => _permissionService.HasPermissionAsync(_currentUser.Roles, "IRN", "View");
+
     public async Task<IActionResult> Index(string? status, int page = 1, int? pageSize = null)
     {
+        if (!await CanViewAsync()) return Forbid();
+
         ViewData["Title"] = "Incoming Receipts (IRN)";
         ViewData["Section"] = "Inventory & Materials";
         ViewData["HelpKey"] = "IrnReceipt.Index";
@@ -146,6 +151,8 @@ public class IrnReceiptController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
+        if (!await CanViewAsync()) return Forbid();
+
         ViewData["Title"] = "IRN Details";
         ViewData["Section"] = "Inventory & Materials";
         ViewData["HelpKey"] = "IrnReceipt.Details";
@@ -265,7 +272,26 @@ public class IrnReceiptController : Controller
             return RedirectToAction(nameof(Details), new { id });
         }
 
-        await _runtime.StartInstanceAsync(IrnModule, IrnBusinessObjectType, id, IrnDispositionWorkflowSeeder.Category, null, employeeId);
+        // P0 / F-07: Disposition (ذخیره‌ی مقادیر) و شروع گردش‌کار دو commit جدا هستند. اگر شروع گردش‌کار شکست بخورد، IRN
+        // بدون Instance در PendingApproval گیر می‌کرد. اکنون: (۱) Instance در حال اجرای موجود (مثلاً یتیم از تلاش قبلی) دوباره
+        // استفاده می‌شود؛ (۲) در شکست، Disposition با همان مسیر معمول رد/بازنشانی (CompleteDispositionAsync approved:false)
+        // جبران می‌شود تا IRN به Submitted برگردد و بازرس دوباره ثبت کند - هیچ موجودی‌ای در این مسیر Post نمی‌شود.
+        var existing = await _runtime.GetInstanceAsync(IrnBusinessObjectType, id);
+        if (existing == null || existing.Status != "Running")
+        {
+            try
+            {
+                await _runtime.StartInstanceAsync(IrnModule, IrnBusinessObjectType, id, IrnDispositionWorkflowSeeder.Category, null, employeeId);
+            }
+            catch (Exception ex)
+            {
+                var (compensated, compensationError) = await _lifecycleService.CompleteDispositionAsync(id, false, employeeId);
+                TempData["Error"] = compensated
+                    ? $"گردش‌کار تایید شروع نشد ({ex.Message}). Disposition برگردانده شد؛ دوباره ثبت کنید."
+                    : $"گردش‌کار تایید شروع نشد ({ex.Message}) و بازگردانی Disposition هم ناموفق بود: {compensationError}";
+                return RedirectToAction(nameof(Details), new { id });
+            }
+        }
 
         TempData["Message"] = "Disposition recorded - awaiting QA approval.";
         return RedirectToAction(nameof(Details), new { id });
@@ -292,7 +318,23 @@ public class IrnReceiptController : Controller
         }
 
         var instance = await _runtime.GetInstanceAsync(IrnBusinessObjectType, id);
-        if (instance == null || instance.Status != "Running")
+
+        // P0 / F-07: «گام گردش‌کار» و «Post موجودی» دو commit جدا هستند. اگر گام گردش‌کار انجام شده ولی Post شکست خورده باشد
+        // (مثلاً ردیف موجودی مبهم یا Concurrency)، Instance در Completed/Rejected است ولی IRN هنوز PendingApproval؛ قبلاً هیچ
+        // راه بازیابی نبود («گردش‌کار یافت نشد»). اکنون در این حالت، نتیجه‌ی ثبت‌شده‌ی گردش‌کار (نه پارامتر decision این
+        // درخواست) تعیین می‌کند و فقط Post موجودی تکرار می‌شود؛ CompleteDispositionAsync با گارد وضعیت PendingApproval
+        // Idempotent است (دوبار Post نمی‌شود). مجوز IRN.Approve همچنان بالا اجباری است.
+        // محافظ: Instance باید متعلق به همین نوبت Disposition باشد (بعد از آخرین ورود به PendingApproval شروع شده باشد)؛ Instance
+        // کهنه‌ی نوبت‌های قبلی هرگز نباید Post جدید را تعیین کند.
+        var pendingSince = await _context.IrnReceiptStatusHistories
+            .Where(h => h.IrnReceiptId == id && h.ToStatus == "PendingApproval")
+            .OrderByDescending(h => h.ChangedDate)
+            .Select(h => (DateTime?)h.ChangedDate)
+            .FirstOrDefaultAsync();
+        var recoveringPosting = instance != null
+            && (instance.Status == "Completed" || instance.Status == "Rejected")
+            && pendingSince.HasValue && instance.StartDate >= pendingSince.Value;
+        if (instance == null || (instance.Status != "Running" && !recoveringPosting))
         {
             TempData["Error"] = "The approval workflow for this IRN was not found.";
             return RedirectToAction(nameof(Details), new { id });
@@ -302,16 +344,20 @@ public class IrnReceiptController : Controller
 
         try
         {
-            await _runtime.ExecuteActionAsync(
-                instance.WorkflowInstanceId, decision, employeeId,
-                _currentUser.Roles, comment, HttpContext.Connection.RemoteIpAddress?.ToString(),
-                Request.Headers["User-Agent"].ToString());
+            if (!recoveringPosting)
+            {
+                await _runtime.ExecuteActionAsync(
+                    instance.WorkflowInstanceId, decision, employeeId,
+                    _currentUser.Roles, comment, HttpContext.Connection.RemoteIpAddress?.ToString(),
+                    Request.Headers["User-Agent"].ToString());
+            }
 
-            var (success, error) = await _lifecycleService.CompleteDispositionAsync(id, decision == "Approve", employeeId);
+            var approved = recoveringPosting ? instance.Status == "Completed" : decision == "Approve";
+            var (success, error) = await _lifecycleService.CompleteDispositionAsync(id, approved, employeeId);
 
             TempData[success ? "Message" : "Error"] = success
-                ? (decision == "Approve" ? "Disposition approved - accepted quantity posted to stock." : "Disposition rejected - IRN returned for re-inspection.")
-                : error;
+                ? (approved ? "Disposition approved - accepted quantity posted to stock." : "Disposition rejected - IRN returned for re-inspection.")
+                : $"{error} (تصمیم گردش‌کار ثبت شده است؛ پس از رفع مشکل دوباره «تایید» را بزنید تا ثبت موجودی تکرار شود.)";
         }
         catch (Exception ex)
         {

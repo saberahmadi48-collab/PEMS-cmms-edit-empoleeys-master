@@ -14,6 +14,7 @@ namespace PEMS.Web.Areas.Warehouse.Controllers;
 /// این صفحه هیچ MR/PO/رزرو/موجودی را نمی‌سازد و تغییر نمی‌دهد؛ تبدیل به MR/بسته‌ی تدارکات (P6) وجود ندارد.
 /// </summary>
 [Area("Warehouse")]
+[RequireReplenishmentAvailable]
 public class ReplenishmentController : Controller
 {
     private const string Module = IReplenishmentRecommendationService.Module;

@@ -1,0 +1,265 @@
+@model PEMS.Web.ViewModels.StrategyFormViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Domain.Common
+@using PEMS.Web.Helpers
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var i = Model.Input;
+    var isEdit = Model.MaintenanceStrategyId.HasValue;
+    string Sel(string? current, string value) => string.Equals(current, value, StringComparison.Ordinal) ? "selected" : "";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-diagram-3"></i>
+        @(isEdit ? Localizer["Rcm_EditStrategy"] : Localizer["Rcm_NewStrategy"])
+        @if (isEdit) { <span class="badge @RcmDisplay.StatusBadge(Model.Status) ms-2">@Localizer.Label("Status", Model.Status) · v@(Model.VersionNumber)</span> }
+    </h5>
+    <a asp-action="@(isEdit ? "Details" : "Index")" asp-route-id="@Model.MaintenanceStrategyId" class="btn btn-outline-secondary btn-sm">@Localizer["Rcm_Back"]</a>
+</div>
+
+@await Html.PartialAsync("_RcmErrors", Model.Errors)
+
+@if (Model.WillCreateNewVersion)
+{
+    <div class="alert alert-info small"><i class="bi bi-info-circle"></i> @Localizer["Rcm_NewVersionNotice"]</div>
+}
+<p class="text-muted small">@Localizer["Rcm_FormHint"]</p>
+
+<form method="post" asp-action="@(isEdit ? "Edit" : "Create")" asp-route-id="@Model.MaintenanceStrategyId" class="content-card" id="strategyForm">
+    @if (i.RowVersion != null)
+    {
+        <input type="hidden" name="RowVersion" value="@Convert.ToBase64String(i.RowVersion)" />
+    }
+
+    @if (Model.StartedFromEquipment != null)
+    {
+        <div class="small text-muted mb-1">@Localizer["Rcm_StartedFromTag"]</div>
+        @await Html.PartialAsync("_EquipmentIdentity", Model.StartedFromEquipment)
+    }
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label class="form-label">@Localizer["Rcm_EquipmentClass"] <span class="text-danger">*</span></label>
+            <select name="EquipmentClassId" id="classSelect" class="form-select" required>
+                <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+                @foreach (var c in Model.Classes) { <option value="@c.Id" selected="@(i.EquipmentClassId == c.Id)">@c.Text (@c.Code)</option> }
+            </select>
+            <span class="text-danger small" data-valmsg-for="EquipmentClassId">@Html.ValidationMessage("EquipmentClassId")</span>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">@Localizer["Rcm_Title"]</label>
+            <input name="Title" value="@i.Title" class="form-control" maxlength="200" />
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">@Localizer["Rcm_FailureMode"] <span class="text-danger">*</span></label>
+            <input type="text" id="modeSearch" class="form-control form-control-sm mb-1" placeholder="@Localizer["Rcm_SearchFailureMode"]" autocomplete="off" />
+            <select name="FailureModeId" id="modeSelect" class="form-select" size="5" required>
+                @if (i.FailureModeId.HasValue)
+                {
+                    <option value="@i.FailureModeId" selected>@(Model.SelectedFailureModeLabel ?? i.FailureModeId.ToString())</option>
+                }
+            </select>
+            <div class="form-text">@Localizer["Rcm_FailureModeHint"]</div>
+            <span class="text-danger small">@Html.ValidationMessage("FailureModeId")</span>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">@Localizer["Rcm_FailureCause"]</label>
+            <select name="FailureCauseId" id="causeSelect" class="form-select">
+                <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+            </select>
+            <label class="form-label mt-2">@Localizer["Rcm_FunctionalFailure"]</label>
+            <input name="FunctionalFailure" value="@i.FunctionalFailure" class="form-control" maxlength="500" />
+            <label class="form-label mt-2">@Localizer["Rcm_FailureEffect"]</label>
+            <input name="FailureEffect" value="@i.FailureEffect" class="form-control" maxlength="500" />
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">@Localizer["Rcm_Consequence"] <span class="text-danger">*</span></label>
+            <select name="ConsequenceCategory" id="consequenceSelect" class="form-select" required>
+                @foreach (var c in RcmCodes.Consequence.All) { <option value="@c" selected="@(i.ConsequenceCategory == c || (i.ConsequenceCategory == null && c == "Operational"))">@Localizer.Label("Consequence", c)</option> }
+            </select>
+            <div class="form-check mt-2">
+                <input class="form-check-input" type="checkbox" name="IsHiddenFailure" value="true" id="hiddenChk" checked="@i.IsHiddenFailure" />
+                <label class="form-check-label small" for="hiddenChk">@Localizer["Rcm_HiddenFailure"]</label>
+                <input type="hidden" name="IsHiddenFailure" value="false" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">@Localizer["Rcm_StrategyType"] <span class="text-danger">*</span></label>
+            <select name="StrategyType" id="typeSelect" class="form-select" required>
+                @foreach (var t in RcmCodes.StrategyType.All) { <option value="@t" selected="@(i.StrategyType == t)">@Localizer.Label("StrategyType", t)</option> }
+            </select>
+            <div class="form-text text-warning" id="rtfWarning" style="display:none;">@Localizer["Rcm_RtfWarning"]</div>
+            <span class="text-danger small">@Html.ValidationMessage("strategyType")</span>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">@Localizer["Rcm_Source"]</label>
+            <select name="Source" class="form-select">
+                <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+                @foreach (var s in RcmCodes.Source.All) { <option value="@s" selected="@(i.Source == s)">@Localizer.Label("Source", s)</option> }
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">@Localizer["Rcm_TaskType"]</label>
+            <select name="TaskType" class="form-select">
+                <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+                @foreach (var t in RcmCodes.TaskType.All) { <option value="@t" selected="@(i.TaskType == t)">@Localizer.Label("TaskType", t)</option> }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">@Localizer["Rcm_OwnerDiscipline"]</label>
+            <select name="OwnerDisciplineId" class="form-select">
+                <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+                @foreach (var d in Model.Disciplines) { <option value="@d.Id" selected="@(i.OwnerDisciplineId == d.Id)">@d.Text</option> }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">@Localizer["Rcm_Frequency"]</label>
+            <select name="Frequency" class="form-select">
+                <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+                @foreach (var f in RcmCodes.Frequency.All) { <option value="@f" selected="@(i.Frequency == f)">@Localizer.Label("Frequency", f)</option> }
+            </select>
+            <span class="text-danger small">@Html.ValidationMessage("frequency")</span>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">@Localizer["Rcm_DefaultIntervalDays"]</label>
+            <input name="DefaultIntervalDays" type="number" min="1" value="@i.DefaultIntervalDays" class="form-control" />
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">@Localizer["Rcm_RecommendedTrigger"]</label>
+            <select name="RecommendedTriggerType" class="form-select">
+                @foreach (var t in RcmCodes.Trigger.All) { <option value="@t" selected="@(i.RecommendedTriggerType == t)">@Localizer.Label("Trigger", t)</option> }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">@Localizer["Rcm_RequiredSkills"]</label>
+            <input name="RequiredSkills" value="@i.RequiredSkills" class="form-control" maxlength="500" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">@Localizer["Rcm_EstimatedHours"]</label>
+            <input name="EstimatedDurationHours" type="number" step="0.25" min="0" value="@i.EstimatedDurationHours" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">@Localizer["Rcm_ReviewDate"]</label>
+            <input name="ReviewDate" type="date" value="@i.ReviewDate?.ToString("yyyy-MM-dd")" class="form-control" />
+        </div>
+
+        <div class="col-12" id="cbmSection">
+            <div class="border rounded p-3">
+                <div class="fw-bold small mb-2"><i class="bi bi-activity"></i> @Localizer["Rcm_CbmSection"]</div>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">@Localizer["Rcm_CbmParameter"]</label>
+                        <input name="CbmParameter" value="@i.CbmParameter" class="form-control" maxlength="100" />
+                        <span class="text-danger small">@Html.ValidationMessage("cbmParameter")</span>
+                    </div>
+                    <div class="col-md-2"><label class="form-label">@Localizer["Rcm_Unit"]</label><input name="ThresholdUnit" value="@i.ThresholdUnit" class="form-control" maxlength="30" /></div>
+                    <div class="col-md-2"><label class="form-label">@Localizer["Rcm_AlarmThreshold"]</label><input name="AlarmThreshold" type="number" step="any" value="@i.AlarmThreshold" class="form-control" /></div>
+                    <div class="col-md-2"><label class="form-label">@Localizer["Rcm_TripThreshold"]</label><input name="TripThreshold" type="number" step="any" value="@i.TripThreshold" class="form-control" /></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-3"><label class="form-label">@Localizer["Rcm_PfInterval"]</label><input name="PfIntervalDays" type="number" min="1" value="@i.PfIntervalDays" class="form-control" /></div>
+                    <div class="col-md-3">
+                        <label class="form-label">@Localizer["Rcm_InspectionInterval"]</label>
+                        <input name="InspectionIntervalDays" type="number" min="1" value="@i.InspectionIntervalDays" class="form-control" />
+                        <span class="text-danger small">@Html.ValidationMessage("inspectionIntervalDays")</span>
+                    </div>
+                    <div class="col-md-6 small text-muted align-self-end">@Localizer["Rcm_PfHint"]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">@Localizer["Rcm_StartDate"]</label>
+            <input name="StartDate" type="date" value="@i.StartDate?.ToString("yyyy-MM-dd")" class="form-control" />
+            <span class="text-danger small">@Html.ValidationMessage("startDate")</span>
+        </div>
+        <div class="col-12">
+            <label class="form-label">@Localizer["Rcm_Justification"] <span class="text-danger">*</span></label>
+            <textarea name="Justification" class="form-control" rows="3" minlength="20" required placeholder="@Localizer["Rcm_JustificationPlaceholder"]">@i.Justification</textarea>
+            <div class="form-text">@Localizer["Rcm_JustificationHint"]</div>
+            <span class="text-danger small">@Html.ValidationMessage("justification")</span>
+        </div>
+        <div class="col-12">
+            <label class="form-label">@Localizer["Rcm_Description"]</label>
+            <textarea name="Description" class="form-control" rows="2">@i.Description</textarea>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex gap-2">
+        <button type="submit" class="btn btn-pems-solid">@(Model.WillCreateNewVersion ? Localizer["Rcm_SaveNewVersion"] : Localizer["Save"])</button>
+        <a asp-action="@(isEdit ? "Details" : "Index")" asp-route-id="@Model.MaintenanceStrategyId" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        (function () {
+            var classSel = document.getElementById('classSelect');
+            var modeSel = document.getElementById('modeSelect');
+            var causeSel = document.getElementById('causeSelect');
+            var search = document.getElementById('modeSearch');
+            var typeSel = document.getElementById('typeSelect');
+            var consSel = document.getElementById('consequenceSelect');
+            var hiddenChk = document.getElementById('hiddenChk');
+            var cbm = document.getElementById('cbmSection');
+            var rtfWarn = document.getElementById('rtfWarning');
+            var isFa = document.documentElement.lang === 'fa' || document.dir === 'rtl';
+            var selectedMode = '@(i.FailureModeId?.ToString() ?? "")';
+            var selectedCause = '@(i.FailureCauseId?.ToString() ?? "")';
+            var modes = [];
+
+            function label(m) { return (isFa && m.nameFa ? m.nameFa : m.name) + ' (' + m.code + ')'; }
+
+            function renderModes() {
+                var keep = modeSel.value || selectedMode;
+                modeSel.innerHTML = '';
+                modes.forEach(function (m) {
+                    var o = document.createElement('option');
+                    o.value = m.failureModeId; o.textContent = label(m);
+                    if (String(m.failureModeId) === String(keep)) o.selected = true;
+                    modeSel.appendChild(o);
+                });
+                renderCauses();
+            }
+
+            function renderCauses() {
+                var m = modes.find(function (x) { return String(x.failureModeId) === String(modeSel.value); });
+                causeSel.innerHTML = '<option value="">—</option>';
+                (m ? m.causes : []).forEach(function (c) {
+                    var o = document.createElement('option');
+                    o.value = c.failureCauseId; o.textContent = (isFa && c.nameFa ? c.nameFa : c.name);
+                    if (String(c.failureCauseId) === String(selectedCause)) o.selected = true;
+                    causeSel.appendChild(o);
+                });
+            }
+
+            var timer = null;
+            function loadModes() {
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    var url = '@Url.Action("FailureModes")' + '?classId=' + encodeURIComponent(classSel.value || '') + '&q=' + encodeURIComponent(search.value || '');
+                    fetch(url).then(function (r) { return r.ok ? r.json() : []; }).then(function (data) { modes = data; renderModes(); });
+                }, 200);
+            }
+
+            function syncRules() {
+                var c = consSel.value, t = typeSel.value;
+                var needsProactive = c === 'Safety' || c === 'Environmental' || c === 'Hidden' || hiddenChk.checked;
+                rtfWarn.style.display = (needsProactive && (t === 'RunToFailure' || t === 'Corrective')) ? '' : 'none';
+                cbm.style.display = (t === 'CBM' || t === 'Predictive') ? '' : 'none';
+            }
+
+            classSel.addEventListener('change', function () { selectedMode = ''; loadModes(); });
+            search.addEventListener('input', loadModes);
+            modeSel.addEventListener('change', function () { selectedCause = ''; renderCauses(); });
+            [consSel, typeSel, hiddenChk].forEach(function (el) { el.addEventListener('change', syncRules); });
+
+            loadModes();
+            syncRules();
+        })();
+    </script>
+}

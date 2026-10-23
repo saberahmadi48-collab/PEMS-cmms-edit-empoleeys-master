@@ -17,7 +17,7 @@
             <div class="col-md-4">
                 <label class="form-label">@Localizer["UOM"]</label>
                 <select name="uomId" id="uomSelect" class="form-select">
-                    <option value="">@Localizer["-- none --"]</option>
+                    <option value="">@Localizer["-- None --"]</option>
                     @foreach (var u in ViewBag.Uoms)
                     {
                         <option value="@u.MaterialUOMId">@u.Code</option>
@@ -62,7 +62,7 @@
             <div class="col-md-6">
                 <label class="form-label">Responsible Employee (optional)</label>
                 <select name="responsibleEmployeeId" class="form-select">
-                    <option value="">@Localizer["-- none --"]</option>
+                    <option value="">@Localizer["-- None --"]</option>
                     @foreach (var emp in ViewBag.Employees)
                     {
                         <option value="@emp.EmployeeId">@emp.Name</option>

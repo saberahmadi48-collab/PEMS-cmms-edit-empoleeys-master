@@ -1,0 +1,28 @@
+@using System.Globalization
+@using System.Text.Json
+@{
+    // داده‌ی راه‌انداز رابط: آدرس‌ها و متن‌ها از سرور می‌آیند (بومی‌سازی با SharedResource، پیوندها با Url.Action)
+    var boot = new
+    {
+        dataUrl = (string?)ViewBag.DataUrl,
+        links = (Dictionary<string, string?>)ViewBag.Links,
+        i18n = (Dictionary<string, string>)ViewBag.I18n,
+        locale = CultureInfo.CurrentUICulture.Name,
+        rtl = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft
+    };
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/dist/dashboards/dashboards.css" asp-append-version="true" />
+}
+
+@* React + Bklit UI island (source: frontend/dashboards). Every Tailwind rule is scoped under .bk-scope. *@
+<div id="executive-root" class="bk-scope exec-host" aria-live="polite">
+    <div class="exec-boot-note text-muted small p-3">@ViewData["Title"]…</div>
+</div>
+
+<script type="application/json" id="exec-boot">@Html.Raw(JsonSerializer.Serialize(boot).Replace("<", "\\u003c"))</script>
+
+@section Scripts {
+    <script type="module" src="~/dist/dashboards/dashboards.js" asp-append-version="true"></script>
+}

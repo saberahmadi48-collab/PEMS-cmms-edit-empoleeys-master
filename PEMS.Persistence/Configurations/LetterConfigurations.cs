@@ -47,7 +47,15 @@ public class LetterConfiguration : IEntityTypeConfiguration<Letter>
             .HasForeignKey(x => x.ParentLetterId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.HasOne(x => x.CorrespondentParty).WithMany().HasForeignKey(x => x.CorrespondentPartyId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.Contract).WithMany().HasForeignKey(x => x.ContractId).OnDelete(DeleteBehavior.Restrict);
+
+        // جست‌وجوی ثبت تکراری (طرف مکاتبه + شماره‌ی نامه‌ی فرستنده) و رشته‌ی مکاتبه‌ی یک طرف؛ عمداً یکتا نیست (داده‌ی قدیمی ممکن است تکرار داشته باشد)
+        builder.HasIndex(x => new { x.CorrespondentPartyId, x.SenderReference });
         builder.HasIndex(x => x.LetterNumber);
+        builder.HasIndex(x => new { x.Status, x.IsActive });
+        builder.HasIndex(x => x.RegisteredById);
+        builder.HasIndex(x => x.SenderEmployeeId);
 
         // طبق بهینه‌سازی عملکرد: این‌ها دقیقاً همان فیلدهایی هستند که SearchAsync همیشه
         // با آن‌ها فیلتر/مرتب‌سازی می‌کند

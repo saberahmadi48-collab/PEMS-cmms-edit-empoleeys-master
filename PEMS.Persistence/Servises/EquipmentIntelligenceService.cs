@@ -81,7 +81,7 @@ public class EquipmentIntelligenceService : IEquipmentIntelligenceService
         }
 
         // Maintenance
-        dto.ActiveStrategyCount = await _context.MaintenanceStrategies.CountAsync(x => x.EquipmentId == equipmentId && x.IsActive);
+        dto.ActiveStrategyCount = await _context.MaintenanceStrategies.CountAsync(x => x.IsActive && (x.EquipmentId == equipmentId || x.Assignments.Any(a => a.IsActive && a.Status == "Active" && a.EquipmentId == equipmentId)));
         dto.ActiveMaintenancePlanCount = await _context.MaintenancePlans.CountAsync(x => x.EquipmentId == equipmentId && x.IsActive);
 
         var workOrderTypeCounts = await _context.WorkOrders.AsNoTracking()

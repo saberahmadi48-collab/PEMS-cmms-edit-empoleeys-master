@@ -13,7 +13,7 @@
             <div class="col-md-6">
                 <label class="form-label">Operator (optional)</label>
                 <select name="operatorEmployeeId" class="form-select">
-                    <option value="">@Localizer["-- none --"]</option>
+                    <option value="">@Localizer["-- None --"]</option>
                     @foreach (var emp in ViewBag.Employees)
                     {
                         <option value="@emp.EmployeeId">@emp.Name</option>
@@ -23,7 +23,7 @@
             <div class="col-md-6">
                 <label class="form-label">Shift (optional)</label>
                 <select name="shiftDefinitionId" class="form-select">
-                    <option value="">@Localizer["-- none --"]</option>
+                    <option value="">@Localizer["-- None --"]</option>
                     @foreach (var s in ViewBag.Shifts)
                     {
                         <option value="@s.ShiftDefinitionId">@s.Code - @s.Name</option>

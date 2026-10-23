@@ -136,7 +136,11 @@
 
         quill.on('text-change', function () {
             targetTextarea.value = quill.root.innerHTML;
+            // برای صفحه‌هایی که تغییر متن را دنبال می‌کنند (ذخیره‌ی خودکار پیش‌نویس)؛ مقدار textarea با کد عوض نمی‌شود پس input/change رخ نمی‌دهد
+            targetTextarea.dispatchEvent(new Event('rte-change', { bubbles: true }));
         });
+        // دسترسی کد صفحه به ادیتور (مثلاً پاک‌سازی پس از ورود قالب)
+        targetTextarea.quillEditor = quill;
 
         var form = targetTextarea.closest('form');
         if (form) {

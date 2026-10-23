@@ -7,6 +7,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @inject INotificationService NotificationService
 @inject ICurrentUserService CurrentUser
+@inject PEMS.Web.Navigation.IDynamicSidebarAvailability DynamicSidebar
 @{
     var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
     string LocalizedPageTitle(string? s) { if (string.IsNullOrWhiteSpace(s)) return s ?? ""; var l = Localizer[s]; return l.ResourceNotFound ? s : l.Value; }
@@ -21,7 +22,7 @@
         : 0;
 }
 <!DOCTYPE html>
-<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" dir="@(isRtl ? "rtl" : "ltr")" data-theme="@currentTheme">
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" dir="@(isRtl ? "rtl" : "ltr")" data-theme="@currentTheme" data-bs-theme="@(currentTheme is "turquoise" or "dark" ? "dark" : null)">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -52,6 +53,7 @@
        بعد از همه‌ی فایل‌های دیگر بارگذاری می‌شود تا بتواند override های محدود و هدفمند خودش
        را (فقط روی Turquoise + کلاس‌های Loading/Skeleton سراسری) اعمال کند. *@
     <link rel="stylesheet" href="~/css/pems-glass.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-themes.css" asp-append-version="true" />
 
     @if (isRtl)
     {
@@ -68,6 +70,7 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="@(isAdminArea ? "admin-area" : "")" data-user-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value">
+    <a class="pems-skip-link" href="#pemsMainContent">@Localizer["Shell_SkipToContent"]</a>
     <header class="pems-topbar">
         <div class="d-flex align-items-center gap-2">
             <button class="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="@Localizer["Shell_ToggleMenu"]">
@@ -166,8 +169,9 @@
     @await Html.PartialAsync("_ContextualHelpDrawer")
 
     <div class="pems-shell">
-        <partial name="_SidebarMenu" />
-        <main class="pems-content">
+        @* سایدبار داده‌محور پشت پرچم Features:DynamicSidebar:Enabled (پیش‌فرض: سایدبار قدیمی) *@
+        <partial name="@(DynamicSidebar.IsEnabled ? "_DynamicSidebarMenu" : "_SidebarMenu")" />
+        <main class="pems-content" id="pemsMainContent" tabindex="-1">
             @* هدر عمومی صفحه: فقط یک ردیف فشرده (عنوان + برچسب ماژول) - بدون مسیر/URL و بدون Breadcrumb تکراری.
                صفحاتی که هدر اختصاصی دارند ViewData["HidePageTitle"]=true می‌گذارند. *@
             @if (isAdminArea)
@@ -185,7 +189,7 @@
         </main>
     </div>
 
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1080;">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1080;" aria-live="polite" aria-atomic="false">
         @if (TempData["Message"] != null)
         {
             <div class="toast align-items-center text-bg-success border-0 show" role="alert" data-bs-delay="5000" data-bs-autohide="true">
@@ -215,6 +219,8 @@
     <script src="~/js/pems-global-search.js" asp-append-version="true"></script>
     <script src="~/js/pems-data-grid.js" asp-append-version="true"></script>
     <script src="~/js/pems-ui.js" asp-append-version="true"></script>
+    <script src="~/js/pems-sidebar-search.js" asp-append-version="true"
+            data-placeholder="@Localizer["Shell_SidebarSearch"]" data-results="@Localizer["Shell_SidebarSearchResults"]" data-empty="@Localizer["Shell_SidebarSearchEmpty"]"></script>
     <script src="~/js/pems-loading.js" asp-append-version="true"></script>
     <script src="~/js/admin.js" asp-append-version="true"></script>
     <script src="~/lib/signalr/signalr-8.0.7.min.js"></script>

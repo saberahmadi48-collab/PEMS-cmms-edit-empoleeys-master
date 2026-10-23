@@ -1,0 +1,57 @@
+@model PEMS.Application.DTOs.WorkItemListItemDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var canRank = ViewData["CanRank"] is true;
+    var showBulk = ViewData["ShowBulk"] is true;
+    var showSpace = ViewData["ShowSpace"] is true;
+    var sprints = ViewData["Sprints"] as List<PEMS.Application.DTOs.SprintDto> ?? new();
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+    var i = Model;
+}
+<tr class="tm-row @(i.IsOverdue ? "tm-row--overdue" : "") @(!i.IsActive ? "text-muted" : "")" data-tm-id="@i.Id" draggable="@(canRank ? "true" : "false")">
+    @if (showBulk)
+    {
+        <td class="tm-col-check"><input type="checkbox" class="form-check-input" name="ids" value="@i.Id" form="tmBulk" aria-label="@Localizer["Tm_Select"] @(i.Key ?? "#" + i.Id)" data-tm-bulk-item /></td>
+    }
+    <td class="text-nowrap">
+        @if (!string.IsNullOrEmpty(i.TypeIcon)) { <i class="bi @i.TypeIcon me-1" title="@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)" aria-hidden="true"></i><span class="visually-hidden">@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)</span> }
+        <a asp-controller="Task" asp-action="Details" asp-route-id="@i.Id" class="tm-key">@(i.Key ?? "#" + i.Id)</a>
+    </td>
+    @if (showSpace) { <td class="small">@(i.WorkSpaceKey ?? Localizer["Tm_Personal"].Value)</td> }
+    <td class="tm-title-cell">
+        <a asp-controller="Task" asp-action="Details" asp-route-id="@i.Id" class="text-reset">@i.Title</a>
+        @if (i.ParentKey != null) { <span class="small text-muted ms-1">↳ @i.ParentKey</span> }
+        @if (!i.IsActive) { <span class="badge bg-light text-dark border ms-1">@Localizer["Tm_Archived"]</span> }
+    </td>
+    <td><span class="badge @TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</span></td>
+    <td class="text-nowrap"><i class="bi @TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true"></i> <span class="small">@TaskManagerUi.Priority(Localizer, i.Priority)</span></td>
+    <td class="small">@(i.AssigneeName ?? Localizer["Tm_Unassigned"].Value)</td>
+    <td class="small text-nowrap">
+        @TaskManagerUi.Date(i.DueDate)
+        @if (i.IsOverdue) { <span class="badge bg-danger ms-1">@Localizer["Overdue"]</span> }
+    </td>
+    <td class="small text-end">@(i.StoryPoints?.ToString("0.#"))</td>
+    @if (canRank)
+    {
+        <td class="text-nowrap tm-row-actions">
+            <form asp-controller="TaskManager" asp-action="Rank" method="post" class="d-inline">
+                <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="up" value="true" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                <button class="btn btn-sm btn-link p-0" title="@Localizer["Tm_MoveUp"]" aria-label="@Localizer["Tm_MoveUp"] @(i.Key)"><i class="bi bi-arrow-up" aria-hidden="true"></i></button>
+            </form>
+            <form asp-controller="TaskManager" asp-action="Rank" method="post" class="d-inline">
+                <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="up" value="false" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                <button class="btn btn-sm btn-link p-0" title="@Localizer["Tm_MoveDown"]" aria-label="@Localizer["Tm_MoveDown"] @(i.Key)"><i class="bi bi-arrow-down" aria-hidden="true"></i></button>
+            </form>
+            <form asp-controller="TaskManager" asp-action="SetSprint" method="post" class="d-inline">
+                <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                <select name="sprintId" class="form-select form-select-sm d-inline-block w-auto" aria-label="@Localizer["Tm_MoveToSprint"] @(i.Key)" onchange="this.form.submit()">
+                    <option value="0" selected="@(i.SprintId == null)">@Localizer["Tm_Backlog"]</option>
+                    @foreach (var s in sprints) { <option value="@s.Id" selected="@(i.SprintId == s.Id)">@s.Name</option> }
+                </select>
+            </form>
+        </td>
+    }
+</tr>

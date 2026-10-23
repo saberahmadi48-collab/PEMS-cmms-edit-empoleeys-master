@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
+using PEMS.Domain.Common;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
 
@@ -32,9 +34,19 @@ public class PMGenerationService : IPMGenerationService
     {
         var plan = await _context.MaintenancePlans
             .Include(x => x.Equipment)
+            .Include(x => x.MaintenanceStrategy)
+            .Include(x => x.MaintenanceStrategyAssignment)
             .FirstOrDefaultAsync(x => x.MaintenancePlanId == planId && x.IsActive);
 
         if (plan == null) return null;
+
+        // RCM: تخصیص بسته‌شده (Retired/Suspended) یا استراتژی «بدون کار زمان‌بندی‌شده» (RTF/Corrective)
+        // هرگز Work Order تولید نمی‌کند - Plan های قدیمی نامعتبر هم بی‌صدا WO نمی‌سازند.
+        if (plan.MaintenanceStrategyAssignment != null &&
+            (!plan.MaintenanceStrategyAssignment.IsActive || plan.MaintenanceStrategyAssignment.Status != RcmCodes.AssignmentStatus.Active))
+            return null;
+        if (plan.MaintenanceStrategy != null && StrategyRules.ReactiveTypes.Contains(plan.MaintenanceStrategy.StrategyType))
+            return null;
 
         // طبق بند ۱۵/۵۵: محافظ Idempotency - اگر همین Plan از قبل یک WorkOrder اشغال‌کننده دارد،
         // یکی دیگر ساخته نمی‌شود (نه حتی با کلیک تکراری کاربر، نه با اجرای دوباره‌ی Batch).
@@ -42,6 +54,24 @@ public class PMGenerationService : IPMGenerationService
             .AnyAsync(x => x.MaintenancePlanId == planId && OccupyingStatuses.Contains(x.Status));
 
         if (hasOpenWorkOrder) return null;
+
+        // اولویت از ماتریس پیامد × بحرانی‌بودن (نه Medium ثابت) و رشته‌ی مسئول از استراتژی
+        var strategy = plan.MaintenanceStrategy;
+        var criticality = await _context.EquipmentCriticalities.AsNoTracking()
+            .Where(c => c.IsActive && c.EquipmentId == plan.EquipmentId)
+            .Select(c => c.CriticalityClass).FirstOrDefaultAsync();
+        var consequence = LegacyMaps.Consequence(strategy?.ConsequenceCategory) ?? strategy?.ConsequenceCategory;
+        var priority = strategy == null
+            ? RcmCodes.Priority.Medium
+            : StrategyRules.DerivePriority(consequence, criticality, strategy.IsHiddenFailure);
+
+        int? responsibleDisciplineId = null;
+        if (strategy?.OwnerDisciplineId is int ownerId &&
+            await _context.Disciplines.AnyAsync(d => d.DisciplineId == ownerId && d.IsActive))
+            responsibleDisciplineId = ownerId;
+
+        var assignment = plan.MaintenanceStrategyAssignment;
+        var taskNote = assignment is { OverrideStatus: RcmCodes.OverrideStatus.Approved } ? assignment.OverrideTaskNote : null;
 
         var workOrderNumber = await _numberingService.GetNextNumberAsync("WorkOrder");
 
@@ -51,12 +81,16 @@ public class PMGenerationService : IPMGenerationService
             MaintenancePlanId = plan.MaintenancePlanId,
             WorkOrderNumber = workOrderNumber,
             WorkOrderType = "Preventive",
-            Priority = "Medium",
+            Priority = priority,
+            ResponsibleDisciplineId = responsibleDisciplineId,
+            ResponsibleOrganization = responsibleDisciplineId.HasValue ? OrganizationDomains.Maintenance : null,
             Status = "Open",
             // طبق «PEMS Phase 7» بند ۱۲: سررسید فعلیِ Plan پیش از جلو رفتن (چند خط پایین‌تر)
             // این‌جا کپی می‌شود - تنها فرصت برای ثبت این مقدار، همین لحظه‌ی تولید است.
             DueDate = plan.NextDueDate,
-            Description = plan.Title + (string.IsNullOrEmpty(plan.Description) ? "" : " - " + plan.Description),
+            Description = plan.Title + (string.IsNullOrEmpty(plan.Description) ? "" : " - " + plan.Description)
+                          + (string.IsNullOrWhiteSpace(taskNote) ? "" : " | " + taskNote)
+                          + (string.IsNullOrWhiteSpace(strategy?.RequiredSkills) ? "" : " | Skills: " + strategy!.RequiredSkills),
             IsActive = true,
             CreatedDate = DateTime.Now
         };
@@ -121,18 +155,75 @@ public class PMGenerationService : IPMGenerationService
             await _context.SaveChangesAsync();
         }
 
-        plan.LastExecutionDate = DateTime.Now;
-        if (plan.IntervalDays.HasValue)
-            plan.NextDueDate = DateTime.Now.AddDays(plan.IntervalDays.Value);
+        AdvanceSchedule(plan, DateTime.Now);
 
         await _context.SaveChangesAsync();
 
         return workOrderNumber;
     }
 
+    /// <summary>
+    /// سیاست زمان‌بندی (ScheduleMode):
+    /// Fixed    — NextDueDate روی سررسید قبلی لنگر می‌شود و بدون «طوفان جبران» به اولین سررسید آینده می‌پرد.
+    /// Floating — NextDueDate عمداً جلو نمی‌رود؛ پس از تکمیل WO از تاریخ تکمیل واقعی محاسبه می‌شود
+    ///            (ReconcileFloatingSchedulesAsync). Guard ضد-تکرار تا آن زمان WO جدید را مسدود می‌کند.
+    /// تناوب مؤثر: Override تاییدشده‌ی تخصیص، وگرنه IntervalDays خود Plan.
+    /// </summary>
+    private static void AdvanceSchedule(MaintenancePlan plan, DateTime now)
+    {
+        plan.LastExecutionDate = now;
+
+        var interval = EffectiveInterval(plan);
+        if (!interval.HasValue || interval <= 0) return;
+
+        if (plan.ScheduleMode == RcmCodes.ScheduleMode.Floating) return;
+
+        plan.NextDueDate = ScheduleCalculator.NextFixedDue(plan.NextDueDate, interval.Value, now);
+    }
+
+    private static int? EffectiveInterval(MaintenancePlan plan)
+        => plan.MaintenanceStrategyAssignment is { OverrideStatus: RcmCodes.OverrideStatus.Approved, OverrideIntervalDays: > 0 } a
+            ? a.OverrideIntervalDays
+            : plan.IntervalDays;
+
+    public async Task<int> ReconcileFloatingSchedulesAsync()
+    {
+        var plans = await _context.MaintenancePlans
+            .Include(p => p.MaintenanceStrategyAssignment)
+            .Where(p => p.IsActive && p.ScheduleMode == RcmCodes.ScheduleMode.Floating)
+            .ToListAsync();
+
+        var updated = 0;
+        foreach (var plan in plans)
+        {
+            var interval = EffectiveInterval(plan);
+            if (!interval.HasValue || interval <= 0) continue;
+
+            var lastCompletion = await _context.WorkOrders
+                .Where(w => w.MaintenancePlanId == plan.MaintenancePlanId && w.CompletionDate != null
+                            && (w.Status == "Completed" || w.Status == "Closed"))
+                .OrderByDescending(w => w.CompletionDate)
+                .Select(w => w.CompletionDate)
+                .FirstOrDefaultAsync();
+
+            if (lastCompletion == null) continue;
+            if (plan.LastCompletionDate.HasValue && lastCompletion <= plan.LastCompletionDate) continue;
+
+            plan.LastCompletionDate = lastCompletion;
+            plan.NextDueDate = ScheduleCalculator.NextFloatingDue(lastCompletion.Value, interval.Value);
+            updated++;
+        }
+
+        if (updated > 0) await _context.SaveChangesAsync();
+        return updated;
+    }
+
     public async Task<PMGenerationResultDto> GenerateDueWorkOrdersAsync()
     {
         var now = DateTime.Now;
+
+        // Floating: سررسید از تکمیل‌های واقعی به‌روز می‌شود، پیش از انتخاب Plan های سررسیدرسیده
+        await ReconcileFloatingSchedulesAsync();
 
         // طبق بند ۵۶: Overdue/Due قطعی است - فقط NextDueDate واقعی <= اکنون، نه ساعت سمت کلاینت.
         var duePlanIds = await _context.MaintenancePlans

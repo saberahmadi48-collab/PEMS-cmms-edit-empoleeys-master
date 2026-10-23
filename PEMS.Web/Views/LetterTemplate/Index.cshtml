@@ -1,0 +1,62 @@
+@model List<PEMS.Application.DTOs.LetterTemplateDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+
+<div class="content-card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <p class="text-muted small mb-0">@Localizer["LtT_Help"]</p>
+        <div class="d-flex gap-2">
+            <a asp-controller="Letter" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left-short" aria-hidden="true"></i> @Localizer["Correspondence"]</a>
+            <a asp-action="Edit" asp-route-id="0" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["LtT_New"]</a>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p class="text-muted text-center py-4">@Localizer["LtT_Empty"]</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-enterprise mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">@Localizer["LtT_Name"]</th>
+                        <th scope="col">@Localizer["Type"]</th>
+                        <th scope="col">@Localizer["Lt_Subject"]</th>
+                        <th scope="col">@Localizer["Lt_Priority"]</th>
+                        <th scope="col">@Localizer["Lt_Confidentiality"]</th>
+                        <th scope="col">@Localizer["Status"]</th>
+                        <th scope="col"><span class="visually-hidden">@Localizer["Actions"]</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in Model)
+                    {
+                        <tr class="@(t.IsActive ? "" : "text-muted")">
+                            <td class="fw-semibold">@t.Name</td>
+                            <td>@(t.LetterType ?? Localizer["LtT_AllTypes"].Value)</td>
+                            <td>@t.Subject</td>
+                            <td>@Localizer["Lt_P_" + t.Priority]</td>
+                            <td>@t.ConfidentialityLevel</td>
+                            <td>
+                                @if (t.IsActive) { <span class="badge bg-success"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["LtT_Active"]</span> }
+                                else { <span class="badge bg-secondary"><i class="bi bi-slash-circle" aria-hidden="true"></i> @Localizer["LtT_Inactive"]</span> }
+                            </td>
+                            <td class="text-nowrap">
+                                <a asp-action="Preview" asp-route-id="@t.LetterTemplateId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye" aria-hidden="true"></i> @Localizer["LtT_Preview"]</a>
+                                <a asp-action="Edit" asp-route-id="@t.LetterTemplateId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil" aria-hidden="true"></i> @Localizer["Edit"]</a>
+                                <form asp-action="SetActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@t.LetterTemplateId" />
+                                    <input type="hidden" name="active" value="@(t.IsActive ? "false" : "true")" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">@Localizer[t.IsActive ? "LtT_Deactivate" : "LtT_Activate"]</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

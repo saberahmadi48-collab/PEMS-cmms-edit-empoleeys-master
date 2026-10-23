@@ -19,9 +19,10 @@
      python .claude/skills/ui-ux-pro-max/scripts/search.py "elevation shadow consistent navigation active state" --domain ux
        → وضعیت فعال ناوبری باید با رنگ/خط مشخص شود؛ مقیاس Elevation ثابت (نه سایه‌ی دلبخواه).
 
-   قاعده‌ی سخت‌گیرانه‌ی سند (بند ۳۱/۳۲): فیروزه فقط لهجه (خط نازک، نقطه‌ی وضعیت، حلقه‌ی فوکوس،
-   حاشیه‌ی هاور/انتخاب) - هرگز سطح بزرگ. شیشه فقط روی ناوبری/هدر/کارت شناور/مودال - جدول‌های
-   متراکم عمداً Opaque می‌مانند (بند ۸/۱۸: خوانایی داده همیشه برنده است).
+   v3 (ممیزی رنگ/چیدمان): هویت تم از «فیروزه‌ی کم‌یاب روی خاکستری» به سه رنگ کاشی ایرانی تغییر کرد - فیروزه (رنگ اصلی، فعال،
+   پیوند)، لاجورد (ثانویه/اطلاعات)، زر (فقط اقدام اصلی و تزیین) - روی پایه‌ی جوهری-فیروزه‌ای. شیشه (backdrop-filter) فقط روی
+   لایه‌ی بالای صفحه‌ی بدون فرزند fixed می‌ماند؛ کارت‌ها/جدول‌ها/سایدبار کدرند (خوانایی داده + منوهای Popper با strategy=fixed).
+   توکن‌ها در site.css (:root[data-theme="turquoise"])، و کنتراست/Cascade در ThemeContrastTests نگهداری می‌شوند.
    ========================================================================================= */
 
 /* =========================================================================================
@@ -31,8 +32,11 @@
    پس‌زمینه‌ی صفحه‌ی ورود/حالت خالی/بخش قهرمان داشبورد).
    ========================================================================================= */
 :root {
-    --pems-pattern-fine: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cg fill='none' stroke='%230ea5a6' stroke-width='1'%3E%3Ccircle cx='42' cy='42' r='30' /%3E%3Crect x='16' y='16' width='52' height='52' transform='rotate(45 42 42)'/%3E%3Crect x='16' y='16' width='52' height='52'/%3E%3Ccircle cx='42' cy='42' r='4'/%3E%3C/g%3E%3C/svg%3E");
-    --pems-pattern-hero: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='none' stroke='%230ea5a6' stroke-width='1'%3E%3Ccircle cx='120' cy='120' r='96'/%3E%3Ccircle cx='120' cy='120' r='64'/%3E%3Crect x='56' y='56' width='128' height='128' transform='rotate(45 120 120)'/%3E%3Crect x='56' y='56' width='128' height='128'/%3E%3Cpath d='M120 24 L120 216 M24 120 L216 120'/%3E%3Ccircle cx='120' cy='120' r='6'/%3E%3C/g%3E%3C/svg%3E");
+    --pems-pattern-fine: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cg fill='none' stroke='%231bc5b3' stroke-width='1'%3E%3Ccircle cx='42' cy='42' r='30' /%3E%3Crect x='16' y='16' width='52' height='52' transform='rotate(45 42 42)'/%3E%3Crect x='16' y='16' width='52' height='52'/%3E%3Ccircle cx='42' cy='42' r='4'/%3E%3C/g%3E%3C/svg%3E");
+    --pems-frieze: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='6' viewBox='0 0 24 6'%3E%3Crect y='5' width='24' height='1' fill='%231bc5b3' fill-opacity='.55'/%3E%3Cpath d='M12 .4 15.4 3 12 5.6 8.6 3z' fill='%231bc5b3'/%3E%3Cpath d='M3.2 3h3.4M17.4 3h3.4' stroke='%232c5fb8' stroke-width='1'/%3E%3Ccircle cx='0' cy='3' r='1' fill='%23e5b04a'/%3E%3Ccircle cx='24' cy='3' r='1' fill='%23e5b04a'/%3E%3C/svg%3E");
+    --pems-star-gold: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpolygon fill='%23e5b04a' points='6.00,0.00 7.26,2.95 10.24,1.76 9.05,4.74 12.00,6.00 9.05,7.26 10.24,10.24 7.26,9.05 6.00,12.00 4.74,9.05 1.76,10.24 2.95,7.26 0.00,6.00 2.95,4.74 1.76,1.76 4.74,2.95'/%3E%3C/svg%3E");
+    --pems-star-outline: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%23e5b04a' stroke-width='1'%3E%3Cpolygon points='16.00,1.00 19.29,8.05 26.61,5.39 23.95,12.71 31.00,16.00 23.95,19.29 26.61,26.61 19.29,23.95 16.00,31.00 12.71,23.95 5.39,26.61 8.05,19.29 1.00,16.00 8.05,12.71 5.39,5.39 12.71,8.05'/%3E%3Ccircle cx='16' cy='16' r='3'/%3E%3C/g%3E%3C/svg%3E");
+    --pems-pattern-hero: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='none' stroke='%231bc5b3' stroke-width='1'%3E%3Ccircle cx='120' cy='120' r='96'/%3E%3Ccircle cx='120' cy='120' r='64'/%3E%3Crect x='56' y='56' width='128' height='128' transform='rotate(45 120 120)'/%3E%3Crect x='56' y='56' width='128' height='128'/%3E%3Cpath d='M120 24 L120 216 M24 120 L216 120'/%3E%3Ccircle cx='120' cy='120' r='6'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 .pems-persian-bg {
@@ -76,217 +80,414 @@
 }
 
 /* =========================================================================================
-   PERSIAN TURQUOISE — component redesign (scoped; Light/Dark untouched by this block)
+   PERSIAN TURQUOISE v3 — لایه‌ی کامپوننت‌ها (فقط وقتی data-theme="turquoise"؛ Light/Dark دست‌نخورده)
+
+   اصلاح‌های ساختاری این نسخه (هر کدام در مرورگر واقعی اندازه‌گیری/مشاهده شد):
+     ۱) backdrop-filter از .content-card/.kpi-card/.pems-sidebar/.pems-topbar حذف شد: چنین عنصری Containing Block
+        فرزندان position:fixed می‌شود و pems-ui.js همه‌ی Dropdown ها را با Popper strategy=fixed باز می‌کند، پس منوی
+        داخل کارت با فاصله‌ی غلط رندر می‌شد. Blur هدر به یک ::before منتقل شد (فرزندان هدر را تحت‌تأثیر قرار نمی‌دهد).
+     ۲) position:relative روی .pems-sidebar (مشخصیت بالاتر از قاعده‌ی fixed موبایل) حذف شد - در موبایل سایدبار دیگر
+        Overlay نبود و محتوا را هل می‌داد.
+     ۳) انتخابگر RTL قبلاً html[dir="rtl"] [data-theme="turquoise"] بود؛ چون data-theme روی خودِ <html> است هرگز
+        منطبق نمی‌شد و لبه‌ی فعال منو در فارسی سمت اشتباه می‌افتاد. اکنون :root[data-theme][dir="rtl"].
+     ۴) رنگ‌های Bootstrap (هشدار، تب، لیست، منوی کشویی، متن کم‌رنگ، پیوند آبی، progress) به توکن‌ها وصل شدند.
    ========================================================================================= */
 
-/* --- Atmosphere: پایه‌ی سیاه‌غالب با یک لایه‌ی نور بسیار کم‌رنگ، نه گرادیان روشن/رنگی --- */
+/* --- فضای صفحه: پایه‌ی جوهری + دو نور بسیار نرم (فیروزه‌ای/لاجوردی) + نقش هندسی خیلی کم‌رنگ در گوشه --- */
 [data-theme="turquoise"] body {
     background:
-        radial-gradient(1100px 520px at 14% -8%, rgba(14,165,166,.05), transparent 60%),
-        radial-gradient(900px 480px at 100% 0%, rgba(28,63,118,.07), transparent 55%),
+        radial-gradient(900px 520px at 88% -8%, rgba(27, 197, 179, .10), transparent 62%),
+        radial-gradient(820px 540px at 4% 108%, rgba(44, 95, 184, .13), transparent 60%),
         var(--pems-bg);
+    scrollbar-color: #2b5666 transparent;
+    scrollbar-width: thin;
 }
 
-/* --- Sidebar: شیشه‌ی تیره + الگوی هندسی بسیار کم‌رنگ + سلسله‌مراتب واضح --- */
-[data-theme="turquoise"] .pems-sidebar {
-    position: relative;
-    background: var(--pems-glass-bg-strong);
-    border-right: 1px solid var(--pems-glass-border);
+[data-theme="turquoise"] body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: .055;
+    background-image: var(--pems-pattern-hero);
+    background-repeat: no-repeat;
+    background-position: 108% 112%;
+    background-size: 620px 620px;
+}
+
+[data-theme="turquoise"] ::selection { background: var(--pems-selection); color: #fff; }
+
+/* --- Top bar: بلور روی ::before (نه خودِ هدر) + «حاشیه‌ی کاشی» (frieze) به‌جای یک خط گرادیان ساده --- */
+[data-theme="turquoise"] .pems-topbar {
+    background: transparent;
+    border-bottom: 0;
+    box-shadow: none;
+}
+
+[data-theme="turquoise"] .pems-topbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--pems-topbar-bg);
 }
 
 @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    [data-theme="turquoise"] .pems-sidebar {
-        backdrop-filter: blur(var(--pems-glass-blur-strong));
-        -webkit-backdrop-filter: blur(var(--pems-glass-blur-strong));
+    [data-theme="turquoise"] .pems-topbar::before {
+        backdrop-filter: blur(var(--pems-glass-blur));
+        -webkit-backdrop-filter: blur(var(--pems-glass-blur));
     }
 }
 
+[data-theme="turquoise"] .pems-topbar::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 6px;
+    pointer-events: none;
+    background-image: var(--pems-frieze);
+    background-repeat: repeat-x;
+    background-position: center bottom;
+    opacity: .9;
+}
+
+/* نشان برند: دو رنگ کاشی (فیروزه‌ای تیره → لاجورد) با حلقه‌ی نازک زر؛ آیکون سفید (≥۴.۸:۱ روی هر دو سر) */
+[data-theme="turquoise"] .pems-topbar .brand .brand-icon {
+    background: linear-gradient(135deg, var(--pems-turquoise-dark), var(--pems-lapis));
+    color: #fff;
+    box-shadow: 0 0 0 1px rgba(229, 176, 74, .65), 0 6px 16px rgba(27, 197, 179, .20);
+}
+
+[data-theme="turquoise"] .pems-topbar .brand { color: var(--pems-turquoise-bright); }
+[data-theme="turquoise"] .pems-user-menu .dropdown-toggle { color: var(--pems-turquoise-bright); }
+[data-theme="turquoise"] .pems-user-avatar { box-shadow: 0 0 0 2px rgba(27, 197, 179, .55); }
+[data-theme="turquoise"] .pems-search input::placeholder,
+[data-theme="turquoise"] .form-control::placeholder { color: var(--pems-text-faint); opacity: 1; }
+[data-theme="turquoise"] .pems-search input { background: var(--pems-input-bg); border-color: var(--pems-border-strong); }
+
+/* --- Sidebar: کدر و جوهری (روی صفحه‌ی یکدست Blur معنی نداشت و در حالت Overlay خوانایی را کم می‌کرد) --- */
+[data-theme="turquoise"] .pems-sidebar {
+    background: linear-gradient(180deg, #08202a 0%, #061821 38%, #051119 100%);
+    border-inline-end: 1px solid rgba(27, 197, 179, .16);
+    border-right-width: 1px;
+}
+
+html[dir="rtl"][data-theme="turquoise"] .pems-sidebar { border-right: 0; border-left: 0; border-inline-end: 1px solid rgba(27, 197, 179, .16); }
+
+/* نقش هندسی سایدبار: در بالا دیده می‌شود و به‌تدریج محو می‌شود (Mask) */
 [data-theme="turquoise"] .pems-sidebar::before {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    opacity: .045;
+    opacity: .10;
     background-image: var(--pems-pattern-fine);
     background-repeat: repeat;
     background-size: 84px 84px;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 72%);
+    mask-image: linear-gradient(180deg, #000 0%, transparent 72%);
 }
 
-[data-theme="turquoise"] .pems-sidebar > * {
-    position: relative;
-    z-index: 1;
-}
+[data-theme="turquoise"] .pems-sidebar > * { position: relative; z-index: 1; }
 
-/* هاور: شیشه‌ی کمی روشن‌تر، نه رنگ */
+[data-theme="turquoise"] .pems-sidebar .nav-section-title { color: var(--pems-text-muted); }
+[data-theme="turquoise"] .pems-sidebar .nav-section-title:hover { color: #fff; }
+[data-theme="turquoise"] .pems-sidebar .nav-link { color: #b9cfd1; }
+[data-theme="turquoise"] .pems-sidebar .nav-link i { color: var(--pems-turquoise-bright); opacity: .8; }
+
 [data-theme="turquoise"] .pems-sidebar .nav-link:hover {
-    background: rgba(255,255,255,.045);
+    background: rgba(27, 197, 179, .08);
     color: #fff;
 }
 
-/* فعال: لبه‌ی نازک فیروزه‌ای + درخشش بسیار محدود + نقطه‌ی وضعیت - نه یک بلوک توپر فیروزه‌ای */
+/* فعال: لبه‌ی فیروزه‌ای در سمت «شروع» (چپ در LTR، راست در RTL) + زمینه‌ی کم‌رنگ + ستاره‌ی هشت‌پر زر در سمت پایان.
+   لبه‌ی قدیمی border-left/right با بازنشانی صریح جفتش، فقط یک لبه می‌ماند. */
 [data-theme="turquoise"] .pems-sidebar .nav-link.active {
-    background: linear-gradient(90deg, rgba(14,165,166,.14), rgba(14,165,166,.02) 70%);
+    background: linear-gradient(90deg, rgba(27, 197, 179, .16), rgba(27, 197, 179, .03) 75%);
     color: #fff;
     border-left-color: var(--pems-turquoise);
-    box-shadow: inset 2px 0 0 var(--pems-turquoise), var(--pems-accent-glow);
+    border-right-color: transparent;
     position: relative;
 }
 
-html[dir="rtl"] [data-theme="turquoise"] .pems-sidebar .nav-link.active {
+html[dir="rtl"][data-theme="turquoise"] .pems-sidebar .nav-link.active {
+    background: linear-gradient(270deg, rgba(27, 197, 179, .16), rgba(27, 197, 179, .03) 75%);
+    border-left-color: transparent;
     border-right-color: var(--pems-turquoise);
-    box-shadow: inset -2px 0 0 var(--pems-turquoise), var(--pems-accent-glow);
 }
+
+[data-theme="turquoise"] .pems-sidebar .nav-link.active i { color: var(--pems-turquoise-bright); opacity: 1; }
 
 [data-theme="turquoise"] .pems-sidebar .nav-link.active::after {
     content: "";
     position: absolute;
     inset-inline-end: 14px;
     top: 50%;
-    width: 5px;
-    height: 5px;
-    margin-top: -2.5px;
-    border-radius: 50%;
-    background: var(--pems-turquoise);
-    box-shadow: 0 0 6px 1px rgba(45,212,213,.7);
+    width: 10px;
+    height: 10px;
+    margin-top: -5px;
+    pointer-events: none;
+    background: var(--pems-star-gold) center / contain no-repeat;
 }
 
-/* --- Header: شیشه‌ی نازک + خط لهجه‌ی هندسی ظریف - نه هدر بزرگ --- */
-[data-theme="turquoise"] .pems-topbar {
-    border-bottom: 1px solid var(--pems-topbar-border);
-    background-color: var(--pems-topbar-bg);
-    background-image: linear-gradient(90deg, var(--pems-turquoise) 0%, var(--pems-lapis) 55%, var(--pems-copper) 100%);
-    background-repeat: no-repeat;
-    background-size: 100% 2px;
-    background-position: bottom;
+/* --- Cards: کدر، با «لبه‌ی لعاب» نازک در بالا (فیروزه‌ای → زر) و شیب بسیار کم‌رنگ فیروزه‌ای - بدون Blur --- */
+[data-theme="turquoise"] .content-card,
+[data-theme="turquoise"] .kpi-card,
+[data-theme="turquoise"] .vs-panel {
+    background:
+        linear-gradient(90deg, transparent, rgba(27, 197, 179, .55) 18%, rgba(229, 176, 74, .38) 82%, transparent) top / 100% 1px no-repeat,
+        linear-gradient(180deg, rgba(27, 197, 179, .05), transparent 46%),
+        var(--pems-elev-1);
+    border: 1px solid var(--pems-surface-border);
+    box-shadow: inset 0 1px 0 var(--pems-glass-highlight), 0 12px 28px rgba(0, 0, 0, .34);
 }
 
-@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    [data-theme="turquoise"] .pems-topbar {
-        backdrop-filter: blur(var(--pems-glass-blur));
-        -webkit-backdrop-filter: blur(var(--pems-glass-blur));
-    }
-}
+[data-theme="turquoise"] .kpi-card { position: relative; overflow: hidden; }
 
-/* --- Cards: سطح شیشه‌ای لایه‌ای، جزئیات کوچک فیروزه‌ای فقط روی هاور --- */
-[data-theme="turquoise"] .content-card {
-    background: var(--pems-glass-bg);
-    border: 1px solid var(--pems-glass-border);
-    box-shadow: 0 10px 30px rgba(0,0,0,.32), inset 0 1px 0 var(--pems-glass-highlight);
-}
-
-@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    [data-theme="turquoise"] .content-card {
-        backdrop-filter: blur(var(--pems-glass-blur));
-        -webkit-backdrop-filter: blur(var(--pems-glass-blur));
-    }
-}
-
-/* --- KPI cards: کنترل‌اتاق صنعتی - عدد بزرگ خوانا، لهجه فقط روی هاور --- */
-[data-theme="turquoise"] .kpi-card {
-    background: var(--pems-glass-bg);
-    border: 1px solid var(--pems-glass-border);
-    box-shadow: 0 8px 22px rgba(0,0,0,.3);
-}
-
-@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    [data-theme="turquoise"] .kpi-card {
-        backdrop-filter: blur(var(--pems-glass-blur));
-        -webkit-backdrop-filter: blur(var(--pems-glass-blur));
-    }
+/* ستاره‌ی هشت‌پر تزیینی گوشه‌ی کارت KPI (فقط تزیین؛ pointer-events:none و بدون محتوا) */
+[data-theme="turquoise"] .kpi-card::after {
+    content: "";
+    position: absolute;
+    inset-block-start: -10px;
+    inset-inline-end: -10px;
+    width: 56px;
+    height: 56px;
+    pointer-events: none;
+    opacity: .16;
+    background: var(--pems-star-outline) center / contain no-repeat;
 }
 
 [data-theme="turquoise"] .kpi-card:hover {
     border-color: var(--pems-glass-border-accent);
-    box-shadow: var(--pems-accent-glow), 0 10px 24px rgba(0,0,0,.34);
+    box-shadow: var(--pems-accent-glow), 0 12px 28px rgba(0, 0, 0, .38);
     transform: translateY(-2px);
 }
 
 [data-theme="turquoise"] .kpi-value {
+    color: var(--pems-turquoise-bright);
     font-variant-numeric: tabular-nums;
-    font-family: "Cascadia Code", "Consolas", ui-monospace, monospace;
 }
 
-/* --- Tables: عمداً Opaque (نه شیشه) طبق بند ۸/۱۸ - خوانایی داده اولویت مطلق --- */
+[data-theme="turquoise"] .kpi-label,
+[data-theme="turquoise"] .section-subtitle,
+[data-theme="turquoise"] .pems-breadcrumb,
+[data-theme="turquoise"] .pems-breadcrumb a { color: var(--pems-text-muted); }
+
+/* آیکون‌های رنگی KPI: هم‌خانواده‌ی پالت (لاجورد/فیروزه‌ای/زر/...)، نه آبی/نارنجی Bootstrap */
+[data-theme="turquoise"] .bg-icon-blue   { background: linear-gradient(135deg, #3a72d6, var(--pems-lapis-dark)); }
+[data-theme="turquoise"] .bg-icon-teal   { background: linear-gradient(135deg, var(--pems-turquoise), var(--pems-turquoise-deep)); }
+[data-theme="turquoise"] .bg-icon-green  { background: linear-gradient(135deg, #3fbf7f, #17694a); }
+[data-theme="turquoise"] .bg-icon-amber,
+[data-theme="turquoise"] .bg-icon-orange { background: linear-gradient(135deg, var(--pems-gold-hi), var(--pems-gold-lo)); color: var(--pems-on-gold); }
+[data-theme="turquoise"] .bg-icon-red    { background: linear-gradient(135deg, #e8675c, #a82f28); }
+[data-theme="turquoise"] .bg-icon-purple { background: linear-gradient(135deg, #8a6fd6, #4a3590); }
+[data-theme="turquoise"] .bg-icon-slate  { background: linear-gradient(135deg, #4f7686, #254452); }
+
+/* --- Typography --- */
+[data-theme="turquoise"] .pems-page-title { color: var(--pems-text); }
+[data-theme="turquoise"] .pems-page-section { color: var(--pems-text-muted); }
+[data-theme="turquoise"] .section-title { color: var(--pems-turquoise-bright); }
+[data-theme="turquoise"] .vs-panel__title .bi,
+[data-theme="turquoise"] .vs-section__title .bi { color: var(--pems-gold); }
+
+/* --- Tables: کدر؛ هدر با خط فیروزه‌ای، ردیف انتخاب‌شده با لبه‌ی فیروزه‌ای در سمت شروع --- */
 [data-theme="turquoise"] .table-enterprise,
-[data-theme="turquoise"] .table {
-    background: var(--pems-elev-1);
-}
+[data-theme="turquoise"] .table { background: var(--pems-elev-1); }
 
 [data-theme="turquoise"] .table-enterprise thead th {
     background: var(--pems-table-header-bg);
+    color: var(--pems-text);
+    border-bottom: 1px solid rgba(27, 197, 179, .38);
 }
 
-[data-theme="turquoise"] .table-enterprise tbody tr:hover {
-    background: var(--pems-row-hover);
+[data-theme="turquoise"] .table-enterprise tbody tr:hover { background: var(--pems-row-hover); }
+
+[data-theme="turquoise"] .table-enterprise tbody tr.selected > td,
+[data-theme="turquoise"] .table-enterprise tbody tr[aria-selected="true"] > td {
+    box-shadow: inset 0 0 0 9999px rgba(27, 197, 179, .12);
 }
 
-/* ردیف انتخاب‌شده - طبق بند ۱۸: فیروزه فقط این‌جا، به شکل لبه‌ی نازک، نه پرشدن کل ردیف */
-[data-theme="turquoise"] .table-enterprise tbody tr.selected,
-[data-theme="turquoise"] .table-enterprise tbody tr[aria-selected="true"] {
-    background: rgba(14,165,166,.09);
-    box-shadow: inset 2px 0 0 var(--pems-turquoise);
+[data-theme="turquoise"] .table-enterprise tbody tr.selected > td:first-child,
+[data-theme="turquoise"] .table-enterprise tbody tr[aria-selected="true"] > td:first-child {
+    box-shadow: inset 3px 0 0 var(--pems-turquoise), inset 0 0 0 9999px rgba(27, 197, 179, .12);
 }
 
-/* --- Forms: فوکوس ظریف فیروزه‌ای - نه ورودی سایان روشن --- */
+html[dir="rtl"][data-theme="turquoise"] .table-enterprise tbody tr.selected > td:first-child,
+html[dir="rtl"][data-theme="turquoise"] .table-enterprise tbody tr[aria-selected="true"] > td:first-child {
+    box-shadow: inset -3px 0 0 var(--pems-turquoise), inset 0 0 0 9999px rgba(27, 197, 179, .12);
+}
+
+/* --- Forms: «چاهک» تیره‌تر از کارت با مرز ≥۳:۱؛ فوکوس فیروزه‌ای روشن + هاله --- */
 [data-theme="turquoise"] .form-control,
 [data-theme="turquoise"] .form-select {
-    background-color: var(--pems-elev-1);
+    background-color: var(--pems-input-bg);
+    border-color: var(--pems-border-strong);
+    color: var(--pems-text);
 }
 
 [data-theme="turquoise"] .form-control:focus,
 [data-theme="turquoise"] .form-select:focus {
-    background-color: var(--pems-elev-1);
-    border-color: var(--pems-turquoise);
-    box-shadow: 0 0 0 3px rgba(14,165,166,.16);
+    background-color: var(--pems-input-bg);
+    border-color: var(--pems-turquoise-bright);
+    box-shadow: 0 0 0 3px rgba(95, 224, 210, .24);
     color: var(--pems-text);
 }
 
-/* --- Buttons: فیروزه فقط برای حلقه‌ی فوکوس/حاشیه‌ی ثانویه - CTA اصلی همچنان مس (btn-pems-solid،
-   از قبل روی --pems-accent سوار است) طبق بند ۲۰: «هر دکمه‌ای را فیروزه‌ای نکن» --- */
-[data-theme="turquoise"] .btn-outline-primary {
-    color: var(--pems-turquoise);
-    border-color: rgba(14,165,166,.45);
+[data-theme="turquoise"] .form-control:disabled,
+[data-theme="turquoise"] .form-select:disabled { background-color: var(--pems-elev-2); border-color: var(--pems-surface-border); opacity: .6; }
+[data-theme="turquoise"] .form-control.is-invalid,
+[data-theme="turquoise"] .form-select.is-invalid { border-color: #ff8f84; }
+
+[data-theme="turquoise"] .form-check-input { background-color: var(--pems-input-bg); border-color: var(--pems-border-strong); }
+[data-theme="turquoise"] .form-check-input:checked { background-color: var(--pems-turquoise-deep); border-color: var(--pems-turquoise-bright); }
+[data-theme="turquoise"] .form-check-input:focus { border-color: var(--pems-turquoise-bright); box-shadow: 0 0 0 3px rgba(95, 224, 210, .24); }
+
+/* --- Buttons: اقدام اصلی = زر با متن تیره (۶.۵ تا ۱۱.۹:۱)؛ فیروزه‌ای فقط برای اقدام‌های ثانویه/فوکوس.
+   همه‌ی روش‌هایی که پروژه برای «دکمه‌ی اصلی» دارد (btn-pems-solid، btn-primary، vs-btn--primary، دکمه‌ی صفحه‌ی ورود،
+   دکمه‌های اصلی ناحیه‌ی Admin) یک ظاهر می‌گیرند. --- */
+[data-theme="turquoise"] .btn-pems-solid,
+[data-theme="turquoise"] .vs-page .btn-pems-solid,
+[data-theme="turquoise"] .vs-btn--primary,
+[data-theme="turquoise"] .btn-pems,
+[data-theme="turquoise"] .admin-page .btn-primary,
+[data-theme="turquoise"] .admin-page-shell .btn-pems-solid,
+[data-theme="turquoise"] .admin-area .btn-pems-solid {
+    background: linear-gradient(135deg, var(--pems-gold-hi), var(--pems-gold-lo));
+    border: 1px solid rgba(255, 255, 255, .14);
+    color: var(--pems-on-gold);
+    font-weight: 700;
+    box-shadow: 0 6px 16px rgba(201, 143, 42, .22);
 }
 
-[data-theme="turquoise"] .btn-outline-primary:hover {
-    background: rgba(14,165,166,.12);
-    border-color: var(--pems-turquoise);
-    color: #fff;
+[data-theme="turquoise"] .btn-pems-solid:hover, [data-theme="turquoise"] .btn-pems-solid:focus,
+[data-theme="turquoise"] .vs-btn--primary:hover, [data-theme="turquoise"] .btn-pems:hover,
+[data-theme="turquoise"] .admin-page .btn-primary:hover, [data-theme="turquoise"] .admin-page-shell .btn-pems-solid:hover {
+    background: linear-gradient(135deg, #ffe08b, var(--pems-gold));
+    color: var(--pems-on-gold);
+    opacity: 1;
 }
 
-[data-theme="turquoise"] .btn-outline-secondary {
-    background: rgba(255,255,255,.02);
-    border-color: var(--pems-surface-border);
-    color: var(--pems-text-muted);
+[data-theme="turquoise"] .btn-primary {
+    --bs-btn-color: var(--pems-on-gold); --bs-btn-hover-color: var(--pems-on-gold); --bs-btn-active-color: var(--pems-on-gold);
+    --bs-btn-bg: var(--pems-gold); --bs-btn-border-color: var(--pems-gold-lo);
+    --bs-btn-hover-bg: var(--pems-gold-hi); --bs-btn-hover-border-color: var(--pems-gold-hi);
+    --bs-btn-active-bg: var(--pems-gold-lo); --bs-btn-active-border-color: var(--pems-gold-lo);
+    --bs-btn-disabled-bg: var(--pems-gold); --bs-btn-disabled-border-color: var(--pems-gold-lo); --bs-btn-disabled-color: var(--pems-on-gold);
+    --bs-btn-focus-shadow-rgb: 95, 224, 210;
 }
 
-[data-theme="turquoise"] .btn-outline-secondary:hover {
-    background: rgba(255,255,255,.05);
-    color: var(--pems-text);
-    border-color: rgba(255,255,255,.18);
+[data-theme="turquoise"] .btn-outline-primary,
+[data-theme="turquoise"] .pems-content .btn-outline-primary {
+    --bs-btn-color: var(--pems-turquoise-bright); --bs-btn-border-color: rgba(27, 197, 179, .55);
+    --bs-btn-hover-bg: rgba(27, 197, 179, .16); --bs-btn-hover-color: #fff; --bs-btn-hover-border-color: var(--pems-turquoise-bright);
+    --bs-btn-active-bg: rgba(27, 197, 179, .24); --bs-btn-active-color: #fff; --bs-btn-active-border-color: var(--pems-turquoise-bright);
 }
 
-/* --- Modals / dropdowns: شیشه‌ی قوی‌تر (لایه‌ی بالاتر) --- */
+[data-theme="turquoise"] .btn-outline-secondary,
+[data-theme="turquoise"] .pems-content .btn-outline-secondary {
+    --bs-btn-color: var(--pems-text); --bs-btn-border-color: var(--pems-border-strong);
+    --bs-btn-hover-bg: rgba(255, 255, 255, .06); --bs-btn-hover-color: #fff; --bs-btn-hover-border-color: var(--pems-turquoise-bright);
+    --bs-btn-active-bg: rgba(255, 255, 255, .10); --bs-btn-active-color: #fff; --bs-btn-active-border-color: var(--pems-turquoise-bright);
+}
+
+[data-theme="turquoise"] .btn-outline-danger {
+    --bs-btn-color: #ff8f84; --bs-btn-border-color: rgba(255, 143, 132, .55);
+    --bs-btn-hover-bg: #c43d34; --bs-btn-hover-color: #fff; --bs-btn-hover-border-color: #c43d34;
+    --bs-btn-active-bg: #a82f28; --bs-btn-active-color: #fff; --bs-btn-active-border-color: #a82f28;
+}
+
+/* --- Badges: نام‌های رنگ هم‌خانواده‌ی پالت؛ آیکون همراه متن را pems-ui.js می‌گذارد (وضعیت هیچ‌وقت فقط رنگ نیست) --- */
+[data-theme="turquoise"] .pems-content .badge.bg-success, [data-theme="turquoise"] .pems-content .badge.text-bg-success { background: #123f2e !important; color: #bdf2d3 !important; }
+[data-theme="turquoise"] .pems-content .badge.bg-danger,  [data-theme="turquoise"] .pems-content .badge.text-bg-danger  { background: #5a211d !important; color: #ffd6d1 !important; }
+[data-theme="turquoise"] .pems-content .badge.bg-warning, [data-theme="turquoise"] .pems-content .badge.text-bg-warning { background: #4d3a12 !important; color: #ffe0a6 !important; }
+[data-theme="turquoise"] .pems-content .badge.bg-primary, [data-theme="turquoise"] .pems-content .badge.text-bg-primary { background: #0a4a4a !important; color: #c3f5ee !important; }
+[data-theme="turquoise"] .pems-content .badge.bg-info,    [data-theme="turquoise"] .pems-content .badge.text-bg-info    { background: #1b3566 !important; color: #d3e3ff !important; }
+[data-theme="turquoise"] .pems-content .badge.bg-secondary, [data-theme="turquoise"] .pems-content .badge.text-bg-secondary,
+[data-theme="turquoise"] .pems-content .badge.bg-light,   [data-theme="turquoise"] .pems-content .badge.text-bg-light,
+[data-theme="turquoise"] .pems-content .badge.bg-dark,    [data-theme="turquoise"] .pems-content .badge.text-bg-dark { background: #1b3441 !important; color: #dcebea !important; }
+
+/* --- Tabs / list-group / pagination / progress: حالت «فعال» با فیروزه‌ای عمیق و متن سفید (۶.۴:۱)، نه آبی Bootstrap --- */
+[data-theme="turquoise"] .nav-tabs { border-bottom-color: var(--pems-surface-border); }
+[data-theme="turquoise"] .nav-tabs .nav-link { color: var(--pems-text-muted); }
+[data-theme="turquoise"] .nav-tabs .nav-link:hover { color: #fff; border-color: transparent transparent var(--pems-turquoise); }
+[data-theme="turquoise"] .nav-tabs .nav-link.active {
+    background: var(--pems-elev-2);
+    color: var(--pems-turquoise-bright);
+    border-color: var(--pems-surface-border) var(--pems-surface-border) transparent;
+    box-shadow: inset 0 2px 0 var(--pems-turquoise);
+}
+[data-theme="turquoise"] .nav-tabs .nav-link.disabled { color: var(--pems-text-faint); }
+
+[data-theme="turquoise"] .list-group { --bs-list-group-bg: transparent; --bs-list-group-border-color: var(--pems-surface-border); --bs-list-group-color: var(--pems-text);
+    --bs-list-group-active-bg: var(--pems-turquoise-deep); --bs-list-group-active-border-color: var(--pems-turquoise-bright); --bs-list-group-active-color: #fff;
+    --bs-list-group-action-hover-bg: rgba(27, 197, 179, .08); --bs-list-group-action-hover-color: #fff; }
+
+[data-theme="turquoise"] .pagination { --bs-pagination-bg: var(--pems-elev-1); --bs-pagination-border-color: var(--pems-surface-border); --bs-pagination-color: var(--pems-turquoise-bright);
+    --bs-pagination-hover-bg: rgba(27, 197, 179, .12); --bs-pagination-hover-color: #fff; --bs-pagination-active-bg: var(--pems-turquoise-deep);
+    --bs-pagination-active-border-color: var(--pems-turquoise-bright); --bs-pagination-active-color: #fff; --bs-pagination-disabled-bg: var(--pems-elev-1);
+    --bs-pagination-disabled-color: var(--pems-text-faint); }
+
+[data-theme="turquoise"] .nav-pills { --bs-nav-pills-link-active-bg: var(--pems-turquoise-deep); --bs-nav-pills-link-active-color: #fff; }
+
+[data-theme="turquoise"] .progress { --bs-progress-bg: var(--pems-elev-3); --bs-progress-bar-bg: var(--pems-turquoise); }
+
+/* --- Alerts: رنگ‌های «زیرین» تیره‌ی Bootstrap (data-bs-theme=dark) + لبه‌ی نشانگر در سمت شروع (آیکون/متن همچنان معنی را می‌رسانند) --- */
+[data-theme="turquoise"] .alert { border-width: 1px; border-inline-start-width: 4px; }
+
+/* --- Modals / dropdowns: کدر و بالاتر از کارت‌ها (elev-3). Blur ندارند: فرزند fixed ندارند و خوانایی مهم‌تر است --- */
 [data-theme="turquoise"] .modal-content,
 [data-theme="turquoise"] .dropdown-menu {
-    background: var(--pems-glass-bg-strong);
-    border: 1px solid var(--pems-glass-border);
-    box-shadow: 0 20px 48px rgba(0,0,0,.45);
+    background: var(--pems-elev-3);
+    color: var(--pems-text);
+    border: 1px solid rgba(95, 224, 210, .22);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, .55);
+    --bs-dropdown-link-color: var(--pems-text);
+    --bs-dropdown-link-hover-color: #fff;
+    --bs-dropdown-link-hover-bg: rgba(27, 197, 179, .14);
+    --bs-dropdown-link-active-bg: var(--pems-turquoise-deep);
+    --bs-dropdown-link-active-color: #fff;
+    --bs-dropdown-header-color: var(--pems-text-muted);
+    --bs-dropdown-divider-bg: var(--pems-surface-border);
 }
 
-@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    [data-theme="turquoise"] .modal-content,
-    [data-theme="turquoise"] .dropdown-menu {
-        backdrop-filter: blur(var(--pems-glass-blur-strong));
-        -webkit-backdrop-filter: blur(var(--pems-glass-blur-strong));
-    }
+[data-theme="turquoise"] .modal-header,
+[data-theme="turquoise"] .modal-footer { border-color: var(--pems-surface-border); }
+[data-theme="turquoise"] .modal-backdrop { --bs-backdrop-bg: #020a0f; --bs-backdrop-opacity: .72; }
+
+[data-theme="turquoise"] .dropdown-item i { color: var(--pems-turquoise-bright); }
+
+/* پیام‌های کوتاه (Toast) */
+[data-theme="turquoise"] .toast.text-bg-success { background-color: #0f5a45 !important; color: #fff !important; }
+[data-theme="turquoise"] .toast.text-bg-danger  { background-color: #9c2b24 !important; color: #fff !important; }
+
+/* وضعیت «معوق» (مکاتبات و ...): متن + آیکون با رنگ متنی AA */
+[data-theme="turquoise"] .pems-due-overdue { color: var(--pems-chart-danger-text); }
+
+/* --- Workspace (.vs-*): پیل‌ها هم‌رنگ Badge ها؛ «chip/دکمه‌ی خطر» به‌جای #ba1a1a (≈۳:۱ روی تیره) رنگ متنی AA می‌گیرد --- */
+[data-theme="turquoise"] .vs-pill--neutral { background: #1b3441; color: #dcebea; }
+[data-theme="turquoise"] .vs-pill--info    { background: #1b3566; color: #d3e3ff; }
+[data-theme="turquoise"] .vs-pill--success { background: #123f2e; color: #bdf2d3; }
+[data-theme="turquoise"] .vs-pill--warning { background: #4d3a12; color: #ffe0a6; }
+[data-theme="turquoise"] .vs-pill--danger  { background: #5a211d; color: #ffd6d1; }
+[data-theme="turquoise"] .vs-chip { background: var(--pems-elev-1); }
+[data-theme="turquoise"] .vs-chip--danger { border-color: #ff8f84; color: #ff8f84; }
+[data-theme="turquoise"] .vs-btn { background: var(--pems-elev-1); }
+[data-theme="turquoise"] .vs-btn--danger:hover { border-color: #ff8f84; color: #ff8f84; }
+[data-theme="turquoise"] .vs-icon-btn { background: var(--pems-table-header-bg); }
+
+/* --- ناحیه‌ی Administration: هدر صفحه با شیب فیروزه‌ای (نه مس) و نشان لاجورد/فیروزه‌ای (آیکون سفید ≥۴.۸:۱) --- */
+[data-theme="turquoise"] .admin-area .admin-hero {
+    background: linear-gradient(135deg, var(--pems-elev-1), rgba(27, 197, 179, .09));
+    box-shadow: inset 0 1px 0 var(--pems-glass-highlight), 0 12px 28px rgba(0, 0, 0, .34);
 }
 
-[data-theme="turquoise"] .dropdown-item:hover,
-[data-theme="turquoise"] .dropdown-item:focus {
-    background: rgba(14,165,166,.10);
+[data-theme="turquoise"] .admin-area .admin-hero .admin-hero-icon {
+    background: linear-gradient(135deg, var(--pems-turquoise-dark), var(--pems-lapis));
     color: #fff;
+    box-shadow: 0 0 0 1px rgba(229, 176, 74, .6);
 }
 
 /* =========================================================================================

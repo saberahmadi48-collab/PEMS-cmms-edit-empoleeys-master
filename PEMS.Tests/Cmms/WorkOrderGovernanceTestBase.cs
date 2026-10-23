@@ -114,13 +114,14 @@ public abstract class WorkOrderGovernanceTestBase : IDisposable
 
     protected async Task Do(int id, string action, WorkOrderActor who, string? comment = null, WorkOrderCompletionData? data = null)
     {
-        var (ok, err) = await Svc.ExecuteWorkflowActionAsync(id, action, comment, who, data);
+        // A1/B14: Reject/Cancel/Hold/Return نیازمند دلیل‌اند؛ تست‌ها که موضوعشان دلیل نیست یک دلیل پیش‌فرض می‌دهند
+        var (ok, err) = await Svc.ExecuteWorkflowActionAsync(id, action, comment ?? (PEMS.Application.Common.WorkflowActionRules.ActionRequiresReason(action) ? "test reason" : null), who, data);
         Assert.True(ok, $"{action} by {who.Roles.FirstOrDefault()}: {err}");
     }
 
     protected async Task<string> Fail(int id, string action, WorkOrderActor who, WorkOrderCompletionData? data = null)
     {
-        var (ok, err) = await Svc.ExecuteWorkflowActionAsync(id, action, null, who, data);
+        var (ok, err) = await Svc.ExecuteWorkflowActionAsync(id, action, PEMS.Application.Common.WorkflowActionRules.ActionRequiresReason(action) ? "test reason" : null, who, data);
         Assert.False(ok, $"{action} by {who.Roles.FirstOrDefault()} unexpectedly succeeded");
         return err ?? "";
     }

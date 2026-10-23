@@ -21,6 +21,36 @@
         <a asp-area="Warehouse" asp-controller="PartCatalogueAdmin" asp-action="Index" class="active" aria-current="page">@Localizer["Pc_Title_Admin"]</a>
     </nav>
 
+    @* ---------------------------------------------------- Part No generation (فاز ۱: فقط پرچم تنظیمات) *@
+    <section class="vs-panel pc-card" id="pc-partno-settings">
+        <h2 class="vs-section__title"><i class="bi bi-hash"></i> @Localizer["Pc_Adm_PartNoTitle"]</h2>
+        <p class="small text-muted">@Localizer["Pc_Adm_PartNoHint"]</p>
+        <form asp-action="SaveSettings" method="post" class="row g-3 align-items-start">
+            @if (Model.Settings.RowVersion != null) { <input type="hidden" name="rowVersion" value="@Convert.ToBase64String(Model.Settings.RowVersion)" /> }
+            <div class="col-md-4">
+                <label class="form-label" for="pc_partNoMethod">@Localizer["Pc_Adm_PartNoMethod"]</label>
+                <select id="pc_partNoMethod" name="partNoGenerationMethod" class="form-select form-select-sm">
+                    <option value="MANUAL" selected="@(Model.Settings.PartNoGenerationMethod == "MANUAL")">@Localizer["Pc_Adm_PartNoManual"]</option>
+                    <option value="API" selected="@(Model.Settings.PartNoGenerationMethod == "API")">@Localizer["Pc_Adm_PartNoApi"]</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" for="pc_partNoFormat">@Localizer["Pc_Adm_PartNoFormat"]</label>
+                <input id="pc_partNoFormat" name="partNoFormat" class="form-control form-control-sm" maxlength="50" autocomplete="off"
+                       value="@Model.Settings.PartNoFormat" placeholder="PCR-YYYY-NNNN" />
+                <div class="form-text">@Localizer["Pc_Adm_PartNoFormatHelp"]</div>
+            </div>
+            <div class="col-auto pt-md-4">
+                <button type="submit" class="vs-btn vs-btn--sm vs-btn--primary mt-md-1"><i class="bi bi-check2"></i> @Localizer["Save"]</button>
+            </div>
+        </form>
+        <div class="alert alert-info small py-2 mt-3 mb-0"><i class="bi bi-info-circle"></i> @Localizer["Pc_Adm_PartNoNote"]</div>
+        @if (Model.Settings.IsPersisted && Model.Settings.ModifiedDate.HasValue)
+        {
+            <div class="small text-muted mt-2">@Localizer["Pc_Adm_PartNoModified"]: @Model.Settings.ModifiedDate.Value.ToString("yyyy-MM-dd HH:mm")@(string.IsNullOrEmpty(Model.Settings.ModifiedBy) ? "" : " · " + Model.Settings.ModifiedBy)</div>
+        }
+    </section>
+
     @* ---------------------------------------------------- Import *@
     <section class="vs-panel pc-card">
         <h2 class="vs-section__title"><i class="bi bi-cloud-arrow-up"></i> @Localizer["Pc_Adm_Import"]</h2>

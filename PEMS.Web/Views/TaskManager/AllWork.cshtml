@@ -1,0 +1,116 @@
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.WorkItemListItemDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var q = (PEMS.Application.DTOs.WorkItemQuery)ViewBag.Query;
+    var spaces = (List<PEMS.Application.DTOs.WorkSpaceDto>)ViewBag.Spaces;
+    var types = ViewBag.Types as List<PEMS.Application.DTOs.WorkItemTypeDto>;
+    var assignees = ViewBag.Assignees as PEMS.Application.DTOs.AssigneeResolutionDto;
+    var canEdit = ViewBag.CanEdit is true;
+    ViewData["ShowBulk"] = canEdit;
+    ViewData["ShowSpace"] = true;
+    ViewData["CanRank"] = false;
+    var qs = Context.Request.QueryString.Value ?? "";
+    var existing = System.Text.RegularExpressions.Regex.Replace(qs.TrimStart('?'), @"(^|&)(page|pageSize)=[^&]*", "").Trim('&');
+    string SortLink(string key) => Url.Action("AllWork", new { q.WorkSpaceId, q.Text, q.Assignee, q.StatusCategory, q.Priority, q.TypeId, q.SprintId, q.IncludeArchived, Sort = key, Descending = q.Sort == key && !q.Descending })!;
+}
+@section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
+
+<section class="vs-panel mb-3">
+    <nav aria-label="breadcrumb" class="small mb-1"><a asp-action="Index">@Localizer["Tm_Title"]</a></nav>
+    <h2 class="h5 mb-3"><i class="bi bi-collection" aria-hidden="true"></i> @ViewData["Title"]</h2>
+
+    <form method="get" asp-action="AllWork" class="row g-2 align-items-end" role="search">
+        <div class="col-md-3">
+            <label class="form-label small" for="f-text">@Localizer["Tm_Search"]</label>
+            <input id="f-text" name="Text" value="@q.Text" class="form-control form-control-sm" maxlength="200" placeholder="@Localizer["Tm_SearchPlaceholder"]" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small" for="f-space">@Localizer["Tm_Field_Space"]</label>
+            <select id="f-space" name="WorkSpaceId" class="form-select form-select-sm">
+                <option value="">@Localizer["Tm_Any"]</option>
+                @foreach (var s in spaces) { <option value="@s.Id" selected="@(q.WorkSpaceId == s.Id)">@s.Key · @TaskManagerUi.Name(s.Name, s.NameFa)</option> }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small" for="f-assignee">@Localizer["Tm_Field_Assignee"]</label>
+            <select id="f-assignee" name="Assignee" class="form-select form-select-sm">
+                <option value="">@Localizer["Tm_Any"]</option>
+                <option value="me" selected="@(q.Assignee == "me")">@Localizer["Tm_Me"]</option>
+                <option value="unassigned" selected="@(q.Assignee == "unassigned")">@Localizer["Tm_Unassigned"]</option>
+                @if (assignees != null)
+                {
+                    foreach (var e in assignees.Candidates) { <option value="@e.EmployeeId" selected="@(q.Assignee == e.EmployeeId.ToString())">@e.Name</option> }
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small" for="f-status">@Localizer["Tm_Field_Status"]</label>
+            <select id="f-status" name="StatusCategory" class="form-select form-select-sm">
+                <option value="">@Localizer["Tm_Any"]</option>
+                @foreach (var c in new[] { "NotDone", "ToDo", "InProgress", "Done" })
+                { <option value="@c" selected="@(q.StatusCategory == c)">@Localizer["Tm_Category_" + c]</option> }
+            </select>
+        </div>
+        <div class="col-md-1">
+            <label class="form-label small" for="f-priority">@Localizer["Tm_Field_Priority"]</label>
+            <select id="f-priority" name="Priority" class="form-select form-select-sm">
+                <option value="">@Localizer["Tm_Any"]</option>
+                @foreach (var p in PEMS.Domain.Entities.TaskItemPriorities.All) { <option value="@p" selected="@(q.Priority == p)">@TaskManagerUi.Priority(Localizer, p)</option> }
+            </select>
+        </div>
+        @if (types != null)
+        {
+            <div class="col-md-2">
+                <label class="form-label small" for="f-type">@Localizer["Tm_Field_Type"]</label>
+                <select id="f-type" name="TypeId" class="form-select form-select-sm">
+                    <option value="">@Localizer["Tm_Any"]</option>
+                    @foreach (var t in types) { <option value="@t.Id" selected="@(q.TypeId == t.Id)">@TaskManagerUi.Name(t.Name, t.NameFa)</option> }
+                </select>
+            </div>
+        }
+        <div class="col-md-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="f-archived" name="IncludeArchived" value="true" checked="@q.IncludeArchived" />
+                <label class="form-check-label small" for="f-archived">@Localizer["Tm_IncludeArchived"]</label>
+            </div>
+        </div>
+        <input type="hidden" name="Sort" value="@q.Sort" />
+        <input type="hidden" name="Descending" value="@(q.Descending ? "true" : "false")" />
+        <div class="col-auto d-flex gap-2">
+            <button class="btn btn-sm btn-pems-solid"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Tm_Filter"]</button>
+            <a class="btn btn-sm btn-outline-secondary" asp-action="AllWork">@Localizer["Tm_Reset"]</a>
+        </div>
+    </form>
+    <div class="small text-muted mt-2">
+        @Localizer["Tm_SortBy"]:
+        @foreach (var key in new[] { "updated", "rank", "due", "priority", "created", "key" })
+        {
+            <a href="@SortLink(key)" class="ms-2 @(q.Sort == key || (q.Sort == null && key == "updated") ? "fw-semibold" : "")">@Localizer["Tm_Sort_" + key]@(q.Sort == key ? (q.Descending ? " ↓" : " ↑") : "")</a>
+        }
+    </div>
+</section>
+
+<section class="vs-panel">
+    @if (canEdit)
+    {
+        <partial name="_BulkBar" />
+        <p class="small text-muted mb-2" data-tm-bulk-hint>@(ViewBag.SpaceView != null ? Localizer["Tm_BulkHint"] : Localizer["Tm_BulkHintNoSpace"])</p>
+    }
+    <div class="small text-muted mb-2">@Localizer["Tm_ResultCount", Model.TotalCount]</div>
+    <partial name="_ItemTable" model="Model.Items" view-data="ViewData" />
+    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+    {
+        Page = Model.Page,
+        TotalPages = Model.TotalPages,
+        TotalCount = Model.TotalCount,
+        PageSize = Model.PageSize,
+        GridKey = "TaskManagerAllWork",
+        BaseUrl = Url.Action("AllWork") ?? "",
+        ExistingQueryString = existing
+    })
+</section>
+
+@section Scripts { <script src="~/js/pems-task-manager.js" asp-append-version="true"></script> }

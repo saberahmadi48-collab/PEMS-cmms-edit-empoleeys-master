@@ -1,4 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
+using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
@@ -17,11 +20,17 @@ public class TenderService : ITenderService
 {
     private readonly PEMSDbContext _context;
     private readonly INumberingService _numbering;
+    private readonly ILogger<TenderService>? _logger;
+    private readonly ContractCreationScope _scope;
 
-    public TenderService(PEMSDbContext context, INumberingService numbering)
+    // logger اختیاری است تا سازنده‌ی دو-پارامتری موجود (تست‌ها) سازگار بماند؛ DI آن را خودکار تأمین می‌کند.
+    // P0.3: lockTimeoutMs مهلت انتظار قفل‌های کاربردی مسیر ساخت قرارداد است (پیش‌فرض ۱۵ ثانیه، هم‌اندازه با PostingScope)؛ فقط تست‌ها آن را کوتاه می‌کنند.
+    public TenderService(PEMSDbContext context, INumberingService numbering, ILogger<TenderService>? logger = null, int lockTimeoutMs = 15000)
     {
         _context = context;
         _numbering = numbering;
+        _logger = logger;
+        _scope = new ContractCreationScope(context, logger, lockTimeoutMs);
     }
 
     public async Task<int> CreateAsync(int procurementPackageId, string title, DateTime? issueDate, DateTime? responseDeadline,
@@ -232,6 +241,62 @@ public class TenderService : ITenderService
         return (true, null);
     }
 
+    public async Task<TenderApprovalSeparation> CheckCreatorApproverSeparationAsync(
+        int? tenderId, int? bidNegotiationId, int? userId, string? userName, bool isSystemAdmin, string? ipAddress = null)
+    {
+        var resolvedTenderId = tenderId;
+        if (bidNegotiationId.HasValue)
+        {
+            resolvedTenderId = await _context.BidNegotiations.AsNoTracking()
+                .Where(n => n.BidNegotiationId == bidNegotiationId.Value)
+                .Select(n => (int?)n.Bid!.TenderId)
+                .FirstOrDefaultAsync();
+        }
+        if (!resolvedTenderId.HasValue) return TenderApprovalSeparation.NotFound;
+
+        var tender = await _context.Tenders.AsNoTracking()
+            .Where(t => t.TenderId == resolvedTenderId.Value)
+            .Select(t => new { t.TenderId, t.CreatedBy })
+            .FirstOrDefaultAsync();
+        if (tender == null) return TenderApprovalSeparation.NotFound;
+
+        // رکورد قدیمی بدون ایجادکننده‌ی ثبت‌شده: ایجادکننده قابل‌تشخیص نیست (محدودیت مستند، نه حدس)
+        if (string.IsNullOrWhiteSpace(tender.CreatedBy)) return TenderApprovalSeparation.Allowed;
+
+        if (string.IsNullOrWhiteSpace(userName) || !userId.HasValue) return TenderApprovalSeparation.DeniedUnverifiable;
+
+        if (!string.Equals(tender.CreatedBy, userName, StringComparison.OrdinalIgnoreCase))
+            return TenderApprovalSeparation.Allowed;
+
+        if (!isSystemAdmin) return TenderApprovalSeparation.DeniedCreator;
+
+        // استثنای SystemAdmin فقط با ردیف ممیزی؛ شکست ثبت = رد (Fail-Closed)
+        var exemption = new AuthorizationAuditLog
+        {
+            UserId = userId.Value,
+            ResourceName = "Tender",
+            ActionName = "Approve",
+            ResourceId = tender.TenderId.ToString(),
+            Decision = AccessDecisionReason.Allow.ToString(),
+            Reason = "SoD exemption: SystemAdmin approved a tender they created (owner decision D-OPEN-04, Tender Create<->Approve)",
+            IpAddress = ipAddress,
+            Timestamp = DateTime.Now
+        };
+        try
+        {
+            _context.AuthorizationAuditLogs.Add(exemption);
+            await _context.SaveChangesAsync();
+            return TenderApprovalSeparation.AllowedBySystemAdminExemption;
+        }
+        catch (Exception ex)
+        {
+            // ردیف ناموفق نباید با ذخیره‌ی بعدی همین درخواست بی‌صدا نوشته شود
+            _context.Entry(exemption).State = EntityState.Detached;
+            _logger?.LogError(ex, "Could not audit the SystemAdmin SoD exemption for tender {TenderId}; approval denied.", tender.TenderId);
+            return TenderApprovalSeparation.DeniedUnverifiable;
+        }
+    }
+
     public async Task<(bool Success, string? Error)> SelectWinnerAsync(int tenderId, int bidId, int? actorEmployeeId)
     {
         var tender = await _context.Tenders.FirstOrDefaultAsync(x => x.TenderId == tenderId);
@@ -243,11 +308,20 @@ public class TenderService : ITenderService
         if (bid == null) return (false, "این پیشنهاد متعلق به این مناقصه نیست.");
 
         // طبق §D/§I قاعده‌ی ۲: تایید فنی و تجاری همیشه دو گیت مستقل‌اند - هیچ‌کدام جایگزین دیگری نیست
-        var technicalPassed = bid.Evaluations.Any(x => x.EvaluationType == "Technical" && x.Decision == "Passed");
-        var commercialPassed = bid.Evaluations.Any(x => x.EvaluationType == "Commercial" && x.Decision == "Passed");
+        // P0 / F-02: ارزیابی‌ها Append-only‌اند. قبلاً Any(Passed) یک ارزیابی مردودِ بعدی را نادیده می‌گرفت. قاعده‌ی محافظه‌کارانه:
+        // برای هر دسته‌ی اجباری (فنی/تجاری) باید دست‌کم یک ارزیابی فعال Passed وجود داشته باشد و هیچ ارزیابی فعال Failed نباید
+        // وجود داشته باشد (ردِ ثبت‌شده هرگز با پذیرشِ قبل یا بعد از آن خنثی نمی‌شود). ارزیابی Pending هرگز پذیرش حساب نمی‌شود.
+        // این‌جا فرمول امتیازدهی/وزن‌دهی ساخته نشده؛ اینکه «آخرین ارزیابی» جایگزین ردِ قبلی شود یا نه تصمیم تجاری باز است.
+        var activeEvaluations = bid.Evaluations.Where(x => x.IsActive).ToList();
 
-        if (!technicalPassed) return (false, "این پیشنهاد هنوز ارزیابی فنی موفق ندارد - انتخاب به‌عنوان برنده مجاز نیست.");
-        if (!commercialPassed) return (false, "این پیشنهاد هنوز ارزیابی تجاری موفق ندارد - انتخاب به‌عنوان برنده مجاز نیست.");
+        foreach (var (type, label) in new[] { ("Technical", "فنی"), ("Commercial", "تجاری") })
+        {
+            var ofType = activeEvaluations.Where(x => x.EvaluationType == type).ToList();
+            if (ofType.Any(x => x.Decision == "Failed"))
+                return (false, $"این پیشنهاد ارزیابی {label} مردود دارد - انتخاب به‌عنوان برنده مجاز نیست.");
+            if (!ofType.Any(x => x.Decision == "Passed"))
+                return (false, $"این پیشنهاد هنوز ارزیابی {label} موفق ندارد - انتخاب به‌عنوان برنده مجاز نیست.");
+        }
 
         if (tender.RequiresVendorQualification)
         {
@@ -271,19 +345,73 @@ public class TenderService : ITenderService
         return (true, null);
     }
 
-    public async Task<(bool Success, string? Error, int? ContractId)> CreateContractFromWinningBidAsync(
-        int tenderId, string contractNo, DateTime? startDate, DateTime? endDate)
+    public async Task<TenderContractResult> CreateContractFromWinningBidAsync(
+        int tenderId, string contractNo, DateTime? startDate, DateTime? endDate, int? creatorUserId = null, string? ipAddress = null)
     {
+        contractNo = contractNo?.Trim() ?? string.Empty;
+
+        // P0.3: ساخت قرارداد + اتصال به مناقصه + هر دو ذخیره‌ی AuditLog عمومی + رویداد «Contracts.Create» (و AuditLog عمومی آن) روی SQL Server
+        // یک تراکنش صریح داخل Execution Strategy است. هر شکست پیش از Commit همه‌ی این‌ها را با هم Rollback می‌کند؛ بدنه‌ی هر تلاش، مناقصه را
+        // دوباره از دیتابیس می‌خواند و پیش از بررسی یکتایی ContractNo وجود قرارداد را بررسی می‌کند، پس تلاش مجدد بعد از Commit نامطمئن
+        // قرارداد تکراری نمی‌سازد. روی Providerهای بدون تراکنش (InMemory) همان بدنه بدون اتمیک‌بودن اجرا می‌شود.
+        var state = new ContractCreationScope.State();
+        try
+        {
+            return await _scope.RunAsync(state, () => CreateContractAttemptAsync(state, tenderId, contractNo, startDate, endDate, creatorUserId, ipAddress));
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            return await ClassifyCreateFailureAsync(state, ex, tenderId, contractNo, creatorUserId);
+        }
+    }
+
+    private async Task<(TenderContractResult Value, bool Commit)> CreateContractAttemptAsync(
+        ContractCreationScope.State state, int tenderId, string contractNo, DateTime? startDate, DateTime? endDate, int? creatorUserId, string? ipAddress)
+    {
+        // قفل مناقصه: درخواست هم‌زمان دوم تا پایان اولی منتظر می‌ماند و بعد وجود قرارداد را می‌بیند
+        await _scope.AcquireLockAsync(ContractCreationLocks.TenderResource(tenderId));
+        await _scope.ReloadPreTrackedAsync(state);
+
         var tender = await _context.Tenders
             .Include(x => x.ProcurementPackage)
             .Include(x => x.AwardedBid)
             .FirstOrDefaultAsync(x => x.TenderId == tenderId);
 
-        if (tender == null) return (false, "مناقصه یافت نشد.", null);
+        if (tender == null) return (new TenderContractResult(false, "مناقصه یافت نشد.", null), false);
         if (tender.Status != "Awarded" || tender.AwardedBid == null)
-            return (false, "پیش از ساخت قرارداد، مناقصه باید به یک برنده رسیده باشد (Awarded).", null);
+            return (new TenderContractResult(false, "پیش از ساخت قرارداد، مناقصه باید به یک برنده رسیده باشد (Awarded).", null), false);
+
         if (tender.ContractId.HasValue)
-            return (false, "برای این مناقصه قبلاً قرارداد ساخته شده است.", null);
+        {
+            // قرارداد از قبل ساخته شده؛ این بررسی عمداً قبل از بررسی یکتایی ContractNo است (وگرنه تلاش مجدد بعد از Commit نامطمئن، شماره‌ی خودش را «تکراری» می‌دید).
+            // قرارداد تکراری ساخته نمی‌شود؛ رویداد ناقص برای ایجادکننده‌ی اصلی (Contract.CreatedBy) ترمیم می‌شود - نه برای کاربری که اکنون تلاش مجدد می‌کند.
+            var existingId = tender.ContractId.Value;
+            state.ExistingContractId = existingId;
+            var repair = await ContractCreatorEvents.EnsureCoreAsync(_context, _scope, state, _logger, existingId, ipAddress);
+            if (state.GeneratedContractIds.Contains(existingId))
+            {
+                // قرارداد را یکی از تلاش‌های قبلیِ همین فراخوانی ساخته و Commit آن نامطمئن بود؛ اکنون وجود قرارداد (و رویداد) تأیید شد
+                var status = !creatorUserId.HasValue ? ContractCreatorEventStatus.NotApplicable
+                    : repair.Status is ContractCreatorEventStatus.AlreadyRecorded or ContractCreatorEventStatus.Repaired ? ContractCreatorEventStatus.Recorded
+                    : repair.Status;
+                return (new TenderContractResult(true, null, existingId, Committed: true, CreatorEvent: status, RecoveredAfterUncertainCommit: true), repair.Wrote);
+            }
+
+            return (new TenderContractResult(false, "برای این مناقصه قبلاً قرارداد ساخته شده است.", existingId, Committed: true, CreatorEvent: repair.Status), repair.Wrote);
+        }
+
+        // P0 / F-03: شماره‌ی قرارداد الزامی و یکتا. P0.3: بررسی یکتایی زیر قفل کاربردیِ شماره‌ی نرمال‌شده انجام می‌شود تا دو مناقصه‌ی هم‌زمان با یک شماره
+        // هر دو از بررسی رد نشوند؛ این قفل جایگزین Index یکتا نیست (مسیرهای دیگر ساخت قرارداد قفل نمی‌گیرند).
+        if (contractNo.Length == 0)
+            return (new TenderContractResult(false, "شماره‌ی قرارداد الزامی است.", null), false);
+
+        await _scope.AcquireLockAsync(ContractCreationLocks.ContractNoResource(contractNo));
+        if (await _context.Contracts.AsNoTracking().AnyAsync(x => x.ContractNo == contractNo))
+            return (new TenderContractResult(false, $"قراردادی با شماره‌ی «{contractNo}» از قبل وجود دارد.", null), false);
 
         var contract = new Contract
         {
@@ -300,12 +428,149 @@ public class TenderService : ITenderService
             CriticalityClass = tender.ProcurementPackage.CriticalityClass
         };
 
-        _context.Contracts.Add(contract);
-        await _context.SaveChangesAsync();
+        // قرارداد و اتصال آن به مناقصه یک SaveChanges است (RowVersion مناقصه در همان ذخیره بررسی می‌شود). PEMSDbContext.SaveChangesAsync دو ذخیره‌ی
+        // فیزیکی انجام می‌دهد: (A) داده‌ی کسب‌وکار (B) AuditLog عمومی؛ هر دو در تراکنش جاری هستند.
+        tender.Contract = contract;
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        finally
+        {
+            // اگر ذخیره‌ی اول (A) موفق بود ولی دومی (B) شکست خورد، شناسه‌ی تولیدشده روی موجودیت ردیابی‌شده می‌ماند؛ آن را ثبت می‌کنیم تا طبقه‌بندی
+            // شکست (و تلاش مجدد بعد از Commit نامطمئن) بتواند قرارداد این فراخوانی را از قرارداد درخواست دیگر تشخیص دهد
+            if (contract.ContractId > 0) state.GeneratedContractIds.Add(contract.ContractId);
+        }
 
-        tender.ContractId = contract.ContractId;
-        await _context.SaveChangesAsync();
+        // (C) رویداد «Contracts.Create» که SoD «ایجادکننده ≠ تاییدکننده» به آن تکیه دارد و (D) AuditLog عمومی آن، در همان تراکنش. شکست هرکدام کل
+        // عملیات (از جمله قرارداد) را Rollback می‌کند؛ هیچ استثنایی بلعیده نمی‌شود.
+        var creatorEvent = ContractCreatorEventStatus.NotApplicable;
+        if (creatorUserId.HasValue)
+        {
+            ContractCreatorEvents.Add(_context, contract.ContractId, creatorUserId.Value, ipAddress, "Creator attribution: contract created from the awarded tender");
+            await _context.SaveChangesAsync();
+            creatorEvent = ContractCreatorEventStatus.Recorded;
+        }
 
-        return (true, null, contract.ContractId);
+        return (new TenderContractResult(true, null, contract.ContractId, Committed: true, CreatorEvent: creatorEvent), true);
     }
+
+    /// <summary>
+    /// طبقه‌بندی شکست بعد از پایان Execution Strategy (P0.5 / H-1، سازگار با READ_COMMITTED_SNAPSHOT=ON).
+    /// ۱) اگر درخواست Commit صادر شده بود، سرنوشت تراکنش نامعلوم است و فقط خواندنِ تأییدی زیر قفل مناقصه (که تراکنش اصلی از ابتدا تا پایانش نگه می‌داشت؛
+    ///    ContractCreationScope.TryReadUnderLockAsync) تصمیم می‌گیرد: مناقصه به قرارداد همین فراخوانی متصل است = موفقیتِ بازیابی‌شده؛ به قرارداد دیگری = «قبلاً ساخته
+    ///    شده»؛ به هیچ قراردادی متصل نیست = «ساخته نشد» (قفل گرفته شد پس تراکنش اصلی تمام شده و Commit نکرده)؛ قفل/خواندن ناموفق = OutcomeUnknown.
+    ///    «چیزی پیدا نشد» به‌تنهایی هرگز «ساخته نشد» نیست.
+    /// ۲) Provider بدون تراکنش (InMemory/تراکنش بیرونی): از خواندن مستقیم طبقه‌بندی می‌شود (بدون ادعای اتمیک‌بودن).
+    /// ۳) شکست پیش از هر درخواست Commit: تراکنش قطعاً Rollback شده؛ بدون خواندن، فقط نگاشت نوع خطا.
+    /// </summary>
+    private async Task<TenderContractResult> ClassifyCreateFailureAsync(ContractCreationScope.State state, Exception ex, int tenderId, string contractNo, int? creatorUserId)
+    {
+        _logger?.LogError(ex, "Tender {TenderId}: creating the contract {ContractNo} reported an error (attempts={Attempts}, commitAttempted={CommitAttempted}).",
+            tenderId, contractNo, state.Attempts, state.CommitAttempted);
+
+        async Task<(int? LinkedId, bool EventExists)> ReadLinkAsync()
+        {
+            var linked = await _context.Tenders.AsNoTracking()
+                .Where(t => t.TenderId == tenderId).Select(t => t.ContractId).FirstOrDefaultAsync();
+            var hasEvent = linked.HasValue && await ContractCreatorEvents.ExistsAsync(_context, linked.Value);
+            return (linked, hasEvent);
+        }
+
+        if (state.CommitAttempted)
+        {
+            var check = await _scope.TryReadUnderLockAsync(ContractCreationLocks.TenderResource(tenderId), ReadLinkAsync);
+            if (!check.Verified)
+                return new TenderContractResult(false,
+                    "نتیجه‌ی ساخت قرارداد نامطمئن است (درخواست Commit صادر شد و بررسی امن نتیجه ممکن نبود). قبل از تلاش مجدد، فهرست قراردادها و گزارش تشخیص را بررسی کنید؛ تلاش مجدد قرارداد تکراری نمی‌سازد.",
+                    null, OutcomeUnknown: true, CreatorEvent: ContractCreatorEventStatus.OutcomeUnknown);
+
+            var (linkedId, eventExists) = check.Value;
+            if (linkedId.HasValue)
+            {
+                if (state.GeneratedContractIds.Contains(linkedId.Value))
+                {
+                    var status = !creatorUserId.HasValue ? ContractCreatorEventStatus.NotApplicable
+                        : eventExists ? ContractCreatorEventStatus.Recorded : ContractCreatorEventStatus.NotRecorded;
+                    return new TenderContractResult(true, null, linkedId, Committed: true, CreatorEvent: status, RecoveredAfterUncertainCommit: true);
+                }
+
+                // قرارداد را درخواست هم‌زمان دیگری ساخته و Commit کرده است (یا مناقصه از قبل متصل بود)
+                return new TenderContractResult(false, "برای این مناقصه قبلاً قرارداد ساخته شده است.", linkedId, Committed: true,
+                    CreatorEvent: eventExists ? ContractCreatorEventStatus.AlreadyRecorded : ContractCreatorEventStatus.NotRecorded);
+            }
+
+            // قفل گرفته شد (تراکنش اصلی پایان یافته) و مناقصه به قراردادی متصل نیست ⇒ Commit نشده
+            return ex is ContractLockBusyException
+                ? new TenderContractResult(false, "این مناقصه یا شماره‌ی قرارداد هم‌اکنون توسط عملیات دیگری در حال پردازش است؛ چند لحظه بعد دوباره تلاش کنید. هیچ تغییری ذخیره نشد.", null)
+                : new TenderContractResult(false, "ساخت قرارداد انجام نشد؛ هیچ تغییری ذخیره نشد. دوباره تلاش کنید.", null);
+        }
+
+        if (!state.Transactional && state.GeneratedContractIds.Count > 0)
+        {
+            int? linkedId;
+            bool eventExists;
+            try
+            {
+                (linkedId, eventExists) = await ReadLinkAsync();
+            }
+            catch (Exception verifyEx) when (verifyEx is not OperationCanceledException)
+            {
+                _logger?.LogError(verifyEx, "Tender {TenderId}: could not verify the contract-creation outcome after an error (non-transactional provider).", tenderId);
+                return new TenderContractResult(false,
+                    "نتیجه‌ی ساخت قرارداد نامطمئن است (Provider بدون تراکنش و بررسی بعدی هم ممکن نبود). قبل از تلاش مجدد، فهرست قراردادها و گزارش تشخیص را بررسی کنید.",
+                    null, OutcomeUnknown: true, CreatorEvent: ContractCreatorEventStatus.OutcomeUnknown);
+            }
+
+            if (linkedId.HasValue)
+            {
+                if (state.GeneratedContractIds.Contains(linkedId.Value))
+                {
+                    var status = !creatorUserId.HasValue ? ContractCreatorEventStatus.NotApplicable
+                        : eventExists ? ContractCreatorEventStatus.Recorded : ContractCreatorEventStatus.NotRecorded;
+                    return new TenderContractResult(true, null, linkedId, Committed: true, CreatorEvent: status);
+                }
+
+                return new TenderContractResult(false, "برای این مناقصه قبلاً قرارداد ساخته شده است.", linkedId, Committed: true,
+                    CreatorEvent: eventExists ? ContractCreatorEventStatus.AlreadyRecorded : ContractCreatorEventStatus.NotRecorded);
+            }
+        }
+
+        if (state.ExistingContractId is int existingId)
+        {
+            // شکست (بدون درخواست Commit) در مسیر «قرارداد از قبل هست» (ترمیم رویداد): قرارداد وجود دارد، پس «ساخت انجام نشد» پیام درستی نیست. وضعیت رویداد از
+            // دیتابیس خوانده می‌شود؛ این خواندن فقط پیام را می‌سازد (ترمیم ما Commit نشده)، اگر ممکن نبود فقط «ثبت‌نشده» گزارش می‌شود.
+            var eventStatus = ContractCreatorEventStatus.NotRecorded;
+            try { if (await ContractCreatorEvents.ExistsAsync(_context, existingId)) eventStatus = ContractCreatorEventStatus.AlreadyRecorded; }
+            catch (Exception verifyEx) when (verifyEx is not OperationCanceledException)
+            {
+                _logger?.LogError(verifyEx, "Tender {TenderId}: could not verify the creator event of the existing contract {ContractId}.", tenderId, existingId);
+            }
+            return new TenderContractResult(false, "برای این مناقصه قبلاً قرارداد ساخته شده است.", existingId, Committed: true, CreatorEvent: eventStatus);
+        }
+
+        return MapNotCreated(ex);
+    }
+
+    private static TenderContractResult MapNotCreated(Exception ex)
+    {
+        switch (ex)
+        {
+            case ContractLockBusyException:
+                return new TenderContractResult(false,
+                    "این مناقصه یا شماره‌ی قرارداد هم‌اکنون توسط عملیات دیگری در حال پردازش است؛ چند لحظه بعد دوباره تلاش کنید. هیچ تغییری ذخیره نشد.", null);
+            case DbUpdateConcurrencyException:
+                return new TenderContractResult(false,
+                    "این مناقصه هم‌زمان توسط کاربر دیگری تغییر کرد (احتمالاً قرارداد قبلاً ساخته شده است). صفحه را تازه کنید.", null);
+            case DbUpdateException:
+            case RetryLimitExceededException:
+                return new TenderContractResult(false, "ساخت قرارداد انجام نشد؛ هیچ تغییری ذخیره نشد. دوباره تلاش کنید.", null);
+            default:
+                System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(ex).Throw();
+                throw ex;   // به‌دست نمی‌رسد؛ برای کامپایلر
+        }
+    }
+
+    public Task<ContractCreatorEventStatus> EnsureContractCreatorEventAsync(int contractId, string? ipAddress = null)
+        => ContractCreatorEvents.EnsureAsync(_context, _scope, _logger, contractId, ipAddress);
 }

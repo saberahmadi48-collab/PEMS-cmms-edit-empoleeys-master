@@ -2,7 +2,7 @@
 
 @if (!string.IsNullOrEmpty(Model.Url))
 {
-    <a href="@Model.Url" class="kpi-card kpi-link text-decoration-none">
+    <a href="@Model.Url" class="kpi-card kpi-link text-decoration-none" title="@Model.Hint">
         <div class="kpi-icon @Model.ColorClass"><i class="bi @Model.IconClass"></i></div>
         <div>
             <div class="kpi-value">@Model.DisplayCount</div>
@@ -12,7 +12,7 @@
 }
 else
 {
-    <div class="kpi-card">
+    <div class="kpi-card" title="@Model.Hint">
         <div class="kpi-icon @Model.ColorClass"><i class="bi @Model.IconClass"></i></div>
         <div>
             <div class="kpi-value">@Model.DisplayCount</div>

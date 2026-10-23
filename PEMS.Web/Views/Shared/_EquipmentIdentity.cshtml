@@ -1,0 +1,34 @@
+@model PEMS.Application.DTOs.EquipmentIdentityDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Helpers
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var areaUnit = string.Join(" / ", new[] { Model.Area, Model.Unit }.Where(x => !string.IsNullOrWhiteSpace(x)));
+}
+@* هویت تجهیز فقط‌خواندنی - همه‌جا (فرم استراتژی، Plan، Tag، WO) یکسان: تگ، نام، کلاس، ناحیه/واحد، بحرانی‌بودن.
+   تگ هرگز فیلد متنی آزاد نیست؛ از ثبت تجهیز خوانده می‌شود. *@
+<div class="border rounded p-2 mb-3 small bg-light" data-equipment-identity>
+    <div class="row g-2">
+        <div class="col-md-3">
+            <div class="text-muted">@Localizer["Rcm_Tag"]</div>
+            <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId" class="fw-bold">@Model.Tag</a>
+        </div>
+        <div class="col-md-3">
+            <div class="text-muted">@Localizer["Rcm_EquipmentName"]</div>
+            <div>@Model.Name</div>
+        </div>
+        <div class="col-md-3">
+            <div class="text-muted">@Localizer["Rcm_EquipmentClass"]</div>
+            <div>@(string.IsNullOrEmpty(Model.EquipmentClassName) ? Localizer["Rcm_Unclassified"].Value : Model.EquipmentClassName)</div>
+        </div>
+        <div class="col-md-2">
+            <div class="text-muted">@Localizer["Rcm_AreaUnit"]</div>
+            <div>@(areaUnit.Length > 0 ? areaUnit : "-")</div>
+        </div>
+        <div class="col-md-1">
+            <div class="text-muted">@Localizer["Rcm_Criticality"]</div>
+            <span class="badge @RcmDisplay.CriticalityBadge(Model.CriticalityClass)">@Localizer.Label("Criticality", Model.CriticalityClass ?? "Unrated")</span>
+        </div>
+    </div>
+</div>

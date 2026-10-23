@@ -1,93 +1,347 @@
-﻿@using Microsoft.Extensions.Localization
+﻿@using System.Text.Json
+@using Microsoft.Extensions.Localization
+@using PEMS.Application.Common
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-<div class="content-card" style="max-width:900px;">
-    <h6 class="mb-3"><i class="bi bi-envelope-plus"></i> @Localizer["ثبت مکاتبه‌ی وارده (DCC)"]</h6>
-    <p class="text-muted small">
-        این فرم برای هر نوع مکاتبه‌ی وارده است - ایمیل، نامه‌ی رسمی، یا مکاتبه‌ی وندور. برخلاف
-        فرم عمومی نامه‌نگاری، پیوست فایل و اتصال به MR/VDR در همین یک مرحله انجام می‌شود.
-    </p>
+@{
+    var projects = (IEnumerable<dynamic>)ViewBag.Projects;
+    var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
+    var presetParty = ViewBag.PresetParty as PEMS.Application.DTOs.PartySearchItemDto;
+    var replyTo = ViewBag.ReplyTo;
+    string L(string key) => Localizer[key].Value;
+    // the script reads camelCase properties (same shape as the JSON endpoints return)
+    var jsonWeb = new JsonSerializerOptions(JsonSerializerDefaults.Web);
 
-    <form asp-action="RegisterIncoming" method="post" enctype="multipart/form-data">
-        <div class="row g-3">
-            <div class="col-md-4">
-                <label class="form-label">@Localizer["نوع منبع"]</label>
-                <select name="sourceType" class="form-select">
-                    <option value="Email">@Localizer["ایمیل"]</option>
-                    <option value="OfficialLetter">@Localizer["نامه‌ی رسمی"]</option>
-                    <option value="VendorCommunication">@Localizer["مکاتبه‌ی وندور"]</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">@Localizer["فرستنده"]</label>
-                <input name="sender" class="form-control" required placeholder="مثلاً DCC کارفرما / نام وندور" />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">@Localizer["اولویت"]</label>
-                <select name="priority" class="form-select">
-                    <option>@Localizer["Normal"]</option><option>@Localizer["Low"]</option><option>@Localizer["High"]</option><option>@Localizer["Urgent"]</option>
-                </select>
-            </div>
+    // متن‌های لازم برای جاوااسکریپت (برچسب‌ها و پیام‌های خطا) یک‌جا و از همان منبع ترجمه
+    var clientKeys = new List<string> {
+        "Dcc_Searching", "Dcc_NoResults", "Dcc_AddNewParty", "Dcc_Provisional", "Dcc_NoContracts", "Dcc_ChooseContract", "Dcc_ThreadEmpty",
+        "Dcc_ThreadAwaitingUs", "Dcc_ThreadAwaitingThem", "Dcc_ThreadLast", "Dcc_ThreadTotal", "Dcc_Incoming", "Dcc_Outgoing", "Dcc_Overdue",
+        "Dcc_Answered", "Dcc_DueOn", "Dcc_NoFilePreview", "Dcc_RemoveFile", "Dcc_RoleOriginal", "Dcc_RoleAttachment", "Dcc_RoleEmailCopy",
+        "Dcc_Remove", "Dcc_ReplyChoose", "Dcc_ReplyAwaiting", "Dcc_ReplyNone", "Dcc_DuplicateFound", "Dcc_OpenLetter", "Dcc_RegisterAnyway",
+        "Dcc_Registering", "Dcc_SavedNext", "Dcc_Today", "Dcc_PrevMonth", "Dcc_NextMonth", "Dcc_PickDate", "Dcc_DateFormatHint", "Dcc_NetworkError",
+        "Dcc_FixErrors", "Dcc_LinkEngineeringDocument", "Dcc_LinkVdrItem", "Dcc_LinkMaterialRequisition", "Dcc_LinkTransmittal", "Dcc_NoLinks",
+        "Dcc_ThreadPickParty", "Dcc_ReplyChooseParty", "Dcc_Days", "Dcc_Unsaved", "Dcc_Err_DateInvalid" };
+    foreach (var code in new[] { "ProjectRequired", "PartyRequired", "PartyTypeInvalid", "SubjectRequired", "SenderReferenceRequired", "DocumentDateRequired",
+        "ReceivedDateFuture", "DocumentDateFuture", "ReceivedBeforeDocument", "ResponseDueRequired", "ResponseDueBeforeReceived", "OwnerRequired",
+        "OriginalRequired", "OneOriginalOnly", "FileTypeNotAllowed", "FileTooLarge", "FileEmpty", "FileContentMismatch", "TooManyFiles", "Duplicate" })
+        clientKeys.Add("Dcc_Err_" + code);
+    var i18n = clientKeys.Distinct().ToDictionary(k => k, k => L(k));
+}
 
-            <div class="col-md-6">
-                <label class="form-label">پروژه <span class="text-muted small">@Localizer["(اختیاری)"]</span></label>
-                <select name="projectId" class="form-select">
-                    <option value="">@Localizer["-- ندارد --"]</option>
-                    @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">دیسیپلین <span class="text-muted small">@Localizer["(اختیاری)"]</span></label>
-                <select name="disciplineId" class="form-select">
-                    <option value="">@Localizer["-- ندارد --"]</option>
-                    @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                </select>
-            </div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/dcc-register.css" asp-append-version="true" />
+}
 
-            <div class="col-12"><label class="form-label">@Localizer["موضوع"]</label><input name="subject" class="form-control" required /></div>
-            <div class="col-12"><label class="form-label">@Localizer["خلاصه / متن"]</label><textarea name="body" class="form-control" rows="4"></textarea></div>
+<div class="dcr" id="dcr"
+     data-url-parties="@Url.Action("Parties", "DCC")"
+     data-url-thread="@Url.Action("PartyThread", "DCC")"
+     data-url-outgoing="@Url.Action("OutgoingForReply", "DCC")"
+     data-url-links="@Url.Action("Links", "DCC")"
+     data-url-people="@Url.Action("People", "DCC")"
+     data-url-number="@Url.Action("NextNumber", "DCC")"
+     data-url-duplicate="@Url.Action("CheckDuplicate", "DCC")"
+     data-url-register="@Url.Action("RegisterIncoming", "DCC")"
+     data-url-letter="@Url.Action("Details", "Letter", new { id = "__ID__" })"
+     data-preset-party="@(presetParty == null ? "" : JsonSerializer.Serialize(presetParty, jsonWeb))"
+     data-reply-to="@(replyTo == null ? "" : JsonSerializer.Serialize(new { id = (int)replyTo.LetterId, number = (string)replyTo.LetterNumber, subject = (string)replyTo.Subject }))">
 
-            <div class="col-12">
-                <label class="form-label"><i class="bi bi-paperclip"></i> پیوست فایل <span class="text-muted small">@Localizer["(اختیاری - PDF/تصویر/ایمیل ذخیره‌شده)"]</span></label>
-                <input type="file" name="attachment" class="form-control" />
-            </div>
+    <header class="dcr-head">
+        <div>
+            <nav class="dcr-crumbs" aria-label="breadcrumb">
+                <a asp-action="Index">@L("Dcc_Crumb")</a><i class="bi bi-chevron-right" aria-hidden="true"></i><span>@L("Dcc_PageTitle")</span>
+            </nav>
+            <h1 class="dcr-title"><i class="bi bi-envelope-arrow-down" aria-hidden="true"></i> @L("Dcc_PageTitle")</h1>
+            <p class="dcr-sub">@L("Dcc_PageSubtitle")</p>
+        </div>
+        <div class="dcr-numchip" title="@L("Dcc_NumberHint")">
+            <span class="dcr-numchip-label">@L("Dcc_NextNumber")</span>
+            <bdi class="dcr-numchip-value" id="dcrNumber">—</bdi>
+        </div>
+    </header>
 
-            <div class="col-12"><hr /></div>
+    <div class="dcr-banner dcr-banner--ok" id="dcrSaved" role="status" hidden>
+        <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+        <span id="dcrSavedText"></span>
+        <a id="dcrSavedLink" href="#" class="dcr-link">@L("Dcc_OpenLetter")</a>
+    </div>
 
-            <div class="col-md-4">
-                <label class="form-label"><i class="bi bi-file-earmark-text"></i> @Localizer["مدرک مهندسی مرتبط"]</label>
-                <input type="text" class="form-control" placeholder="جستجو با شماره مدرک، عنوان یا توضیح..."
-                       data-pems-search data-search-type="EngineeringDocument" data-search-hidden="#relatedDocumentIdHidden" autocomplete="off" />
-                <input type="hidden" name="relatedDocumentId" id="relatedDocumentIdHidden" />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label"><i class="bi bi-journal-check"></i> @Localizer["مدرک وندور (VDR) مرتبط"]</label>
-                <input type="text" class="form-control" placeholder="جستجو با نام وندور، شماره مدرک یا وضعیت..."
-                       data-pems-search data-search-type="VDRItem" data-search-hidden="#relatedVdrItemIdHidden" autocomplete="off" />
-                <input type="hidden" name="relatedVdrItemId" id="relatedVdrItemIdHidden" />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label"><i class="bi bi-cart-check"></i> @Localizer["MR مرتبط"]</label>
-                <select name="relatedMRId" class="form-select">
-                    <option value="">@Localizer["-- ندارد --"]</option>
-                    @foreach (var m in (IEnumerable<dynamic>)ViewBag.RelatedMRs)
-                    {
-                        <option value="@m.MRId">@m.MRNumber</option>
-                    }
-                </select>
-                <span class="text-muted small">@Localizer["(موتور جستجوی MR در فاز بعدی اضافه می‌شود)"]</span>
-            </div>
-            <div class="col-12">
-                <p class="text-muted small mb-0">
-                    اگه هم مدرک مهندسی و هم VDR انتخاب بشه، VDR اولویت داره (چون معمولاً نامه‌ی
-                    وندور به مدرک وندور مرتبطه، نه مدرک مهندسی).
-                </p>
-            </div>
+    <div class="dcr-banner dcr-banner--err" id="dcrSummary" role="alert" tabindex="-1" hidden>
+        <i class="bi bi-exclamation-octagon-fill" aria-hidden="true"></i>
+        <div><strong id="dcrSummaryTitle">@L("Dcc_FixErrors")</strong><ul id="dcrSummaryList"></ul></div>
+    </div>
+
+    <div class="dcr-banner dcr-banner--warn" id="dcrDuplicate" role="alert" hidden>
+        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+        <div class="dcr-grow"><span id="dcrDuplicateText"></span> <a id="dcrDuplicateLink" href="#" target="_blank" rel="noopener" class="dcr-link">@L("Dcc_OpenLetter")</a></div>
+        <button type="button" class="btn btn-sm btn-outline-warning" id="dcrDuplicateConfirm">@L("Dcc_RegisterAnyway")</button>
+    </div>
+
+    <form id="dcrForm" class="dcr-grid" novalidate autocomplete="off">
+        @Html.AntiForgeryToken()
+
+        <div class="dcr-main">
+            @* ---------------------------------------------------------------- ۱. فرستنده *@
+            <section class="dcr-card" aria-labelledby="dcrSecSender">
+                <h2 class="dcr-card-title" id="dcrSecSender"><span class="dcr-step">1</span> @L("Dcc_SecSender")</h2>
+                <div class="dcr-row">
+                    <div class="dcr-field dcr-span-2" data-field="party">
+                        <label class="dcr-label" for="dcrParty">@L("Dcc_Party") <span class="dcr-req" aria-hidden="true">*</span></label>
+                        <div class="dcr-combo">
+                            <input id="dcrParty" class="form-control" role="combobox" aria-expanded="false" aria-controls="dcrPartyList" aria-autocomplete="list" placeholder="@L("Dcc_PartyPlaceholder")" />
+                            <ul id="dcrPartyList" class="dcr-list" role="listbox" hidden></ul>
+                        </div>
+                        <div class="dcr-newparty" id="dcrNewParty" hidden>
+                            <label class="dcr-label" for="dcrNewPartyType">@L("Dcc_PartyType")</label>
+                            <select id="dcrNewPartyType" class="form-select form-select-sm">
+                                @foreach (var t in IncomingCorrespondenceRules.PartyTypes) { <option value="@t">@L("Dcc_PartyType_" + t)</option> }
+                            </select>
+                            <span class="dcr-hint">@L("Dcc_NewPartyHint")</span>
+                        </div>
+                        <div class="dcr-error" data-error-for="party"></div>
+                    </div>
+
+                    <div class="dcr-field" data-field="projectId">
+                        <label class="dcr-label" for="dcrProject">@L("Dcc_Project") <span class="dcr-req" aria-hidden="true">*</span></label>
+                        <select id="dcrProject" class="form-select">
+                            <option value="">@L("Dcc_Choose")</option>
+                            @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
+                        </select>
+                        <div class="dcr-error" data-error-for="projectId"></div>
+                    </div>
+
+                    <div class="dcr-field" data-field="contractId">
+                        <label class="dcr-label" for="dcrContract">@L("Dcc_Contract")</label>
+                        <select id="dcrContract" class="form-select" disabled><option value="">—</option></select>
+                        <div class="dcr-error" data-error-for="contractId"></div>
+                    </div>
+
+                    <div class="dcr-field" data-field="senderReference">
+                        <label class="dcr-label" for="dcrRef">@L("Dcc_SenderRef") <span class="dcr-req" id="dcrRefReq" aria-hidden="true">*</span></label>
+                        <input id="dcrRef" class="form-control dcr-ltr" maxlength="100" placeholder="@L("Dcc_SenderRefPlaceholder")" />
+                        <div class="dcr-hint" id="dcrRefHint"></div>
+                        <div class="dcr-error" data-error-for="senderReference"></div>
+                    </div>
+
+                    <div class="dcr-field" data-field="receiptChannel">
+                        <span class="dcr-label" id="dcrChannelLabel">@L("Dcc_Channel")</span>
+                        <div class="dcr-seg" role="radiogroup" aria-labelledby="dcrChannelLabel" id="dcrChannel">
+                            @foreach (var c in IncomingCorrespondenceRules.Channels)
+                            {
+                                <label class="dcr-seg-item"><input type="radio" name="receiptChannel" value="@c" checked="@(c == "OfficialLetter")" /><span>@L("Dcc_Channel_" + c)</span></label>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            @* ---------------------------------------------------------------- ۲. مشخصات نامه *@
+            <section class="dcr-card" aria-labelledby="dcrSecLetter">
+                <h2 class="dcr-card-title" id="dcrSecLetter"><span class="dcr-step">2</span> @L("Dcc_SecLetter")</h2>
+                <div class="dcr-row">
+                    <div class="dcr-field dcr-span-2" data-field="subject">
+                        <label class="dcr-label" for="dcrSubject">@L("Dcc_Subject") <span class="dcr-req" aria-hidden="true">*</span></label>
+                        <input id="dcrSubject" class="form-control" maxlength="300" />
+                        <div class="dcr-error" data-error-for="subject"></div>
+                    </div>
+
+                    <div class="dcr-field" data-field="documentDate">
+                        <label class="dcr-label" for="dcrDocDate">@L("Dcc_DocumentDate") <span class="dcr-req" aria-hidden="true">*</span></label>
+                        <div class="dcr-date" data-date-name="documentDate" id="dcrDocDateWrap">
+                            <input id="dcrDocDate" class="form-control dcr-ltr" inputmode="numeric" placeholder="1405/01/01" aria-describedby="dcrDocDateIso" />
+                            <button type="button" class="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><i class="bi bi-calendar3" aria-hidden="true"></i></button>
+                            <div class="dcr-cal" role="dialog" aria-label="@L("Dcc_PickDate")" hidden></div>
+                        </div>
+                        <div class="dcr-hint dcr-ltr" id="dcrDocDateIso"></div>
+                        <div class="dcr-error" data-error-for="documentDate"></div>
+                    </div>
+
+                    <div class="dcr-field" data-field="receivedDate">
+                        <label class="dcr-label" for="dcrRecvDate">@L("Dcc_ReceivedDate") <span class="dcr-req" aria-hidden="true">*</span></label>
+                        <div class="dcr-date" data-date-name="receivedDate" id="dcrRecvDateWrap">
+                            <input id="dcrRecvDate" class="form-control dcr-ltr" inputmode="numeric" placeholder="1405/01/01" aria-describedby="dcrRecvDateIso" />
+                            <button type="button" class="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><i class="bi bi-calendar3" aria-hidden="true"></i></button>
+                            <div class="dcr-cal" role="dialog" aria-label="@L("Dcc_PickDate")" hidden></div>
+                        </div>
+                        <div class="dcr-hint dcr-ltr" id="dcrRecvDateIso"></div>
+                        <div class="dcr-error" data-error-for="receivedDate"></div>
+                    </div>
+
+                    <div class="dcr-field" data-field="priority">
+                        <label class="dcr-label" for="dcrPriority">@L("Dcc_Priority")</label>
+                        <select id="dcrPriority" class="form-select">
+                            @foreach (var p in LetterComposeRules.Priorities) { <option value="@p" selected="@(p == "Normal")">@L("Lt_P_" + p)</option> }
+                        </select>
+                    </div>
+
+                    <div class="dcr-field" data-field="category">
+                        <label class="dcr-label" for="dcrCategory">@L("Dcc_Category")</label>
+                        <select id="dcrCategory" class="form-select">
+                            <option value="">—</option>
+                            @foreach (var c in LetterComposeRules.Categories) { <option value="@c">@L("Lc_Cat_" + c)</option> }
+                        </select>
+                    </div>
+
+                    <div class="dcr-field" data-field="confidentialityLevel">
+                        <label class="dcr-label" for="dcrConf">@L("Dcc_Confidentiality")</label>
+                        <select id="dcrConf" class="form-select">
+                            @foreach (var c in LetterComposeRules.Confidentialities) { <option value="@c" selected="@(c == "Internal")">@L("Lt_C_" + c)</option> }
+                        </select>
+                        <div class="dcr-hint">@L("Dcc_ConfidentialityHint")</div>
+                    </div>
+
+                    <div class="dcr-field" data-field="disciplineId">
+                        <label class="dcr-label" for="dcrDiscipline">@L("Dcc_Discipline")</label>
+                        <select id="dcrDiscipline" class="form-select">
+                            <option value="">—</option>
+                            @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
+                        </select>
+                    </div>
+
+                    <div class="dcr-field dcr-span-2" data-field="parentLetterId">
+                        <label class="dcr-label" for="dcrReply">@L("Dcc_InReplyTo")</label>
+                        <select id="dcrReply" class="form-select" disabled><option value="">@L("Dcc_ReplyChooseParty")</option></select>
+                        <div class="dcr-hint">@L("Dcc_InReplyToHint")</div>
+                        <div class="dcr-error" data-error-for="parentLetterId"></div>
+                    </div>
+
+                    <div class="dcr-field dcr-span-2" data-field="summary">
+                        <label class="dcr-label" for="dcrSummaryText">@L("Dcc_Summary")</label>
+                        <textarea id="dcrSummaryText" class="form-control" rows="3" maxlength="4000" placeholder="@L("Dcc_SummaryPlaceholder")"></textarea>
+                        <div class="dcr-error" data-error-for="summary"></div>
+                    </div>
+                </div>
+            </section>
+
+            @* ---------------------------------------------------------------- ۳. اقدام *@
+            <section class="dcr-card" aria-labelledby="dcrSecAction">
+                <h2 class="dcr-card-title" id="dcrSecAction"><span class="dcr-step">3</span> @L("Dcc_SecAction")</h2>
+                <div class="dcr-row">
+                    <div class="dcr-field dcr-span-2">
+                        <label class="dcr-switch">
+                            <input type="checkbox" id="dcrRespReq" role="switch" />
+                            <span class="dcr-switch-track" aria-hidden="true"></span>
+                            <span>@L("Dcc_ResponseRequired")</span>
+                        </label>
+                    </div>
+
+                    <div class="dcr-field dcr-span-2" id="dcrDueBlock" data-field="responseDueDate" hidden>
+                        <span class="dcr-label" id="dcrDueLabel">@L("Dcc_ResponseDue") <span class="dcr-req" aria-hidden="true">*</span></span>
+                        <div class="dcr-due">
+                            <div class="dcr-presets" role="group" aria-labelledby="dcrDueLabel">
+                                @foreach (var days in new[] { 3, 7, 14, 30 })
+                                {
+                                    <button type="button" class="dcr-chip" data-preset="@days">@days @L("Dcc_Days")</button>
+                                }
+                            </div>
+                            <div class="dcr-date" data-date-name="responseDueDate" id="dcrDueWrap">
+                                <input id="dcrDue" class="form-control dcr-ltr" inputmode="numeric" placeholder="1405/01/01" aria-labelledby="dcrDueLabel" aria-describedby="dcrDueIso" />
+                                <button type="button" class="dcr-date-btn" aria-label="@L("Dcc_PickDate")"><i class="bi bi-calendar3" aria-hidden="true"></i></button>
+                                <div class="dcr-cal" role="dialog" aria-label="@L("Dcc_PickDate")" hidden></div>
+                            </div>
+                        </div>
+                        <div class="dcr-hint dcr-ltr" id="dcrDueIso"></div>
+                        <div class="dcr-error" data-error-for="responseDueDate"></div>
+                    </div>
+
+                    <div class="dcr-field" data-field="ownerEmployeeId">
+                        <label class="dcr-label" for="dcrOwner">@L("Dcc_Owner") <span class="dcr-req" id="dcrOwnerReq" aria-hidden="true" hidden>*</span></label>
+                        <div class="dcr-combo">
+                            <input id="dcrOwner" class="form-control" role="combobox" aria-expanded="false" aria-controls="dcrOwnerList" aria-autocomplete="list" placeholder="@L("Dcc_OwnerPlaceholder")" />
+                            <ul id="dcrOwnerList" class="dcr-list" role="listbox" hidden></ul>
+                        </div>
+                        <div class="dcr-error" data-error-for="ownerEmployeeId"></div>
+                    </div>
+
+                    <div class="dcr-field" data-field="ccEmployeeIds">
+                        <label class="dcr-label" for="dcrCc">@L("Dcc_Cc")</label>
+                        <div class="dcr-combo">
+                            <input id="dcrCc" class="form-control" role="combobox" aria-expanded="false" aria-controls="dcrCcList" aria-autocomplete="list" placeholder="@L("Dcc_CcPlaceholder")" />
+                            <ul id="dcrCcList" class="dcr-list" role="listbox" hidden></ul>
+                        </div>
+                        <div class="dcr-tags" id="dcrCcTags"></div>
+                        <div class="dcr-error" data-error-for="ccEmployeeIds"></div>
+                    </div>
+
+                    <div class="dcr-field dcr-span-2" data-field="instruction">
+                        <label class="dcr-label" for="dcrInstruction">@L("Dcc_Instruction")</label>
+                        <textarea id="dcrInstruction" class="form-control" rows="2" maxlength="1000" placeholder="@L("Dcc_InstructionPlaceholder")"></textarea>
+                        <div class="dcr-error" data-error-for="instruction"></div>
+                    </div>
+                </div>
+            </section>
+
+            @* ---------------------------------------------------------------- ۴. فایل‌ها *@
+            <section class="dcr-card" aria-labelledby="dcrSecFiles">
+                <h2 class="dcr-card-title" id="dcrSecFiles"><span class="dcr-step">4</span> @L("Dcc_SecFiles")</h2>
+                <div class="dcr-field" data-field="files">
+                    <div class="dcr-drop" id="dcrDrop" tabindex="0" role="button" aria-describedby="dcrDropHint">
+                        <i class="bi bi-cloud-arrow-up" aria-hidden="true"></i>
+                        <strong>@L("Dcc_DropTitle")</strong>
+                        <span id="dcrDropHint" class="dcr-hint">@L("Dcc_DropHint")</span>
+                        <input type="file" id="dcrFileInput" multiple hidden accept="@string.Join(",", IncomingCorrespondenceRules.AllowedExtensions)" />
+                    </div>
+                    <ul class="dcr-files" id="dcrFiles" aria-live="polite"></ul>
+                    <div class="dcr-error" data-error-for="files"></div>
+                </div>
+            </section>
+
+            @* ---------------------------------------------------------------- ۵. پیوندها *@
+            <section class="dcr-card" aria-labelledby="dcrSecLinks">
+                <h2 class="dcr-card-title" id="dcrSecLinks"><span class="dcr-step">5</span> @L("Dcc_SecLinks") <span class="dcr-opt">@L("Dcc_Optional")</span></h2>
+                <div class="dcr-field" data-field="links">
+                    <div class="dcr-linkbar">
+                        <select id="dcrLinkType" class="form-select form-select-sm" aria-label="@L("Dcc_LinkType")">
+                            @foreach (var t in IncomingCorrespondenceRules.LinkTypes) { <option value="@t">@L("Dcc_Link" + t)</option> }
+                        </select>
+                        <div class="dcr-combo dcr-grow">
+                            <input id="dcrLinkSearch" class="form-control form-control-sm" role="combobox" aria-expanded="false" aria-controls="dcrLinkList" aria-autocomplete="list" placeholder="@L("Dcc_LinkSearch")" />
+                            <ul id="dcrLinkList" class="dcr-list" role="listbox" hidden></ul>
+                        </div>
+                    </div>
+                    <ul class="dcr-links" id="dcrLinks" aria-live="polite"></ul>
+                    <div class="dcr-error" data-error-for="links"></div>
+                </div>
+            </section>
         </div>
 
-        <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid"><i class="bi bi-check-circle"></i> ثبت مکاتبه</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["انصراف"]</a>
-        </div>
+        @* ================================================================ پنل کناری *@
+        <aside class="dcr-side" aria-label="@L("Dcc_SidePanel")">
+            <div class="dcr-tabs" role="tablist">
+                <button type="button" role="tab" id="dcrTabDocs" class="dcr-tab active" aria-selected="true" aria-controls="dcrPaneDocs">@L("Dcc_TabDocuments")</button>
+                <button type="button" role="tab" id="dcrTabThread" class="dcr-tab" aria-selected="false" aria-controls="dcrPaneThread" tabindex="-1">@L("Dcc_TabThread") <span class="dcr-count" id="dcrThreadCount" hidden>0</span></button>
+            </div>
+
+            <div class="dcr-pane" id="dcrPaneDocs" role="tabpanel" aria-labelledby="dcrTabDocs">
+                <div class="dcr-preview" id="dcrPreview" data-empty="@L("Dcc_PreviewEmpty")">
+                    <div class="dcr-empty"><i class="bi bi-file-earmark-text" aria-hidden="true"></i><span>@L("Dcc_PreviewEmpty")</span></div>
+                </div>
+                <ul class="dcr-previewlist" id="dcrPreviewList"></ul>
+            </div>
+
+            <div class="dcr-pane" id="dcrPaneThread" role="tabpanel" aria-labelledby="dcrTabThread" hidden>
+                <div id="dcrThread"><div class="dcr-empty"><i class="bi bi-chat-left-text" aria-hidden="true"></i><span>@L("Dcc_ThreadPickParty")</span></div></div>
+            </div>
+        </aside>
+
+        <footer class="dcr-foot">
+            <label class="dcr-switch dcr-switch--small">
+                <input type="checkbox" id="dcrKeepSender" role="switch" checked />
+                <span class="dcr-switch-track" aria-hidden="true"></span>
+                <span>@L("Dcc_KeepSender")</span>
+            </label>
+            <span class="dcr-foot-hint">@L("Dcc_ShortcutHint")</span>
+            <div class="dcr-foot-actions">
+                <a asp-action="Index" class="btn btn-outline-secondary">@L("Dcc_Cancel")</a>
+                <button type="submit" class="btn btn-outline-primary" id="dcrSubmitNext" data-mode="next"><i class="bi bi-arrow-repeat" aria-hidden="true"></i> @L("Dcc_RegisterNext")</button>
+                <button type="submit" class="btn btn-pems-solid" id="dcrSubmit" data-mode="open"><i class="bi bi-check2-circle" aria-hidden="true"></i> @L("Dcc_Register")</button>
+            </div>
+        </footer>
     </form>
+
+    <script type="application/json" id="dcrI18n">@Html.Raw(JsonSerializer.Serialize(i18n).Replace("<", "\\u003c"))</script>
 </div>
+
+@section Scripts {
+    <script src="~/js/pems-jalali.js" asp-append-version="true"></script>
+    <script src="~/js/dcc-register.js" asp-append-version="true"></script>
+}

@@ -180,8 +180,11 @@ html[dir="rtl"] .pems-orgchart-canvas {
 }
 
 .pems-org-node-meta .pems-org-badge-vacant {
-    color: var(--pems-chart-warning);
+    color: var(--pems-chart-warning-text, var(--pems-chart-warning));
     font-weight: 650;
+    padding: 0 7px;
+    border-radius: 999px;
+    border: 1px solid var(--pems-chart-warning-text, var(--pems-chart-warning));
 }
 
 /* Node-kind accent bar (color communicated alongside text/icon, never color alone) */
@@ -191,7 +194,14 @@ html[dir="rtl"] .pems-orgchart-canvas {
 .pems-org-node[data-kind="SubTeam"],
 .pems-org-node[data-kind="Unit"] { border-inline-start: 3px solid var(--pems-chart-tertiary); }
 .pems-org-node[data-kind="Position-Occupied"] { border-inline-start: 3px solid var(--pems-chart-positive); }
-.pems-org-node[data-kind="Position-Vacant"] { border-inline-start: 3px dashed var(--pems-chart-warning); }
+.pems-org-node[data-kind="Position-Vacant"] {
+    border-inline-start: 4px dashed var(--pems-chart-warning);
+    /* tinted background so a vacancy stands out at a glance (older browsers without color-mix keep the plain card) */
+    background: color-mix(in srgb, var(--pems-chart-warning) 12%, var(--pems-surface));
+}
+.pems-org-node[data-kind="Position-Occupied"] {
+    background: color-mix(in srgb, var(--pems-chart-positive) 6%, var(--pems-surface));
+}
 .pems-org-node[data-inactive="true"] { opacity: .55; }
 
 /* Expand/collapse toggle sits above the node, centered on the connector */
@@ -226,3 +236,85 @@ html[dir="rtl"] .pems-orgchart-canvas {
 @media (max-width: 991.98px) {
     .pems-orgchart-viewport { height: 55vh; }
 }
+
+/* ---- Staffing summary + vacancy filter ---- */
+
+.pems-org-summary { padding: 12px 14px; }
+
+.pems-org-summary-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.pems-org-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.pems-org-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--pems-surface-border);
+    background: var(--pems-surface);
+}
+
+.pems-org-stat-value { font-size: 1.35rem; font-weight: 700; line-height: 1.1; color: var(--pems-text); }
+.pems-org-stat-label { font-size: .74rem; color: var(--pems-text-muted); display: inline-flex; align-items: center; gap: 4px; }
+.pems-org-stat-filled { border-inline-start: 3px solid var(--pems-chart-positive); }
+.pems-org-stat-vacant { border-inline-start: 3px dashed var(--pems-chart-warning); }
+.pems-org-stat-vacant .pems-org-stat-value { color: var(--pems-chart-warning-text, var(--pems-chart-warning)); }
+
+.pems-org-progress {
+    display: flex;
+    height: 8px;
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid var(--pems-surface-border);
+    background: var(--pems-bg);
+}
+
+.pems-org-progress-filled { background: var(--pems-chart-positive); transition: width .2s ease; }
+.pems-org-progress-vacant { background: var(--pems-chart-warning); opacity: .55; transition: width .2s ease; }
+
+/* ---- Legend ---- */
+
+.pems-org-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--pems-surface-border);
+    background: var(--pems-surface);
+    font-size: .8rem;
+    color: var(--pems-text-muted);
+}
+
+.pems-org-legend-title { font-weight: 700; color: var(--pems-text); }
+.pems-org-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+
+/* swatches mirror the node accent bars above (same tokens, same solid/dashed distinction) */
+.pems-org-swatch {
+    display: inline-block;
+    width: 22px;
+    height: 14px;
+    border-radius: 4px;
+    border: 1px solid var(--pems-surface-border);
+    background: var(--pems-surface);
+}
+.pems-org-swatch[data-kind="Group"] { border-inline-start: 4px solid var(--pems-chart-primary); }
+.pems-org-swatch[data-kind="Team"] { border-inline-start: 4px solid var(--pems-chart-secondary); }
+.pems-org-swatch[data-kind="Shift"] { border-inline-start: 4px solid var(--pems-chart-tertiary); }
+.pems-org-swatch[data-kind="Position-Occupied"] { border-inline-start: 4px solid var(--pems-chart-positive); background: color-mix(in srgb, var(--pems-chart-positive) 6%, var(--pems-surface)); }
+.pems-org-swatch[data-kind="Position-Vacant"] { border-inline-start: 4px dashed var(--pems-chart-warning); background: color-mix(in srgb, var(--pems-chart-warning) 12%, var(--pems-surface)); }

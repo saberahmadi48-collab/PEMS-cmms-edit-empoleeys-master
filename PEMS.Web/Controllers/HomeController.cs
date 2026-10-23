@@ -54,10 +54,17 @@ namespace PEMS.Web.Controllers
                 DocumentsCount = await SafeCountAsync(() => _context.EngineeringDocuments.CountAsync(), "EngineeringDocuments", failedTables),
 
                 PendingApprovalCount = await SafeCountAsync(() => _context.EngineeringDocuments
-                    .CountAsync(x => x.Status == "Submitted" || x.Status == "Checked"), "EngineeringDocuments", failedTables),
+                    .CountAsync(DashboardDefinitions.PendingApproval), "EngineeringDocuments", failedTables),
 
+                // D20: تعریف‌ها در DashboardDefinitions (تنها منبع)؛ Rejected = رد واقعی، نه «بازگشته با کامنت»
                 RejectedCount = await SafeCountAsync(() => _context.EngineeringDocuments
-                    .CountAsync(x => x.Status == "Rejected"), "EngineeringDocuments", failedTables),
+                    .CountAsync(DashboardDefinitions.Rejected), "EngineeringDocuments", failedTables),
+
+                ReturnedWithCommentsCount = await SafeCountAsync(() => _context.EngineeringDocuments
+                    .CountAsync(DashboardDefinitions.ReturnedWithComments), "EngineeringDocuments", failedTables),
+
+                ActiveContractsCount = await SafeCountAsync(() => _context.Contracts
+                    .CountAsync(DashboardDefinitions.ActiveContract), "Contracts", failedTables),
 
                 OpenRevisionsCount = await SafeCountAsync(() => _context.DocumentRevisions
                     .CountAsync(x => x.IsActive && x.Status != "Approved"), "DocumentRevisions", failedTables),
@@ -254,13 +261,18 @@ namespace PEMS.Web.Controllers
             {
                 new KpiCardViewModel { Title = "Active Projects", Count = model.ProjectsCount, IconClass = "bi-kanban", ColorClass = "bg-icon-blue", Url = Url.Action("Index", "Projects") },
                 new KpiCardViewModel { Title = "Engineering Documents", Count = model.DocumentsCount, IconClass = "bi-file-earmark-text", ColorClass = "bg-icon-slate", Url = Url.Action("Index", "EngineeringDocuments") },
-                new KpiCardViewModel { Title = "Pending Approval", Count = model.PendingApprovalCount, IconClass = "bi-hourglass-split", ColorClass = "bg-icon-orange", Url = Url.Action("Index", "EngineeringDocuments", new { status = "Submitted,Checked" }) },
-                new KpiCardViewModel { Title = "Rejected Documents", Count = model.RejectedCount, IconClass = "bi-x-circle", ColorClass = "bg-icon-red", Url = Url.Action("Index", "EngineeringDocuments", new { status = "Rejected" }) },
+                new KpiCardViewModel { Title = "Pending Approval", Count = model.PendingApprovalCount, IconClass = "bi-hourglass-split", ColorClass = "bg-icon-orange", Url = Url.Action("Index", "EngineeringDocuments", new { status = "Submitted,Checked" }),
+                    Hint = "Documents currently waiting for action in the internal workflow (status Submitted or Checked)." },
+                new KpiCardViewModel { Title = "Rejected Documents", Count = model.RejectedCount, IconClass = "bi-x-circle", ColorClass = "bg-icon-red", Url = Url.Action("Index", "EngineeringDocuments", new { status = "Rejected" }),
+                    Hint = "Truly rejected: status Rejected with client response RE (or an internal rejection). The linked list shows every Rejected-status document, including those returned with comments." },
+                new KpiCardViewModel { Title = "Returned With Comments (CO/AC)", Count = model.ReturnedWithCommentsCount, IconClass = "bi-chat-left-text", ColorClass = "bg-icon-orange", Url = Url.Action("Index", "EngineeringDocuments", new { status = "Rejected" }),
+                    Hint = "Client response CO (commented) or AC (approved with comments): the document must be revised and resubmitted, but it was not rejected." },
                 new KpiCardViewModel { Title = "Open Revisions", Count = model.OpenRevisionsCount, IconClass = "bi-clock-history", ColorClass = "bg-icon-purple", Url = Url.Action("Index", "DocumentRevisions") },
                 new KpiCardViewModel { Title = "Open MR / MRQ", Count = model.OpenMRCount, IconClass = "bi-cart-check", ColorClass = "bg-icon-teal", Url = Url.Action("Index", "MaterialRequisition") },
                 
-                // این کارت چون Coming Soon هست، Url ندارد
-                new KpiCardViewModel { Title = "Active Contracts (coming soon)", Count = 0, IconClass = "bi-file-earmark-ruled", ColorClass = "bg-icon-slate", Url = null },
+                // D19: دیگر Placeholder نیست؛ قراردادهای در اجرا (Effective + Active میراثی)
+                new KpiCardViewModel { Title = "Active Contracts", Count = model.ActiveContractsCount, IconClass = "bi-file-earmark-ruled", ColorClass = "bg-icon-slate", Url = Url.Action("Index", "Contract"),
+                    Hint = "Contracts in execution: status Effective (or the legacy Active status)." },
 
                 new KpiCardViewModel { Title = "Open Work Orders (CMMS)", Count = model.OpenWorkOrdersCount, IconClass = "bi-clipboard-check", ColorClass = "bg-icon-teal", Url = Url.Action("Index", "WorkOrder") },
                 new KpiCardViewModel { Title = "AI Alerts (Failed Analysis)", Count = model.AIAlertsCount, IconClass = "bi-robot", ColorClass = "bg-icon-red", Url = Url.Action("Index", "Intake") },
@@ -268,6 +280,25 @@ namespace PEMS.Web.Controllers
                 new KpiCardViewModel { Title = "Transmittals", Count = model.TransmittalsCount, IconClass = "bi-send", ColorClass = "bg-icon-purple", Url = Url.Action("Index", "Transmittal") }
             };
 
+
+            // D19: «Discipline Performance» دیگر Placeholder نیست - نمای مدارک به‌تفکیک دیسیپلین (بزرگ‌ترین‌ها)
+            try
+            {
+                var rows = await _context.EngineeringDocuments.Where(x => x.DisciplineId != null)
+                    .GroupBy(x => x.DisciplineId)
+                    .Select(g => new { DisciplineId = g.Key, Total = g.Count(), Approved = g.Count(x => x.Status == "Approved"),
+                        Pending = g.Count(x => x.Status == "Submitted" || x.Status == "Checked") })
+                    .OrderByDescending(x => x.Total).Take(8).ToListAsync();
+                var ids = rows.Select(r => r.DisciplineId).ToList();
+                var names = await _context.Disciplines.Where(d => ids.Contains((int?)d.DisciplineId)).ToDictionaryAsync(d => d.DisciplineId, d => d.Name);
+                ViewBag.DisciplinePerformance = rows.Select(r => new DisciplinePerformanceRow(
+                    r.DisciplineId.HasValue && names.TryGetValue(r.DisciplineId.Value, out var n) ? n : "#" + r.DisciplineId, r.Total, r.Approved, r.Total - r.Approved, r.Pending)).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "محاسبه‌ی عملکرد دیسیپلین‌ها برای Dashboard ناموفق بود");
+                ViewBag.DisciplinePerformance = new List<DisciplinePerformanceRow>();
+            }
 
             return View(model);
         }
@@ -296,6 +327,17 @@ namespace PEMS.Web.Controllers
             return View();
         }
 
+
+        // صفحه‌ی دوستانه برای پاسخ‌های 4xx/5xx بدون بدنه (مثلاً NotFound()): Program.cs آن را با
+        // UseStatusCodePagesWithReExecute صدا می‌زند و کد HTTP اصلی حفظ می‌شود. بدون احراز هویت هم باید باز شود
+        // (وگرنه 404 برای کاربر ناشناس به Login منحرف می‌شد).
+        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult StatusPage(int code = 500)
+        {
+            if (code < 400 || code > 599) code = 500;
+            return View(new StatusPageViewModel { Code = code, RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

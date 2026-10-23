@@ -34,13 +34,14 @@ public class TaskService : ITaskService
             Status = "Open",
             RelatedType = relatedType,
             RelatedId = relatedId,
+            IsActive = true,
             CreatedDate = DateTime.Now
         };
 
         await _context.TaskItems.AddAsync(task);
         await _context.SaveChangesAsync();
 
-        if (assignedToEmployeeId.HasValue)
+        if (assignedToEmployeeId.HasValue && _notificationService != null)
         {
             var targetUserId = await _context.Users
                 .Where(x => x.EmployeeId == assignedToEmployeeId.Value)
@@ -73,7 +74,7 @@ public class TaskService : ITaskService
 
         if (!employeeId.HasValue) return new PagedResult<TaskItemDto> { Page = page, PageSize = pageSize };
 
-        var query = _context.TaskItems.Where(x => x.AssignedToEmployeeId == employeeId.Value);
+        var query = _context.TaskItems.Where(x => x.AssignedToEmployeeId == employeeId.Value && x.IsActive);
 
         if (openOnly) query = query.Where(x => x.Status != "Completed" && x.Status != "Cancelled");
 
@@ -82,7 +83,7 @@ public class TaskService : ITaskService
 
     public async Task<PagedResult<TaskItemDto>> GetAssignedByMeAsync(int applicationUserId, bool openOnly = true, int page = 1, int pageSize = 50)
     {
-        var query = _context.TaskItems.Where(x => x.AssignedByApplicationUserId == applicationUserId);
+        var query = _context.TaskItems.Where(x => x.AssignedByApplicationUserId == applicationUserId && x.IsActive);
 
         if (openOnly) query = query.Where(x => x.Status != "Completed" && x.Status != "Cancelled");
 
@@ -98,6 +99,7 @@ public class TaskService : ITaskService
 
         var tasks = await query
             .Include(x => x.AssignedToEmployee)
+            .Include(x => x.WorkItemStatus)
             .OrderBy(x => x.DueDate)
             .ThenBy(x => x.TaskItemId)
             .Skip((page - 1) * pageSize)
@@ -111,24 +113,34 @@ public class TaskService : ITaskService
     {
         var tasks = await _context.TaskItems
             .Include(x => x.AssignedToEmployee)
-            .Where(x => x.RelatedType == relatedType && x.RelatedId == relatedId)
+            .Where(x => x.RelatedType == relatedType && x.RelatedId == relatedId && x.IsActive)
             .OrderByDescending(x => x.CreatedDate)
             .ToListAsync();
 
         return Map(tasks);
     }
 
+    /// <summary>
+    /// تغییر وضعیت سطح سیستم (بدون کاربر؛ مسیرهای کاربر از ITaskManagerService.TransitionAsync با کنترل سطح-شیء
+    /// استفاده می‌کنند). فقط وظیفه‌ی شخصی/قدیمی و فقط گذارهای مجاز TaskItemStatuses؛ وضعیت نامعتبر نادیده گرفته می‌شود.
+    /// </summary>
     public async Task UpdateStatusAsync(int taskItemId, string status, string? completionNote = null)
     {
         var task = await _context.TaskItems.FirstOrDefaultAsync(x => x.TaskItemId == taskItemId);
-        if (task == null) return;
+        if (task == null || task.WorkSpaceId != null || !task.IsActive) return;
+        if (task.Status == status || !TaskItemStatuses.IsAllowed(task.Status, status)) return;
 
         task.Status = status;
+        task.ModifiedDate = DateTime.Now;
 
-        if (status == "Completed")
+        if (TaskItemStatuses.IsClosed(status))
         {
             task.CompletedDate = DateTime.Now;
             task.CompletionNote = completionNote;
+        }
+        else
+        {
+            task.CompletedDate = null;
         }
 
         await _context.SaveChangesAsync();
@@ -149,7 +161,7 @@ public class TaskService : ITaskService
         if (!employeeId.HasValue) return 0;
 
         return await _context.TaskItems.CountAsync(x =>
-            x.AssignedToEmployeeId == employeeId.Value && x.Status != "Completed" && x.Status != "Cancelled");
+            x.AssignedToEmployeeId == employeeId.Value && x.IsActive && x.Status != "Completed" && x.Status != "Cancelled");
     }
 
     private static List<TaskItemDto> Map(List<TaskItem> tasks)
@@ -172,7 +184,11 @@ public class TaskService : ITaskService
             CompletedDate = t.CompletedDate,
             CompletionNote = t.CompletionNote,
             IsOverdue = t.Status != "Completed" && t.Status != "Cancelled"
-                && t.DueDate.HasValue && t.DueDate.Value < DateTime.Now
+                && t.DueDate.HasValue && t.DueDate.Value < DateTime.Now,
+            WorkSpaceId = t.WorkSpaceId,
+            ItemKey = t.ItemKey,
+            StatusName = t.WorkItemStatus?.Name,
+            StatusNameFa = t.WorkItemStatus?.NameFa
         }).ToList();
     }
 }

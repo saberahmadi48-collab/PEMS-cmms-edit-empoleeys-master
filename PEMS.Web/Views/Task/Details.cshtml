@@ -1,0 +1,336 @@
+@model PEMS.Application.DTOs.WorkItemDetailDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var i = Model.Item;
+    var history = (List<PEMS.Application.DTOs.WorkItemHistoryEntryDto>)ViewBag.History;
+    var assignees = (PEMS.Application.DTOs.AssigneeResolutionDto)ViewBag.Assignees;
+    var returnUrl = Url.Action("Details", "Task", new { id = i.Id })!;
+    var subtaskType = Model.Types.FirstOrDefault(t => t.IsSubtask);
+    var title = (i.Key ?? "#" + i.Id);
+}
+@section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
+
+<section class="vs-panel mb-3">
+    <nav aria-label="breadcrumb" class="small mb-1">
+        @if (Model.IsLegacy)
+        {
+            <a asp-controller="Task" asp-action="Index">@Localizer["Tasks"]</a>
+        }
+        else
+        {
+            <a asp-controller="TaskManager" asp-action="Index">@Localizer["Tm_Title"]</a> <span>/</span>
+            <a asp-controller="TaskManager" asp-action="Space" asp-route-key="@i.WorkSpaceKey">@TaskManagerUi.Name(Model.WorkSpaceName, Model.WorkSpaceNameFa)</a>
+            @if (i.ParentKey != null) { <span>/</span> <a asp-action="Details" asp-route-id="@i.ParentId">@i.ParentKey</a> }
+        }
+    </nav>
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+        <div>
+            <div class="small">
+                @if (!string.IsNullOrEmpty(i.TypeIcon)) { <i class="bi @i.TypeIcon" aria-hidden="true"></i> }
+                @if (i.TypeName != null) { <span>@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)</span> } else { <span>@Localizer["Tm_Personal"]</span> }
+                · <span class="tm-key">@title</span>
+            </div>
+            <h2 class="h5 mb-1">@i.Title</h2>
+            <span class="badge @TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</span>
+            @if (i.IsOverdue) { <span class="badge bg-danger">@Localizer["Overdue"]</span> }
+            @if (!i.IsActive) { <span class="badge bg-light text-dark border">@Localizer["Tm_Archived"]</span> }
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <form asp-controller="TaskManager" asp-action="Watch" method="post">
+                <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="watch" value="@(Model.IsWatching ? "false" : "true")" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                <button class="btn btn-sm btn-outline-secondary" aria-pressed="@(Model.IsWatching ? "true" : "false")"><i class="bi @(Model.IsWatching ? "bi-eye-slash" : "bi-eye")" aria-hidden="true"></i> @(Model.IsWatching ? Localizer["Tm_Unwatch"] : Localizer["Tm_Watch"]) <span class="badge bg-light text-dark border">@Model.Watchers.Count</span></button>
+            </form>
+            @if (Model.CanArchive)
+            {
+                <form asp-controller="TaskManager" asp-action="Archive" method="post">
+                    <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="archived" value="@(i.IsActive ? "true" : "false")" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                    <button class="btn btn-sm @(i.IsActive ? "btn-outline-danger" : "btn-outline-success")" data-tm-confirm="@(i.IsActive ? Localizer["Tm_ArchiveConfirm"] : Localizer["Tm_RestoreConfirm"])"><i class="bi @(i.IsActive ? "bi-archive" : "bi-arrow-counterclockwise")" aria-hidden="true"></i> @(i.IsActive ? Localizer["Tm_Archive"] : Localizer["Tm_Restore"])</button>
+                </form>
+            }
+        </div>
+    </div>
+</section>
+
+<div class="row g-3">
+    <div class="col-lg-8">
+        <section class="vs-panel mb-3" aria-labelledby="descTitle">
+            <h3 class="h6" id="descTitle">@Localizer["Tm_Field_Description"]</h3>
+            @if (Model.CanEdit)
+            {
+                <form asp-controller="TaskManager" asp-action="Update" method="post" class="row g-2" data-tm-dirty-guard data-tm-ctrl-enter>
+                    <input type="hidden" name="Id" value="@i.Id" />
+                    <input type="hidden" name="RowVersion" value="@i.RowVersion" />
+                    <input type="hidden" name="ParentId" value="@i.ParentId" />
+                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                    <div class="col-12">
+                        <label class="form-label small" for="e-title">@Localizer["Tm_Field_Title"] <span class="text-danger" aria-hidden="true">*</span></label>
+                        <input id="e-title" name="Title" value="@i.Title" class="form-control form-control-sm" required maxlength="300" />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small" for="e-desc">@Localizer["Tm_Field_Description"]</label>
+                        <textarea id="e-desc" name="Description" class="form-control form-control-sm" rows="6" maxlength="8000">@Model.Description</textarea>
+                    </div>
+                    @if (!Model.IsLegacy)
+                    {
+                        <div class="col-md-4">
+                            <label class="form-label small" for="e-type">@Localizer["Tm_Field_Type"]</label>
+                            <select id="e-type" name="TypeId" class="form-select form-select-sm">
+                                @foreach (var t in Model.Types.Where(t => !t.IsSubtask || i.ParentId != null || t.Id == i.TypeId))
+                                { <option value="@t.Id" selected="@(t.Id == i.TypeId)">@TaskManagerUi.Name(t.Name, t.NameFa)</option> }
+                            </select>
+                        </div>
+                    }
+                    <div class="col-md-4">
+                        <label class="form-label small" for="e-priority">@Localizer["Tm_Field_Priority"]</label>
+                        <select id="e-priority" name="Priority" class="form-select form-select-sm">
+                            @foreach (var p in PEMS.Domain.Entities.TaskItemPriorities.All) { <option value="@p" selected="@(p == i.Priority)">@TaskManagerUi.Priority(Localizer, p)</option> }
+                        </select>
+                    </div>
+                    @if (!Model.IsLegacy)
+                    {
+                        <div class="col-md-4">
+                            <label class="form-label small" for="e-points">@Localizer["Tm_Field_StoryPoints"]</label>
+                            <input id="e-points" name="StoryPoints" type="number" min="0" max="1000" step="0.5" value="@(i.StoryPoints?.ToString(System.Globalization.CultureInfo.InvariantCulture))" class="form-control form-control-sm" />
+                        </div>
+                    }
+                    <div class="col-md-4">
+                        <label class="form-label small" for="e-start">@Localizer["Tm_Field_StartDate"]</label>
+                        <input id="e-start" name="StartDate" type="date" value="@TaskManagerUi.DateInput(i.StartDate)" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small" for="e-due">@Localizer["Tm_Field_DueDate"]</label>
+                        <input id="e-due" name="DueDate" type="date" value="@TaskManagerUi.DateInput(i.DueDate)" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end"><button class="btn btn-sm btn-pems-solid w-100">@Localizer["Tm_Save"]</button></div>
+                </form>
+            }
+            else
+            {
+                @if (string.IsNullOrWhiteSpace(Model.Description)) { <p class="text-muted small mb-0">@Localizer["Tm_NoDescription"]</p> }
+                else { <div class="tm-text">@Model.Description</div> }
+            }
+        </section>
+
+        @if (!Model.IsLegacy)
+        {
+            <section class="vs-panel mb-3" aria-labelledby="subTitle">
+                <h3 class="h6" id="subTitle">@Localizer["Tm_Subtasks"] <span class="badge bg-light text-dark border">@Model.Subtasks.Count</span></h3>
+                <partial name="~/Views/TaskManager/_ItemTable.cshtml" model="Model.Subtasks" view-data='new ViewDataDictionary(ViewData) { ["ShowBulk"] = false, ["CanRank"] = false }' />
+                @if (Model.CanEdit && subtaskType != null && i.ParentId == null)
+                {
+                    <form asp-controller="TaskManager" asp-action="Create" method="post" class="d-flex gap-2 mt-2">
+                        <input type="hidden" name="WorkSpaceId" value="@i.WorkSpaceId" />
+                        <input type="hidden" name="ParentId" value="@i.Id" />
+                        <input type="hidden" name="TypeId" value="@subtaskType.Id" />
+                        <input type="hidden" name="SprintId" value="@i.SprintId" />
+                        <input type="hidden" name="returnUrl" value="@returnUrl" />
+                        <input type="hidden" name="createAnother" value="true" />
+                        <label class="visually-hidden" for="st-title">@Localizer["Tm_NewSubtask"]</label>
+                        <input id="st-title" name="Title" class="form-control form-control-sm" placeholder="@Localizer["Tm_NewSubtask"]" required maxlength="300" />
+                        <button class="btn btn-sm btn-outline-secondary text-nowrap"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Tm_Add"]</button>
+                    </form>
+                }
+            </section>
+        }
+
+        <section class="vs-panel mb-3" aria-labelledby="linkTitle">
+            <h3 class="h6" id="linkTitle">@Localizer["Tm_Links"]</h3>
+            @if (!Model.Links.Any()) { <p class="small text-muted">@Localizer["Tm_NoLinks"]</p> }
+            else
+            {
+                <ul class="list-unstyled mb-2">
+                    @foreach (var l in Model.Links)
+                    {
+                        <li class="d-flex justify-content-between align-items-center gap-2 py-1 border-bottom">
+                            <span>
+                                <span class="small text-muted">@TaskManagerUi.LinkType(Localizer, l.LinkType, l.Outward)</span>
+                                @if (l.OtherVisible)
+                                {
+                                    <a asp-action="Details" asp-route-id="@l.OtherId" class="tm-key ms-1">@(l.OtherKey ?? "#" + l.OtherId)</a> <span>@l.OtherTitle</span>
+                                    <span class="badge @TaskManagerUi.CategoryBadge(l.OtherStatusCategory)">@Localizer["Tm_Category_" + l.OtherStatusCategory]</span>
+                                }
+                                else
+                                {
+                                    <span class="ms-1 text-muted fst-italic"><i class="bi bi-lock" aria-hidden="true"></i> @Localizer["Tm_RestrictedItem"]</span>
+                                }
+                            </span>
+                            @if (l.CanRemove)
+                            {
+                                <form asp-controller="TaskManager" asp-action="RemoveLink" method="post">
+                                    <input type="hidden" name="linkId" value="@l.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                                    <button class="btn btn-sm btn-link text-danger p-0" aria-label="@Localizer["Tm_RemoveLink"]" data-tm-confirm="@Localizer["Tm_RemoveLinkConfirm"]"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+                                </form>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+            @if (Model.CanLink)
+            {
+                <form asp-controller="TaskManager" asp-action="AddLink" method="post" class="row g-2">
+                    <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                    <div class="col-md-4">
+                        <label class="visually-hidden" for="lk-type">@Localizer["Tm_LinkType"]</label>
+                        <select id="lk-type" name="linkType" class="form-select form-select-sm">
+                            @foreach (var lt in PEMS.Domain.Entities.WorkItemLinkTypes.All) { <option value="@lt">@TaskManagerUi.LinkType(Localizer, lt, true)</option> }
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <label class="visually-hidden" for="lk-target">@Localizer["Tm_LinkTarget"]</label>
+                        <input id="lk-target" name="target" class="form-control form-control-sm" placeholder="@Localizer["Tm_LinkTargetPlaceholder"]" required maxlength="30" />
+                    </div>
+                    <div class="col-md-3"><button class="btn btn-sm btn-outline-secondary w-100"><i class="bi bi-link-45deg" aria-hidden="true"></i> @Localizer["Tm_AddLink"]</button></div>
+                </form>
+            }
+        </section>
+
+        <section class="vs-panel mb-3" aria-labelledby="commentTitle">
+            <h3 class="h6" id="commentTitle">@Localizer["Tm_Comments"] <span class="badge bg-light text-dark border">@Model.Comments.Count(c => !c.IsDeleted)</span></h3>
+            @if (Model.CanComment)
+            {
+                <form asp-controller="TaskManager" asp-action="Comment" method="post" class="mb-3" data-tm-dirty-guard data-tm-ctrl-enter>
+                    <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                    <label class="visually-hidden" for="c-body">@Localizer["Tm_AddComment"]</label>
+                    <textarea id="c-body" name="body" class="form-control form-control-sm mb-2" rows="3" maxlength="5000" required placeholder="@Localizer["Tm_AddComment"]"></textarea>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="small text-muted">@Localizer["Tm_CtrlEnterHint"]</span>
+                        <button class="btn btn-sm btn-pems-solid">@Localizer["Tm_AddComment"]</button>
+                    </div>
+                </form>
+            }
+            @if (!Model.Comments.Any()) { <p class="small text-muted mb-0">@Localizer["Tm_NoComments"]</p> }
+            @foreach (var c in Model.Comments)
+            {
+                <article class="tm-comment">
+                    <div class="d-flex justify-content-between small text-muted">
+                        <span><strong class="text-body">@c.AuthorName</strong> · @c.CreatedDate.ToString("yyyy-MM-dd HH:mm", System.Globalization.CultureInfo.InvariantCulture)</span>
+                        @if (c.CanDelete)
+                        {
+                            <form asp-controller="TaskManager" asp-action="DeleteComment" method="post">
+                                <input type="hidden" name="commentId" value="@c.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                                <button class="btn btn-sm btn-link text-danger p-0" data-tm-confirm="@Localizer["Tm_DeleteCommentConfirm"]">@Localizer["Tm_Delete"]</button>
+                            </form>
+                        }
+                    </div>
+                    @if (c.IsDeleted) { <div class="small fst-italic text-muted">@Localizer["Tm_CommentDeleted"]</div> }
+                    else { <div class="tm-text">@c.Body</div> }
+                </article>
+            }
+        </section>
+
+        <section class="vs-panel mb-3" aria-labelledby="histTitle">
+            <h3 class="h6" id="histTitle">@Localizer["Tm_History"]</h3>
+            @if (!history.Any()) { <p class="small text-muted mb-0">@Localizer["Tm_NoHistory"]</p> }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-sm vs-dense mb-0">
+                        <thead><tr><th>@Localizer["Tm_When"]</th><th>@Localizer["Tm_Who"]</th><th>@Localizer["Tm_Action"]</th><th>@Localizer["Tm_Changes"]</th></tr></thead>
+                        <tbody>
+                            @foreach (var h in history)
+                            {
+                                <tr>
+                                    <td class="small text-nowrap">@h.Timestamp.ToString("yyyy-MM-dd HH:mm", System.Globalization.CultureInfo.InvariantCulture)</td>
+                                    <td class="small">@h.UserName</td>
+                                    <td class="small">@TaskManagerUi.Localized(Localizer, "Tm_Audit_" + h.Action, h.Action)</td>
+                                    <td class="small tm-text">@h.Changes</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </section>
+    </div>
+
+    <div class="col-lg-4">
+        <section class="vs-panel mb-3" aria-labelledby="statusTitle">
+            <h3 class="h6" id="statusTitle">@Localizer["Tm_Field_Status"]</h3>
+            @if (Model.CanTransition && Model.AllowedTransitions.Any())
+            {
+                <form asp-controller="TaskManager" asp-action="Transition" method="post" class="d-flex flex-column gap-2">
+                    <input type="hidden" name="id" value="@i.Id" />
+                    <input type="hidden" name="rowVersion" value="@i.RowVersion" />
+                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                    <label class="visually-hidden" for="tr-target">@Localizer["Tm_MoveTo"]</label>
+                    @if (Model.IsLegacy)
+                    {
+                        <select id="tr-target" name="legacyStatus" class="form-select form-select-sm">
+                            @foreach (var o in Model.AllowedTransitions) { <option value="@o.Value">@TaskManagerUi.LegacyStatus(Localizer, o.Value)</option> }
+                        </select>
+                    }
+                    else
+                    {
+                        <select id="tr-target" name="statusId" class="form-select form-select-sm">
+                            @foreach (var o in Model.AllowedTransitions) { <option value="@o.StatusId">@TaskManagerUi.Name(o.Name, o.NameFa)</option> }
+                        </select>
+                    }
+                    <label class="visually-hidden" for="tr-note">@Localizer["Tm_CompletionNote"]</label>
+                    <input id="tr-note" name="note" class="form-control form-control-sm" maxlength="2000" placeholder="@Localizer["Tm_CompletionNoteOptional"]" />
+                    <button class="btn btn-sm btn-pems-solid">@Localizer["Tm_ChangeStatus"]</button>
+                </form>
+            }
+            else
+            {
+                <span class="badge @TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</span>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.CompletionNote)) { <div class="small mt-2"><strong>@Localizer["Tm_CompletionNote"]:</strong> @Model.CompletionNote</div> }
+        </section>
+
+        <section class="vs-panel mb-3" aria-labelledby="detailsTitle">
+            <h3 class="h6" id="detailsTitle">@Localizer["Tm_Details"]</h3>
+            <dl class="tm-dl small mb-0">
+                <dt>@Localizer["Tm_Field_Assignee"]</dt>
+                <dd>
+                    @if (Model.CanAssign)
+                    {
+                        <form asp-controller="TaskManager" asp-action="Assign" method="post" class="d-flex gap-1">
+                            <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="rowVersion" value="@i.RowVersion" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                            <label class="visually-hidden" for="as-emp">@Localizer["Tm_Field_Assignee"]</label>
+                            <select id="as-emp" name="assigneeEmployeeId" class="form-select form-select-sm" aria-describedby="as-help">
+                                <option value="">@Localizer["Tm_Unassigned"]</option>
+                                @foreach (var e in assignees.Candidates) { <option value="@e.EmployeeId" selected="@(e.EmployeeId == i.AssigneeEmployeeId)">@e.Name</option> }
+                                @if (i.AssigneeEmployeeId != null && assignees.Candidates.All(e => e.EmployeeId != i.AssigneeEmployeeId))
+                                { <option value="@i.AssigneeEmployeeId" selected>@i.AssigneeName (@Localizer["Tm_NotEligible"])</option> }
+                            </select>
+                            <button class="btn btn-sm btn-outline-secondary">@Localizer["Tm_Save"]</button>
+                        </form>
+                        @if (assignees.State != "RESOLVED") { <div id="as-help" class="form-text text-warning">@Localizer["Tm_Diag_" + assignees.State]</div> }
+                    }
+                    else { @(i.AssigneeName ?? Localizer["Tm_Unassigned"].Value) }
+                </dd>
+                <dt>@Localizer["Tm_Reporter"]</dt><dd>@(i.ReporterName ?? "—")</dd>
+                @if (Model.AssignedByName != null && Model.AssignedByName != i.ReporterName) { <dt>@Localizer["Tm_AssignedBy"]</dt><dd>@Model.AssignedByName</dd> }
+                <dt>@Localizer["Tm_Field_Priority"]</dt><dd><i class="bi @TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true"></i> @TaskManagerUi.Priority(Localizer, i.Priority)</dd>
+                @if (!Model.IsLegacy)
+                {
+                    <dt>@Localizer["Tm_Field_Sprint"]</dt><dd>@(Model.SprintName ?? Localizer["Tm_Backlog"].Value)</dd>
+                    <dt>@Localizer["Tm_Field_StoryPoints"]</dt><dd>@(i.StoryPoints?.ToString("0.#") ?? "—")</dd>
+                }
+                <dt>@Localizer["Tm_Field_StartDate"]</dt><dd>@(TaskManagerUi.Date(i.StartDate) is { Length: > 0 } sd ? sd : "—")</dd>
+                <dt>@Localizer["Tm_Field_DueDate"]</dt><dd class="@(i.IsOverdue ? "text-danger fw-semibold" : "")">@(TaskManagerUi.Date(i.DueDate) is { Length: > 0 } dd ? dd : "—")</dd>
+                <dt>@Localizer["Tm_Created"]</dt><dd>@TaskManagerUi.Date(i.CreatedDate)</dd>
+                @if (Model.CompletedDate != null) { <dt>@Localizer["Tm_Completed"]</dt><dd>@TaskManagerUi.Date(Model.CompletedDate)</dd> }
+                @if (!string.IsNullOrEmpty(Model.RelatedType))
+                {
+                    <dt>@Localizer["Tm_Related"]</dt>
+                    <dd>
+                        @* فقط برچسب و پیوند به ماژول مالک؛ داده‌ی ماژول اینجا خوانده نمی‌شود و دسترسی همان ماژول اعمال می‌شود *@
+                        @switch (Model.RelatedType)
+                        {
+                            case "Letter": <a asp-controller="Letter" asp-action="Details" asp-route-id="@Model.RelatedId">@Localizer["Tm_Related_Letter"] #@Model.RelatedId</a> break;
+                            case "Meeting": <a asp-controller="Meeting" asp-action="Details" asp-route-id="@Model.RelatedId">@Localizer["Tm_Related_Meeting"] #@Model.RelatedId</a> break;
+                            default: <span>@Model.RelatedType #@Model.RelatedId</span> break;
+                        }
+                    </dd>
+                }
+                <dt>@Localizer["Tm_Watchers"]</dt><dd>@(Model.Watchers.Any() ? string.Join(TaskManagerUi.IsFa ? "، " : ", ", Model.Watchers) : "—")</dd>
+            </dl>
+        </section>
+    </div>
+</div>
+
+@section Scripts { <script src="~/js/pems-task-manager.js" asp-append-version="true"></script> }

@@ -31,6 +31,12 @@ public class UserWorkspaceVm
     public List<EffectivePermissionDto> EffectivePermissions { get; set; } = new();
     public int AllowedCount => EffectivePermissions.Count(p => p.Allowed);
 
+    // مجوزهای غیرقابل‌ویرایش از همین تب (نام مجوز -> کد دلیل از PermissionChangeReasons)؛ نبودن یعنی قابل‌ویرایش
+    public IReadOnlyDictionary<string, string> NonEditablePermissions { get; set; } = new Dictionary<string, string>();
+
+    // تعداد کاربران هر نقش این کاربر: تغییر مجوز روی Grant نقش اعمال می‌شود، نه فقط همین کاربر
+    public Dictionary<string, int> RoleUserCounts { get; set; } = new();
+
     // Access & Authorization / Matrix - فقط ردیف‌های نقش‌های همین کاربر از همان ماتریس کامل موجود
     public List<RolePermissionDto> MatrixRows { get; set; } = new();
 
@@ -47,6 +53,20 @@ public class UserWorkspaceVm
 
     // Audit - آخرین چند ردیف؛ برای فهرست کامل با فیلتر، لینک به Admin/AuthorizationAudit?userId=
     public List<UserAuditLogRowVm> RecentAuditLogs { get; set; } = new();
+}
+
+/// <summary>یک ردیف تب Effective؛ LockedReason (کد از PermissionChangeReasons) یعنی از این صفحه قابل‌ویرایش نیست.</summary>
+public class UserEffectivePermissionRowVm
+{
+    public EffectivePermissionDto Row { get; set; } = new();
+    public string? LockedReason { get; set; }
+}
+
+/// <summary>بدنه‌ی درخواست فعال/غیرفعال‌سازی مجوزها از تب Effective (JSON).</summary>
+public class SetPermissionAccessRequest
+{
+    public string? TargetRole { get; set; }
+    public List<PermissionToggleRequest> Changes { get; set; } = new();
 }
 
 public class UserAuditLogRowVm

@@ -46,14 +46,31 @@ public static class DisciplineSeeder
     // پیدا و رفع شد. حالا مثل MaintenanceGroupSeeder، بررسی به‌ازای هر Code جداست - Additive،
     // Idempotent، بدون دست‌زدن به دیسیپلین‌هایی که کاربر خودش قبلاً ساخته/ویرایش کرده.
     // ==============================================================================
+    private static string NormalizeName(string? name)
+        => new string((name ?? "").Where(char.IsLetterOrDigit).ToArray()).ToUpperInvariant();
+
+    /// <summary>برای Seederهای وابسته (MaintenanceGroupSeeder): دیسیپلین با همین کد، یا با همین کد در ImportAliases.</summary>
+    public static PEMS.Domain.Entities.Discipline? Resolve(IEnumerable<PEMS.Domain.Entities.Discipline> disciplines, string code)
+        => disciplines.FirstOrDefault(d => string.Equals(d.Code, code, StringComparison.OrdinalIgnoreCase))
+           ?? disciplines.FirstOrDefault(d => (d.ImportAliases ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                  .Contains(code, StringComparer.OrdinalIgnoreCase));
+
     public static async Task SeedAsync(IServiceProvider services)
     {
         var db = services.GetRequiredService<PEMSDbContext>();
 
-        var existingCodes = (await db.Disciplines.Select(x => x.Code).ToListAsync())
-            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        // C18: پیش‌تر فقط «کد» مقایسه می‌شد؛ ردیف‌های HasData قدیمی کد دیگری داشتند (EL/PR/PI/CV/AR/...) و Seeder یک «Electrical»/«Process»/«Piping»/«Civil»
+        // دوم می‌ساخت (تکرار در فهرست‌ها). حالا اگر دیسیپلین موجودی با همان کد، یا با همان کد در ImportAliases، یا با همان نام وجود داشته باشد، چیزی ساخته نمی‌شود.
+        var existing = await db.Disciplines.Select(x => new { x.Code, x.Name, x.ImportAliases }).ToListAsync();
+        var existingTokens = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var e in existing)
+        {
+            existingTokens.Add(e.Code ?? "");
+            existingTokens.Add(NormalizeName(e.Name));
+            foreach (var alias in (e.ImportAliases ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)) existingTokens.Add(alias);
+        }
 
-        var missing = Defaults.Where(d => !existingCodes.Contains(d.Code)).ToList();
+        var missing = Defaults.Where(d => !existingTokens.Contains(d.Code) && !existingTokens.Contains(NormalizeName(d.Name))).ToList();
         if (missing.Count == 0) return;
 
         foreach (var (code, name, description, importAliases) in missing)

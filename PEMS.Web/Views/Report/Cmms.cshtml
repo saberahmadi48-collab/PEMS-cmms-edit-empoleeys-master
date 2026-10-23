@@ -2,6 +2,18 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
+@{
+    var noData = Localizer["Chart_NoData"].Value;
+    // priority colours follow urgency, whatever order the rows arrive in
+    string PriorityColor(string p) => p switch { "Low" => BkChartSpec.Neutral, "Medium" => BkChartSpec.Primary, "High" => BkChartSpec.Warning, "Critical" => BkChartSpec.Negative, _ => BkChartSpec.Tertiary };
+    var volumeChart = BkChartSpec.MonthlyBars("Work orders by month", noData, Model.VolumeByMonth.Select(x => x.Month),
+        BkSeries.Of("Work Orders", Model.VolumeByMonth.Select(x => x.Count), BkChartSpec.Primary));
+    var priorityChart = BkChartSpec.Donut("Work orders by priority", noData, Localizer["Total"].Value, Model.ByPriority.Select(x => (x.Priority, (double)x.Count)),
+        Model.ByPriority.Select(x => PriorityColor(x.Priority)));
+    var typeChartRows = BkChartSpec.TopWithOthers(Model.ByType.Select(x => (x.Type, x.Count)), 10, Localizer["Chart_Other"].Value);
+    var typeChart = BkChartSpec.HBars("Work orders by type", noData, typeChartRows.Select(x => x.Label), false,
+        new BkSeries("Work Orders", typeChartRows.Select(x => x.Value).ToList(), BkChartSpec.Accent));
+}
 
 <div class="d-flex flex-wrap gap-2 mb-3">
     <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-envelope-paper"></i> @Localizer["Correspondence"]</a>
@@ -16,7 +28,7 @@
     <form method="get" class="row g-2">
         <div class="col-md-3">
             <select name="status" class="form-select form-select-sm">
-                <option value="">@Localizer["All Statuses"]</option>
+                <option value="">@Localizer["All statuses"]</option>
                 @foreach (var s in new[] { "Open", "Assigned", "InProgress", "Completed", "Closed" })
                 { <option value="@s" selected="@(s == (string)ViewBag.SelectedStatus)">@s</option> }
             </select>
@@ -47,19 +59,19 @@
     <div class="col-lg-8">
         <div class="content-card mb-3">
             <h6 class="mb-3">Work Orders (last 12 months)</h6>
-            <canvas id="volumeChart" height="90"></canvas>
+            <partial name="_BkChart" model="@volumeChart" />
         </div>
     </div>
     <div class="col-lg-4">
         <div class="content-card mb-3">
             <h6 class="mb-3">By Priority</h6>
-            <canvas id="priorityChart" height="200"></canvas>
+            <partial name="_BkChart" model="@priorityChart" />
         </div>
     </div>
     <div class="col-lg-6">
         <div class="content-card mb-3">
             <h6 class="mb-3">By Type</h6>
-            <canvas id="typeChart" height="180"></canvas>
+            <partial name="_BkChart" model="@typeChart" />
         </div>
     </div>
     <div class="col-lg-6">
@@ -76,35 +88,10 @@
     </div>
 </div>
 
+@section Styles {
+    <partial name="_BkChartStyles" />
+}
+
 @section Scripts {
-    <script src="~/lib/chartjs/chart-4.4.1.umd.min.js"></script>
-    <script src="~/js/pems-charts.js"></script>
-    <script>
-        const volumeLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VolumeByMonth.Select(x => x.Month)));
-        const volumeData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VolumeByMonth.Select(x => x.Count)));
-
-        new Chart(document.getElementById('volumeChart'), {
-            type: 'bar',
-            data: { labels: volumeLabels, datasets: [{ label: 'Work Orders', data: volumeData, backgroundColor: PemsChartColors.primary }] },
-            options: { responsive: true, plugins: { legend: { display: false } } }
-        });
-
-        const priorityLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ByPriority.Select(x => x.Priority)));
-        const priorityData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ByPriority.Select(x => x.Count)));
-
-        new Chart(document.getElementById('priorityChart'), {
-            type: 'doughnut',
-            data: { labels: priorityLabels, datasets: [{ data: priorityData, backgroundColor: [PemsChartColors.neutral, PemsChartColors.primary, PemsChartColors.warning, PemsChartColors.negative] }] },
-            options: { plugins: { legend: { position: 'bottom' } } }
-        });
-
-        const typeLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ByType.Select(x => x.Type)));
-        const typeData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ByType.Select(x => x.Count)));
-
-        new Chart(document.getElementById('typeChart'), {
-            type: 'bar',
-            data: { labels: typeLabels, datasets: [{ label: 'Work Orders', data: typeData, backgroundColor: PemsChartColors.accent }] },
-            options: { indexAxis: 'y', plugins: { legend: { display: false } } }
-        });
-    </script>
+    <partial name="_BkChartScripts" />
 }

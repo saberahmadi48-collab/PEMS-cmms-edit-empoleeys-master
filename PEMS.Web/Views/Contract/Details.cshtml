@@ -89,7 +89,7 @@
     <hr />
 
     <div class="d-flex gap-2 flex-wrap">
-        @if (Model.Status == "Draft")
+        @if (Model.Status == "Draft" || Model.Status == "Rejected")
         {
             <form asp-action="SubmitForReview" method="post" class="d-inline">
                 <input type="hidden" name="contractId" value="@Model.ContractId" />

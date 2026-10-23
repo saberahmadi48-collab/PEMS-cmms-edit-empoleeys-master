@@ -21,6 +21,31 @@
     // (صرف‌نظر از این‌که Approve/Comment/Reject بوده) - نه فقط تعداد Approve
     var idcApprovedCount = idcStatusForPage.Count(x => x.Status != "Pending");
 
+    // کامنت‌ها و ترنسمیتال‌ها: شمارنده‌ی تب‌ها و کارت‌های خلاصه‌ی Overview به این مقادیر نیاز دارند (قبلاً پایین صفحه تعریف می‌شدند)
+    var engComments = (List<PEMS.Application.DTOs.VDRCommentDto>)(ViewBag.Comments ?? new List<PEMS.Application.DTOs.VDRCommentDto>());
+    var latestPdfAttachment = Model.Attachments
+        .Where(a => a.FileExtension.Equals(".pdf", StringComparison.OrdinalIgnoreCase))
+        .OrderByDescending(a => a.UploadDate)
+        .FirstOrDefault();
+    var commentsClosedCount = engComments.Count(c => c.ActionStatus is "Closed" or "Verified" or "NoActionRequired");
+    var commentsOpenCount = engComments.Count - commentsClosedCount;
+    var relatedTransmittals = (List<PEMS.Application.DTOs.RelatedTransmittalDto>)(ViewBag.RelatedTransmittals ?? new List<PEMS.Application.DTOs.RelatedTransmittalDto>());
+
+    // «مرحله‌ی بعد» زیر نمودار: فقط توضیح است؛ اقدام واقعی همان دکمه‌های بالای صفحه است و سرور خودش مجاز بودن را بررسی می‌کند
+    string? wfNextStep = Model.Status switch
+    {
+        "Draft" => Localizer["Ed_Next_Draft"].Value,
+        "Submitted" => Localizer["Ed_Next_Submitted"].Value,
+        "IDC Review" => string.Format(Localizer["Ed_Next_Idc"].Value, idcStatusForPage.Count(x => x.Status == "Pending")),
+        "Checked" => Localizer["Ed_Next_Checked"].Value,
+        "Approved" => Localizer["Ed_Next_Approved"].Value,
+        "Issued" => string.IsNullOrEmpty(Model.ClientApprovalStatus) ? Localizer["Ed_Next_Issued"].Value : null,
+        "Rejected" or "Revise & Resubmit" => Localizer["Ed_Next_Revise"].Value,
+        _ => null
+    };
+    // لینک «Assign» به صفحه‌ی ویرایش می‌رود (فیلدهای امضا همان‌جا متن آزاد هستند)؛ مدرک منجمد/صادرشده قابل ویرایش نیست
+    var canAssignSignoff = !Model.IsFrozen && Model.Status != "Issued";
+
     // طبق «PEMS Phase 2C-3»: منطق تعیین مرحله عیناً همان منطق قبلی _WorkflowStagesDiagram
     // است - فقط جابه‌جا شده به این‌جا، بدون هیچ تغییر رفتاری. محاسبه یک‌بار انجام می‌شود چون
     // این صفحه دو بار (بالای صفحه + داخل Modal Submit) همین نمودار را نشان می‌دهد.
@@ -289,10 +314,17 @@
        هم هست تا همیشه معلوم باشه مدرک دقیقاً کجای چرخه‌ست، بدون نیاز به باز کردن مدال. طبق بخش
        ۲۴ ممیزی UX: خلاصه‌ی پیشرفت IDC (بدون نیاز به اسکرول) این‌جا می‌ماند؛ ماتریس کامل هر
        دیسیپلین به تب اختصاصی IDC Review منتقل شد. *@
-    @if (Model.Status != "Draft")
+    @if (!string.IsNullOrEmpty(Model.Status))
     {
         <hr class="my-2" />
         <partial name="_PemsStageDiagram" model="wfStageDiagramModel" />
+
+        @if (wfNextStep != null)
+        {
+            <div class="alert alert-info py-2 mb-2 mt-2 small" role="note">
+                <i class="bi bi-signpost-split" aria-hidden="true"></i> <strong>@Localizer["Ed_NextStep"]</strong> @wfNextStep
+            </div>
+        }
 
         @if (Model.Status == "IDC Review" && idcStatusForPage.Any())
         {
@@ -332,6 +364,18 @@
         </button>
     </li>
     <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-transmittals" type="button">
+            <i class="bi bi-truck"></i> @Localizer["Ed_TabTransmittals"]
+            @if (relatedTransmittals.Any()) { <span class="badge bg-secondary">@relatedTransmittals.Count</span> }
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
+            <i class="bi bi-chat-square-text"></i> @Localizer["Ed_TabComments"]
+            @if (engComments.Any()) { <span class="badge @(commentsOpenCount > 0 ? "bg-danger" : "bg-secondary")">@commentsOpenCount<span class="visually-hidden"> @Localizer["Ed_OpenComments"]</span></span> }
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
             <i class="bi bi-diagram-2"></i> @Localizer["Ed_TabWorkflow"]
         </button>
@@ -348,6 +392,8 @@
 
     @* ===================== Overview ===================== *@
     <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
+        <div class="row g-3">
+        <div class="col-lg-8">
         <div class="vs-section">
             <h2 class="vs-section__title"><i class="bi bi-card-list"></i> @Localizer["Ed_SecIdentification"]</h2>
             <div class="vs-info">
@@ -365,11 +411,27 @@
             <h2 class="vs-section__title"><i class="bi bi-patch-check"></i> @Localizer["Ed_SecEngineering"]</h2>
             <div class="vs-info">
                 <div><p class="vs-info__label">@Localizer["Ed_IssuePurpose"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.IssuePurpose) ? "—" : Model.IssuePurpose)</p></div>
-                <div><p class="vs-info__label">@Localizer["Ed_PreparedBy"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.PreparedBy) ? "—" : Model.PreparedBy)</p></div>
+                <div>
+                    <p class="vs-info__label">@Localizer["Ed_PreparedBy"]</p>
+                    <p class="vs-info__value">
+                        @if (string.IsNullOrEmpty(Model.PreparedBy))
+                        {
+                            <span class="text-muted">@Localizer["Ed_NotSet"]</span>
+                            @if (canAssignSignoff) { <text> &middot; <a asp-action="Edit" asp-route-id="@Model.DocumentId">@Localizer["Ed_Assign"]</a></text> }
+                        }
+                        else { @Model.PreparedBy }
+                    </p>
+                </div>
                 <div>
                     <p class="vs-info__label">@Localizer["Ed_CheckedBy"]</p>
                     <p class="vs-info__value">
-                        @(string.IsNullOrEmpty(Model.CheckedBy) ? "—" : Model.CheckedBy) @(Model.CheckedDate.HasValue ? $"({Model.CheckedDate:yyyy-MM-dd})" : "")
+                        @if (string.IsNullOrEmpty(Model.CheckedBy))
+                        {
+                            <span class="text-muted">@Localizer["Ed_NotSet"]</span>
+                            @if (canAssignSignoff) { <text> &middot; <a asp-action="Edit" asp-route-id="@Model.DocumentId">@Localizer["Ed_Assign"]</a></text> }
+                        }
+                        else { @Model.CheckedBy }
+                        @(Model.CheckedDate.HasValue ? $"({Model.CheckedDate:yyyy-MM-dd})" : "")
                         @if (!string.IsNullOrEmpty(Model.CheckedBySignaturePath))
                         {
                             <img src="@Model.CheckedBySignaturePath" alt="Signature" style="height:32px; vertical-align:middle; margin-inline-start:8px; background:#fff; border:1px solid #eee; border-radius:3px;" />
@@ -414,6 +476,36 @@
                     </p>
                 </div>
             </div>
+        </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="vs-section">
+                <h2 class="vs-section__title"><i class="bi bi-chat-square-text"></i> @Localizer["Ed_TabComments"]</h2>
+                <p class="small text-muted mb-2">@string.Format(Localizer["Ed_OpenClosed"].Value, commentsOpenCount, commentsClosedCount)</p>
+                @if (!engComments.Any())
+                {
+                    <p class="small text-muted border rounded p-2 text-center mb-2">@Localizer["Ed_NoCommentsHint"]</p>
+                }
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addEngCommentModal"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Add Comment"]</button>
+                    @if (engComments.Any())
+                    {
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tab" data-bs-target="#tab-comments">@Localizer["Ed_ViewAll"]</button>
+                    }
+                </div>
+            </div>
+            <div class="vs-section">
+                <h2 class="vs-section__title"><i class="bi bi-paperclip"></i> @Localizer["Ed_TabFiles"]</h2>
+                <p class="small text-muted mb-2">@((Model.Attachments?.Count ?? 0) == 0 ? Localizer["Ed_NoFilesHint"].Value : string.Format(Localizer["Ed_FilesCount"].Value, Model.Attachments!.Count))</p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a asp-action="UploadAttachment" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-upload" aria-hidden="true"></i> @Localizer["Ed_Upload"]</a>
+                    @if ((Model.Attachments?.Count ?? 0) > 0)
+                    {
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tab" data-bs-target="#tab-attachments">@Localizer["Ed_ViewAll"]</button>
+                    }
+                </div>
+            </div>
+        </div>
         </div>
     </div>
 
@@ -740,13 +832,14 @@
             }
         </div>
 
+    </div>
+
+    @* ===================== Transmittals ===================== *@
+    <div class="tab-pane fade" id="tab-transmittals" role="tabpanel">
         @* طبق «PEMS Phase 2A — EDMS Foundation» بخش ۲: قبلاً هیچ پیوند متقابلی با Transmittal
            روی این صفحه نبود - Service/Entity موجود، فقط یک بخش خلاصه‌ی جدید *@
         <div class="vs-section">
             <h6 class="mb-3"><i class="bi bi-truck"></i> @Localizer["Ed_SecTransmittals"]</h6>
-            @{
-                var relatedTransmittals = (List<PEMS.Application.DTOs.RelatedTransmittalDto>)(ViewBag.RelatedTransmittals ?? new List<PEMS.Application.DTOs.RelatedTransmittalDto>());
-            }
             @if (relatedTransmittals.Any())
             {
                 <table class="table table-enterprise">
@@ -771,6 +864,197 @@
                 <p class="text-muted text-center py-4">@Localizer["Ed_NoTransmittals"]</p>
             }
         </div>
+    </div>
+
+    @* ===================== Comments (Document Viewer + Comment Management) ===================== *@
+    <div class="tab-pane fade" id="tab-comments" role="tabpanel">
+@if (latestPdfAttachment != null)
+{
+    <div class="content-card mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
+            <div class="d-flex align-items-center gap-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfPrevPage" data-bs-toggle="tooltip" title="@Localizer["Previous page"]" aria-label="@Localizer["Previous page"]"><i class="bi bi-chevron-left"></i></button>
+                <span class="small" id="pdfPageLabel">Page - / -</span>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfNextPage" data-bs-toggle="tooltip" title="@Localizer["Next page"]" aria-label="@Localizer["Next page"]"><i class="bi bi-chevron-right"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomOut" data-bs-toggle="tooltip" title="@Localizer["Zoom out"]" aria-label="@Localizer["Zoom out"]"><i class="bi bi-zoom-out"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomIn" data-bs-toggle="tooltip" title="@Localizer["Zoom in"]" aria-label="@Localizer["Zoom in"]"><i class="bi bi-zoom-in"></i></button>
+            </div>
+        </div>
+        <div id="pdfCanvasWrapper" style="position:relative; border:1px solid var(--pems-surface-border,#dee2e6); overflow:auto; max-height:75vh; text-align:center; cursor:crosshair;">
+            <canvas id="pdfCanvas"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.js"></script>
+    <script>
+        (function () {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
+
+            var pdfUrl = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Url.Action("Download", "Files", new { id = latestPdfAttachment.AttachmentId })));
+            var wrapper = document.getElementById('pdfCanvasWrapper');
+            var canvas = document.getElementById('pdfCanvas');
+            var ctx = canvas.getContext('2d');
+            var pdfDoc = null, currentPage = 1, scale = 1.2;
+
+            var pins = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(engComments
+                .Where(c => c.PageNumber.HasValue)
+                .Select(c => new { c.CommentNo, c.PageNumber, c.PinX, c.PinY, c.CommentText }),
+                new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase }));
+
+            function renderPage(num) {
+                pdfDoc.getPage(num).then(function (page) {
+                    var viewport = page.getViewport({ scale: scale });
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
+                        document.getElementById('pdfPageLabel').textContent = 'Page ' + num + ' / ' + pdfDoc.numPages;
+                        renderPins(num, viewport.width, viewport.height);
+                    });
+                });
+            }
+
+            function renderPins(pageNum, width, height) {
+                wrapper.querySelectorAll('.pdf-pin').forEach(function (el) { el.remove(); });
+
+                pins.filter(function (p) { return p.pageNumber === pageNum; }).forEach(function (p) {
+                    var pin = document.createElement('div');
+                    pin.className = 'pdf-pin';
+                    pin.title = p.commentNo + ': ' + p.commentText;
+                    pin.style.cssText = 'position:absolute;width:22px;height:22px;border-radius:50% 50% 50% 0;' +
+                        'background:#ef4444;border:2px solid #fff;transform:translate(-50%,-100%) rotate(-45deg);' +
+                        'left:' + (p.pinX / 100 * width) + 'px;top:' + (p.pinY / 100 * height) + 'px;cursor:pointer;';
+                    wrapper.appendChild(pin);
+                });
+            }
+
+            pdfjsLib.getDocument(pdfUrl).promise.then(function (doc) {
+                pdfDoc = doc;
+                renderPage(currentPage);
+            }).catch(function () {
+                wrapper.innerHTML = '<p class="text-muted py-4">Could not load the PDF preview.</p>';
+            });
+
+            document.getElementById('pdfPrevPage').addEventListener('click', function () {
+                if (currentPage > 1) { currentPage--; renderPage(currentPage); }
+            });
+            document.getElementById('pdfNextPage').addEventListener('click', function () {
+                if (pdfDoc && currentPage < pdfDoc.numPages) { currentPage++; renderPage(currentPage); }
+            });
+            document.getElementById('pdfZoomIn').addEventListener('click', function () { scale += 0.2; renderPage(currentPage); });
+            document.getElementById('pdfZoomOut').addEventListener('click', function () { if (scale > 0.4) { scale -= 0.2; renderPage(currentPage); } });
+
+            canvas.addEventListener('click', function (e) {
+                var rect = canvas.getBoundingClientRect();
+                var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+                var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+
+                document.getElementById('engPinPageNumber').value = currentPage;
+                document.getElementById('engPinX').value = xPct.toFixed(2);
+                document.getElementById('engPinY').value = yPct.toFixed(2);
+                document.getElementById('engPinLocationLabel').textContent = 'Pinned on page ' + currentPage;
+
+                var modal = new bootstrap.Modal(document.getElementById('addEngCommentModal'));
+                modal.show();
+            });
+
+            document.getElementById('addEngCommentModal').addEventListener('hidden.bs.modal', function () {
+                document.getElementById('engPinPageNumber').value = '';
+                document.getElementById('engPinX').value = '';
+                document.getElementById('engPinY').value = '';
+                document.getElementById('engPinLocationLabel').textContent = '';
+            });
+        })();
+    </script>
+}
+
+<div class="content-card mb-3">
+    <h6 class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></h6>
+
+    <table class="table table-enterprise">
+        <thead><tr><th>No</th><th>@Localizer["Category"]</th><th>Sheet/Zone</th><th>@Localizer["Comment"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Raised"]</th><th>@Localizer["Action Status"]</th><th>@Localizer["Response"]</th></tr></thead>
+        <tbody>
+            @foreach (var c in engComments)
+            {
+                <tr>
+                    <td><strong>@c.CommentNo</strong></td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(c.Category)) { <span class="badge bg-secondary">@c.Category</span> }
+                        @if (!string.IsNullOrEmpty(c.Severity)) { <span class="badge bg-dark">@c.Severity</span> }
+                    </td>
+                    <td class="small">@c.Sheet @c.Zone</td>
+                    <td class="small">
+                        @c.CommentText
+                        @if (!string.IsNullOrEmpty(c.AttachmentFilePath))
+                        {
+                            <div><a href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.AttachmentFileName</a></div>
+                        }
+                        @if (!string.IsNullOrEmpty(c.RequiredAction))
+                        {
+                            <div class="text-muted">Required: @c.RequiredAction</div>
+                        }
+                        @if (c.MarksRevisionRequired)
+                        {
+                            <div>
+                                <span class="badge bg-warning text-dark"><i class="bi bi-cloud-fill"></i> Marked for Revision</span>
+                                @if (c.TriggeredRevisionId.HasValue)
+                                {
+                                    <span class="badge bg-success">Rev @c.TriggeredRevisionNo created</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">no revision yet</span>
+                                }
+                            </div>
+                        }
+                    </td>
+                    <td>@c.RaisedByName</td>
+                    <td>@c.RaisedDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @{
+                            var eab = c.ActionStatus switch
+                            {
+                                "Closed" => "bg-success",
+                                "Verified" => "bg-info text-dark",
+                                "VendorResponsePending" => "bg-warning text-dark",
+                                "NoActionRequired" => "bg-secondary",
+                                _ => "bg-danger"
+                            };
+                        }
+                        <span class="badge @eab">@c.ActionStatus</span>
+                        <form asp-action="SetCommentAction" method="post" class="d-inline">
+                            <input type="hidden" name="documentId" value="@Model.DocumentId" />
+                            <input type="hidden" name="commentId" value="@c.VDRCommentId" />
+                            <select name="actionStatus" class="form-select form-select-sm mt-1" style="width:170px;" onchange="this.form.submit()">
+                                @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
+                                { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
+                            </select>
+                        </form>
+                    </td>
+                    <td class="small">
+                        @c.ResponseText
+                        @if (!string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
+                        {
+                            <div><a href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.ReplyAttachmentFileName</a></div>
+                        }
+                        @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
+                        {
+                            <button type="button" class="btn btn-sm btn-outline-primary mt-1" data-bs-toggle="modal" data-bs-target="#engReplyModal_@c.VDRCommentId">
+                                <i class="bi bi-reply"></i> Reply
+                            </button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!engComments.Any()) { <p class="text-muted">No comments recorded yet.</p> }
+
+    <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">
+        <i class="bi bi-plus-lg"></i> @Localizer["Add Comment"]
+    </button>
+</div>
     </div>
 
 </div>
@@ -1087,7 +1371,7 @@
                         <div class="mb-2">
                             <label class="form-label small"><i class="bi bi-cloud-fill"></i> Closes Marked-for-Revision comment <span class="text-muted">@Localizer["(optional)"]</span></label>
                             <select name="triggeringCommentId" class="form-select form-select-sm">
-                                <option value="">@Localizer["-- none --"]</option>
+                                <option value="">@Localizer["-- None --"]</option>
                                 @foreach (var oc in openClouded)
                                 {
                                     <option value="@oc.VDRCommentId">@oc.CommentNo - @oc.CommentText</option>
@@ -1163,202 +1447,6 @@
 </div>
 
 @* طبق درخواست: چرخه‌ی کامنت/ریپلای دقیقاً مثل بخش VDR - همان سرویس مشترک، همان تجربه *@
-@{
-    var engComments = (List<PEMS.Application.DTOs.VDRCommentDto>)ViewBag.Comments;
-    var latestPdfAttachment = Model.Attachments
-        .Where(a => a.FileExtension.Equals(".pdf", StringComparison.OrdinalIgnoreCase))
-        .OrderByDescending(a => a.UploadDate)
-        .FirstOrDefault();
-}
-
-@if (latestPdfAttachment != null)
-{
-    <div class="content-card mb-3">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
-            <div class="d-flex align-items-center gap-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfPrevPage" data-bs-toggle="tooltip" title="@Localizer["Previous page"]" aria-label="@Localizer["Previous page"]"><i class="bi bi-chevron-left"></i></button>
-                <span class="small" id="pdfPageLabel">Page - / -</span>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfNextPage" data-bs-toggle="tooltip" title="@Localizer["Next page"]" aria-label="@Localizer["Next page"]"><i class="bi bi-chevron-right"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomOut" data-bs-toggle="tooltip" title="@Localizer["Zoom out"]" aria-label="@Localizer["Zoom out"]"><i class="bi bi-zoom-out"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomIn" data-bs-toggle="tooltip" title="@Localizer["Zoom in"]" aria-label="@Localizer["Zoom in"]"><i class="bi bi-zoom-in"></i></button>
-            </div>
-        </div>
-        <div id="pdfCanvasWrapper" style="position:relative; border:1px solid var(--pems-surface-border,#dee2e6); overflow:auto; max-height:75vh; text-align:center; cursor:crosshair;">
-            <canvas id="pdfCanvas"></canvas>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.js"></script>
-    <script>
-        (function () {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
-
-            var pdfUrl = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Url.Action("Download", "Files", new { id = latestPdfAttachment.AttachmentId })));
-            var wrapper = document.getElementById('pdfCanvasWrapper');
-            var canvas = document.getElementById('pdfCanvas');
-            var ctx = canvas.getContext('2d');
-            var pdfDoc = null, currentPage = 1, scale = 1.2;
-
-            var pins = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(engComments
-                .Where(c => c.PageNumber.HasValue)
-                .Select(c => new { c.CommentNo, c.PageNumber, c.PinX, c.PinY, c.CommentText }),
-                new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase }));
-
-            function renderPage(num) {
-                pdfDoc.getPage(num).then(function (page) {
-                    var viewport = page.getViewport({ scale: scale });
-                    canvas.width = viewport.width;
-                    canvas.height = viewport.height;
-
-                    page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
-                        document.getElementById('pdfPageLabel').textContent = 'Page ' + num + ' / ' + pdfDoc.numPages;
-                        renderPins(num, viewport.width, viewport.height);
-                    });
-                });
-            }
-
-            function renderPins(pageNum, width, height) {
-                wrapper.querySelectorAll('.pdf-pin').forEach(function (el) { el.remove(); });
-
-                pins.filter(function (p) { return p.pageNumber === pageNum; }).forEach(function (p) {
-                    var pin = document.createElement('div');
-                    pin.className = 'pdf-pin';
-                    pin.title = p.commentNo + ': ' + p.commentText;
-                    pin.style.cssText = 'position:absolute;width:22px;height:22px;border-radius:50% 50% 50% 0;' +
-                        'background:#ef4444;border:2px solid #fff;transform:translate(-50%,-100%) rotate(-45deg);' +
-                        'left:' + (p.pinX / 100 * width) + 'px;top:' + (p.pinY / 100 * height) + 'px;cursor:pointer;';
-                    wrapper.appendChild(pin);
-                });
-            }
-
-            pdfjsLib.getDocument(pdfUrl).promise.then(function (doc) {
-                pdfDoc = doc;
-                renderPage(currentPage);
-            }).catch(function () {
-                wrapper.innerHTML = '<p class="text-muted py-4">Could not load the PDF preview.</p>';
-            });
-
-            document.getElementById('pdfPrevPage').addEventListener('click', function () {
-                if (currentPage > 1) { currentPage--; renderPage(currentPage); }
-            });
-            document.getElementById('pdfNextPage').addEventListener('click', function () {
-                if (pdfDoc && currentPage < pdfDoc.numPages) { currentPage++; renderPage(currentPage); }
-            });
-            document.getElementById('pdfZoomIn').addEventListener('click', function () { scale += 0.2; renderPage(currentPage); });
-            document.getElementById('pdfZoomOut').addEventListener('click', function () { if (scale > 0.4) { scale -= 0.2; renderPage(currentPage); } });
-
-            canvas.addEventListener('click', function (e) {
-                var rect = canvas.getBoundingClientRect();
-                var xPct = ((e.clientX - rect.left) / rect.width) * 100;
-                var yPct = ((e.clientY - rect.top) / rect.height) * 100;
-
-                document.getElementById('engPinPageNumber').value = currentPage;
-                document.getElementById('engPinX').value = xPct.toFixed(2);
-                document.getElementById('engPinY').value = yPct.toFixed(2);
-                document.getElementById('engPinLocationLabel').textContent = 'Pinned on page ' + currentPage;
-
-                var modal = new bootstrap.Modal(document.getElementById('addEngCommentModal'));
-                modal.show();
-            });
-
-            document.getElementById('addEngCommentModal').addEventListener('hidden.bs.modal', function () {
-                document.getElementById('engPinPageNumber').value = '';
-                document.getElementById('engPinX').value = '';
-                document.getElementById('engPinY').value = '';
-                document.getElementById('engPinLocationLabel').textContent = '';
-            });
-        })();
-    </script>
-}
-
-<div class="content-card mb-3">
-    <h6 class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></h6>
-
-    <table class="table table-enterprise">
-        <thead><tr><th>No</th><th>@Localizer["Category"]</th><th>Sheet/Zone</th><th>@Localizer["Comment"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Raised"]</th><th>@Localizer["Action Status"]</th><th>@Localizer["Response"]</th></tr></thead>
-        <tbody>
-            @foreach (var c in engComments)
-            {
-                <tr>
-                    <td><strong>@c.CommentNo</strong></td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(c.Category)) { <span class="badge bg-secondary">@c.Category</span> }
-                        @if (!string.IsNullOrEmpty(c.Severity)) { <span class="badge bg-dark">@c.Severity</span> }
-                    </td>
-                    <td class="small">@c.Sheet @c.Zone</td>
-                    <td class="small">
-                        @c.CommentText
-                        @if (!string.IsNullOrEmpty(c.AttachmentFilePath))
-                        {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.AttachmentFileName</a></div>
-                        }
-                        @if (!string.IsNullOrEmpty(c.RequiredAction))
-                        {
-                            <div class="text-muted">Required: @c.RequiredAction</div>
-                        }
-                        @if (c.MarksRevisionRequired)
-                        {
-                            <div>
-                                <span class="badge bg-warning text-dark"><i class="bi bi-cloud-fill"></i> Marked for Revision</span>
-                                @if (c.TriggeredRevisionId.HasValue)
-                                {
-                                    <span class="badge bg-success">Rev @c.TriggeredRevisionNo created</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">no revision yet</span>
-                                }
-                            </div>
-                        }
-                    </td>
-                    <td>@c.RaisedByName</td>
-                    <td>@c.RaisedDate.ToString("yyyy-MM-dd")</td>
-                    <td>
-                        @{
-                            var eab = c.ActionStatus switch
-                            {
-                                "Closed" => "bg-success",
-                                "Verified" => "bg-info text-dark",
-                                "VendorResponsePending" => "bg-warning text-dark",
-                                "NoActionRequired" => "bg-secondary",
-                                _ => "bg-danger"
-                            };
-                        }
-                        <span class="badge @eab">@c.ActionStatus</span>
-                        <form asp-action="SetCommentAction" method="post" class="d-inline">
-                            <input type="hidden" name="documentId" value="@Model.DocumentId" />
-                            <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                            <select name="actionStatus" class="form-select form-select-sm mt-1" style="width:170px;" onchange="this.form.submit()">
-                                @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
-                                { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
-                            </select>
-                        </form>
-                    </td>
-                    <td class="small">
-                        @c.ResponseText
-                        @if (!string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
-                        {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.ReplyAttachmentFileName</a></div>
-                        }
-                        @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
-                        {
-                            <button type="button" class="btn btn-sm btn-outline-primary mt-1" data-bs-toggle="modal" data-bs-target="#engReplyModal_@c.VDRCommentId">
-                                <i class="bi bi-reply"></i> Reply
-                            </button>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @if (!engComments.Any()) { <p class="text-muted">No comments recorded yet.</p> }
-
-    <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">
-        <i class="bi bi-plus-lg"></i> @Localizer["Add Comment"]
-    </button>
-</div>
-
 <div class="modal fade" id="addEngCommentModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

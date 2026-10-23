@@ -37,7 +37,7 @@ public class Phase8AuthorizationGapTests
         var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
         var crewService = new CrewService(ctx);
 
-        var controller = new WorkOrderController(ctx, null!, currentUser, permissionService, null!, null!, crewService, null!, null!).WithTempData();
+        var controller = new WorkOrderController(ctx, null!, currentUser, permissionService, null!, null!, crewService, null!, null!, new WorkOrderSectionGuard(ctx, accessControl)).WithTempData();
         return (controller, ctx);
     }
 

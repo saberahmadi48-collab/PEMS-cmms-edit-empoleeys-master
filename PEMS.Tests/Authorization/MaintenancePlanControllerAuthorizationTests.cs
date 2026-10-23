@@ -32,6 +32,7 @@ public class MaintenancePlanControllerAuthorizationTests
         public Task<string?> GenerateForPlanAsync(int planId) => Task.FromResult<string?>("WO-0001");
         public Task<PEMS.Application.DTOs.PMGenerationResultDto> GenerateDueWorkOrdersAsync() =>
             Task.FromResult(new PEMS.Application.DTOs.PMGenerationResultDto());
+        public Task<int> ReconcileFloatingSchedulesAsync() => Task.FromResult(0);
     }
 
     private static async Task<(MaintenancePlanController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(
@@ -53,7 +54,9 @@ public class MaintenancePlanControllerAuthorizationTests
         var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
 
         var maintenancePlanService = new MaintenancePlanService(ctx);
-        var controller = new MaintenancePlanController(ctx, new FakeNumberingService(), maintenancePlanService, new FakePMGenerationService(), currentUser, permissionService)
+        var controller = new MaintenancePlanController(ctx, maintenancePlanService,
+                new MaintenancePlanCommandService(ctx, new FakeNumberingService()), new StrategyAssignmentService(ctx),
+                new FakePMGenerationService(), currentUser, permissionService)
             .WithTempData();
         return (controller, ctx);
     }
@@ -78,14 +81,33 @@ public class MaintenancePlanControllerAuthorizationTests
         Assert.IsType<ViewResult>(result);
     }
 
+    private static async Task<int> SeedAssignmentAsync(PEMS.Persistence.Context.PEMSDbContext ctx)
+    {
+        var eq = new Equipment { EquipmentId = 1, TagNumber = "EQ-001", Name = "EQ-001", EquipmentType = "Pump", IsActive = true };
+        ctx.Equipments.Add(eq);
+        var strategy = new MaintenanceStrategy
+        {
+            StrategyType = "Preventive", ConsequenceCategory = "Operational", Status = "Active", IsActive = true, FailureModeCode = "X"
+        };
+        ctx.MaintenanceStrategies.Add(strategy);
+        await ctx.SaveChangesAsync();
+        var assignment = new MaintenanceStrategyAssignment { MaintenanceStrategyId = strategy.MaintenanceStrategyId, EquipmentId = eq.EquipmentId, IsActive = true };
+        ctx.MaintenanceStrategyAssignments.Add(assignment);
+        ctx.JobPlans.Add(new JobPlan { JobPlanId = 1, JobPlanNumber = "JP-1", Title = "JP", IsActive = true });
+        await ctx.SaveChangesAsync();
+        return assignment.MaintenanceStrategyAssignmentId;
+    }
+
     [Fact]
     public async Task Create_WithoutCreatePermission_ReturnsForbid()
     {
         var (controller, ctx) = await CreateController(nameof(Create_WithoutCreatePermission_ReturnsForbid), role: SystemRoles.Viewer);
-        ctx.Equipments.Add(new Equipment { EquipmentId = 1, TagNumber = "EQ-001", Name = "EQ-001", EquipmentType = "Pump", IsActive = true });
-        await ctx.SaveChangesAsync();
+        var assignmentId = await SeedAssignmentAsync(ctx);
 
-        var result = await controller.Create(1, 1, "Test Plan", "Calendar", 30, null, null, null, null, null);
+        var result = await controller.Create(new PEMS.Application.DTOs.PlanInputDto
+        {
+            MaintenanceStrategyAssignmentId = assignmentId, Title = "Test Plan", TriggerType = "Calendar", IntervalDays = 30, JobPlanId = 1
+        });
 
         Assert.IsType<ForbidResult>(result);
         Assert.Empty(ctx.MaintenancePlans);
@@ -95,13 +117,16 @@ public class MaintenancePlanControllerAuthorizationTests
     public async Task Create_WithCreatePermission_CreatesMaintenancePlan()
     {
         var (controller, ctx) = await CreateController(nameof(Create_WithCreatePermission_CreatesMaintenancePlan));
-        ctx.Equipments.Add(new Equipment { EquipmentId = 1, TagNumber = "EQ-001", Name = "EQ-001", EquipmentType = "Pump", IsActive = true });
-        await ctx.SaveChangesAsync();
+        var assignmentId = await SeedAssignmentAsync(ctx);
 
-        var result = await controller.Create(1, 1, "Test Plan", "Calendar", 30, null, null, null, null, null);
+        var result = await controller.Create(new PEMS.Application.DTOs.PlanInputDto
+        {
+            MaintenanceStrategyAssignmentId = assignmentId, Title = "Test Plan", TriggerType = "Calendar", IntervalDays = 30, JobPlanId = 1
+        });
 
         Assert.IsType<RedirectToActionResult>(result);
-        Assert.Single(ctx.MaintenancePlans);
+        var plan = Assert.Single(ctx.MaintenancePlans);
+        Assert.Equal(1, plan.EquipmentId); // تجهیز از تخصیص مشتق شد، نه از کلاینت
     }
 
     [Fact]

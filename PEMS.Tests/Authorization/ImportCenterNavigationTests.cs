@@ -41,12 +41,13 @@ public class ImportCenterNavigationTests
     // ---------- (1) catalog integrity ----------
 
     [Fact]
-    public void Catalog_HasThirteen_UniqueImports()
+    public void Catalog_HasFourteen_UniqueImports()
     {
         // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۹:
         // یک ورودی تازه («ConditionReading») به کاتالوگ اضافه شد - ۱۱ → ۱۲.
         // Organization Hierarchy Phase 1: «OrganizationStructure» اضافه شد - ۱۲ → ۱۳.
-        Assert.Equal(13, ImportCatalog.All.Count);
+        // RCM کلاس‌محور: «RcmStrategy» اضافه شد - ۱۳ → ۱۴.
+        Assert.Equal(14, ImportCatalog.All.Count);
         Assert.Equal(ImportCatalog.All.Count, ImportCatalog.All.Select(e => e.Key).Distinct().Count());
     }
 
@@ -113,11 +114,11 @@ public class ImportCenterNavigationTests
     // طبق فاز ۹: «ConditionReading» دقیقاً همون Sets(CmmsIntegration, ImportCenter) را دارد که
     // MaintenanceHistory دارد - پس هر جا MaintenanceHistory دیده می‌شد، حالا این‌جا هم دیده می‌شود.
     [Theory]
-    [InlineData(SystemRoles.SystemAdmin, 13)]
-    [InlineData(SystemRoles.EngineeringManager, 10)]
+    [InlineData(SystemRoles.SystemAdmin, 14)]
+    [InlineData(SystemRoles.EngineeringManager, 11)]
     [InlineData(SystemRoles.Viewer, 2)]
     [InlineData(SystemRoles.DocumentController, 3)]
-    [InlineData(SystemRoles.MaintenanceEngineer, 7)]
+    [InlineData(SystemRoles.MaintenanceEngineer, 8)]
     [InlineData(SystemRoles.QAManager, 0)]
     public void VisibleByRole_MatchesLegacySidebarGates(string role, int expectedCount)
     {
@@ -179,7 +180,7 @@ public class ImportCenterNavigationTests
         var view = Assert.IsType<ViewResult>(await controller.Index());
         var model = Assert.IsAssignableFrom<IReadOnlyList<ImportCatalog.ImportEntry>>(view.Model);
 
-        Assert.Equal(12, model.Count);
+        Assert.Equal(13, model.Count); // 14 در کاتالوگ منهای Mrs (رد مجوز)
         Assert.DoesNotContain(model, e => e.Key == "Mrs");
     }
 

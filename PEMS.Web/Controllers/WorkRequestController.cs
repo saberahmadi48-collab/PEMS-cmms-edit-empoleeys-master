@@ -70,6 +70,9 @@ public class WorkRequestController : Controller
         ViewBag.Disciplines = await _context.Disciplines.Where(x => x.IsActive)
             .Select(x => new { x.DisciplineId, x.Name }).ToListAsync();
         ViewBag.FunctionalLocations = await _functionalLocationService.GetPickerListAsync();
+        // A5: حالت خرابی از کاتالوگ ISO 14224 (نه متن آزاد)
+        ViewBag.FailureModes = await _context.FailureModes.Where(x => x.IsActive).OrderBy(x => x.DisplayOrder).ThenBy(x => x.Name)
+            .Select(x => new { x.FailureModeId, Label = x.Code + " - " + x.Name }).ToListAsync();
 
         return View();
     }
@@ -77,7 +80,9 @@ public class WorkRequestController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(string title, string? description, int? equipmentId, int? assetId,
-        int? functionalLocationId, string? reportedCondition, string priority, int? suggestedDisciplineId)
+        int? functionalLocationId, string? reportedCondition, string priority, int? suggestedDisciplineId,
+        bool isHseRelated = false, bool isEmergency = false, int? riskLikelihood = null, int? riskSeverity = null,
+        int? failureModeId = null, string? failureEffect = null, decimal? reportedDowntimeHours = null)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "Create"))
             return Forbid();
@@ -89,9 +94,13 @@ public class WorkRequestController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        var (success, error, id) = await _service.CreateAsync(
-            title, description, employeeId.Value, equipmentId, assetId, functionalLocationId,
-            reportedCondition, priority, suggestedDisciplineId);
+        var (success, error, id) = await _service.CreateAsync(new WorkRequestCreateRequest
+        {
+            Title = title, Description = description, RequestedById = employeeId.Value, EquipmentId = equipmentId, AssetId = assetId,
+            FunctionalLocationId = functionalLocationId, ReportedCondition = reportedCondition, Priority = priority, SuggestedDisciplineId = suggestedDisciplineId,
+            IsHseRelated = isHseRelated, IsEmergency = isEmergency, RiskLikelihood = riskLikelihood, RiskSeverity = riskSeverity,
+            FailureModeId = failureModeId, FailureEffect = failureEffect, ReportedDowntimeHours = reportedDowntimeHours
+        });
 
         if (!success)
         {
@@ -217,12 +226,12 @@ public class WorkRequestController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ConvertToWorkOrder(int id, string workOrderType)
+    public async Task<IActionResult> ConvertToWorkOrder(int id, string workOrderType, int? equipmentId = null)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "Approve"))
             return Forbid();
 
-        var (success, error, workOrderId) = await _service.ConvertToWorkOrderAsync(id, workOrderType, _currentUser.UserName, await BuildActorAsync());
+        var (success, error, workOrderId) = await _service.ConvertToWorkOrderAsync(id, workOrderType, _currentUser.UserName, await BuildActorAsync(), equipmentId);
 
         if (!success)
         {

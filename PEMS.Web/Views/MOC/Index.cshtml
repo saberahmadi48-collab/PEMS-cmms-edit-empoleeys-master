@@ -41,7 +41,7 @@
         </div>
         <div class="col-md-3">
             <select name="status" class="form-select form-select-sm">
-                <option value="">@Localizer["All Statuses"]</option>
+                <option value="">@Localizer["All statuses"]</option>
                 @foreach (var s in new[] { "PendingRiskAssessment", "PendingApproval", "PendingSeniorApproval", "Approved", "PendingClosure", "Closed", "Rejected" })
                 {
                     <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option>

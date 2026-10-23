@@ -49,24 +49,43 @@ public class ContractWorkflowService : IContractWorkflowService
     }
 
     public async Task<(bool Success, string? Error)> SubmitForReviewAsync(
-        int contractId, IReadOnlyList<string>? requiredDisciplines, int? actorEmployeeId, IReadOnlyList<string> actorRoles)
+        int contractId, IReadOnlyList<string>? requiredDisciplines, int? actorEmployeeId, IReadOnlyList<string> actorRoles,
+        int? editorUserId = null, string? ipAddress = null)
     {
         var contract = await _context.Contracts.FirstOrDefaultAsync(x => x.ContractId == contractId);
         if (contract == null) return (false, "قرارداد یافت نشد.");
-        if (contract.Status != "Draft")
-            return (false, $"ارسال برای بازبینی فقط از وضعیت Draft مجاز است (وضعیت فعلی: {contract.Status}).");
+        // P0 / بازارسال بعد از رد: Reject نهایی قرارداد را به Draft برمی‌گرداند و ردِ رشته‌ای آن را در «Rejected» نگه می‌دارد؛
+        // هر دو باید قابل اصلاح و ارسال مجدد باشند (قبلاً Rejected فقط با Terminate قابل خروج بود).
+        if (contract.Status != "Draft" && contract.Status != "Rejected")
+            return (false, $"ارسال برای بازبینی فقط از وضعیت Draft یا Rejected مجاز است (وضعیت فعلی: {contract.Status}).");
 
         var disciplines = (requiredDisciplines != null && requiredDisciplines.Count > 0)
-            ? requiredDisciplines
-            : RequiredDisciplines;
+            ? requiredDisciplines.Distinct().ToList()
+            : RequiredDisciplines.ToList();
 
         var participantRoles = disciplines.Select(RoleForDiscipline).Distinct().ToList();
 
-        await _runtime.StartInstanceAsync(
-            ContractWorkflowSeeder.Module, ContractWorkflowSeeder.BusinessObjectType, contractId,
-            ContractWorkflowSeeder.Category, contract.ProjectId, actorEmployeeId, participantRoles);
+        // P0 / بازارسال بعد از رد: ردیف‌های بازبینی هر رشته یکتاست (Index یکتا روی ContractId+DisciplineRole). در ارسال مجدد ردیف‌های
+        // موجود به Pending بازنشانی و دوباره استفاده می‌شوند (به‌جای درج ردیف تکراری که استثنای پایگاه‌داده می‌داد و بعد از شروع
+        // Instance گردش‌کار، Instance یتیم باقی می‌گذاشت)؛ رشته‌ای که دیگر لازم نیست IsRequired=false می‌شود.
+        var existingReviews = await _context.ContractDisciplineReviews.Where(x => x.ContractId == contractId).ToListAsync();
+        foreach (var review in existingReviews)
+        {
+            if (disciplines.Contains(review.DisciplineRole))
+            {
+                review.IsRequired = true;
+                review.Decision = "Pending";
+                review.Comment = null;
+                review.ReviewDate = null;
+                review.ReviewerId = null;
+            }
+            else
+            {
+                review.IsRequired = false;
+            }
+        }
 
-        foreach (var d in disciplines)
+        foreach (var d in disciplines.Where(d => existingReviews.All(r => r.DisciplineRole != d)))
         {
             _context.ContractDisciplineReviews.Add(new ContractDisciplineReview
             {
@@ -77,7 +96,12 @@ public class ContractWorkflowService : IContractWorkflowService
             });
         }
 
+        await _runtime.StartInstanceAsync(
+            ContractWorkflowSeeder.Module, ContractWorkflowSeeder.BusinessObjectType, contractId,
+            ContractWorkflowSeeder.Category, contract.ProjectId, actorEmployeeId, participantRoles);
+
         contract.Status = "UnderReview";
+        ContractEditorEvents.Add(_context, contractId, editorUserId, ipAddress, "Submitted the contract for review");
         await _context.SaveChangesAsync();
         return (true, null);
     }
@@ -132,7 +156,7 @@ public class ContractWorkflowService : IContractWorkflowService
             return (false, $"تایید نهایی فقط از وضعیت UnderReview مجاز است (وضعیت فعلی: {contract.Status}).");
 
         var anyPending = await _context.ContractDisciplineReviews
-            .AnyAsync(x => x.ContractId == contractId && x.Decision == "Pending");
+            .AnyAsync(x => x.ContractId == contractId && x.IsRequired && x.Decision == "Pending");
         if (anyPending)
             return (false, "همه‌ی رشته‌های الزامی هنوز بازبینی خود را ثبت نکرده‌اند.");
 
@@ -156,6 +180,11 @@ public class ContractWorkflowService : IContractWorkflowService
         });
         if (!sodDecision.Allowed && sodDecision.Reason == AccessDecisionReason.DeniedBySoD)
             return (false, "طبق سیاست تفکیک وظایف، کاربری که این قرارداد را ایجاد/ویرایش کرده نمی‌تواند خودش آن را تایید کند.");
+
+        // P0 / Fail-Closed: قبلاً فقط ردِ SoD متوقف می‌کرد و ردِ Scope/نقش/سیاست نادیده گرفته می‌شد. حالا فقط «Allowed صریح با
+        // دلیل Allow» عبور می‌کند؛ هر نتیجه‌ی دیگر (و نتیجه‌ی ناسازگار) تایید را بدون استثنای پیش‌بینی‌نشده متوقف می‌کند.
+        if (!(sodDecision.Allowed && sodDecision.Reason == AccessDecisionReason.Allow))
+            return (false, "شما برای تایید نهایی این قرارداد مجاز نیستید (مجوز، محدوده‌ی دسترسی یا سیاست تفکیک وظایف).");
 
         // طبق §I قاعده‌ی ۸ (Phase 4.4): ماتریس تایید بر مبنای ارزش/بحرانی‌بودن - فقط وقتی حداقل
         // یک قاعده پیکربندی شده باشد فعال می‌شود (بدون آستانه‌ی از پیش Seed شده). اگر پیکربندی
@@ -300,7 +329,8 @@ public class ContractWorkflowService : IContractWorkflowService
     }
 
     public async Task<(bool Success, string? Error, int? RevisionId)> RequestRevisionAsync(
-        int contractId, string changeType, decimal? newValue, string? reason, string? changeDescription, int? actorEmployeeId)
+        int contractId, string changeType, decimal? newValue, string? reason, string? changeDescription, int? actorEmployeeId,
+        int? editorUserId = null, string? ipAddress = null)
     {
         var contract = await _context.Contracts.Include(x => x.Revisions).FirstOrDefaultAsync(x => x.ContractId == contractId);
         if (contract == null) return (false, "قرارداد یافت نشد.", null);
@@ -324,19 +354,38 @@ public class ContractWorkflowService : IContractWorkflowService
             Status = "Pending"
         };
         _context.ContractRevisions.Add(revision);
+        ContractEditorEvents.Add(_context, contractId, editorUserId, ipAddress, "Requested a contract revision");
         await _context.SaveChangesAsync();
 
         return (true, null, revision.ContractRevisionId);
     }
 
     public async Task<(bool Success, string? Error)> ApproveRevisionAsync(
-        int contractRevisionId, int? actorEmployeeId, IReadOnlyList<string> actorRoles)
+        int contractRevisionId, int? actorEmployeeId, IReadOnlyList<string> actorRoles,
+        int? currentUserId = null, string? ipAddress = null)
     {
         var revision = await _context.ContractRevisions
             .Include(x => x.Contract)
             .FirstOrDefaultAsync(x => x.ContractRevisionId == contractRevisionId);
         if (revision == null) return (false, "این تغییر یافت نشد.");
         if (revision.Status != "Pending") return (false, "این تغییر قبلاً تصمیم‌گیری شده است.");
+
+        // P0-10 / D-OPEN-05: تأیید تغییر ارزش هم «تأیید قرارداد» است؛ همان مسیر کاربر-آگاه ApproveAsync (Scope + SoD) و Fail-Closed.
+        if (currentUserId.HasValue)
+        {
+            var decision = await _accessControlService.AuthorizeAsync(new AccessControlRequest
+            {
+                UserId = currentUserId.Value,
+                ResourceName = "Contracts",
+                ActionName = "Approve",
+                ResourceId = revision.ContractId.ToString(),
+                IpAddress = ipAddress
+            });
+            if (!decision.Allowed && decision.Reason == AccessDecisionReason.DeniedBySoD)
+                return (false, "طبق سیاست تفکیک وظایف، کاربری که این قرارداد را ایجاد/ویرایش کرده نمی‌تواند تغییر آن را تایید کند.");
+            if (!(decision.Allowed && decision.Reason == AccessDecisionReason.Allow))
+                return (false, "شما برای تایید تغییر این قرارداد مجاز نیستید (مجوز، محدوده‌ی دسترسی یا سیاست تفکیک وظایف).");
+        }
 
         revision.Status = "Approved";
         revision.ApprovedById = actorEmployeeId;

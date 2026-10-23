@@ -23,7 +23,7 @@
             <strong>Index of Contents Due:</strong> @(Model.IndexOfContentsDueDate?.ToString("yyyy-MM-dd") ?? "-")
             @if (Model.IsIndexOverdue)
             {
-                <span class="badge bg-danger">@Localizer["overdue"]</span>
+                <span class="badge bg-danger">@Localizer["Overdue"]</span>
             }
         </div>
         <div class="col-md-3"><strong>Index Submitted:</strong> @(Model.IndexOfContentsSubmittedDate?.ToString("yyyy-MM-dd") ?? "-")</div>

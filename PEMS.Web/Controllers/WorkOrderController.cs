@@ -32,12 +32,15 @@ public class WorkOrderController : Controller
     private readonly ICrewService _crewService;
     private readonly INumberingService _numberingService;
     private readonly IMaterialStockService _materialStockService;
+    private readonly IWorkOrderSectionGuard? _sectionGuard;
 
+    // sectionGuard اختیاری است تا سازنده‌ی ۹-پارامتری قبلی (تست‌ها) سازگار بماند؛ DI همیشه آن را تأمین می‌کند. بدون آن، تمام جهش‌های بخش‌های فرزند Fail-Closed رد می‌شوند.
     public WorkOrderController(PEMSDbContext context, IWorkOrderReviewService reviewService,
         ICurrentUserService currentUser, IPermissionService permissionService, IWorkOrderLaborService laborService,
         IWorkOrderLifecycleService lifecycleService, ICrewService crewService, INumberingService numberingService,
-        IMaterialStockService materialStockService)
+        IMaterialStockService materialStockService, IWorkOrderSectionGuard? sectionGuard = null)
     {
+        _sectionGuard = sectionGuard;
         _context = context;
         _reviewService = reviewService;
         _currentUser = currentUser;
@@ -222,6 +225,10 @@ public class WorkOrderController : Controller
 
         if (workOrder == null) return NotFound();
 
+        // هویت تجهیز (تگ، نام، کلاس ISO 14224، ناحیه/واحد، بحرانی‌بودن) همه‌جا یکسان نمایش داده می‌شود
+        if (HttpContext?.RequestServices?.GetService(typeof(IStrategyAssignmentService)) is IStrategyAssignmentService identityService)
+            ViewBag.EquipmentIdentity = await identityService.GetEquipmentIdentityAsync(workOrder.EquipmentId);
+
         // طبق قاعده‌ی دیسیپلین در AssignExecutorAsync/AddLaborEntryAsync (Phase 6D): وقتی دیسیپلین مسئول
         // مشخص است، فقط تیم/کارمند همان دیسیپلین نمایش داده می‌شود تا انتخابگر با قاعده‌ی واقعی سرور
         // هم‌خوان باشد (پیش از این هر تیم/کارمند فعالی نمایش داده می‌شد و فقط بعد از Submit رد می‌شد).
@@ -275,6 +282,24 @@ public class WorkOrderController : Controller
         ViewBag.RequiredMaterials = await _context.WorkOrderMaterials.Include(x => x.MaterialItem)
             .Where(x => x.WorkOrderId == id).ToListAsync();
 
+        // H25/H26: تنها منبع حقیقت «کدام بخش در کدام فاز چه قابلیتی دارد»؛ Razor فقط همین را رندر می‌کند و POSTها همین را اعمال می‌کنند
+        ViewBag.Sections = _sectionGuard == null ? null : await _sectionGuard.GetPageAsync(id, BuildCaller(await GetCurrentEmployeeIdAsync()));
+        ViewBag.HasMaterialItems = await _context.MaterialItems.AnyAsync(x => x.IsActive);
+        ViewBag.CanEditWorkOrder = await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit");
+        ViewBag.CanApproveWorkOrder = await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Approve");
+        // B9: حالت/علت خرابی از کاتالوگ ISO 14224 (فرم تکمیل به‌جای متن آزاد Select نشان می‌دهد؛ سرور هم همین را اعمال می‌کند)
+        // کاتالوگ مشترک با استراتژی RCM: فقط حالت‌های خرابی کلاس تجهیز این دستور کار (+ والدهای کلاس + حالت‌های عمومی)
+        var classChain = new HashSet<int>();
+        for (int? cid = workOrder.Equipment?.EquipmentClassId; cid.HasValue && classChain.Add(cid.Value);)
+            cid = await _context.EquipmentClasses.Where(c => c.EquipmentClassId == cid.Value).Select(c => c.ParentEquipmentClassId).FirstOrDefaultAsync();
+        var failureModeQuery = _context.FailureModes.Where(x => x.IsActive);
+        if (classChain.Count > 0)
+            failureModeQuery = failureModeQuery.Where(x => x.EquipmentClassId == null || classChain.Contains(x.EquipmentClassId.Value));
+        ViewBag.FailureModeOptions = await failureModeQuery.OrderBy(x => x.DisplayOrder).ThenBy(x => x.Name)
+            .Select(x => new PEMS.Application.DTOs.FailureOption(x.Code, x.Name)).ToListAsync();
+        ViewBag.FailureCauseOptions = await _context.FailureCauses.Where(x => x.IsActive).OrderBy(x => x.DisplayOrder).ThenBy(x => x.Name)
+            .Select(x => new PEMS.Application.DTOs.FailureOption(x.Code, x.Name)).ToListAsync();
+
         // طبق CMMS Production Baseline v1 بند ۱۰.۴: چک‌لیست اجرای واقعی - وقتی این WorkOrder از
         // یک Plan دارای Job Plan ساخته شده باشد
         ViewBag.Tasks = await _context.WorkOrderTasks
@@ -296,6 +321,9 @@ public class WorkOrderController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit"))
             return Forbid();
 
+        var denied = await GuardChildAsync(workOrderId, WoSection.JobPlanTasks, WoSectionAction.Edit, recordRef: workOrderTaskId.ToString());
+        if (denied != null) return denied;
+
         var task = await GetOwnedWorkOrderTaskAsync(workOrderTaskId, workOrderId);
         if (task == null) return NotFound();
 
@@ -313,6 +341,9 @@ public class WorkOrderController : Controller
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit"))
             return Forbid();
+
+        var denied = await GuardChildAsync(workOrderId, WoSection.JobPlanTasks, WoSectionAction.Edit, recordRef: workOrderTaskId.ToString());
+        if (denied != null) return denied;
 
         var task = await GetOwnedWorkOrderTaskAsync(workOrderTaskId, workOrderId);
         if (task == null) return NotFound();
@@ -375,12 +406,12 @@ public class WorkOrderController : Controller
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
 
-        var (success, error) = await _lifecycleService.ExecuteWorkflowActionAsync(id, actionType, comment, await BuildActorAsync(),
+        var (success, error) = await SafeAsync(async () => await _lifecycleService.ExecuteWorkflowActionAsync(id, actionType, comment, await BuildActorAsync(),
             new WorkOrderCompletionData
             {
                 FailureModeCode = failureModeCode, FailureCauseCode = failureCauseCode, RootCause = rootCause, DowntimeHours = downtimeHours,
                 FailureEffect = failureEffect, CorrectiveAction = correctiveAction, ContractorCost = contractorCost, ContractorName = contractorName
-            });
+            }));
         TempData[success ? "Message" : "Error"] = success ? L("اقدام با موفقیت انجام شد.", "The action was completed.") : error;
         return RedirectToAction(nameof(Details), new { id });
     }
@@ -390,7 +421,10 @@ public class WorkOrderController : Controller
     public async Task<IActionResult> SetPlanning(int id, int responsibleDisciplineId)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
-        var (success, error) = await _lifecycleService.SetPlanningAsync(id, responsibleDisciplineId, await BuildActorAsync());
+        var denied = await GuardChildAsync(id, WoSection.ResponsibleDiscipline, WoSectionAction.Edit);
+        if (denied != null) return denied;
+        var (success, error) = await SafeAsync(async () => await _lifecycleService.SetPlanningAsync(id, responsibleDisciplineId, await BuildActorAsync()));
+        if (success) await RecordChildChangeAsync(id, WoSection.ResponsibleDiscipline, WoSectionAction.Edit, null, null, null, "ResponsibleDisciplineId=" + responsibleDisciplineId);
         TempData[success ? "Message" : "Error"] = success ? L("دیسیپلین مسئول نگهداری ثبت شد.", "Responsible maintenance discipline saved.") : error;
         return RedirectToAction(nameof(Details), new { id });
     }
@@ -400,7 +434,10 @@ public class WorkOrderController : Controller
     public async Task<IActionResult> AssignExecutor(int id, int? teamId, int? employeeId)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
-        var (success, error) = await _lifecycleService.AssignExecutorAsync(id, teamId, employeeId, await BuildActorAsync());
+        var denied = await GuardChildAsync(id, WoSection.ExecutorAssignment, WoSectionAction.Edit);
+        if (denied != null) return denied;
+        var (success, error) = await SafeAsync(async () => await _lifecycleService.AssignExecutorAsync(id, teamId, employeeId, await BuildActorAsync()));
+        if (success) await RecordChildChangeAsync(id, WoSection.ExecutorAssignment, WoSectionAction.Edit, null, null, null, $"TeamId={teamId}; EmployeeId={employeeId}");
         TempData[success ? "Message" : "Error"] = success ? L("مجری تخصیص داده شد.", "Executor assigned.") : error;
         return RedirectToAction(nameof(Details), new { id });
     }
@@ -410,7 +447,10 @@ public class WorkOrderController : Controller
     public async Task<IActionResult> SetSchedule(int id, DateTime plannedStart, DateTime plannedFinish)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
-        var (success, error) = await _lifecycleService.ScheduleWorkOrderAsync(id, plannedStart, plannedFinish, await BuildActorAsync());
+        var denied = await GuardChildAsync(id, WoSection.Schedule, WoSectionAction.Edit);
+        if (denied != null) return denied;
+        var (success, error) = await SafeAsync(async () => await _lifecycleService.ScheduleWorkOrderAsync(id, plannedStart, plannedFinish, await BuildActorAsync()));
+        if (success) await RecordChildChangeAsync(id, WoSection.Schedule, WoSectionAction.Edit, null, null, null, $"PlannedStart={plannedStart:O}; PlannedFinish={plannedFinish:O}");
         TempData[success ? "Message" : "Error"] = success ? L("زمان‌بندی ثبت شد.", "Schedule saved.") : error;
         return RedirectToAction(nameof(Details), new { id });
     }
@@ -467,22 +507,47 @@ public class WorkOrderController : Controller
         return RedirectToAction(nameof(Details), new { id });
     }
 
+    /// <summary>
+    /// H28: بازگشایی رسمی Work Order بسته‌شده. مجوز جدا (WorkOrder.Reopen)، دلیل الزامی و ممیزی کامل؛ Work Order به مرحله‌ی تأیید برمی‌گردد (نه ویرایش آزاد).
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ReopenWorkOrder(int id, string? reason)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Reopen")) return Forbid();
+
+        var (success, error) = await _lifecycleService.ReopenAsync(id, reason, await BuildActorAsync(), _currentUser.UserName, _currentUser.UserId, GetClientIp());
+        TempData[success ? "Message" : "Error"] = success ? L("Work Order بازگشایی شد و به مرحله‌ی تأیید برگشت.", "The Work Order was reopened and returned to verification.") : error;
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddLaborEntry(int workOrderId, int employeeId, int? teamId, DateTime workDate,
-        decimal regularHours, decimal overtimeHours, string? notes)
+        decimal regularHours, decimal overtimeHours, string? notes, string? correctionReason = null)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
-        try { await _laborService.AddLaborEntryAsync(workOrderId, employeeId, teamId, workDate, regularHours, overtimeHours, notes, await BuildActorAsync()); TempData["Message"] = "ساعت کار ثبت شد."; }
+        var denied = await GuardChildAsync(workOrderId, WoSection.Labor, WoSectionAction.Add, correctionReason);
+        if (denied != null) return denied;
+        try
+        {
+            var laborId = await _laborService.AddLaborEntryAsync(workOrderId, employeeId, teamId, workDate, regularHours, overtimeHours, notes, await BuildActorAsync(), isCorrection: true);
+            await RecordChildChangeAsync(workOrderId, WoSection.Labor, WoSectionAction.Add, laborId.ToString(), correctionReason, null,
+                $"EmployeeId={employeeId}; TeamId={teamId}; WorkDate={workDate:yyyy-MM-dd}; RegularHours={regularHours}; OvertimeHours={overtimeHours}");
+            TempData["Message"] = "ساعت کار ثبت شد.";
+        }
+        catch (LaborRateMissingException ex) { TempData["Error"] = ex.Message; TempData["LaborRateEmployeeId"] = ex.EmployeeId; }
         catch (Exception ex) { TempData["Error"] = ex.Message; }
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddSpareUsage(int workOrderId, int materialItemId, decimal quantity, decimal? unitCost)
+    public async Task<IActionResult> AddSpareUsage(int workOrderId, int materialItemId, decimal quantity, decimal? unitCost, string? correctionReason = null)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
+        var denied = await GuardChildAsync(workOrderId, WoSection.SpareParts, WoSectionAction.Add, correctionReason);
+        if (denied != null) return denied;
         if (quantity <= 0) { TempData["Error"] = "تعداد مصرف باید بزرگ‌تر از صفر باشه."; return RedirectToAction(nameof(Details), new { id = workOrderId }); }
         if (unitCost.HasValue && unitCost.Value < 0) { TempData["Error"] = "قیمت واحد نمی‌تونه منفی باشه."; return RedirectToAction(nameof(Details), new { id = workOrderId }); }
 
@@ -548,6 +613,8 @@ public class WorkOrderController : Controller
             return RedirectToAction(nameof(Details), new { id = workOrderId });
         }
 
+        await RecordChildChangeAsync(workOrderId, WoSection.SpareParts, WoSectionAction.Add, materialItemId.ToString(), correctionReason, null,
+            $"MaterialItemId={materialItemId}; Quantity={quantity}; UnitCost={unitCost}");
         TempData["Message"] = "مصرف قطعه ثبت شد" + (stock.IsLowStock ? " - هشدار: موجودی این متریال کمه." : "");
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
@@ -560,6 +627,8 @@ public class WorkOrderController : Controller
     public async Task<IActionResult> ReturnSpareUsage(int maintenanceSpareUsageId, int workOrderId, decimal returnQuantity, string? reason)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
+        var denied = await GuardChildAsync(workOrderId, WoSection.SpareParts, WoSectionAction.Edit, reason, maintenanceSpareUsageId.ToString());
+        if (denied != null) return denied;
 
         if (returnQuantity <= 0)
         {
@@ -580,6 +649,7 @@ public class WorkOrderController : Controller
             return RedirectToAction(nameof(Details), new { id = workOrderId });
         }
 
+        await RecordChildChangeAsync(workOrderId, WoSection.SpareParts, WoSectionAction.Edit, maintenanceSpareUsageId.ToString(), reason, null, $"ReturnQuantity={returnQuantity}");
         TempData["Message"] = "برگشت قطعه ثبت شد.";
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
@@ -589,6 +659,8 @@ public class WorkOrderController : Controller
     public async Task<IActionResult> AddRequiredSkill(int workOrderId, int skillId, string? minimumProficiencyLevel, decimal? plannedHours)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
+        var denied = await GuardChildAsync(workOrderId, WoSection.RequiredSkills, WoSectionAction.Add, recordRef: skillId.ToString());
+        if (denied != null) return denied;
 
         if (await _context.RequiredSkills.AnyAsync(x => x.WorkOrderId == workOrderId && x.SkillId == skillId))
         {
@@ -606,6 +678,7 @@ public class WorkOrderController : Controller
         });
         await _context.SaveChangesAsync();
 
+        await RecordChildChangeAsync(workOrderId, WoSection.RequiredSkills, WoSectionAction.Add, skillId.ToString(), null, null, $"SkillId={skillId}; Level={minimumProficiencyLevel}; PlannedHours={plannedHours}");
         TempData["Message"] = "مهارت موردنیاز اضافه شد.";
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
@@ -615,6 +688,8 @@ public class WorkOrderController : Controller
     public async Task<IActionResult> AddRequiredMaterial(int workOrderId, int materialItemId, decimal requiredQuantity)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
+        var denied = await GuardChildAsync(workOrderId, WoSection.RequiredMaterials, WoSectionAction.Add, recordRef: materialItemId.ToString());
+        if (denied != null) return denied;
 
         if (await _context.WorkOrderMaterials.AnyAsync(x => x.WorkOrderId == workOrderId && x.MaterialItemId == materialItemId))
         {
@@ -631,6 +706,7 @@ public class WorkOrderController : Controller
         });
         await _context.SaveChangesAsync();
 
+        await RecordChildChangeAsync(workOrderId, WoSection.RequiredMaterials, WoSectionAction.Add, materialItemId.ToString(), null, null, $"MaterialItemId={materialItemId}; RequiredQuantity={requiredQuantity}");
         TempData["Message"] = "متریال موردنیاز اضافه شد.";
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
@@ -640,12 +716,17 @@ public class WorkOrderController : Controller
     public async Task<IActionResult> RemoveRequiredMaterial(int workOrderMaterialId, int workOrderId)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
+        var denied = await GuardChildAsync(workOrderId, WoSection.RequiredMaterials, WoSectionAction.Remove, recordRef: workOrderMaterialId.ToString());
+        if (denied != null) return denied;
 
-        var requiredMaterial = await _context.WorkOrderMaterials.FirstOrDefaultAsync(x => x.WorkOrderMaterialId == workOrderMaterialId);
+        // H27: رکورد باید به همین Work Order تعلق داشته باشد (قبلاً فقط با شناسه‌ی خودش پیدا می‌شد - امکان حذف رکورد Work Order دیگر)
+        var requiredMaterial = await _context.WorkOrderMaterials.FirstOrDefaultAsync(x => x.WorkOrderMaterialId == workOrderMaterialId && x.WorkOrderId == workOrderId);
         if (requiredMaterial != null)
         {
+            var before = $"MaterialItemId={requiredMaterial.MaterialItemId}; RequiredQuantity={requiredMaterial.RequiredQuantity}";
             _context.WorkOrderMaterials.Remove(requiredMaterial);
             await _context.SaveChangesAsync();
+            await RecordChildChangeAsync(workOrderId, WoSection.RequiredMaterials, WoSectionAction.Remove, workOrderMaterialId.ToString(), null, before, null);
         }
 
         return RedirectToAction(nameof(Details), new { id = workOrderId });
@@ -656,12 +737,16 @@ public class WorkOrderController : Controller
     public async Task<IActionResult> RemoveRequiredSkill(int requiredSkillId, int workOrderId)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
+        var denied = await GuardChildAsync(workOrderId, WoSection.RequiredSkills, WoSectionAction.Remove, recordRef: requiredSkillId.ToString());
+        if (denied != null) return denied;
 
-        var requiredSkill = await _context.RequiredSkills.FirstOrDefaultAsync(x => x.RequiredSkillId == requiredSkillId);
+        var requiredSkill = await _context.RequiredSkills.FirstOrDefaultAsync(x => x.RequiredSkillId == requiredSkillId && x.WorkOrderId == workOrderId);
         if (requiredSkill != null)
         {
+            var before = $"SkillId={requiredSkill.SkillId}; Level={requiredSkill.MinimumProficiencyLevel}; PlannedHours={requiredSkill.PlannedHours}";
             _context.RequiredSkills.Remove(requiredSkill);
             await _context.SaveChangesAsync();
+            await RecordChildChangeAsync(workOrderId, WoSection.RequiredSkills, WoSectionAction.Remove, requiredSkillId.ToString(), null, before, null);
         }
 
         TempData["Message"] = "مهارت موردنیاز حذف شد.";
@@ -674,7 +759,10 @@ public class WorkOrderController : Controller
     public async Task<IActionResult> CreateCrewForWorkOrder(int workOrderId, string code, string name)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
-        var (success, error, _) = await _crewService.CreateAsync(code, name, workOrderId);
+        var denied = await GuardChildAsync(workOrderId, WoSection.Crew, WoSectionAction.Add, recordRef: code);
+        if (denied != null) return denied;
+        var (success, error, crewId) = await _crewService.CreateAsync(code, name, workOrderId);
+        if (success) await RecordChildChangeAsync(workOrderId, WoSection.Crew, WoSectionAction.Add, crewId?.ToString(), null, null, $"Code={code}; Name={name}");
         TempData[success ? "Message" : "Error"] = success ? "Crew ساخته شد." : error;
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
@@ -684,7 +772,14 @@ public class WorkOrderController : Controller
     public async Task<IActionResult> RequestDisciplineReview(int workOrderId, List<int> disciplineIds)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
-        try { await _reviewService.RequestDisciplineReviewAsync(workOrderId, disciplineIds, await GetCurrentEmployeeIdAsync(), GetClientIp(), GetUserAgent()); TempData["Message"] = "بازبینی چند-دیسیپلینه شروع شد."; }
+        var denied = await GuardChildAsync(workOrderId, WoSection.DisciplineReview, WoSectionAction.Add);
+        if (denied != null) return denied;
+        try
+        {
+            await _reviewService.RequestDisciplineReviewAsync(workOrderId, disciplineIds, await GetCurrentEmployeeIdAsync(), GetClientIp(), GetUserAgent());
+            await RecordChildChangeAsync(workOrderId, WoSection.DisciplineReview, WoSectionAction.Add, null, null, null, "DisciplineIds=" + string.Join(",", disciplineIds ?? new List<int>()));
+            TempData["Message"] = "بازبینی چند-دیسیپلینه شروع شد.";
+        }
         catch (Exception ex) { TempData["Error"] = ex.Message; }
         return RedirectToAction(nameof(Details), new { id = workOrderId });
     }
@@ -713,6 +808,57 @@ public class WorkOrderController : Controller
         var employeeId = await GetCurrentEmployeeIdAsync();
         if (!employeeId.HasValue) return null;
         return await _context.Employees.Where(e => e.EmployeeId == employeeId.Value).Select(e => (int?)e.DisciplineId).FirstOrDefaultAsync();
+    }
+
+    private WoCaller BuildCaller(int? employeeId)
+        => new(_currentUser.UserId, _currentUser.UserName, employeeId, _currentUser.Roles, HttpContext?.Connection.RemoteIpAddress?.ToString());
+
+    private static bool IsFa() => System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+
+    private bool WantsJson()
+        => Request.Headers.XRequestedWith == "XMLHttpRequest" || Request.Headers.Accept.ToString().Contains("application/json", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// H25-H27: تنها نقطه‌ی بررسی «بخش × فاز × مجوز» برای تمام POSTهای جهشی. null = مجاز. رد = پیام مشخص و بومی‌شده؛ برای فرم‌های کلاسیک Toast + بازگشت به صفحه
+    /// (PRG؛ تا صفحه‌ی خطای خالی نشان داده نشود) و برای فراخوان JSON/AJAX وضعیت واقعی HTTP 400/403/404 با بدنه‌ی JSON. هرگز بی‌صدا و هرگز 500.
+    /// </summary>
+    private async Task<IActionResult?> GuardChildAsync(int workOrderId, WoSection section, WoSectionAction action, string? reason = null, string? recordRef = null)
+    {
+        if (_sectionGuard == null)
+        {
+            TempData["Error"] = L("دروازه‌ی بخش‌های Work Order پیکربندی نشده است؛ تغییر مجاز نیست.", "The Work Order section guard is not configured; the change is not allowed.");
+            return RedirectToAction(nameof(Details), new { id = workOrderId });
+        }
+
+        var result = await _sectionGuard.AuthorizeAsync(workOrderId, section, action, BuildCaller(await GetCurrentEmployeeIdAsync()), reason, recordRef);
+        if (result.Allowed) return null;
+
+        var message = result.Message(IsFa());
+        Response.Headers["X-PEMS-Policy"] = result.Code;
+        if (WantsJson()) return StatusCode(result.HttpStatus, new { code = result.Code, error = message, phase = result.Phase.ToString() });
+        if (result.HttpStatus == 404) return NotFound();
+
+        TempData["Error"] = message;
+        TempData["PolicyCode"] = result.Code;
+        return RedirectToAction(nameof(Details), new { id = workOrderId });
+    }
+
+    private async Task RecordChildChangeAsync(int workOrderId, WoSection section, WoSectionAction action, string? recordRef, string? reason, string? before, string? after)
+    {
+        if (_sectionGuard == null) return;
+        try { await _sectionGuard.RecordChangeAsync(workOrderId, section, action, BuildCaller(await GetCurrentEmployeeIdAsync()), recordRef, reason, before, after); }
+        catch (Exception) { _context.ChangeTracker.Clear(); /* ثبت ممیزی بهترین‌تلاش است؛ جهش قبلاً ذخیره شده */ }
+    }
+
+    /// <summary>B11: آخرین خط دفاع - هر استثنای پیش‌بینی‌نشده به Toast خطای مشخص تبدیل می‌شود (هرگز صفحه‌ی خطا/سکوت).</summary>
+    private async Task<(bool Success, string? Error)> SafeAsync(Func<Task<(bool Success, string? Error)>> action)
+    {
+        try { return await action(); }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            _context.ChangeTracker.Clear();
+            return (false, L("عملیات انجام نشد (خطای غیرمنتظره): ", "The operation could not be completed (unexpected error): ") + ex.GetBaseException().Message);
+        }
     }
 
     private string? GetClientIp() => HttpContext.Connection.RemoteIpAddress?.ToString();

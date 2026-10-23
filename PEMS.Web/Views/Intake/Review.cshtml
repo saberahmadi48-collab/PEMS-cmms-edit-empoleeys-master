@@ -64,7 +64,7 @@
             <div class="col-md-4">
                 <label class="form-label">@Localizer["Discipline"]</label>
                 <select name="disciplineCode" class="form-select">
-                    <option value="">@Localizer["-- none --"]</option>
+                    <option value="">@Localizer["-- None --"]</option>
                     @foreach (var d in disciplines)
                     { <option value="@d.Code" selected="@(d.Code == Model.PredictedDisciplineCode)">@d.Name (@d.Code)</option> }
                 </select>

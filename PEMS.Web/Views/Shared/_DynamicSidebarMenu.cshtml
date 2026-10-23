@@ -1,0 +1,95 @@
+@using PEMS.Web.Navigation
+@using PEMS.Web.Security
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@inject ICurrentUserService CurrentUserService
+@inject DynamicSidebarBuilder SidebarBuilder
+@{
+    // سایدبار داده‌محور (پشت پرچم Features:DynamicSidebar:Enabled). ساختار/قاعده‌ها از NavigationMenuItems؛ Markup و کلاس‌ها عیناً
+    // همان _SidebarMenu.cshtml تا ظاهر، Accordion، حالت Icon-Rail و دسترس‌پذیری صفحه‌کلید بدون تغییر بمانند.
+    var route = new SidebarRouteContext(
+        ViewContext.RouteData.Values["area"]?.ToString(),
+        ViewContext.RouteData.Values["controller"]?.ToString() ?? "",
+        ViewContext.RouteData.Values["action"]?.ToString() ?? "");
+
+    var nodes = await SidebarBuilder.BuildAsync(User, CurrentUserService.Roles, route,
+        item => item.ExternalPath ?? (item.Controller == null ? null : Url.Action(item.Action ?? "Index", item.Controller, new { area = item.Area ?? "" })),
+        key => Localizer[key]);
+
+    string SectionId(string key) => "sec-" + new string(key.Select(c => char.IsLetterOrDigit(c) ? c : '-').ToArray());
+}
+
+@functions {
+    private Microsoft.AspNetCore.Html.IHtmlContent Badge(SidebarNode node)
+    {
+        if (node.BadgeKey == null) return Microsoft.AspNetCore.Html.HtmlString.Empty;
+        return new Microsoft.AspNetCore.Html.HtmlString(
+            $"<span class=\"badge rounded-pill bg-{node.BadgeTone} ms-auto nav-badge d-none\" data-nav-badge=\"{System.Net.WebUtility.HtmlEncode(node.BadgeKey)}\"></span>");
+    }
+}
+
+<nav class="pems-sidebar" id="pemsSidebar" data-dynamic-sidebar="true">
+    @foreach (var node in nodes)
+    {
+        if (node.IsSection)
+        {
+            var id = SectionId(node.Key);
+            <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#@id" role="button" tabindex="0" aria-expanded="@node.IsActive.ToString().ToLower()" data-nav-key="@node.Key">
+                <i class="bi @node.Icon nav-section-icon"></i>
+                <span>@node.Title</span>
+                <i class="bi bi-chevron-down nav-section-chevron@(node.IsActive ? " rotated" : "")"></i>
+            </div>
+            <div class="collapse@(node.IsActive ? " show" : "")" id="@id">
+                @foreach (var child in node.Children)
+                {
+                    if (child.IsSubheading)
+                    {
+                        <div class="nav-subheading" data-nav-key="@child.Key">@child.Title</div>
+                        foreach (var sub in child.Children)
+                        {
+                            <a class="nav-link nav-subitem @(sub.IsActive ? "active" : "")" href="@sub.Href" data-nav-key="@sub.Key" @(sub.OpenInNewTab ? "target=_blank rel=noopener" : "")>
+                                <i class="bi @sub.Icon"></i><span class="nav-label">@sub.Title</span>@Badge(sub)
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <a class="nav-link @(child.IsActive ? "active" : "")" href="@child.Href" data-nav-key="@child.Key" @(child.OpenInNewTab ? "target=_blank rel=noopener" : "")>
+                            <i class="bi @child.Icon"></i><span class="nav-label">@child.Title</span>@Badge(child)
+                        </a>
+                    }
+                }
+            </div>
+        }
+        else if (!node.IsSubheading)
+        {
+            <a class="nav-link @(node.IsActive ? "active" : "")" href="@node.Href" data-nav-key="@node.Key" @(node.OpenInNewTab ? "target=_blank rel=noopener" : "")>
+                <i class="bi @node.Icon"></i><span class="nav-label">@node.Title</span>@Badge(node)
+            </a>
+        }
+    }
+</nav>
+
+<script>
+    // همان رفتارهای سایدبار قدیمی: چرخش Chevron، باز/بسته با Enter/Space، Tooltip برای حالت Icon-Rail
+    document.querySelectorAll('.pems-sidebar .nav-section-title').forEach(function (title) {
+        var target = document.querySelector(title.getAttribute('data-bs-target'));
+        var chevron = title.querySelector('.nav-section-chevron');
+        if (target && chevron) {
+            target.addEventListener('show.bs.collapse', function () { chevron.classList.add('rotated'); });
+            target.addEventListener('hide.bs.collapse', function () { chevron.classList.remove('rotated'); });
+        }
+        title.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); title.click(); }
+        });
+    });
+    document.querySelectorAll('.pems-sidebar .nav-link, .pems-sidebar .nav-section-title').forEach(function (el) {
+        if (!el.hasAttribute('title')) {
+            var label = el.querySelector('.nav-label, span');
+            var text = (label ? label.textContent : el.textContent).trim();
+            if (text) el.setAttribute('title', text);
+        }
+    });
+</script>
+<script src="~/js/sidebar-badges.js" asp-append-version="true"></script>

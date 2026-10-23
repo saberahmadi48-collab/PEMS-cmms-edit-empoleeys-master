@@ -26,7 +26,7 @@
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Contract No"]</label>
                 <select name="contractId" class="form-select">
-                    <option value="">@Localizer["-- none --"]</option>
+                    <option value="">@Localizer["-- None --"]</option>
                     @foreach (var c in contracts) { <option value="@c.ContractId">@c.ContractNo</option> }
                 </select>
             </div>

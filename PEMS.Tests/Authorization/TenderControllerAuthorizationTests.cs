@@ -33,7 +33,7 @@ public class TenderControllerAuthorizationTests
         var currentUser = new FakeCurrentUserService { UserId = 1, Roles = role != null ? new List<string> { role } : new List<string>() };
         var service = new TenderService(ctx, new FakeNumberingService());
         var packageService = new ProcurementPackageService(ctx);
-        var controller = new TenderController(service, packageService, permissionService, currentUser, ctx).WithTempData();
+        var controller = new TenderController(service, packageService, permissionService, currentUser, ctx, accessControl).WithTempData();
 
         return (controller, ctx);
     }

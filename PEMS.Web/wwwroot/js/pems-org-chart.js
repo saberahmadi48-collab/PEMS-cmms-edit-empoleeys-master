@@ -15,6 +15,12 @@
     var positionsText = root.getAttribute("data-positions-text");
     var membersText = root.getAttribute("data-members-text");
     var viewDetailsText = root.getAttribute("data-view-details-text");
+    var filterEmptyText = root.getAttribute("data-filter-empty-text");
+    var noDisciplineText = root.getAttribute("data-no-discipline-text");
+    var allDisciplinesText = root.getAttribute("data-all-disciplines-text");
+
+    // Pure helpers (summary, vacancy filter, discipline search) live in pems-org-chart-logic.js
+    var Logic = window.PemsOrgChartLogic;
 
     var loadingEl = document.getElementById("orgChartLoading");
     var errorEl = document.getElementById("orgChartError");
@@ -25,18 +31,25 @@
     var canvasEl = document.getElementById("orgChartCanvas");
     var retryBtn = document.getElementById("orgChartRetry");
     var disciplineFilter = document.getElementById("orgChartDisciplineFilter");
+    var disciplineSearch = document.getElementById("orgChartDisciplineSearch");
+    var summaryEl = document.getElementById("orgChartSummary");
 
     var noSelectionEl = document.getElementById("orgChartNoSelection");
     var detailContentEl = document.getElementById("orgChartDetailContent");
 
+    var rawTree = [];          // last tree from the server (unfiltered); the vacancy filter redraws from this
+    var filterMode = "all";    // all | filled | vacant
+
     var zoom = 1;
     var MIN_ZOOM = 0.4, MAX_ZOOM = 2, ZOOM_STEP = 0.15;
 
-    function showState(state) {
+    // keepSummary: the staffing summary stays visible when the chart is empty only because of the vacancy filter
+    function showState(state, keepSummary) {
         loadingEl.hidden = state !== "loading";
         errorEl.hidden = state !== "error";
         emptyEl.hidden = state !== "empty";
         viewportEl.hidden = state !== "ready";
+        if (summaryEl) summaryEl.hidden = !(state === "ready" || keepSummary === true);
     }
 
     function esc(s) {
@@ -353,23 +366,74 @@
 
     // ---- Load ----
 
-    function render(tree) {
+    function setText(id, value) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = value;
+    }
+
+    function updateSummary(s) {
+        setText("orgChartStatTotal", s.total);
+        setText("orgChartStatFilled", s.filled);
+        setText("orgChartStatVacant", s.vacant);
+        setText("orgChartStatOccupancy", s.occupancyPercent + "%");
+        setText("orgChartFilterFilled", s.filled);
+        setText("orgChartFilterVacant", s.vacant);
+
+        var filledPct = s.total === 0 ? 0 : (s.filled * 100) / s.total;
+        var filledBar = document.getElementById("orgChartProgressFilled");
+        var vacantBar = document.getElementById("orgChartProgressVacant");
+        if (filledBar) filledBar.style.width = filledPct.toFixed(1) + "%";
+        if (vacantBar) vacantBar.style.width = (s.total === 0 ? 0 : 100 - filledPct).toFixed(1) + "%";
+
+        var progress = document.getElementById("orgChartProgress");
+        if (progress) {
+            var label = progress.getAttribute("data-base-label") || progress.getAttribute("aria-label") || "";
+            progress.setAttribute("data-base-label", label);
+            progress.setAttribute("aria-label", label + ": " + s.occupancyPercent + "% (" + s.filled + "/" + s.total + ")");
+            progress.title = s.occupancyPercent + "%";
+        }
+    }
+
+    function resetDetail() {
+        detailContentEl.hidden = true;
+        detailContentEl.innerHTML = "";
+        noSelectionEl.hidden = false;
+    }
+
+    // Draws the tree for the current vacancy filter. Filtering prunes the data (see pems-org-chart-logic.js) rather
+    // than hiding nodes, because the connector lines depend on real first/last children.
+    function draw() {
         canvasEl.innerHTML = "";
-        if (!tree || tree.length === 0) {
-            emptyTextEl.textContent = emptyText;
-            showState("empty");
+        resetDetail();
+
+        var shown = Logic.filterTree(rawTree, filterMode);
+        if (shown.length === 0) {
+            emptyTextEl.textContent = filterEmptyText;
+            showState("empty", true);
             return;
         }
 
         var ul = document.createElement("ul");
         ul.className = "pems-org-tree";
         ul.setAttribute("role", "tree");
-        tree.forEach(function (group) { ul.appendChild(buildGroupNode(group)); });
+        shown.forEach(function (group) { ul.appendChild(buildGroupNode(group)); });
         canvasEl.appendChild(ul);
 
         showState("ready");
         zoom = 1;
         applyZoom();
+    }
+
+    function render(tree) {
+        rawTree = tree || [];
+        if (rawTree.length === 0) {
+            canvasEl.innerHTML = "";
+            emptyTextEl.textContent = emptyText;
+            showState("empty");
+            return;
+        }
+        updateSummary(Logic.summarize(rawTree));
+        draw();
     }
 
     function load() {
@@ -395,6 +459,67 @@
 
     retryBtn.addEventListener("click", load);
     disciplineFilter.addEventListener("change", load);
+
+    // ---- Vacancy filter (all / filled / vacant) ----
+
+    var filterButtons = Array.prototype.slice.call(document.querySelectorAll("#orgChartVacancyFilter button"));
+    filterButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            filterMode = btn.getAttribute("data-filter");
+            filterButtons.forEach(function (b) {
+                var on = b === btn;
+                b.classList.toggle("active", on);
+                b.setAttribute("aria-pressed", on ? "true" : "false");
+            });
+            if (rawTree.length) draw();
+        });
+    });
+
+    // ---- Searchable discipline filter ----
+    // The <select> stays the source of truth (load() reads its value); the search box only narrows its options.
+    // The selected option is always kept so typing never changes the active filter by itself.
+
+    var disciplineOptions = Array.prototype.slice.call(disciplineFilter.options)
+        .filter(function (o) { return o.value !== ""; })
+        .map(function (o) { return { value: o.value, text: o.textContent }; });
+
+    function addOption(value, text, disabled) {
+        var o = document.createElement("option");
+        o.value = value;
+        o.textContent = text;
+        if (disabled) o.disabled = true;
+        disciplineFilter.appendChild(o);
+    }
+
+    function rebuildDisciplineOptions() {
+        var selected = disciplineFilter.value;
+        var query = disciplineSearch.value;
+        var matches = Logic.filterOptions(disciplineOptions, query, selected);
+
+        while (disciplineFilter.firstChild) disciplineFilter.removeChild(disciplineFilter.firstChild);
+        addOption("", allDisciplinesText, false);
+        matches.forEach(function (m) { addOption(m.value, m.text, false); });
+        if (Logic.normalize(query) && Logic.filterOptions(disciplineOptions, query, null).length === 0)
+            addOption("", noDisciplineText, true);
+        disciplineFilter.value = selected;
+    }
+
+    if (disciplineSearch) {
+        disciplineSearch.addEventListener("input", rebuildDisciplineOptions);
+        disciplineSearch.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+                disciplineSearch.value = "";
+                rebuildDisciplineOptions();
+            } else if (e.key === "Enter") {
+                e.preventDefault();
+                var only = Logic.filterOptions(disciplineOptions, disciplineSearch.value, null);
+                if (only.length === 1 && disciplineSearch.value.trim()) {
+                    disciplineFilter.value = only[0].value;
+                    disciplineFilter.dispatchEvent(new Event("change"));
+                }
+            }
+        });
+    }
 
     load();
 })();

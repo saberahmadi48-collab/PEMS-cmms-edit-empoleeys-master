@@ -49,6 +49,19 @@ public class PurchaseOrderService : IPurchaseOrderService
     public async Task<int> CreateAsync(string poNumber, int projectId, int vendorId, int? contractId,
         string? description, decimal? value)
     {
+        // P0 / شناسه‌ها: شماره‌ی PO دستی بود، بدون اعتبارسنجی و بدون یکتایی (ایندکس یکتا نیازمند Migration جداگانه است و
+        // این‌جا اضافه نشده). تا آن زمان، بررسی در لایه‌ی سرویس انجام می‌شود (بدون محافظ در برابر رقابت هم‌زمان دقیق).
+        var normalizedNumber = poNumber?.Trim() ?? string.Empty;
+        if (normalizedNumber.Length == 0)
+            throw new InvalidOperationException("شماره‌ی سفارش خرید الزامی است.");
+        if (value.HasValue && value.Value < 0)
+            throw new InvalidOperationException("مبلغ سفارش خرید نمی‌تواند منفی باشد.");
+
+        var numberKey = normalizedNumber.ToLower();
+        if (await _context.PurchaseOrders.AnyAsync(x => x.ProjectId == projectId && x.PoNumber.ToLower() == numberKey))
+            throw new InvalidOperationException($"سفارش خریدی با شماره‌ی «{normalizedNumber}» در این پروژه از قبل وجود دارد.");
+
+        poNumber = normalizedNumber;
         var po = new PurchaseOrder
         {
             PoNumber = poNumber,

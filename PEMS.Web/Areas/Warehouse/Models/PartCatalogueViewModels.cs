@@ -39,6 +39,9 @@ public sealed class PcAdminViewModel
     public PcAdminOverview Overview { get; set; } = new();
     public List<PcLookupItem> Employees { get; set; } = new();
     public PcImportResult? LastImport { get; set; }
+
+    /// <summary>تنظیمات سراسری (روش تولید شماره‌ی قطعه + قالب) برای پنل «Part No generation».</summary>
+    public PartCatalogueSettingsDto Settings { get; set; } = new();
 }
 
 /// <summary>تبدیل پیام‌های سرویس (کلید Localization + نام فیلد) به متن قابل‌نمایش.</summary>

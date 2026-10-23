@@ -1,0 +1,24 @@
+@model PEMS.Web.Models.BkChartSpec
+@* Bklit chart host: frontend/dashboards (dist/dashboards/dashboards.js) draws it from data-bk-chart. The visually-hidden table is the
+   accessible / no-JS copy of the same numbers. *@
+<div class="bk-scope bk-chart min-w-0" data-bk-chart="@Model.ToJson()" role="img" aria-label="@Model.AriaLabel"></div>
+@if (Model.Kind == "gauge")
+{
+    if (Model.Value.HasValue)
+    {
+        <span class="visually-hidden">@Model.AriaLabel: @Model.Value.Value.ToString("0.#")@Model.Unit</span>
+    }
+}
+else if (Model.Labels.Count > 0)
+{
+    <table class="visually-hidden">
+        <caption>@Model.AriaLabel</caption>
+        <thead><tr><th scope="col"></th>@foreach (var s in Model.Series) { <th scope="col">@s.Name</th> }</tr></thead>
+        <tbody>
+            @for (var i = 0; i < Model.Labels.Count; i++)
+            {
+                <tr><th scope="row">@Model.Labels[i]</th>@foreach (var s in Model.Series) { <td>@(i < s.Values.Count ? s.Values[i].ToString("0.##") : "")</td> }</tr>
+            }
+        </tbody>
+    </table>
+}

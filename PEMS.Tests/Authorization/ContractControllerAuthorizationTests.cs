@@ -49,7 +49,7 @@ public class ContractControllerAuthorizationTests
         }
 
         var runtime = new FakeWorkflowRuntime();
-        var contractService = new ContractService(ctx);
+        var contractService = new ContractService(ctx, accessControl);
         var workflowService = new ContractWorkflowService(ctx, runtime, accessControl, new FakeNumberingService());
         var currentUser = new FakeCurrentUserService
         {

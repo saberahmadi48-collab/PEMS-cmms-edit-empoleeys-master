@@ -297,15 +297,80 @@ public class PartCatalogueServiceTests
     }
 
     [Fact]
-    public async Task Cancel_ByOthersRequiresComment_AndEndsTheRequest()
+    public async Task Cancel_OnlyTheRequesterMay_NotTheStepApproverNorAdmin()
     {
         var e = await NewEnvAsync();
         var id = await SubmittedAsync(e);
-        // لغو توسط شخص دیگر (غیر از درخواست‌دهنده) بدون توضیح پذیرفته نمی‌شود؛ درخواست‌دهنده توضیح اختیاری دارد
-        Assert.False((await e.Svc.ExecuteAsync(id, "Cancel", null, null, null, e.Actor(DirectMgr))).Success);
-        Assert.True((await e.Svc.ExecuteAsync(id, "Cancel", "not needed", null, null, e.Actor(Requester))).Success);
+
+        // همه‌ی Actorهای تست نقش «PC» دارند که PartCatalogue.Admin را هم شامل می‌شود؛ DirectMgr گیرنده‌ی گام جاری هم هست.
+        // با این حال هیچ‌کدام (با توضیح یا بدون آن) نمی‌توانند لغو کنند - لغو فقط برای درخواست‌دهنده است.
+        foreach (var other in new[] { DirectMgr, Superior, Pool, Outsider })
+            foreach (var comment in new string?[] { null, "reason" })
+            {
+                var denied = await e.Svc.ExecuteAsync(id, "Cancel", comment, null, null, e.Actor(other));
+                Assert.False(denied.Success);
+                Assert.Contains(denied.Errors, x => x.Key == "Pc_Err_NotAuthorized");
+            }
+        Assert.Equal("InApproval", await StatusAsync(e, id));
+        Assert.False(await e.Db.PartCatalogueRequestApprovals.AnyAsync(a => a.PartCatalogueRequestId == id && (a.Action == "Cancel" || a.Action == "AdminOverride")));
+
+        // دکمه‌ی لغو فقط برای درخواست‌دهنده؛ تأیید/بازگشت برای گیرنده‌ی گام دست‌نخورده می‌ماند
+        var approverView = (await e.Svc.GetDetailsAsync(id, e.Actor(DirectMgr)))!;
+        Assert.False(approverView.Actions.CanCancel);
+        Assert.True(approverView.Actions.CanApprove);
+        Assert.True(approverView.Actions.CanReturn);
+        Assert.True((await e.Svc.GetDetailsAsync(id, e.Actor(Requester)))!.Actions.CanCancel);
+
+        // درخواست‌دهنده بدون توضیح هم می‌تواند لغو کند و ثبت تاریخچه‌ی عادی Cancel است (نه AdminOverride)
+        Assert.True((await e.Svc.ExecuteAsync(id, "Cancel", null, null, null, e.Actor(Requester))).Success);
         Assert.Equal("Cancelled", await StatusAsync(e, id));
+        Assert.True(await e.Db.PartCatalogueRequestApprovals.AnyAsync(a => a.PartCatalogueRequestId == id && a.Action == "Cancel"));
         Assert.False((await e.Svc.ExecuteAsync(id, "Approve", null, null, null, e.Actor(DirectMgr))).Success);
+    }
+
+    [Fact]
+    public async Task Cancel_Draft_IsAllowedForTheRequesterOnly()
+    {
+        var e = await NewEnvAsync();
+        var id = await e.Svc.CreateDraftAsync("Add", e.Actor(Requester));
+
+        Assert.False((await e.Svc.ExecuteAsync(id, "Cancel", "reason", null, null, e.Actor(Outsider))).Success);
+        Assert.Equal("Draft", await StatusAsync(e, id));
+        Assert.True((await e.Svc.GetDetailsAsync(id, e.Actor(Requester)))!.Actions.CanCancel);
+        Assert.False((await e.Svc.GetDetailsAsync(id, e.Actor(Outsider)))?.Actions.CanCancel ?? false);
+
+        Assert.True((await e.Svc.ExecuteAsync(id, "Cancel", null, null, null, e.Actor(Requester))).Success);
+        Assert.Equal("Cancelled", await StatusAsync(e, id));
+    }
+
+    [Fact]
+    public async Task Details_ShowsTheTechnicalClassDefinition_OnlyWhileTheRequestIsDraft()
+    {
+        const string definition = "A circular or moderately noncircular shaped sealing material";
+        var e = await NewEnvAsync();
+        (await e.Db.PartCatalogueTechnicalClasses.FindAsync(e.Tc))!.LongDescription = definition;
+        await e.Db.SaveChangesAsync();
+
+        var id = await e.Svc.CreateDraftAsync("Add", e.Actor(Requester));
+        Assert.True((await e.Svc.SaveAsync(Form(e, id), e.Actor(Requester))).Success);
+        Assert.True((await e.Svc.GenerateNumberAsync(id, null, e.Actor(Requester))).Success);
+
+        var host = new PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueAdminController(null!, null!, null!, null!, null!, null!);
+        async Task<string> RenderAsync()
+        {
+            var dto = (await e.Svc.GetDetailsAsync(id, e.Actor(Requester)))!;
+            var result = new Microsoft.AspNetCore.Mvc.ViewResult { ViewData = new Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary(host.ViewData) { Model = dto } };
+            return await RazorViewRenderer.RenderAsync(host, result, "~/Areas/Warehouse/Views/PartCatalogueRequest/Details.cshtml");
+        }
+
+        Assert.Equal("Draft", await StatusAsync(e, id));
+        Assert.Contains(definition, await RenderAsync());
+
+        Assert.True((await e.Svc.SubmitAsync(id, null, e.Actor(Requester))).Success);
+        Assert.Equal("InApproval", await StatusAsync(e, id));
+        var submitted = await RenderAsync();
+        Assert.DoesNotContain(definition, submitted);
+        Assert.Contains("V-1", submitted);   // the class itself is still shown; only its long definition is hidden
     }
 
     [Fact]

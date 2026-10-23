@@ -38,7 +38,7 @@
 <div class="content-card">
     <form method="get" class="mb-3">
         <select name="status" class="form-select form-select-sm" style="max-width:220px;" onchange="this.form.submit()">
-            <option value="">@Localizer["All Statuses"]</option>
+            <option value="">@Localizer["All statuses"]</option>
             @foreach (var s in new[] { "Pending", "Processing", "Completed", "Failed" })
             {
                 <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option>

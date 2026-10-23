@@ -12,6 +12,12 @@
     bool canEditDraft = ViewBag.CanEditDraft;
     bool canReview = ViewBag.CanReview;
     bool canEditNow = canEditReturned || canEditDraft;
+    bool canManageResponse = ViewBag.CanManageResponse == true;
+    bool isAuthor = ViewBag.IsAuthor == true;
+    bool isAdmin = ViewBag.IsAdmin == true;
+    bool canArchive = ViewBag.CanArchive == true;
+    bool canAudit = ViewBag.CanAudit == true;
+    bool isFormal = l.LetterType == "Internal" || l.LetterType == "Outgoing";
 
     string statusBadgeClass = PEMS.Web.Helpers.LetterStatusBadge.CssClass(l.Status);
 }
@@ -42,15 +48,63 @@
                 <span><strong>@(l.LetterType == "Incoming" ? "From" : "To"):</strong> @(l.LetterType == "Incoming" ? l.Sender : l.Receiver)</span>
                 <span><strong>Date:</strong> @l.LetterDate.ToString("yyyy-MM-dd")</span>
                 <span><strong>@Localizer["Priority:"]</strong> @l.Priority</span>
+                @if (!string.IsNullOrEmpty(l.Category)) { <span><strong>@Localizer["Lc_Category"]:</strong> @Localizer["Lc_Cat_" + l.Category]</span> }
+                @if (!string.IsNullOrEmpty(l.ReferenceNumber)) { <span><strong>@Localizer["Lc_Reference"]:</strong> @l.ReferenceNumber</span> }
                 @if (!string.IsNullOrEmpty(l.ProjectName)) { <span><strong>@Localizer["Project:"]</strong> @l.ProjectName</span> }
                 @if (!string.IsNullOrEmpty(l.DisciplineName)) { <span><strong>@Localizer["Discipline:"]</strong> @l.DisciplineName</span> }
+                @if (l.ResponseRequired && l.ResponseDueDate.HasValue)
+                {
+                    <span>
+                        <strong>@Localizer["Lt_ResponseDueDate"]:</strong> @l.ResponseDueDate.Value.ToString("yyyy-MM-dd")
+                        @if (l.ResponseAnswered) { <span class="badge bg-success"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Lt_ResponseAnswered"]</span> }
+                        else if (l.ResponseOverdue) { <span class="badge bg-danger"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Lt_Overdue"]</span> }
+                        else { <span class="badge bg-secondary"><i class="bi bi-hourglass-split" aria-hidden="true"></i> @Localizer["Lt_ResponsePending"]</span> }
+                    </span>
+                }
             </div>
+            @if (canManageResponse)
+            {
+                <details class="mt-2 small">
+                    <summary>@Localizer["Lt_ResponseEdit"]</summary>
+                    <form asp-action="SetResponseDue" method="post" class="d-flex flex-wrap align-items-end gap-2 mt-2">
+                        <input type="hidden" name="letterId" value="@l.LetterId" />
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="responseRequired" value="true" id="detResponseRequired" checked="@l.ResponseRequired" />
+                            <label class="form-check-label" for="detResponseRequired">@Localizer["Lt_ResponseRequired"]</label>
+                        </div>
+                        <div>
+                            <label class="form-label mb-1" for="detResponseDue">@Localizer["Lt_ResponseDueDate"]</label>
+                            <input type="date" name="responseDueDate" id="detResponseDue" class="form-control form-control-sm"
+                                   value="@(l.ResponseDueDate?.ToString("yyyy-MM-dd"))" min="@l.LetterDate.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">@Localizer["Save"]</button>
+                    </form>
+                </details>
+            }
         </div>
 
         <div class="d-flex align-items-center gap-2">
             @* طبق بند ۳۳: بدون دکمه‌ی وضعیت آزاد - فقط اقدامات کسب‌وکاری نام‌گذاری‌شده، هرکدام
                فقط زمانی نمایش داده می‌شوند که واقعاً از وضعیت فعلی مجاز باشند (سرویس هم دوباره
                اعتبارسنجی می‌کند - این‌جا فقط UX است) *@
+            @if (isFormal && (l.Status == "Draft" || l.Status == "ReturnedForRevision") && isAuthor)
+            {
+                <a class="btn btn-outline-secondary btn-sm" asp-controller="LetterCompose" asp-action="Compose" asp-route-id="@l.LetterId"><i class="bi bi-pencil-square" aria-hidden="true"></i> @Localizer["Lc_EditInComposer"]</a>
+            }
+            @if (l.Status == "Approved" && l.LetterType == "Internal" && isAuthor)
+            {
+                <form asp-controller="LetterCompose" asp-action="Send" method="post" onsubmit="return confirm('@Localizer["Lc_ConfirmSend"]');">
+                    <input type="hidden" name="letterId" value="@l.LetterId" />
+                    <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-send-check" aria-hidden="true"></i> @Localizer["Lt_Send"]</button>
+                </form>
+            }
+            @if (canArchive && (l.Status is "Sent" or "Closed" or "Issued" or "Acknowledged" or "Registered"))
+            {
+                <form asp-controller="LetterCompose" asp-action="Archive" method="post" onsubmit="return confirm('@Localizer["Lc_ConfirmArchive"]');">
+                    <input type="hidden" name="letterId" value="@l.LetterId" />
+                    <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lc_Archive"]</button>
+                </form>
+            }
             @if (l.Status == "Draft" && canEditDraft)
             {
                 <form asp-action="SubmitForReview" method="post" onsubmit="return confirm('Submit this draft for review?');">
@@ -71,7 +125,7 @@
                 <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#returnModal"><i class="bi bi-arrow-return-left"></i> Return</button>
                 <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal"><i class="bi bi-x-lg"></i> @Localizer["Reject"]</button>
             }
-            @if (l.Status == "Approved" && canReview)
+            @if (l.Status == "Approved" && canReview && l.LetterType != "Internal")
             {
                 <form asp-action="Issue" method="post" onsubmit="return confirm('Issue this letter?');">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
@@ -93,6 +147,10 @@
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" asp-action="Reply" asp-route-id="@l.LetterId"><i class="bi bi-reply-fill me-1"></i> Reply</a></li>
                     <li><a class="dropdown-item" asp-action="ExportPdf" asp-route-id="@l.LetterId"><i class="bi bi-file-earmark-pdf me-1"></i> Export PDF</a></li>
+                    @if (canAudit)
+                    {
+                        <li><a class="dropdown-item" asp-controller="LetterCompose" asp-action="History" asp-route-id="@l.LetterId"><i class="bi bi-clock-history me-1" aria-hidden="true"></i> @Localizer["Lc_HistoryTitle"]</a></li>
+                    }
                     @if (string.IsNullOrEmpty(l.SignedByName))
                     {
                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#signModal"><i class="bi bi-pen me-1"></i> Sign / Acknowledge</a></li>
@@ -157,6 +215,42 @@
         </div>
     }
 </div>
+
+@if (Model.ApprovalSteps.Any())
+{
+    <div class="content-card mb-3" id="approvalChain">
+        <div class="section-title mb-2">@Localizer["Lc_ApprovalChain"]</div>
+        <ol class="list-unstyled mb-0">
+            @foreach (var step in Model.ApprovalSteps.OrderBy(x => x.StepOrder))
+            {
+                var stepBadge = step.Status switch { "Approved" => "bg-success", "Rejected" => "bg-danger", "Returned" => "bg-warning text-dark", _ => step.IsCurrent ? "bg-primary" : "bg-secondary" };
+                <li class="d-flex flex-wrap align-items-center gap-2 py-1 @(step.IsCurrent ? "fw-semibold" : "")">
+                    <span class="badge rounded-pill bg-light text-dark border">@step.StepOrder</span>
+                    <span>@step.ApproverName</span>
+                    <span class="badge @stepBadge">@(step.IsCurrent ? Localizer["Lc_StepCurrent"].Value : step.Status)</span>
+                    @if (step.DecidedDate.HasValue) { <small class="text-muted">@step.DecidedDate.Value.ToString("yyyy-MM-dd HH:mm")</small> }
+                    @if (!string.IsNullOrWhiteSpace(step.Comment)) { <small class="text-muted">&mdash; @step.Comment</small> }
+                    @if (isAdmin && step.Status == "Pending" && l.Status == "PendingApproval")
+                    {
+                        <form asp-controller="LetterCompose" asp-action="ReassignApprover" method="post" class="d-flex gap-1 ms-auto">
+                            <input type="hidden" name="letterId" value="@l.LetterId" />
+                            <input type="hidden" name="stepOrder" value="@step.StepOrder" />
+                            <label class="visually-hidden" for="reassign@(step.StepOrder)">@Localizer["Lc_Reassign"]</label>
+                            <select name="newApproverUserId" id="reassign@(step.StepOrder)" class="form-select form-select-sm" required>
+                                <option value="">@Localizer["Lc_Reassign"]</option>
+                                @foreach (var opt in (IEnumerable<PEMS.Application.DTOs.ApproverOptionDto>)(ViewBag.ApproverOptions ?? new List<PEMS.Application.DTOs.ApproverOptionDto>()))
+                                {
+                                    <option value="@opt.UserId">@opt.FullName</option>
+                                }
+                            </select>
+                            <button class="btn btn-sm btn-outline-secondary" type="submit">@Localizer["Lc_Reassign"]</button>
+                        </form>
+                    }
+                </li>
+            }
+        </ol>
+    </div>
+}
 
 @* طبق بند ۱۴-۲۰: مکالمه/زنجیره‌ی پاسخ - محتوای رسمی به‌طور پیش‌فرض فقط-خواندنی؛ ویرایش فقط
    در حالت‌های مجاز و فقط توسط نویسنده‌ی اصلی، به‌صورت یک فرم صریح و مجزا (نه دکمه‌ی همیشه-حاضر) *@
@@ -593,4 +687,17 @@
             sel.addEventListener('focus', loadEmployeesOnce, { once: true });
         });
     })();
+</script>
+
+<script>
+    // the list's "Refer" row action lands here (Details#accReferrals): open the referrals section and scroll to it
+    document.addEventListener('DOMContentLoaded', function () {
+        if (location.hash === '#accReferrals') {
+            var el = document.getElementById('accReferrals');
+            if (el && window.bootstrap) {
+                window.bootstrap.Collapse.getOrCreateInstance(el, { toggle: false }).show();
+                el.scrollIntoView({ block: 'center' });
+            }
+        }
+    });
 </script>

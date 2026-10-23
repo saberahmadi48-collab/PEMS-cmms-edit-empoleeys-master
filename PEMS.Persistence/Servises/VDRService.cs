@@ -78,6 +78,8 @@ public class VDRService : IVDRService
                 DocumentDescription = x.DocumentDescription,
                 DocumentTypeCode = x.DocumentTypeCode,
                 VendorName = x.Vendor != null ? x.Vendor.Name : "",
+                ProjectName = x.Project != null ? x.Project.ProjectName : "",
+                DisciplineName = x.Discipline != null ? x.Discipline.Name : x.DisciplineCodeRaw,
                 WorkflowStatus = x.WorkflowStatus,
                 LatestRevisionNo = x.Submissions
                     .OrderByDescending(s => s.RevisionNo)

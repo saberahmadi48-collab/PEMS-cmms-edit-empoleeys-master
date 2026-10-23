@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
+using PEMS.Web.Security;
 
 namespace PEMS.Web.Areas.Warehouse.Controllers;
 
@@ -11,15 +12,25 @@ public class InventoryController : Controller
 {
     private readonly PEMSDbContext _context;
     private readonly IMaterialStockService _materialStockService;
+    private readonly IPermissionService _permissionService;
+    private readonly ICurrentUserService _currentUser;
 
-    public InventoryController(PEMSDbContext context, IMaterialStockService materialStockService)
+    public InventoryController(PEMSDbContext context, IMaterialStockService materialStockService,
+        IPermissionService permissionService, ICurrentUserService currentUser)
     {
         _context = context;
         _materialStockService = materialStockService;
+        _permissionService = permissionService;
+        _currentUser = currentUser;
     }
 
     public async Task<IActionResult> Index()
     {
+        // P0-09 (D-OPEN-02، تصمیم مالک): ماژول «Inventory» هیچ ردیف مجوزی ندارد؛ نزدیک‌ترین مجوز موجود
+        // MaterialItem.View است (همان الگوی D-04 که تغییر موجودی را به MaterialItem.Edit می‌بندد).
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaterialItem", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Inventory Dashboard";
         ViewData["Section"] = "Inventory & Materials";
 

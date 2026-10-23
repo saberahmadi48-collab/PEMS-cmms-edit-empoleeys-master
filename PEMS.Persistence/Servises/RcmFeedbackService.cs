@@ -32,17 +32,28 @@ public class RcmFeedbackService : IRcmFeedbackService
         var now = DateTime.Now;
         var windowStart = now.AddDays(-windowDays);
 
-        var strategies = await _context.MaintenanceStrategies.AsNoTracking()
-            .Where(x => x.IsActive)
-            .Include(x => x.Equipment)
+        // RCM کلاس‌محور: ارزیابی به‌ازای هر جفت (استراتژی، تگ) انجام می‌شود - تگ‌ها از تخصیص‌های فعال
+        // می‌آیند و استراتژی‌های قدیمی تک‌تگی (EquipmentId مستقیم) هم همچنان پوشش داده می‌شوند.
+        var legacyPairs = await _context.MaintenanceStrategies.AsNoTracking()
+            .Where(x => x.IsActive && x.EquipmentId != null)
+            .ToListAsync();
+        var assignmentPairs = await _context.MaintenanceStrategyAssignments.AsNoTracking()
+            .Where(a => a.IsActive && a.Status == "Active" && a.MaintenanceStrategy!.IsActive)
+            .Select(a => new { a.MaintenanceStrategy, a.EquipmentId })
             .ToListAsync();
 
-        result.StrategiesEvaluated = strategies.Count;
+        var pairs = legacyPairs.Select(x => (Strategy: x, EquipmentId: x.EquipmentId!.Value))
+            .Concat(assignmentPairs.Select(a => (Strategy: a.MaintenanceStrategy!, EquipmentId: a.EquipmentId)))
+            .GroupBy(p => (p.Strategy.MaintenanceStrategyId, p.EquipmentId))
+            .Select(g => g.First())
+            .ToList();
 
-        foreach (var strategy in strategies)
+        result.StrategiesEvaluated = pairs.Count;
+
+        foreach (var (strategy, strategyEquipmentId) in pairs)
         {
             var failuresQuery = _context.FailureRecords.AsNoTracking()
-                .Where(x => x.IsActive && x.EquipmentId == strategy.EquipmentId && x.FailureDate >= windowStart && x.FailureDate <= now);
+                .Where(x => x.IsActive && x.EquipmentId == strategyEquipmentId && x.FailureDate >= windowStart && x.FailureDate <= now);
 
             // طبق بند ۲۰: اگر استراتژی به یک حالت‌خرابی مشخص وصل است، فقط خرابی‌های همان حالت
             // شمرده می‌شوند - وگرنه (استراتژی عمومی بدون FailureModeCode) همه‌ی خرابی‌های همان
@@ -88,7 +99,7 @@ public class RcmFeedbackService : IRcmFeedbackService
 
                 _context.RcmReviewRecommendations.Add(new RcmReviewRecommendation
                 {
-                    EquipmentId = strategy.EquipmentId,
+                    EquipmentId = strategyEquipmentId,
                     MaintenanceStrategyId = strategy.MaintenanceStrategyId,
                     TriggerReason = reason,
                     Evidence = evidence,
