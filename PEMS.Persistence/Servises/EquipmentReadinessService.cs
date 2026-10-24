@@ -36,7 +36,7 @@ public class EquipmentReadinessService : IEquipmentReadinessService
                 .CountAsync(x => x.IsActive && _context.EquipmentCriticalities.Any(c => c.IsActive && c.EquipmentId == x.EquipmentId)),
 
             StrategyReadyEquipment = await _context.Equipments
-                .CountAsync(x => x.IsActive && _context.MaintenanceStrategies.Any(s => s.IsActive && s.EquipmentId == x.EquipmentId)),
+                .CountAsync(x => x.IsActive && (_context.MaintenanceStrategies.Any(s => s.IsActive && s.EquipmentId == x.EquipmentId) || _context.MaintenanceStrategyAssignments.Any(a => a.IsActive && a.Status == "Active" && a.EquipmentId == x.EquipmentId && a.MaintenanceStrategy!.IsActive))),
 
             PmPlanReadyEquipment = await _context.Equipments
                 .CountAsync(x => x.IsActive && _context.MaintenancePlans.Any(p => p.IsActive && p.EquipmentId == x.EquipmentId)),
@@ -56,7 +56,7 @@ public class EquipmentReadinessService : IEquipmentReadinessService
         dto.ExecutionReadyEquipment = await _context.Equipments
             .Where(x => x.IsActive && x.EquipmentClassId != null)
             .Where(x => _context.EquipmentCriticalities.Any(c => c.IsActive && c.EquipmentId == x.EquipmentId))
-            .Where(x => _context.MaintenanceStrategies.Any(s => s.IsActive && s.EquipmentId == x.EquipmentId))
+            .Where(x => (_context.MaintenanceStrategies.Any(s => s.IsActive && s.EquipmentId == x.EquipmentId) || _context.MaintenanceStrategyAssignments.Any(a => a.IsActive && a.Status == "Active" && a.EquipmentId == x.EquipmentId && a.MaintenanceStrategy!.IsActive)))
             .Where(x => _context.MaintenancePlans.Any(p => p.IsActive && p.EquipmentId == x.EquipmentId && p.JobPlanId != null))
             .CountAsync();
 
@@ -72,7 +72,8 @@ public class EquipmentReadinessService : IEquipmentReadinessService
             _context.EquipmentCriticalities.Where(x => x.IsActive).Select(x => x.EquipmentId));
 
         var strategyByClass = await CountEquipmentByClassAsync(
-            _context.MaintenanceStrategies.Where(x => x.IsActive).Select(x => x.EquipmentId));
+            _context.MaintenanceStrategies.Where(x => x.IsActive && x.EquipmentId != null).Select(x => x.EquipmentId!.Value)
+                .Union(_context.MaintenanceStrategyAssignments.Where(a => a.IsActive && a.Status == "Active" && a.MaintenanceStrategy!.IsActive).Select(a => a.EquipmentId)));
 
         var planByClass = await CountEquipmentByClassAsync(
             _context.MaintenancePlans.Where(x => x.IsActive).Select(x => x.EquipmentId));
@@ -80,7 +81,7 @@ public class EquipmentReadinessService : IEquipmentReadinessService
         var executionReadyByClass = await _context.Equipments.AsNoTracking()
             .Where(x => x.IsActive && x.EquipmentClassId != null)
             .Where(x => _context.EquipmentCriticalities.Any(c => c.IsActive && c.EquipmentId == x.EquipmentId))
-            .Where(x => _context.MaintenanceStrategies.Any(s => s.IsActive && s.EquipmentId == x.EquipmentId))
+            .Where(x => (_context.MaintenanceStrategies.Any(s => s.IsActive && s.EquipmentId == x.EquipmentId) || _context.MaintenanceStrategyAssignments.Any(a => a.IsActive && a.Status == "Active" && a.EquipmentId == x.EquipmentId && a.MaintenanceStrategy!.IsActive)))
             .Where(x => _context.MaintenancePlans.Any(p => p.IsActive && p.EquipmentId == x.EquipmentId && p.JobPlanId != null))
             .GroupBy(x => x.EquipmentClassId!.Value)
             .Select(g => new { ClassId = g.Key, Count = g.Count() })
@@ -169,9 +170,13 @@ public class EquipmentReadinessService : IEquipmentReadinessService
             .Where(x => x.IsActive && pageEquipmentIds.Contains(x.EquipmentId))
             .Select(x => x.EquipmentId).Distinct().ToListAsync();
 
-        var strategyIds = await _context.MaintenanceStrategies.AsNoTracking()
-            .Where(x => x.IsActive && pageEquipmentIds.Contains(x.EquipmentId))
-            .Select(x => x.EquipmentId).Distinct().ToListAsync();
+        var strategyIds = (await _context.MaintenanceStrategies.AsNoTracking()
+            .Where(x => x.IsActive && x.EquipmentId != null && pageEquipmentIds.Contains(x.EquipmentId.Value))
+            .Select(x => x.EquipmentId!.Value).Distinct().ToListAsync())
+            .Union(await _context.MaintenanceStrategyAssignments.AsNoTracking()
+                .Where(a => a.IsActive && a.Status == "Active" && a.MaintenanceStrategy!.IsActive && pageEquipmentIds.Contains(a.EquipmentId))
+                .Select(a => a.EquipmentId).Distinct().ToListAsync())
+            .ToList();
 
         var plans = await _context.MaintenancePlans.AsNoTracking()
             .Where(x => x.IsActive && pageEquipmentIds.Contains(x.EquipmentId))

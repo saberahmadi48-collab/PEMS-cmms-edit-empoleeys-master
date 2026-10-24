@@ -1,0 +1,43 @@
+/* PEMS Task Manager (Spaces, Backlog, Board, Details). Uses the shared workspace tokens from pems-workspace.css;
+   logical properties so the same rules serve LTR and RTL. */
+
+.tm-key { font-family: var(--bs-font-monospace); font-size: 12px; font-weight: 600; letter-spacing: .02em; white-space: nowrap; }
+.tm-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+.tm-space-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.tm-space-card { background: var(--pems-surface, #fff); border: 1px solid var(--vs-border, #dee2e6); border-radius: 8px; padding: 12px 14px; }
+
+.tm-table .tm-col-check { inline-size: 32px; }
+.tm-title-cell { min-inline-size: 220px; overflow-wrap: anywhere; }
+.tm-row--overdue td:first-child { box-shadow: inset 3px 0 0 #ba1a1a; }
+[dir="rtl"] .tm-row--overdue td:first-child { box-shadow: inset -3px 0 0 #ba1a1a; }
+.tm-row[draggable="true"] { cursor: grab; }
+.tm-row.tm-dragging, .tm-card.tm-dragging { opacity: .5; }
+.tm-row-actions form { margin: 0; }
+
+.tm-sprint--active { border-inline-start: 3px solid var(--bs-success, #198754); }
+.tm-bulkbar { padding: 6px 0; }
+.tm-bulkbar[hidden] { display: none !important; }
+
+.tm-board { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(250px, 1fr); gap: 12px; overflow-x: auto; padding-block-end: 8px; }
+.tm-col { background: var(--pems-surface-2, #f4f6f8); border: 1px solid var(--vs-border, #dee2e6); border-radius: 8px; display: flex; flex-direction: column; min-block-size: 240px; }
+.tm-col__head { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-block-end: 1px solid var(--vs-border, #dee2e6); }
+.tm-col__body { padding: 8px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.tm-col__body.tm-drop-ok { outline: 2px dashed var(--bs-primary, #0d6efd); outline-offset: -4px; }
+.tm-col__body.tm-drop-no { outline: 2px dashed #ba1a1a; outline-offset: -4px; }
+.tm-col__empty { text-align: center; padding: 12px 0; }
+.tm-card { background: var(--pems-surface, #fff); border: 1px solid var(--vs-border, #dee2e6); border-radius: 6px; padding: 8px 10px; }
+.tm-card[draggable="true"] { cursor: grab; }
+.tm-card--overdue { border-inline-start: 3px solid #ba1a1a; }
+.tm-card__title { font-size: 14px; margin-block-start: 4px; overflow-wrap: anywhere; }
+.tm-card__move select { min-inline-size: 0; }
+
+.tm-comment { border-block-start: 1px solid var(--vs-border, #dee2e6); padding-block: 8px; }
+.tm-dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 12px; }
+.tm-dl dt { font-weight: 500; color: var(--bs-secondary-color, #6c757d); }
+.tm-dl dd { margin: 0; min-inline-size: 0; overflow-wrap: anywhere; }
+.tm-matrix th, .tm-matrix td { font-size: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+    .tm-card, .tm-row { transition: none !important; }
+}

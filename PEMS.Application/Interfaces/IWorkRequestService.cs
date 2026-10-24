@@ -16,6 +16,9 @@ public interface IWorkRequestService
         string title, string? description, int requestedById, int? equipmentId, int? assetId,
         int? functionalLocationId, string? reportedCondition, string priority, int? suggestedDisciplineId);
 
+    /// <summary>ثبت کامل (A2: تجهیز/Asset/Functional Location الزامی؛ A4: ریسک/HSE/SLA؛ A5: اطلاعات خرابی). اعلان HSE برای HSE/اضطراری.</summary>
+    Task<(bool Success, string? Error, int? Id)> CreateAsync(WorkRequestCreateRequest request);
+
     /// <summary>
     /// گذار وضعیت را طبق جدول داخلی مجاز بودن اعتبارسنجی می‌کند - قبل از هرگونه تغییر، نه
     /// فقط با اعتماد به مقدار ارسالی از Controller (طبق بند ۹.۳ سند Baseline).
@@ -29,7 +32,7 @@ public interface IWorkRequestService
     /// <paramref name="actor"/> الزامی است. برای رکورد Legacy (بدون Instance) همان رفتار قبلی حفظ شده است.
     /// </summary>
     Task<(bool Success, string? Error, int? WorkOrderId)> ConvertToWorkOrderAsync(
-        int workRequestId, string workOrderType, string? currentUserName, WorkRequestActor? actor = null);
+        int workRequestId, string workOrderType, string? currentUserName, WorkRequestActor? actor = null, int? equipmentId = null);
 
     /// <summary>LEGACY: وضعیت بعدی برای رکوردهای بدون Instance گردش‌کار (تنها منبع؛ Controller نقشه‌ی جداگانه ندارد). null = وضعیت نهایی.</summary>
     string? GetLegacyNextStatus(string currentStatus);

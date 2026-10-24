@@ -22,7 +22,10 @@
      data-vacant-text="@Localizer["خالی (Vacant)"]"
      data-positions-text="@Localizer["سمت‌ها"]"
      data-members-text="@Localizer["اعضا"]"
-     data-view-details-text="@Localizer["مشاهده‌ی جزئیات تیم"]">
+     data-view-details-text="@Localizer["مشاهده‌ی جزئیات تیم"]"
+     data-filter-empty-text="@Localizer["هیچ سمتی با این فیلتر وجود ندارد."]"
+     data-no-discipline-text="@Localizer["هیچ دیسیپلینی یافت نشد"]"
+     data-all-disciplines-text="@Localizer["همه‌ی دیسیپلین‌ها"]">
 
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
         <div class="d-flex align-items-center gap-2 flex-wrap">
@@ -30,7 +33,10 @@
                 <i class="bi bi-arrow-return-@(System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "right" : "left")"></i>
                 @Localizer["بازگشت به تیم‌ها"]
             </a>
-            <select id="orgChartDisciplineFilter" class="form-select form-select-sm" style="min-width:200px">
+            <input type="search" id="orgChartDisciplineSearch" class="form-control form-control-sm" style="width:170px"
+                   placeholder="@Localizer["جستجوی دیسیپلین..."]" aria-label="@Localizer["جستجوی دیسیپلین..."]" autocomplete="off" />
+            <select id="orgChartDisciplineFilter" class="form-select form-select-sm" style="min-width:200px"
+                    aria-label="@Localizer["دیسیپلین"]">
                 <option value="">@Localizer["همه‌ی دیسیپلین‌ها"]</option>
                 @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines)
                 {
@@ -61,6 +67,28 @@
 
     <div class="row g-3">
         <div class="col-12 col-xl-9">
+            <div class="content-card pems-org-summary mb-3" id="orgChartSummary" hidden>
+                <div class="pems-org-summary-head">
+                    <strong>@Localizer["خلاصه‌ی اشغال سمت‌ها"]</strong>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="@Localizer["نمایش سمت‌ها"]" id="orgChartVacancyFilter">
+                        <button type="button" class="btn btn-outline-secondary active" data-filter="all" aria-pressed="true">@Localizer["همه"]</button>
+                        <button type="button" class="btn btn-outline-secondary" data-filter="filled" aria-pressed="false">@Localizer["تکمیل‌شده"] (<span id="orgChartFilterFilled">0</span>)</button>
+                        <button type="button" class="btn btn-outline-secondary" data-filter="vacant" aria-pressed="false">@Localizer["خالی"] (<span id="orgChartFilterVacant">0</span>)</button>
+                    </div>
+                </div>
+                <div class="pems-org-stats">
+                    <div class="pems-org-stat"><span class="pems-org-stat-value" id="orgChartStatTotal">0</span><span class="pems-org-stat-label">@Localizer["کل سمت‌ها"]</span></div>
+                    <div class="pems-org-stat pems-org-stat-filled"><span class="pems-org-stat-value" id="orgChartStatFilled">0</span><span class="pems-org-stat-label"><i class="bi bi-person-check"></i> @Localizer["تکمیل‌شده"]</span></div>
+                    <div class="pems-org-stat pems-org-stat-vacant"><span class="pems-org-stat-value" id="orgChartStatVacant">0</span><span class="pems-org-stat-label"><i class="bi bi-person-dash"></i> @Localizer["خالی"]</span></div>
+                    <div class="pems-org-stat"><span class="pems-org-stat-value" id="orgChartStatOccupancy">0%</span><span class="pems-org-stat-label">@Localizer["نرخ اشغال"]</span></div>
+                </div>
+                <div class="pems-org-progress" role="img" id="orgChartProgress" aria-label="@Localizer["نرخ اشغال"]">
+                    <span class="pems-org-progress-filled" id="orgChartProgressFilled"></span>
+                    <span class="pems-org-progress-vacant" id="orgChartProgressVacant"></span>
+                </div>
+                <div class="small text-muted mt-1">@Localizer["سمت‌های غیرفعال در شمارش نیامده‌اند."]</div>
+            </div>
+
             <div class="content-card pems-orgchart-card">
                 <div id="orgChartLoading" class="pems-orgchart-state">
                     <div class="spinner-border spinner-border-sm text-secondary" role="status" aria-hidden="true"></div>
@@ -81,6 +109,15 @@
                     <div id="orgChartCanvas" class="pems-orgchart-canvas"></div>
                 </div>
             </div>
+
+            <div class="pems-org-legend" aria-label="@Localizer["راهنمای نمودار"]">
+                <span class="pems-org-legend-title">@Localizer["راهنمای نمودار"]</span>
+                <span class="pems-org-legend-item"><span class="pems-org-swatch" data-kind="Group"></span>@Localizer["گروه نگهداری"]</span>
+                <span class="pems-org-legend-item"><span class="pems-org-swatch" data-kind="Team"></span>@Localizer["تیم"]</span>
+                <span class="pems-org-legend-item"><span class="pems-org-swatch" data-kind="Shift"></span>@Localizer["شیفت / زیرتیم / واحد"]</span>
+                <span class="pems-org-legend-item"><span class="pems-org-swatch" data-kind="Position-Occupied"></span>@Localizer["سمت تکمیل‌شده"]</span>
+                <span class="pems-org-legend-item"><span class="pems-org-swatch" data-kind="Position-Vacant"></span>@Localizer["سمت خالی"]</span>
+            </div>
         </div>
 
         <div class="col-12 col-xl-3">
@@ -96,5 +133,6 @@
 </div>
 
 @section Scripts {
+    <script src="~/js/pems-org-chart-logic.js" asp-append-version="true"></script>
     <script src="~/js/pems-org-chart.js" asp-append-version="true"></script>
 }

@@ -93,6 +93,12 @@ public class WorkOrder : BaseEntity
 
     public string? RootCause { get; set; }
 
+    // A5: اثر خرابی گزارش‌شده (از Work Request منتقل می‌شود؛ هنگام تکمیل در FailureRecord ثبت/اصلاح می‌شود) و پرچم HSE مبدأ
+    [System.ComponentModel.DataAnnotations.MaxLength(500)]
+    public string? FailureEffect { get; set; }
+
+    public bool IsHseRelated { get; set; }
+
     // ساعت واقعی توقف تولید/عملکرد ناشی از این خرابی - برای محاسبه‌ی OEE/Availability، جدا
     // از StartDate/CompletionDate خودِ کار تعمیر (که ممکنه دیرتر از توقف واقعی شروع بشه)
     public decimal? DowntimeHours { get; set; }

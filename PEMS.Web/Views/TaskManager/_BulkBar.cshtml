@@ -1,0 +1,45 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var spaceView = ViewBag.SpaceView as PEMS.Application.DTOs.WorkSpaceViewDto;
+    var assignees = spaceView != null ? ViewBag.Assignees as PEMS.Application.DTOs.AssigneeResolutionDto : null;
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+}
+@* هر مورد جداگانه در سرور مجوز می‌گیرد؛ این نوار فقط ورودی جمع می‌کند. مقادیر وضعیت/Sprint/مسئول فقط از همان فضا. *@
+<form id="tmBulk" asp-controller="TaskManager" asp-action="Bulk" method="post" class="tm-bulkbar d-flex flex-wrap gap-2 align-items-center" data-tm-bulkbar hidden>
+    <input type="hidden" name="returnUrl" value="@returnUrl" />
+    <span class="small"><strong data-tm-bulk-count>0</strong> @Localizer["Tm_Selected"]</span>
+    <label class="visually-hidden" for="tm-bulk-action">@Localizer["Tm_BulkAction"]</label>
+    <select id="tm-bulk-action" name="bulkAction" class="form-select form-select-sm w-auto" data-tm-bulk-action>
+        @if (spaceView != null)
+        {
+            <option value="status">@Localizer["Tm_Bulk_Status"]</option>
+            @if (assignees != null) { <option value="assign">@Localizer["Tm_Bulk_Assign"]</option> }
+            @if (spaceView.CanRank) { <option value="sprint">@Localizer["Tm_Bulk_Sprint"]</option> }
+        }
+        <option value="archive">@Localizer["Tm_Bulk_Archive"]</option>
+    </select>
+    @if (spaceView != null)
+    {
+        <select name="value" class="form-select form-select-sm w-auto" data-tm-bulk-value="status" aria-label="@Localizer["Tm_Field_Status"]">
+            @foreach (var s in spaceView.Statuses) { <option value="@s.Id">@TaskManagerUi.Name(s.Name, s.NameFa)</option> }
+        </select>
+        @if (assignees != null)
+        {
+            <select name="value" class="form-select form-select-sm w-auto" data-tm-bulk-value="assign" aria-label="@Localizer["Tm_Field_Assignee"]" disabled hidden>
+                <option value="">@Localizer["Tm_Unassigned"]</option>
+                @foreach (var e in assignees.Candidates) { <option value="@e.EmployeeId">@e.Name</option> }
+            </select>
+        }
+        @if (spaceView.CanRank)
+        {
+            <select name="value" class="form-select form-select-sm w-auto" data-tm-bulk-value="sprint" aria-label="@Localizer["Tm_Field_Sprint"]" disabled hidden>
+                <option value="0">@Localizer["Tm_Backlog"]</option>
+                @foreach (var s in spaceView.Sprints) { <option value="@s.Id">@s.Name</option> }
+            </select>
+        }
+    }
+    <button type="submit" class="btn btn-sm btn-pems-solid" data-tm-confirm="@Localizer["Tm_BulkConfirm"]">@Localizer["Tm_Apply"]</button>
+</form>

@@ -1,0 +1,75 @@
+@model List<PEMS.Application.DTOs.WorkSpaceDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var departments = (List<(int Id, string Name)>)ViewBag.Departments;
+}
+@section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
+
+<section class="vs-panel mb-3">
+    <nav aria-label="breadcrumb" class="small mb-1"><a asp-action="Index">@Localizer["Tm_Title"]</a></nav>
+    <h2 class="h5 mb-1"><i class="bi bi-gear" aria-hidden="true"></i> @Localizer["Tm_Admin_Title"]</h2>
+    <p class="small text-muted mb-0">@Localizer["Tm_Admin_Hint"]</p>
+</section>
+
+<section class="vs-panel mb-3">
+    <h3 class="h6">@Localizer["Tm_Spaces"]</h3>
+    @if (!Model.Any()) { <div class="vs-empty py-2 small">@Localizer["Tm_NoSpaces"]</div> }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-sm table-enterprise vs-dense mb-0">
+                <thead><tr><th>@Localizer["Tm_Field_Key"]</th><th>@Localizer["Tm_Field_Name"]</th><th>@Localizer["Tm_Field_Department"]</th><th>@Localizer["Tm_Members"]</th><th>@Localizer["Tm_OpenItems"]</th><th>@Localizer["Tm_Field_Active"]</th><th></th></tr></thead>
+                <tbody>
+                    @foreach (var s in Model)
+                    {
+                        <tr class="@(s.IsActive ? "" : "text-muted")">
+                            <td class="tm-key">@s.Key</td>
+                            <td>@TaskManagerUi.Name(s.Name, s.NameFa)</td>
+                            <td class="small">@(s.OwnerDepartmentName ?? "—")</td>
+                            <td>@s.MemberCount</td>
+                            <td>@s.OpenItemCount</td>
+                            <td>@(s.IsActive ? Localizer["Tm_Yes"] : Localizer["Tm_No"])</td>
+                            <td><a class="btn btn-sm btn-outline-secondary" asp-action="AdminSpace" asp-route-id="@s.Id">@Localizer["Tm_Configure"]</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
+
+<section class="vs-panel" aria-labelledby="newSpaceTitle">
+    <h3 class="h6" id="newSpaceTitle">@Localizer["Tm_Admin_CreateSpace"]</h3>
+    <form asp-action="SaveSpace" method="post" class="row g-2">
+        <input type="hidden" name="IsActive" value="true" />
+        <div class="col-md-2">
+            <label class="form-label small" for="ns-key">@Localizer["Tm_Field_Key"] <span class="text-danger" aria-hidden="true">*</span></label>
+            <input id="ns-key" name="Key" class="form-control form-control-sm text-uppercase" required pattern="[A-Za-z][A-Za-z0-9]{1,9}" maxlength="10" aria-describedby="ns-key-help" />
+            <div id="ns-key-help" class="form-text">@Localizer["Tm_KeyHelp"]</div>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small" for="ns-name">@Localizer["Tm_Field_Name"] <span class="text-danger" aria-hidden="true">*</span></label>
+            <input id="ns-name" name="Name" class="form-control form-control-sm" required maxlength="150" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small" for="ns-namefa">@Localizer["Tm_Field_NameFa"]</label>
+            <input id="ns-namefa" name="NameFa" class="form-control form-control-sm" maxlength="150" dir="rtl" />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label small" for="ns-dept">@Localizer["Tm_Field_Department"]</label>
+            <select id="ns-dept" name="OwnerDepartmentId" class="form-select form-select-sm" aria-describedby="ns-dept-help">
+                <option value="">@Localizer["Tm_NoDepartment"]</option>
+                @foreach (var d in departments) { <option value="@d.Id">@d.Name</option> }
+            </select>
+            <div id="ns-dept-help" class="form-text">@Localizer["Tm_DepartmentHelp"]</div>
+        </div>
+        <div class="col-md-10">
+            <label class="form-label small" for="ns-desc">@Localizer["Tm_Field_Description"]</label>
+            <input id="ns-desc" name="Description" class="form-control form-control-sm" maxlength="1000" />
+        </div>
+        <div class="col-md-2 d-flex align-items-end"><button class="btn btn-sm btn-pems-solid w-100">@Localizer["Tm_Create"]</button></div>
+    </form>
+</section>

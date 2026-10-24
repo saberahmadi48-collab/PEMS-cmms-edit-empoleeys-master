@@ -80,6 +80,8 @@ public class WorkOrderDisciplineScopeTests : WorkOrderGovernanceTestBase
         await RunToInProgressAsync(id);
 
         var mechTeamId = AddTeam(Mech, "MechCrew2");
+        Ctx.EmployeeLaborRates.Add(new PEMS.Domain.Entities.EmployeeLaborRate { EmployeeId = Executor.EmployeeId!.Value, RateType = "Normal", Rate = 100, EffectiveFrom = DateTime.Today.AddYears(-1), IsActive = true });
+        await Ctx.SaveChangesAsync();
         var labor = new WorkOrderLaborService(Ctx, AccessControl);
         var laborId = await labor.AddLaborEntryAsync(id, Executor.EmployeeId!.Value, mechTeamId, DateTime.Today, 4, 0, null, Executor);
         Assert.True(laborId > 0);

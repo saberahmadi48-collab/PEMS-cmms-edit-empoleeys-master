@@ -4,6 +4,10 @@
 @{
     var thread = (List<PEMS.Application.DTOs.ThreadMessageDto>)ViewBag.Thread;
     var parentLetterId = (int)ViewBag.ParentLetterId;
+    var prefill = ViewBag.Prefill as PEMS.Application.DTOs.LetterTemplateDto;
+    var templates = (ViewBag.Templates as List<PEMS.Application.DTOs.LetterTemplateDto>) ?? new List<PEMS.Application.DTOs.LetterTemplateDto>();
+    int? selectedTemplateId = ViewBag.SelectedTemplateId;
+    var parent = ViewBag.ParentLetter as PEMS.Application.DTOs.LetterDto;
 }
 
 @* طراحی الهام‌گرفته از نمونه‌ی کارتابل مرجع: پیام‌های قبلی به‌صورت زنجیره‌ای/Thread بالای
@@ -40,6 +44,34 @@
 </div>
 
 <div class="content-card">
+    @if (parent != null && parent.ResponseRequired && parent.ResponseDueDate.HasValue)
+    {
+        @* پاسخ‌خواهی نامه‌ی مادر: وضعیت هم متن و آیکون دارد، نه فقط رنگ *@
+        <div class="alert @(parent.ResponseOverdue ? "alert-danger" : "alert-info") py-2" role="status">
+            <i class="bi @(parent.ResponseOverdue ? "bi-exclamation-triangle" : "bi-reply")" aria-hidden="true"></i>
+            @Localizer["Lt_ReplyParentDue"] <strong>@parent.ResponseDueDate.Value.ToString("yyyy-MM-dd")</strong>
+            @if (parent.ResponseOverdue) { <span>(@Localizer["Lt_Overdue"])</span> }
+        </div>
+    }
+
+    @if (templates.Any())
+    {
+        <form method="get" asp-action="Reply" class="d-flex flex-wrap align-items-end gap-2 mb-3">
+            <input type="hidden" name="id" value="@parentLetterId" />
+            <div>
+                <label class="form-label small mb-1" for="replyTemplate">@Localizer["LtT_UseTemplate"]</label>
+                <select name="templateId" id="replyTemplate" class="form-select form-select-sm">
+                    <option value="">@Localizer["Ed_None"]</option>
+                    @foreach (var tpl in templates)
+                    {
+                        <option value="@tpl.LetterTemplateId" selected="@(selectedTemplateId == tpl.LetterTemplateId)">@tpl.Name</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> @Localizer["LtT_Apply"]</button>
+        </form>
+    }
+
     <form asp-action="Reply" method="post">
         <input type="hidden" name="parentLetterId" value="@parentLetterId" />
 
@@ -54,7 +86,7 @@
             </div>
             <div class="col-12">
                 <label class="form-label">Body</label>
-                <textarea name="body" id="replyBodyEditor" class="form-control" rows="6"></textarea>
+                <textarea name="body" id="replyBodyEditor" class="form-control" rows="6">@prefill?.Body</textarea>
             </div>
         </div>
 

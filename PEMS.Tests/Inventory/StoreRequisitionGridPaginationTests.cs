@@ -9,8 +9,7 @@ namespace PEMS.Tests.Inventory;
 
 /// <summary>
 /// طبق «PEMS Phase 6B — Wave A: StoreRequisition Grid». قبلاً کل جدول فیلترشده (با ۲ Include)
-/// با ToListAsync (بدون Skip/Take) بارگذاری می‌شد. Index هیچ HasPermissionAsync gate ای ندارد
-/// (طبق کد موجود) - این رفتار عمداً دست‌نخورده باقی مانده است.
+/// با ToListAsync (بدون Skip/Take) بارگذاری می‌شد. از P0-09 (D-11، ۲۰۲۶-۱۰-۱۴) Index مجوز StoreRequisition.View می‌خواهد.
 /// </summary>
 public class StoreRequisitionGridPaginationTests
 {
@@ -23,7 +22,9 @@ public class StoreRequisitionGridPaginationTests
         ctx.SaveChanges();
 
         var currentUser = new FakeCurrentUserService();
-        var controller = new StoreRequisitionController(ctx, null!, currentUser, null!, null!);
+        // P0-09 (D-11): Index حالا StoreRequisition.View می‌خواهد؛ این تست صفحه‌بندی را می‌سنجد، پس کاربر مجاز است
+        // (رد بدون View در ProcurementP0ReadAndSodDecisionTests پوشش داده شده).
+        var controller = new StoreRequisitionController(ctx, null!, currentUser, new FakePermissionService(), null!);
         return (controller, ctx);
     }
 

@@ -27,17 +27,18 @@ public class PremiumGlassSystemTests
     }
 
     [Fact]
-    public void TurquoiseTheme_BackgroundIsNearBlack_NotBlueTinted()
+    public void TurquoiseTheme_BackgroundIsVeryDark_InkTealBase()
     {
         var css = Web("wwwroot", "css", "site.css");
-        var start = css.IndexOf("[data-theme=\"turquoise\"] {", StringComparison.Ordinal);
+        // v3: انتخابگر :root[data-theme] (مشخصیت بالاتر از :root ی admin.css)؛ علت اصلی ظاهر خراب نسخه‌ی قبل
+        var start = css.IndexOf(":root[data-theme=\"turquoise\"] {", StringComparison.Ordinal);
         Assert.True(start >= 0, "turquoise token block must exist");
         var end = css.IndexOf("\n}", start, StringComparison.Ordinal);
         var block = css.Substring(start, end - start);
 
-        // طبق بند ۵ سند: سیاه/گرافیتی باید غالب باشد - --pems-bg باید نزدیک به سیاه واقعی
-        // باشد (کانال آبی نزدیک به کانال قرمز/سبز، نه یک آبی-تیره‌ی معمولی مثل نسخه‌ی قبلی #0e1520)
-        Assert.Contains("--pems-bg: #0a0d12;", block);
+        // پایه هنوز تیره‌ی غالب است (v3: جوهری-فیروزه‌ای، نه خاکستری خنثی - تا فیروزه یک رنگ «بومی» تم باشد)
+        Assert.Contains("--pems-bg: #061219;", block);
+        Assert.Contains("color-scheme: dark;", block);
         Assert.Contains("--pems-elev-0", block);
         Assert.Contains("--pems-elev-1", block);
         Assert.Contains("--pems-elev-2", block);

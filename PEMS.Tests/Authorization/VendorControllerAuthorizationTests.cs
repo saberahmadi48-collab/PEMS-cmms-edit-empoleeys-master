@@ -203,26 +203,36 @@ public class VendorControllerAuthorizationTests
     }
 
     // ==============================================================================
-    // Index/Details — طبق تصمیم صریح کاربر: عمداً دست‌نخورده، برای همه‌ی نقش‌ها در دسترس
+    // Index/Details — P0-09 (D-OPEN-02، تصمیم مالک ۲۰۲۶-۱۰-۱۴): تصمیم قبلی «همه‌ی نقش‌ها» لغو شد؛ حالا Vendors.View لازم است.
+    // Viewer هیچ ردیف Vendors ندارد (سید موجود فقط ContractManager)، پس رد می‌شود.
     // ==============================================================================
 
     [Fact]
-    public async Task Index_ViewerRole_StillAccessible_NoRegressionFromNewGates()
+    public async Task Index_ViewerRole_WithoutVendorsView_Forbidden()
     {
-        var (controller, _) = await CreateController(nameof(Index_ViewerRole_StillAccessible_NoRegressionFromNewGates), SystemRoles.Viewer);
+        var (controller, _) = await CreateController(nameof(Index_ViewerRole_WithoutVendorsView_Forbidden), SystemRoles.Viewer);
 
         var result = await controller.Index();
 
-        Assert.IsType<ViewResult>(result);
+        Assert.IsType<ForbidResult>(result);
     }
 
     [Fact]
-    public async Task Details_ViewerRole_StillAccessible_NoRegressionFromNewGates()
+    public async Task Details_ViewerRole_WithoutVendorsView_Forbidden()
     {
-        var (controller, _) = await CreateController(nameof(Details_ViewerRole_StillAccessible_NoRegressionFromNewGates), SystemRoles.Viewer);
+        var (controller, _) = await CreateController(nameof(Details_ViewerRole_WithoutVendorsView_Forbidden), SystemRoles.Viewer);
 
         var result = await controller.Details(1);
 
-        Assert.IsType<ViewResult>(result);
+        Assert.IsType<ForbidResult>(result);
+    }
+
+    [Fact]
+    public async Task Index_And_Details_ContractManager_WithVendorsView_Accessible()
+    {
+        var (controller, _) = await CreateController(nameof(Index_And_Details_ContractManager_WithVendorsView_Accessible), SystemRoles.ContractManager);
+
+        Assert.IsType<ViewResult>(await controller.Index());
+        Assert.IsType<ViewResult>(await controller.Details(1));
     }
 }

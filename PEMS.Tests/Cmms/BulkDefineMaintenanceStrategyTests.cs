@@ -38,7 +38,9 @@ public class BulkDefineMaintenanceStrategyTests
         var strategyService = new MaintenanceStrategyService(ctx);
         var functionalLocationService = new FunctionalLocationService(ctx);
 
-        var controller = new MaintenanceStrategyController(ctx, strategyService, functionalLocationService, currentUser, permissionService).WithTempData();
+        var controller = new MaintenanceStrategyController(ctx, strategyService,
+            new MaintenanceStrategyCommandService(ctx, new FakeWorkflowRuntime()), new StrategyAssignmentService(ctx),
+            new FailureModeCatalogService(ctx), new StrategyCoverageService(ctx), functionalLocationService, currentUser, permissionService).WithTempData();
         return (controller, ctx);
     }
 
@@ -148,38 +150,48 @@ public class BulkDefineMaintenanceStrategyTests
         Assert.Equal(0, equipmentWithFlCount);
     }
 
-    [Fact]
-    public async Task BulkCreate_Post_InactiveEquipment_SkippedAndNotCreated()
+    private static async Task<(int StrategyId, int ClassId)> SeedApprovedStrategyAsync(PEMS.Persistence.Context.PEMSDbContext ctx)
     {
-        // طبق بند ۱۳ ممیزی: POST قبلاً هرگز دوباره تایید نمی‌کرد که تجهیز هنوز فعال است
-        var (controller, ctx) = await CreateController(nameof(BulkCreate_Post_InactiveEquipment_SkippedAndNotCreated));
-        var active = new Equipment { TagNumber = "A-1", Name = "A-1", EquipmentType = "Pump", IsActive = true };
-        var inactive = new Equipment { TagNumber = "A-2", Name = "A-2", EquipmentType = "Pump", IsActive = false };
-        ctx.Equipments.AddRange(active, inactive);
+        var (classId, modeId) = await RcmTestFactory.SeedCatalogAsync(ctx, "BULK");
+        var s = new MaintenanceStrategy
+        {
+            EquipmentClassId = classId, FailureModeId = modeId, FailureModeCode = "BULK_LEAK", StrategyType = "Preventive",
+            ConsequenceCategory = "Operational", Status = "Active", IsActive = true
+        };
+        ctx.MaintenanceStrategies.Add(s);
         await ctx.SaveChangesAsync();
+        return (s.MaintenanceStrategyId, classId);
+    }
 
-        var result = await controller.BulkCreate(new List<int> { active.EquipmentId, inactive.EquipmentId },
-            "Preventive", "LEAK", "Operational", "test", "Calendar", null, null, null);
+    [Fact]
+    public async Task BulkCreate_Post_InactiveEquipment_SkippedAndNotAssigned()
+    {
+        // POST دوباره تایید می‌کند که تجهیز هنوز فعال است
+        var (controller, ctx) = await CreateController(nameof(BulkCreate_Post_InactiveEquipment_SkippedAndNotAssigned));
+        var (strategyId, classId) = await SeedApprovedStrategyAsync(ctx);
+        var active = await RcmTestFactory.AddEquipmentAsync(ctx, "A-1", classId);
+        var inactive = await RcmTestFactory.AddEquipmentAsync(ctx, "A-2", classId, active: false);
+
+        var result = await controller.BulkCreate(new List<int> { active.EquipmentId, inactive.EquipmentId }, strategyId);
 
         Assert.IsType<RedirectToActionResult>(result);
-        var created = ctx.MaintenanceStrategies.ToList();
+        var created = ctx.MaintenanceStrategyAssignments.ToList();
         Assert.Single(created);
         Assert.Equal(active.EquipmentId, created[0].EquipmentId);
     }
 
     [Fact]
-    public async Task BulkCreate_Post_DuplicateEquipmentIdInSameSubmission_OnlyCreatesOneRow()
+    public async Task BulkCreate_Post_DuplicateEquipmentIdInSameSubmission_OnlyAssignsOnce()
     {
-        var (controller, ctx) = await CreateController(nameof(BulkCreate_Post_DuplicateEquipmentIdInSameSubmission_OnlyCreatesOneRow));
-        var equipment = new Equipment { TagNumber = "D-1", Name = "D-1", EquipmentType = "Pump", IsActive = true };
-        ctx.Equipments.Add(equipment);
-        await ctx.SaveChangesAsync();
+        var (controller, ctx) = await CreateController(nameof(BulkCreate_Post_DuplicateEquipmentIdInSameSubmission_OnlyAssignsOnce));
+        var (strategyId, classId) = await SeedApprovedStrategyAsync(ctx);
+        var equipment = await RcmTestFactory.AddEquipmentAsync(ctx, "D-1", classId);
 
-        var result = await controller.BulkCreate(new List<int> { equipment.EquipmentId, equipment.EquipmentId },
-            "Preventive", "LEAK", "Operational", "test", "Calendar", null, null, null);
+        var result = await controller.BulkCreate(new List<int> { equipment.EquipmentId, equipment.EquipmentId }, strategyId);
 
         Assert.IsType<RedirectToActionResult>(result);
-        Assert.Single(ctx.MaintenanceStrategies);
+        Assert.Single(ctx.MaintenanceStrategyAssignments);
+        Assert.Single(ctx.MaintenanceStrategies); // هیچ استراتژی تک‌تگی جدیدی ساخته نمی‌شود
     }
 
     [Fact]

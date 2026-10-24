@@ -6,6 +6,7 @@
 @inject IPermissionService PermissionService
 @inject IRoleModuleActionService RoleActions
 @inject ICurrentUserService CurrentUserService
+@inject IReplenishmentAvailability ReplenishmentAvailability
 @inject PEMS.Web.Security.NavigationVisibilityResolver NavigationVisibilityResolver
 @{
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
@@ -24,7 +25,8 @@
 
     var canSeeQuickSetup = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "Setup", "View");
     // Phase 2 / P5: توصیه‌های تأمین مجوزمحور است (ماژول ReplenishmentRecommendation)؛ بدون مجوز، لینک دیده نمی‌شود (Sidebar visible + denied = BAD)
-    var canSeeReplenishment = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "ReplenishmentRecommendation", "View");
+    // دروازه‌ی موقت P5: وقتی غیرفعال است (پیش‌فرض) هیچ بررسی مجوزی برای P5 انجام نمی‌شود (&& کوتاه‌شونده) و لینک نمایش داده نمی‌شود
+    var canSeeReplenishment = ReplenishmentAvailability.IsEnabled && await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "ReplenishmentRecommendation", "View");
     // Discipline Master Data: مجوزمحور (ماژول DisciplineMaster)، نه نقش-محور؛ بدون دادن بخش Administration کامل به نقش‌های غیرادمین
     var canSeeDisciplineMaster = await PermissionService.HasPermissionAsync(CurrentUserService.Roles, "DisciplineMaster", "View");
 
@@ -70,8 +72,8 @@
     var correspondenceControllers = new[] { "Letter", "DCC", "TechnicalQuery" };
     var qualityControllers = new[] { "QC", "MOC" };
     var contractControllers = new[] { "Contract", "Vendor", "PurchaseOrder" };
-    var projectControlControllers = new[] { "Task", "Tag", "Report", "Meeting" };
-    var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "MaintenancePlan", "MaintenanceCalendar", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
+    var projectControlControllers = new[] { "Task", "TaskManager", "Tag", "Report", "Meeting" };
+    var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "FailureModeCatalog", "StrategyImport", "MaintenancePlan", "MaintenanceCalendar", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
     var inventoryControllers = new[] { "Inventory", "MaterialItem", "IrnReceipt", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "Replenishment" };
     // طبق «PEMS Operations CMMS Boundary Correction»: Operations دیگر زیرمجموعه‌ی CMMS Integration
     // نیست - بخش سایدباری کاملاً مستقل خودش را دارد (دقیقاً هم‌الگو با جدایی Inventory & Materials
@@ -89,6 +91,10 @@
 
     <a class="nav-link @(IsActive("Home") ? "active" : "")" asp-controller="Home" asp-action="Index" asp-area="">
         <i class="bi bi-speedometer2"></i> @Localizer["Dashboard"]
+    </a>
+
+    <a class="nav-link @(IsActive("ExecutiveDashboard") ? "active" : "")" asp-controller="ExecutiveDashboard" asp-action="Index" asp-area="">
+        <i class="bi bi-graph-up-arrow"></i> @Localizer["Exec_NavTitle"]
     </a>
 
     <a class="nav-link @(IsActive("MyWork") ? "active" : "")" asp-controller="MyWork" asp-action="Index" asp-area="">
@@ -308,16 +314,16 @@
                 <i class="bi bi-check2-square"></i> @Localizer["Tasks"]
             </a>
 
+            <a class="nav-link @(IsActive("TaskManager") ? "active" : "")" asp-controller="TaskManager" asp-action="Index" asp-area="">
+                <i class="bi bi-kanban"></i> @Localizer["Nav_TaskManager"]
+            </a>
+
             <a class="nav-link @(IsActive("Meeting") ? "active" : "")" asp-controller="Meeting" asp-action="Index" asp-area="">
                 <i class="bi bi-people"></i> @Localizer["Meetings"]
             </a>
 
             <a class="nav-link @(IsActive("Report") ? "active" : "")" asp-controller="Report" asp-action="Index" asp-area="">
                 <i class="bi bi-graph-up"></i> @Localizer["Reports"]
-            </a>
-
-            <a class="nav-link @(IsActive("Tag") ? "active" : "")" asp-controller="Tag" asp-action="Index" asp-area="">
-                <i class="bi bi-tags"></i> @Localizer["Tags"]
             </a>
         </div>
     }

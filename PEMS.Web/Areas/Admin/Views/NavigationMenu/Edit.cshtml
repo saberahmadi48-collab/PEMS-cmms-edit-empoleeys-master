@@ -1,0 +1,100 @@
+@model PEMS.Web.Areas.Admin.Models.NavigationMenuEditViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Navigation
+@using PEMS.Domain.Entities
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var i = Model.Item;
+    var input = Model.Input;
+}
+
+<div class="admin-page-shell">
+    <div class="content-card" style="max-width:760px">
+        <h2 class="h5 mb-1">@Localizer["Nav_Admin_Edit"]</h2>
+        <p class="small text-body-tertiary mb-3" dir="ltr">@i.Key · @i.VisibilityRule</p>
+
+        <div asp-validation-summary="All" class="text-danger small mb-2" role="alert"></div>
+
+        <form method="post" asp-action="Edit">
+            <input type="hidden" name="Key" value="@i.Key" />
+            <input type="hidden" name="RowVersion" value="@input.RowVersion" />
+
+            <div class="mb-3">
+                <label class="form-label" for="ParentKey">@Localizer["Nav_Field_Parent"]</label>
+                <select class="form-select" id="ParentKey" name="ParentKey" disabled="@(i.Kind == NavigationMenuItemKinds.Section)">
+                    @if (i.Kind != NavigationMenuItemKinds.Subheading)
+                    {
+                        <option value="" selected="@(input.ParentKey == null)">@Localizer["Nav_TopLevel"]</option>
+                    }
+                    @foreach (var (key, title) in Model.Parents)
+                    {
+                        <option value="@key" selected="@(input.ParentKey == key)">@title</option>
+                    }
+                </select>
+                @if (i.Kind == NavigationMenuItemKinds.Section)
+                {
+                    <div class="form-text">@Localizer["Nav_SectionTopLevelOnly"]</div>
+                }
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="TitleFa">@Localizer["Nav_Field_TitleFa"]</label>
+                    <input class="form-control" id="TitleFa" name="TitleFa" value="@input.TitleFa" maxlength="200" dir="rtl" placeholder="@Model.DefaultTitle" aria-describedby="titleHelp" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="TitleEn">@Localizer["Nav_Field_TitleEn"]</label>
+                    <input class="form-control" id="TitleEn" name="TitleEn" value="@input.TitleEn" maxlength="200" dir="ltr" placeholder="@Model.DefaultTitle" aria-describedby="titleHelp" />
+                </div>
+                <div id="titleHelp" class="form-text">@Localizer["Nav_TitleHelp"]</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="Icon">@Localizer["Nav_Field_Icon"]</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi @input.Icon" id="iconPreview" aria-hidden="true"></i></span>
+                    <input class="form-control" id="Icon" name="Icon" value="@input.Icon" maxlength="60" dir="ltr" pattern="bi-[a-z0-9-]{1,50}" aria-describedby="iconHelp" />
+                </div>
+                <div id="iconHelp" class="form-text">@Localizer["Nav_IconHelp"]</div>
+            </div>
+
+            @if (i.Kind == NavigationMenuItemKinds.Link)
+            {
+                <div class="mb-3">
+                    <label class="form-label" for="BadgeKey">@Localizer["Nav_Field_Badge"]</label>
+                    <select class="form-select" id="BadgeKey" name="BadgeKey" aria-describedby="badgeHelp">
+                        <option value="">@Localizer["Nav_NoBadge"]</option>
+                        @foreach (var b in NavigationBadges.All)
+                        {
+                            <option value="@b.Key" selected="@(input.BadgeKey == b.Key)">@Localizer[b.TitleKey]</option>
+                        }
+                    </select>
+                    <div id="badgeHelp" class="form-text">@Localizer["Nav_BadgeHelp"]</div>
+                </div>
+            }
+
+            <div class="form-check form-switch mb-4">
+                <input class="form-check-input" type="checkbox" id="IsActive" name="IsActive" value="true" checked="@input.IsActive" />
+                <input type="hidden" name="IsActive" value="false" />
+                <label class="form-check-label" for="IsActive">@Localizer["Nav_Field_Visible"]</label>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+                <a class="btn btn-outline-secondary" asp-action="Index">@Localizer["Cancel"]</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // پیش‌نمایش آیکون هنگام تایپ (فقط کلاس‌های معتبر bi-*)
+    (function () {
+        var input = document.getElementById('Icon'), preview = document.getElementById('iconPreview');
+        if (!input || !preview) return;
+        input.addEventListener('input', function () {
+            preview.className = /^bi-[a-z0-9-]{1,50}$/.test(input.value) ? 'bi ' + input.value : 'bi';
+        });
+    })();
+</script>

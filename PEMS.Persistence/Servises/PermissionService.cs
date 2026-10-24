@@ -602,6 +602,9 @@ public class PermissionService : IPermissionService
         // مادی جدید از بیرون - رفع آن‌ها به یک تغییر امنیتی جدا و کنترل‌شده موکول شده (طبق دستور
         // صریح: بدون بازطراحی امنیتی گسترده در این Step). نقش‌ها هم‌الگو با "InventoryMasterData"
         // موجود (نزدیک‌ترین ماژول قابل‌مقایسه از نظر ریسک مستقیم-موجودی).
+        // به‌روزرسانی مستندات (Procurement P0 / F-04): توضیح بالا تاریخی است. اکنون MaterialItemController سمت سرور
+        // Create را با MaterialItem.Create و Edit/ToggleActive/AdjustStock/TransferStock را با MaterialItem.Edit گیت می‌کند.
+        // مجوز اختصاصی «اصلاح موجودی» و تخصیص آن به نقش‌های انبار (WH.*) تصمیم سیاستی باز است و این Seed تغییر نکرده است.
         await SeedMissingRolesAsync("MaterialItem", new List<RolePermission>
         {
             New(SystemRoles.MaintenanceEngineer, "MaterialItem", create: true, edit: true),

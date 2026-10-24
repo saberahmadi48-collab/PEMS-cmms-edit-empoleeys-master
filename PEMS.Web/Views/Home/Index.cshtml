@@ -144,20 +144,45 @@
     <div class="col-lg-6">
         <div class="content-card">
             <h6 class="mb-3">@Localizer["Documents by Status"]</h6>
-            <canvas id="docsStatusChart" height="220"></canvas>
+            <partial name="_DonutChart" model="@(new PEMS.Web.Models.DonutChartViewModel
+            {
+                Id = "docsStatusDonut",
+                DefaultLabel = Localizer["Documents"].Value,
+                AriaLabel = Localizer["Documents by Status"].Value,
+                EmptyText = Localizer["No documents to chart yet."].Value,
+                Items = Model.DocumentsByStatus.Select(kv => new PEMS.Web.Models.DonutChartItem(kv.Key, kv.Value)).ToList()
+            })" />
         </div>
     </div>
 
     <div class="col-lg-6">
         <div class="content-card h-100">
             <h6 class="mb-3">@Localizer["Discipline Performance"]</h6>
-            <p class="text-muted small">
-                این بخش پس از تکمیل ماژول‌های مهندسی (فاز بعدی) با KPI واقعی هر دیسیپلین پر می‌شود.
-            </p>
-            <div class="text-center text-muted py-5">
-                <i class="bi bi-bar-chart-line" style="font-size:38px;"></i>
-                <div class="small mt-2">Coming soon</div>
-            </div>
+            @{ var disciplineRows = (List<PEMS.Web.Models.DisciplinePerformanceRow>)(ViewBag.DisciplinePerformance ?? new List<PEMS.Web.Models.DisciplinePerformanceRow>()); }
+            @if (disciplineRows.Count == 0)
+            {
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-bar-chart-line" style="font-size:38px;"></i>
+                    <div class="small mt-2">@Localizer["No engineering documents with a discipline yet. Register documents (or import the MDR) to see per-discipline progress here."]</div>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-enterprise table-sm mb-0">
+                        <thead><tr><th>@Localizer["Discipline"]</th><th class="text-end">@Localizer["Documents"]</th><th class="text-end">@Localizer["Approved"]</th><th class="text-end">@Localizer["Pending Approval"]</th><th style="width:30%;">%</th></tr></thead>
+                        <tbody>
+                            @foreach (var row in disciplineRows)
+                            {
+                                <tr>
+                                    <td>@row.Discipline</td><td class="text-end">@row.Total</td><td class="text-end">@row.Approved</td><td class="text-end">@row.PendingApproval</td>
+                                    <td><div class="progress" style="height:8px;" title="@row.ApprovedPercent%"><div class="progress-bar bg-success" style="width:@row.ApprovedPercent%"></div></div></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
         </div>
     </div>
 
@@ -212,26 +237,11 @@ else
 }
 
 
-@section Scripts {
-    <script src="~/lib/chartjs/chart-4.4.4.umd.min.js"></script>
-    <script src="~/js/pems-charts.js"></script>
-    <script>
-        const statusLabels = @Html.Raw(Json.Serialize(Model.DocumentsByStatus.Keys));
-        const statusValues = @Html.Raw(Json.Serialize(Model.DocumentsByStatus.Values));
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-donut.css" asp-append-version="true" />
+}
 
-        const ctx = document.getElementById('docsStatusChart');
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: statusLabels,
-                datasets: [{
-                    data: statusValues,
-                    backgroundColor: PemsChartColors.categorical
-                }]
-            },
-            options: {
-                plugins: { legend: { position: 'bottom' } }
-            }
-        });
-    </script>
+@section Scripts {
+    <script src="~/js/pems-charts.js"></script>
+    <script src="~/js/pems-donut.js" asp-append-version="true"></script>
 }

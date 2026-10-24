@@ -1,0 +1,110 @@
+@model PEMS.Application.DTOs.BacklogDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var view = Model.View;
+    var canRank = view.CanRank;
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+    var hasActive = view.Sprints.Any(s => s.State == PEMS.Domain.Entities.SprintStates.Active);
+    var futureSprints = view.Sprints.Where(s => s.State == PEMS.Domain.Entities.SprintStates.Future).ToList();
+    ViewData["CanRank"] = canRank;
+    ViewData["ShowBulk"] = true;
+    ViewData["Sprints"] = view.Sprints;
+}
+@section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
+
+<partial name="_SpaceHeader" model="view" />
+@if (canRank) { <div hidden data-tm-reorder-url="@Url.Action("Reorder", "TaskManager")"></div> }
+
+<div class="vs-panel mb-2 py-2">
+    <partial name="_BulkBar" />
+    <p class="small text-muted mb-0" data-tm-bulk-hint>@Localizer["Tm_BulkHint"]</p>
+</div>
+
+@foreach (var (sprint, items) in Model.SprintPanels)
+{
+    var isActive = sprint.State == PEMS.Domain.Entities.SprintStates.Active;
+    <section class="vs-panel mb-3 tm-sprint @(isActive ? "tm-sprint--active" : "")" aria-labelledby="sprint-@sprint.Id">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+            <div>
+                <h3 class="h6 mb-0" id="sprint-@sprint.Id">
+                    @sprint.Name
+                    <span class="badge @(isActive ? "bg-success" : "bg-secondary") ms-1">@Localizer["Tm_SprintState_" + sprint.State]</span>
+                </h3>
+                <div class="small text-muted">
+                    @TaskManagerUi.Date(sprint.StartDate) @(sprint.StartDate != null || sprint.EndDate != null ? "–" : "") @TaskManagerUi.Date(sprint.EndDate)
+                    · @Localizer["Tm_SprintCounts", sprint.ToDoCount, sprint.InProgressCount, sprint.DoneCount]
+                </div>
+                @if (!string.IsNullOrWhiteSpace(sprint.Goal)) { <div class="small"><i class="bi bi-flag" aria-hidden="true"></i> @sprint.Goal</div> }
+            </div>
+            @if (view.CanManageSprints)
+            {
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                    @if (!isActive && !hasActive)
+                    {
+                        <form asp-action="StartSprint" method="post">
+                            <input type="hidden" name="sprintId" value="@sprint.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                            <button class="btn btn-sm btn-pems-solid"><i class="bi bi-play-fill" aria-hidden="true"></i> @Localizer["Tm_StartSprint"]</button>
+                        </form>
+                    }
+                    @if (isActive)
+                    {
+                        <form asp-action="CompleteSprint" method="post" class="d-flex gap-1 align-items-center">
+                            <input type="hidden" name="sprintId" value="@sprint.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                            <label class="small text-nowrap" for="moveTo-@sprint.Id">@Localizer["Tm_MoveUnfinishedTo"]</label>
+                            <select id="moveTo-@sprint.Id" name="moveTo" class="form-select form-select-sm w-auto">
+                                <option value="0">@Localizer["Tm_Backlog"]</option>
+                                @foreach (var f in futureSprints) { <option value="@f.Id">@f.Name</option> }
+                            </select>
+                            <button class="btn btn-sm btn-outline-success" data-tm-confirm="@Localizer["Tm_CompleteSprintConfirm"]"><i class="bi bi-check2-all" aria-hidden="true"></i> @Localizer["Tm_CompleteSprint"]</button>
+                        </form>
+                    }
+                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#editSprint-@sprint.Id" aria-expanded="false" aria-controls="editSprint-@sprint.Id"><i class="bi bi-pencil" aria-hidden="true"></i> @Localizer["Tm_Edit"]</button>
+                </div>
+            }
+        </div>
+        @if (view.CanManageSprints)
+        {
+            <form id="editSprint-@sprint.Id" asp-action="UpdateSprint" method="post" class="collapse row g-2 mb-2">
+                <input type="hidden" name="sprintId" value="@sprint.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                <div class="col-md-3"><label class="form-label small" for="sn-@sprint.Id">@Localizer["Tm_Field_Name"]</label><input id="sn-@sprint.Id" name="name" value="@sprint.Name" class="form-control form-control-sm" required maxlength="150" /></div>
+                <div class="col-md-4"><label class="form-label small" for="sg-@sprint.Id">@Localizer["Tm_Field_Goal"]</label><input id="sg-@sprint.Id" name="goal" value="@sprint.Goal" class="form-control form-control-sm" maxlength="1000" /></div>
+                <div class="col-md-2"><label class="form-label small" for="ss-@sprint.Id">@Localizer["Tm_Field_StartDate"]</label><input id="ss-@sprint.Id" name="startDate" type="date" value="@TaskManagerUi.DateInput(sprint.StartDate)" class="form-control form-control-sm" /></div>
+                <div class="col-md-2"><label class="form-label small" for="se-@sprint.Id">@Localizer["Tm_Field_EndDate"]</label><input id="se-@sprint.Id" name="endDate" type="date" value="@TaskManagerUi.DateInput(sprint.EndDate)" class="form-control form-control-sm" /></div>
+                <div class="col-md-1 d-flex align-items-end"><button class="btn btn-sm btn-pems-solid w-100">@Localizer["Tm_Save"]</button></div>
+            </form>
+        }
+        @{ ViewData["Bucket"] = $"{view.Space.Id}:{sprint.Id}"; }
+        <partial name="_ItemTable" model="items" view-data="ViewData" />
+    </section>
+}
+
+<section class="vs-panel mb-3" aria-labelledby="backlogTitle">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+        <h3 class="h6 mb-0" id="backlogTitle">@Localizer["Tm_Backlog"] <span class="badge bg-light text-dark border">@Model.BacklogItems.Count</span></h3>
+        @if (view.CanManageSprints)
+        {
+            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#newSprint" aria-expanded="false" aria-controls="newSprint"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Tm_CreateSprint"]</button>
+        }
+    </div>
+    @if (view.CanManageSprints)
+    {
+        <form id="newSprint" asp-action="CreateSprint" method="post" class="collapse row g-2 mb-2">
+            <input type="hidden" name="workSpaceId" value="@view.Space.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+            <div class="col-md-3"><label class="form-label small" for="ns-name">@Localizer["Tm_Field_Name"]</label><input id="ns-name" name="name" class="form-control form-control-sm" required maxlength="150" /></div>
+            <div class="col-md-4"><label class="form-label small" for="ns-goal">@Localizer["Tm_Field_Goal"]</label><input id="ns-goal" name="goal" class="form-control form-control-sm" maxlength="1000" /></div>
+            <div class="col-md-2"><label class="form-label small" for="ns-start">@Localizer["Tm_Field_StartDate"]</label><input id="ns-start" name="startDate" type="date" class="form-control form-control-sm" /></div>
+            <div class="col-md-2"><label class="form-label small" for="ns-end">@Localizer["Tm_Field_EndDate"]</label><input id="ns-end" name="endDate" type="date" class="form-control form-control-sm" /></div>
+            <div class="col-md-1 d-flex align-items-end"><button class="btn btn-sm btn-pems-solid w-100">@Localizer["Tm_Create"]</button></div>
+        </form>
+    }
+    @{ ViewData["Bucket"] = $"{view.Space.Id}:"; }
+    <partial name="_ItemTable" model="Model.BacklogItems" view-data="ViewData" />
+    @if (canRank) { <p class="small text-muted mt-2 mb-0"><i class="bi bi-arrows-move" aria-hidden="true"></i> @Localizer["Tm_RankHint"]</p> }
+</section>
+
+<partial name="_CreateModal" model="view" />
+
+@section Scripts { <script src="~/js/pems-task-manager.js" asp-append-version="true"></script> }

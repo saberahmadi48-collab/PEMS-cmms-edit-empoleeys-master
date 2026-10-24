@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using PEMS.Domain.Common;
 
 namespace PEMS.Domain.Entities;
@@ -22,6 +22,20 @@ public class MaintenancePlan : BaseEntity
     public int MaintenanceStrategyId { get; set; }
 
     public MaintenanceStrategy? MaintenanceStrategy { get; set; }
+
+    // ==============================================================================
+    // طبق RCM کلاس‌محور: Plan از یک «تخصیص» (نسخه‌ی استراتژی + تگ) ساخته می‌شود. تجهیز از همین
+    // تخصیص مشتق می‌شود، نه از ورودی کلاینت. Null فقط برای Planهای قدیمی پیش از مهاجرت (که
+    // مهاجرت داده برایشان تخصیص می‌سازد).
+    // ==============================================================================
+    public int? MaintenanceStrategyAssignmentId { get; set; }
+    public MaintenanceStrategyAssignment? MaintenanceStrategyAssignment { get; set; }
+
+    // سیاست زمان‌بندی (RcmCodes.ScheduleMode): Fixed = لنگر روی سررسید قبلی، Floating = از تاریخ تکمیل
+    public string ScheduleMode { get; set; } = "Fixed";
+
+    // آخرین تاریخ تکمیل واقعی Work Order (برای سیاست Floating)
+    public DateTime? LastCompletionDate { get; set; }
 
     // شماره برنامه
     // مثال: PM-P101-001

@@ -1,0 +1,65 @@
+@model List<PEMS.Application.DTOs.FailureModeOptionDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Helpers
+@using PEMS.Web.Resources
+@using PEMS.Web.ViewModels
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var classes = (List<LookupItem>)ViewBag.Classes;
+    var classId = (int?)ViewBag.ClassId;
+    var canEdit = (bool)ViewBag.CanEdit;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-journal-text"></i> @Localizer["Rcm_FailureModeCatalog"]</h5>
+    <div>
+        @if (canEdit) { <a asp-action="Edit" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg"></i> @Localizer["Rcm_NewFailureMode"]</a> }
+        <a asp-controller="MaintenanceStrategy" asp-action="Index" class="btn btn-sm btn-outline-secondary">@Localizer["Rcm_Back"]</a>
+    </div>
+</div>
+<p class="text-muted small">@Localizer["Rcm_CatalogHint"]</p>
+
+<div class="content-card mb-3">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label small">@Localizer["Rcm_EquipmentClass"]</label>
+            <select name="classId" class="form-select form-select-sm">
+                <option value="">@Localizer["Rcm_All"]</option>
+                @foreach (var c in classes) { <option value="@c.Id" selected="@(classId == c.Id)">@c.Text (@c.Code)</option> }
+            </select>
+        </div>
+        <div class="col-md-5">
+            <label class="form-label small">@Localizer["Rcm_Search"]</label>
+            <input name="q" value="@ViewBag.Query" class="form-control form-control-sm" />
+        </div>
+        <div class="col-md-2"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-search"></i></button></div>
+    </form>
+</div>
+
+<div class="content-card">
+    <table class="table table-sm table-enterprise align-middle">
+        <thead><tr><th>@Localizer["Rcm_Code"]</th><th>@Localizer["Rcm_FailureMode"]</th><th>@Localizer["Rcm_EquipmentClass"]</th><th>@Localizer["Rcm_FailureCauses"]</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td class="small"><code>@m.Code</code></td>
+                <td>@RcmDisplay.Name(m.Name, m.NameFa)</td>
+                <td class="small">@(m.EquipmentClassName ?? Localizer["Rcm_AllClasses"].Value)</td>
+                <td class="small">@string.Join("، ", m.Causes.Select(c => RcmDisplay.Name(c.Name, c.NameFa)))</td>
+                <td class="text-end">
+                    @if (canEdit)
+                    {
+                        <a asp-action="Edit" asp-route-id="@m.FailureModeId" class="btn btn-sm btn-outline-secondary py-0"><i class="bi bi-pencil"></i></a>
+                        <form asp-action="Toggle" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@m.FailureModeId" /><input type="hidden" name="active" value="false" />
+                            <button class="btn btn-sm btn-outline-danger py-0" title="@Localizer["Rcm_Deactivate"]"><i class="bi bi-slash-circle"></i></button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    @if (!Model.Any()) { <p class="text-muted text-center py-3">@Localizer["Rcm_NoFailureModes"]</p> }
+</div>

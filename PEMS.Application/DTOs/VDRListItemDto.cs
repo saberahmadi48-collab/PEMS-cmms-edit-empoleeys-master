@@ -12,6 +12,9 @@ public class VDRListItemDto
     public string? DocumentDescription { get; set; }
     public string? DocumentTypeCode { get; set; }
     public string VendorName { get; set; } = "";
+    public string ProjectName { get; set; } = "";
+    // نام دیسیپلین؛ اگر مدرک به دیسیپلین وصل نیست (ورودی Import) همان کد خام
+    public string? DisciplineName { get; set; }
     public int? LatestRevisionNo { get; set; }
     public string? LatestReviewCategory { get; set; }
     public string WorkflowStatus { get; set; } = "";

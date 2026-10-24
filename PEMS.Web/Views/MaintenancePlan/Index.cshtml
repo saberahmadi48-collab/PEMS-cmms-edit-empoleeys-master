@@ -1,6 +1,7 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MaintenancePlanListDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 
 <div class="content-card">
@@ -12,7 +13,7 @@
             <form asp-action="GenerateDueWorkOrders" method="post" class="d-inline" onsubmit="return confirm('برای همه‌ی Plan های سررسیدرسیده (که Work Order فعال ندارند) Work Order ساخته شود؟');">
                 <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-lightning-charge"></i> Generate Due PMs</button>
             </form>
-            <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New Plan</a>
+            <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> @Localizer["Rcm_NewPlan"]</a>
         </div>
     </div>
     <div class="table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
@@ -34,9 +35,20 @@
                 {
                     <tr class="@(p.IsOverdue ? "table-danger" : "")">
                         <td>@p.PlanNumber</td>
-                        <td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@p.EquipmentId">@p.EquipmentTagNumber</a></td>
+                        <td class="small">
+                            <a asp-controller="MaintenanceStrategy" asp-action="Tag" asp-route-equipmentId="@p.EquipmentId" class="fw-bold">@p.EquipmentTagNumber</a>
+                            <div class="text-muted">@p.EquipmentName</div>
+                            <div class="text-muted">@(p.EquipmentClassName ?? Localizer["Rcm_Unclassified"].Value)
+                                <span class="badge @RcmDisplay.CriticalityBadge(p.CriticalityClass ?? "Unrated")">@Localizer.Label("Criticality", p.CriticalityClass ?? "Unrated")</span></div>
+                        </td>
                         <td>@p.Title</td>
-                        <td><span class="badge bg-secondary">@p.StrategyType</span></td>
+                        <td class="small">
+                            <span class="badge bg-secondary">@Localizer.Label("StrategyType", p.StrategyType)</span>
+                            @if (p.StrategyId.HasValue) { <a asp-controller="MaintenanceStrategy" asp-action="Details" asp-route-id="@p.StrategyId">v@(p.StrategyVersion)</a> }
+                            <div class="text-muted">@RcmDisplay.Name(p.FailureModeName, p.FailureModeNameFa)</div>
+                            <div class="text-muted">@Localizer.Label("ScheduleMode", p.ScheduleMode)</div>
+                            @if (!p.HasAssignment) { <span class="badge bg-warning text-dark" title="@Localizer["Rcm_PlanNoAssignment"]">@Localizer["Rcm_NoAssignmentBadge"]</span> }
+                        </td>
                         <td class="small">
                             @if (p.TriggerType is "Calendar" or "Both")
                             {

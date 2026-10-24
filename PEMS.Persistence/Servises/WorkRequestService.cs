@@ -59,11 +59,15 @@ public class WorkRequestService : IWorkRequestService
     private readonly IWorkflowReadModelService _readModel;
     private readonly IWorkflowBindingService _bindings;
     private readonly IAccessControlService _access;
+    private readonly INotificationService? _notifications;
+    private readonly WorkRequestPolicyOptions _policy;
 
     public WorkRequestService(PEMSDbContext context, INumberingService numberingService, IFunctionalLocationService functionalLocationService,
         IWorkflowRuntime? runtime = null, IWorkflowReadModelService? readModel = null, IWorkflowBindingService? bindings = null,
-        IAccessControlService? accessControl = null)
+        IAccessControlService? accessControl = null, INotificationService? notifications = null, WorkRequestPolicyOptions? policy = null)
     {
+        _notifications = notifications;
+        _policy = policy ?? new WorkRequestPolicyOptions();      // پیش‌فرض: تفکیک وظایف روشن
         _context = context;
         _numberingService = numberingService;
         _functionalLocationService = functionalLocationService;
@@ -153,6 +157,10 @@ public class WorkRequestService : IWorkRequestService
         if (!roles.Contains($"{PermissionPrefix}WorkRequest.Create"))
             return (false, T("شما مجوز ارسال Work Request را ندارید.", "You do not have permission to submit a Work Request."));
 
+        // A2: پیش‌نویس‌های قدیمی بدون محل هم قابل ارسال نیستند
+        if (!wr.EquipmentId.HasValue && !wr.AssetId.HasValue && !wr.FunctionalLocationId.HasValue)
+            return (false, T("پیش از ارسال، تجهیز، Asset یا Functional Location باید مشخص شود.", "An equipment, asset or functional location must be set before submitting."));
+
         string? startStatus;
         try { startStatus = await ResolveStartStatusAsync(); }
         catch (WorkflowBindingAmbiguousException ex) { return (false, ex.Message); }   // ابهام Binding = خطای قطعی، نه انتخاب یکی
@@ -199,7 +207,14 @@ public class WorkRequestService : IWorkRequestService
         if (action == null) return (false, T($"اقدام «{actionType}» در مرحله‌ی جاری برای شما در دسترس نیست.", $"Action \"{actionType}\" is not available for you at the current stage."));
         if (!action.IsAllowed) return (false, T($"اقدام «{actionType}» مجاز نیست ({action.DeniedReason}).", $"Action \"{actionType}\" is not allowed ({action.DeniedReason})."));
 
+        // A1: reject/cancel/return without a reason are refused (shared rule with Work Order); the reason stays in workflow + status history
+        var reasonError = WorkflowActionRules.ValidateAction(actionType, comment);
+        if (reasonError != null) return (false, reasonError);
+        comment = WorkflowActionRules.Normalize(comment);
+
         var newStatus = await ResolveNewStatusAsync(action, wr.Status);
+        var sodError = await CheckSegregationAsync(wr, actionType, newStatus, actor, comment);
+        if (sodError != null) return (false, sodError);
         try
         {
             await StageBusinessChangeAsync(wr, newStatus ?? wr.Status, comment, actor.EmployeeId);
@@ -266,6 +281,7 @@ public class WorkRequestService : IWorkRequestService
             .Include(x => x.Equipment)
             .Include(x => x.Asset)
             .Include(x => x.SuggestedDiscipline)
+            .Include(x => x.FailureMode)
             .Include(x => x.LinkedWorkOrder)
             .FirstOrDefaultAsync(x => x.WorkRequestId == workRequestId);
 
@@ -321,42 +337,170 @@ public class WorkRequestService : IWorkRequestService
             ApprovedDate = wr.ApprovedDate,
             LinkedWorkOrderId = wr.LinkedWorkOrderId,
             LinkedWorkOrderNumber = wr.LinkedWorkOrder?.WorkOrderNumber,
+            IsHseRelated = wr.IsHseRelated, IsEmergency = wr.IsEmergency, RiskLikelihood = wr.RiskLikelihood, RiskSeverity = wr.RiskSeverity,
+            RiskScore = wr.RiskScore, RiskLevel = wr.RiskLevel, RequestedPriority = wr.RequestedPriority, PriorityRationale = wr.PriorityRationale,
+            ResponseDueDate = wr.ResponseDueDate, ResolutionDueDate = wr.ResolutionDueDate,
+            FailureModeName = wr.FailureMode != null ? wr.FailureMode.Code + " - " + wr.FailureMode.Name : null,
+            FailureEffect = wr.FailureEffect, ReportedDowntimeHours = wr.ReportedDowntimeHours,
             StatusHistory = history
         };
     }
 
-    public async Task<(bool Success, string? Error, int? Id)> CreateAsync(
+    public Task<(bool Success, string? Error, int? Id)> CreateAsync(
         string title, string? description, int requestedById, int? equipmentId, int? assetId,
         int? functionalLocationId, string? reportedCondition, string priority, int? suggestedDisciplineId)
-    {
-        title = title?.Trim() ?? "";
-        if (string.IsNullOrWhiteSpace(title)) return (false, "عنوان درخواست الزامی است.", null);
-
-        if (!await _context.Employees.AnyAsync(x => x.EmployeeId == requestedById && x.IsActive))
-            return (false, "کارمند درخواست‌دهنده نامعتبره.", null);
-
-        var workRequest = new WorkRequest
+        => CreateAsync(new WorkRequestCreateRequest
         {
-            RequestNumber = await _numberingService.GetNextNumberAsync("WorkRequest"),
-            Title = title,
-            Description = description,
-            RequestedById = requestedById,
-            RequestedDate = DateTime.Now,
-            EquipmentId = equipmentId,
-            AssetId = assetId,
-            FunctionalLocationId = functionalLocationId,
-            ReportedCondition = reportedCondition,
-            Priority = string.IsNullOrWhiteSpace(priority) ? "Medium" : priority,
-            SuggestedDisciplineId = suggestedDisciplineId,
-            Status = "Draft",
-            IsActive = true,
-            CreatedDate = DateTime.Now
-        };
+            Title = title, Description = description, RequestedById = requestedById, EquipmentId = equipmentId, AssetId = assetId,
+            FunctionalLocationId = functionalLocationId, ReportedCondition = reportedCondition, Priority = priority, SuggestedDisciplineId = suggestedDisciplineId
+        });
 
-        await _context.WorkRequests.AddAsync(workRequest);
-        await _context.SaveChangesAsync();
+    public async Task<(bool Success, string? Error, int? Id)> CreateAsync(WorkRequestCreateRequest r)
+    {
+        var title = r.Title?.Trim() ?? "";
+        if (string.IsNullOrWhiteSpace(title)) return (false, T("عنوان درخواست الزامی است.", "A title is required."), null);
 
-        return (true, null, workRequest.WorkRequestId);
+        if (!await _context.Employees.AnyAsync(x => x.EmployeeId == r.RequestedById && x.IsActive))
+            return (false, T("کارمند درخواست‌دهنده نامعتبر است.", "The requesting employee is invalid."), null);
+
+        if (!WorkRequestRiskAssessor.IsValidRating(r.RiskLikelihood) || !WorkRequestRiskAssessor.IsValidRating(r.RiskSeverity))
+            return (false, T("احتمال و شدت ریسک باید بین ۱ تا ۵ باشند.", "Risk likelihood and severity must be between 1 and 5."), null);
+        if ((r.RiskLikelihood.HasValue) != (r.RiskSeverity.HasValue))
+            return (false, T("برای ارزیابی ریسک هم احتمال و هم شدت لازم است.", "Both likelihood and severity are required for a risk assessment."), null);
+        if (r.ReportedDowntimeHours is < 0) return (false, T("ساعت توقف نمی‌تواند منفی باشد.", "Downtime hours cannot be negative."), null);
+
+        // A2: هر درخواست باید به «محل» مشخصی وصل باشد: تجهیز، Asset یا Functional Location. Asset همیشه به یک تجهیز وصل است و تجهیز از آن مشتق می‌شود.
+        var equipmentId = r.EquipmentId;
+        if (!equipmentId.HasValue && r.AssetId.HasValue)
+        {
+            equipmentId = await _context.Assets.Where(a => a.AssetId == r.AssetId.Value).Select(a => (int?)a.EquipmentId).FirstOrDefaultAsync();
+            if (!equipmentId.HasValue) return (false, T("Asset انتخاب‌شده یافت نشد.", "The selected asset was not found."), null);
+        }
+        if (!equipmentId.HasValue && !r.FunctionalLocationId.HasValue)
+            return (false, T("تجهیز، Asset یا Functional Location باید مشخص شود (درخواست بدون محل پذیرفته نمی‌شود).", "An equipment, asset or functional location is required (a request without a location is not accepted)."), null);
+        if (equipmentId.HasValue && !await _context.Equipments.AnyAsync(e => e.EquipmentId == equipmentId.Value))
+            return (false, T("تجهیز انتخاب‌شده یافت نشد.", "The selected equipment was not found."), null);
+        if (r.FunctionalLocationId.HasValue && !await _context.FunctionalLocations.AnyAsync(f => f.FunctionalLocationId == r.FunctionalLocationId.Value))
+            return (false, T("Functional Location انتخاب‌شده یافت نشد.", "The selected functional location was not found."), null);
+        if (r.FailureModeId.HasValue && !await _context.FailureModes.AnyAsync(f => f.FailureModeId == r.FailureModeId.Value && f.IsActive))
+            return (false, T("حالت خرابی انتخاب‌شده در کاتالوگ فعال نیست.", "The selected failure mode is not an active catalog entry."), null);
+
+        var now = DateTime.Now;
+        var assessment = WorkRequestRiskAssessor.Assess(r.RiskLikelihood, r.RiskSeverity, r.IsHseRelated, r.IsEmergency, r.Priority, now);
+        var failureEffect = string.IsNullOrWhiteSpace(r.FailureEffect) ? null : r.FailureEffect.Trim();
+        if (failureEffect is { Length: > 500 }) failureEffect = failureEffect[..500];
+
+        // A7: شماره و ردیف سند در «یک» تراکنش: اگر ثبت شکست بخورد شماره هم برمی‌گردد (بدون حفره)؛ ردیف شمارنده تا Commit قفل است (بدون تکرار در هم‌زمانی).
+        WorkRequest? created = null;
+        try
+        {
+            await _context.Database.CreateExecutionStrategy().ExecuteAsync(async () =>
+            {
+                Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction? tx = null;
+                WorkRequest? attempt = null;
+                try
+                {
+                    if (_context.Database.IsRelational() && _context.Database.CurrentTransaction == null) tx = await _context.Database.BeginTransactionAsync();
+
+                    attempt = new WorkRequest
+                    {
+                        RequestNumber = await _numberingService.GetNextNumberAsync("WorkRequest"),
+                        Title = title,
+                        Description = r.Description,
+                        RequestedById = r.RequestedById,
+                        RequestedDate = now,
+                        EquipmentId = equipmentId,
+                        AssetId = r.AssetId,
+                        FunctionalLocationId = r.FunctionalLocationId,
+                        ReportedCondition = r.ReportedCondition,
+                        Priority = assessment.Priority,
+                        RequestedPriority = WorkRequestRiskAssessor.NormalizePriority(r.Priority),
+                        PriorityRationale = assessment.Rationale,
+                        IsHseRelated = r.IsHseRelated,
+                        IsEmergency = r.IsEmergency,
+                        RiskLikelihood = r.RiskLikelihood,
+                        RiskSeverity = r.RiskSeverity,
+                        RiskScore = assessment.Score,
+                        RiskLevel = assessment.RiskLevel,
+                        ResponseDueDate = assessment.ResponseDue,
+                        ResolutionDueDate = assessment.ResolutionDue,
+                        FailureModeId = r.FailureModeId,
+                        FailureEffect = failureEffect,
+                        ReportedDowntimeHours = r.ReportedDowntimeHours,
+                        SuggestedDisciplineId = r.SuggestedDisciplineId,
+                        Status = "Draft",
+                        IsActive = true,
+                        CreatedDate = now
+                    };
+                    await _context.WorkRequests.AddAsync(attempt);
+                    await _context.SaveChangesAsync();
+                    if (tx != null) await tx.CommitAsync();
+                    created = attempt;
+                }
+                catch
+                {
+                    if (tx != null) await tx.RollbackAsync();
+                    if (attempt != null) _context.Entry(attempt).State = EntityState.Detached;
+                    throw;
+                }
+                finally { if (tx != null) await tx.DisposeAsync(); }
+            });
+        }
+        catch (DbUpdateException ex)
+        {
+            _context.ChangeTracker.Clear();
+            return (false, T("ثبت درخواست انجام نشد؛ دوباره تلاش کنید. ", "The request could not be saved; please retry. ") + ex.GetBaseException().Message, null);
+        }
+
+        await NotifyHseAsync(created!);
+        return (true, null, created!.WorkRequestId);
+    }
+
+    /// <summary>A4: اعلان درون‌برنامه‌ای به کاربران HSE برای درخواست HSE-related/اضطراری. بهترین‌تلاش و پس از Commit؛ شکست اعلان هرگز ثبت درخواست را برنمی‌گرداند.</summary>
+    private async Task NotifyHseAsync(WorkRequest wr)
+    {
+        if (_notifications == null || !(wr.IsHseRelated || wr.IsEmergency)) return;
+        try
+        {
+            var userIds = await (from u in _context.Users
+                                 join e in _context.Employees on u.EmployeeId equals (int?)e.EmployeeId
+                                 where e.IsActive && ((e.Department != null && e.Department.Name == "HSE") || (e.Discipline != null && e.Discipline.Code == "HSE"))
+                                 select u.Id).Distinct().ToListAsync();
+            var title = wr.IsEmergency ? $"EMERGENCY Work Request {wr.RequestNumber}" : $"HSE-related Work Request {wr.RequestNumber}";
+            var message = $"{wr.Title} — priority {wr.Priority}; response due {wr.ResponseDueDate:yyyy-MM-dd HH:mm}.";
+            foreach (var userId in userIds)
+                await _notifications.CreateAsync(userId, title, message, $"/WorkRequest/Details/{wr.WorkRequestId}", "WorkRequest", wr.WorkRequestId);
+        }
+        catch (Exception) { /* اعلان بهترین‌تلاش است */ }
+    }
+
+    /// <summary>
+    /// A3: تفکیک وظایف (پیش‌فرض روشن، قابل‌پیکربندی). درخواست‌دهنده نمی‌تواند همان درخواست را بازبینی/تأیید/برنامه‌ریزی/رد کند و تأییدکننده نباید همان بازبین باشد.
+    /// SystemAdmin فقط با ثبت ممیزی (AuthorizationAuditLog با Decision=SoDOverride + دلیل) می‌تواند Override کند. null = مجاز.
+    /// </summary>
+    private async Task<string?> CheckSegregationAsync(WorkRequest wr, string actionType, string? newStatus, WorkRequestActor actor, string? comment)
+    {
+        if (!_policy.EnforceSegregationOfDuties) return null;
+        var isDecision = newStatus is "UnderReview" or "Approved" or "Planned" || actionType == "Reject";
+        if (!isDecision || !actor.EmployeeId.HasValue) return null;
+
+        string? violation = null;
+        if (actor.EmployeeId == wr.RequestedById)
+            violation = T("درخواست‌دهنده نمی‌تواند همان درخواست را بازبینی/تأیید/برنامه‌ریزی/رد کند (تفکیک وظایف).", "The requester cannot review, approve, plan or reject their own request (segregation of duties).");
+        else if (newStatus == "Approved" && wr.ReviewedById == actor.EmployeeId)
+            violation = T("تأییدکننده نمی‌تواند همان بازبین باشد (تفکیک وظایف).", "The approver cannot be the same person as the reviewer (segregation of duties).");
+        if (violation == null) return null;
+
+        if (actor.Roles.Contains(PEMS.Persistence.Identity.SystemRoles.SystemAdmin, StringComparer.OrdinalIgnoreCase))
+        {
+            _context.AuthorizationAuditLogs.Add(new AuthorizationAuditLog
+            {
+                UserId = null, ResourceName = "WorkRequest", ActionName = actionType, ResourceId = wr.WorkRequestId.ToString(),
+                Decision = "SoDOverride", Reason = $"SystemAdmin (employee {actor.EmployeeId}) overrode: {violation} Comment: {comment}", Timestamp = DateTime.Now
+            });
+            return null;      // ذخیره در همان SaveChanges اکشن انجام می‌شود (اتمیک با تغییر وضعیت)
+        }
+        return violation;
     }
 
     public async Task<(bool Success, string? Error)> AdvanceStatusAsync(
@@ -383,6 +527,10 @@ public class WorkRequestService : IWorkRequestService
 
         if (!LegalTransitions.TryGetValue(wr.Status, out var allowed) || !allowed.Contains(nextStatus))
             return (false, $"گذار از وضعیت «{wr.Status}» به «{nextStatus}» مجاز نیست.");
+
+        var legacyReasonError = WorkflowActionRules.ValidateStatus(nextStatus, reason);
+        if (legacyReasonError != null) return (false, legacyReasonError);
+        reason = WorkflowActionRules.Normalize(reason);
 
         var fromStatus = wr.Status;
 
@@ -420,7 +568,7 @@ public class WorkRequestService : IWorkRequestService
     }
 
     public async Task<(bool Success, string? Error, int? WorkOrderId)> ConvertToWorkOrderAsync(
-        int workRequestId, string workOrderType, string? currentUserName, WorkRequestActor? actor = null)
+        int workRequestId, string workOrderType, string? currentUserName, WorkRequestActor? actor = null, int? equipmentId = null)
     {
         var wr = await _context.WorkRequests.Include(x => x.Equipment).FirstOrDefaultAsync(x => x.WorkRequestId == workRequestId);
         if (wr == null) return (false, "Work Request پیدا نشد.", null);
@@ -431,8 +579,16 @@ public class WorkRequestService : IWorkRequestService
         if (wr.LinkedWorkOrderId.HasValue)
             return (false, "این درخواست قبلاً به یک WorkOrder تبدیل شده.", null);
 
+        // درخواستِ فقط-Functional-Location: Work Order همیشه یک تجهیز دارد، پس در لحظه‌ی تبدیل باید تجهیز مشخص شود (انتخاب صریح؛ حدس زده نمی‌شود)
+        if (!wr.EquipmentId.HasValue && equipmentId.HasValue)
+        {
+            if (!await _context.Equipments.AnyAsync(e => e.EquipmentId == equipmentId.Value))
+                return (false, T("تجهیز انتخاب‌شده یافت نشد.", "The selected equipment was not found."), null);
+            wr.EquipmentId = equipmentId;
+        }
         if (!wr.EquipmentId.HasValue)
-            return (false, "برای ساخت WorkOrder، این درخواست باید به یک تجهیز مشخص وصل باشد.", null);
+            return (false, T("برای ساخت WorkOrder باید یک تجهیز مشخص شود (این درخواست فقط به Functional Location وصل است؛ تجهیز را در فرم تبدیل انتخاب کنید).",
+                "An equipment is required to create a Work Order (this request only has a functional location; select the equipment in the convert form)."), null);
 
         // Phase 2: اگر تحت گردش‌کار مرکزی است، اکشن «Complete» باید برای این کاربر مجاز باشد (سمت‌سرور، قبل از هر تغییر)
         WorkflowInstance? instance;
@@ -450,21 +606,35 @@ public class WorkRequestService : IWorkRequestService
             if (!complete.IsAllowed) return (false, T($"اقدام تبدیل مجاز نیست ({complete.DeniedReason}).", $"The conversion action is not allowed ({complete.DeniedReason})."), null);
         }
 
-        var workOrderNumber = await _numberingService.GetNextNumberAsync("WorkOrder");
-
         var workOrder = new WorkOrder
         {
             EquipmentId = wr.EquipmentId.Value,
             SourceWorkRequestId = wr.WorkRequestId,
-            WorkOrderNumber = workOrderNumber,
             WorkOrderType = workOrderType,
             Priority = wr.Priority,
             Status = "Open",
             Description = wr.Title + (string.IsNullOrEmpty(wr.Description) ? "" : " - " + wr.Description),
             IsActive = true,
             CreatedBy = currentUserName,
-            CreatedDate = DateTime.Now
+            CreatedDate = DateTime.Now,
+            // A5: اطلاعات خرابی گزارش‌شده و HSE از Work Request منتقل می‌شود (پیش‌پر برای فرم تکمیل؛ داده‌ی تکمیل واقعی آن را بازنویسی می‌کند)
+            IsHseRelated = wr.IsHseRelated,
+            FailureEffect = wr.FailureEffect,
+            DowntimeHours = wr.ReportedDowntimeHours
         };
+        if (wr.FailureModeId.HasValue)
+        {
+            var mode = await _context.FailureModes.Where(f => f.FailureModeId == wr.FailureModeId.Value).Select(f => new { f.FailureModeId, f.Code }).FirstOrDefaultAsync();
+            if (mode != null) { workOrder.FailureModeId = mode.FailureModeId; workOrder.FailureModeCode = mode.Code; }
+        }
+        // A6: «دیسیپلین پیشنهادی» ثبت‌کننده به‌عنوان دیسیپلین «مسئول» پیشنهادی نگهداری منتقل می‌شود (قبلاً گم می‌شد). دیسیپلین «مبدأ» همان دیسیپلین درخواست‌دهنده است
+        // (پایین‌تر از Snapshot کارمند) و دیسیپلین «مسئول» را برنامه‌ریز در مرحله‌ی Planning تأیید/تغییر می‌دهد.
+        if (wr.SuggestedDisciplineId.HasValue
+            && await _context.Disciplines.AnyAsync(d => d.DisciplineId == wr.SuggestedDisciplineId.Value && d.IsActive))
+        {
+            workOrder.ResponsibleDisciplineId = wr.SuggestedDisciplineId;
+            workOrder.ResponsibleOrganization = PEMS.Domain.Common.OrganizationDomains.Maintenance;
+        }
 
         // Phase 3B: اگر گردش‌کار چرخه‌عمر Work Order با Binding فعال است، Work Order «حاکمیتی» ساخته می‌شود: مبدأ (سازمان + دیسیپلین
         // + درخواست‌دهنده) از Work Request Snapshot می‌شود (قبلاً فقط SourceWorkRequestId کپی می‌شد) و Instance چرخه‌عمر شروع می‌شود.
@@ -481,6 +651,10 @@ public class WorkRequestService : IWorkRequestService
             workOrder.OriginatingDisciplineId = disc;
             workOrder.OriginatingRequestedById = wr.RequestedById;
         }
+
+        // A7: شماره فقط پس از گذراندن همه‌ی اعتبارسنجی‌ها گرفته می‌شود (قبلاً پیش از آن‌ها گرفته می‌شد و هر رد، یک شماره را می‌سوزاند)
+        var workOrderNumber = await _numberingService.GetNextNumberAsync("WorkOrder");
+        workOrder.WorkOrderNumber = workOrderNumber;
 
         var fromStatus = wr.Status;
         // از navigation property به جای FK خام استفاده شد چون workOrder هنوز Id واقعی ندارد -

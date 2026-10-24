@@ -1,0 +1,265 @@
+@model PEMS.Web.ViewModels.StrategyDetailsViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Domain.Common
+@using PEMS.Web.Helpers
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var s = Model.Strategy;
+    var i = s.Input;
+    var usable = s.Status is "Approved" or "Active";
+    var live = s.IsActive && s.Status != "Retired" && s.Status != "Superseded";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-diagram-3"></i> @(string.IsNullOrWhiteSpace(i.Title) ? Localizer["Rcm_Strategy"].Value : i.Title)
+        <span class="badge @RcmDisplay.StatusBadge(s.Status) ms-2">@Localizer.Label("Status", s.Status)</span>
+        <span class="badge bg-light text-dark border">v@(s.VersionNumber)</span>
+    </h5>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Rcm_Back"]</a>
+</div>
+
+@await Html.PartialAsync("_RcmErrors", Model.Errors)
+
+@if (Model.AssignReport.Any())
+{
+    <div class="content-card mb-3">
+        <h6 class="small fw-bold">@Localizer["Rcm_AssignReport"]</h6>
+        <table class="table table-sm table-enterprise">
+            <thead><tr><th>@Localizer["Rcm_Tag"]</th><th>@Localizer["Rcm_SkipReason"]</th></tr></thead>
+            <tbody>
+            @foreach (var row in Model.AssignReport)
+            {
+                <tr>
+                    <td>@row[0]</td>
+                    <td class="small">@(row[1] == "NotFound" ? Localizer["Rcm_Bulk_NotFound"].Value : Localizer["Rcm_Bulk_" + row[1]].Value)
+                        @if (row.Length > 2 && int.TryParse(row[2], out var otherId)) { <a asp-action="Details" asp-route-id="@otherId">#@otherId</a> }</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+
+<div class="content-card mb-3">
+    <div class="row g-3 small">
+        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_EquipmentClass"]</div><div>@(s.EquipmentClassName ?? "-")</div></div>
+        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_StrategyType"]</div><span class="badge bg-secondary">@Localizer.Label("StrategyType", i.StrategyType)</span></div>
+        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_FailureMode"]</div><div>@RcmDisplay.Name(s.FailureModeName, s.FailureModeNameFa)</div></div>
+        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_Consequence"]</div><span class="badge @RcmDisplay.ConsequenceBadge(i.ConsequenceCategory)">@Localizer.Label("Consequence", i.ConsequenceCategory)</span>
+            @if (i.IsHiddenFailure) { <span class="badge bg-dark">@Localizer["Rcm_HiddenFailure"]</span> }</div>
+        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_TaskType"]</div><div>@Localizer.Label("TaskType", i.TaskType)</div></div>
+        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_OwnerDiscipline"]</div><div>@(s.OwnerDisciplineName ?? "-")</div></div>
+        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_Frequency"]</div><div>@Localizer.Label("Frequency", i.Frequency) @(i.DefaultIntervalDays.HasValue ? $"({i.DefaultIntervalDays} d)" : "")</div></div>
+        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_Source"]</div><div>@Localizer.Label("Source", i.Source)</div></div>
+        <div class="col-md-6"><div class="text-muted">@Localizer["Rcm_FunctionalFailure"]</div><div>@(i.FunctionalFailure ?? "-")</div></div>
+        <div class="col-md-6"><div class="text-muted">@Localizer["Rcm_FailureEffect"]</div><div>@(i.FailureEffect ?? "-")</div></div>
+        @if (i.StrategyType is "CBM" or "Predictive")
+        {
+            <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_CbmParameter"]</div><div>@i.CbmParameter @i.ThresholdUnit</div></div>
+            <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_AlarmThreshold"] / @Localizer["Rcm_TripThreshold"]</div><div>@i.AlarmThreshold / @i.TripThreshold</div></div>
+            <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_PfInterval"]</div><div>@i.PfIntervalDays</div></div>
+            <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_InspectionInterval"]</div><div>@i.InspectionIntervalDays</div></div>
+        }
+        <div class="col-12"><div class="text-muted">@Localizer["Rcm_Justification"]</div><div>@i.Justification</div></div>
+        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_ReviewDate"]</div><div>@(i.ReviewDate?.ToString("yyyy-MM-dd") ?? "-")</div></div>
+        <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_ApprovedBy"]</div><div>@(s.ApprovedBy ?? "-") @(s.ApprovedAt?.ToString("yyyy-MM-dd"))</div></div>
+        @if (!string.IsNullOrEmpty(s.LegacyEquipmentTag))
+        {
+            <div class="col-md-3"><div class="text-muted">@Localizer["Rcm_LegacyTag"]</div><a asp-action="Tag" asp-route-equipmentId="@s.LegacyEquipmentId">@s.LegacyEquipmentTag</a></div>
+        }
+    </div>
+
+    <div class="mt-3 d-flex flex-wrap gap-2">
+        @if (Model.CanEdit && live)
+        {
+            <a asp-action="Edit" asp-route-id="@s.MaintenanceStrategyId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i> @(usable ? Localizer["Rcm_NewVersion"] : Localizer["Rcm_Edit"])</a>
+        }
+        @if (Model.CanEdit && s.Status == "Draft")
+        {
+            <form asp-action="Submit" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline">
+                <button class="btn btn-sm btn-primary"><i class="bi bi-send"></i> @Localizer["Rcm_SubmitForReview"]</button>
+            </form>
+        }
+        @if (Model.CanApprove && s.Status == "InReview")
+        {
+            <form asp-action="Review" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline-flex gap-2">
+                <input name="comment" class="form-control form-control-sm" placeholder="@Localizer["Rcm_Comment"]" style="width:220px" />
+                <button name="approve" value="true" class="btn btn-sm btn-success"><i class="bi bi-check2"></i> @Localizer["Rcm_Approve"]</button>
+                <button name="approve" value="false" class="btn btn-sm btn-outline-danger"><i class="bi bi-x"></i> @Localizer["Rcm_Reject"]</button>
+            </form>
+            @if (Model.IsAuthorOrSubmitter) { <span class="small text-muted align-self-center">@Localizer["Rcm_SodNotice"]</span> }
+        }
+        @if (Model.CanApprove && s.Status == "Approved")
+        {
+            <form asp-action="Activate" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline-flex gap-2 align-items-center">
+                <div class="form-check small mb-0"><input class="form-check-input" type="checkbox" name="moveAssignments" value="true" checked id="mv" /><label class="form-check-label" for="mv">@Localizer["Rcm_MoveAssignments"]</label></div>
+                <button class="btn btn-sm btn-success"><i class="bi bi-lightning"></i> @Localizer["Rcm_Activate"]</button>
+            </form>
+        }
+        @if (Model.CanApprove && live)
+        {
+            <form asp-action="Retire" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Rcm_ConfirmRetire"]');">
+                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-slash-circle"></i> @Localizer["Rcm_Retire"]</button>
+            </form>
+        }
+    </div>
+</div>
+
+@if (s.Versions.Count > 1)
+{
+    <div class="content-card mb-3">
+        <h6 class="small fw-bold">@Localizer["Rcm_Versions"]</h6>
+        <div class="d-flex flex-wrap gap-2">
+            @foreach (var v in s.Versions)
+            {
+                <a asp-action="Details" asp-route-id="@v.MaintenanceStrategyId" class="badge @RcmDisplay.StatusBadge(v.Status) text-decoration-none @(v.MaintenanceStrategyId == s.MaintenanceStrategyId ? "border border-3 border-warning" : "")">
+                    v@(v.VersionNumber) · @Localizer.Label("Status", v.Status)
+                </a>
+            }
+        </div>
+    </div>
+}
+
+<div class="content-card mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="small fw-bold mb-0">@Localizer["Rcm_AssignedTags"] (@s.Assignments.Count)</h6>
+        @if (Model.CanApprove && usable)
+        {
+            <div class="d-flex gap-2">
+                <form asp-action="Assign" asp-route-id="@s.MaintenanceStrategyId" method="post" class="d-flex gap-2">
+                    <input type="text" class="form-control form-control-sm" placeholder="@Localizer["Rcm_SearchEquipmentPlaceholder"]" style="width:260px"
+                           data-pems-search data-search-type="Equipment" data-search-hidden="#assignEquipmentId" autocomplete="off" required />
+                    <input type="hidden" name="equipmentIds" id="assignEquipmentId" />
+                    <button class="btn btn-sm btn-outline-primary">@Localizer["Rcm_AssignTag"]</button>
+                </form>
+                <a asp-action="BulkCreate" asp-route-strategyId="@s.MaintenanceStrategyId" asp-route-classId="@i.EquipmentClassId" class="btn btn-sm btn-outline-primary"><i class="bi bi-collection"></i> @Localizer["Rcm_BulkAssign"]</a>
+            </div>
+        }
+    </div>
+    @if (!usable) { <p class="small text-muted">@Localizer["Rcm_AssignRequiresApproval"]</p> }
+    <div class="table-responsive">
+        <table class="table table-sm table-enterprise align-middle">
+            <thead><tr>
+                <th>@Localizer["Rcm_Tag"]</th><th>@Localizer["Rcm_EquipmentName"]</th><th>@Localizer["Rcm_EquipmentClass"]</th><th>@Localizer["Rcm_AreaUnit"]</th>
+                <th>@Localizer["Rcm_Criticality"]</th><th>@Localizer["Rcm_Plans"]</th><th>@Localizer["Rcm_Override"]</th><th></th>
+            </tr></thead>
+            <tbody>
+            @foreach (var a in s.Assignments)
+            {
+                <tr>
+                    <td><a asp-action="Tag" asp-route-equipmentId="@a.Equipment.EquipmentId" class="fw-bold">@a.Equipment.Tag</a></td>
+                    <td class="small">@a.Equipment.Name</td>
+                    <td class="small">@(a.Equipment.EquipmentClassName ?? "-")</td>
+                    <td class="small">@(a.Equipment.Area ?? "-")</td>
+                    <td><span class="badge @RcmDisplay.CriticalityBadge(a.Equipment.CriticalityClass)">@Localizer.Label("Criticality", a.Equipment.CriticalityClass)</span></td>
+                    <td class="small">@a.PlanCount
+                        @if (usable && a.PlanCount == 0 && i.StrategyType is not ("RunToFailure" or "Corrective" or "Redesign"))
+                        {
+                            <a asp-controller="MaintenancePlan" asp-action="Create" asp-route-assignmentId="@a.AssignmentId" class="ms-1"><i class="bi bi-calendar-plus"></i></a>
+                        }
+                    </td>
+                    <td class="small">
+                        @if (a.OverrideStatus != "None")
+                        {
+                            <div><span class="badge bg-info text-dark">@Localizer.Label("OverrideStatus", a.OverrideStatus)</span> @(a.OverrideIntervalDays.HasValue ? a.OverrideIntervalDays + " d" : "")</div>
+                            <div class="text-muted">@a.OverrideJustification</div>
+                            @if (a.OverrideStatus == "Pending" && Model.CanApprove)
+                            {
+                                <form asp-action="DecideOverride" method="post" class="d-flex gap-1 mt-1">
+                                    <input type="hidden" name="assignmentId" value="@a.AssignmentId" /><input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
+                                    <input name="comment" class="form-control form-control-sm" placeholder="@Localizer["Rcm_Comment"]" />
+                                    <button name="approve" value="true" class="btn btn-sm btn-success">✓</button>
+                                    <button name="approve" value="false" class="btn btn-sm btn-outline-danger">✗</button>
+                                </form>
+                            }
+                        }
+                        else if (Model.CanEdit && usable)
+                        {
+                            <button type="button" class="btn btn-sm btn-outline-secondary py-0" data-bs-toggle="modal" data-bs-target="#overrideModal" data-assignment="@a.AssignmentId" data-tag="@a.Equipment.Tag">@Localizer["Rcm_RequestOverride"]</button>
+                        }
+                    </td>
+                    <td class="text-end">
+                        @if (Model.CanApprove)
+                        {
+                            <form asp-action="Unassign" method="post" class="d-inline" onsubmit="return confirm('@Localizer["Rcm_ConfirmUnassign"]');">
+                                <input type="hidden" name="assignmentId" value="@a.AssignmentId" /><input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
+                                <button class="btn btn-sm btn-outline-danger py-0"><i class="bi bi-x-lg"></i></button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        @if (!s.Assignments.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoAssignments"]</p> }
+    </div>
+</div>
+
+<div class="content-card mb-3">
+    <h6 class="small fw-bold">@Localizer["Rcm_PlansByVersion"]</h6>
+    <table class="table table-sm table-enterprise">
+        <thead><tr><th>@Localizer["Rcm_PlanNumber"]</th><th>@Localizer["Rcm_Tag"]</th><th>@Localizer["Rcm_Title"]</th><th>@Localizer["Rcm_Version"]</th></tr></thead>
+        <tbody>
+        @foreach (var p in s.Plans)
+        {
+            <tr>
+                <td>@p.PlanNumber</td><td>@p.Tag</td><td class="small">@p.Title</td>
+                <td>v@(p.StrategyVersion) @if (p.OutOfSync) { <span class="badge bg-warning text-dark" title="@Localizer["Rcm_PlanOutOfSync"]">@Localizer["Rcm_OutOfSync"]</span> }</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    @if (!s.Plans.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoPlans"]</p> }
+</div>
+
+<div class="content-card">
+    <h6 class="small fw-bold">@Localizer["Rcm_History"]</h6>
+    <table class="table table-sm table-enterprise">
+        <thead><tr><th>@Localizer["Rcm_When"]</th><th>@Localizer["Rcm_Who"]</th><th>@Localizer["Rcm_Action"]</th><th>@Localizer["Rcm_Version"]</th><th>@Localizer["Rcm_Changes"]</th></tr></thead>
+        <tbody>
+        @foreach (var h in s.History)
+        {
+            <tr>
+                <td class="small text-nowrap">@h.Timestamp.ToString("yyyy-MM-dd HH:mm")</td>
+                <td class="small">@h.ActorName</td>
+                <td class="small">@Localizer.Label("HistoryAction", h.Action) @if (h.FromStatus != null || h.ToStatus != null) { <span class="text-muted">(@h.FromStatus → @h.ToStatus)</span> }</td>
+                <td class="small">v@(h.VersionNumber)</td>
+                <td class="small"><pre class="mb-0" style="white-space:pre-wrap;font:inherit">@h.ChangesSummary</pre>@h.Comment</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="overrideModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="RequestOverride" method="post">
+                <input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
+                <input type="hidden" name="assignmentId" id="overrideAssignmentId" />
+                <div class="modal-header"><h6 class="modal-title">@Localizer["Rcm_RequestOverride"] — <span id="overrideTag"></span></h6></div>
+                <div class="modal-body">
+                    <p class="small text-muted">@Localizer["Rcm_OverrideHint"]</p>
+                    <div class="mb-2"><label class="form-label">@Localizer["Rcm_OverrideInterval"]</label><input name="overrideIntervalDays" type="number" min="1" class="form-control" /></div>
+                    <div class="mb-2"><label class="form-label">@Localizer["Rcm_OverrideTaskNote"]</label><textarea name="overrideTaskNote" class="form-control" rows="2" maxlength="1000"></textarea></div>
+                    <div class="mb-2"><label class="form-label">@Localizer["Rcm_Justification"] *</label><textarea name="overrideJustification" class="form-control" rows="2" minlength="20" required maxlength="1000"></textarea></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('overrideModal').addEventListener('show.bs.modal', function (e) {
+            var b = e.relatedTarget;
+            document.getElementById('overrideAssignmentId').value = b.getAttribute('data-assignment');
+            document.getElementById('overrideTag').textContent = b.getAttribute('data-tag');
+        });
+    </script>
+}

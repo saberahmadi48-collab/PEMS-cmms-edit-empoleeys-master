@@ -1,0 +1,87 @@
+@model PEMS.Application.DTOs.LetterTemplateDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    string? error = ViewBag.Error;
+}
+
+<div class="content-card" style="max-width:800px;">
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <div class="alert alert-danger" role="alert"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @error</div>
+    }
+    <p class="text-muted small">@Localizer["LtT_PrefillNote"]</p>
+
+    <details class="small mb-3">
+        <summary>@Localizer["LtT_PlaceholdersTitle"]</summary>
+        <p class="text-muted mt-2 mb-1">@Localizer["LtT_PlaceholdersHelp"]</p>
+        <ul class="mb-1">
+            @foreach (var token in PEMS.Application.Common.LetterTemplatePlaceholders.General)
+            {
+                <li><code dir="ltr">{{@token}}</code> - @Localizer["LtT_Token_" + token]</li>
+            }
+        </ul>
+        <p class="text-muted mb-1">@Localizer["LtT_PlaceholdersReply"]</p>
+        <ul class="mb-0">
+            @foreach (var token in PEMS.Application.Common.LetterTemplatePlaceholders.Reply)
+            {
+                <li><code dir="ltr">{{@token}}</code> - @Localizer["LtT_Token_" + token]</li>
+            }
+        </ul>
+    </details>
+
+    <form asp-action="Save" method="post">
+        <input type="hidden" name="LetterTemplateId" value="@Model.LetterTemplateId" />
+
+        <div class="row g-3">
+            <div class="col-md-8">
+                <label class="form-label" for="tplName">@Localizer["LtT_Name"]</label>
+                <input name="Name" id="tplName" class="form-control" value="@Model.Name" maxlength="150" required />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" for="tplType">@Localizer["Type"]</label>
+                <select name="LetterType" id="tplType" class="form-select">
+                    <option value="" selected="@(Model.LetterType == null)">@Localizer["LtT_AllTypes"]</option>
+                    @foreach (var type in new[] { "Incoming", "Outgoing", "Internal" })
+                    {
+                        <option value="@type" selected="@(Model.LetterType == type)">@type</option>
+                    }
+                </select>
+            </div>
+            <div class="col-12">
+                <label class="form-label" for="tplSubject">@Localizer["Lt_Subject"]</label>
+                <input name="Subject" id="tplSubject" class="form-control" value="@Model.Subject" maxlength="300" required />
+            </div>
+            <div class="col-12">
+                <label class="form-label" for="tplBodyEditor">@Localizer["Lt_Body"]</label>
+                <textarea name="Body" id="tplBodyEditor" class="form-control" rows="8">@Model.Body</textarea>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="tplPriority">@Localizer["Lt_Priority"]</label>
+                <select name="Priority" id="tplPriority" class="form-select">
+                    @foreach (var p in new[] { "Normal", "Low", "High", "Urgent" })
+                    {
+                        <option value="@p" selected="@(Model.Priority == p)">@Localizer["Lt_P_" + p]</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="tplConf">@Localizer["Lt_Confidentiality"]</label>
+                <select name="ConfidentialityLevel" id="tplConf" class="form-select">
+                    @foreach (var c in new[] { "Internal", "Public", "Confidential", "Restricted", "HighlyConfidential" })
+                    {
+                        <option value="@c" selected="@(Model.ConfidentialityLevel == c)">@c</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
+        </div>
+    </form>
+</div>
+
+@await Html.PartialAsync("_RichTextEditorScripts", "tplBodyEditor")

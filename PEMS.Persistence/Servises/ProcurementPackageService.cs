@@ -189,6 +189,13 @@ public class ProcurementPackageService : IProcurementPackageService
 
     public async Task<int> CreateAsync(string packageNumber, int projectId, int? disciplineId, string title, string? description)
     {
+        // P0 / شناسه‌ها: شماره‌ی بسته دستی است و ایندکس یکتا ندارد (Migration جداگانه لازم است)؛ اعتبارسنجی در سرویس.
+        packageNumber = packageNumber?.Trim() ?? string.Empty;
+        if (packageNumber.Length == 0)
+            throw new InvalidOperationException("شماره‌ی بسته‌ی تدارکات الزامی است.");
+        if (await _context.ProcurementPackages.AnyAsync(x => x.PackageNumber == packageNumber))
+            throw new InvalidOperationException($"بسته‌ای با شماره‌ی «{packageNumber}» از قبل وجود دارد.");
+
         var package = new ProcurementPackage
         {
             PackageNumber = packageNumber,

@@ -1,0 +1,174 @@
+@model PEMS.Web.Models.ExecutiveKpiPageViewModel
+@using System.Globalization
+@using Microsoft.Extensions.Localization
+@using PEMS.Application.Common
+@using PEMS.Application.DTOs
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var d = Model.Dashboard;
+    var inv = CultureInfo.InvariantCulture;
+
+    string Number(decimal v, int decimals) => v.ToString("N" + decimals, inv);
+
+    string UnitSuffix(string unit) => unit switch { "%" => "%", "h" => " h", "d" => " d", _ => "" };
+
+    string Format(KpiTileDto t) => t.Value is null ? "—" : Number(t.Value.Value, t.Decimals) + UnitSuffix(t.Unit);
+
+    string TargetText(KpiTileDto t) => t.Target is null ? "" :
+        (t.Direction == KpiDirections.LowerIsBetter ? "≤ " : "≥ ") + Number(t.Target.Value, t.Decimals) + UnitSuffix(t.Unit);
+
+    (string Css, string Icon) StatusLook(string status) => status switch
+    {
+        KpiStatuses.Met => ("met", "bi-check-circle"),
+        KpiStatuses.Near => ("near", "bi-exclamation-circle"),
+        KpiStatuses.Missed => ("missed", "bi-x-circle"),
+        KpiStatuses.NoTarget => ("notarget", "bi-dash-circle"),
+        _ => ("nodata", "bi-question-circle")
+    };
+
+    var withTarget = d.Tiles.Where(t => t.Status is KpiStatuses.Met or KpiStatuses.Near or KpiStatuses.Missed).ToList();
+    var message = TempData["KpiMessage"] as string;
+    var error = TempData["KpiError"] as string;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-kpi-dashboard.css" asp-append-version="true" />
+}
+
+<div class="pems-kpi-page">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+        <h5 class="mb-0"><i class="bi bi-bar-chart-line"></i> @Localizer["Kpi_Exec_Title"]</h5>
+        <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-speedometer2"></i> @Localizer["Kpi_Exec_ClassicLink"]</a>
+    </div>
+    <p class="text-muted small mb-3">@Localizer["Kpi_Exec_Intro"]</p>
+
+    @if (!string.IsNullOrEmpty(message)) { <div class="alert alert-success py-2 small" role="status">@Localizer[message]</div> }
+    @if (!string.IsNullOrEmpty(error)) { <div class="alert alert-danger py-2 small" role="alert">@Localizer[error]</div> }
+
+    <form method="get" class="d-flex gap-2 align-items-end flex-wrap mb-3">
+        <div>
+            <label class="form-label small mb-0" for="kpiFrom">@Localizer["From"]</label>
+            <input type="date" id="kpiFrom" name="fromDate" class="form-control form-control-sm" value="@Model.From.ToString("yyyy-MM-dd")" />
+        </div>
+        <div>
+            <label class="form-label small mb-0" for="kpiTo">@Localizer["To"]</label>
+            <input type="date" id="kpiTo" name="toDate" class="form-control form-control-sm" value="@Model.To.ToString("yyyy-MM-dd")" />
+        </div>
+        <button type="submit" class="btn btn-sm btn-pems-solid">@Localizer["Filter"]</button>
+        <span class="small text-muted ms-auto">@Localizer["Kpi_Exec_Generated"]: @d.GeneratedAt.ToString("yyyy-MM-dd HH:mm")</span>
+    </form>
+
+    @* خلاصه‌ی وضعیت نسبت به هدف: فقط شمارش شاخص‌هایی که هدف و مقدار دارند؛ «امتیاز کلی سلامت» جعلی ساخته نمی‌شود *@
+    <div class="pems-kpi-overview" aria-label="@Localizer["Kpi_Exec_Overview"]">
+        <span class="pems-kpi-overview-title">@Localizer["Kpi_Exec_Overview"]</span>
+        <span class="pems-kpi-chip pems-kpi-status-met"><i class="bi bi-check-circle"></i> @Localizer["Kpi_Status_Met"]: @withTarget.Count(t => t.Status == KpiStatuses.Met)</span>
+        <span class="pems-kpi-chip pems-kpi-status-near"><i class="bi bi-exclamation-circle"></i> @Localizer["Kpi_Status_Near"]: @withTarget.Count(t => t.Status == KpiStatuses.Near)</span>
+        <span class="pems-kpi-chip pems-kpi-status-missed"><i class="bi bi-x-circle"></i> @Localizer["Kpi_Status_Missed"]: @withTarget.Count(t => t.Status == KpiStatuses.Missed)</span>
+        <span class="pems-kpi-chip pems-kpi-status-nodata"><i class="bi bi-question-circle"></i> @Localizer["Kpi_Status_NoData"]: @d.Tiles.Count(t => t.Status == KpiStatuses.NoData)</span>
+    </div>
+
+    @foreach (var sec in KpiSections.Ordered)
+    {
+        var tiles = d.Tiles.Where(t => t.Section == sec).ToList();
+        if (tiles.Count == 0) { continue; }
+        <section class="pems-kpi-section" id="kpi-@sec.ToLowerInvariant()">
+            <h6 class="pems-kpi-section-title">@Localizer["Kpi_Section_" + sec]</h6>
+            <div class="pems-kpi-grid">
+                @foreach (var t in tiles)
+                {
+                    var look = StatusLook(t.Status);
+                    <div class="pems-kpi-tile pems-kpi-status-@look.Css" data-kpi="@t.Key" data-status="@t.Status">
+                        <div class="pems-kpi-name">@Localizer["Kpi_Name_" + t.Key]</div>
+                        <div class="pems-kpi-value">@Format(t)</div>
+                        <div class="pems-kpi-meta">
+                            <span class="pems-kpi-chip pems-kpi-status-@look.Css"><i class="bi @look.Icon"></i> @Localizer["Kpi_Status_" + t.Status]</span>
+                            @if (t.Target is not null) { <span class="pems-kpi-target" title="@Localizer["Kpi_Exec_Target"]">@Localizer["Kpi_Exec_Target"] @TargetText(t)</span> }
+                        </div>
+                        @if (t.Status == KpiStatuses.NoData) { <div class="pems-kpi-detail">@Localizer["Kpi_Exec_NoDataHint"]</div> }
+                        else if (!string.IsNullOrEmpty(t.Detail)) { <div class="pems-kpi-detail">@t.Detail</div> }
+                    </div>
+                }
+            </div>
+
+            @if (sec == KpiSections.Equipment && d.EquipmentByStatus.Count > 0)
+            {
+                <table class="table table-sm table-enterprise pems-kpi-table">
+                    <thead><tr><th>@Localizer["Kpi_Exec_Status"]</th><th class="text-end">@Localizer["Kpi_Exec_Count"]</th></tr></thead>
+                    <tbody>
+                    @foreach (var s in d.EquipmentByStatus)
+                    {
+                        <tr><td>@s.Name</td><td class="text-end">@s.Count.ToString("N0", inv)</td></tr>
+                    }
+                    </tbody>
+                </table>
+            }
+
+            @if (sec == KpiSections.Cost && d.TopEquipmentByCost.Count > 0)
+            {
+                <table class="table table-sm table-enterprise pems-kpi-table">
+                    <thead><tr><th>@Localizer["Kpi_Exec_TopCost"]</th><th class="text-end">@Localizer["Kpi_Name_cost_total"]</th></tr></thead>
+                    <tbody>
+                    @foreach (var e in d.TopEquipmentByCost)
+                    {
+                        <tr><td>@e.TagNumber</td><td class="text-end">@e.Cost.ToString("N0", inv)</td></tr>
+                    }
+                    </tbody>
+                </table>
+            }
+        </section>
+    }
+
+    @* بخش‌هایی از سند KPI که در PEMS داده‌ی منبع ندارند؛ عمداً بدون عدد *@
+    <section class="pems-kpi-section pems-kpi-nottracked" id="kpi-nottracked">
+        <h6 class="pems-kpi-section-title"><i class="bi bi-hourglass-split"></i> @Localizer["Kpi_Exec_NotTracked"]</h6>
+        <p class="small text-muted">@Localizer["Kpi_Exec_NotTrackedHint"]</p>
+        <ul class="pems-kpi-nt-list">
+            @foreach (var key in KpiCatalog.NotTracked)
+            {
+                <li><strong>@Localizer["Kpi_NT_" + key]</strong> <span class="text-muted">- @Localizer["Kpi_NTD_" + key]</span></li>
+            }
+        </ul>
+    </section>
+
+    @if (Model.CanEditTargets)
+    {
+        <details class="pems-kpi-section pems-kpi-targets" id="kpi-targets">
+            <summary class="pems-kpi-section-title">@Localizer["Kpi_Exec_EditTargets"]</summary>
+            <p class="small text-muted mt-2">@Localizer["Kpi_Exec_EditTargetsHint"]</p>
+            <div class="table-responsive">
+                <table class="table table-sm table-enterprise">
+                    <thead>
+                        <tr>
+                            <th>@Localizer["Kpi_Exec_Kpi"]</th><th>@Localizer["Kpi_Exec_Direction"]</th>
+                            <th>@Localizer["Kpi_Exec_Target"]</th><th>@Localizer["Kpi_Exec_Warn"]</th><th>@Localizer["Kpi_Exec_Source"]</th><th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var tg in Model.Targets)
+                    {
+                        var formId = "kpiTargetForm_" + tg.Key;
+                        <tr data-kpi-target="@tg.Key">
+                            <td>@Localizer["Kpi_Name_" + tg.Key] <span class="text-muted small">(@Localizer["Kpi_Section_" + tg.Section])</span></td>
+                            <td>@(tg.Direction == KpiDirections.LowerIsBetter ? "≤" : "≥") <span class="text-muted small">@(tg.Unit == "currency" ? "" : tg.Unit)</span></td>
+                            <td><input form="@formId" type="number" step="any" min="0" name="target" class="form-control form-control-sm pems-kpi-input"
+                                       value="@(tg.Target?.ToString("0.####", inv))" aria-label="@Localizer["Kpi_Exec_Target"]: @Localizer["Kpi_Name_" + tg.Key]" /></td>
+                            <td><input form="@formId" type="number" step="any" min="0" name="warn" class="form-control form-control-sm pems-kpi-input"
+                                       value="@(tg.Warn?.ToString("0.####", inv))" aria-label="@Localizer["Kpi_Exec_Warn"]: @Localizer["Kpi_Name_" + tg.Key]" /></td>
+                            <td><span class="small text-muted">@(tg.IsCustom ? Localizer["Kpi_Exec_Custom"] : Localizer["Kpi_Exec_Default"])</span></td>
+                            <td>
+                                <form id="@formId" method="post" asp-action="SaveTarget" class="d-inline">
+                                    <input type="hidden" name="key" value="@tg.Key" />
+                                    <input type="hidden" name="fromDate" value="@Model.From.ToString("yyyy-MM-dd")" />
+                                    <input type="hidden" name="toDate" value="@Model.To.ToString("yyyy-MM-dd")" />
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">@Localizer["Save"]</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </details>
+    }
+</div>

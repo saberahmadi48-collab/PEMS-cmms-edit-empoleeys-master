@@ -1,0 +1,80 @@
+@model PEMS.Web.Areas.Admin.Models.NavigationMenuCreateViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var input = Model.Input;
+}
+
+<div class="admin-page-shell">
+    <div class="content-card" style="max-width:760px">
+        <h2 class="h5 mb-1">@Localizer["Nav_Admin_AddLink"]</h2>
+        <p class="small text-body-tertiary mb-3">@Localizer["Nav_AddLinkIntro"]</p>
+
+        <div asp-validation-summary="All" class="text-danger small mb-2" role="alert"></div>
+
+        <form method="post" asp-action="Create">
+            <div class="mb-3">
+                <label class="form-label" for="ParentKey">@Localizer["Nav_Field_Parent"] <span class="text-danger" aria-hidden="true">*</span></label>
+                <select class="form-select" id="ParentKey" name="ParentKey" required>
+                    @foreach (var (key, title) in Model.Parents)
+                    {
+                        <option value="@key" selected="@(input.ParentKey == key)">@title</option>
+                    }
+                </select>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="TitleFa">@Localizer["Nav_Field_TitleFa"] <span class="text-danger" aria-hidden="true">*</span></label>
+                    <input class="form-control" id="TitleFa" name="TitleFa" value="@input.TitleFa" maxlength="200" dir="rtl" required />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="TitleEn">@Localizer["Nav_Field_TitleEn"] <span class="text-danger" aria-hidden="true">*</span></label>
+                    <input class="form-control" id="TitleEn" name="TitleEn" value="@input.TitleEn" maxlength="200" dir="ltr" required />
+                </div>
+            </div>
+
+            <fieldset class="mb-3">
+                <legend class="form-label fs-6">@Localizer["Nav_Field_Route"] <span class="text-danger" aria-hidden="true">*</span></legend>
+                <div class="row g-2" dir="ltr">
+                    <div class="col-md-4">
+                        <label class="form-label small" for="Area">@Localizer["Nav_Field_Area"]</label>
+                        <input class="form-control" id="Area" name="Area" value="@input.Area" maxlength="100" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small" for="Controller">@Localizer["Nav_Field_Controller"]</label>
+                        <input class="form-control" id="Controller" name="Controller" value="@input.Controller" maxlength="100" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small" for="Action">@Localizer["Nav_Field_Action"]</label>
+                        <input class="form-control" id="Action" name="Action" value="@input.Action" maxlength="100" required />
+                    </div>
+                </div>
+                <div class="form-text">@Localizer["Nav_RouteHelp"]</div>
+            </fieldset>
+
+            <div class="mb-3">
+                <label class="form-label" for="RequiredPermission">@Localizer["Nav_Field_Permission"]</label>
+                <select class="form-select" id="RequiredPermission" name="RequiredPermission" aria-describedby="permHelp" dir="ltr">
+                    <option value="">@Localizer["Nav_NoPermission"]</option>
+                    @foreach (var p in Model.Permissions)
+                    {
+                        <option value="@p" selected="@(input.RequiredPermission == p)">@p</option>
+                    }
+                </select>
+                <div id="permHelp" class="form-text">@Localizer["Nav_PermissionHelp"]</div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label" for="Icon">@Localizer["Nav_Field_Icon"]</label>
+                <input class="form-control" id="Icon" name="Icon" value="@input.Icon" maxlength="60" dir="ltr" pattern="bi-[a-z0-9-]{1,50}" placeholder="bi-link-45deg" />
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">@Localizer["Save"]</button>
+                <a class="btn btn-outline-secondary" asp-action="Index">@Localizer["Cancel"]</a>
+            </div>
+        </form>
+    </div>
+</div>

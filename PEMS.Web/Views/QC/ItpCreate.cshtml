@@ -38,7 +38,7 @@
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Package"] <span class="text-muted small">@Localizer["(optional)"]</span></label>
                 <select name="procurementPackageId" class="form-select">
-                    <option value="">@Localizer["-- none --"]</option>
+                    <option value="">@Localizer["-- None --"]</option>
                     @foreach (var p in (IEnumerable<dynamic>)ViewBag.ProcurementPackages)
                     {
                         <option value="@p.ProcurementPackageId" selected="@(ViewBag.PrefillPackageId != null && (int)ViewBag.PrefillPackageId == (int)p.ProcurementPackageId)">@p.PackageNumber</option>
@@ -48,7 +48,7 @@
             <div class="col-md-6">
                 <label class="form-label">@Localizer["Contract"] <span class="text-muted small">@Localizer["(optional)"]</span></label>
                 <select name="contractId" class="form-select">
-                    <option value="">@Localizer["-- none --"]</option>
+                    <option value="">@Localizer["-- None --"]</option>
                     @foreach (var c in (IEnumerable<dynamic>)ViewBag.Contracts)
                     {
                         <option value="@c.ContractId" selected="@(ViewBag.PrefillContractId != null && (int)ViewBag.PrefillContractId == (int)c.ContractId)">@c.ContractNo</option>

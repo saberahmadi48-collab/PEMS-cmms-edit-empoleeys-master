@@ -15,10 +15,11 @@ public class TagService : ITagService
         _context = context;
     }
 
-    public async Task<List<TagDto>> GetAllAsync()
+    // سازمانی (OwnerUserId == null) برای همه + برچسب‌های شخصیِ خودِ بیننده؛ برچسب شخصی دیگران هرگز دیده نمی‌شود
+    public async Task<List<TagDto>> GetAllAsync(int? viewerUserId = null)
     {
         return await _context.Tags
-            .Where(x => x.IsActive)
+            .Where(x => x.IsActive && (x.OwnerUserId == null || x.OwnerUserId == viewerUserId))
             .OrderBy(x => x.Name)
             .Select(x => new TagDto
             {
@@ -50,17 +51,25 @@ public class TagService : ITagService
         return tag.TagId;
     }
 
-    public async Task DeleteAsync(int tagId)
+    public async Task DeleteAsync(int tagId, int? actorUserId = null)
     {
         var tag = await _context.Tags.FirstOrDefaultAsync(x => x.TagId == tagId);
         if (tag == null) return;
+        // برچسب شخصی فقط توسط صاحبش غیرفعال می‌شود
+        if (tag.OwnerUserId.HasValue && tag.OwnerUserId != actorUserId) return;
+        // برچسب دارای زیرمجموعه‌ی فعال غیرفعال نمی‌شود تا درخت یتیم نشود
+        if (await _context.Tags.AnyAsync(x => x.ParentTagId == tagId && x.IsActive)) return;
 
         tag.IsActive = false;
         await _context.SaveChangesAsync();
     }
 
-    public async Task AttachToLetterAsync(int letterId, int tagId)
+    public async Task AttachToLetterAsync(int letterId, int tagId, int? actorUserId = null)
     {
+        // برچسب شخصیِ دیگران قابل‌استفاده نیست
+        var owner = await _context.Tags.Where(x => x.TagId == tagId && x.IsActive).Select(x => new { x.OwnerUserId }).FirstOrDefaultAsync();
+        if (owner == null || (owner.OwnerUserId.HasValue && owner.OwnerUserId != actorUserId)) return;
+
         var existing = await _context.LetterTags
             .FirstOrDefaultAsync(x => x.LetterId == letterId && x.TagId == tagId);
 
@@ -87,11 +96,12 @@ public class TagService : ITagService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<TagDto>> GetForLetterAsync(int letterId)
+    public async Task<List<TagDto>> GetForLetterAsync(int letterId, int? viewerUserId = null)
     {
         return await _context.LetterTags
             .Include(x => x.Tag)
-            .Where(x => x.LetterId == letterId && x.Tag != null && x.Tag.IsActive)
+            .Where(x => x.LetterId == letterId && x.Tag != null && x.Tag.IsActive
+                && (x.Tag.OwnerUserId == null || x.Tag.OwnerUserId == viewerUserId))
             .Select(x => new TagDto
             {
                 TagId = x.Tag!.TagId,

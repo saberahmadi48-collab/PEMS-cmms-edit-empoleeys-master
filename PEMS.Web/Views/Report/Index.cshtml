@@ -5,6 +5,14 @@
 @{
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
+    var noData = Localizer["Chart_NoData"].Value;
+    var volumeChart = BkChartSpec.MonthlyBars("Letters by month", noData, Model.VolumeByMonth.Select(x => x.Month),
+        BkSeries.Of("Incoming", Model.VolumeByMonth.Select(x => x.Incoming), BkChartSpec.Positive),
+        BkSeries.Of("Outgoing", Model.VolumeByMonth.Select(x => x.Outgoing), BkChartSpec.Primary));
+    var statusChart = BkChartSpec.Donut("Letters by status", noData, Localizer["Total"].Value, Model.ByStatus.Select(x => (x.Status, (double)x.Count)));
+    var disciplineChartRows = BkChartSpec.TopWithOthers(Model.ByDiscipline.Select(x => (x.Discipline, x.Count)), 10, Localizer["Chart_Other"].Value);
+    var disciplineChart = BkChartSpec.HBars("Letters by discipline", noData, disciplineChartRows.Select(x => x.Label), false,
+        new BkSeries("Letters", disciplineChartRows.Select(x => x.Value).ToList(), BkChartSpec.Accent));
 }
 
 <div class="d-flex flex-wrap gap-2 mb-3">
@@ -48,19 +56,19 @@
     <div class="col-lg-8">
         <div class="content-card mb-3">
             <h6 class="mb-3">Correspondence Volume (last 12 months)</h6>
-            <canvas id="volumeChart" height="90"></canvas>
+            <partial name="_BkChart" model="@volumeChart" />
         </div>
     </div>
     <div class="col-lg-4">
         <div class="content-card mb-3">
             <h6 class="mb-3">@Localizer["By Status"]</h6>
-            <canvas id="statusChart" height="200"></canvas>
+            <partial name="_BkChart" model="@statusChart" />
         </div>
     </div>
     <div class="col-lg-6">
         <div class="content-card mb-3">
             <h6 class="mb-3">@Localizer["By Discipline"]</h6>
-            <canvas id="disciplineChart" height="180"></canvas>
+            <partial name="_BkChart" model="@disciplineChart" />
         </div>
     </div>
     <div class="col-lg-6">
@@ -96,48 +104,10 @@
     @if (!Model.TopSenders.Any()) { <p class="text-muted text-center py-3">@Localizer["No data."]</p> }
 </div>
 
+@section Styles {
+    <partial name="_BkChartStyles" />
+}
+
 @section Scripts {
-    <script src="~/lib/chartjs/chart-4.4.1.umd.min.js"></script>
-    <script src="~/js/pems-charts.js"></script>
-    <script>
-        const volumeLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VolumeByMonth.Select(x => x.Month)));
-        const incomingData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VolumeByMonth.Select(x => x.Incoming)));
-        const outgoingData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VolumeByMonth.Select(x => x.Outgoing)));
-
-        new Chart(document.getElementById('volumeChart'), {
-            type: 'bar',
-            data: {
-                labels: volumeLabels,
-                datasets: [
-                    { label: 'Incoming', data: incomingData, backgroundColor: PemsChartColors.positive },
-                    { label: 'Outgoing', data: outgoingData, backgroundColor: PemsChartColors.primary }
-                ]
-            },
-            options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-        });
-
-        const statusLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ByStatus.Select(x => x.Status)));
-        const statusData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ByStatus.Select(x => x.Count)));
-
-        new Chart(document.getElementById('statusChart'), {
-            type: 'doughnut',
-            data: {
-                labels: statusLabels,
-                datasets: [{ data: statusData, backgroundColor: PemsChartColors.categorical }]
-            },
-            options: { plugins: { legend: { position: 'bottom' } } }
-        });
-
-        const disciplineLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ByDiscipline.Select(x => x.Discipline)));
-        const disciplineData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ByDiscipline.Select(x => x.Count)));
-
-        new Chart(document.getElementById('disciplineChart'), {
-            type: 'bar',
-            data: {
-                labels: disciplineLabels,
-                datasets: [{ label: 'Letters', data: disciplineData, backgroundColor: PemsChartColors.accent }]
-            },
-            options: { indexAxis: 'y', plugins: { legend: { display: false } } }
-        });
-    </script>
+    <partial name="_BkChartScripts" />
 }

@@ -68,7 +68,17 @@ public class NumberingService : INumberingService
         // عمداً «NTP» نه «IRN» - طبق §K ریسک ۹ ممیزی: پرهیز از برخورد نام با
         // IrnReceipt (Incoming Receipt Note) موجود در ماژول Material Management
         ["NTP"] = new("NTP", 4, true, () => DateTime.Now.Year.ToString()),
+        // Task Manager: شمارنده به‌ازای هر فضا (ScopeKey = کلید فضا)؛ قالب کلید «{فضا}-{n}» را خود ماژول می‌سازد (GetNextValueAsync)
+        ["WorkItem"] = new("WI", 1, true, () => throw new InvalidOperationException("WorkItem numbering requires the workspace key as scope.")),
     };
+
+    public async Task<int> GetNextValueAsync(string documentType, string scopeKey)
+    {
+        if (string.IsNullOrWhiteSpace(scopeKey)) throw new ArgumentException("A scope key is required.", nameof(scopeKey));
+        var formatted = await GetNextNumberAsync(documentType, scopeKey);
+        // قالب ثابت Prefix-Scope-Value؛ مقدار آخرین بخش است (کلید فضا خط تیره ندارد - اعتبارسنجی WorkSpace.Key)
+        return int.Parse(formatted[(formatted.LastIndexOf('-') + 1)..], System.Globalization.CultureInfo.InvariantCulture);
+    }
 
     public NumberingService(PEMSDbContext context)
     {
@@ -82,23 +92,33 @@ public class NumberingService : INumberingService
 
         var scope = string.IsNullOrWhiteSpace(scopeKey) ? config.DefaultScope() : scopeKey;
 
-        var strategy = _context.Database.CreateExecutionStrategy();
-
-        var value = await strategy.ExecuteAsync(async () =>
+        int value;
+        if (_context.Database.CurrentTransaction != null)
         {
-            await using var transaction = await _context.Database.BeginTransactionAsync();
-            try
+            // A7 (بدون حفره): فراخوان یک تراکنش بازِ مشترک با ثبت خودِ سند دارد؛ افزایش شمارنده در همان تراکنش انجام می‌شود، پس اگر ثبت سند شکست بخورد
+            // (Rollback) شماره هم برمی‌گردد و حفره‌ای ایجاد نمی‌شود. ردیف شمارنده تا Commit قفل می‌ماند، پس ثبت‌های هم‌زمان سریالی و بدون تکرار هستند.
+            // (فراخوان باید خودش داخل CreateExecutionStrategy().ExecuteAsync باشد؛ اینجا Retry/Commit نمی‌کنیم.)
+            value = await IncrementAsync(documentType, scope, config, ambient: true);
+        }
+        else
+        {
+            var strategy = _context.Database.CreateExecutionStrategy();
+            value = await strategy.ExecuteAsync(async () =>
             {
-                var next = await IncrementAsync(documentType, scope, config);
-                await transaction.CommitAsync();
-                return next;
-            }
-            catch
-            {
-                await transaction.RollbackAsync();
-                throw;
-            }
-        });
+                await using var transaction = await _context.Database.BeginTransactionAsync();
+                try
+                {
+                    var next = await IncrementAsync(documentType, scope, config);
+                    await transaction.CommitAsync();
+                    return next;
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            });
+        }
 
         var padded = value.ToString().PadLeft(config.PadWidth, '0');
 
@@ -107,7 +127,7 @@ public class NumberingService : INumberingService
             : $"{config.Prefix}-{padded}";
     }
 
-    private async Task<int> IncrementAsync(string documentType, string scope, Config config)
+    private async Task<int> IncrementAsync(string documentType, string scope, Config config, bool ambient = false)
     {
         const int maxAttempts = 3;
 
@@ -139,9 +159,10 @@ public class NumberingService : INumberingService
                 await _context.SaveChangesAsync();
                 return 1;
             }
-            catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex) && attempt < maxAttempts)
+            catch (DbUpdateException ex) when (IsUniqueConstraintViolation(ex) && attempt < maxAttempts && !ambient)
             {
                 // هم‌زمان یک درخواست دیگر همین ردیف را ساخت؛ دور بعد UPDATE موفق می‌شود.
+                // (در تراکنش مشترک فراخوان، Clear() موجودیت‌های فراخوان را هم می‌پراند؛ آنجا خطا بالا می‌رود و فراخوان کل تراکنش را دوباره اجرا می‌کند.)
                 _context.ChangeTracker.Clear();
             }
         }

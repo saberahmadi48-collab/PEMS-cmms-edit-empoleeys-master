@@ -14,6 +14,17 @@ public class MaintenancePlanListDto
     public string EquipmentTagNumber { get; set; } = "";
     public string Title { get; set; } = "";
     public string? StrategyType { get; set; }
+
+    // هویت تجهیز و نسخه‌ی استراتژی (RCM کلاس‌محور): تگ، نام، کلاس، بحرانی‌بودن، حالت خرابی، نسخه، سیاست زمان‌بندی
+    public string EquipmentName { get; set; } = "";
+    public string? EquipmentClassName { get; set; }
+    public string? CriticalityClass { get; set; }
+    public int? StrategyId { get; set; }
+    public int? StrategyVersion { get; set; }
+    public string? FailureModeName { get; set; }
+    public string? FailureModeNameFa { get; set; }
+    public string ScheduleMode { get; set; } = "Fixed";
+    public bool HasAssignment { get; set; }
     public string TriggerType { get; set; } = "";
     public int? IntervalDays { get; set; }
     public string? MeterType { get; set; }

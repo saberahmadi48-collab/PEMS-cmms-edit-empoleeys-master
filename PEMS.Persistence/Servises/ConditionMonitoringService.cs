@@ -364,7 +364,7 @@ public class ConditionMonitoringService : IConditionMonitoringService
             .Where(x => x.IsActive && x.ConditionMonitoringPointId != null)
             .Join(_context.MaintenancePlans.Where(p => p.IsActive && p.NextDueDate.HasValue),
                 s => s.MaintenanceStrategyId, p => p.MaintenanceStrategyId,
-                (s, p) => new { s.ConditionMonitoringPointId, s.EquipmentId, p.NextDueDate })
+                (s, p) => new { s.ConditionMonitoringPointId, p.EquipmentId, p.NextDueDate })
             .Where(x => x.NextDueDate!.Value < now)
             .OrderBy(x => x.NextDueDate)
             .ToListAsync();

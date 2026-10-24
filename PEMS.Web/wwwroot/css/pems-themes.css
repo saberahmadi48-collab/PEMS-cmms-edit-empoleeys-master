@@ -1,0 +1,123 @@
+/* =========================================================================================
+   PEMS Light + Dark - لایه‌ی کامپوننت (ممیزی رنگ/چیدمان). Turquoise در pems-glass.css است؛ این فایل فقط Light و Dark را
+   پوشش می‌دهد و بعد از pems-glass.css بارگذاری می‌شود.
+
+   یافته‌های اندازه‌گیری‌شده (DOM Contrast Scan روی صفحه‌ی واقعی در Edge، ۷۷ متن):
+     Dark: ۲۲ شکست - .text-muted ≈۱:۱، برچسب KPI/نقش کاربر ۳.۱:۱، پیوند آبی پیش‌فرض ۳.۵:۱، chip خطر ۲.۵:۱، دکمه‌ی اصلی (سفید روی
+           کهربایی) ۳.۸:۱، placeholder و گزینه‌های منوی کشویی تقریباً نامرئی، هشدار/تب/لیست پاستلی-سفید روی تیره.
+     Light: ۲ شکست - دکمه‌ی اصلی سفید روی کهربایی ۳.۸:۱؛ به‌علاوه دو آبی رقیب (navy برند و #0d6efd بوت‌استرپ) برای پیوند/progress/
+           لیست/صفحه‌بندی و مرز کنترل‌های فرم ≈۱.۳:۱ (کمتر از ۳:۱ مورد نیاز WCAG 1.4.11).
+   اصلاح: توکن‌ها در site.css (:root و :root[data-theme="dark"])، و این‌جا فقط کامپوننت‌هایی که رنگ ثابت داشتند.
+   ========================================================================================= */
+
+/* --- اقدام اصلی: کهربایی با متن تیره (۶.۷ تا ۹.۹:۱)، یک ظاهر برای همه‌ی خانواده‌های «دکمه‌ی اصلی» پروژه --- */
+:is([data-theme="light"], [data-theme="dark"]) :is(.btn-pems-solid, .vs-page .btn-pems-solid, .vs-btn--primary, .btn-pems,
+        .admin-page .btn-primary, .admin-page-shell .btn-pems-solid, .admin-area .btn-pems-solid) {
+    background: linear-gradient(135deg, var(--pems-cta-start), var(--pems-cta-end));
+    border: 1px solid rgba(0, 0, 0, .10);
+    color: var(--pems-on-accent);
+    font-weight: 700;
+}
+
+:is([data-theme="light"], [data-theme="dark"]) :is(.btn-pems-solid, .vs-page .btn-pems-solid, .vs-btn--primary, .btn-pems,
+        .admin-page .btn-primary, .admin-page-shell .btn-pems-solid):is(:hover, :focus) {
+    background: linear-gradient(135deg, #ffcb78, var(--pems-cta-start));
+    color: var(--pems-on-accent);
+    opacity: 1;
+}
+
+/* Bootstrap .btn-primary (همان دکمه‌ی اصلی). عمداً بدون «.pems-content» تا قاعده‌ی «اقدام‌های ردیف جدول آرام‌اند»
+   (.pems-content td .btn-primary در pems-workspace.css) برنده بماند. */
+:is([data-theme="light"], [data-theme="dark"]) .btn-primary {
+    --bs-btn-color: var(--pems-on-accent); --bs-btn-hover-color: var(--pems-on-accent); --bs-btn-active-color: var(--pems-on-accent);
+    --bs-btn-bg: var(--pems-cta-end); --bs-btn-border-color: var(--pems-cta-end);
+    --bs-btn-hover-bg: var(--pems-cta-start); --bs-btn-hover-border-color: var(--pems-cta-start);
+    --bs-btn-active-bg: var(--pems-cta-end); --bs-btn-active-border-color: var(--pems-cta-end);
+    --bs-btn-disabled-bg: var(--pems-cta-end); --bs-btn-disabled-border-color: var(--pems-cta-end); --bs-btn-disabled-color: var(--pems-on-accent);
+}
+
+/* --- فرم‌ها: مرز کنترل ≥۳:۱، placeholder ≥۴.۵:۱، فوکوس آبی (کهربایی روی سفید فقط ۲.۸:۱ بود) --- */
+:is([data-theme="light"], [data-theme="dark"]) :is(.form-control, .form-select) {
+    background-color: var(--pems-input-bg);
+    border-color: var(--pems-border-strong);
+    color: var(--pems-text);
+}
+
+:is([data-theme="light"], [data-theme="dark"]) :is(.form-control, .form-select):focus {
+    background-color: var(--pems-input-bg);
+    border-color: var(--pems-focus);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--pems-focus) 28%, transparent);
+    color: var(--pems-text);
+}
+
+:is([data-theme="light"], [data-theme="dark"]) :is(.form-control, .pems-search input)::placeholder { color: var(--pems-text-faint); opacity: 1; }
+:is([data-theme="light"], [data-theme="dark"]) .pems-search input { border-color: var(--pems-border-strong); background: var(--pems-input-bg); }
+:is([data-theme="light"], [data-theme="dark"]) :is(.form-control, .form-select):disabled { opacity: .65; }
+:is([data-theme="light"], [data-theme="dark"]) :is(.form-control, .form-select).is-invalid { border-color: var(--pems-chart-danger-text); }
+
+:is([data-theme="light"], [data-theme="dark"]) .form-check-input { border-color: var(--pems-border-strong); background-color: var(--pems-input-bg); }
+:is([data-theme="light"], [data-theme="dark"]) .form-check-input:checked { background-color: #1d4ed8; border-color: #1d4ed8; }
+:is([data-theme="light"], [data-theme="dark"]) .form-check-input:focus { border-color: var(--pems-focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--pems-focus) 28%, transparent); }
+
+/* --- «حالت فعال» کامپوننت‌ها: آبی برند با متن سفید (۶.۷:۱) به‌جای #0d6efd پیش‌فرض (۵.۲:۱ ولی رنگ خارج از پالت) --- */
+:is([data-theme="light"], [data-theme="dark"]) .list-group {
+    --bs-list-group-active-bg: #1d4ed8; --bs-list-group-active-border-color: #1d4ed8; --bs-list-group-active-color: #fff;
+}
+:is([data-theme="light"], [data-theme="dark"]) .pagination {
+    --bs-pagination-active-bg: #1d4ed8; --bs-pagination-active-border-color: #1d4ed8; --bs-pagination-active-color: #fff;
+    --bs-pagination-color: var(--pems-link); --bs-pagination-hover-color: var(--pems-link-hover);
+}
+:is([data-theme="light"], [data-theme="dark"]) .progress { --bs-progress-bar-bg: #2563eb; }
+:is([data-theme="light"], [data-theme="dark"]) .nav-pills { --bs-nav-pills-link-active-bg: #1d4ed8; --bs-nav-pills-link-active-color: #fff; }
+:is([data-theme="light"], [data-theme="dark"]) .dropdown-menu { --bs-dropdown-link-active-bg: #1d4ed8; --bs-dropdown-link-active-color: #fff; }
+
+/* --- ردیف انتخاب‌شده در جدول: روی سلول‌ها (پس‌زمینه‌ی سلول مات است) + لبه‌ی آبی سمت شروع، هر دو جهت --- */
+:is([data-theme="light"], [data-theme="dark"]) .table-enterprise tbody tr:is(.selected, [aria-selected="true"]) > td {
+    box-shadow: inset 0 0 0 9999px rgba(37, 99, 235, .09);
+}
+:is([data-theme="light"], [data-theme="dark"]) .table-enterprise tbody tr:is(.selected, [aria-selected="true"]) > td:first-child {
+    box-shadow: inset 3px 0 0 var(--pems-focus), inset 0 0 0 9999px rgba(37, 99, 235, .09);
+}
+html[dir="rtl"]:is([data-theme="light"], [data-theme="dark"]) .table-enterprise tbody tr:is(.selected, [aria-selected="true"]) > td:first-child {
+    box-shadow: inset -3px 0 0 var(--pems-focus), inset 0 0 0 9999px rgba(37, 99, 235, .09);
+}
+
+/* =========================================================================================
+   فقط Dark
+   ========================================================================================= */
+[data-theme="dark"] body { scrollbar-color: #3a4a60 transparent; scrollbar-width: thin; }
+
+/* منو/مودال بالاتر از کارت (elev-menu) با حاشیه‌ی روشن‌تر؛ بوت‌استرپ dark متن/هاور را از توکن‌ها می‌گیرد */
+[data-theme="dark"] :is(.dropdown-menu, .modal-content) {
+    background: var(--pems-elev-menu);
+    border-color: #34425a;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, .5);
+    --bs-dropdown-link-color: var(--pems-text);
+    --bs-dropdown-link-hover-color: #fff;
+    --bs-dropdown-link-hover-bg: rgba(91, 156, 248, .16);
+    --bs-dropdown-header-color: var(--pems-text-muted);
+    --bs-dropdown-divider-bg: #34425a;
+}
+[data-theme="dark"] :is(.modal-header, .modal-footer) { border-color: #34425a; }
+[data-theme="dark"] .modal-backdrop { --bs-backdrop-bg: #04070b; --bs-backdrop-opacity: .7; }
+
+/* chip/دکمه‌ی خطر: #ba1a1a (۲.۵:۱ روی تیره) → رنگ متنی AA */
+[data-theme="dark"] .vs-chip--danger { border-color: var(--pems-chart-danger-text); color: var(--pems-chart-danger-text); }
+[data-theme="dark"] .vs-btn--danger:hover { border-color: var(--pems-chart-danger-text); color: var(--pems-chart-danger-text); }
+[data-theme="dark"] .pems-due-overdue { color: var(--pems-chart-danger-text); }
+[data-theme="dark"] .btn-outline-danger {
+    --bs-btn-color: #ff8f84; --bs-btn-border-color: rgba(255, 143, 132, .55);
+    --bs-btn-hover-bg: #b42318; --bs-btn-hover-color: #fff; --bs-btn-hover-border-color: #b42318;
+    --bs-btn-active-bg: #912018; --bs-btn-active-color: #fff; --bs-btn-active-border-color: #912018;
+}
+
+/* آیکون‌های KPI و پیوند «فعال» منو روی تیره */
+[data-theme="dark"] .kpi-label, [data-theme="dark"] .section-subtitle, [data-theme="dark"] .pems-breadcrumb,
+[data-theme="dark"] .pems-breadcrumb a { color: var(--pems-text-muted); }
+[data-theme="dark"] .pems-search input::placeholder { color: var(--pems-text-faint); }
+
+/* =========================================================================================
+   فقط Light
+   ========================================================================================= */
+/* chip خطر در Light همان #ba1a1a (۶.۳:۱) می‌ماند؛ فقط دکمه‌ی خطر روی سفید ۴.۵:۱ مرزی بود → کمی تیره‌تر */
+[data-theme="light"] .btn-outline-danger { --bs-btn-color: #b42318; --bs-btn-border-color: #b42318; --bs-btn-hover-bg: #b42318; --bs-btn-hover-color: #fff; }

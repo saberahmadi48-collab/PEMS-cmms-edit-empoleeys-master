@@ -8,12 +8,26 @@
     var allTags = (List<PEMS.Application.DTOs.TagDto>)ViewBag.AllTags;
     var timeline = (List<PEMS.Application.DTOs.LetterTimelineEventDto>)ViewBag.Timeline;
     var thread = (List<PEMS.Application.DTOs.ThreadMessageDto>)ViewBag.Thread;
+    var conversation = ViewBag.Conversation as List<PEMS.Application.DTOs.ConversationMessageDto>;
     bool canEditReturned = ViewBag.CanEditReturned;
     bool canEditDraft = ViewBag.CanEditDraft;
     bool canReview = ViewBag.CanReview;
+    bool isCurrentApprover = ViewBag.IsCurrentApprover == true;
     bool canEditNow = canEditReturned || canEditDraft;
+    bool canManageResponse = ViewBag.CanManageResponse == true;
+    bool isAuthor = ViewBag.IsAuthor == true;
+    bool isAdmin = ViewBag.IsAdmin == true;
+    bool canArchive = ViewBag.CanArchive == true;
+    bool canAudit = ViewBag.CanAudit == true;
+    bool isFormal = l.LetterType == "Internal" || l.LetterType == "Outgoing";
 
     string statusBadgeClass = PEMS.Web.Helpers.LetterStatusBadge.CssClass(l.Status);
+
+    // embedded in the cartable's side pane: compact layout; every action inside opens the full page (see _LayoutEmbed: <base target="_top">)
+    bool embed = ViewBag.Embed == true;
+    if (embed) { Layout = "_LayoutEmbed"; ViewData["HidePageTitle"] = true; }
+    string historyRole = (string?)ViewBag.HistoryRole ?? "all";
+    string historyOrder = (string?)ViewBag.HistoryOrder ?? "asc";
 }
 
 <style>
@@ -22,6 +36,23 @@
     .thread-message { border-inline-start: 3px solid var(--bs-border-color, #dee2e6); padding-inline-start: .75rem; }
     .thread-message.current { border-inline-start-color: var(--bs-primary, #0d6efd); }
     .thread-message .msg-summary { cursor: pointer; }
+    .cv-msg { border: 1px solid var(--bs-border-color, #dee2e6); border-inline-start-width: 4px; border-radius: .5rem; padding: .6rem .8rem; margin-bottom: .6rem; background: var(--pems-surface, transparent); }
+    .cv-msg--original { border-inline-start-color: var(--bs-secondary, #6c757d); }
+    .cv-msg--reply { border-inline-start-color: var(--bs-primary, #0d6efd); }
+    .cv-msg--referral { border-inline-start-color: #d97706; }
+    .cv-msg--current { background: color-mix(in srgb, var(--bs-primary, #0d6efd) 6%, transparent); }
+    .cv-head { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .75rem; font-size: .82rem; }
+    .cv-head .cv-who { font-weight: 600; }
+    .cv-to { color: var(--bs-secondary-color, #6c757d); }
+    .cv-body { margin-top: .5rem; padding-top: .5rem; border-top: 1px dashed var(--bs-border-color, #dee2e6); overflow-wrap: anywhere; }
+    .cv-body blockquote { border-inline-start: 3px solid var(--bs-border-color, #dee2e6); margin: .5rem 0; padding-inline-start: .75rem; color: var(--bs-secondary-color, #6c757d); }
+    .cv-kind { display: inline-flex; align-items: center; gap: .25rem; font-size: .7rem; font-weight: 700; padding: .05rem .45rem; border-radius: 3px; border: 1px solid transparent; }
+    .cv-kind--referral { color: #92400e; background: #fef3c7; border-color: #fcd34d; }
+    .cv-kind--reply { color: #1d4ed8; background: #dbeafe; border-color: #bfdbfe; }
+    .cv-kind--original { color: #475569; background: #f1f5f9; border-color: #e2e8f0; }
+    :root[data-theme="dark"] .cv-kind--referral, :root[data-theme="turquoise"] .cv-kind--referral { color: #fcd34d; background: rgba(217,119,6,.2); border-color: rgba(252,211,77,.4); }
+    :root[data-theme="dark"] .cv-kind--reply, :root[data-theme="turquoise"] .cv-kind--reply { color: #93c5fd; background: rgba(59,130,246,.18); border-color: rgba(147,197,253,.4); }
+    :root[data-theme="dark"] .cv-kind--original, :root[data-theme="turquoise"] .cv-kind--original { color: #cbd5e1; background: rgba(148,163,184,.15); border-color: rgba(148,163,184,.3); }
     .section-title { font-size: .85rem; text-transform: uppercase; letter-spacing: .03em; color: var(--pems-muted, #6c757d); }
 </style>
 
@@ -42,15 +73,63 @@
                 <span><strong>@(l.LetterType == "Incoming" ? "From" : "To"):</strong> @(l.LetterType == "Incoming" ? l.Sender : l.Receiver)</span>
                 <span><strong>Date:</strong> @l.LetterDate.ToString("yyyy-MM-dd")</span>
                 <span><strong>@Localizer["Priority:"]</strong> @l.Priority</span>
+                @if (!string.IsNullOrEmpty(l.Category)) { <span><strong>@Localizer["Lc_Category"]:</strong> @Localizer["Lc_Cat_" + l.Category]</span> }
+                @if (!string.IsNullOrEmpty(l.ReferenceNumber)) { <span><strong>@Localizer["Lc_Reference"]:</strong> @l.ReferenceNumber</span> }
                 @if (!string.IsNullOrEmpty(l.ProjectName)) { <span><strong>@Localizer["Project:"]</strong> @l.ProjectName</span> }
                 @if (!string.IsNullOrEmpty(l.DisciplineName)) { <span><strong>@Localizer["Discipline:"]</strong> @l.DisciplineName</span> }
+                @if (l.ResponseRequired && l.ResponseDueDate.HasValue)
+                {
+                    <span>
+                        <strong>@Localizer["Lt_ResponseDueDate"]:</strong> @l.ResponseDueDate.Value.ToString("yyyy-MM-dd")
+                        @if (l.ResponseAnswered) { <span class="badge bg-success"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Lt_ResponseAnswered"]</span> }
+                        else if (l.ResponseOverdue) { <span class="badge bg-danger"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Lt_Overdue"]</span> }
+                        else { <span class="badge bg-secondary"><i class="bi bi-hourglass-split" aria-hidden="true"></i> @Localizer["Lt_ResponsePending"]</span> }
+                    </span>
+                }
             </div>
+            @if (canManageResponse)
+            {
+                <details class="mt-2 small">
+                    <summary>@Localizer["Lt_ResponseEdit"]</summary>
+                    <form asp-action="SetResponseDue" method="post" class="d-flex flex-wrap align-items-end gap-2 mt-2">
+                        <input type="hidden" name="letterId" value="@l.LetterId" />
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="responseRequired" value="true" id="detResponseRequired" checked="@l.ResponseRequired" />
+                            <label class="form-check-label" for="detResponseRequired">@Localizer["Lt_ResponseRequired"]</label>
+                        </div>
+                        <div>
+                            <label class="form-label mb-1" for="detResponseDue">@Localizer["Lt_ResponseDueDate"]</label>
+                            <input type="date" name="responseDueDate" id="detResponseDue" class="form-control form-control-sm"
+                                   value="@(l.ResponseDueDate?.ToString("yyyy-MM-dd"))" min="@l.LetterDate.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">@Localizer["Save"]</button>
+                    </form>
+                </details>
+            }
         </div>
 
         <div class="d-flex align-items-center gap-2">
             @* طبق بند ۳۳: بدون دکمه‌ی وضعیت آزاد - فقط اقدامات کسب‌وکاری نام‌گذاری‌شده، هرکدام
                فقط زمانی نمایش داده می‌شوند که واقعاً از وضعیت فعلی مجاز باشند (سرویس هم دوباره
                اعتبارسنجی می‌کند - این‌جا فقط UX است) *@
+            @if (isFormal && (l.Status == "Draft" || l.Status == "ReturnedForRevision") && isAuthor)
+            {
+                <a class="btn btn-outline-secondary btn-sm" asp-controller="LetterCompose" asp-action="Compose" asp-route-id="@l.LetterId"><i class="bi bi-pencil-square" aria-hidden="true"></i> @Localizer["Lc_EditInComposer"]</a>
+            }
+            @if (l.Status == "Approved" && l.LetterType == "Internal" && isAuthor)
+            {
+                <form asp-controller="LetterCompose" asp-action="Send" method="post" onsubmit="return confirm('@Localizer["Lc_ConfirmSend"]');">
+                    <input type="hidden" name="letterId" value="@l.LetterId" />
+                    <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-send-check" aria-hidden="true"></i> @Localizer["Lt_Send"]</button>
+                </form>
+            }
+            @if (canArchive && (l.Status is "Sent" or "Closed" or "Issued" or "Acknowledged" or "Registered"))
+            {
+                <form asp-controller="LetterCompose" asp-action="Archive" method="post" onsubmit="return confirm('@Localizer["Lc_ConfirmArchive"]');">
+                    <input type="hidden" name="letterId" value="@l.LetterId" />
+                    <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="bi bi-archive" aria-hidden="true"></i> @Localizer["Lc_Archive"]</button>
+                </form>
+            }
             @if (l.Status == "Draft" && canEditDraft)
             {
                 <form asp-action="SubmitForReview" method="post" onsubmit="return confirm('Submit this draft for review?');">
@@ -62,7 +141,7 @@
             {
                 <button type="button" class="btn btn-pems-solid btn-sm" onclick="toggleBodyEdit()"><i class="bi bi-pencil-square"></i> Edit &amp; Resubmit</button>
             }
-            @if (l.Status == "PendingApproval" && canReview)
+            @if (l.Status == "PendingApproval" && (canReview || isCurrentApprover))
             {
                 <form asp-action="Approve" method="post" class="d-inline" onsubmit="return confirm('Approve this letter?');">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
@@ -71,7 +150,7 @@
                 <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#returnModal"><i class="bi bi-arrow-return-left"></i> Return</button>
                 <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal"><i class="bi bi-x-lg"></i> @Localizer["Reject"]</button>
             }
-            @if (l.Status == "Approved" && canReview)
+            @if (l.Status == "Approved" && canReview && l.LetterType != "Internal")
             {
                 <form asp-action="Issue" method="post" onsubmit="return confirm('Issue this letter?');">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
@@ -86,6 +165,12 @@
                 </form>
             }
 
+            @if (l.Status != "Draft" && l.Status != "PendingApproval" && l.Status != "Rejected")
+            {
+                @* reply and referral are one flow: both open the composer on this letter (the referral keeps the subject and only takes the «referral» tag) *@
+                <a class="btn btn-outline-primary btn-sm" asp-controller="LetterCompose" asp-action="Compose" asp-route-replyTo="@l.LetterId"><i class="bi bi-reply" aria-hidden="true"></i> @Localizer["Ct_Reply"]</a>
+                <a class="btn btn-outline-warning btn-sm" asp-controller="LetterCompose" asp-action="Compose" asp-route-referTo="@l.LetterId"><i class="bi bi-signpost-split" aria-hidden="true"></i> @Localizer["Ct_Refer"]</a>
+            }
             <div class="dropdown">
                 <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="More">
                     <i class="bi bi-three-dots-vertical"></i>
@@ -93,6 +178,10 @@
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" asp-action="Reply" asp-route-id="@l.LetterId"><i class="bi bi-reply-fill me-1"></i> Reply</a></li>
                     <li><a class="dropdown-item" asp-action="ExportPdf" asp-route-id="@l.LetterId"><i class="bi bi-file-earmark-pdf me-1"></i> Export PDF</a></li>
+                    @if (canAudit)
+                    {
+                        <li><a class="dropdown-item" asp-controller="LetterCompose" asp-action="History" asp-route-id="@l.LetterId"><i class="bi bi-clock-history me-1" aria-hidden="true"></i> @Localizer["Lc_HistoryTitle"]</a></li>
+                    }
                     @if (string.IsNullOrEmpty(l.SignedByName))
                     {
                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#signModal"><i class="bi bi-pen me-1"></i> Sign / Acknowledge</a></li>
@@ -158,12 +247,91 @@
     }
 </div>
 
+@if (Model.ApprovalSteps.Any())
+{
+    <div class="content-card mb-3" id="approvalChain">
+        <div class="section-title mb-2">@Localizer["Lc_ApprovalChain"]</div>
+        <ol class="list-unstyled mb-0">
+            @foreach (var step in Model.ApprovalSteps.OrderBy(x => x.StepOrder))
+            {
+                var stepBadge = step.Status switch { "Approved" => "bg-success", "Rejected" => "bg-danger", "Returned" => "bg-warning text-dark", _ => step.IsCurrent ? "bg-primary" : "bg-secondary" };
+                <li class="d-flex flex-wrap align-items-center gap-2 py-1 @(step.IsCurrent ? "fw-semibold" : "")">
+                    <span class="badge rounded-pill bg-light text-dark border">@step.StepOrder</span>
+                    <span>@step.ApproverName</span>
+                    <span class="badge @stepBadge">@(step.IsCurrent ? Localizer["Lc_StepCurrent"].Value : step.Status)</span>
+                    @if (step.DecidedDate.HasValue) { <small class="text-muted">@step.DecidedDate.Value.ToString("yyyy-MM-dd HH:mm")</small> }
+                    @if (!string.IsNullOrWhiteSpace(step.Comment)) { <small class="text-muted">&mdash; @step.Comment</small> }
+                    @if (isAdmin && step.Status == "Pending" && l.Status == "PendingApproval")
+                    {
+                        <form asp-controller="LetterCompose" asp-action="ReassignApprover" method="post" class="d-flex gap-1 ms-auto">
+                            <input type="hidden" name="letterId" value="@l.LetterId" />
+                            <input type="hidden" name="stepOrder" value="@step.StepOrder" />
+                            <label class="visually-hidden" for="reassign@(step.StepOrder)">@Localizer["Lc_Reassign"]</label>
+                            <select name="newApproverUserId" id="reassign@(step.StepOrder)" class="form-select form-select-sm" required>
+                                <option value="">@Localizer["Lc_Reassign"]</option>
+                                @foreach (var opt in (IEnumerable<PEMS.Application.DTOs.ApproverOptionDto>)(ViewBag.ApproverOptions ?? new List<PEMS.Application.DTOs.ApproverOptionDto>()))
+                                {
+                                    <option value="@opt.UserId">@opt.FullName</option>
+                                }
+                            </select>
+                            <button class="btn btn-sm btn-outline-secondary" type="submit">@Localizer["Lc_Reassign"]</button>
+                        </form>
+                    }
+                </li>
+            }
+        </ol>
+    </div>
+}
+
 @* طبق بند ۱۴-۲۰: مکالمه/زنجیره‌ی پاسخ - محتوای رسمی به‌طور پیش‌فرض فقط-خواندنی؛ ویرایش فقط
    در حالت‌های مجاز و فقط توسط نویسنده‌ی اصلی، به‌صورت یک فرم صریح و مجزا (نه دکمه‌ی همیشه-حاضر) *@
+@if (conversation != null && conversation.Count > 1)
+{
+    <section class="content-card mb-3" id="conversationPanel" aria-labelledby="cvTitle">
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <div class="section-title mb-0" id="cvTitle"><i class="bi bi-chat-left-text me-1" aria-hidden="true"></i> @Localizer["Ct_ConversationTitle"] (@conversation.Count)</div>
+            <span class="ms-auto d-inline-flex gap-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-cv-toggle="open">@Localizer["Ct_ExpandAll"]</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-cv-toggle="close">@Localizer["Ct_CollapseAll"]</button>
+            </span>
+        </div>
+        @foreach (var m in conversation)
+        {
+            var kindClass = m.Kind.ToLowerInvariant();
+            <article class="cv-msg cv-msg--@kindClass @(m.IsCurrent ? "cv-msg--current" : "")" aria-current="@(m.IsCurrent ? "true" : null)">
+                @if (m.IsCurrent)
+                {
+                    <div class="cv-head">
+                        <span class="cv-kind cv-kind--@kindClass"><i class="bi @(m.Kind == "Referral" ? "bi-signpost-split" : m.Kind == "Reply" ? "bi-reply" : "bi-envelope")" aria-hidden="true"></i> @Localizer["Ct_Kind_" + m.Kind]</span>
+                        <span class="cv-who">@m.SenderName</span>
+                        <span class="text-muted">@m.LetterNumber &middot; @m.LetterDate.ToString("yyyy-MM-dd")</span>
+                        <span class="badge text-bg-primary ms-auto">@Localizer["Ct_ThisLetter"]</span>
+                    </div>
+                }
+                else
+                {
+                    <details open>
+                        <summary class="cv-head" style="cursor:pointer">
+                            <span class="cv-kind cv-kind--@kindClass"><i class="bi @(m.Kind == "Referral" ? "bi-signpost-split" : m.Kind == "Reply" ? "bi-reply" : "bi-envelope")" aria-hidden="true"></i> @Localizer["Ct_Kind_" + m.Kind]</span>
+                            <span class="cv-who">@m.SenderName</span>
+                            @if (!string.IsNullOrWhiteSpace(m.RecipientsSummary)) { <span class="cv-to">&rarr; @m.RecipientsSummary</span> }
+                            <span class="text-muted ms-auto">@m.LetterNumber &middot; @m.LetterDate.ToString("yyyy-MM-dd")</span>
+                            @if (m.AttachmentsCount > 0) { <i class="bi bi-paperclip text-muted" aria-hidden="true" title="@Localizer["Lt_ColAttachments"]"></i> }
+                        </summary>
+                        @if (!string.IsNullOrWhiteSpace(m.CcSummary)) { <div class="small cv-to mt-1">@Localizer["Lc_Cc"]: @m.CcSummary</div> }
+                        <div class="cv-body">@Html.Raw(m.Body)</div>
+                        <div class="small mt-2"><a asp-action="Details" asp-route-id="@m.LetterId">@Localizer["Lt_Open"]</a></div>
+                    </details>
+                }
+            </article>
+        }
+    </section>
+}
+
 <div class="content-card mb-3">
     <div class="section-title mb-2">@Localizer["Message"]</div>
 
-    @if (thread != null && thread.Count > 1)
+    @if (conversation == null && thread != null && thread.Count > 1)
     {
         for (int i = 0; i < thread.Count; i++)
         {
@@ -455,16 +623,16 @@
                 else
                 { <p class="text-muted small">No referrals yet.</p> }
 
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <a class="btn btn-sm btn-pems-solid" asp-controller="LetterCompose" asp-action="Compose" asp-route-referTo="@l.LetterId"><i class="bi bi-signpost-split" aria-hidden="true"></i> @Localizer["Ct_ReferToPerson"]</a>
+                    <span class="small text-muted">@Localizer["Ct_ReferToPersonHint"]</span>
+                </div>
+                <div class="small text-muted mb-1">@Localizer["Ct_ReferToDepartment"]</div>
                 <form asp-action="Refer" method="post" class="row g-2">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
-                    <div class="col-md-3">
-                        <select name="referredToEmployeeId" class="form-select form-select-sm employee-picker">
-                            <option value="">@Localizer["-- Employee --"]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select name="referredToDepartmentId" class="form-select form-select-sm">
-                            <option value="">@Localizer["-- or Department --"]</option>
+                    <div class="col-md-6">
+                        <select name="referredToDepartmentId" class="form-select form-select-sm" required>
+                            <option value="">@Localizer["Ct_ChooseDepartment"]</option>
                             @foreach (var d in departments) { <option value="@d.DepartmentId">@d.Name</option> }
                         </select>
                     </div>
@@ -484,6 +652,22 @@
         </h2>
         <div id="accTimeline" class="accordion-collapse collapse" data-bs-parent="#letterAccordion">
             <div class="accordion-body">
+                @* workflow-history options: order and who acted (the manager / subordinates come from the organization chart) *@
+                <form method="get" target="_self" action="@Url.Action("Details", new { id = l.LetterId })#accTimeline" class="d-flex flex-wrap align-items-center gap-2 mb-3 small">
+                    @if (embed) { <input type="hidden" name="embed" value="true" /> }
+                    <label for="historyOrder" class="text-muted">@Localizer["Ct_HistoryOrder"]</label>
+                    <select id="historyOrder" name="historyOrder" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+                        <option value="asc" selected="@(historyOrder == "asc")">@Localizer["Ct_HistoryOldest"]</option>
+                        <option value="desc" selected="@(historyOrder == "desc")">@Localizer["Ct_HistoryNewest"]</option>
+                    </select>
+                    <label for="historyRole" class="text-muted ms-2">@Localizer["Ct_HistoryWho"]</label>
+                    <select id="historyRole" name="historyRole" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+                        <option value="all" selected="@(historyRole == "all")">@Localizer["Ct_HistoryAll"]</option>
+                        <option value="me" selected="@(historyRole == "me")">@Localizer["Ct_HistoryMe"]</option>
+                        <option value="manager" selected="@(historyRole == "manager")">@Localizer["Ct_HistoryManager"]</option>
+                        <option value="subordinates" selected="@(historyRole == "subordinates")">@Localizer["Ct_HistorySubordinates"]</option>
+                    </select>
+                </form>
                 @if (timeline != null && timeline.Any())
                 {
                     <ul class="list-unstyled mb-0">
@@ -593,4 +777,26 @@
             sel.addEventListener('focus', loadEmployeesOnce, { once: true });
         });
     })();
+</script>
+
+<script>
+    document.addEventListener('click', function (e) {
+        var b = e.target.closest ? e.target.closest('[data-cv-toggle]') : null;
+        if (!b) return;
+        var open = b.getAttribute('data-cv-toggle') === 'open';
+        document.querySelectorAll('#conversationPanel details').forEach(function (d) { d.open = open; });
+    });
+</script>
+
+<script>
+    // the list's "Refer" row action lands here (Details#accReferrals): open the referrals section and scroll to it
+    document.addEventListener('DOMContentLoaded', function () {
+        if (location.hash === '#accReferrals' || location.hash === '#accTimeline') {
+            var el = document.getElementById(location.hash.slice(1));
+            if (el && window.bootstrap) {
+                window.bootstrap.Collapse.getOrCreateInstance(el, { toggle: false }).show();
+                el.scrollIntoView({ block: 'center' });
+            }
+        }
+    });
 </script>

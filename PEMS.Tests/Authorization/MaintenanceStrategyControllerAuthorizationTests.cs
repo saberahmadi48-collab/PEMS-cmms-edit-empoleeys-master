@@ -1,199 +1,261 @@
+using System.Reflection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using PEMS.Application.DTOs;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Identity;
-using PEMS.Persistence.Seed;
-using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
 using PEMS.Web.Controllers;
 
 namespace PEMS.Tests.Authorization;
 
 /// <summary>
-/// طبق «PEMS Phase 7.5 — CMMS Operational Data Readiness & Master Data Activation» ممیزی:
-/// MaintenanceStrategyController پیش از این فاز هیچ بررسی مجوزی نداشت - هر کاربر
-/// احرازهویت‌شده‌ای (بدون توجه به نقش) می‌توانست برای هر تجهیزی، حتی به‌صورت Bulk برای صدها
-/// تجهیز هم‌زمان، استراتژی نگهداری بسازد یا غیرفعال کند. این تست‌ها اثبات می‌کنند گیت جدید
-/// واقعاً کار می‌کند و BulkCreate (بالاترین ریسک، طبق بند ۴۳) فقط برای Supervisor/Manager
-/// (Approve) در دسترس است، نه MaintenanceEngineer.
+/// ممیزی مجوز (مسئله ۲۶): هر Endpoint استراتژی/Plan/کاتالوگ/Import سمت سرور مجوز می‌گیرد، همه‌ی POST ها
+/// Antiforgery دارند، و کاربر بدون مجوز نمی‌تواند Endpoint را مستقیم صدا بزند. نقش‌ها: Viewer فقط View،
+/// MaintenanceEngineer = Create+Edit (بدون Approve)، EngineeringSupervisor/Manager = + Approve.
+/// ماژول MaintenanceStrategy: Create=ساخت الگو، Edit=ویرایش/ارسال/درخواست Override، Approve=تایید/فعال‌سازی/
+/// بایگانی/تخصیص/تصمیم Override.
 /// </summary>
 public class MaintenanceStrategyControllerAuthorizationTests
 {
-    private static async Task<(MaintenanceStrategyController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(
-        string dbName, string? role = SystemRoles.MaintenanceEngineer)
-    {
-        var ctx = PemsDbContextFactory.CreateInMemory($"MaintStrategyAuth_{dbName}");
-        foreach (var roleName in SystemRoles.All)
-            ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
-        await ctx.SaveChangesAsync();
-
-        var accessControl = new AccessControlService(ctx);
-        var permissionService = new PermissionService(ctx, accessControl);
-        await permissionService.SeedDefaultsAsync();
-
-        var services = new ServiceCollection();
-        services.AddSingleton(ctx);
-        await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
-
-        var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
-
-        var strategyService = new MaintenanceStrategyService(ctx);
-        var functionalLocationService = new FunctionalLocationService(ctx);
-        var controller = new MaintenanceStrategyController(ctx, strategyService, functionalLocationService, currentUser, permissionService).WithTempData();
-        return (controller, ctx);
-    }
+    private static Task<RcmEnv> Env(string name, string? role = SystemRoles.MaintenanceEngineer)
+        => RcmTestFactory.CreateEnvAsync($"StratAuth_{name}", role);
 
     [Fact]
     public async Task Index_WithoutViewPermission_ReturnsForbid()
     {
-        var (controller, _) = await CreateController(nameof(Index_WithoutViewPermission_ReturnsForbid), role: null);
-
-        var result = await controller.Index(null);
-
-        Assert.IsType<ForbidResult>(result);
+        var env = await Env(nameof(Index_WithoutViewPermission_ReturnsForbid), role: null);
+        Assert.IsType<ForbidResult>(await env.StrategyController().Index(null));
     }
 
     [Fact]
     public async Task Index_ViewerRole_CanView()
     {
-        var (controller, _) = await CreateController(nameof(Index_ViewerRole_CanView), role: SystemRoles.Viewer);
-
-        var result = await controller.Index(null);
-
-        Assert.IsType<ViewResult>(result);
+        var env = await Env(nameof(Index_ViewerRole_CanView), SystemRoles.Viewer);
+        Assert.IsType<ViewResult>(await env.StrategyController().Index(null));
     }
 
     [Fact]
     public async Task Create_ViewerRole_ReturnsForbid_NoStrategyCreated()
     {
-        var (controller, ctx) = await CreateController(nameof(Create_ViewerRole_ReturnsForbid_NoStrategyCreated), role: SystemRoles.Viewer);
-        var equipment = new Equipment { TagNumber = "EQ-1", Name = "EQ-1", EquipmentType = "Pump", IsActive = true };
-        ctx.Equipments.Add(equipment);
-        await ctx.SaveChangesAsync();
+        var env = await Env(nameof(Create_ViewerRole_ReturnsForbid_NoStrategyCreated), SystemRoles.Viewer);
+        var (classId, modeId) = await RcmTestFactory.SeedCatalogAsync(env.Ctx);
 
-        var result = await controller.Create(equipment.EquipmentId, "Preventive", "LEAK", "Operational", "test", "Calendar", null, null, null);
+        var result = await env.StrategyController().Create(RcmTestFactory.ValidInput(classId, modeId));
 
         Assert.IsType<ForbidResult>(result);
-        Assert.Empty(ctx.MaintenanceStrategies);
+        Assert.Empty(env.Ctx.MaintenanceStrategies);
     }
 
     [Fact]
-    public async Task Create_MaintenanceEngineer_CanCreate()
+    public async Task Create_MaintenanceEngineer_CanCreate_AsDraft()
     {
-        var (controller, ctx) = await CreateController(nameof(Create_MaintenanceEngineer_CanCreate), role: SystemRoles.MaintenanceEngineer);
-        var equipment = new Equipment { TagNumber = "EQ-2", Name = "EQ-2", EquipmentType = "Pump", IsActive = true };
-        ctx.Equipments.Add(equipment);
-        await ctx.SaveChangesAsync();
+        var env = await Env(nameof(Create_MaintenanceEngineer_CanCreate_AsDraft));
+        var (classId, modeId) = await RcmTestFactory.SeedCatalogAsync(env.Ctx);
 
-        var result = await controller.Create(equipment.EquipmentId, "Preventive", "LEAK", "Operational", "test", "Calendar", null, null, null);
+        var result = await env.StrategyController().Create(RcmTestFactory.ValidInput(classId, modeId));
 
         Assert.IsType<RedirectToActionResult>(result);
-        Assert.Single(ctx.MaintenanceStrategies);
+        var strategy = Assert.Single(env.Ctx.MaintenanceStrategies);
+        Assert.Equal("Draft", strategy.Status);
+        Assert.Equal("PUMP_T_LEAK", strategy.FailureModeCode);
     }
 
     [Fact]
-    public async Task Create_DuplicateEquipmentAndFailureMode_RejectedWithoutCreatingSecondRow()
+    public async Task Create_InvalidInput_ReturnsFormWith400_NotA500_AndSavesNothing()
     {
-        // طبق بند ۳۴: همان کلید Equipment+FailureModeCode که RcmOperationalBridgeService (فاز ۶.۱) استفاده می‌کند
-        var (controller, ctx) = await CreateController(nameof(Create_DuplicateEquipmentAndFailureMode_RejectedWithoutCreatingSecondRow));
-        var equipment = new Equipment { TagNumber = "EQ-3", Name = "EQ-3", EquipmentType = "Pump", IsActive = true };
-        ctx.Equipments.Add(equipment);
-        await ctx.SaveChangesAsync();
+        var env = await Env(nameof(Create_InvalidInput_ReturnsFormWith400_NotA500_AndSavesNothing));
+        var (classId, modeId) = await RcmTestFactory.SeedCatalogAsync(env.Ctx);
+        var bad = RcmTestFactory.ValidInput(classId, modeId, "RunToFailure", "Safety");
+        bad.Justification = null;
+        var controller = env.StrategyController();
 
-        var first = await controller.Create(equipment.EquipmentId, "Preventive", "LEAK", "Operational", "first", "Calendar", null, null, null);
-        var second = await controller.Create(equipment.EquipmentId, "Predictive", "LEAK", "Operational", "second attempt", "Calendar", null, null, null);
+        var result = await controller.Create(bad);
+
+        var view = Assert.IsType<ViewResult>(result);
+        Assert.Equal("Edit", view.ViewName);
+        Assert.Equal(StatusCodes.Status400BadRequest, controller.Response.StatusCode);
+        Assert.Empty(env.Ctx.MaintenanceStrategies);
+    }
+
+    [Fact]
+    public async Task Create_DuplicateClassFailureModeAndType_RejectedWithoutCreatingSecondRow()
+    {
+        var env = await Env(nameof(Create_DuplicateClassFailureModeAndType_RejectedWithoutCreatingSecondRow));
+        var (classId, modeId) = await RcmTestFactory.SeedCatalogAsync(env.Ctx);
+        var controller = env.StrategyController();
+
+        var first = await controller.Create(RcmTestFactory.ValidInput(classId, modeId));
+        var second = await controller.Create(RcmTestFactory.ValidInput(classId, modeId));
 
         Assert.IsType<RedirectToActionResult>(first);
-        Assert.IsType<RedirectToActionResult>(second); // نه خطای سیستمی - فقط رد کسب‌وکاری با پیام
-        Assert.Single(ctx.MaintenanceStrategies); // هرگز رکورد دوم ساخته نشد
+        var view = Assert.IsType<ViewResult>(second); // پیام قابل‌مشاهده، نه رد بی‌صدا
+        var form = Assert.IsType<PEMS.Web.ViewModels.StrategyFormViewModel>(view.Model);
+        Assert.Contains(form.Errors, e => e.Contains("Rcm_Err_DuplicateStrategy"));
+        Assert.Single(env.Ctx.MaintenanceStrategies);
     }
 
     [Fact]
     public async Task BulkCreate_Get_MaintenanceEngineer_ReturnsForbid()
     {
-        // طبق بند ۴۳: فعال‌سازی هم‌زمان چند تجهیز، بالاترین ریسک است - فقط Approve (Supervisor/Manager)
-        var (controller, _) = await CreateController(nameof(BulkCreate_Get_MaintenanceEngineer_ReturnsForbid), role: SystemRoles.MaintenanceEngineer);
-
-        var result = await controller.BulkCreate(null, null, null, null);
-
-        Assert.IsType<ForbidResult>(result);
+        var env = await Env(nameof(BulkCreate_Get_MaintenanceEngineer_ReturnsForbid));
+        Assert.IsType<ForbidResult>(await env.StrategyController().BulkCreate(null, null, null, null));
     }
 
     [Fact]
     public async Task BulkCreate_Get_EngineeringSupervisor_CanView()
     {
-        var (controller, _) = await CreateController(nameof(BulkCreate_Get_EngineeringSupervisor_CanView), role: SystemRoles.EngineeringSupervisor);
+        var env = await Env(nameof(BulkCreate_Get_EngineeringSupervisor_CanView), SystemRoles.EngineeringSupervisor);
+        Assert.IsType<ViewResult>(await env.StrategyController().BulkCreate(null, null, null, null));
+    }
 
-        var result = await controller.BulkCreate(null, null, null, null);
-
-        Assert.IsType<ViewResult>(result);
+    private static async Task<(int StrategyId, int ClassId, int ModeId)> ActiveStrategyAsync(RcmEnv env, string code = "PUMP_T")
+    {
+        var (classId, modeId) = await RcmTestFactory.SeedCatalogAsync(env.Ctx, code);
+        var id = await RcmTestFactory.CreateActiveStrategyAsync(env, classId, modeId);
+        return (id, classId, modeId);
     }
 
     [Fact]
-    public async Task BulkCreate_Post_MaintenanceEngineer_ReturnsForbid_NoStrategiesCreated()
+    public async Task BulkCreate_Post_MaintenanceEngineer_ReturnsForbid_NoAssignmentsCreated()
     {
-        var (controller, ctx) = await CreateController(nameof(BulkCreate_Post_MaintenanceEngineer_ReturnsForbid_NoStrategiesCreated), role: SystemRoles.MaintenanceEngineer);
-        var e1 = new Equipment { TagNumber = "EQ-4", Name = "EQ-4", EquipmentType = "Pump", IsActive = true };
-        var e2 = new Equipment { TagNumber = "EQ-5", Name = "EQ-5", EquipmentType = "Pump", IsActive = true };
-        ctx.Equipments.AddRange(e1, e2);
-        await ctx.SaveChangesAsync();
+        var env = await Env(nameof(BulkCreate_Post_MaintenanceEngineer_ReturnsForbid_NoAssignmentsCreated));
+        var (strategyId, classId, _) = await ActiveStrategyAsync(env);
+        var e1 = await RcmTestFactory.AddEquipmentAsync(env.Ctx, "EQ-4", classId);
 
-        var result = await controller.BulkCreate(new List<int> { e1.EquipmentId, e2.EquipmentId },
-            "Preventive", "LEAK", "Operational", "bulk", "Calendar", null, null, null);
+        var result = await env.StrategyController().BulkCreate(new List<int> { e1.EquipmentId }, strategyId);
 
         Assert.IsType<ForbidResult>(result);
-        Assert.Empty(ctx.MaintenanceStrategies);
+        Assert.Empty(env.Ctx.MaintenanceStrategyAssignments);
     }
 
     [Fact]
-    public async Task BulkCreate_Post_EngineeringSupervisor_CreatesForAllSelectedEquipment()
+    public async Task BulkCreate_Post_EngineeringSupervisor_AssignsAllSelectedEquipment()
     {
-        var (controller, ctx) = await CreateController(nameof(BulkCreate_Post_EngineeringSupervisor_CreatesForAllSelectedEquipment), role: SystemRoles.EngineeringSupervisor);
-        var e1 = new Equipment { TagNumber = "EQ-6", Name = "EQ-6", EquipmentType = "Pump", IsActive = true };
-        var e2 = new Equipment { TagNumber = "EQ-7", Name = "EQ-7", EquipmentType = "Pump", IsActive = true };
-        ctx.Equipments.AddRange(e1, e2);
-        await ctx.SaveChangesAsync();
+        var env = await Env(nameof(BulkCreate_Post_EngineeringSupervisor_AssignsAllSelectedEquipment), SystemRoles.EngineeringSupervisor);
+        var (strategyId, classId, _) = await ActiveStrategyAsync(env);
+        var e1 = await RcmTestFactory.AddEquipmentAsync(env.Ctx, "EQ-6", classId);
+        var e2 = await RcmTestFactory.AddEquipmentAsync(env.Ctx, "EQ-7", classId);
 
-        var result = await controller.BulkCreate(new List<int> { e1.EquipmentId, e2.EquipmentId },
-            "Preventive", "LEAK", "Operational", "bulk", "Calendar", null, null, null);
+        var result = await env.StrategyController().BulkCreate(new List<int> { e1.EquipmentId, e2.EquipmentId }, strategyId);
 
         Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal(2, await ctx.MaintenanceStrategies.CountAsync());
+        Assert.Equal(2, await env.Ctx.MaintenanceStrategyAssignments.CountAsync());
+        Assert.Single(env.Ctx.MaintenanceStrategies); // الگو یک بار تعریف شد، نه یک استراتژی برای هر تگ
     }
 
     [Fact]
-    public async Task BulkCreate_Post_SkipsEquipmentThatAlreadyHasMatchingActiveStrategy()
+    public async Task BulkCreate_Post_SkipsEquipmentThatAlreadyHasConflictingStrategyForSameFailureMode()
     {
-        var (controller, ctx) = await CreateController(nameof(BulkCreate_Post_SkipsEquipmentThatAlreadyHasMatchingActiveStrategy), role: SystemRoles.EngineeringSupervisor);
-        var e1 = new Equipment { TagNumber = "EQ-8", Name = "EQ-8", EquipmentType = "Pump", IsActive = true };
-        var e2 = new Equipment { TagNumber = "EQ-9", Name = "EQ-9", EquipmentType = "Pump", IsActive = true };
-        ctx.Equipments.AddRange(e1, e2);
-        await ctx.SaveChangesAsync();
-        ctx.MaintenanceStrategies.Add(new MaintenanceStrategy { EquipmentId = e1.EquipmentId, StrategyType = "Preventive", FailureModeCode = "LEAK", IsActive = true });
-        await ctx.SaveChangesAsync();
+        var env = await Env(nameof(BulkCreate_Post_SkipsEquipmentThatAlreadyHasConflictingStrategyForSameFailureMode), SystemRoles.EngineeringSupervisor);
+        var (firstId, classId, modeId) = await ActiveStrategyAsync(env);
+        var secondId = await RcmTestFactory.CreateActiveStrategyAsync(env, classId, modeId, "Predictive");
+        var e1 = await RcmTestFactory.AddEquipmentAsync(env.Ctx, "EQ-8", classId);
+        var e2 = await RcmTestFactory.AddEquipmentAsync(env.Ctx, "EQ-9", classId);
+        await env.Assignments.AssignAsync(firstId, new[] { e1.EquipmentId }, RcmTestFactory.Actor(9));
 
-        var result = await controller.BulkCreate(new List<int> { e1.EquipmentId, e2.EquipmentId },
-            "Preventive", "LEAK", "Operational", "bulk", "Calendar", null, null, null);
+        await env.StrategyController().BulkCreate(new List<int> { e1.EquipmentId, e2.EquipmentId }, secondId);
 
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal(2, await ctx.MaintenanceStrategies.CountAsync()); // فقط e2 اضافه شد؛ e1 تکراری نشد
+        var forSecond = await env.Ctx.MaintenanceStrategyAssignments.Where(a => a.MaintenanceStrategyId == secondId).ToListAsync();
+        Assert.Single(forSecond); // فقط e2؛ e1 به‌خاطر تعارض (همان حالت خرابی) رد شد
+        Assert.Equal(e2.EquipmentId, forSecond[0].EquipmentId);
     }
 
     [Fact]
     public async Task Deactivate_ViewerRole_ReturnsForbid()
     {
-        var (controller, ctx) = await CreateController(nameof(Deactivate_ViewerRole_ReturnsForbid), role: SystemRoles.Viewer);
-        var equipment = new Equipment { TagNumber = "EQ-10", Name = "EQ-10", EquipmentType = "Pump", IsActive = true };
-        ctx.Equipments.Add(equipment);
-        await ctx.SaveChangesAsync();
-        var strategy = new MaintenanceStrategy { EquipmentId = equipment.EquipmentId, StrategyType = "Preventive", IsActive = true };
-        ctx.MaintenanceStrategies.Add(strategy);
-        await ctx.SaveChangesAsync();
+        var env = await Env(nameof(Deactivate_ViewerRole_ReturnsForbid), SystemRoles.Viewer);
+        var strategy = new MaintenanceStrategy { StrategyType = "Preventive", Status = "Active", IsActive = true };
+        env.Ctx.MaintenanceStrategies.Add(strategy);
+        await env.Ctx.SaveChangesAsync();
 
-        var result = await controller.Deactivate(strategy.MaintenanceStrategyId);
+        var result = await env.StrategyController().Deactivate(strategy.MaintenanceStrategyId);
 
         Assert.IsType<ForbidResult>(result);
-        Assert.True(ctx.MaintenanceStrategies.Single().IsActive);
+        Assert.True(env.Ctx.MaintenanceStrategies.Single().IsActive);
+    }
+
+    // ==================== مجوز هر Endpoint (فراخوانی مستقیم بدون مجوز) ====================
+
+    [Fact]
+    public async Task EveryMutatingEndpoint_ForViewerRole_ReturnsForbid()
+    {
+        var env = await Env(nameof(EveryMutatingEndpoint_ForViewerRole_ReturnsForbid), SystemRoles.Viewer);
+        var c = env.StrategyController();
+
+        Assert.IsType<ForbidResult>(await c.Create(new StrategyInputDto()));
+        Assert.IsType<ForbidResult>(await c.Edit(1, new StrategyInputDto()));
+        Assert.IsType<ForbidResult>(await c.Submit(1));
+        Assert.IsType<ForbidResult>(await c.Review(1, true, null));
+        Assert.IsType<ForbidResult>(await c.Activate(1));
+        Assert.IsType<ForbidResult>(await c.Retire(1, null));
+        Assert.IsType<ForbidResult>(await c.Assign(1, new List<int> { 1 }));
+        Assert.IsType<ForbidResult>(await c.Unassign(1, 1, null));
+        Assert.IsType<ForbidResult>(await c.RequestOverride(1, 1, 10, null, "x"));
+        Assert.IsType<ForbidResult>(await c.DecideOverride(1, 1, true, null));
+        Assert.IsType<ForbidResult>(await c.BulkCreate(new List<int> { 1 }, 1));
+    }
+
+    [Fact]
+    public async Task ApprovalEndpoints_ForMaintenanceEngineer_ReturnForbid_ButEditEndpointsAreAllowed()
+    {
+        var env = await Env(nameof(ApprovalEndpoints_ForMaintenanceEngineer_ReturnForbid_ButEditEndpointsAreAllowed));
+        var c = env.StrategyController();
+
+        Assert.IsType<ForbidResult>(await c.Review(1, true, null));
+        Assert.IsType<ForbidResult>(await c.Activate(1));
+        Assert.IsType<ForbidResult>(await c.Retire(1, null));
+        Assert.IsType<ForbidResult>(await c.Assign(1, new List<int> { 1 }));
+        Assert.IsType<ForbidResult>(await c.Unassign(1, 1, null));
+        Assert.IsType<ForbidResult>(await c.DecideOverride(1, 1, true, null));
+
+        // Edit-level endpoints pass the permission gate (they then answer 404 for a missing record, not Forbid)
+        Assert.IsNotType<ForbidResult>(await c.Submit(999));
+        Assert.IsNotType<ForbidResult>(await c.RequestOverride(999, 1, 10, null, "x"));
+    }
+
+    [Fact]
+    public async Task ReadEndpoints_WithoutViewPermission_ReturnForbid()
+    {
+        var env = await Env(nameof(ReadEndpoints_WithoutViewPermission_ReturnForbid), role: null);
+        var c = env.StrategyController();
+
+        Assert.IsType<ForbidResult>(await c.Details(1));
+        Assert.IsType<ForbidResult>(await c.Tag(1));
+        Assert.IsType<ForbidResult>(await c.Coverage());
+        Assert.IsType<ForbidResult>(await c.ExportUncovered());
+        Assert.IsType<ForbidResult>(await c.FailureModes(null, null));
+    }
+
+    [Fact]
+    public async Task Details_ForUnknownId_ReturnsNotFound_NotA500()
+    {
+        var env = await Env(nameof(Details_ForUnknownId_ReturnsNotFound_NotA500), SystemRoles.Viewer);
+        Assert.IsType<NotFoundResult>(await env.StrategyController().Details(424242));
+        Assert.IsType<NotFoundResult>(await env.StrategyController().Tag(424242));
+    }
+
+    [Fact]
+    public void EveryPostAction_OnRcmControllers_HasAntiforgeryValidation()
+    {
+        var controllers = new[]
+        {
+            typeof(MaintenanceStrategyController), typeof(MaintenancePlanController),
+            typeof(FailureModeCatalogController), typeof(StrategyImportController)
+        };
+
+        var missing = new List<string>();
+        foreach (var type in controllers)
+        {
+            foreach (var m in type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+            {
+                if (m.GetCustomAttribute<HttpPostAttribute>() == null) continue;
+                if (m.GetCustomAttribute<ValidateAntiForgeryTokenAttribute>() == null)
+                    missing.Add($"{type.Name}.{m.Name}");
+            }
+        }
+
+        Assert.True(missing.Count == 0, "POST actions without [ValidateAntiForgeryToken]: " + string.Join(", ", missing));
     }
 }

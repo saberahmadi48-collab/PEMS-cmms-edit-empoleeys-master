@@ -1,91 +1,132 @@
-﻿@using Microsoft.Extensions.Localization
+@model PEMS.Web.ViewModels.PlanFormViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Domain.Common
+@using PEMS.Web.Helpers
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    var strategies = (IEnumerable<dynamic>)ViewBag.Strategies;
-    var jobPlans = (IEnumerable<dynamic>)ViewBag.JobPlans;
+    var ctx = Model.Context;
+    var i = Model.Input;
 }
 
-<div class="content-card" style="max-width:700px;">
-    <form asp-action="Create" method="post">
-        <div class="row g-3">
-            <div class="col-12">
-                <label class="form-label">@Localizer["Equipment"]</label>
-                <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]"
-                       value="@ViewBag.PreselectedEquipmentLabel"
-                       data-pems-search data-search-type="Equipment" data-search-hidden="#planEquipmentIdHidden" autocomplete="off" />
-                <input type="hidden" name="equipmentId" id="planEquipmentIdHidden" value="@ViewBag.PreselectedEquipmentId" />
-            </div>
-            <div class="col-12">
-                <label class="form-label">@Localizer["Maintenance Strategy"]</label>
-                <select name="maintenanceStrategyId" class="form-select" required id="planStrategySelect">
-                    @foreach (var s in strategies)
-                    {
-                        <option value="@s.MaintenanceStrategyId" data-equipment="@s.EquipmentId" selected="@(s.MaintenanceStrategyId == (int?)ViewBag.PreselectedStrategyId)">
-                            @s.StrategyType (@s.Frequency)
-                        </option>
-                    }
-                </select>
-                <div class="form-text small">Define a strategy for the equipment first if none is listed.</div>
-            </div>
-            <div class="col-12"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" placeholder="e.g. Quarterly lubrication check" required /></div>
+<div class="content-card" style="max-width:820px;">
+    @await Html.PartialAsync("_RcmErrors", Model.Errors)
 
-            <div class="col-12">
-                <label class="form-label">Trigger Type</label>
-                <select name="triggerType" class="form-select" id="triggerTypeSelect" onchange="pemsToggleTriggerFields()">
-                    <option value="Calendar">Calendar (تقویمی)</option>
-                    <option value="Meter">Meter (کارکرد/سیکل)</option>
-                    <option value="Both">Both (هردو)</option>
-                </select>
-            </div>            <div class="col-md-6" id="intervalDaysWrap"><label class="form-label">Interval (days)</label><input name="intervalDays" type="number" class="form-control" /></div>
-            <div class="col-md-6" id="nextDueDateWrap"><label class="form-label">Next Due Date</label><input name="nextDueDate" type="date" class="form-control" /></div>
-            <div class="col-md-6" id="meterTypeWrap" style="display:none;">
-                <label class="form-label">Meter Type</label>
-                <select name="meterType" class="form-select">
-                    <option value="RunningHours">Running Hours</option>
-                    <option value="Cycles">Cycles</option>
-                    <option value="ProductionUnits">Production Units</option>
-                </select>
-            </div>
-            <div class="col-md-6" id="meterIntervalWrap" style="display:none;">
-                <label class="form-label">@Localizer["Meter Interval (هر چند واحد یک‌بار)"]</label>
-                <input name="meterInterval" type="number" step="0.01" class="form-control" placeholder="e.g. 2000" />
-            </div>
-            <script>
-                function pemsToggleTriggerFields() {
-                    var t = document.getElementById('triggerTypeSelect').value;
-                    document.getElementById('meterTypeWrap').style.display = (t === 'Meter' || t === 'Both') ? '' : 'none';
-                    document.getElementById('meterIntervalWrap').style.display = (t === 'Meter' || t === 'Both') ? '' : 'none';
-                    document.getElementById('intervalDaysWrap').style.display = (t === 'Calendar' || t === 'Both') ? '' : 'none';
-                    document.getElementById('nextDueDateWrap').style.display = (t === 'Calendar' || t === 'Both') ? '' : 'none';
+    @if (ctx == null)
+    {
+        @* انتخاب تخصیص (تگ + نسخه‌ی استراتژی) - برچسب‌ها متمایزند: تگ · نوع · حالت خرابی · نسخه *@
+        <h6 class="mb-3">@Localizer["Rcm_PickAssignment"]</h6>
+        @if (!Model.Choices.Any())
+        {
+            <p class="text-muted">@Localizer["Rcm_NoEligibleAssignments"] <a asp-controller="MaintenanceStrategy" asp-action="Index">@Localizer["Rcm_Strategies"]</a></p>
+        }
+        else
+        {
+            <div class="list-group">
+                @foreach (var c in Model.Choices)
+                {
+                    <a asp-action="Create" asp-route-assignmentId="@c.AssignmentId" class="list-group-item list-group-item-action">
+                        <strong>@c.Tag</strong> · @Localizer.Label("StrategyType", c.StrategyType) · @RcmDisplay.Name(c.FailureModeName, c.FailureModeNameFa) · v@(c.StrategyVersion)
+                        <span class="text-muted small">@c.EquipmentClassName</span>
+                    </a>
                 }
-
-                // طبق رفع ناهماهنگی Strategy/Plan: اگه از یک استراتژی خاص اومده باشیم،
-                // نوع تریگر پیشنهادی همون استراتژی از قبل انتخاب می‌شه
-                var preselectedTrigger = '@ViewBag.PreselectedTriggerType';
-                if (preselectedTrigger) {
-                    document.getElementById('triggerTypeSelect').value = preselectedTrigger;
-                }
-                pemsToggleTriggerFields();
-            </script>
-
-            <div class="col-12">
-                <label class="form-label">@Localizer["Job Plan"]</label>
-                <select name="jobPlanId" class="form-select">
-                    <option value="">-- none (WorkOrder Description only) --</option>
-                    @foreach (var jp in jobPlans)
-                    {
-                        <option value="@jp.JobPlanId">@jp.JobPlanNumber &mdash; @jp.Title</option>
-                    }
-                </select>
-                <div class="form-text small">When set, generating a WorkOrder from this plan copies the Job Plan's Tasks/Skills/Materials onto it. <a asp-controller="JobPlan" asp-action="Index" target="_blank">Manage Job Plans</a></div>
             </div>
+        }
+    }
+    else
+    {
+        <p class="text-muted small">@Localizer["Rcm_PlanHint"]</p>
+        @await Html.PartialAsync("_EquipmentIdentity", ctx.Equipment)
+        <div class="small mb-3">
+            <span class="text-muted">@Localizer["Rcm_Strategy"]:</span>
+            <a asp-controller="MaintenanceStrategy" asp-action="Details" asp-route-id="@ctx.StrategyId">#@ctx.StrategyId · v@(ctx.StrategyVersion)</a>
+            · <span class="badge bg-secondary">@Localizer.Label("StrategyType", ctx.StrategyType)</span>
+            · @RcmDisplay.Name(ctx.FailureModeName, ctx.FailureModeNameFa)
+            · <span class="badge @RcmDisplay.ConsequenceBadge(ctx.ConsequenceCategory)">@Localizer.Label("Consequence", ctx.ConsequenceCategory)</span>
+        </div>
 
-            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
-        </div>
-        <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">Create Plan</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
-        </div>
-    </form>
+        <form asp-action="Create" method="post">
+            <input type="hidden" name="MaintenanceStrategyAssignmentId" value="@ctx.AssignmentId" />
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label">@Localizer["Title"] <span class="text-danger">*</span></label>
+                    <input name="Title" value="@i.Title" class="form-control" minlength="5" required />
+                    <span class="text-danger small">@Html.ValidationMessage("title")</span>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">@Localizer["Rcm_TriggerType"]</label>
+                    <select name="TriggerType" class="form-select" id="triggerTypeSelect">
+                        @foreach (var t in RcmCodes.Trigger.All) { <option value="@t" selected="@(i.TriggerType == t)">@Localizer.Label("Trigger", t)</option> }
+                    </select>
+                    <span class="text-danger small">@Html.ValidationMessage("triggerType")</span>
+                </div>
+                <div class="col-md-4" id="intervalDaysWrap">
+                    <label class="form-label">@Localizer["Rcm_IntervalDays"]</label>
+                    <input name="IntervalDays" type="number" min="1" value="@i.IntervalDays" class="form-control" />
+                    @if (ctx.SuggestedIntervalDays.HasValue) { <div class="form-text">@Localizer["Rcm_SuggestedInterval", ctx.SuggestedIntervalDays.Value, ctx.Equipment.CriticalityClass ?? "-"]</div> }
+                    <span class="text-danger small">@Html.ValidationMessage("intervalDays")</span>
+                </div>
+                <div class="col-md-4" id="nextDueDateWrap">
+                    <label class="form-label">@Localizer["Rcm_NextDueDate"]</label>
+                    <input name="NextDueDate" type="date" value="@i.NextDueDate?.ToString("yyyy-MM-dd")" class="form-control" />
+                    <span class="text-danger small">@Html.ValidationMessage("nextDueDate")</span>
+                    <div class="form-check mt-1 small">
+                        <input class="form-check-input" type="checkbox" name="AllowPastDueDate" value="true" id="allowPast" />
+                        <label class="form-check-label" for="allowPast">@Localizer["Rcm_AllowPastDue"]</label>
+                        <input type="hidden" name="AllowPastDueDate" value="false" />
+                    </div>
+                </div>
+                <div class="col-md-4" id="meterTypeWrap" style="display:none;">
+                    <label class="form-label">@Localizer["Rcm_MeterType"]</label>
+                    <select name="MeterType" class="form-select">
+                        @foreach (var m in RcmCodes.MeterType.All) { <option value="@m" selected="@(i.MeterType == m)">@Localizer.Label("MeterType", m)</option> }
+                    </select>
+                    <span class="text-danger small">@Html.ValidationMessage("meterType")</span>
+                </div>
+                <div class="col-md-4" id="meterIntervalWrap" style="display:none;">
+                    <label class="form-label">@Localizer["Rcm_MeterInterval"]</label>
+                    <input name="MeterInterval" type="number" step="0.01" min="0.01" value="@i.MeterInterval" class="form-control" />
+                    <span class="text-danger small">@Html.ValidationMessage("meterInterval")</span>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">@Localizer["Rcm_ScheduleMode"]</label>
+                    <select name="ScheduleMode" class="form-select">
+                        <option value="Fixed" selected="@(i.ScheduleMode != "Floating")">@Localizer.Label("ScheduleMode", "Fixed")</option>
+                        <option value="Floating" selected="@(i.ScheduleMode == "Floating")">@Localizer.Label("ScheduleMode", "Floating")</option>
+                    </select>
+                    <div class="form-text">@Localizer["Rcm_ScheduleModeHint"]</div>
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">@Localizer["Job Plan"] <span class="text-danger">*</span></label>
+                    <select name="JobPlanId" class="form-select" required>
+                        <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+                        @foreach (var jp in Model.JobPlans) { <option value="@jp.Id" selected="@(i.JobPlanId == jp.Id)">@jp.Code &mdash; @jp.Text</option> }
+                    </select>
+                    <div class="form-text">@Localizer["Rcm_JobPlanHint"] <a asp-controller="JobPlan" asp-action="Index" target="_blank">@Localizer["Rcm_ManageJobPlans"]</a></div>
+                    <span class="text-danger small">@Html.ValidationMessage("jobPlanId")</span>
+                </div>
+
+                <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="Description" class="form-control" rows="2">@i.Description</textarea></div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-pems-solid">@Localizer["Rcm_CreatePlan"]</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
+            </div>
+        </form>
+
+        <script>
+            function pemsToggleTriggerFields() {
+                var t = document.getElementById('triggerTypeSelect').value;
+                var meter = (t === 'Meter' || t === 'Both'), cal = (t === 'Calendar' || t === 'Both');
+                document.getElementById('meterTypeWrap').style.display = meter ? '' : 'none';
+                document.getElementById('meterIntervalWrap').style.display = meter ? '' : 'none';
+                document.getElementById('intervalDaysWrap').style.display = cal ? '' : 'none';
+                document.getElementById('nextDueDateWrap').style.display = cal ? '' : 'none';
+            }
+            document.getElementById('triggerTypeSelect').addEventListener('change', pemsToggleTriggerFields);
+            pemsToggleTriggerFields();
+        </script>
+    }
 </div>

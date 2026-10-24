@@ -142,7 +142,8 @@
                 <dl class="pc-dl">
                     <dt>@L("SectionId")</dt><dd>@Label("SectionId")</dd>
                     <dt>@L("TechnicalClassId")</dt><dd>@Label("TechnicalClassId")</dd>
-                    @if (!string.IsNullOrEmpty(d.TechnicalClassLongDescription)) { <dt></dt><dd class="small text-muted">@d.TechnicalClassLongDescription</dd> }
+                    @* تعریف (Definition) کلاس فنی فقط برای راهنمایی هنگام تکمیل پیش‌نویس است؛ پس از ثبت (در جریان تأیید/برگشتی/تکمیل/لغو) نمایش داده نمی‌شود. *@
+                    @if (d.Status == "Draft" && !string.IsNullOrEmpty(d.TechnicalClassLongDescription)) { <dt></dt><dd class="small text-muted">@d.TechnicalClassLongDescription</dd> }
                     <dt>@L("AssetType")</dt><dd>@Localizer["Pc_Asset_" + f.AssetType]</dd>
                     <dt>@L("CommodityGroup1Id")</dt><dd>@Label("CommodityGroup1Id")</dd>
                     <dt>@L("CommodityGroup2Id")</dt><dd>@Label("CommodityGroup2Id")</dd>

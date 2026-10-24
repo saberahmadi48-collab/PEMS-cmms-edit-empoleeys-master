@@ -1,0 +1,48 @@
+@model PEMS.Application.DTOs.FailureModeEditDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.ViewModels
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var classes = (List<LookupItem>)ViewBag.Classes;
+    var causes = (List<LookupItem>)ViewBag.Causes;
+    var errors = (List<string>)ViewBag.Errors;
+}
+
+<div class="content-card" style="max-width:760px;">
+    <h6 class="mb-3">@Localizer["Rcm_FailureMode"]</h6>
+    @await Html.PartialAsync("_RcmErrors", errors)
+    <form method="post" asp-action="Edit">
+        <input type="hidden" name="FailureModeId" value="@Model.FailureModeId" />
+        <div class="row g-3">
+            <div class="col-md-4"><label class="form-label">@Localizer["Rcm_Code"] *</label><input name="Code" value="@Model.Code" class="form-control" required /></div>
+            <div class="col-md-4"><label class="form-label">@Localizer["Rcm_NameEn"] *</label><input name="Name" value="@Model.Name" class="form-control" required /></div>
+            <div class="col-md-4"><label class="form-label">@Localizer["Rcm_NameFa"]</label><input name="NameFa" value="@Model.NameFa" class="form-control" dir="rtl" /></div>
+            <div class="col-md-6">
+                <label class="form-label">@Localizer["Rcm_EquipmentClass"]</label>
+                <select name="EquipmentClassId" class="form-select">
+                    <option value="">@Localizer["Rcm_AllClasses"]</option>
+                    @foreach (var c in classes) { <option value="@c.Id" selected="@(Model.EquipmentClassId == c.Id)">@c.Text (@c.Code)</option> }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">@Localizer["Rcm_FailureCauses"]</label>
+                <select name="CauseIds" class="form-select" multiple size="6">
+                    @foreach (var c in causes) { <option value="@c.Id" selected="@Model.CauseIds.Contains(c.Id)">@c.Text</option> }
+                </select>
+            </div>
+            <div class="col-12"><label class="form-label">@Localizer["Rcm_Description"]</label><textarea name="Description" class="form-control" rows="2">@Model.Description</textarea></div>
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="IsActive" value="true" id="act" checked="@Model.IsActive" />
+                    <label class="form-check-label" for="act">@Localizer["Rcm_Active"]</label>
+                    <input type="hidden" name="IsActive" value="false" />
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
+        </div>
+    </form>
+</div>

@@ -44,6 +44,21 @@ public class WorkRequestDetailDto
     public int? LinkedWorkOrderId { get; set; }
     public string? LinkedWorkOrderNumber { get; set; }
 
+    // A4/A5
+    public bool IsHseRelated { get; set; }
+    public bool IsEmergency { get; set; }
+    public int? RiskLikelihood { get; set; }
+    public int? RiskSeverity { get; set; }
+    public int? RiskScore { get; set; }
+    public string? RiskLevel { get; set; }
+    public string? RequestedPriority { get; set; }
+    public string? PriorityRationale { get; set; }
+    public DateTime? ResponseDueDate { get; set; }
+    public DateTime? ResolutionDueDate { get; set; }
+    public string? FailureModeName { get; set; }
+    public string? FailureEffect { get; set; }
+    public decimal? ReportedDowntimeHours { get; set; }
+
     /// <summary>ممیزی کسب‌وکاری Work Request (Append-only، جدا از تاریخچه‌ی گردش‌کار).</summary>
     public List<WorkRequestStatusHistoryDto> StatusHistory { get; set; } = new();
 
@@ -58,6 +73,27 @@ public class WorkRequestDetailDto
 
     /// <summary>رکورد قبل از مهاجرت که هنوز Instance گردش‌کار ندارد (مسیر Legacy).</summary>
     public bool IsLegacyWithoutWorkflow { get; set; }
+}
+
+/// <summary>ورودی کامل ثبت Work Request (A2/A4/A5). مسیر قدیمی CreateAsync با پارامترهای ساده همچنان کار می‌کند.</summary>
+public class WorkRequestCreateRequest
+{
+    public string Title { get; set; } = "";
+    public string? Description { get; set; }
+    public int RequestedById { get; set; }
+    public int? EquipmentId { get; set; }
+    public int? AssetId { get; set; }
+    public int? FunctionalLocationId { get; set; }
+    public string? ReportedCondition { get; set; }
+    public string Priority { get; set; } = "Medium";
+    public int? SuggestedDisciplineId { get; set; }
+    public bool IsHseRelated { get; set; }
+    public bool IsEmergency { get; set; }
+    public int? RiskLikelihood { get; set; }
+    public int? RiskSeverity { get; set; }
+    public int? FailureModeId { get; set; }
+    public string? FailureEffect { get; set; }
+    public decimal? ReportedDowntimeHours { get; set; }
 }
 
 /// <summary>کاربر اجراکننده: شناسه‌ی کارمند + نقش‌های واقعی. توسط Controller از سشن سمت‌سرور ساخته می‌شود، نه از ورودی کاربر.</summary>

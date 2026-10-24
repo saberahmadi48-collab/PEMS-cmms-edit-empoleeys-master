@@ -18,15 +18,17 @@ public class PartCatalogueAdminController : Controller
 
     private readonly IPartCatalogueAdminService _admin;
     private readonly IPartCatalogueLookupService _lookups;
+    private readonly IPartCatalogueSettingsService _settings;
     private readonly IRoleModuleActionService _actions;
     private readonly ICurrentUserContext _user;
     private readonly IStringLocalizer<SharedResource> _l;
 
     public PartCatalogueAdminController(IPartCatalogueAdminService admin, IPartCatalogueLookupService lookups, IRoleModuleActionService actions,
-        ICurrentUserContext user, IStringLocalizer<SharedResource> l)
+        ICurrentUserContext user, IStringLocalizer<SharedResource> l, IPartCatalogueSettingsService settings)
     {
         _admin = admin;
         _lookups = lookups;
+        _settings = settings;
         _actions = actions;
         _user = user;
         _l = l;
@@ -60,7 +62,15 @@ public class PartCatalogueAdminController : Controller
 
         ViewData["Title"] = "Part Catalogue Administration";
         ViewData["Section"] = "Warehouse";
-        return View(new PcAdminViewModel { Overview = overview.Overview });
+        return View(new PcAdminViewModel { Overview = overview.Overview, Settings = await _settings.GetAsync() });
+    }
+
+    // تنظیم روش تولید شماره‌ی قطعه (MANUAL/API) و قالب آن؛ فقط ذخیره‌ی پرچم - مصرف‌کننده‌اش در فاز ۲ است.
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> SaveSettings(string? partNoGenerationMethod, string? partNoFormat, byte[]? rowVersion)
+    {
+        var a = await AdminActorAsync(); if (a == null) return Forbid();
+        return Back(await _settings.SaveAsync(partNoGenerationMethod, partNoFormat, rowVersion, a));
     }
 
     [HttpPost]

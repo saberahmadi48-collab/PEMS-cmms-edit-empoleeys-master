@@ -1,0 +1,65 @@
+@model List<PEMS.Application.DTOs.WorkSpaceDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var isAdmin = ViewBag.IsAdmin is true;
+    var hasEmployee = ViewBag.HasEmployee is true;
+}
+@section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
+
+<section class="vs-panel mb-3">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+        <h2 class="h5 mb-0"><i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Title"]</h2>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="vs-chip text-decoration-none" asp-action="AllWork" asp-route-Assignee="me" asp-route-StatusCategory="NotDone"><i class="bi bi-person-check" aria-hidden="true"></i> @Localizer["Tm_MyTasks"]</a>
+            <a class="vs-chip text-decoration-none" asp-controller="Task" asp-action="Index" asp-route-tab="followup"><i class="bi bi-send-check" aria-hidden="true"></i> @Localizer["Tm_AssignedByMe"]</a>
+            <a class="vs-chip text-decoration-none" asp-action="AllWork" asp-route-StatusCategory="NotDone"><i class="bi bi-collection" aria-hidden="true"></i> @Localizer["Tm_AllWork"]</a>
+            @if (isAdmin)
+            {
+                <a class="vs-chip text-decoration-none" asp-action="Admin"><i class="bi bi-gear" aria-hidden="true"></i> @Localizer["Tm_Admin_Title"]</a>
+            }
+        </div>
+    </div>
+    <p class="small text-muted mb-0">@Localizer["Tm_Index_Hint"]</p>
+</section>
+
+@if (!hasEmployee)
+{
+    <div class="alert alert-warning" role="status"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @Localizer["Tm_NoEmployeeLink"]</div>
+}
+
+<section class="vs-panel">
+    <h3 class="h6 mb-3">@Localizer["Tm_Spaces"]</h3>
+    @if (!Model.Any())
+    {
+        <div class="vs-empty py-3">
+            <i class="bi bi-inbox" aria-hidden="true"></i> @Localizer["Tm_NoSpaces"]
+            @if (isAdmin) { <a asp-action="Admin" class="ms-2">@Localizer["Tm_Admin_CreateSpace"]</a> }
+        </div>
+    }
+    else
+    {
+        <div class="tm-space-grid">
+            @foreach (var s in Model)
+            {
+                <article class="tm-space-card">
+                    <div class="d-flex justify-content-between align-items-start gap-2">
+                        <div>
+                            <span class="tm-key">@s.Key</span>
+                            <h4 class="h6 mb-1 mt-1"><a asp-action="Space" asp-route-key="@s.Key">@TaskManagerUi.Name(s.Name, s.NameFa)</a></h4>
+                        </div>
+                        @if (s.IsLead) { <span class="badge bg-primary-subtle text-primary-emphasis">@Localizer["Tm_Role_Lead"]</span> }
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(s.OwnerDepartmentName)) { <div class="small text-muted"><i class="bi bi-diagram-3" aria-hidden="true"></i> @s.OwnerDepartmentName</div> }
+                    <div class="small mt-2">@Localizer["Tm_OpenItems"]: <strong>@s.OpenItemCount</strong></div>
+                    <div class="d-flex gap-2 mt-2">
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Space" asp-route-key="@s.Key" asp-route-view="backlog"><i class="bi bi-list-ol" aria-hidden="true"></i> @Localizer["Tm_Backlog"]</a>
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Space" asp-route-key="@s.Key" asp-route-view="board"><i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Board"]</a>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</section>

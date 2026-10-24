@@ -55,6 +55,8 @@ public class StoreRequisitionController : Controller
     // ToListAsync (بدون Skip/Take) بارگذاری می‌شد.
     public async Task<IActionResult> Index(string? status, int page = 1, int? pageSize = null)
     {
+        if (!await CanViewAsync()) return Forbid();
+
         ViewData["Title"] = "Store Requisitions";
         ViewData["Section"] = "Inventory & Materials";
         ViewData["HelpKey"] = "StoreRequisition.Index";
@@ -131,8 +133,13 @@ public class StoreRequisitionController : Controller
         return RedirectToAction(nameof(Details), new { id = requisition.StoreRequisitionId });
     }
 
+    // P0-09 (D-OPEN-02، تصمیم مالک): صفحات فقط-خواندنی هم مجوز View می‌خواهند.
+    private Task<bool> CanViewAsync() => _permissionService.HasPermissionAsync(_currentUser.Roles, "StoreRequisition", "View");
+
     public async Task<IActionResult> Details(int id)
     {
+        if (!await CanViewAsync()) return Forbid();
+
         ViewData["Title"] = "Store Requisition Details";
         ViewData["Section"] = "Inventory & Materials";
 

@@ -215,6 +215,46 @@ public class EmployeeRoleDisciplineManagementTests
     }
 
     [Fact]
+    public async Task C16_a_rejected_password_creates_no_orphan_employee_keeps_the_non_secret_values_and_roles_and_never_echoes_the_password()
+    {
+        var e = NewEnv(); var (dept, disc) = await Org(e.Ctx);
+        await Role(e, "RoleX");
+        var c = NewUsersController(e);
+
+        var result = await c.Create(new UserFormViewModel { UserName = "weak", Email = "w@t.io", FullName = "Weak User", Password = "abc", DepartmentId = dept, DisciplineId = disc, SelectedRoles = new() { "RoleX" } });
+
+        var back = Assert.IsType<UserFormViewModel>(Assert.IsType<ViewResult>(result).Model);
+        Assert.Empty(e.Ctx.Employees); Assert.Empty(e.Ctx.Users);                         // پیش‌تر: کارمند ساخته می‌شد و با هر ارسال دوباره، کارمند تکراری
+        Assert.Equal("weak", back.UserName); Assert.Equal("Weak User", back.FullName); Assert.Equal("w@t.io", back.Email);
+        Assert.Equal(dept, back.DepartmentId); Assert.Equal(disc, back.DisciplineId); Assert.Contains("RoleX", back.SelectedRoles);
+        Assert.Null(back.Password);                                                        // رمز هرگز برنمی‌گردد؛ ارسال بعدی دوباره رمز می‌خواهد
+        Assert.True(c.ModelState.TryGetValue("Password", out var entry) && entry!.Errors.Count > 0);
+
+        // ارسال دوباره با رمز معتبر: دقیقاً یک کارمند و یک کاربر
+        var again = await NewUsersController(e).Create(new UserFormViewModel { UserName = "weak", Email = "w@t.io", FullName = "Weak User", Password = "Abc@123456", DepartmentId = dept, DisciplineId = disc, SelectedRoles = new() { "RoleX" } });
+        Assert.IsType<RedirectToActionResult>(again);
+        Assert.Equal(1, await e.Ctx.Employees.CountAsync()); Assert.Equal(1, await e.Ctx.Users.CountAsync());
+        Assert.Equal(1, await e.Ctx.UserRoles.CountAsync());
+    }
+
+    [Fact]
+    public async Task C16_duplicate_user_name_or_unknown_role_is_rejected_before_any_employee_is_created_and_a_blank_password_is_always_required()
+    {
+        var e = NewEnv(); var (dept, disc) = await Org(e.Ctx);
+        await User(e, "taken");
+        var before = await e.Ctx.Employees.CountAsync();
+
+        Assert.IsType<ViewResult>(await NewUsersController(e).Create(new UserFormViewModel { UserName = "taken", Email = "t@t.io", FullName = "T T", Password = "Abc@123456", DepartmentId = dept, DisciplineId = disc }));
+        Assert.IsType<ViewResult>(await NewUsersController(e).Create(new UserFormViewModel { UserName = "fresh", Email = "f@t.io", FullName = "F F", Password = "Abc@123456", DepartmentId = dept, DisciplineId = disc, SelectedRoles = new() { "NoSuchRole" } }));
+        var noPassword = NewUsersController(e);
+        Assert.IsType<ViewResult>(await noPassword.Create(new UserFormViewModel { UserName = "nopass", Email = "n@t.io", FullName = "N N", Password = "", DepartmentId = dept, DisciplineId = disc }));
+        Assert.True(noPassword.ModelState.ContainsKey("Password"));
+
+        Assert.Equal(before, await e.Ctx.Employees.CountAsync());
+        Assert.Equal(1, await e.Ctx.Users.CountAsync());
+    }
+
+    [Fact]
     public async Task UserCreate_ExistingEmployee_MustExist_BeActive_AndNotLinkedElsewhere()
     {
         var e = NewEnv(); var (dept, disc) = await Org(e.Ctx);

@@ -1,0 +1,85 @@
+@model PEMS.Application.DTOs.BoardDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var view = Model.View;
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+    var transitionsJson = System.Text.Json.JsonSerializer.Serialize(view.Transitions.ToDictionary(k => k.Key.ToString(), v => v.Value));
+}
+@section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
+
+<partial name="_SpaceHeader" model="view" />
+
+<section class="vs-panel mb-2 py-2">
+    @if (Model.ActiveSprint != null)
+    {
+        <div class="small"><i class="bi bi-lightning-charge" aria-hidden="true"></i> <strong>@Model.ActiveSprint.Name</strong>
+            · @TaskManagerUi.Date(Model.ActiveSprint.StartDate) – @TaskManagerUi.Date(Model.ActiveSprint.EndDate)
+            @if (!string.IsNullOrWhiteSpace(Model.ActiveSprint.Goal)) { <span>· @Model.ActiveSprint.Goal</span> }
+        </div>
+    }
+    else
+    {
+        <div class="small text-muted"><i class="bi bi-info-circle" aria-hidden="true"></i> @Localizer["Tm_BoardNoSprint"]</div>
+    }
+    <div class="small text-muted mt-1">@Localizer["Tm_BoardHint"]</div>
+</section>
+
+@Html.AntiForgeryToken()
+<div class="tm-board" data-tm-board data-tm-transitions="@transitionsJson"
+     data-tm-transition-url="@Url.Action("Transition", "TaskManager")"
+     data-tm-msg-invalid="@Localizer["Tm_Err_InvalidTransition"]" data-tm-msg-failed="@Localizer["Tm_Err_SaveFailed"]">
+    @foreach (var col in Model.Columns)
+    {
+        <section class="tm-col" data-tm-status="@col.Status.Id" aria-labelledby="col-@col.Status.Id">
+            <header class="tm-col__head">
+                <h3 class="h6 mb-0" id="col-@col.Status.Id">@TaskManagerUi.Name(col.Status.Name, col.Status.NameFa)</h3>
+                <span class="badge @TaskManagerUi.CategoryBadge(col.Status.Category)" data-tm-col-count>@col.Items.Count</span>
+            </header>
+            <div class="tm-col__body" data-tm-dropzone>
+                @foreach (var i in col.Items)
+                {
+                    var targets = view.Transitions.TryGetValue(col.Status.Id, out var t) ? t : new List<int>();
+                    <article class="tm-card @(i.IsOverdue ? "tm-card--overdue" : "")" draggable="@(i.CanTransition ? "true" : "false")" data-tm-card data-tm-id="@i.Id" data-tm-rv="@i.RowVersion" data-tm-from="@col.Status.Id">
+                        <div class="d-flex justify-content-between gap-2">
+                            <a asp-controller="Task" asp-action="Details" asp-route-id="@i.Id" class="tm-key">@i.Key</a>
+                            <span title="@TaskManagerUi.Priority(Localizer, i.Priority)"><i class="bi @TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true"></i><span class="visually-hidden">@TaskManagerUi.Priority(Localizer, i.Priority)</span></span>
+                        </div>
+                        <div class="tm-card__title">
+                            @if (!string.IsNullOrEmpty(i.TypeIcon)) { <i class="bi @i.TypeIcon me-1" aria-hidden="true"></i> }
+                            @i.Title
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center small text-muted mt-1">
+                            <span>@(i.AssigneeName ?? Localizer["Tm_Unassigned"].Value)</span>
+                            <span>
+                                @if (i.StoryPoints != null) { <span class="badge bg-light text-dark border">@i.StoryPoints?.ToString("0.#")</span> }
+                                @if (i.DueDate != null) { <span class="@(i.IsOverdue ? "text-danger fw-semibold" : "")">@TaskManagerUi.Date(i.DueDate)</span> }
+                            </span>
+                        </div>
+                        @if (i.CanTransition && targets.Count > 0)
+                        {
+                            @* جایگزین صفحه‌کلید/بدون JS برای کشیدن‌ورها کردن (WCAG 2.5.7) *@
+                            <form asp-action="Transition" method="post" class="d-flex gap-1 mt-2 tm-card__move">
+                                <input type="hidden" name="id" value="@i.Id" />
+                                <input type="hidden" name="rowVersion" value="@i.RowVersion" />
+                                <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                <select name="statusId" class="form-select form-select-sm" aria-label="@Localizer["Tm_MoveTo"] @i.Key">
+                                    @foreach (var s in view.Statuses.Where(s => targets.Contains(s.Id)))
+                                    { <option value="@s.Id">@TaskManagerUi.Name(s.Name, s.NameFa)</option> }
+                                </select>
+                                <button class="btn btn-sm btn-outline-secondary" aria-label="@Localizer["Tm_Move"] @i.Key"><i class="bi bi-arrow-right-short" aria-hidden="true"></i></button>
+                            </form>
+                        }
+                    </article>
+                }
+                @if (!col.Items.Any()) { <div class="tm-col__empty small text-muted">@Localizer["Tm_EmptyColumn"]</div> }
+            </div>
+        </section>
+    }
+</div>
+
+<partial name="_CreateModal" model="view" />
+
+@section Scripts { <script src="~/js/pems-task-manager.js" asp-append-version="true"></script> }

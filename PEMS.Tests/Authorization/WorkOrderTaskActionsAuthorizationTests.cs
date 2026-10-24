@@ -34,7 +34,11 @@ public class WorkOrderTaskActionsAuthorizationTests
 
         var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
 
-        var controller = new WorkOrderController(ctx, null!, currentUser, permissionService, null!, null!, null!, null!, null!);
+        // H25-H27: جهش‌های فرزند از دروازه‌ی ماتریس «بخش × فاز × مجوز» عبور می‌کنند؛ Work Orderهای این تست‌ها در فاز اجرا (InProgress) هستند
+        var controller = new WorkOrderController(ctx, null!, currentUser, permissionService, null!, null!, null!, null!, null!, new WorkOrderSectionGuard(ctx, accessControl)).WithTempData();
+        foreach (var id in new[] { 1, 100, 200, 300 })
+            ctx.WorkOrders.Add(new WorkOrder { WorkOrderId = id, EquipmentId = 1, WorkOrderNumber = "WO-" + id, WorkOrderType = "Corrective", Status = "InProgress", IsActive = true });
+        await ctx.SaveChangesAsync();
         return (controller, ctx);
     }
 

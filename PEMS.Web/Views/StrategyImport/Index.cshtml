@@ -1,0 +1,76 @@
+@model PEMS.Web.ViewModels.StrategyImportViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-file-earmark-excel"></i> @Localizer["Rcm_Import"]</h5>
+    <a asp-controller="MaintenanceStrategy" asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Rcm_Back"]</a>
+</div>
+<p class="text-muted small">@Localizer["Rcm_ImportHint"]</p>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-6">
+        <div class="content-card">
+            <h6 class="small fw-bold">@Localizer["Rcm_ImportStrategies"]</h6>
+            <form asp-action="Preview" method="post" enctype="multipart/form-data" class="d-flex gap-2">
+                <input type="hidden" name="kind" value="strategies" />
+                <input type="file" name="file" accept=".xlsx" class="form-control form-control-sm" required />
+                <button class="btn btn-sm btn-pems-solid">@Localizer["Rcm_Validate"]</button>
+            </form>
+            <a asp-action="Template" asp-route-kind="strategies" class="small">@Localizer["Rcm_DownloadTemplate"]</a>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="content-card">
+            <h6 class="small fw-bold">@Localizer["Rcm_ImportAssignments"]</h6>
+            <form asp-action="Preview" method="post" enctype="multipart/form-data" class="d-flex gap-2">
+                <input type="hidden" name="kind" value="assignments" />
+                <input type="file" name="file" accept=".xlsx" class="form-control form-control-sm" required />
+                <button class="btn btn-sm btn-pems-solid">@Localizer["Rcm_Validate"]</button>
+            </form>
+            <a asp-action="Template" asp-route-kind="assignments" class="small">@Localizer["Rcm_DownloadTemplate"]</a>
+        </div>
+    </div>
+</div>
+
+@if (Model.Result != null)
+{
+    var r = Model.Result;
+    <div class="content-card">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="small fw-bold mb-0">
+                @(r.Committed ? Localizer["Rcm_ImportCommitted"] : Localizer["Rcm_ImportPreview"]):
+                @Localizer["Rcm_RowsRead"] @r.RowsRead · @Localizer["Rcm_RowsAccepted"] @r.RowsAccepted · @Localizer["Rcm_RowsRejected"] @r.RowsRejected
+            </h6>
+            <div class="d-flex gap-2">
+                @if (!r.Committed && !string.IsNullOrEmpty(Model.Token) && r.RowsAccepted > 0)
+                {
+                    <form asp-action="Commit" method="post" onsubmit="return confirm('@Localizer["Rcm_ConfirmImport"]');">
+                        <input type="hidden" name="token" value="@Model.Token" /><input type="hidden" name="kind" value="@Model.Kind" />
+                        <button class="btn btn-sm btn-success"><i class="bi bi-check2-all"></i> @Localizer["Rcm_CommitValidRows"]</button>
+                    </form>
+                }
+                @if (r.RowsRejected > 0 && !string.IsNullOrEmpty(Model.Token))
+                {
+                    <a asp-action="Errors" asp-route-token="@Model.Token" asp-route-kind="@Model.Kind" class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i> @Localizer["Rcm_ErrorReport"]</a>
+                }
+            </div>
+        </div>
+        <div style="max-height:420px;overflow:auto">
+        <table class="table table-sm table-enterprise">
+            <thead><tr><th>#</th><th>@Localizer["Rcm_Reference"]</th><th>@Localizer["Rcm_Status"]</th><th>@Localizer["Rcm_Messages"]</th></tr></thead>
+            <tbody>
+            @foreach (var row in r.Rows)
+            {
+                <tr class="@(row.Accepted ? "" : "table-danger")">
+                    <td>@row.RowNumber</td><td class="small">@row.Reference</td>
+                    <td>@(row.Accepted ? Localizer["Rcm_RowAccepted"].Value : Localizer["Rcm_RowRejected"].Value)</td>
+                    <td class="small">@string.Join(" | ", Model.Messages.TryGetValue(row.RowNumber, out var m) ? m : new List<string>())</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        </div>
+    </div>
+}

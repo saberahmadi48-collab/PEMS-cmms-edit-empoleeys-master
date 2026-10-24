@@ -1,0 +1,40 @@
+@model PEMS.Web.Areas.Admin.Models.UserEffectivePermissionRowVm
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    // یک ردیف مشترک برای هر دو جدول Allowed/Not granted: JS هنگام تغییر وضعیت ردیف را بین دو جدول
+    // جابه‌جا می‌کند، پس ساختار باید دقیقاً یکسان بماند.
+    var row = Model.Row;
+    var locked = Model.LockedReason != null;
+    var lockedText = locked ? (string)Localizer["PermAdmin_Locked_" + Model.LockedReason] : null;
+}
+<tr data-permission="@row.PermissionName" data-resource="@row.ResourceName" data-action="@row.ActionName"
+    data-allowed="@(row.Allowed ? "1" : "0")" data-locked="@(locked ? "1" : "0")" class="@(row.Allowed ? "" : "text-body-secondary")">
+    <td class="perm-select-cell">
+        <input type="checkbox" class="form-check-input perm-select" @(locked ? "disabled" : "")
+               aria-label="@string.Format(Localizer["PermAdmin_SelectRow"].Value, row.PermissionName)" />
+    </td>
+    <td>@row.ResourceName</td>
+    <td>@row.ActionName</td>
+    <td><code>@row.PermissionName</code></td>
+    <td class="perm-status-cell">
+        <div class="d-inline-flex align-items-center gap-2">
+            <div class="form-check form-switch m-0">
+                <input type="checkbox" role="switch" class="form-check-input perm-toggle" @(row.Allowed ? "checked" : "") @(locked ? "disabled" : "")
+                       aria-label="@string.Format(Localizer["PermAdmin_ToggleRow"].Value, row.PermissionName)"
+                       title="@(locked ? lockedText : "")" />
+            </div>
+            <span class="perm-status-label admin-status @(row.Allowed ? "active" : "inactive")">
+                <i class="bi @(row.Allowed ? "bi-check2-circle" : "bi-dash-circle")"></i>
+                <span class="perm-status-text">@(row.Allowed ? Localizer["Allowed"] : Localizer["Not granted"])</span>
+            </span>
+            @if (locked)
+            {
+                <i class="bi bi-lock text-body-secondary" title="@lockedText" aria-hidden="true"></i>
+            }
+            <span class="perm-row-state small" role="status" aria-live="polite"></span>
+        </div>
+    </td>
+    <td class="perm-destructive-cell">@if (row.IsDestructive) { <span class="text-danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Yes"]</span> } else { <span class="text-body-secondary">&mdash;</span> }</td>
+</tr>

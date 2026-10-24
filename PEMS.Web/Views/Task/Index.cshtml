@@ -1,19 +1,26 @@
-﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.TaskItemDto>
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.TaskItemDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@using PEMS.Domain.Entities
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    var employees = (IEnumerable<dynamic>)ViewBag.Employees;
+    var employees = (IEnumerable<PEMS.Application.DTOs.EligibleAssigneeDto>)ViewBag.Employees;
     var tab = (string)ViewBag.Tab;
+    var canEdit = ViewBag.CanEdit is true;
+    var canCreate = ViewBag.CanCreate is true;
 }
 
 
-<div class="d-flex gap-2 mb-3">
-    <a asp-action="Index" asp-route-tab="action" class="btn btn-sm @(tab != "followup" ? "btn-pems-solid" : "btn-outline-secondary")">
-        <i class="bi bi-check2-square"></i> Action Items (assigned to me)
+<div class="d-flex flex-wrap gap-2 mb-3">
+    <a asp-action="Index" asp-route-tab="action" class="btn btn-sm @(tab != "followup" ? "btn-pems-solid" : "btn-outline-secondary")" aria-current="@(tab != "followup" ? "page" : null)">
+        <i class="bi bi-check2-square" aria-hidden="true"></i> @Localizer["Tm_Tab_Action"]
     </a>
-    <a asp-action="Index" asp-route-tab="followup" class="btn btn-sm @(tab == "followup" ? "btn-pems-solid" : "btn-outline-secondary")">
-        <i class="bi bi-eye"></i> Follow-up (assigned by me)
+    <a asp-action="Index" asp-route-tab="followup" class="btn btn-sm @(tab == "followup" ? "btn-pems-solid" : "btn-outline-secondary")" aria-current="@(tab == "followup" ? "page" : null)">
+        <i class="bi bi-eye" aria-hidden="true"></i> @Localizer["Tm_Tab_Followup"]
+    </a>
+    <a asp-controller="TaskManager" asp-action="Index" class="btn btn-sm btn-outline-secondary ms-auto">
+        <i class="bi bi-kanban" aria-hidden="true"></i> @Localizer["Tm_Title"]
     </a>
 </div>
 
@@ -32,53 +39,64 @@
                 <th data-col-key="due" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Due"]</th>
                 <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Priority"]</th>
                 <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Status"]</th>
-                <th data-col-key="related" data-resizable="true" data-min-width="100" data-max-width="200">Related</th>
-                <th></th>
+                <th data-col-key="related" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Tm_Related"]</th>
+                <th><span class="visually-hidden">@Localizer["Tm_Actions"]</span></th>
             </tr>
         </thead>
             <tbody>
                 @foreach (var t in Model.Items)
                 {
+                    var closed = TaskItemStatuses.IsClosed(t.Status);
                     <tr class="@(t.IsOverdue ? "table-danger" : "")">
                         <td>
-                            @t.Title
-                            @if (!string.IsNullOrEmpty(t.Description)) { <div class="small text-muted">@t.Description</div> }
+                            @if (t.ItemKey != null) { <span class="tm-key me-1">@t.ItemKey</span> }
+                            <a asp-action="Details" asp-route-id="@t.TaskItemId" class="text-reset">@t.Title</a>
+                            @if (!string.IsNullOrEmpty(t.Description)) { <div class="small text-muted text-truncate" style="max-width:380px;">@t.Description</div> }
                         </td>
                         <td class="small">@t.AssignedToEmployeeName</td>
-                        <td class="small">@(t.DueDate?.ToString("yyyy-MM-dd"))</td>
+                        <td class="small">@(t.DueDate?.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture))</td>
                         <td>
                             @{
-                                var pb = t.Priority switch { "Urgent" => "bg-danger", "High" => "bg-warning text-dark", _ => "bg-secondary" };
+                                var pb = TaskManagerUi.PriorityBadge(t.Priority);
                             }
-                            <span class="badge @pb">@t.Priority</span>
+                            <span class="badge @pb">@TaskManagerUi.Priority(Localizer, t.Priority)</span>
                         </td>
                         <td>
                             @{
                                 var sb = t.Status switch { "Completed" => "bg-success", "InProgress" => "bg-info text-dark", "Cancelled" => "bg-dark", _ => "bg-secondary" };
                             }
-                            <span class="badge @sb">@t.Status</span>
+                            <span class="badge @sb">@(t.WorkSpaceId != null ? TaskManagerUi.Name(t.StatusName, t.StatusNameFa) : TaskManagerUi.LegacyStatus(Localizer, t.Status))</span>
                             @if (t.IsOverdue) { <span class="badge bg-danger">@Localizer["Overdue"]</span> }
                         </td>
                         <td class="small">
                             @if (!string.IsNullOrEmpty(t.RelatedType))
                             {
                                 @if (t.RelatedType == "Letter")
-                                { <a asp-controller="Letter" asp-action="Details" asp-route-id="@t.RelatedId">Letter #@t.RelatedId</a> }
+                                { <a asp-controller="Letter" asp-action="Details" asp-route-id="@t.RelatedId">@Localizer["Tm_Related_Letter"] #@t.RelatedId</a> }
+                                else if (t.RelatedType == "Meeting")
+                                { <a asp-controller="Meeting" asp-action="Details" asp-route-id="@t.RelatedId">@Localizer["Tm_Related_Meeting"] #@t.RelatedId</a> }
                                 else
                                 { @($"{t.RelatedType} #{t.RelatedId}") }
                             }
                         </td>
                         <td>
-                            @if (t.Status != "Completed" && t.Status != "Cancelled")
+                            @if (t.WorkSpaceId != null)
+                            {
+                                @* وضعیت وظیفه‌ی فضا از طرح وضعیت همان فضا تغییر می‌کند *@
+                                <a asp-action="Details" asp-route-id="@t.TaskItemId" class="btn btn-sm btn-outline-secondary">@Localizer["Tm_Open"]</a>
+                            }
+                            else if (canEdit && TaskItemStatuses.Transitions.TryGetValue(t.Status, out var targets) && targets.Length > 0)
                             {
                                 <form asp-action="UpdateStatus" method="post" class="d-flex gap-1">
                                     <input type="hidden" name="taskItemId" value="@t.TaskItemId" />
                                     <input type="hidden" name="tab" value="@tab" />
-                                    <select name="status" class="form-select form-select-sm" style="width:110px;" onchange="this.form.submit()">
-                                        @foreach (var s in new[] { "Open", "InProgress", "Completed", "Cancelled" })
-                                        { <option value="@s" selected="@(s == t.Status)">@s</option> }
+                                    <label class="visually-hidden" for="st-@t.TaskItemId">@Localizer["Tm_MoveTo"]</label>
+                                    <select id="st-@t.TaskItemId" name="status" class="form-select form-select-sm" style="width:130px;">
+                                        @foreach (var s in targets) { <option value="@s">@TaskManagerUi.LegacyStatus(Localizer, s)</option> }
                                     </select>
+                                    <button class="btn btn-sm btn-outline-secondary" aria-label="@Localizer["Tm_ChangeStatus"]"><i class="bi bi-check2" aria-hidden="true"></i></button>
                                 </form>
+                                @if (closed && !string.IsNullOrEmpty(t.CompletionNote)) { <div class="small text-muted">@t.CompletionNote</div> }
                             }
                             else
                             {
@@ -90,7 +108,7 @@
             </tbody>
         </table>
     </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">No tasks here.</p> }
+    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["Tm_EmptyList"]</p> }
 
     @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
     {
@@ -104,6 +122,8 @@
     })
 </div>
 
+@section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
+
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -112,26 +132,37 @@
     </script>
 }
 
-@if (tab != "followup")
+@if (tab != "followup" && canCreate)
 {
     <div class="content-card">
-        <h6 class="mb-3">New Task</h6>
+        <h6 class="mb-3">@Localizer["Tm_NewPersonalTask"]</h6>
         <form asp-action="Create" method="post" class="row g-2">
-            <div class="col-md-4"><input name="title" class="form-control form-control-sm" placeholder="@Localizer["Title"]" required /></div>
+            <div class="col-md-4">
+                <label class="visually-hidden" for="nt-title">@Localizer["Title"]</label>
+                <input id="nt-title" name="title" class="form-control form-control-sm" placeholder="@Localizer["Title"]" required maxlength="300" />
+            </div>
             <div class="col-md-3">
-                <select name="assignedToEmployeeId" class="form-select form-select-sm">
+                <label class="visually-hidden" for="nt-assignee">@Localizer["Assigned To"]</label>
+                <select id="nt-assignee" name="assignedToEmployeeId" class="form-select form-select-sm">
                     <option value="">@Localizer["-- Assign to --"]</option>
                     @foreach (var e in employees) { <option value="@e.EmployeeId">@e.Name</option> }
                 </select>
             </div>
-            <div class="col-md-2"><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
             <div class="col-md-2">
-                <select name="priority" class="form-select form-select-sm">
-                    <option>@Localizer["Normal"]</option><option>@Localizer["Low"]</option><option>@Localizer["High"]</option><option>@Localizer["Urgent"]</option>
+                <label class="visually-hidden" for="nt-due">@Localizer["Due"]</label>
+                <input id="nt-due" name="dueDate" type="date" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-2">
+                <label class="visually-hidden" for="nt-priority">@Localizer["Priority"]</label>
+                <select id="nt-priority" name="priority" class="form-select form-select-sm">
+                    @foreach (var p in TaskItemPriorities.All) { <option value="@p" selected="@(p == "Normal")">@TaskManagerUi.Priority(Localizer, p)</option> }
                 </select>
             </div>
-            <div class="col-md-1"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-plus-lg"></i></button></div>
-            <div class="col-12"><input name="description" class="form-control form-control-sm" placeholder="@Localizer["Description (optional)"]" /></div>
+            <div class="col-md-1"><button class="btn btn-sm btn-pems-solid w-100" aria-label="@Localizer["Tm_Create"]"><i class="bi bi-plus-lg" aria-hidden="true"></i></button></div>
+            <div class="col-12">
+                <label class="visually-hidden" for="nt-desc">@Localizer["Description (optional)"]</label>
+                <input id="nt-desc" name="description" class="form-control form-control-sm" placeholder="@Localizer["Description (optional)"]" maxlength="8000" />
+            </div>
         </form>
     </div>
 }

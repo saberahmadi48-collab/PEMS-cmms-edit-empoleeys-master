@@ -1,3 +1,5 @@
+using PEMS.Application.DTOs;
+
 namespace PEMS.Application.Interfaces;
 
 /// <summary>
@@ -33,6 +35,28 @@ public interface ITenderService
 
     Task<(bool Success, string? Error)> SelectWinnerAsync(int tenderId, int bidId, int? actorEmployeeId);
 
-    Task<(bool Success, string? Error, int? ContractId)> CreateContractFromWinningBidAsync(
-        int tenderId, string contractNo, DateTime? startDate, DateTime? endDate);
+    /// <summary>
+    /// P0-10 / D-OPEN-04: «ایجادکننده‌ی مناقصه ≠ تأییدکننده‌ی آن». ایجادکننده از Tender.CreatedBy (که DbContext هنگام درج از کاربر جاری
+    /// می‌نویسد) خوانده می‌شود، پس به ثبت جداگانه‌ی رویداد وابسته نیست. SystemAdmin مستثناست و استثنا در AuthorizationAuditLog ثبت می‌شود؛
+    /// اگر آن ثبت ممکن نباشد، نتیجه رد است. فقط یکی از tenderId یا bidNegotiationId لازم است (مذاکره به مناقصه‌ی خودش نگاشت می‌شود).
+    /// </summary>
+    Task<TenderApprovalSeparation> CheckCreatorApproverSeparationAsync(
+        int? tenderId, int? bidNegotiationId, int? userId, string? userName, bool isSystemAdmin, string? ipAddress = null);
+
+    /// <summary>
+    /// ساخت قرارداد از پیشنهاد برنده. creatorUserId = کاربری که این اقدام را انجام می‌دهد؛ اگر داده شود، رویداد «Contracts.Create» برای
+    /// همان کاربر ثبت می‌شود. اگر قرارداد از قبل وجود داشته باشد، رویداد ناقص برای ایجادکننده‌ی اصلی (Contract.CreatedBy) ترمیم می‌شود،
+    /// نه برای کاربری که تلاش مجدد می‌کند.
+    /// P0.3: روی SQL Server ساخت قرارداد، اتصال مناقصه، AuditLogهای عمومی و رویداد ایجادکننده یک تراکنش‌اند (همه یا هیچ)؛ پس از Commit نامطمئن
+    /// وضعیت واقعی از دیتابیس خوانده می‌شود و «ساخته نشد» فقط با اطمینان گزارش می‌شود (OutcomeUnknown در غیر این صورت).
+    /// </summary>
+    Task<TenderContractResult> CreateContractFromWinningBidAsync(
+        int tenderId, string contractNo, DateTime? startDate, DateTime? endDate, int? creatorUserId = null, string? ipAddress = null);
+
+    /// <summary>
+    /// اگر برای قرارداد رویداد ایجاد (Allow) ثبت نشده باشد، آن را برای ایجادکننده‌ی اصلی (Contract.CreatedBy) می‌نویسد؛ در غیر این صورت چیزی
+    /// نمی‌نویسد. P0.3: با قفل کاربردی به‌ازای قرارداد در یک تراکنش اجرا می‌شود، پس ترمیم هم‌زمان رویداد تکراری نمی‌نویسد (بدون Index یکتا؛ مسیرهای
+    /// بدون قفل، مثل SQL مستقیم، تحت پوشش نیستند و تکرار برای SoD بی‌ضرر است چون بررسی SoD فقط «وجود» رویداد را می‌پرسد).
+    /// </summary>
+    Task<ContractCreatorEventStatus> EnsureContractCreatorEventAsync(int contractId, string? ipAddress = null);
 }

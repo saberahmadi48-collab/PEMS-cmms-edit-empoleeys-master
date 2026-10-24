@@ -8,15 +8,15 @@ namespace PEMS.Application.Interfaces;
 /// </summary>
 public interface ITagService
 {
-    Task<List<TagDto>> GetAllAsync();
+    Task<List<TagDto>> GetAllAsync(int? viewerUserId = null);
 
     Task<int> CreateAsync(string name, string color, int? createdById);
 
-    Task DeleteAsync(int tagId);
+    Task DeleteAsync(int tagId, int? actorUserId = null);
 
-    Task AttachToLetterAsync(int letterId, int tagId);
+    Task AttachToLetterAsync(int letterId, int tagId, int? actorUserId = null);
 
     Task DetachFromLetterAsync(int letterId, int tagId);
 
-    Task<List<TagDto>> GetForLetterAsync(int letterId);
+    Task<List<TagDto>> GetForLetterAsync(int letterId, int? viewerUserId = null);
 }

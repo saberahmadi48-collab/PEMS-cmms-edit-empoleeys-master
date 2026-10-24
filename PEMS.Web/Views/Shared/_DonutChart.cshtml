@@ -1,0 +1,32 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@model PEMS.Web.Models.DonutChartViewModel
+@inject IStringLocalizer<SharedResource> Localizer
+@* Donut with a hover-linked legend. The <li data-value> rows are the data; pems-donut.js draws the ring from them. *@
+@if (Model.Items.Count == 0 || Model.Items.All(i => i.Value <= 0))
+{
+    <div class="pdn-empty">
+        <i class="bi bi-pie-chart" aria-hidden="true"></i>
+        <span>@Model.EmptyText</span>
+    </div>
+}
+else
+{
+    <div class="pdn" id="@Model.Id" data-default-label="@Model.DefaultLabel" role="group" aria-label="@Model.AriaLabel">
+        <div class="pdn-plot">
+            <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><g class="pdn-slices"></g></svg>
+            <div class="pdn-center" aria-hidden="true"><span class="pdn-center-value"></span><span class="pdn-center-label"></span></div>
+        </div>
+        <ul class="pdn-legend">
+            @foreach (var item in Model.Items)
+            {
+                <li class="pdn-item" tabindex="0" data-value="@item.Value" data-label="@item.Label">
+                    <span class="pdn-marker" aria-hidden="true"></span>
+                    <span class="pdn-label">@item.Label</span>
+                    <span class="pdn-value">@item.Value</span>
+                    <span class="pdn-pct"></span>
+                </li>
+            }
+        </ul>
+    </div>
+}

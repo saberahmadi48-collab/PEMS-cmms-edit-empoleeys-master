@@ -151,6 +151,18 @@ public static class AccessControlSeeder
             await SyncRowAsync(db, cache, row);
     }
 
+    /// <summary>
+    /// همان هم‌گام‌سازی SyncRoleFromRolePermissionsAsync ولی فقط برای یک ماژول - برای ذخیره‌ی خودکار
+    /// تک‌خانه‌ی Permission Matrix که نباید به‌ازای هر کلیک همه‌ی ماژول‌های نقش را دوباره هم‌گام کند.
+    /// </summary>
+    public static async Task SyncModuleFromRolePermissionAsync(PEMSDbContext db, string roleName, string moduleName)
+    {
+        var cache = new Dictionary<string, Permission>(StringComparer.Ordinal);
+        var row = await db.RolePermissions.FirstOrDefaultAsync(x => x.RoleName == roleName && x.ModuleName == moduleName);
+        if (row != null)
+            await SyncRowAsync(db, cache, row);
+    }
+
     private static async Task SeedFromRolePermissionsAsync(PEMSDbContext db, Dictionary<string, Permission> cache)
     {
         var rows = await db.RolePermissions.ToListAsync();

@@ -10,6 +10,8 @@ public class DashboardViewModel
     public int DocumentsCount { get; set; }
     public int PendingApprovalCount { get; set; }
     public int RejectedCount { get; set; }
+    public int ReturnedWithCommentsCount { get; set; }
+    public int ActiveContractsCount { get; set; }
     public int OpenRevisionsCount { get; set; }
     public int OpenWorkOrdersCount { get; set; }
     public int AIAlertsCount { get; set; }

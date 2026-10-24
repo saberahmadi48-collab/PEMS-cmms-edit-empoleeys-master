@@ -56,7 +56,7 @@
                                     <td>@a.AssignmentType</td>
                                     <td>
                                         @if (a.EffectiveFrom == null && a.EffectiveTo == null) { <span class="text-body-secondary">@Localizer["Always"]</span> }
-                                        else { <span>@a.EffectiveFrom?.ToString("yyyy-MM-dd") &ndash; @(a.EffectiveTo?.ToString("yyyy-MM-dd") ?? Localizer["open"])</span> }
+                                        else { <span>@a.EffectiveFrom?.ToString("yyyy-MM-dd") &ndash; @(a.EffectiveTo?.ToString("yyyy-MM-dd") ?? Localizer["Open"])</span> }
                                     </td>
                                 </tr>
                             }

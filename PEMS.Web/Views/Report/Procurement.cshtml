@@ -6,6 +6,13 @@
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
     var pipeline = (PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.ProcurementPipelineRowDto>)ViewBag.Pipeline;
+    var noData = Localizer["Chart_NoData"].Value;
+    var volumeChart = BkChartSpec.MonthlyBars("Procurement packages by month", noData, Model.VolumeByMonth.Select(x => x.Month),
+        BkSeries.Of("Packages", Model.VolumeByMonth.Select(x => x.Count), BkChartSpec.Primary));
+    var statusChart = BkChartSpec.Donut("Packages by status", noData, Localizer["Total"].Value, Model.ByStatus.Select(x => (x.Status, (double)x.Count)));
+    var disciplineChartRows = BkChartSpec.TopWithOthers(Model.ByDiscipline.Select(x => (x.Discipline, x.Count)), 10, Localizer["Chart_Other"].Value);
+    var disciplineChart = BkChartSpec.HBars("Packages by discipline", noData, disciplineChartRows.Select(x => x.Label), false,
+        new BkSeries("Packages", disciplineChartRows.Select(x => x.Value).ToList(), BkChartSpec.Accent));
 }
 
 <div class="d-flex flex-wrap gap-2 mb-3">
@@ -57,19 +64,19 @@
     <div class="col-lg-8">
         <div class="content-card mb-3">
             <h6 class="mb-3">Packages (last 12 months)</h6>
-            <canvas id="volumeChart" height="90"></canvas>
+            <partial name="_BkChart" model="@volumeChart" />
         </div>
     </div>
     <div class="col-lg-4">
         <div class="content-card mb-3">
             <h6 class="mb-3">@Localizer["By Status"]</h6>
-            <canvas id="statusChart" height="200"></canvas>
+            <partial name="_BkChart" model="@statusChart" />
         </div>
     </div>
     <div class="col-lg-6">
         <div class="content-card mb-3">
             <h6 class="mb-3">@Localizer["By Discipline"]</h6>
-            <canvas id="disciplineChart" height="180"></canvas>
+            <partial name="_BkChart" model="@disciplineChart" />
         </div>
     </div>
     <div class="col-lg-6">
@@ -135,35 +142,10 @@
     }
 </div>
 
+@section Styles {
+    <partial name="_BkChartStyles" />
+}
+
 @section Scripts {
-    <script src="~/lib/chartjs/chart-4.4.1.umd.min.js"></script>
-    <script src="~/js/pems-charts.js"></script>
-    <script>
-        const volumeLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VolumeByMonth.Select(x => x.Month)));
-        const volumeData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.VolumeByMonth.Select(x => x.Count)));
-
-        new Chart(document.getElementById('volumeChart'), {
-            type: 'bar',
-            data: { labels: volumeLabels, datasets: [{ label: 'Packages', data: volumeData, backgroundColor: PemsChartColors.primary }] },
-            options: { responsive: true, plugins: { legend: { display: false } } }
-        });
-
-        const statusLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ByStatus.Select(x => x.Status)));
-        const statusData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ByStatus.Select(x => x.Count)));
-
-        new Chart(document.getElementById('statusChart'), {
-            type: 'doughnut',
-            data: { labels: statusLabels, datasets: [{ data: statusData, backgroundColor: [PemsChartColors.neutral, PemsChartColors.warning, PemsChartColors.positive, PemsChartColors.negative] }] },
-            options: { plugins: { legend: { position: 'bottom' } } }
-        });
-
-        const discLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ByDiscipline.Select(x => x.Discipline)));
-        const discData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ByDiscipline.Select(x => x.Count)));
-
-        new Chart(document.getElementById('disciplineChart'), {
-            type: 'bar',
-            data: { labels: discLabels, datasets: [{ label: 'Packages', data: discData, backgroundColor: PemsChartColors.accent }] },
-            options: { indexAxis: 'y', plugins: { legend: { display: false } } }
-        });
-    </script>
+    <partial name="_BkChartScripts" />
 }

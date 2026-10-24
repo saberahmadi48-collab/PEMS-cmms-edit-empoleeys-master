@@ -5,6 +5,15 @@
     var letterType = (string)ViewBag.LetterType;
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
+    var prefill = ViewBag.Prefill as PEMS.Application.DTOs.LetterTemplateDto;
+    var templates = (ViewBag.Templates as List<PEMS.Application.DTOs.LetterTemplateDto>) ?? new List<PEMS.Application.DTOs.LetterTemplateDto>();
+    int? selectedTemplateId = ViewBag.SelectedTemplateId;
+    string prefillDate = ((DateTime?)ViewBag.PrefillDate ?? DateTime.Now).ToString("yyyy-MM-dd");
+    bool respRequired = ViewBag.PrefillResponseRequired == true;
+    string respDue = ((DateTime?)ViewBag.PrefillResponseDue)?.ToString("yyyy-MM-dd") ?? "";
+    string? respError = ViewBag.ResponseError;
+    string curPriority = prefill?.Priority ?? "Normal";
+    string curConf = prefill?.ConfidentialityLevel ?? "Internal";
     var saveLabel = letterType switch
     {
         "Outgoing" => Localizer["Lt_SaveDraft"].Value,
@@ -18,23 +27,58 @@
    دیسیپلین، شماره‌ی دستی، مدرک/MR مرتبط) پشت «More Details» جمع می‌شود - نه یک فرم بزرگ یک‌جا *@
 <div class="content-card" style="max-width:800px;">
     <h2 class="vs-section__title">@Localizer[letterType == "Incoming" ? "Lt_NewIncoming" : letterType == "Outgoing" ? "Lt_NewOutgoing" : "Lt_NewInternal"]</h2>
+    @if (templates.Any())
+    {
+        @* قالب فقط فرم را پیش‌پر می‌کند (GET)، پس باید پیش از تایپ انتخاب شود *@
+        <form method="get" asp-action="Create" class="d-flex flex-wrap align-items-end gap-2 mb-3">
+            <input type="hidden" name="letterType" value="@letterType" />
+            <div>
+                <label class="form-label small mb-1" for="letterTemplate">@Localizer["LtT_UseTemplate"]</label>
+                <select name="templateId" id="letterTemplate" class="form-select form-select-sm">
+                    <option value="">@Localizer["Ed_None"]</option>
+                    @foreach (var tpl in templates)
+                    {
+                        <option value="@tpl.LetterTemplateId" selected="@(selectedTemplateId == tpl.LetterTemplateId)">@tpl.Name</option>
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> @Localizer["LtT_Apply"]</button>
+        </form>
+    }
+
     <form asp-action="Create" method="post">
         <input type="hidden" name="letterType" value="@letterType" />
 
         <div class="row g-3">
-            <div class="col-md-6"><label class="form-label" for="letterDate">@Localizer["Lt_Date"]</label><input name="letterDate" id="letterDate" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" required /></div>
+            <div class="col-md-6"><label class="form-label" for="letterDate">@Localizer["Lt_Date"]</label><input name="letterDate" id="letterDate" type="date" class="form-control" value="@prefillDate" required /></div>
 
             @if (letterType == "Incoming")
             {
-                <div class="col-md-6"><label class="form-label" for="letterSender">@Localizer["Lt_From"]</label><input name="sender" id="letterSender" class="form-control" placeholder="@Localizer["Lt_ExtSender"]" required /></div>
+                <div class="col-md-6"><label class="form-label" for="letterSender">@Localizer["Lt_From"]</label><input name="sender" id="letterSender" class="form-control" placeholder="@Localizer["Lt_ExtSender"]" value="@((string?)ViewBag.PrefillSender)" required /></div>
             }
             else
             {
-                <div class="col-md-6"><label class="form-label" for="letterReceiver">@Localizer["Lt_To"]</label><input name="receiver" id="letterReceiver" class="form-control" placeholder="@Localizer["Lt_Recipient"]" required /></div>
+                <div class="col-md-6"><label class="form-label" for="letterReceiver">@Localizer["Lt_To"]</label><input name="receiver" id="letterReceiver" class="form-control" placeholder="@Localizer["Lt_Recipient"]" value="@((string?)ViewBag.PrefillReceiver)" required /></div>
             }
 
-            <div class="col-12"><label class="form-label" for="letterSubject">@Localizer["Lt_Subject"]</label><input name="subject" id="letterSubject" class="form-control" required /></div>
-            <div class="col-12"><label class="form-label" for="letterBodyEditor" id="letterBodyLabel">@Localizer["Lt_Body"]</label><textarea name="body" id="letterBodyEditor" class="form-control" rows="8"></textarea></div>
+            <div class="col-12"><label class="form-label" for="letterSubject">@Localizer["Lt_Subject"]</label><input name="subject" id="letterSubject" class="form-control" value="@prefill?.Subject" required /></div>
+            <div class="col-12"><label class="form-label" for="letterBodyEditor" id="letterBodyLabel">@Localizer["Lt_Body"]</label><textarea name="body" id="letterBodyEditor" class="form-control" rows="8">@prefill?.Body</textarea></div>
+
+            @* پاسخ‌خواهی: «پاسخ‌داده‌شده» و «معوق» از نامه‌ی پاسخ صادرشده و تاریخ محاسبه می‌شوند، نه با تیک دستی *@
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="responseRequired" value="true" id="responseRequired" checked="@respRequired" />
+                    <label class="form-check-label" for="responseRequired">@Localizer["Lt_ResponseRequired"]</label>
+                </div>
+                <div class="mt-2" id="responseDueWrap" style="max-width:260px;">
+                    <label class="form-label small" for="responseDueDate">@Localizer["Lt_ResponseDueDate"]</label>
+                    <input type="date" name="responseDueDate" id="responseDueDate" class="form-control" value="@respDue"
+                           aria-describedby="responseDueError" aria-invalid="@(respError != null ? "true" : "false")" />
+                    <div id="responseDueError" class="text-danger small mt-1" role="alert" @(respError == null ? "hidden" : "")>
+                        <i class="bi bi-exclamation-circle" aria-hidden="true"></i> @respError
+                    </div>
+                </div>
+            </div>
         </div>
 
         <button type="button" class="btn btn-sm btn-outline-secondary mt-3" data-bs-toggle="collapse" data-bs-target="#moreDetails" aria-expanded="false" aria-controls="moreDetails">
@@ -64,14 +108,13 @@
                 <div class="col-md-4">
                     <label class="form-label" for="letterPriority">@Localizer["Lt_Priority"]</label>
                     <select name="priority" id="letterPriority" class="form-select">
-                        <option value="Normal">@Localizer["Lt_P_Normal"]</option><option value="Low">@Localizer["Lt_P_Low"]</option><option value="High">@Localizer["Lt_P_High"]</option><option value="Urgent">@Localizer["Lt_P_Urgent"]</option>
+                        @foreach (var pr in new[] { "Normal", "Low", "High", "Urgent" }) { <option value="@pr" selected="@(curPriority == pr)">@Localizer["Lt_P_" + pr]</option> }
                     </select>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label" for="letterConf">@Localizer["Lt_Confidentiality"]</label>
                     <select name="confidentialityLevel" id="letterConf" class="form-select">
-                        <option value="Internal">@Localizer["Lt_C_Internal"]</option><option value="Public">@Localizer["Lt_C_Public"]</option><option value="Confidential">@Localizer["Lt_C_Confidential"]</option>
-                        <option value="Restricted">@Localizer["Lt_C_Restricted"]</option><option value="HighlyConfidential">@Localizer["Lt_C_HighlyConfidential"]</option>
+                        @foreach (var cf in new[] { "Internal", "Public", "Confidential", "Restricted", "HighlyConfidential" }) { <option value="@cf" selected="@(curConf == cf)">@Localizer["Lt_C_" + cf]</option> }
                     </select>
                 </div>
 
@@ -113,5 +156,23 @@
         </div>
     </form>
 </div>
+
+<script>
+    (function () {
+        var cb = document.getElementById('responseRequired');
+        var wrap = document.getElementById('responseDueWrap');
+        var due = document.getElementById('responseDueDate');
+        var letterDate = document.getElementById('letterDate');
+        function sync() {
+            wrap.hidden = !cb.checked;
+            due.required = cb.checked;
+            due.min = letterDate.value || '';
+            if (!cb.checked) due.value = '';
+        }
+        cb.addEventListener('change', sync);
+        letterDate.addEventListener('change', sync);
+        sync();
+    })();
+</script>
 
 @await Html.PartialAsync("_RichTextEditorScripts", "letterBodyEditor")

@@ -1,0 +1,195 @@
+@model PEMS.Application.DTOs.WorkSpaceAdminDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var s = Model.Space;
+    var departments = (List<(int Id, string Name)>)ViewBag.Departments;
+    var employees = (List<PEMS.Application.DTOs.EligibleAssigneeDto>)ViewBag.Employees;
+    var memberIds = Model.Members.Select(m => m.EmployeeId).ToHashSet();
+}
+@section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
+
+<section class="vs-panel mb-3">
+    <nav aria-label="breadcrumb" class="small mb-1"><a asp-action="Admin">@Localizer["Tm_Admin_Title"]</a> / <span class="tm-key">@s.Key</span></nav>
+    <h2 class="h5 mb-3">@TaskManagerUi.Name(s.Name, s.NameFa)</h2>
+    <form asp-action="SaveSpace" method="post" class="row g-2">
+        <input type="hidden" name="Id" value="@s.Id" />
+        <input type="hidden" name="Key" value="@s.Key" />
+        <div class="col-md-3"><label class="form-label small" for="sp-name">@Localizer["Tm_Field_Name"]</label><input id="sp-name" name="Name" value="@s.Name" class="form-control form-control-sm" required maxlength="150" /></div>
+        <div class="col-md-3"><label class="form-label small" for="sp-namefa">@Localizer["Tm_Field_NameFa"]</label><input id="sp-namefa" name="NameFa" value="@s.NameFa" class="form-control form-control-sm" maxlength="150" dir="rtl" /></div>
+        <div class="col-md-3">
+            <label class="form-label small" for="sp-dept">@Localizer["Tm_Field_Department"]</label>
+            <select id="sp-dept" name="OwnerDepartmentId" class="form-select form-select-sm">
+                <option value="">@Localizer["Tm_NoDepartment"]</option>
+                @foreach (var d in departments) { <option value="@d.Id" selected="@(d.Id == s.OwnerDepartmentId)">@d.Name</option> }
+            </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="sp-active" name="IsActive" value="true" checked="@s.IsActive" />
+                <input type="hidden" name="IsActive" value="false" />
+                <label class="form-check-label small" for="sp-active">@Localizer["Tm_Field_Active"]</label>
+            </div>
+        </div>
+        <div class="col-md-10"><label class="form-label small" for="sp-desc">@Localizer["Tm_Field_Description"]</label><input id="sp-desc" name="Description" value="@s.Description" class="form-control form-control-sm" maxlength="1000" /></div>
+        <div class="col-md-2 d-flex align-items-end"><button class="btn btn-sm btn-pems-solid w-100">@Localizer["Tm_Save"]</button></div>
+    </form>
+    <p class="small text-muted mt-2 mb-0">@Localizer["Tm_KeyImmutable"]</p>
+</section>
+
+<div class="row g-3">
+    <div class="col-lg-6">
+        <section class="vs-panel mb-3" aria-labelledby="memTitle">
+            <h3 class="h6" id="memTitle">@Localizer["Tm_Members"]</h3>
+            <p class="small text-muted">@Localizer["Tm_MembersHint"]</p>
+            @if (!Model.Members.Any()) { <div class="vs-empty py-2 small">@Localizer["Tm_NoMembers"]</div> }
+            else
+            {
+                <table class="table table-sm vs-dense">
+                    <thead><tr><th>@Localizer["Tm_Field_Name"]</th><th>@Localizer["Tm_Field_Role"]</th><th>@Localizer["Tm_Field_Active"]</th><th></th></tr></thead>
+                    <tbody>
+                        @foreach (var m in Model.Members)
+                        {
+                            <tr class="@(m.IsActive ? "" : "text-muted")">
+                                <td>@m.Name</td>
+                                <td colspan="3">
+                                    <form asp-action="SetMember" method="post" class="d-flex gap-2 align-items-center">
+                                        <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="memberId" value="@m.Id" />
+                                        <select name="role" class="form-select form-select-sm w-auto" aria-label="@Localizer["Tm_Field_Role"] @m.Name">
+                                            @foreach (var r in PEMS.Domain.Entities.WorkSpaceMemberRoles.All) { <option value="@r" selected="@(r == m.Role)">@Localizer["Tm_Role_" + r]</option> }
+                                        </select>
+                                        <input class="form-check-input" type="checkbox" name="isActive" value="true" checked="@m.IsActive" aria-label="@Localizer["Tm_Field_Active"] @m.Name" />
+                                        <input type="hidden" name="isActive" value="false" />
+                                        <button class="btn btn-sm btn-outline-secondary">@Localizer["Tm_Save"]</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            <form asp-action="AddMember" method="post" class="d-flex gap-2 flex-wrap">
+                <input type="hidden" name="workSpaceId" value="@s.Id" />
+                <label class="visually-hidden" for="am-emp">@Localizer["Tm_Employee"]</label>
+                <select id="am-emp" name="employeeId" class="form-select form-select-sm w-auto flex-grow-1" required>
+                    <option value="">@Localizer["Tm_SelectEmployee"]</option>
+                    @foreach (var e in employees.Where(e => !memberIds.Contains(e.EmployeeId))) { <option value="@e.EmployeeId">@e.Name</option> }
+                </select>
+                <label class="visually-hidden" for="am-role">@Localizer["Tm_Field_Role"]</label>
+                <select id="am-role" name="role" class="form-select form-select-sm w-auto">
+                    @foreach (var r in PEMS.Domain.Entities.WorkSpaceMemberRoles.All) { <option value="@r">@Localizer["Tm_Role_" + r]</option> }
+                </select>
+                <button class="btn btn-sm btn-pems-solid">@Localizer["Tm_Add"]</button>
+            </form>
+        </section>
+
+        <section class="vs-panel mb-3" aria-labelledby="typeTitle">
+            <h3 class="h6" id="typeTitle">@Localizer["Tm_Types"]</h3>
+            <table class="table table-sm vs-dense">
+                <tbody>
+                    @foreach (var t in Model.Types)
+                    {
+                        <tr class="@(t.IsActive ? "" : "text-muted")">
+                            <td><i class="bi @t.Icon" aria-hidden="true"></i> @TaskManagerUi.Name(t.Name, t.NameFa) @if (t.IsSubtask) { <span class="badge bg-light text-dark border">@Localizer["Tm_Subtask"]</span> }</td>
+                            <td class="text-end">
+                                <form asp-action="SetTypeActive" method="post">
+                                    <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="typeId" value="@t.Id" /><input type="hidden" name="isActive" value="@(t.IsActive ? "false" : "true")" />
+                                    <button class="btn btn-sm btn-link p-0">@(t.IsActive ? Localizer["Tm_Deactivate"] : Localizer["Tm_Activate"])</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <form asp-action="AddType" method="post" class="row g-2">
+                <input type="hidden" name="workSpaceId" value="@s.Id" />
+                <div class="col-md-3"><label class="form-label small" for="at-name">@Localizer["Tm_Field_Name"]</label><input id="at-name" name="name" class="form-control form-control-sm" required maxlength="100" /></div>
+                <div class="col-md-3"><label class="form-label small" for="at-namefa">@Localizer["Tm_Field_NameFa"]</label><input id="at-namefa" name="nameFa" class="form-control form-control-sm" maxlength="100" dir="rtl" /></div>
+                <div class="col-md-3"><label class="form-label small" for="at-icon">@Localizer["Tm_Field_Icon"]</label><input id="at-icon" name="icon" value="bi-check2-square" class="form-control form-control-sm" required pattern="bi-[a-z0-9-]{1,40}" /></div>
+                <div class="col-md-3 d-flex align-items-end gap-2">
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="at-sub" name="isSubtask" value="true" /><label class="form-check-label small" for="at-sub">@Localizer["Tm_Subtask"]</label></div>
+                    <button class="btn btn-sm btn-pems-solid">@Localizer["Tm_Add"]</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div class="col-lg-6">
+        <section class="vs-panel mb-3" aria-labelledby="stTitle">
+            <h3 class="h6" id="stTitle">@Localizer["Tm_Statuses"]</h3>
+            <p class="small text-muted">@Localizer["Tm_StatusesHint"]</p>
+            @foreach (var st in Model.Statuses)
+            {
+                <form asp-action="EditStatus" method="post" class="row g-1 mb-1 align-items-center @(st.IsActive ? "" : "text-muted")">
+                    <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="statusId" value="@st.Id" />
+                    <div class="col-3"><input name="name" value="@st.Name" class="form-control form-control-sm" required maxlength="100" aria-label="@Localizer["Tm_Field_Name"]" /></div>
+                    <div class="col-3"><input name="nameFa" value="@st.NameFa" class="form-control form-control-sm" maxlength="100" dir="rtl" aria-label="@Localizer["Tm_Field_NameFa"]" /></div>
+                    <div class="col-2">
+                        <select name="category" class="form-select form-select-sm" aria-label="@Localizer["Tm_Field_Category"]">
+                            @foreach (var c in PEMS.Domain.Entities.WorkItemStatusCategories.All) { <option value="@c" selected="@(c == st.Category)">@Localizer["Tm_Category_" + c]</option> }
+                        </select>
+                    </div>
+                    <div class="col-1"><input name="sortOrder" type="number" value="@st.SortOrder" min="0" max="999" class="form-control form-control-sm" aria-label="@Localizer["Tm_Field_Order"]" /></div>
+                    <div class="col-1 text-center">
+                        <input class="form-check-input" type="checkbox" name="isActive" value="true" checked="@st.IsActive" aria-label="@Localizer["Tm_Field_Active"]" />
+                        <input type="hidden" name="isActive" value="false" />
+                    </div>
+                    <div class="col-2"><button class="btn btn-sm btn-outline-secondary w-100">@Localizer["Tm_Save"]</button></div>
+                </form>
+            }
+            <form asp-action="AddStatus" method="post" class="row g-1 mt-2">
+                <input type="hidden" name="workSpaceId" value="@s.Id" />
+                <div class="col-4"><input name="name" class="form-control form-control-sm" required maxlength="100" placeholder="@Localizer["Tm_Field_Name"]" aria-label="@Localizer["Tm_Field_Name"]" /></div>
+                <div class="col-3"><input name="nameFa" class="form-control form-control-sm" maxlength="100" dir="rtl" placeholder="@Localizer["Tm_Field_NameFa"]" aria-label="@Localizer["Tm_Field_NameFa"]" /></div>
+                <div class="col-3">
+                    <select name="category" class="form-select form-select-sm" aria-label="@Localizer["Tm_Field_Category"]">
+                        @foreach (var c in PEMS.Domain.Entities.WorkItemStatusCategories.All) { <option value="@c">@Localizer["Tm_Category_" + c]</option> }
+                    </select>
+                </div>
+                <div class="col-2"><button class="btn btn-sm btn-pems-solid w-100">@Localizer["Tm_Add"]</button></div>
+            </form>
+        </section>
+
+        <section class="vs-panel mb-3" aria-labelledby="trTitle">
+            <h3 class="h6" id="trTitle">@Localizer["Tm_Transitions"]</h3>
+            <p class="small text-muted">@Localizer["Tm_TransitionsHint"]</p>
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered vs-dense tm-matrix">
+                    <thead>
+                        <tr>
+                            <th scope="col">@Localizer["Tm_FromTo"]</th>
+                            @foreach (var to in Model.Statuses.Where(x => x.IsActive)) { <th scope="col" class="text-center">@TaskManagerUi.Name(to.Name, to.NameFa)</th> }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var from in Model.Statuses.Where(x => x.IsActive))
+                        {
+                            <tr>
+                                <th scope="row">@TaskManagerUi.Name(from.Name, from.NameFa)</th>
+                                @foreach (var to in Model.Statuses.Where(x => x.IsActive))
+                                {
+                                    <td class="text-center">
+                                        @if (from.Id != to.Id)
+                                        {
+                                            var allowed = Model.Transitions.Contains((from.Id, to.Id));
+                                            <form asp-action="SetTransition" method="post">
+                                                <input type="hidden" name="workSpaceId" value="@s.Id" /><input type="hidden" name="fromStatusId" value="@from.Id" /><input type="hidden" name="toStatusId" value="@to.Id" /><input type="hidden" name="allowed" value="@(allowed ? "false" : "true")" />
+                                                <button class="btn btn-sm btn-link p-0 @(allowed ? "text-success" : "text-muted")" aria-pressed="@(allowed ? "true" : "false")"
+                                                        aria-label="@TaskManagerUi.Name(from.Name, from.NameFa) → @TaskManagerUi.Name(to.Name, to.NameFa): @(allowed ? Localizer["Tm_Allowed"] : Localizer["Tm_NotAllowed"])">
+                                                    <i class="bi @(allowed ? "bi-check-circle-fill" : "bi-circle")" aria-hidden="true"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        else { <span class="text-muted" aria-hidden="true">—</span> }
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>

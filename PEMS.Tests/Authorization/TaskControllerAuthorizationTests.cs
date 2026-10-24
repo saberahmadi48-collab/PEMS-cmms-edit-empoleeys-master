@@ -40,7 +40,8 @@ public class TaskControllerAuthorizationTests
         };
 
         var taskService = new TaskService(ctx, null!);
-        var controller = new TaskController(taskService, ctx, currentUser, permissionService).WithTempData();
+        var manager = new PEMS.Persistence.Services.TaskManager.TaskManagerService(ctx, permissionService, new FakeNumberingService());
+        var controller = new TaskController(taskService, manager, currentUser, permissionService).WithTempData();
         return (controller, ctx);
     }
 
@@ -104,7 +105,8 @@ public class TaskControllerAuthorizationTests
     public async Task UpdateStatus_WithEditPermission_UpdatesStatus()
     {
         var (controller, ctx) = await CreateController(nameof(UpdateStatus_WithEditPermission_UpdatesStatus));
-        var task = new PEMS.Domain.Entities.TaskItem { TaskItemId = 1, Title = "T", Status = "Open", CreatedDate = DateTime.Now };
+        // Task Manager فاز ۰: مجوز نقش کافی نیست - کاربر باید درگیر وظیفه باشد (اینجا ارجاع‌دهنده)
+        var task = new PEMS.Domain.Entities.TaskItem { TaskItemId = 1, Title = "T", Status = "Open", CreatedDate = DateTime.Now, AssignedByApplicationUserId = 1 };
         ctx.TaskItems.Add(task);
         await ctx.SaveChangesAsync();
 
@@ -112,5 +114,41 @@ public class TaskControllerAuthorizationTests
 
         Assert.IsType<RedirectToActionResult>(result);
         Assert.Equal("Completed", ctx.TaskItems.Single().Status);
+    }
+
+    [Fact]
+    public async Task UpdateStatus_WithEditPermission_ButNotInvolved_ReturnsNotFound_AndKeepsStatus()
+    {
+        var (controller, ctx) = await CreateController(nameof(UpdateStatus_WithEditPermission_ButNotInvolved_ReturnsNotFound_AndKeepsStatus));
+        // قبلاً هر کاربر با Task.Edit هر شناسه‌ای را تغییر می‌داد (IDOR)
+        ctx.TaskItems.Add(new PEMS.Domain.Entities.TaskItem { TaskItemId = 1, Title = "T", Status = "Open", CreatedDate = DateTime.Now, AssignedByApplicationUserId = 42 });
+        await ctx.SaveChangesAsync();
+
+        var result = await controller.UpdateStatus(1, "Completed", null, "action");
+
+        Assert.IsType<NotFoundResult>(result);
+        Assert.Equal("Open", ctx.TaskItems.Single().Status);
+    }
+
+    [Fact]
+    public async Task UpdateStatus_WithInvalidTransition_KeepsStatus()
+    {
+        var (controller, ctx) = await CreateController(nameof(UpdateStatus_WithInvalidTransition_KeepsStatus));
+        ctx.TaskItems.Add(new PEMS.Domain.Entities.TaskItem { TaskItemId = 1, Title = "T", Status = "Completed", CreatedDate = DateTime.Now, AssignedByApplicationUserId = 1 });
+        await ctx.SaveChangesAsync();
+
+        Assert.IsType<RedirectToActionResult>(await controller.UpdateStatus(1, "Whatever", null, "action"));
+        Assert.IsType<RedirectToActionResult>(await controller.UpdateStatus(1, "InProgress", null, "action"));
+        Assert.Equal("Completed", ctx.TaskItems.Single().Status);
+    }
+
+    [Fact]
+    public async Task Details_ForATaskTheUserIsNotInvolvedIn_ReturnsNotFound()
+    {
+        var (controller, ctx) = await CreateController(nameof(Details_ForATaskTheUserIsNotInvolvedIn_ReturnsNotFound));
+        ctx.TaskItems.Add(new PEMS.Domain.Entities.TaskItem { TaskItemId = 1, Title = "T", Status = "Open", CreatedDate = DateTime.Now, AssignedByApplicationUserId = 42 });
+        await ctx.SaveChangesAsync();
+
+        Assert.IsType<NotFoundResult>(await controller.Details(1));
     }
 }

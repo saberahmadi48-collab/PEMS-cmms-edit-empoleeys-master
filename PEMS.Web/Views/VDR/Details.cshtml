@@ -30,6 +30,10 @@
         ["LeadReview"] = Localizer["Vd_Role_Lead"].Value, ["ReturnToVendor"] = Localizer["Vd_Role_DocControl"].Value, ["Closed"] = "—"
     };
     var wfIsPendingResubmission = wfStatus == "PendingResubmission";
+    // تب پیش‌فرض: گردش‌کار (شروع یا ادامه‌ی چرخه‌ی بازبینی)؛ مدرک بسته‌شده با نمای کلی باز می‌شود
+    var vdrDefaultTab = wfStatus == "Closed" ? "overview" : "workflow";
+    // شماره‌ی بازنگری بعدی را سیستم پیشنهاد می‌کند (آخرین + ۱)؛ همین مقدار با فرم ارسال می‌شود
+    var nextRevisionNo = (Model.LatestRevisionNo ?? -1) + 1;
 
     int wfCurrentIndex;
     if (!string.IsNullOrEmpty(wfStageName) && Array.IndexOf(wfStageOrder, wfStageName) >= 0)
@@ -63,43 +67,41 @@
     };
 }
 
-@{ ViewData["Title"] = Model.DocumentNumber; }
+@{ ViewData["Title"] = Model.DocumentNumber; ViewData["HidePageTitle"] = true; }
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
 }
 
 <div class="vs-page">
 
-<div class="vs-header">
-    <div class="d-flex flex-wrap align-items-center gap-2">
-        <span class="vs-pill @VdrUi.WorkflowTone(Model.WorkflowStatus)">@VdrUi.Loc(Localizer, "St_", Model.WorkflowStatus)</span>
-        @if (Model.IsOverdue) { <span class="vs-pill vs-pill--danger">@Localizer["Vs_Overdue"]</span> }
-        <span class="vs-cell-strong">@Model.VendorName</span>
-        <span class="vs-cell-sub">&middot; @Model.ProjectName &middot; @Localizer["Vd_Rev"] @(Model.LatestRevisionNo ?? 0)</span>
-    </div>
-    <a asp-action="Index" class="vs-btn vs-btn--sm"><i class="bi bi-arrow-left"></i> @Localizer["Vs_Back"]</a>
-</div>
+<nav aria-label="@Localizer["Vd_Breadcrumb"]" class="small text-muted mb-2">
+    <a asp-action="Index">VDR</a> / <a asp-controller="Vendor" asp-action="Details" asp-route-id="@Model.VendorId">@Model.VendorName</a> / <span>@Model.DocumentNumber</span>
+</nav>
 
-<div class="vs-panel">
-    <div class="vs-panel__body">
-        <div class="vs-tracker">
-            @foreach (var st in wfStageDiagramModel.Stages)
-            {
-                var cls = st.State switch { StageItemState.Done => "vs-step--done", StageItemState.Current => "vs-step--current", StageItemState.Rejected => "vs-step--rejected", _ => "" };
-                <div class="vs-step @cls">
-                    <div class="vs-step__dot"><i class="bi @(st.State == StageItemState.Done ? "bi-check-lg" : st.IconCssClass)"></i></div>
-                    <div class="vs-step__label">@st.Label</div>
-                    <div class="vs-step__meta">@st.RoleLabel</div>
-                </div>
-            }
+<div class="vs-doc-head">
+    <div class="vs-doc-identity">
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+            <h1 class="vs-doc-number vs-num">@Model.DocumentNumber</h1>
+            <span class="vs-pill @VdrUi.WorkflowTone(Model.WorkflowStatus)">@VdrUi.Loc(Localizer, "St_", Model.WorkflowStatus)</span>
+            @if (Model.IsOverdue) { <span class="vs-pill vs-pill--danger">@Localizer["Vs_Overdue"]</span> }
+            <span class="vs-pill vs-pill--current">@Localizer["Vd_Rev"] <span class="vs-num">@(Model.LatestRevisionNo ?? 0)</span></span>
         </div>
+        <div class="vs-doc-meta">@Localizer["Vd_VendorLabel"] <a asp-controller="Vendor" asp-action="Details" asp-route-id="@Model.VendorId">@Model.VendorName</a> &middot; @Model.ProjectName@(string.IsNullOrEmpty(Model.DisciplineCodeRaw) ? "" : " · " + Model.DisciplineCodeRaw)</div>
+    </div>
+    <div class="vs-doc-actions">
+        <a asp-action="Index" class="vs-btn"><i class="bi bi-arrow-left" aria-hidden="true"></i> @Localizer["Vs_Back"]</a>
     </div>
 </div>
 
 <ul class="nav nav-tabs mb-3" id="vdrTabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
+        <button class="nav-link @(vdrDefaultTab == "overview" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
             <i class="bi bi-info-circle"></i> @Localizer["Vs_TabOverview"]
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link @(vdrDefaultTab == "workflow" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
+            <i class="bi bi-signpost-split"></i> @Localizer["Vs_TabWorkflow"]
         </button>
     </li>
     <li class="nav-item" role="presentation">
@@ -113,11 +115,6 @@
         </button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
-            <i class="bi bi-signpost-split"></i> @Localizer["Vs_TabWorkflow"]
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
             <i class="bi bi-envelope-paper"></i> @Localizer["Vs_TabCorrespondence"]
             @if (relatedLetters.Any()) { <span class="badge bg-secondary">@relatedLetters.Count</span> }
@@ -128,7 +125,7 @@
 <div class="tab-content">
 
 @* ===================== Overview ===================== *@
-<div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
+<div class="tab-pane fade @(vdrDefaultTab == "overview" ? "show active" : "")" id="tab-overview" role="tabpanel">
 <div class="vs-panel">
     <div class="vs-panel__body">
         <div class="vs-info">
@@ -573,7 +570,127 @@
 }
 
 @* ===================== Workflow (اکشن‌ها + تاریخچه‌ی واقعی) ===================== *@
-<div class="tab-pane fade" id="tab-workflow" role="tabpanel">
+<div class="tab-pane fade @(vdrDefaultTab == "workflow" ? "show active" : "")" id="tab-workflow" role="tabpanel">
+<section class="vs-panel mb-3" aria-labelledby="vdrStagesTitle">
+    <div class="vs-panel__body">
+        <h2 id="vdrStagesTitle" class="vs-section__title">@Localizer["Vd_ReviewStages"]</h2>
+        <div class="vs-tracker">
+            @foreach (var st in wfStageDiagramModel.Stages)
+            {
+                var cls = st.State switch { StageItemState.Done => "vs-step--done", StageItemState.Current => "vs-step--current", StageItemState.Rejected => "vs-step--rejected", _ => "" };
+                <div class="vs-step @cls" aria-current="@(st.State == StageItemState.Current ? "step" : null)">
+                    <div class="vs-step__dot"><i class="bi @(st.State == StageItemState.Done ? "bi-check-lg" : st.IconCssClass)" aria-hidden="true"></i></div>
+                    <div class="vs-step__label">@st.Label</div>
+                    <div class="vs-step__meta">@st.RoleLabel</div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+    @{
+        var workflowRunning = (bool)(ViewBag.WorkflowRunning ?? false);
+        var currentStageName = (string?)ViewBag.CurrentStageName;
+    }
+
+
+@if (!workflowRunning)
+{
+    var allDisciplinesForStart = ((IEnumerable<PEMS.Domain.Entities.Discipline>)ViewBag.AllDisciplines).ToList();
+
+    @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۶.۱ - همین لیست POI در EngineeringDocuments/Edit.cshtml (فیلد IssuePurpose) هم تکرار شده؛ اگر این‌جا تغییر کرد آن‌جا را هم به‌روزرسانی کنید. *@
+    <form asp-action="SubmitForReview" method="post" id="vdrStartForm">
+        <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+        <input type="hidden" name="revisionNo" value="@nextRevisionNo" />
+        <div class="row g-3 align-items-start">
+            <div class="col-lg-8">
+                <section class="vs-panel mb-3" aria-labelledby="vdrStep1Title">
+                    <div class="vs-panel__body">
+                        <div class="d-flex justify-content-between align-items-baseline gap-2 flex-wrap">
+                            <h2 id="vdrStep1Title" class="vs-section__title mb-1">@Localizer["Vd_Step1Title"]</h2>
+                            <span class="small text-muted">@Localizer["Vd_Step1Of"]</span>
+                        </div>
+                        <p class="small text-muted">@Localizer["Vd_Step1Hint"]</p>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="vdrTransmittal">@Localizer["Vd_VendorTransmittalReq"] <span class="text-danger" aria-hidden="true">*</span></label>
+                                <input id="vdrTransmittal" name="vendorTransmittalNo" class="form-control" required autocomplete="off" aria-describedby="vdrTransmittalHelp" />
+                                <div id="vdrTransmittalHelp" class="form-text">@Localizer["Vd_TransmittalHelp"]</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="vdrIssuedDate">@Localizer["Vd_VendorIssuedDate"]</label>
+                                <input id="vdrIssuedDate" name="vendorActualIssuedDate" type="date" class="form-control" aria-describedby="vdrIssuedHelp" />
+                                <div id="vdrIssuedHelp" class="form-text">@Localizer["Vd_IssuedDateHelp"]</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="vdrPoi">@Localizer["Vd_PoiFull"]</label>
+                                <select id="vdrPoi" name="purposeOfIssueCode" class="form-select" aria-describedby="vdrPoiHelp">
+                                    <option value="">@Localizer["Vd_SelectPurpose"]</option>
+                                    <option value="IFA">@Localizer["Vd_PoiOpt_IFA"]</option>
+                                    <option value="IFR">@Localizer["Vd_PoiOpt_IFR"]</option>
+                                    <option value="IFI">@Localizer["Vd_PoiOpt_IFI"]</option>
+                                    <option value="FI">@Localizer["Vd_PoiOpt_FI"]</option>
+                                    <option value="AB">AB @Localizer["Vd_LegacyTag"]</option>
+                                    <option value="AFD">AFD @Localizer["Vd_LegacyTag"]</option>
+                                </select>
+                                <div id="vdrPoiHelp" class="form-text">@Localizer["Vd_PoiHelp"]</div>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="form-label d-block" id="vdrRevLabel">@Localizer["Vd_Rev"]</span>
+                                <div class="form-control bg-body-secondary" aria-labelledby="vdrRevLabel" aria-describedby="vdrRevHelp">@nextRevisionNo</div>
+                                <div id="vdrRevHelp" class="form-text">@Localizer["Vd_SystemSetRev"]</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="vs-panel mb-3" aria-labelledby="vdrStep2Title">
+                    <div class="vs-panel__body">
+                        <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+                            <div>
+                                <h2 id="vdrStep2Title" class="vs-section__title mb-1">@Localizer["Vd_Step2Title"] <span class="fw-normal text-muted small">(@Localizer["Vd_Optional"])</span></h2>
+                                <p class="small text-muted mb-0" id="vdrDiscSummary" aria-live="polite" data-none="@Localizer["Vd_NoDiscSelected"]" data-some="@Localizer["Vd_DiscSelected"]">@Localizer["Vd_NoDiscSelected"]</p>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#vdrDiscPicker" aria-expanded="false" aria-controls="vdrDiscPicker">@Localizer["Vd_ChooseDisciplines"]</button>
+                        </div>
+                        <div class="collapse mt-3" id="vdrDiscPicker">
+                            <div class="small fw-bold mb-2">@Localizer["Vd_ReviewDisciplines"]</div>
+                            <div class="row">
+                                @foreach (var d in allDisciplinesForStart)
+                                {
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="disciplineIds" value="@d.DisciplineId" id="vdrDisc_@d.DisciplineId" data-name="@d.Name">
+                                            <label class="form-check-label small" for="vdrDisc_@d.DisciplineId">@d.Name</label>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-lg-4">
+                <section class="vs-panel" aria-labelledby="vdrSummaryTitle">
+                    <div class="vs-panel__body">
+                        <h2 id="vdrSummaryTitle" class="vs-section__title">@Localizer["Vd_ReviewSummary"]</h2>
+                        <dl class="small mb-3">
+                            <dt class="text-muted fw-normal">@Localizer["Vd_Reviewers"]</dt>
+                            <dd class="mb-2">@Localizer["Vd_Role_Lead"], @Localizer["Vd_Role_DocControl"]</dd>
+                            <dt class="text-muted fw-normal">@Localizer["Vd_Step2Title"]</dt>
+                            <dd class="mb-0" id="vdrSummaryDisc" data-none="@Localizer["Vd_None"]">@Localizer["Vd_None"]</dd>
+                        </dl>
+                        <button type="submit" class="btn btn-pems-solid w-100" id="vdrStartBtn" aria-describedby="vdrWhyDisabled"><i class="bi bi-play-fill" aria-hidden="true"></i> @Localizer["Vd_StartReview"]</button>
+                        <p id="vdrWhyDisabled" class="small text-warning-emphasis mt-2 mb-0" hidden>@Localizer["Vd_EnterTransmittalToEnable"]</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </form>
+}
+else
+{
 <div class="content-card mb-3">
     <h6 class="mb-3"><i class="bi bi-signpost-split"></i> @Localizer["Vd_ReviewWorkflow"]</h6>
 
@@ -582,55 +699,7 @@
         <p class="text-muted small">@Localizer["Vd_AlreadyRecorded"] @string.Join(", ", Model.Submissions.OrderBy(s => s.RevisionNo).Select(s => Localizer["Vd_Rev"].Value + " " + s.RevisionNo))</p>
     }
 
-    @{
-        var workflowRunning = (bool)(ViewBag.WorkflowRunning ?? false);
-        var currentStageName = (string?)ViewBag.CurrentStageName;
-    }
-
-    @if (!workflowRunning)
-    {
-        <p class="text-muted small">@Localizer["Vd_NoActiveCycle"]</p>
-        <form asp-action="SubmitForReview" method="post" class="row g-2">
-            <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-            <div class="col-md-2"><label class="form-label small">@Localizer["Vd_Rev"]</label><input name="revisionNo" type="number" min="0" class="form-control form-control-sm" value="@((Model.LatestRevisionNo ?? -1) + 1)" required /></div>
-            <div class="col-md-3"><label class="form-label small">@Localizer["Vd_VendorTransmittalReq"] <span class="text-danger">*</span></label><input name="vendorTransmittalNo" class="form-control form-control-sm" required /></div>
-            <div class="col-md-2"><label class="form-label small">@Localizer["Vd_VendorIssuedDate"]</label><input name="vendorActualIssuedDate" type="date" class="form-control form-control-sm" /></div>
-            <div class="col-md-2">
-                <label class="form-label small">@Localizer["Vd_Poi"]</label>
-                @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۶.۱ - همین لیست دقیقاً در
-                   EngineeringDocuments/Edit.cshtml (فیلد IssuePurpose) هم تکرار شده؛ اگر این‌جا تغییر داد آن‌جا را هم به‌روزرسانی کنید. *@
-                <select name="purposeOfIssueCode" class="form-select form-select-sm">
-                    <option value="">--</option>
-                    <option value="IFA">IFA</option>
-                    <option value="IFR">IFR</option>
-                    <option value="IFI">IFI</option>
-                    <option value="FI">FI</option>
-                    <option value="AB">AB @Localizer["Vd_LegacyTag"]</option>
-                    <option value="AFD">AFD @Localizer["Vd_LegacyTag"]</option>
-                </select>
-            </div>
-
-            <div class="col-12 mt-2">
-                <label class="form-label small fw-bold">@Localizer["Vd_ReviewDisciplines"]</label>
-                <div class="row">
-                    @foreach (var d in (IEnumerable<PEMS.Domain.Entities.Discipline>)ViewBag.AllDisciplines)
-                    {
-                        <div class="col-6 col-md-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="disciplineIds" value="@d.DisciplineId" id="vdrDisc_@d.DisciplineId">
-                                <label class="form-check-label small" for="vdrDisc_@d.DisciplineId">@d.Name</label>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-
-            <div class="col-12 mt-2">
-                <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-play-fill"></i> @Localizer["Vd_StartReview"]</button>
-            </div>
-        </form>
-    }
-    else if (currentStageName == "DisciplineReview")
+    @if (currentStageName == "DisciplineReview")
     {
         var reviewStatus = (IEnumerable<PEMS.Application.Interfaces.VdrReviewStatusItemDto>)ViewBag.ReviewStatus;
         var myDisciplineId = ViewBag.MyDisciplineId as int?;
@@ -727,6 +796,8 @@
         </form>
     }
 </div>
+}
+
 
 @* تاریخچه‌ی واقعی گردش‌کار از موتور عمومی (نه فقط رشته‌ی خلاصه‌ی وضعیت) *@
 <div class="content-card">
@@ -792,3 +863,40 @@
 
 </div>
 @* پایان vs-page *@
+
+@section Scripts {
+    <script>
+        (function () {
+            var form = document.getElementById('vdrStartForm');
+            if (!form) return;
+
+            // دکمه‌ی شروع تا ورود شماره‌ی ترنسمیتال غیرفعال است و دلیلش دیده می‌شود (بدون JS دکمه فعال می‌ماند و سرور خودش اعتبارسنجی می‌کند)
+            var input = document.getElementById('vdrTransmittal');
+            var button = document.getElementById('vdrStartBtn');
+            var why = document.getElementById('vdrWhyDisabled');
+            function syncStart() {
+                var ok = input.value.trim().length > 0;
+                button.disabled = !ok;
+                why.hidden = ok;
+            }
+            input.addEventListener('input', syncStart);
+            syncStart();
+
+            var boxes = Array.prototype.slice.call(form.querySelectorAll('input[name="disciplineIds"]'));
+            var summary = document.getElementById('vdrDiscSummary');
+            var side = document.getElementById('vdrSummaryDisc');
+            function syncDisciplines() {
+                var names = boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.getAttribute('data-name'); });
+                if (!names.length) {
+                    summary.textContent = summary.getAttribute('data-none');
+                    side.textContent = side.getAttribute('data-none');
+                } else {
+                    summary.textContent = summary.getAttribute('data-some').replace('{0}', names.length).replace('{1}', names.join(', '));
+                    side.textContent = names.join(', ');
+                }
+            }
+            boxes.forEach(function (b) { b.addEventListener('change', syncDisciplines); });
+            syncDisciplines();
+        })();
+    </script>
+}

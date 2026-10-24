@@ -1,0 +1,62 @@
+@using System.Globalization
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    // A bare page for iframes (the cartable's side detail pane): same styles and theme as the main layout, but no top bar, sidebar or notification
+    // plumbing. Anything that leaves the page (a form post, a link to another page) is sent to the top window, so actions run on the full page.
+    var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+    var currentTheme = PEMS.Web.Controllers.ThemeController.Normalize(Context.Request.Cookies[PEMS.Web.Controllers.ThemeController.CookieName]);
+}
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" dir="@(isRtl ? "rtl" : "ltr")" data-theme="@currentTheme" data-bs-theme="@(currentTheme is "turquoise" or "dark" ? "dark" : null)">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewData["Title"]?.ToString()) - PEMS</title>
+    @if (isRtl)
+    {
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    }
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-data-grid.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-glass.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-themes.css" asp-append-version="true" />
+    @if (isRtl)
+    {
+        <link rel="stylesheet" href="~/css/admin.rtl.css" asp-append-version="true" />
+    }
+    <link rel="stylesheet" href="~/PEMS.Web.styles.css" asp-append-version="true" />
+    <style>
+        body.pems-embed { margin: 0; padding: 12px; background: var(--pems-surface, #fff); }
+        body.pems-embed .pems-page-header { display: none; }
+    </style>
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="pems-embed">
+    @RenderBody()
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        // links and forms that leave this page act on the whole window, not inside the small pane
+        document.addEventListener('submit', function (e) { var f = e.target; if (f && f.tagName === 'FORM' && !f.target) f.target = '_top'; }, true);
+        document.addEventListener('click', function (e) {
+            var a = e.target.closest ? e.target.closest('a[href]') : null;
+            if (!a || a.target) return;
+            var href = a.getAttribute('href') || '';
+            if (href.charAt(0) === '#' || href.indexOf('javascript:') === 0 || a.hasAttribute('data-bs-toggle')) return;
+            a.target = '_top';
+        }, true);
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

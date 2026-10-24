@@ -2,7 +2,12 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 @using PEMS.Application.DTOs
+@using PEMS.Web.Helpers
+@using PEMS.Web.ViewModels
 @{
+    var bulk = (BulkAssignViewModel)ViewBag.BulkAssign;
+    var classes = (List<LookupItem>)ViewBag.Classes;
+    var selectedClassId = (int?)ViewBag.SelectedClassId;
     var equipments = (List<PEMS.Domain.Entities.Equipment>)ViewBag.Equipments;
     var criticalityByEquipment = (Dictionary<int, string>)ViewBag.CriticalityByEquipment;
     var noFilterApplied = (bool)ViewBag.NoFilterApplied;
@@ -35,18 +40,28 @@
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-collection"></i> @Localizer["تعریف دسته‌جمعی استراتژی نگهداری"]</h5>
+    <h5 class="mb-0"><i class="bi bi-collection"></i> @Localizer["Rcm_BulkAssign"]</h5>
     <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["بازگشت"]</a>
 </div>
-<p class="text-muted small">
-    طبق رویه‌ی واقعی RCM، معمولاً یک استراتژی برای خانواده‌ای از تجهیزات مشابه (مثلاً همه‌ی
-    پمپ‌های سانتریفیوژ یک واحد) تعریف می‌شه، نه یکی‌یکی. تجهیزات اول بر اساس <strong>واحد
-    (Area)</strong> و داخل هر واحد بر اساس <strong>@Localizer["نوع تجهیز"]</strong> دسته‌بندی شدن. کلاس
-    بحرانی‌بودن هر تجهیز (اگه از قبل تحلیل شده) کنارش نشون داده می‌شه.
-</p>
+<p class="text-muted small">@Localizer["Rcm_BulkHint"]</p>
 
 <div class="content-card mb-3">
     <form method="get" class="row g-2">
+        <div class="col-md-4">
+            <label class="form-label small mb-0">@Localizer["Rcm_Strategy"] (@Localizer["Rcm_ApprovedOrActive"])</label>
+            <select name="strategyId" class="form-select form-select-sm">
+                <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+                @foreach (var s in bulk.UsableStrategies) { <option value="@s.Id" selected="@(bulk.StrategyId == s.Id)">@s.Text</option> }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label small mb-0">@Localizer["Rcm_EquipmentClass"] (@Localizer["Rcm_IncludesSubclasses"])</label>
+            <select name="classId" class="form-select form-select-sm">
+                <option value="">@Localizer["Rcm_All"]</option>
+                @foreach (var c in classes) { <option value="@c.Id" selected="@(selectedClassId == c.Id)">@c.Text</option> }
+            </select>
+        </div>
+        <div class="col-md-4"></div>
         <div class="col-md-3">
             <label class="form-label small mb-0">@Localizer["Discipline (چندانتخابی)"]</label>
             <select name="disciplineIds" class="form-select form-select-sm" multiple size="4">
@@ -210,17 +225,14 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
                                                         var cls = criticalityByEquipment.GetValueOrDefault(eq.EquipmentId);
                                                         <tr>
                                                             <td style="width:30px;">
-                                                                <input type="checkbox" class="eq-check area-@areaSafeId type-@typeSafeId" name="equipmentIds" value="@eq.EquipmentId" />
+                                                                <input type="checkbox" class="eq-check area-@areaSafeId type-@typeSafeId" name="equipmentIds" value="@eq.EquipmentId" disabled="@(bulk.Candidates.TryGetValue(eq.EquipmentId, out var cand0) && !cand0.WillReceive)" />
                                                             </td>
                                                             <td class="small">@eq.TagNumber — @eq.Name</td>
                                                             <td>
-                                                                @if (!string.IsNullOrEmpty(cls))
+                                                                <span class="badge @RcmDisplay.CriticalityBadge(string.IsNullOrEmpty(cls) ? "Unrated" : cls)">@Localizer.Label("Criticality", string.IsNullOrEmpty(cls) ? "Unrated" : cls)</span>
+                                                                @if (bulk.Candidates.TryGetValue(eq.EquipmentId, out var cand) && !cand.WillReceive)
                                                                 {
-                                                                    <span class="badge @(cls == "A" ? "bg-danger" : cls == "B" ? "bg-warning text-dark" : "bg-secondary")">@cls</span>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <span class="text-muted small">-</span>
+                                                                    <span class="badge bg-warning text-dark" title="@Localizer["Rcm_Bulk_" + cand.Conflict]">@Localizer["Rcm_Bulk_" + cand.Conflict]</span>
                                                                 }
                                                             </td>
                                                         </tr>
@@ -240,62 +252,24 @@ else if (matchingCount.HasValue && matchingCount.Value > maxResults)
 
         <div class="col-md-7">
             <div class="content-card">
-                <h6 class="small fw-bold mb-3">تعریف استراتژی (روی همه‌ی تجهیزات انتخاب‌شده اعمال می‌شه)</h6>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">@Localizer["Strategy Type"]</label>
-                        <select name="strategyType" class="form-select" required>
-                            <option>@Localizer["Preventive"]</option>
-                            <option>@Localizer["Predictive"]</option>
-                            <option>@Localizer["CBM"]</option>
-                            <option>@Localizer["Corrective"]</option>
-                            <option value="RunToFailure">@Localizer["Run-to-Failure"]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">@Localizer["Failure Mode (ISO 14224)"]</label>
-                        <select name="failureModeCode" class="form-select">
-                            <option value="">@Localizer["-- انتخاب --"]</option>
-                            <option>@Localizer["Leakage"]</option><option>@Localizer["Fracture"]</option><option>@Localizer["Vibration"]</option>
-                            <option>@Localizer["Overheating"]</option><option>@Localizer["Blockage"]</option><option>@Localizer["ElectricalFault"]</option>
-                            <option>@Localizer["Other"]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">@Localizer["Consequence Category (RCM)"]</label>
-                        <select name="consequenceCategory" class="form-select" required>
-                            <option value="Safety">@Localizer["Safety"]</option>
-                            <option value="Environmental">@Localizer["Environmental"]</option>
-                            <option value="Operational" selected>@Localizer["Operational"]</option>
-                            <option value="Economic">@Localizer["Economic"]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">@Localizer["Recommended Trigger Type"]</label>
-                        <select name="recommendedTriggerType" class="form-select">
-                            <option value="Calendar">@Localizer["Calendar"]</option>
-                            <option value="Meter">@Localizer["Meter"]</option>
-                            <option value="Both">@Localizer["Both"]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">@Localizer["Frequency (راهنما)"]</label>
-                        <select name="frequency" class="form-select">
-                            <option>@Localizer["Daily"]</option><option>@Localizer["Weekly"]</option><option>@Localizer["Monthly"]</option>
-                            <option>@Localizer["Quarterly"]</option><option>@Localizer["Yearly"]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6"><label class="form-label">@Localizer["Start Date"]</label><input name="startDate" type="date" class="form-control" /></div>
-                    <div class="col-12">
-                        <label class="form-label">Justification (چرا این استراتژی برای این خانواده‌ی تجهیزات؟)</label>
-                        <textarea name="justification" class="form-control" rows="2" required></textarea>
-                    </div>
-                    <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
-                </div>
-
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-pems-solid"><i class="bi bi-check2-all"></i> اعمال روی تجهیزات انتخاب‌شده</button>
-                </div>
+                <h6 class="small fw-bold mb-3">@Localizer["Rcm_AssignSummary"]</h6>
+                @if (!bulk.StrategyId.HasValue)
+                {
+                    <div class="alert alert-info small">@Localizer["Rcm_PickStrategyFirst"]</div>
+                }
+                else
+                {
+                    var willReceive = bulk.Candidates.Values.Count(c => c.WillReceive);
+                    var conflicts = bulk.Candidates.Values.Count(c => !c.WillReceive);
+                    <input type="hidden" name="strategyId" value="@bulk.StrategyId" />
+                    <ul class="small">
+                        <li>@Localizer["Rcm_WillReceive"]: <strong>@willReceive</strong></li>
+                        <li>@Localizer["Rcm_HasConflict"]: <strong>@conflicts</strong> <span class="text-muted">(@Localizer["Rcm_ConflictsSkipped"])</span></li>
+                    </ul>
+                    <p class="small text-muted">@Localizer["Rcm_AssignAtomicNote"]</p>
+                    <button type="submit" class="btn btn-pems-solid" onclick="return confirm('@Localizer["Rcm_ConfirmBulkAssign"]');"><i class="bi bi-check2-all"></i> @Localizer["Rcm_AssignSelected"]</button>
+                }
+                <div class="small text-muted mt-3">@Localizer["Rcm_NeedTemplate"] <a asp-action="Create">@Localizer["Rcm_NewStrategy"]</a></div>
             </div>
         </div>
     </div>

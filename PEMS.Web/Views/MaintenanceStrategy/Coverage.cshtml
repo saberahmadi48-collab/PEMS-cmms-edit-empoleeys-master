@@ -1,0 +1,76 @@
+@model PEMS.Application.DTOs.StrategyCoverageDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Helpers
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var pct = Model.TotalEquipment == 0 ? 0 : Math.Round(100.0 * Model.CoveredEquipment / Model.TotalEquipment, 1);
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0"><i class="bi bi-pie-chart"></i> @Localizer["Rcm_Coverage"]</h5>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Rcm_Back"]</a>
+</div>
+<p class="text-muted small">@Localizer["Rcm_CoverageHint"]</p>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-3"><div class="content-card"><div class="text-muted small">@Localizer["Rcm_TotalEquipment"]</div><div class="h4 mb-0">@Model.TotalEquipment.ToString("N0")</div></div></div>
+    <div class="col-md-3"><div class="content-card"><div class="text-muted small">@Localizer["Rcm_CoveredEquipment"]</div><div class="h4 mb-0">@Model.CoveredEquipment.ToString("N0") <small class="text-muted">(@pct%)</small></div></div></div>
+    <div class="col-md-3"><div class="content-card"><div class="text-muted small">@Localizer["Rcm_Unrated"]</div><div class="h4 mb-0 @(Model.UnratedEquipment > 0 ? "text-warning" : "")">@Model.UnratedEquipment.ToString("N0")</div></div></div>
+    <div class="col-md-3"><div class="content-card"><div class="text-muted small">@Localizer["Rcm_Unclassified"]</div><div class="h4 mb-0 @(Model.UnclassifiedEquipment > 0 ? "text-warning" : "")">@Model.UnclassifiedEquipment.ToString("N0")</div></div></div>
+</div>
+
+@if (Model.UnratedEquipment == Model.TotalEquipment && Model.TotalEquipment > 0)
+{
+    <div class="alert alert-warning small"><i class="bi bi-exclamation-triangle"></i> @Localizer["Rcm_NoCriticalityData"]</div>
+}
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="content-card mb-3">
+            <h6 class="small fw-bold">@Localizer["Rcm_ByCriticality"]</h6>
+            <table class="table table-sm table-enterprise">
+                <thead><tr><th>@Localizer["Rcm_Criticality"]</th><th>@Localizer["Rcm_Total"]</th><th>@Localizer["Rcm_WithStrategy"]</th><th>@Localizer["Rcm_WithoutStrategy"]</th><th>%</th></tr></thead>
+                <tbody>
+                @foreach (var r in Model.ByCriticality)
+                {
+                    <tr><td><span class="badge @RcmDisplay.CriticalityBadge(r.Key)">@Localizer.Label("Criticality", r.Key)</span></td><td>@r.TotalEquipment.ToString("N0")</td><td>@r.WithApprovedStrategy.ToString("N0")</td><td>@r.WithoutStrategy.ToString("N0")</td><td>@r.CoveragePercent</td></tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="content-card mb-3">
+            <h6 class="small fw-bold">@Localizer["Rcm_ByClass"]</h6>
+            <div style="max-height:320px;overflow:auto">
+            <table class="table table-sm table-enterprise">
+                <thead><tr><th>@Localizer["Rcm_EquipmentClass"]</th><th>@Localizer["Rcm_Total"]</th><th>@Localizer["Rcm_WithStrategy"]</th><th>@Localizer["Rcm_WithoutStrategy"]</th><th>%</th></tr></thead>
+                <tbody>
+                @foreach (var r in Model.ByClass)
+                {
+                    <tr><td>@(string.IsNullOrEmpty(r.Key) ? Localizer["Rcm_Unclassified"].Value : r.Key)</td><td>@r.TotalEquipment.ToString("N0")</td><td>@r.WithApprovedStrategy.ToString("N0")</td><td>@r.WithoutStrategy.ToString("N0")</td><td>@r.CoveragePercent</td></tr>
+                }
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-card">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="small fw-bold mb-0">@Localizer["Rcm_CriticalWithoutStrategy"] (@Model.CriticalWithoutStrategyTotal.ToString("N0"))</h6>
+        <a asp-action="ExportUncovered" class="btn btn-sm btn-outline-secondary"><i class="bi bi-download"></i> CSV</a>
+    </div>
+    <table class="table table-sm table-enterprise">
+        <thead><tr><th>@Localizer["Rcm_Tag"]</th><th>@Localizer["Rcm_EquipmentName"]</th><th>@Localizer["Rcm_EquipmentClass"]</th><th>@Localizer["Rcm_AreaUnit"]</th></tr></thead>
+        <tbody>
+        @foreach (var r in Model.CriticalWithoutStrategy)
+        {
+            <tr><td><a asp-action="Tag" asp-route-equipmentId="@r.Equipment.EquipmentId">@r.Equipment.Tag</a></td><td class="small">@r.Equipment.Name</td><td class="small">@(r.Equipment.EquipmentClassName ?? "-")</td><td class="small">@(r.Equipment.Area ?? "-")</td></tr>
+        }
+        </tbody>
+    </table>
+    @if (!Model.CriticalWithoutStrategy.Any()) { <p class="text-muted small text-center py-2">@Localizer["Rcm_NoUncoveredCritical"]</p> }
+</div>

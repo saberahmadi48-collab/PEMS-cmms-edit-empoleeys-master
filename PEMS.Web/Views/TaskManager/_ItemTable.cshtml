@@ -1,0 +1,41 @@
+@model List<PEMS.Application.DTOs.WorkItemListItemDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var canRank = ViewData["CanRank"] is true;
+    var showBulk = ViewData["ShowBulk"] is true;
+    var showSpace = ViewData["ShowSpace"] is true;
+    var bucket = ViewData["Bucket"] as string;
+}
+@if (!Model.Any())
+{
+    <div class="vs-empty py-2 small">@Localizer["Tm_EmptyList"]</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-enterprise vs-dense mb-0 tm-table">
+            <thead>
+                <tr>
+                    @if (showBulk) { <th class="tm-col-check"><input type="checkbox" class="form-check-input" data-tm-bulk-all aria-label="@Localizer["Tm_SelectAll"]" /></th> }
+                    <th>@Localizer["Tm_Field_Key"]</th>
+                    @if (showSpace) { <th>@Localizer["Tm_Field_Space"]</th> }
+                    <th>@Localizer["Tm_Field_Title"]</th>
+                    <th>@Localizer["Tm_Field_Status"]</th>
+                    <th>@Localizer["Tm_Field_Priority"]</th>
+                    <th>@Localizer["Tm_Field_Assignee"]</th>
+                    <th>@Localizer["Tm_Field_DueDate"]</th>
+                    <th class="text-end">@Localizer["Tm_Field_StoryPointsShort"]</th>
+                    @if (canRank) { <th><span class="visually-hidden">@Localizer["Tm_Actions"]</span></th> }
+                </tr>
+            </thead>
+            <tbody data-tm-bucket="@bucket">
+                @foreach (var i in Model)
+                {
+                    <partial name="~/Views/TaskManager/_ItemRow.cshtml" model="i" view-data="ViewData" />
+                }
+            </tbody>
+        </table>
+    </div>
+}

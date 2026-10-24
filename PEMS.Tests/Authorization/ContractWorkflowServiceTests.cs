@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.DTOs;
 using PEMS.Domain.Entities;
@@ -557,10 +557,140 @@ public class ContractWorkflowServiceTests
         await GetToUnderReviewFullyApprovedAsync(ctx, workflow, contractId);
         var admin = await CreateUserWithRoleAsync(ctx, SystemRoles.SystemAdmin);
 
-        // موتور گردش‌کار نقش مرحله‌ی FinalApproval را اجباری می‌کند و SystemAdmin جانشین آن نیست
-        await Assert.ThrowsAsync<UnauthorizedAccessException>(
-            () => workflow.ApproveAsync(contractId, null, admin, 1, new[] { SystemRoles.SystemAdmin }, null));
+        // P0 (Fail-Closed): SystemAdmin برای Contracts.Approve بدون Grant صریح مجاز نیست (RequiresExplicitGrant). قبلاً ردِ
+        // کاربر-آگاه نادیده گرفته می‌شد و فقط نقش مرحله‌ی FinalApproval در موتور گردش‌کار استثنا می‌داد؛ حالا تایید زودتر و
+        // بدون استثنا رد می‌شود (و ContractController هم استثنای موتور را به پیام دوستانه تبدیل می‌کند).
+        var result = await workflow.ApproveAsync(contractId, null, admin, 1, new[] { SystemRoles.SystemAdmin }, null);
 
+        Assert.False(result.Success);
         Assert.NotEqual("Approved", ctx.Contracts.Single().Status);
+    }
+
+    // ==============================================================================
+    // P0-10 / D-OPEN-05 (تصمیم مالک ۲۰۲۶-۱۰-۱۴): ویرایشگر قرارداد ≠ تأییدکننده‌ی آن
+    // ==============================================================================
+
+    private static async Task SubmitAndReviewAllAsync(ContractWorkflowService workflow, int contractId, int? editorUserId)
+    {
+        var submitted = await workflow.SubmitForReviewAsync(contractId, null, 1, new[] { SystemRoles.ContractManager }, editorUserId);
+        Assert.True(submitted.Success);
+        foreach (var (discipline, role) in AllDisciplines)
+            await workflow.RecordDisciplineReviewAsync(contractId, discipline, "Approve", null, 1, new[] { role });
+    }
+
+    [Fact]
+    public async Task P010_SubmitForReview_RecordsTheEditorEvent_InTheSameSave()
+    {
+        var (ctx, workflow, _, contractId) = await CreateAsync(nameof(P010_SubmitForReview_RecordsTheEditorEvent_InTheSameSave));
+        var editor = await CreateUserWithRoleAsync(ctx, SystemRoles.ContractManager);
+
+        await workflow.SubmitForReviewAsync(contractId, null, 1, new[] { SystemRoles.ContractManager }, editor, "10.0.0.1");
+
+        var ev = Assert.Single(ctx.AuthorizationAuditLogs.Where(a => a.ResourceName == "Contracts" && a.ActionName == "Edit"));
+        Assert.Equal(editor, ev.UserId);
+        Assert.Equal(contractId.ToString(), ev.ResourceId);
+        Assert.Equal("Allow", ev.Decision);
+    }
+
+    [Fact]
+    public async Task P010_FailedSubmit_RecordsNoEditorEvent()
+    {
+        var (ctx, workflow, _, contractId) = await CreateAsync(nameof(P010_FailedSubmit_RecordsNoEditorEvent));
+        ctx.Contracts.Single().Status = "Approved";
+        await ctx.SaveChangesAsync();
+        var editor = await CreateUserWithRoleAsync(ctx, SystemRoles.ContractManager);
+
+        var result = await workflow.SubmitForReviewAsync(contractId, null, 1, new[] { SystemRoles.ContractManager }, editor);
+
+        Assert.False(result.Success);
+        Assert.False(ctx.AuthorizationAuditLogs.Any(a => a.ResourceName == "Contracts" && a.ActionName == "Edit"));
+    }
+
+    [Fact]
+    public async Task P010_Approve_ByTheUserWhoSubmittedTheContract_IsDeniedBySoD()
+    {
+        var (ctx, workflow, _, contractId) = await CreateAsync(nameof(P010_Approve_ByTheUserWhoSubmittedTheContract_IsDeniedBySoD));
+        var editor = await CreateUserWithRoleAsync(ctx, SystemRoles.ContractManager);
+        await SubmitAndReviewAllAsync(workflow, contractId, editor);
+
+        var result = await workflow.ApproveAsync(contractId, null, editor, 1, new[] { SystemRoles.ContractManager }, null);
+
+        Assert.False(result.Success);
+        Assert.Contains("تفکیک وظایف", result.Error);
+        Assert.Equal("UnderReview", ctx.Contracts.Single().Status);
+    }
+
+    [Fact]
+    public async Task P010_Approve_ByAnotherUser_AfterSomeoneElseEdited_Succeeds()
+    {
+        var (ctx, workflow, _, contractId) = await CreateAsync(nameof(P010_Approve_ByAnotherUser_AfterSomeoneElseEdited_Succeeds));
+        var editor = await CreateUserWithRoleAsync(ctx, SystemRoles.ContractManager);
+        var approver = await CreateUserWithRoleAsync(ctx, SystemRoles.ContractManager);
+        await SubmitAndReviewAllAsync(workflow, contractId, editor);
+
+        var result = await workflow.ApproveAsync(contractId, null, approver, 1, new[] { SystemRoles.ContractManager }, null);
+
+        Assert.True(result.Success);
+        Assert.Equal("Approved", ctx.Contracts.Single().Status);
+    }
+
+    [Fact]
+    public async Task P010_DisciplineReview_IsNotAnEdit_SoTheReviewerMayStillGiveFinalApproval()
+    {
+        var (ctx, workflow, _, contractId) = await CreateAsync(nameof(P010_DisciplineReview_IsNotAnEdit_SoTheReviewerMayStillGiveFinalApproval));
+        var editor = await CreateUserWithRoleAsync(ctx, SystemRoles.ContractManager);
+        await SubmitAndReviewAllAsync(workflow, contractId, editor);
+
+        Assert.Single(ctx.AuthorizationAuditLogs.Where(a => a.ResourceName == "Contracts" && a.ActionName == "Edit"));
+    }
+
+    private static async Task<int> SignedContractWithRevisionAsync(PEMSDbContext ctx, ContractWorkflowService workflow, int contractId, int? requesterUserId)
+    {
+        ctx.Contracts.Single().Status = "Signed";
+        await ctx.SaveChangesAsync();
+        var (ok, _, revisionId) = await workflow.RequestRevisionAsync(contractId, "Value", 120000m, "scope change", null, 1, requesterUserId);
+        Assert.True(ok);
+        return revisionId!.Value;
+    }
+
+    [Fact]
+    public async Task P010_ApproveRevision_ByTheRequester_IsDeniedBySoD_AndValueUnchanged()
+    {
+        var (ctx, workflow, _, contractId) = await CreateAsync(nameof(P010_ApproveRevision_ByTheRequester_IsDeniedBySoD_AndValueUnchanged));
+        var requester = await CreateUserWithRoleAsync(ctx, SystemRoles.ContractManager);
+        var revisionId = await SignedContractWithRevisionAsync(ctx, workflow, contractId, requester);
+
+        var result = await workflow.ApproveRevisionAsync(revisionId, 1, new[] { SystemRoles.ContractManager }, requester);
+
+        Assert.False(result.Success);
+        Assert.Equal("Pending", ctx.ContractRevisions.Single().Status);
+        Assert.Null(ctx.Contracts.Single().CurrentValue);
+    }
+
+    [Fact]
+    public async Task P010_ApproveRevision_ByAnotherAuthorizedUser_Succeeds()
+    {
+        var (ctx, workflow, _, contractId) = await CreateAsync(nameof(P010_ApproveRevision_ByAnotherAuthorizedUser_Succeeds));
+        var requester = await CreateUserWithRoleAsync(ctx, SystemRoles.ContractManager);
+        var approver = await CreateUserWithRoleAsync(ctx, SystemRoles.ContractManager);
+        var revisionId = await SignedContractWithRevisionAsync(ctx, workflow, contractId, requester);
+
+        var result = await workflow.ApproveRevisionAsync(revisionId, 1, new[] { SystemRoles.ContractManager }, approver);
+
+        Assert.True(result.Success);
+        Assert.Equal(120000m, ctx.Contracts.Single().CurrentValue);
+    }
+
+    [Fact]
+    public async Task P010_ApproveRevision_ByUserWithoutApprovePermission_IsDenied()
+    {
+        var (ctx, workflow, _, contractId) = await CreateAsync(nameof(P010_ApproveRevision_ByUserWithoutApprovePermission_IsDenied));
+        var revisionId = await SignedContractWithRevisionAsync(ctx, workflow, contractId, null);
+        var legal = await CreateUserWithRoleAsync(ctx, SystemRoles.Legal);   // Contracts.Edit فقط
+
+        var result = await workflow.ApproveRevisionAsync(revisionId, 1, new[] { SystemRoles.Legal }, legal);
+
+        Assert.False(result.Success);
+        Assert.Equal("Pending", ctx.ContractRevisions.Single().Status);
     }
 }

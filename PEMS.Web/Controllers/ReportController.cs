@@ -19,12 +19,16 @@ public class ReportController : Controller
     private readonly IProcurementReportService _procurementReportService;
     private readonly IOperationsReportService _operationsReportService;
     private readonly PEMSDbContext _context;
+    private readonly IPermissionService _permissionService;
+    private readonly PEMS.Web.Security.ICurrentUserService _currentUser;
 
     public ReportController(ICorrespondenceReportService service, IEngineeringReportService engineeringReportService,
         IVDRReportService vdrReportService, ICmmsReportService cmmsReportService,
         IProcurementReportService procurementReportService, IOperationsReportService operationsReportService,
-        PEMSDbContext context)
+        PEMSDbContext context, IPermissionService permissionService, PEMS.Web.Security.ICurrentUserService currentUser)
     {
+        _permissionService = permissionService;
+        _currentUser = currentUser;
         _service = service;
         _engineeringReportService = engineeringReportService;
         _vdrReportService = vdrReportService;
@@ -109,6 +113,11 @@ public class ReportController : Controller
     // طبق درخواست: گزارش‌گیری از بخش تدارکات (Procurement Package/MR/MRQ)
     public async Task<IActionResult> Procurement(int? projectId, int? disciplineId, DateTime? fromDate, DateTime? toDate, int page = 1)
     {
+        // P0-09 (D-OPEN-02، تصمیم مالک): ماژول «Report» مجوزی ندارد؛ این گزارش Package/MR/MRQ و زنجیره‌ی
+        // Tender→Contract→PO را نشان می‌دهد، پس نزدیک‌ترین مجوز موجود ProcurementPackage.View است.
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "ProcurementPackage", "View"))
+            return Forbid();
+
         ViewData["Title"] = "Procurement Report";
         ViewData["Section"] = "Engineering Management";
 

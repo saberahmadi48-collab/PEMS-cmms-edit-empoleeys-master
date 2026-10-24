@@ -1,0 +1,146 @@
+@model PEMS.Application.DTOs.LetterWorkspaceDashboardDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    bool canReview = ViewBag.CanReview == true;
+    int total = Math.Max(1, Model.TotalActive);
+
+    // یک کاشی عددی: شمارنده + برچسب (+ پیوند به فهرست فیلترشده). وضعیت «هشدار» با آیکون و متن هم نمایش داده می‌شود، نه فقط رنگ.
+    void Tile(string labelKey, int value, string icon, string? href = null, bool warn = false)
+    {
+        var inner = $"<i class=\"bi {icon}\" aria-hidden=\"true\"></i> <span class=\"vs-tile__label\">{System.Net.WebUtility.HtmlEncode(Localizer[labelKey].Value)}</span> <strong class=\"vs-tile__value\">{value}</strong>"
+            + (warn && value > 0 ? $" <span class=\"badge bg-danger\"><i class=\"bi bi-exclamation-triangle\" aria-hidden=\"true\"></i> {System.Net.WebUtility.HtmlEncode(Localizer["Lt_Dash_NeedsAction"].Value)}</span>" : "");
+        if (href != null)
+        {
+            <a class="vs-chip text-decoration-none" href="@href">@Html.Raw(inner)</a>
+        }
+        else
+        {
+            <span class="vs-chip">@Html.Raw(inner)</span>
+        }
+    }
+
+    void BarRow(string label, int value, string? href = null)
+    {
+        var pct = (int)Math.Round(100.0 * value / total);
+        <tr>
+            <th scope="row" class="fw-normal">@if (href != null) { <a href="@href">@label</a> } else { @label }</th>
+            <td style="width:45%">
+                <div class="progress" role="img" aria-label="@label: @value (@pct%)"><div class="progress-bar" style="width:@pct%"></div></div>
+            </td>
+            <td class="text-end"><strong>@value</strong> <span class="text-muted small">(@pct%)</span></td>
+        </tr>
+    }
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <p class="text-muted small mb-0">@Localizer["Lt_Dash_Scope"]</p>
+    <div class="d-flex flex-wrap gap-2">
+        @if (ViewBag.CanRunReminders == true)
+        {
+            <form asp-action="SendReminders" method="post" onsubmit="return confirm('@Localizer["Lt_RemindersConfirm"]');">
+                <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="bi bi-bell" aria-hidden="true"></i> @Localizer["Lt_RemindersRun"]</button>
+            </form>
+        }
+        <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left-short" aria-hidden="true"></i> @Localizer["Correspondence"]</a>
+    </div>
+</div>
+
+<section aria-label="@Localizer["Lt_Dash_Summary"]" class="vs-chips mb-3">
+    @{
+        Tile("Lt_Dash_TotalActive", Model.TotalActive, "bi-envelope", Url.Action("Index"));
+        Tile("Lt_Dash_Open", Model.OpenLetters, "bi-envelope-open");
+        if (canReview) { Tile("Lt_Dash_AwaitingApproval", Model.AwaitingApproval, "bi-patch-check", Url.Action("Index", new { status = "PendingApproval" }), warn: false); }
+        Tile("Lt_Dash_MyDrafts", Model.MyDrafts, "bi-pencil-square", Url.Action("Index", new { status = "Draft" }));
+        Tile("Lt_Dash_MyReturned", Model.MyReturnedForRevision, "bi-arrow-counterclockwise", Url.Action("Index", new { status = "ReturnedForRevision" }), warn: true);
+        Tile("Lt_Dash_MyReferrals", Model.MyOpenReferrals, "bi-person-check", Url.Action("MyReferrals"));
+        Tile("Lt_Dash_OpenReferrals", Model.OpenReferrals, "bi-signpost-split", Url.Action("Index", new { hasReferrals = true }));
+        Tile("Lt_Dash_OverdueReferrals", Model.OverdueReferrals, "bi-clock-history", Url.Action("Index", new { overdueReferral = true }), warn: true);
+        Tile("Lt_Dash_OverdueResponses", Model.OverdueResponses, "bi-reply", Url.Action("Index", new { overdueResponse = true }), warn: true);
+        Tile("Lt_Dash_Received30", Model.ReceivedLast30Days, "bi-inbox-fill");
+        Tile("Lt_Dash_Issued30", Model.IssuedLast30Days, "bi-send-fill");
+    }
+</section>
+
+<div class="row g-3">
+    <div class="col-lg-6">
+        <div class="content-card h-100">
+            <h2 class="vs-section__title">@Localizer["Lt_Dash_NeedsAttention"]</h2>
+            @if (!Model.NeedsAttention.Any())
+            {
+                <p class="text-muted mb-0"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Lt_Dash_NothingOverdue"]</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-enterprise mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">@Localizer["Letter No"]</th>
+                                <th scope="col">@Localizer["Subject"]</th>
+                                <th scope="col">@Localizer["Lt_Dash_Reason"]</th>
+                                <th scope="col">@Localizer["Lt_Dash_DaysOverdue"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.NeedsAttention)
+                            {
+                                <tr>
+                                    <td class="small">@item.LetterNumber</td>
+                                    <td><a asp-action="Details" asp-route-id="@item.LetterId">@item.Subject</a></td>
+                                    <td class="small">
+                                        <i class="bi @(item.Reason == "OverdueReferral" ? "bi-signpost-split" : "bi-reply")" aria-hidden="true"></i>
+                                        @Localizer[item.Reason == "OverdueReferral" ? "Lt_Dash_ReasonReferral" : "Lt_Dash_ReasonResponse"]
+                                    </td>
+                                    <td class="small pems-due-overdue"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> @item.DaysOverdue <span class="text-muted fw-normal">(@item.DueDate.ToString("yyyy-MM-dd"))</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="content-card h-100">
+            <h2 class="vs-section__title">@Localizer["Lt_Dash_Aging"]</h2>
+            <p class="text-muted small">@Localizer["Lt_Dash_AgingNote"]</p>
+            <table class="table table-sm mb-0">
+                <tbody>
+                    @foreach (var b in Model.Aging) { BarRow(Localizer["Lt_Dash_Age_" + b.Key].Value, b.Count); }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="content-card h-100">
+            <h2 class="vs-section__title">@Localizer["Lt_Dash_ByStatus"]</h2>
+            <table class="table table-sm mb-0"><tbody>
+                @foreach (var kv in Model.ByStatus.OrderByDescending(x => x.Value)) { BarRow(kv.Key, kv.Value, Url.Action("Index", new { status = kv.Key })); }
+            </tbody></table>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="content-card h-100">
+            <h2 class="vs-section__title">@Localizer["Lt_Dash_ByType"]</h2>
+            <table class="table table-sm mb-0"><tbody>
+                @foreach (var kv in Model.ByType.OrderByDescending(x => x.Value)) { BarRow(kv.Key, kv.Value, Url.Action("Index", new { letterType = kv.Key })); }
+            </tbody></table>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="content-card h-100">
+            <h2 class="vs-section__title">@Localizer["Lt_Dash_ByPriority"]</h2>
+            <table class="table table-sm mb-0"><tbody>
+                @foreach (var kv in Model.ByPriority.OrderByDescending(x => x.Value)) { BarRow(Localizer["Lt_P_" + kv.Key].Value, kv.Value, Url.Action("Index", new { priority = kv.Key })); }
+            </tbody></table>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-letter-index.css" asp-append-version="true" />
+}

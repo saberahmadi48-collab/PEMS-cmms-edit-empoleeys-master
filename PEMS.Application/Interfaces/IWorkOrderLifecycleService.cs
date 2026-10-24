@@ -44,4 +44,10 @@ public interface IWorkOrderLifecycleService
 
     /// <summary>آیا Work Order تحت چرخه‌عمر حاکمیتی است (Instance دارد).</summary>
     Task<bool> IsGovernedAsync(int workOrderId);
+
+    /// <summary>
+    /// بازگشایی رسمی Work Order بسته‌شده (H28): مجوز جدا (WorkOrder.Reopen)، دلیل الزامی، ممیزی کامل (WorkOrderStatusHistory + WorkflowHistory + WorkOrderChangeLog).
+    /// Work Order حاکمیتی به مرحله‌ی «تأیید دیسیپلین مبدأ» (وضعیت Completed) برمی‌گردد تا اصلاح ساعت‌کار/قطعات (با دلیل و ممیزی) و تأیید و تصویب نهایی دوباره انجام شود.
+    /// </summary>
+    Task<(bool Success, string? Error)> ReopenAsync(int workOrderId, string? reason, WorkOrderActor actor, string? userName = null, int? userId = null, string? ipAddress = null);
 }

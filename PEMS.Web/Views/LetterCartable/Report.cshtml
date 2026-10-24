@@ -1,0 +1,116 @@
+@model PEMS.Application.DTOs.CartableReportDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var noData = Localizer["Chart_NoData"].Value;
+    var slaItems = new List<(string, double)>
+    {
+        (Localizer["Ct_SlaOnTime"].Value, Model.AnsweredOnTime),
+        (Localizer["Ct_SlaLate"].Value, Model.AnsweredLate),
+        (Localizer["Ct_SlaOpenOverdue"].Value, Model.OpenOverdue),
+        (Localizer["Ct_SlaOpenWithin"].Value, Model.OpenWithinSla)
+    }.Where(x => x.Item2 > 0).ToList();
+    var slaChart = BkChartSpec.Donut(Localizer["Ct_SlaTitle"].Value, noData, Localizer["Total"].Value, slaItems,
+        new[] { BkChartSpec.Positive, BkChartSpec.Warning, BkChartSpec.Negative, BkChartSpec.Primary });
+    var gauge = BkChartSpec.Gauge(Localizer["Ct_SlaOnTimePercent"].Value, noData, Localizer["Ct_SlaOnTimePercent"].Value,
+        Model.ResponseRequired == 0 ? null : Model.OnTimePercent, "%", 0);
+    var monthChart = BkChartSpec.MonthlyBars(Localizer["Ct_ByMonth"].Value, noData, Model.ByMonth.Select(x => x.Label),
+        BkSeries.Of(Localizer["Ct_Received"].Value, Model.ByMonth.Select(x => x.Count), BkChartSpec.Primary));
+    var disciplineChart = BkChartSpec.HBars(Localizer["Ct_ByDiscipline"].Value, noData, Model.ByDiscipline.Select(x => x.Label), false,
+        new BkSeries(Localizer["Ct_Received"].Value, Model.ByDiscipline.Select(x => (double)x.Count).ToList(), BkChartSpec.Accent));
+    string Days(double? d) => d.HasValue ? d.Value.ToString("0.0") : "—";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-cartable.css" asp-append-version="true" />
+    <partial name="_BkChartStyles" />
+}
+
+<div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+    <a asp-controller="Letter" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left-right" aria-hidden="true"></i> @Localizer["Correspondence"]</a>
+    <form method="get" class="d-flex flex-wrap align-items-end gap-2 ms-auto">
+        <div><label class="form-label small mb-0" for="rFrom">@Localizer["Lp_From"]</label><input id="rFrom" type="date" name="from" value="@Model.FromDate.ToString("yyyy-MM-dd")" class="form-control form-control-sm" /></div>
+        <div><label class="form-label small mb-0" for="rTo">@Localizer["Lp_To"]</label><input id="rTo" type="date" name="to" value="@Model.ToDate.ToString("yyyy-MM-dd")" class="form-control form-control-sm" /></div>
+        <button class="btn btn-sm btn-pems-solid"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Apply"]</button>
+    </form>
+</div>
+
+<div class="ct-report">
+    <section aria-label="@Localizer["Ct_ReportPersonal"]">
+        <div class="ct-kpis">
+            <div class="ct-kpi"><div class="v">@Model.Received</div><div class="l">@Localizer["Ct_Received"]</div></div>
+            <div class="ct-kpi @(Model.Unread > 0 ? "warn" : "")"><div class="v">@Model.Unread</div><div class="l">@Localizer["Ct_Unread"]</div></div>
+            <div class="ct-kpi"><div class="v">@Model.Sent</div><div class="l">@Localizer["Ct_FolderSent"]</div></div>
+            <div class="ct-kpi"><div class="v">@Model.OpenReferrals</div><div class="l">@Localizer["Ct_OpenReferrals"]</div></div>
+            <div class="ct-kpi @(Model.OverdueReferrals > 0 ? "warn" : "")"><div class="v">@Model.OverdueReferrals</div><div class="l">@Localizer["Ct_OverdueReferrals"]</div></div>
+            <div class="ct-kpi good"><div class="v">@Model.CompletedReferrals</div><div class="l">@Localizer["Ct_CompletedReferrals"]</div></div>
+            <div class="ct-kpi"><div class="v">@Days(Model.AvgReferralDays)</div><div class="l">@Localizer["Ct_AvgReferralDays"]</div></div>
+        </div>
+    </section>
+
+    <div class="ct-report-grid">
+        <section class="ct-card" aria-labelledby="slaH">
+            <h2 id="slaH">@Localizer["Ct_SlaTitle"]</h2>
+            <p class="small text-muted">@Localizer["Ct_SlaHint"]</p>
+            <div class="row g-3 align-items-center">
+                <div class="col-sm-6"><partial name="_BkChart" model="@slaChart" /></div>
+                <div class="col-sm-6"><partial name="_BkChart" model="@gauge" /></div>
+            </div>
+            <div class="ct-kpis mt-3">
+                <div class="ct-kpi"><div class="v">@Model.ResponseRequired</div><div class="l">@Localizer["Ct_SlaRequired"]</div></div>
+                <div class="ct-kpi"><div class="v">@Days(Model.AvgResponseDays)</div><div class="l">@Localizer["Ct_AvgResponseDays"]</div></div>
+                <div class="ct-kpi @(Model.OpenOverdue > 0 ? "warn" : "")"><div class="v">@Model.OpenOverdue</div><div class="l">@Localizer["Ct_SlaOpenOverdue"]</div></div>
+            </div>
+        </section>
+        <section class="ct-card" aria-labelledby="monthH">
+            <h2 id="monthH">@Localizer["Ct_ByMonth"]</h2>
+            <partial name="_BkChart" model="@monthChart" />
+        </section>
+        <section class="ct-card" aria-labelledby="discH">
+            <h2 id="discH">@Localizer["Ct_ByDiscipline"]</h2>
+            <partial name="_BkChart" model="@disciplineChart" />
+        </section>
+    </div>
+
+    @if (Model.HasSubordinates)
+    {
+        <section class="ct-card" aria-labelledby="subH">
+            <h2 id="subH">@Localizer["Ct_SubordinatesTitle"]</h2>
+            <p class="small text-muted">@Localizer["Ct_SubordinatesHint"]</p>
+            <div class="table-responsive">
+                <table class="ct-table">
+                    <thead>
+                        <tr>
+                            <th>@Localizer["Ct_Employee"]</th>
+                            <th class="num">@Localizer["Ct_Received"]</th>
+                            <th class="num">@Localizer["Ct_Unread"]</th>
+                            <th class="num">@Localizer["Ct_OpenReferrals"]</th>
+                            <th class="num">@Localizer["Ct_OverdueReferrals"]</th>
+                            <th class="num">@Localizer["Ct_CompletedReferrals"]</th>
+                            <th class="num">@Localizer["Ct_AvgReferralDays"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var s in Model.Subordinates)
+                        {
+                            <tr>
+                                <td><div>@(new string('—', Math.Max(0, s.Depth - 1)))@(s.Depth > 1 ? " " : "")@s.Name</div><div class="small text-muted">@s.Position</div></td>
+                                <td class="num">@s.Received</td>
+                                <td class="num">@s.Unread</td>
+                                <td class="num">@s.OpenReferrals</td>
+                                <td class="num @(s.OverdueReferrals > 0 ? "bad" : "")">@s.OverdueReferrals</td>
+                                <td class="num">@s.CompletedReferrals</td>
+                                <td class="num">@Days(s.AvgReferralDays)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_BkChartScripts" />
+}

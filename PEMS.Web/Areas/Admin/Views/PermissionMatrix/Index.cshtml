@@ -3,63 +3,170 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    var roles = (string[])ViewBag.Roles;
+    var roles = ((string[])ViewBag.Roles).Where(r => r != "SystemAdmin").ToArray();
     var modules = (string[])ViewBag.Modules;
+
+    // ده عمل ثابت ماتریس. Key = نام عمل در سرویس ذخیره؛ Prop = نام فیلد فرم بدون JavaScript؛
+    // Risk = رنگ‌بندی (safe/normal/warn/caution/danger) برای تفکیک بصری عمل‌های پرخطر.
+    var actions = new (string Key, string Prop, string Label, string Icon, string Risk)[]
+    {
+        ("View", "CanView", "View", "bi-eye", "safe"),
+        ("Create", "CanCreate", "Create", "bi-plus-circle", "normal"),
+        ("Edit", "CanEdit", "Edit", "bi-pencil", "normal"),
+        ("Delete", "CanDelete", "Delete", "bi-trash", "danger"),
+        ("Approve", "CanApprove", "Approve", "bi-check2-circle", "warn"),
+        ("ManualNumber", "CanManualNumber", "Manual #", "bi-hash", "normal"),
+        ("Freeze", "CanFreeze", "Freeze", "bi-lock", "caution"),
+        ("Unfreeze", "CanUnfreeze", "Unfreeze", "bi-unlock", "caution"),
+        ("Hold", "CanHold", "Hold", "bi-pause-circle", "caution"),
+        ("ReleaseHold", "CanReleaseHold", "Release Hold", "bi-play-circle", "caution")
+    };
+
+    bool Flag(PEMS.Application.DTOs.RolePermissionDto? e, string key) => e != null && key switch
+    {
+        "View" => e.CanView, "Create" => e.CanCreate, "Edit" => e.CanEdit, "Delete" => e.CanDelete,
+        "Approve" => e.CanApprove, "ManualNumber" => e.CanManualNumber, "Freeze" => e.CanFreeze,
+        "Unfreeze" => e.CanUnfreeze, "Hold" => e.CanHold, "ReleaseHold" => e.CanReleaseHold, _ => false
+    };
+    bool AnyFlag(PEMS.Application.DTOs.RolePermissionDto? e) => e != null && actions.Any(a => Flag(e, a.Key));
+
+    // یک جستجوی O(1) به‌جای FirstOrDefault روی کل ماتریس برای هر خانه
+    var rowLookup = Model.GroupBy(x => (x.RoleName, x.ModuleName)).ToDictionary(g => g.Key, g => g.First());
+    PEMS.Application.DTOs.RolePermissionDto? RowFor(string role, string module) => rowLookup.TryGetValue((role, module), out var r) ? r : null;
+    int ConfiguredCount(string role) => modules.Count(m => AnyFlag(RowFor(role, m)));
 }
 
-<div class="admin-page-shell">
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-permission-matrix.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script type="application/json" id="pmI18n">
+        @Json.Serialize(new Dictionary<string, string>
+        {
+            ["saving"] = Localizer["PermMx_Saving"].Value,
+            ["saved"] = Localizer["PermMx_Saved"].Value,
+            ["failed"] = Localizer["PermMx_SaveFailed"].Value,
+            ["retry"] = Localizer["PermMx_Retry"].Value,
+            ["dismiss"] = Localizer["PermMx_Dismiss"].Value,
+            ["savedCount"] = Localizer["PermMx_SavedCount"].Value,
+            ["modulesFormat"] = Localizer["PermMx_ModulesFormat"].Value,
+            ["noPermissions"] = Localizer["No permissions configured"].Value,
+            ["rolesShown"] = Localizer["PermMx_RolesShown"].Value,
+            ["noRoleMatch"] = Localizer["PermMx_NoRoleMatch"].Value,
+            ["errorGeneric"] = Localizer["PermMx_Error_Generic"].Value,
+            ["UnknownRole"] = Localizer["PermMx_Error_UnknownRole"].Value,
+            ["SystemAdminExcluded"] = Localizer["PermMx_Error_SystemAdmin"].Value,
+            ["UnknownModule"] = Localizer["PermMx_Error_UnknownModule"].Value
+        })
+    </script>
+    <script src="~/js/pems-permission-matrix.js" asp-append-version="true"></script>
+}
+
+<div class="admin-page-shell" id="pmRoot" data-url="@Url.Action("SetCells", "PermissionMatrix", new { area = "Admin" })" data-total-modules="@modules.Length">
+    @Html.AntiForgeryToken()
     <div class="admin-hero">
         <div class="d-flex align-items-center gap-3">
-            <div><p>Configure module-level permissions. Changes are saved per role and module.</p></div>
+            <div><p>@Localizer["PermMx_Intro"]</p></div>
         </div>
     </div>
     <div class="content-card">
         <div class="permission-intro"><i class="bi bi-info-circle me-1"></i> <strong>SystemAdmin</strong> has full access and is intentionally excluded. All other roles follow deny-by-default when no permission record exists.</div>
-        <div class="permission-role-jump mb-3">
-            @foreach (var role in roles.Where(r => r != "SystemAdmin"))
+
+        <div class="pm-toolbar" role="search">
+            <div class="pm-search">
+                <i class="bi bi-search" aria-hidden="true"></i>
+                <input type="search" id="pmRoleSearch" class="form-control form-control-sm" placeholder="@Localizer["PermMx_SearchRoles"]" aria-label="@Localizer["PermMx_SearchRoles"]" autocomplete="off" />
+            </div>
+            <div class="pm-search">
+                <i class="bi bi-grid-3x3-gap" aria-hidden="true"></i>
+                <input type="search" id="pmModuleSearch" class="form-control form-control-sm" placeholder="@Localizer["PermMx_SearchModules"]" aria-label="@Localizer["PermMx_SearchModules"]" autocomplete="off" />
+            </div>
+            <select id="pmStatusFilter" class="form-select form-select-sm pm-filter" aria-label="@Localizer["PermMx_FilterLabel"]">
+                <option value="all">@Localizer["PermMx_FilterAll"]</option>
+                <option value="configured">@Localizer["PermMx_FilterConfigured"]</option>
+                <option value="unconfigured">@Localizer["PermMx_FilterUnconfigured"]</option>
+            </select>
+            <div class="btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-outline-secondary" id="pmExpandAll"><i class="bi bi-arrows-expand"></i> @Localizer["PermMx_ExpandAll"]</button>
+                <button type="button" class="btn btn-outline-secondary" id="pmCollapseAll"><i class="bi bi-arrows-collapse"></i> @Localizer["PermMx_CollapseAll"]</button>
+            </div>
+            <span class="pm-global-status small" id="pmGlobalStatus" role="status" aria-live="polite"></span>
+            <span class="small text-body-secondary ms-auto" id="pmRolesShown"></span>
+        </div>
+
+        <div class="permission-role-jump mb-3" id="pmChips">
+            @foreach (var role in roles)
             {
-                var count = Model.Count(x => x.RoleName == role && (x.CanView || x.CanCreate || x.CanEdit || x.CanDelete || x.CanApprove || x.CanManualNumber || x.CanFreeze || x.CanUnfreeze || x.CanHold || x.CanReleaseHold));
-                <a href="#role-@role" class="badge text-decoration-none @(count == 0 ? "text-bg-secondary" : "text-bg-light border")">@role <span class="opacity-75">(@count)</span></a>
+                var count = ConfiguredCount(role);
+                <a href="#role-@role" class="badge text-decoration-none pm-chip @(count == 0 ? "text-bg-secondary" : "text-bg-light border")" data-role="@role">@role <span class="opacity-75 pm-chip-count">(@count/@modules.Length)</span></a>
             }
         </div>
-        @foreach (var role in roles.Where(r => r != "SystemAdmin"))
+        <div id="pmNoRole" class="alert alert-secondary py-2 small d-none">@Localizer["PermMx_NoRoleMatch"]</div>
+
+        @foreach (var role in roles)
         {
-            var configuredCount = Model.Count(x => x.RoleName == role && (x.CanView || x.CanCreate || x.CanEdit || x.CanDelete || x.CanApprove || x.CanManualNumber || x.CanFreeze || x.CanUnfreeze || x.CanHold || x.CanReleaseHold));
-            <details class="permission-role" id="role-@role" open>
-                <summary class="permission-role-title"><span><i class="bi bi-person-badge me-1"></i>@role</span><span class="text-body-secondary small">@(configuredCount == 0 ? Localizer["No permissions configured"] : $"{configuredCount}/{modules.Length} " + Localizer["modules configured"])</span></summary>
-                <form asp-action="SetRole" method="post">
+            var configuredCount = ConfiguredCount(role);
+            <details class="permission-role" id="role-@role" data-role="@role" data-configured="@configuredCount">
+                <summary class="permission-role-title">
+                    <span><i class="bi bi-person-badge me-1"></i>@role</span>
+                    <span class="d-flex align-items-center gap-3">
+                        <span class="pm-role-status small" role="status" aria-live="polite"></span>
+                        <span class="text-body-secondary small pm-role-count">@(configuredCount == 0 ? Localizer["No permissions configured"] : $"{configuredCount}/{modules.Length} " + Localizer["modules configured"])</span>
+                    </span>
+                </summary>
+                <form asp-action="SetRole" method="post" class="pm-form">
                     <input type="hidden" name="roleName" value="@role" />
-                    <div class="permission-grid">
-                        <table class="table table-enterprise">
-                            <thead><tr><th>@Localizer["Module"]</th><th>@Localizer["View"]</th><th>@Localizer["Create"]</th><th>@Localizer["Edit"]</th><th>@Localizer["Delete"]</th><th>@Localizer["Approve"]</th><th>@Localizer["Manual #"]</th><th>@Localizer["Freeze"]</th><th>@Localizer["Unfreeze"]</th><th>@Localizer["Hold"]</th><th>@Localizer["Release Hold"]</th></tr></thead>
+                    <div class="permission-grid pm-grid">
+                        <table class="table table-enterprise pm-table" data-role="@role">
+                            <thead>
+                                <tr>
+                                    <th class="pm-module-col">@Localizer["Module"]</th>
+                                    @foreach (var a in actions)
+                                    {
+                                        <th class="pm-col pm-risk-@a.Risk" data-action="@a.Key" title="@Localizer["PermMx_Tip_" + a.Key]">
+                                            <span class="pm-col-label"><i class="bi @a.Icon" aria-hidden="true"></i><span>@Localizer[a.Label]</span></span>
+                                            <input type="checkbox" class="form-check-input pm-col-all" data-action="@a.Key"
+                                                   aria-label="@string.Format(Localizer["PermMx_ColToggle"].Value, Localizer[a.Label].Value)"
+                                                   title="@string.Format(Localizer["PermMx_ColToggle"].Value, Localizer[a.Label].Value)" />
+                                        </th>
+                                    }
+                                </tr>
+                            </thead>
                             <tbody>
                             @for (int i = 0; i < modules.Length; i++)
                             {
                                 var module = modules[i];
-                                var existing = Model.FirstOrDefault(x => x.RoleName == role && x.ModuleName == module);
-                                <tr>
-                                    <td><span class="row-primary">@module</span><input type="hidden" name="permissions[@i].ModuleName" value="@module" /></td>
-                                    <td><input class="form-check-input" type="checkbox" name="permissions[@i].CanView" value="true" checked="@(existing?.CanView ?? false)" aria-label="View @module" /><input type="hidden" name="permissions[@i].CanView" value="false" /></td>
-                                    <td><input class="form-check-input" type="checkbox" name="permissions[@i].CanCreate" value="true" checked="@(existing?.CanCreate ?? false)" aria-label="Create @module" /><input type="hidden" name="permissions[@i].CanCreate" value="false" /></td>
-                                    <td><input class="form-check-input" type="checkbox" name="permissions[@i].CanEdit" value="true" checked="@(existing?.CanEdit ?? false)" aria-label="Edit @module" /><input type="hidden" name="permissions[@i].CanEdit" value="false" /></td>
-                                    <td><input class="form-check-input" type="checkbox" name="permissions[@i].CanDelete" value="true" checked="@(existing?.CanDelete ?? false)" aria-label="Delete @module" /><input type="hidden" name="permissions[@i].CanDelete" value="false" /></td>
-                                    <td><input class="form-check-input" type="checkbox" name="permissions[@i].CanApprove" value="true" checked="@(existing?.CanApprove ?? false)" aria-label="Approve @module" /><input type="hidden" name="permissions[@i].CanApprove" value="false" /></td>
-                                    <td><input class="form-check-input" type="checkbox" name="permissions[@i].CanManualNumber" value="true" checked="@(existing?.CanManualNumber ?? false)" aria-label="Manual numbering @module" /><input type="hidden" name="permissions[@i].CanManualNumber" value="false" /></td>
-                                    <td><input class="form-check-input" type="checkbox" name="permissions[@i].CanFreeze" value="true" checked="@(existing?.CanFreeze ?? false)" aria-label="Freeze @module" /><input type="hidden" name="permissions[@i].CanFreeze" value="false" /></td>
-                                    <td><input class="form-check-input" type="checkbox" name="permissions[@i].CanUnfreeze" value="true" checked="@(existing?.CanUnfreeze ?? false)" aria-label="Unfreeze @module" /><input type="hidden" name="permissions[@i].CanUnfreeze" value="false" /></td>
-                                    <td><input class="form-check-input" type="checkbox" name="permissions[@i].CanHold" value="true" checked="@(existing?.CanHold ?? false)" aria-label="Hold @module" /><input type="hidden" name="permissions[@i].CanHold" value="false" /></td>
-                                    <td><input class="form-check-input" type="checkbox" name="permissions[@i].CanReleaseHold" value="true" checked="@(existing?.CanReleaseHold ?? false)" aria-label="Release Hold @module" /><input type="hidden" name="permissions[@i].CanReleaseHold" value="false" /></td>
+                                var existing = RowFor(role, module);
+                                <tr data-module="@module" data-configured="@(AnyFlag(existing) ? "1" : "0")">
+                                    <td class="pm-module-cell">
+                                        <span class="pm-module-wrap">
+                                            <input type="checkbox" class="form-check-input pm-row-all"
+                                                   aria-label="@string.Format(Localizer["PermMx_RowToggle"].Value, module)"
+                                                   title="@string.Format(Localizer["PermMx_RowToggle"].Value, module)" />
+                                            <span class="row-primary pm-module-name">@module</span>
+                                        </span>
+                                        <input type="hidden" name="permissions[@i].ModuleName" value="@module" />
+                                    </td>
+                                    @foreach (var a in actions)
+                                    {
+                                        <td class="pm-cell pm-risk-@a.Risk">
+                                            <input class="form-check-input pm-box" type="checkbox" name="permissions[@i].@a.Prop" value="true" data-action="@a.Key" checked="@Flag(existing, a.Key)" aria-label="@Localizer[a.Label] @module" /><input type="hidden" name="permissions[@i].@a.Prop" value="false" />
+                                        </td>
+                                    }
                                 </tr>
                             }
                             </tbody>
                         </table>
                     </div>
-                    <div class="text-end mt-2">
+                    <div class="text-end mt-2 pm-fallback-save">
                         <button type="submit" class="btn btn-sm btn-pems-solid permission-save"><i class="bi bi-check2 me-1"></i> @Localizer["Save"] @role @Localizer["permissions"]</button>
                     </div>
                 </form>
             </details>
         }
-        <div class="admin-footer mt-3"><span>&nbsp;</span><span>@(roles.Count(r => r != "SystemAdmin")) roles · @modules.Length modules</span></div>
+        <div class="admin-footer mt-3"><span>&nbsp;</span><span>@roles.Length roles · @modules.Length modules</span></div>
     </div>
 </div>
+
+<div class="pm-toasts" id="pmToasts" aria-live="polite"></div>

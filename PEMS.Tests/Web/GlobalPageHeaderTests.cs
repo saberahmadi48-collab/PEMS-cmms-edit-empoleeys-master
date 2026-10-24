@@ -12,12 +12,12 @@ public class GlobalPageHeaderTests
     private static string Here([CallerFilePath] string p = "") => p;
 
     [Fact]
-    public void Layout_UsesSinglePageHeader_AndNoBreadcrumbChain()
+    public void Layout_RendersNoPageHeader_AndNoBreadcrumbChain()
     {
         var layout = File.ReadAllText(Path.Combine(Root(), "PEMS.Web", "Views", "Shared", "_Layout.cshtml"));
-        Assert.Contains("<partial name=\"_PageHeader\" />", layout);
+        Assert.DoesNotContain("_PageHeader", layout);   // the global title row was removed on request: pages use the whole content area
         Assert.DoesNotContain("_Breadcrumb", layout);
-        Assert.DoesNotContain("pems-page-title", layout); // title is rendered only by the shared partial
+        Assert.DoesNotContain("pems-page-title", layout);
         Assert.False(File.Exists(Path.Combine(Root(), "PEMS.Web", "Views", "Shared", "_Breadcrumb.cshtml")));
     }
 

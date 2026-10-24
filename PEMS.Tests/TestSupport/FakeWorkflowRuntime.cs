@@ -23,6 +23,9 @@ public class FakeWorkflowRuntime : IWorkflowRuntime
     public Dictionary<int, DateTime>? ExplicitAssignedDates { get; set; }
 
     public bool ThrowOnExecute { get; set; }
+
+    /// <summary>P0 / F-07: شبیه‌سازی شکست شروع گردش‌کار (برای اثبات جبران Disposition).</summary>
+    public bool ThrowOnStart { get; set; }
     public string? LastExecutedActionType { get; private set; }
 
     private int _nextInstanceId = 1;
@@ -31,6 +34,8 @@ public class FakeWorkflowRuntime : IWorkflowRuntime
     public Task<int> StartInstanceAsync(string module, string businessObjectType, int businessObjectId, string workflowCategory,
         int? projectId, int? initiatedByEmployeeId, IReadOnlyList<string>? firstStageParticipantRoles = null)
     {
+        if (ThrowOnStart) throw new InvalidOperationException("Workflow engine unavailable.");
+
         var instance = new WorkflowInstanceDto
         {
             WorkflowInstanceId = _nextInstanceId++,

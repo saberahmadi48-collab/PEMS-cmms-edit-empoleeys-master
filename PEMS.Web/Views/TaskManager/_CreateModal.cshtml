@@ -1,0 +1,92 @@
+@model PEMS.Application.DTOs.WorkSpaceViewDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var assignees = ViewBag.Assignees as PEMS.Application.DTOs.AssigneeResolutionDto ?? new PEMS.Application.DTOs.AssigneeResolutionDto();
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+    var cleanReturn = System.Text.RegularExpressions.Regex.Replace(returnUrl, @"([?&])create=1&?", "$1").TrimEnd('?', '&');
+}
+@if (Model.CanCreate)
+{
+<div class="modal fade" id="tmCreateModal" tabindex="-1" aria-labelledby="tmCreateTitle" aria-hidden="true" data-tm-autoopen="@(Context.Request.Query["create"].ToString() == "1" ? "1" : "0")">
+    <div class="modal-dialog modal-lg">
+        <form class="modal-content" asp-controller="TaskManager" asp-action="Create" method="post" data-tm-dirty-guard data-tm-ctrl-enter>
+            <div class="modal-header">
+                <h3 class="modal-title h6" id="tmCreateTitle">@Localizer["Tm_Create"] · <span class="tm-key">@Model.Space.Key</span></h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Localizer["Tm_Close"]"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="WorkSpaceId" value="@Model.Space.Id" />
+                <input type="hidden" name="returnUrl" value="@cleanReturn" />
+                <div class="row g-2">
+                    <div class="col-md-8">
+                        <label class="form-label small" for="tmc-title">@Localizer["Tm_Field_Title"] <span class="text-danger" aria-hidden="true">*</span></label>
+                        <input id="tmc-title" name="Title" class="form-control form-control-sm" required maxlength="300" autocomplete="off" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small" for="tmc-type">@Localizer["Tm_Field_Type"]</label>
+                        <select id="tmc-type" name="TypeId" class="form-select form-select-sm">
+                            @foreach (var t in Model.Types.Where(t => !t.IsSubtask))
+                            { <option value="@t.Id">@TaskManagerUi.Name(t.Name, t.NameFa)</option> }
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small" for="tmc-desc">@Localizer["Tm_Field_Description"]</label>
+                        <textarea id="tmc-desc" name="Description" class="form-control form-control-sm" rows="4" maxlength="8000"></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small" for="tmc-assignee">@Localizer["Tm_Field_Assignee"]</label>
+                        <select id="tmc-assignee" name="AssigneeEmployeeId" class="form-select form-select-sm" aria-describedby="tmc-assignee-help">
+                            <option value="">@Localizer["Tm_Unassigned"]</option>
+                            @foreach (var e in assignees.Candidates) { <option value="@e.EmployeeId">@e.Name</option> }
+                        </select>
+                        @if (assignees.State != "RESOLVED")
+                        {
+                            <div id="tmc-assignee-help" class="form-text text-warning"><i class="bi bi-info-circle" aria-hidden="true"></i> @Localizer["Tm_Diag_" + assignees.State]</div>
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small" for="tmc-priority">@Localizer["Tm_Field_Priority"]</label>
+                        <select id="tmc-priority" name="Priority" class="form-select form-select-sm">
+                            @foreach (var p in PEMS.Domain.Entities.TaskItemPriorities.All)
+                            { <option value="@p" selected="@(p == "Normal")">@TaskManagerUi.Priority(Localizer, p)</option> }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small" for="tmc-sprint">@Localizer["Tm_Field_Sprint"]</label>
+                        <select id="tmc-sprint" name="SprintId" class="form-select form-select-sm">
+                            <option value="">@Localizer["Tm_Backlog"]</option>
+                            @foreach (var s in Model.Sprints) { <option value="@s.Id">@s.Name</option> }
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small" for="tmc-start">@Localizer["Tm_Field_StartDate"]</label>
+                        <input id="tmc-start" name="StartDate" type="date" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small" for="tmc-due">@Localizer["Tm_Field_DueDate"]</label>
+                        <input id="tmc-due" name="DueDate" type="date" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small" for="tmc-points">@Localizer["Tm_Field_StoryPoints"]</label>
+                        <input id="tmc-points" name="StoryPoints" type="number" min="0" max="1000" step="0.5" class="form-control form-control-sm" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="createAnother" value="true" id="tmc-another" />
+                    <label class="form-check-label small" for="tmc-another">@Localizer["Tm_CreateAnother"]</label>
+                </div>
+                <div class="d-flex gap-2 align-items-center">
+                    <span class="small text-muted d-none d-md-inline">@Localizer["Tm_CtrlEnterHint"]</span>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Tm_Cancel"]</button>
+                    <button type="submit" class="btn btn-sm btn-pems-solid">@Localizer["Tm_Create"]</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+}

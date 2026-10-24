@@ -111,7 +111,17 @@ public class ProcurementPackageController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "ProcurementPackage", "Create"))
             return Forbid();
 
-        var id = await _service.CreateAsync(packageNumber, projectId, disciplineId, title, description);
+        int id;
+        try
+        {
+            id = await _service.CreateAsync(packageNumber, projectId, disciplineId, title, description);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // P0: شماره‌ی خالی/تکراری - ردِ قابل‌فهم به‌جای ثبت رکورد نامعتبر
+            TempData["Error"] = ex.Message;
+            return RedirectToAction(nameof(Create));
+        }
 
         // طبق ممیزی Package Procurement Contract Finalization (§F): ثبت Allow در
         // AuthorizationAuditLog تا اگر همین کاربر بعداً بخواهد همین Package را خودش تایید کند،

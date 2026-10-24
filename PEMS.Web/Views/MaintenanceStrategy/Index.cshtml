@@ -1,42 +1,84 @@
-﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MaintenanceStrategyListDto>
+@model PEMS.Web.ViewModels.StrategyIndexViewModel
 @using Microsoft.Extensions.Localization
+@using PEMS.Domain.Common
+@using PEMS.Web.Helpers
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
+@{
+    var filter = Model.Filter;
+    var qs = new List<string>();
+    if (filter.EquipmentId.HasValue) qs.Add($"equipmentId={filter.EquipmentId}");
+    if (filter.EquipmentClassId.HasValue) qs.Add($"classId={filter.EquipmentClassId}");
+    if (!string.IsNullOrEmpty(filter.Status)) qs.Add($"status={filter.Status}");
+    if (!string.IsNullOrEmpty(filter.StrategyType)) qs.Add($"type={filter.StrategyType}");
+    if (!string.IsNullOrEmpty(filter.Search)) qs.Add($"q={Uri.EscapeDataString(filter.Search)}");
+}
 
 <div class="content-card mb-3">
-    <div class="row g-2 align-items-end">
-        <div class="col-md-5">
-            <label class="form-label small">@Localizer["فیلتر بر اساس تجهیز"]</label>
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label small">@Localizer["Rcm_FilterByEquipment"]</label>
             <div class="d-flex gap-2">
                 <input type="text" class="form-control form-control-sm" id="strategyFilterSearch"
-                       placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]" value="@ViewBag.SelectedEquipmentLabel"
+                       placeholder="@Localizer["Rcm_SearchEquipmentPlaceholder"]" value="@Model.SelectedEquipmentLabel"
                        data-pems-search data-search-type="Equipment" autocomplete="off" />
-                @if (ViewBag.SelectedEquipmentId != null)
+                @if (filter.EquipmentId.HasValue)
                 {
-                    <a asp-action="Index" class="btn btn-outline-danger btn-sm" title="@Localizer["حذف فیلتر"]"><i class="bi bi-x-lg"></i></a>
+                    <a asp-action="Index" class="btn btn-outline-danger btn-sm" title="@Localizer["Rcm_ClearFilter"]"><i class="bi bi-x-lg"></i></a>
                 }
             </div>
-            <script>
-                document.getElementById('strategyFilterSearch').addEventListener('pems:search-select', function (e) {
-                    if (e.detail) window.location.href = '@Url.Action("Index")?equipmentId=' + e.detail.id;
-                });
-            </script>
+            <input type="hidden" name="equipmentId" id="strategyFilterEquipmentId" value="@filter.EquipmentId" />
         </div>
-        <div class="col-md-7 text-end">
-            <a asp-action="BulkCreate" class="btn btn-sm btn-outline-primary">
-                <i class="bi bi-collection"></i> @Localizer["تعریف دسته‌جمعی برای چند تجهیز"]
-            </a>
-            <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#createStrategyModal">
-                <i class="bi bi-plus-lg"></i> New Strategy
-            </button>
+        <div class="col-md-2">
+            <label class="form-label small">@Localizer["Rcm_EquipmentClass"]</label>
+            <select name="classId" class="form-select form-select-sm">
+                <option value="">@Localizer["Rcm_All"]</option>
+                @foreach (var c in Model.Classes) { <option value="@c.Id" selected="@(filter.EquipmentClassId == c.Id)">@c.Text</option> }
+            </select>
         </div>
+        <div class="col-md-2">
+            <label class="form-label small">@Localizer["Rcm_Status"]</label>
+            <select name="status" class="form-select form-select-sm">
+                <option value="">@Localizer["Rcm_AllLive"]</option>
+                @foreach (var s in RcmCodes.Status.All) { <option value="@s" selected="@(filter.Status == s)">@Localizer.Label("Status", s)</option> }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small">@Localizer["Rcm_StrategyType"]</label>
+            <select name="type" class="form-select form-select-sm">
+                <option value="">@Localizer["Rcm_All"]</option>
+                @foreach (var t in RcmCodes.StrategyType.All) { <option value="@t" selected="@(filter.StrategyType == t)">@Localizer.Label("StrategyType", t)</option> }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small">@Localizer["Rcm_Search"]</label>
+            <input type="text" name="q" value="@filter.Search" class="form-control form-control-sm" />
+        </div>
+        <div class="col-md-1"><button class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-funnel"></i></button></div>
+    </form>
+    <div class="text-end mt-2">
+        <a asp-action="Coverage" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pie-chart"></i> @Localizer["Rcm_Coverage"]</a>
+        <a asp-controller="FailureModeCatalog" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-text"></i> @Localizer["Rcm_FailureModeCatalog"]</a>
+        @if (Model.CanApprove)
+        {
+            <a asp-action="BulkCreate" class="btn btn-sm btn-outline-primary"><i class="bi bi-collection"></i> @Localizer["Rcm_BulkAssign"]</a>
+        }
+        @if (Model.CanCreate)
+        {
+            <a asp-action="Create" class="btn btn-sm btn-pems-solid"><i class="bi bi-plus-lg"></i> @Localizer["Rcm_NewStrategy"]</a>
+        }
     </div>
+    <script>
+        (function () {
+            var input = document.getElementById('strategyFilterSearch');
+            input.addEventListener('pems:search-select', function (e) {
+                if (e.detail) { document.getElementById('strategyFilterEquipmentId').value = e.detail.id; input.form.submit(); }
+            });
+        })();
+    </script>
 </div>
 
-<p class="text-muted small">
-    طبق RCM (SAE JA1011): هر استراتژی باید به یک حالت خرابی مشخص وصل باشه و طبقه‌بندی پیامدش
-    (ایمنی/زیست‌محیطی/تولیدی/اقتصادی) مشخص باشه - نه فقط یک برچسب کلی.
-</p>
+<p class="text-muted small">@Localizer["Rcm_IndexHint"]</p>
 
 <div class="content-card">
     <div class="d-flex justify-content-end mb-2">
@@ -45,59 +87,76 @@
         </button>
     </div>
     <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise pems-grid-table" data-grid-key="MaintenanceStrategy">
-        <thead>
-            <tr>
-                <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Equipment"]</th>
-                <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">@Localizer["Type"]</th>
-                <th data-col-key="failureMode" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Failure Mode"]</th>
-                <th data-col-key="consequence" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">@Localizer["پیامد"]</th>
-                <th data-col-key="justification" data-resizable="true" data-min-width="160" data-max-width="400" style="width:260px">@Localizer["توجیه"]</th>
-                <th data-col-key="actions" data-resizable="false" style="width:190px"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var s in Model.Items)
-            {
+        <table class="table table-enterprise pems-grid-table" data-grid-key="MaintenanceStrategy">
+            <thead>
                 <tr>
-                    <td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@s.EquipmentId">@s.EquipmentTagNumber</a></td>
-                    <td><span class="badge bg-secondary">@s.StrategyType</span></td>
-                    <td class="small">@s.FailureModeCode</td>
-                    <td>
-                        <span class="badge @(s.ConsequenceCategory == "Safety" ? "bg-danger" : s.ConsequenceCategory == "Environmental" ? "bg-warning text-dark" : "bg-info text-dark")">
-                            @s.ConsequenceCategory
-                        </span>
-                    </td>
-                    <td class="small text-muted">@s.Justification</td>
-                    <td class="text-end">
-                        <a asp-controller="MaintenancePlan" asp-action="Create" asp-route-strategyId="@s.MaintenanceStrategyId" class="btn btn-sm btn-outline-primary">
-                            <i class="bi bi-calendar-plus"></i> Create Plan
-                        </a>
-                        <form asp-action="Deactivate" method="post" class="d-inline">
-                            <input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-slash-circle"></i></button>
-                        </form>
-                    </td>
+                    <th data-col-key="class" data-resizable="true" data-min-width="110" data-max-width="240" style="width:170px">@Localizer["Rcm_EquipmentClass"]</th>
+                    <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">@Localizer["Rcm_StrategyType"]</th>
+                    <th data-col-key="failureMode" data-resizable="true" data-min-width="120" data-max-width="260" style="width:180px">@Localizer["Rcm_FailureMode"]</th>
+                    <th data-col-key="consequence" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">@Localizer["Rcm_Consequence"]</th>
+                    <th data-col-key="frequency" data-resizable="true" data-min-width="80" data-max-width="160" style="width:100px">@Localizer["Rcm_Frequency"]</th>
+                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Rcm_Status"]</th>
+                    <th data-col-key="tags" data-resizable="true" data-min-width="70" data-max-width="120" style="width:80px">@Localizer["Rcm_Tags"]</th>
+                    <th data-col-key="justification" data-resizable="true" data-min-width="160" data-max-width="400" style="width:260px">@Localizer["Rcm_Justification"]</th>
+                    <th data-col-key="actions" data-resizable="false" style="width:110px"></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var s in Model.Page.Items)
+                {
+                    <tr>
+                        <td class="small">
+                            @if (!string.IsNullOrEmpty(s.EquipmentClassName))
+                            {
+                                <div>@s.EquipmentClassName</div>
+                            }
+                            @if (!string.IsNullOrEmpty(s.EquipmentTagNumber))
+                            {
+                                <div class="text-muted"><a asp-controller="MaintenanceStrategy" asp-action="Tag" asp-route-equipmentId="@s.EquipmentId">@s.EquipmentTagNumber</a></div>
+                            }
+                            @if (string.IsNullOrEmpty(s.EquipmentClassName) && string.IsNullOrEmpty(s.EquipmentTagNumber)) { <span class="text-muted">-</span> }
+                        </td>
+                        <td><span class="badge bg-secondary">@Localizer.Label("StrategyType", s.StrategyType)</span></td>
+                        <td class="small">
+                            @if (!string.IsNullOrEmpty(s.FailureModeName)) { @RcmDisplay.Name(s.FailureModeName, s.FailureModeNameFa) }
+                            else if (!string.IsNullOrEmpty(s.FailureModeCode)) { <span class="text-warning" title="@Localizer["Rcm_NotInCatalog"]">@s.FailureModeCode <i class="bi bi-exclamation-triangle"></i></span> }
+                            else { <span class="text-danger">@Localizer["Rcm_MissingFailureMode"]</span> }
+                        </td>
+                        <td>
+                            <span class="badge @RcmDisplay.ConsequenceBadge(s.ConsequenceCategory)">@Localizer.Label("Consequence", s.ConsequenceCategory)</span>
+                            @if (s.IsHiddenFailure && s.ConsequenceCategory != "Hidden") { <span class="badge bg-dark" title="@Localizer["Rcm_HiddenFailure"]">H</span> }
+                        </td>
+                        <td class="small">@Localizer.Label("Frequency", s.Frequency)</td>
+                        <td>
+                            <span class="badge @RcmDisplay.StatusBadge(s.Status)">@Localizer.Label("Status", s.Status)</span>
+                            <div class="small text-muted">v@(s.VersionNumber)</div>
+                            @if (s.ReviewOverdue) { <div class="small text-danger"><i class="bi bi-clock-history"></i> @Localizer["Rcm_ReviewOverdue"]</div> }
+                        </td>
+                        <td class="small">@s.AssignedTagCount</td>
+                        <td class="small text-muted">@(string.IsNullOrWhiteSpace(s.Justification) ? "-" : (s.Justification!.Length > 140 ? s.Justification[..140] + "…" : s.Justification))</td>
+                        <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@s.MaintenanceStrategyId" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a>
+                            @if (Model.CanEdit && s.Status != "Retired" && s.Status != "Superseded")
+                            {
+                                <a asp-action="Edit" asp-route-id="@s.MaintenanceStrategyId" class="btn btn-sm btn-outline-secondary" title="@Localizer["Rcm_Edit"]"><i class="bi bi-pencil"></i></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No maintenance strategies defined yet.</p> }
+    @if (!Model.Page.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["Rcm_NoStrategies"]</p> }
 
-    @{
-        var qsParts = new List<string>();
-        if (ViewBag.SelectedEquipmentId != null) qsParts.Add($"equipmentId={ViewBag.SelectedEquipmentId}");
-    }
     @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
     {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
+        Page = Model.Page.Page,
+        TotalPages = Model.Page.TotalPages,
+        TotalCount = Model.Page.TotalCount,
+        PageSize = Model.Page.PageSize,
         GridKey = "MaintenanceStrategy",
         BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
+        ExistingQueryString = string.Join("&", qs)
     })
 </div>
 
@@ -108,75 +167,3 @@
         });
     </script>
 }
-
-<div class="modal fade" id="createStrategyModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">New Maintenance Strategy (RCM)</h6></div>
-                <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label class="form-label">@Localizer["Equipment"]</label>
-                            <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]"
-                                   data-pems-search data-search-type="Equipment" data-search-hidden="#strategyEquipmentIdHidden" autocomplete="off" required />
-                            <input type="hidden" name="equipmentId" id="strategyEquipmentIdHidden" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Strategy Type"]</label>
-                            <select name="strategyType" class="form-select" required>
-                                <option>@Localizer["Preventive"]</option>
-                                <option>@Localizer["Predictive"]</option>
-                                <option>@Localizer["CBM"]</option>
-                                <option>@Localizer["Corrective"]</option>
-                                <option value="RunToFailure">@Localizer["Run-to-Failure"]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Failure Mode (ISO 14224)"]</label>
-                            <select name="failureModeCode" class="form-select">
-                                <option value="">@Localizer["-- انتخاب --"]</option>
-                                <option>@Localizer["Leakage"]</option><option>@Localizer["Fracture"]</option><option>@Localizer["Vibration"]</option>
-                                <option>@Localizer["Overheating"]</option><option>@Localizer["Blockage"]</option><option>@Localizer["ElectricalFault"]</option>
-                                <option>@Localizer["Other"]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Consequence Category (RCM)"]</label>
-                            <select name="consequenceCategory" class="form-select" required>
-                                <option value="Safety">@Localizer["Safety"]</option>
-                                <option value="Environmental">@Localizer["Environmental"]</option>
-                                <option value="Operational" selected>@Localizer["Operational"]</option>
-                                <option value="Economic">@Localizer["Economic"]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Recommended Trigger Type"]</label>
-                            <select name="recommendedTriggerType" class="form-select">
-                                <option value="Calendar">@Localizer["Calendar"]</option>
-                                <option value="Meter">@Localizer["Meter"]</option>
-                                <option value="Both">@Localizer["Both"]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Frequency (راهنما)"]</label>
-                            <select name="frequency" class="form-select">
-                                <option>@Localizer["Daily"]</option><option>@Localizer["Weekly"]</option><option>@Localizer["Monthly"]</option>
-                                <option>@Localizer["Quarterly"]</option><option>@Localizer["Yearly"]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Start Date"]</label><input name="startDate" type="date" class="form-control" /></div>
-                        <div class="col-12">
-                            <label class="form-label">@Localizer["Justification (چرا این استراتژی؟)"]</label>
-                            <textarea name="justification" class="form-control" rows="2" placeholder="طبق RCM: چرا این استراتژی برای این حالت خرابی مناسبه"></textarea>
-                        </div>
-                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>

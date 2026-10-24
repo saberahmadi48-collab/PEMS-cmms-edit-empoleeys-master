@@ -5,6 +5,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="mb-0"><i class="bi bi-speedometer2"></i> Maintenance &amp; Cost KPI Dashboard</h5>
+    <a asp-action="Executive" class="btn btn-sm btn-outline-secondary"><i class="bi bi-bar-chart-line"></i> @Localizer["Kpi_Exec_Title"]</a>
 </div>
 <p class="text-muted small">
     طبق CMMS Production Baseline v1 - CMMS-08: از روی داده‌ی واقعی تراکنشی موجود محاسبه می‌شود
@@ -28,85 +29,131 @@
 @{
     string Pct(double? v) => v.HasValue ? $"{v.Value:N1}%" : "N/A";
     string Num(double? v, string suffix = "") => v.HasValue ? $"{v.Value:N1}{suffix}" : "N/A";
+
+    var noData = Localizer["Chart_NoData"].Value;
+    var total = Localizer["Total"].Value;
+    var costSplit = BkChartSpec.Donut("Maintenance cost by cost type", noData, total, new (string, double)[]
+    {
+        ("Labor", (double)Model.Cost.LaborCost), ("Material", (double)Model.Cost.MaterialCost), ("Contractor", (double)Model.Cost.ContractorCost)
+    }, new[] { BkChartSpec.Primary, BkChartSpec.Warning, BkChartSpec.Secondary });
+    var topEquipment = BkChartSpec.HBars("Top equipment by maintenance cost", noData, Model.Cost.TopEquipmentByCost.Select(e => e.TagNumber), false,
+        BkSeries.Of("Cost", Model.Cost.TopEquipmentByCost.Select(e => e.Cost), BkChartSpec.Primary));
+    var byLocationRows = Model.Cost.CostByFunctionalLocation.OrderByDescending(g => g.Cost).ToList();
+    var byLocation = BkChartSpec.HBars("Maintenance cost by functional location", noData, byLocationRows.Take(10).Select(g => g.GroupName), false,
+        BkSeries.Of("Cost", byLocationRows.Take(10).Select(g => g.Cost), BkChartSpec.Tertiary));
+    var byType = BkChartSpec.Donut("Maintenance cost by maintenance type", noData, total, Model.Cost.CostByMaintenanceType.Select(g => (g.GroupName, (double)g.Cost)));
+
+    var pmGauge = BkChartSpec.Gauge("PM compliance", noData, Localizer["PM Compliance"].Value, Model.Maintenance.PmCompliancePercent, "%", 1);
+    var completionGauge = BkChartSpec.Gauge("Work order completion rate", noData, "Completion Rate", Model.Maintenance.WorkOrderCompletionRatePercent, "%", 1);
+    var workMix = BkChartSpec.Donut("Work mix: planned, unplanned and emergency", noData, "%", new (string, double)[]
+    {
+        ("Planned (Preventive)", Model.Maintenance.PlannedPercent), ("Unplanned (Corrective)", Model.Maintenance.UnplannedPercent), ("Emergency", Model.Maintenance.EmergencyPercent)
+    }, new[] { BkChartSpec.Positive, BkChartSpec.Warning, BkChartSpec.Negative });
+    var availabilityGauge = BkChartSpec.Gauge("Average availability", noData, "Avg. Availability", Model.Reliability.AverageAvailabilityPercent, "%", 1);
+}
+
+@section Styles {
+    <partial name="_BkChartStyles" />
 }
 
 <h6 class="text-muted mb-2"><i class="bi bi-cash-coin"></i> Cost KPIs</h6>
-<div class="row g-3 mb-4">
-    <div class="col-md-3"><div class="content-card text-center py-3"><div class="small text-muted">@Localizer["Total Maintenance Cost"]</div><div class="fs-5 fw-bold">@Model.Cost.TotalCost.ToString("N0")</div></div></div>
-    <div class="col-md-3"><div class="content-card text-center py-3"><div class="small text-muted">@Localizer["Labor Cost"]</div><div class="fs-5 fw-bold">@Model.Cost.LaborCost.ToString("N0")</div></div></div>
-    <div class="col-md-3"><div class="content-card text-center py-3"><div class="small text-muted">Material Cost</div><div class="fs-5 fw-bold">@Model.Cost.MaterialCost.ToString("N0")</div></div></div>
-    <div class="col-md-3"><div class="content-card text-center py-3"><div class="small text-muted">Contractor Cost</div><div class="fs-5 fw-bold">@Model.Cost.ContractorCost.ToString("N0")</div></div></div>
+<div class="row g-3 mb-3">
+    <div class="col-lg-4">
+        <div class="content-card h-100">
+            <h6 class="mb-2">Cost by Cost Type</h6>
+            <partial name="_BkChart" model="@costSplit" />
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="row g-3 h-100">
+            <div class="col-sm-6"><div class="content-card text-center py-4 h-100"><div class="small text-muted">@Localizer["Total Maintenance Cost"]</div><div class="fs-4 fw-bold">@Model.Cost.TotalCost.ToString("N0")</div></div></div>
+            <div class="col-sm-6"><div class="content-card text-center py-4 h-100"><div class="small text-muted">@Localizer["Labor Cost"]</div><div class="fs-4 fw-bold">@Model.Cost.LaborCost.ToString("N0")</div></div></div>
+            <div class="col-sm-6"><div class="content-card text-center py-4 h-100"><div class="small text-muted">Material Cost</div><div class="fs-4 fw-bold">@Model.Cost.MaterialCost.ToString("N0")</div></div></div>
+            <div class="col-sm-6"><div class="content-card text-center py-4 h-100"><div class="small text-muted">Contractor Cost</div><div class="fs-4 fw-bold">@Model.Cost.ContractorCost.ToString("N0")</div></div></div>
+        </div>
+    </div>
 </div>
 
 <div class="row g-3 mb-4">
-    <div class="col-md-4">
+    <div class="col-lg-4">
         <div class="content-card h-100">
             <h6 class="mb-2">Top Equipment by Cost</h6>
-            <table class="table table-enterprise table-sm mb-0">
-                <thead><tr><th>@Localizer["Tag"]</th><th class="text-end">@Localizer["Cost"]</th></tr></thead>
-                <tbody>
-                    @foreach (var e in Model.Cost.TopEquipmentByCost)
-                    {
-                        <tr><td class="small"><a asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId">@e.TagNumber</a></td><td class="small text-end">@e.Cost.ToString("N0")</td></tr>
-                    }
-                </tbody>
-            </table>
-            @if (!Model.Cost.TopEquipmentByCost.Any()) { <p class="text-muted small mb-0">@Localizer["داده‌ای نیست."]</p> }
+            <partial name="_BkChart" model="@topEquipment" />
+            @if (Model.Cost.TopEquipmentByCost.Any())
+            {
+                <details class="mt-2">
+                    <summary class="small text-muted">@Localizer["Tag"] / @Localizer["Cost"]</summary>
+                    <table class="table table-enterprise table-sm mb-0 mt-1">
+                        <thead><tr><th>@Localizer["Tag"]</th><th class="text-end">@Localizer["Cost"]</th></tr></thead>
+                        <tbody>
+                            @foreach (var e in Model.Cost.TopEquipmentByCost)
+                            {
+                                <tr><td class="small"><a asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId">@e.TagNumber</a></td><td class="small text-end">@e.Cost.ToString("N0")</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                </details>
+            }
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-lg-4">
         <div class="content-card h-100">
             <h6 class="mb-2">Cost by Functional Location</h6>
-            <table class="table table-enterprise table-sm mb-0">
-                <thead><tr><th>@Localizer["Location"]</th><th class="text-end">@Localizer["Cost"]</th></tr></thead>
-                <tbody>
-                    @foreach (var g in Model.Cost.CostByFunctionalLocation)
-                    {
-                        <tr><td class="small">@g.GroupName</td><td class="small text-end">@g.Cost.ToString("N0")</td></tr>
-                    }
-                </tbody>
-            </table>
-            @if (!Model.Cost.CostByFunctionalLocation.Any()) { <p class="text-muted small mb-0">@Localizer["داده‌ای نیست."]</p> }
+            <partial name="_BkChart" model="@byLocation" />
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-lg-4">
         <div class="content-card h-100">
             <h6 class="mb-2">Cost by Maintenance Type</h6>
-            <table class="table table-enterprise table-sm mb-0">
-                <thead><tr><th>@Localizer["Type"]</th><th class="text-end">@Localizer["Cost"]</th></tr></thead>
-                <tbody>
-                    @foreach (var g in Model.Cost.CostByMaintenanceType)
-                    {
-                        <tr><td class="small">@g.GroupName</td><td class="small text-end">@g.Cost.ToString("N0")</td></tr>
-                    }
-                </tbody>
-            </table>
-            @if (!Model.Cost.CostByMaintenanceType.Any()) { <p class="text-muted small mb-0">@Localizer["داده‌ای نیست."]</p> }
+            <partial name="_BkChart" model="@byType" />
         </div>
     </div>
 </div>
 
 <h6 class="text-muted mb-2"><i class="bi bi-tools"></i> Maintenance KPIs</h6>
-<div class="row g-3 mb-4">
-    <div class="col-md-2"><div class="content-card text-center py-3"><div class="small text-muted">@Localizer["PM Compliance"]</div><div class="fs-5 fw-bold">@Pct(Model.Maintenance.PmCompliancePercent)</div></div></div>
-    <div class="col-md-2"><div class="content-card text-center py-3"><div class="small text-muted">PM Overdue</div><div class="fs-5 fw-bold">@Model.Maintenance.PmOverdueCount / @Model.Maintenance.PmActivePlanCount</div></div></div>
-    <div class="col-md-2"><div class="content-card text-center py-3"><div class="small text-muted">Backlog</div><div class="fs-5 fw-bold">@Model.Maintenance.BacklogCount</div></div></div>
-    <div class="col-md-2"><div class="content-card text-center py-3"><div class="small text-muted">Backlog Hours</div><div class="fs-5 fw-bold">@Model.Maintenance.BacklogHours.ToString("N0")</div></div></div>
-    <div class="col-md-2"><div class="content-card text-center py-3"><div class="small text-muted">WO Aging (avg days)</div><div class="fs-5 fw-bold">@Num(Model.Maintenance.WorkOrderAgingDays)</div></div></div>
-    <div class="col-md-2"><div class="content-card text-center py-3"><div class="small text-muted">Completion Rate</div><div class="fs-5 fw-bold">@Pct(Model.Maintenance.WorkOrderCompletionRatePercent)</div></div></div>
+<div class="row g-3 mb-3">
+    <div class="col-lg-3 col-sm-6">
+        <div class="content-card h-100 text-center">
+            <h6 class="mb-2">@Localizer["PM Compliance"]</h6>
+            <partial name="_BkChart" model="@pmGauge" />
+            <div class="small text-muted mt-1">PM Overdue: @Model.Maintenance.PmOverdueCount / @Model.Maintenance.PmActivePlanCount</div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <div class="content-card h-100 text-center">
+            <h6 class="mb-2">Completion Rate</h6>
+            <partial name="_BkChart" model="@completionGauge" />
+            <div class="small text-muted mt-1">WO Aging (avg days): @Num(Model.Maintenance.WorkOrderAgingDays)</div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <div class="content-card h-100">
+            <h6 class="mb-2">Work Mix</h6>
+            <partial name="_BkChart" model="@workMix" />
+        </div>
+    </div>
+    <div class="col-lg-3 col-sm-6">
+        <div class="row g-3 h-100">
+            <div class="col-12"><div class="content-card text-center py-3 h-100"><div class="small text-muted">Backlog</div><div class="fs-4 fw-bold">@Model.Maintenance.BacklogCount</div></div></div>
+            <div class="col-12"><div class="content-card text-center py-3 h-100"><div class="small text-muted">Backlog Hours</div><div class="fs-4 fw-bold">@Model.Maintenance.BacklogHours.ToString("N0")</div></div></div>
+        </div>
+    </div>
 </div>
-
-<div class="row g-3 mb-4">
-    <div class="col-md-4"><div class="content-card text-center py-3"><div class="small text-muted">Planned (Preventive) %</div><div class="fs-5 fw-bold">@Model.Maintenance.PlannedPercent.ToString("N1")%</div></div></div>
-    <div class="col-md-4"><div class="content-card text-center py-3"><div class="small text-muted">Unplanned (Corrective) %</div><div class="fs-5 fw-bold">@Model.Maintenance.UnplannedPercent.ToString("N1")%</div></div></div>
-    <div class="col-md-4"><div class="content-card text-center py-3"><div class="small text-muted">Emergency %</div><div class="fs-5 fw-bold">@Model.Maintenance.EmergencyPercent.ToString("N1")%</div></div></div>
-</div>
-<p class="text-muted small">در بازه‌ی انتخاب‌شده، بر اساس @Model.Maintenance.TotalWorkOrdersInPeriod دستورکار.</p>
+<p class="text-muted small mb-4">در بازه‌ی انتخاب‌شده، بر اساس @Model.Maintenance.TotalWorkOrdersInPeriod دستورکار.</p>
 
 <h6 class="text-muted mb-2"><i class="bi bi-graph-up-arrow"></i> Reliability Summary</h6>
 <div class="row g-3">
-    <div class="col-md-4"><div class="content-card text-center py-3"><div class="small text-muted">Equipment with Failures</div><div class="fs-5 fw-bold">@Model.Reliability.EquipmentWithFailuresCount</div></div></div>
-    <div class="col-md-4"><div class="content-card text-center py-3"><div class="small text-muted">@Localizer["Total Failures"]</div><div class="fs-5 fw-bold">@Model.Reliability.TotalFailureCount</div></div></div>
-    <div class="col-md-4"><div class="content-card text-center py-3"><div class="small text-muted">Avg. Availability</div><div class="fs-5 fw-bold">@Pct(Model.Reliability.AverageAvailabilityPercent)</div></div></div>
+    <div class="col-lg-3 col-sm-6"><div class="content-card text-center py-4 h-100"><div class="small text-muted">Equipment with Failures</div><div class="fs-4 fw-bold">@Model.Reliability.EquipmentWithFailuresCount</div></div></div>
+    <div class="col-lg-3 col-sm-6"><div class="content-card text-center py-4 h-100"><div class="small text-muted">@Localizer["Total Failures"]</div><div class="fs-4 fw-bold">@Model.Reliability.TotalFailureCount</div></div></div>
+    <div class="col-lg-6">
+        <div class="content-card text-center h-100">
+            <h6 class="mb-2">Avg. Availability</h6>
+            <partial name="_BkChart" model="@availabilityGauge" />
+        </div>
+    </div>
 </div>
 <p class="mt-2"><a asp-controller="Reliability" asp-action="Index" class="small">جزئیات کامل Reliability (MTBF/MTTR در سطح تجهیز) &rarr;</a></p>
+
+@section Scripts {
+    <partial name="_BkChartScripts" />
+}

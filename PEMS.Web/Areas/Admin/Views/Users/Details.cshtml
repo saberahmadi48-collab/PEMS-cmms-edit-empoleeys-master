@@ -9,7 +9,8 @@
     // می‌دهد. الگوی بصری عیناً همان .vs-* «Workspace Design System» است که Equipment/Details،
     // EngineeringDocuments/Details و VDR/Details استفاده می‌کنند - نه یک زبان تصویری تازه.
     // Tab های کلاینت-ساید واقعی (data-bs-toggle="tab") - نه ناوبری سمت-سرور مثل EffectiveRole
-    // قدیمی. Edit موجود دست‌نخورده می‌ماند - این صفحه فقط-نمایش است.
+    // قدیمی. Edit موجود دست‌نخورده می‌ماند و تنها مسیر تخصیص نقش است؛ تب Effective علاوه بر نمایش،
+    // مجوزها را (با ذخیره‌ی خودکار) روی Grant نقش‌های کاربر فعال/غیرفعال می‌کند - نه مجوز به‌ازای کاربر.
     var statusPill = Model.LockedOut
         ? ("vs-pill--danger", "bi-lock", (string)Localizer["Locked"])
         : Model.IsActive
@@ -17,10 +18,43 @@
             : ("vs-pill--neutral", "bi-dash-circle", (string)Localizer["Inactive"]);
 
     var activeAccessTab = ViewData["ActiveAccessTab"] as string;
+
+    // تب Effective قابل ویرایش است مگر این‌که کاربر SystemAdmin باشد (Bypass سراسری دارد و Grant چیزی را
+    // عوض نمی‌کند) یا هیچ نقشی نداشته باشد. هر ردیف جداگانه هم می‌تواند قفل باشد (NonEditablePermissions).
+    var canEditPermissions = Model.RoleNames.Count > 0 && !Model.RoleNames.Contains(PEMS.Persistence.Identity.SystemRoles.SystemAdmin);
+    string? RowLock(PEMS.Application.DTOs.EffectivePermissionDto r) =>
+        Model.NonEditablePermissions.TryGetValue(r.PermissionName, out var why) ? why : null;
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script type="application/json" id="permAdminI18n">
+        @Json.Serialize(new Dictionary<string, string>
+        {
+            ["saving"] = Localizer["PermAdmin_Saving"].Value,
+            ["saved"] = Localizer["PermAdmin_Saved"].Value,
+            ["rowSaved"] = Localizer["PermAdmin_RowSaved"].Value,
+            ["noChange"] = Localizer["PermAdmin_NoChange"].Value,
+            ["someSkipped"] = Localizer["PermAdmin_SomeSkipped"].Value,
+            ["failed"] = Localizer["PermAdmin_Failed"].Value,
+            ["confirmBatch"] = Localizer["PermAdmin_ConfirmBatch"].Value,
+            ["nothingSelected"] = Localizer["PermAdmin_NothingSelected"].Value,
+            ["selectedCount"] = Localizer["PermAdmin_SelectedCount"].Value,
+            ["allowed"] = Localizer["Allowed"].Value,
+            ["notGranted"] = Localizer["Not granted"].Value,
+            ["SystemAdmin"] = Localizer["PermAdmin_Locked_SystemAdmin"].Value,
+            ["NoRoles"] = Localizer["PermAdmin_Locked_NoRoles"].Value,
+            ["OutsideMatrix"] = Localizer["PermAdmin_Locked_OutsideMatrix"].Value,
+            ["RoleModuleAction"] = Localizer["PermAdmin_Locked_RoleModuleAction"].Value,
+            ["Unknown"] = Localizer["PermAdmin_Reason_Unknown"].Value,
+            ["NoChangeReason"] = Localizer["PermAdmin_Reason_NoChange"].Value,
+            ["TargetRoleRequired"] = Localizer["PermAdmin_Reason_TargetRoleRequired"].Value
+        })
+    </script>
+    <script src="~/js/pems-user-permissions.js" asp-append-version="true"></script>
 }
 
 <div class="vs-page">
@@ -45,7 +79,7 @@
     </div>
     <div class="vs-info">
         <div><p class="vs-info__label">@Localizer["Roles"]</p><p class="vs-info__value vs-num">@Model.RoleNames.Count</p></div>
-        <div><p class="vs-info__label">@Localizer["Effective Permissions"]</p><p class="vs-info__value vs-num">@Model.AllowedCount <span class="text-muted small">/ @Model.EffectivePermissions.Count</span></p></div>
+        <div><p class="vs-info__label">@Localizer["Effective Permissions"]</p><p class="vs-info__value vs-num"><span id="permInfoAllowed">@Model.AllowedCount</span> <span class="text-muted small">/ @Model.EffectivePermissions.Count</span></p></div>
         <div><p class="vs-info__label">@Localizer["Potential SoD conflicts"]</p><p class="vs-info__value vs-num">@Model.SoDExposureCount</p></div>
         <div><p class="vs-info__label">@Localizer["Employee link"]</p><p class="vs-info__value">@(Model.HasLinkedEmployee ? Localizer["Linked"] : Localizer["Not linked"])</p></div>
         <div><p class="vs-info__label">@Localizer["Last Login"]</p><p class="vs-info__value vs-num">@(Model.LastLoginDate?.ToString("yyyy-MM-dd HH:mm") ?? Localizer["Never"].Value)</p></div>
@@ -121,7 +155,7 @@
         <ul class="nav nav-tabs mb-3" id="accessTabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link @(activeAccessTab is null or "effective" ? "active" : "")" data-bs-toggle="tab" data-bs-target="#access-effective" type="button">
-                    <i class="bi bi-eye"></i> @Localizer["Effective"] <span class="badge bg-secondary">@Model.AllowedCount</span>
+                    <i class="bi bi-eye"></i> @Localizer["Effective"] <span class="badge bg-secondary" id="permTabBadge">@Model.AllowedCount</span>
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -150,39 +184,84 @@
         <div class="tab-content">
 
             <div class="tab-pane fade @(activeAccessTab is null or "effective" ? "show active" : "")" id="access-effective" role="tabpanel">
-                <div class="content-card">
-                    <div class="admin-toolbar mb-2"><div class="admin-toolbar-main"><span class="text-body-secondary small">@Model.AllowedCount / @Model.EffectivePermissions.Count @Localizer["permissions allowed"]</span></div></div>
+                <div class="content-card" id="permAdmin"
+                     data-url="@Url.Action("SetPermissionAccess", "Users", new { area = "Admin", id = Model.UserId })"
+                     data-editable="@(canEditPermissions ? "1" : "0")">
+                    @Html.AntiForgeryToken()
+
+                    @if (canEditPermissions)
+                    {
+                        <div class="alert alert-info py-2 small mb-2">
+                            <i class="bi bi-info-circle"></i> @Localizer["PermAdmin_RoleScopeNote"]
+                            <strong>@string.Join(", ", Model.RoleUserCounts.Select(kv => string.Format(Localizer["PermAdmin_RoleUsersFormat"].Value, kv.Key, kv.Value)))</strong>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-secondary py-2 small mb-2">
+                            <i class="bi bi-lock"></i> @(Model.RoleNames.Count == 0 ? Localizer["PermAdmin_Locked_NoRoles"] : Localizer["PermAdmin_Locked_SystemAdmin"])
+                        </div>
+                    }
+
+                    <div class="admin-toolbar mb-2 flex-wrap gap-2">
+                        <div class="admin-toolbar-main">
+                            <span class="text-body-secondary small"><span id="permAllowedCount">@Model.AllowedCount</span> / <span id="permTotalCount">@Model.EffectivePermissions.Count</span> @Localizer["permissions allowed"]</span>
+                        </div>
+                        @if (canEditPermissions)
+                        {
+                            <div class="d-flex flex-wrap align-items-center gap-2" id="permToolbar">
+                                @if (Model.RoleNames.Count > 1)
+                                {
+                                    <label class="small text-body-secondary mb-0" for="permTargetRole">@Localizer["PermAdmin_TargetRole"]</label>
+                                    <select id="permTargetRole" class="form-select form-select-sm w-auto">
+                                        @foreach (var roleName in Model.RoleNames)
+                                        {
+                                            <option value="@roleName">@roleName</option>
+                                        }
+                                    </select>
+                                }
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button type="button" class="btn btn-outline-secondary" id="permSelectAll"><i class="bi bi-check2-square"></i> @Localizer["PermAdmin_SelectAll"]</button>
+                                    <button type="button" class="btn btn-outline-secondary" id="permDeselectAll"><i class="bi bi-square"></i> @Localizer["PermAdmin_DeselectAll"]</button>
+                                </div>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <button type="button" class="btn btn-outline-success" id="permEnableSelected" disabled><i class="bi bi-toggle-on"></i> @Localizer["PermAdmin_EnableSelected"]</button>
+                                    <button type="button" class="btn btn-outline-danger" id="permDisableSelected" disabled><i class="bi bi-toggle-off"></i> @Localizer["PermAdmin_DisableSelected"]</button>
+                                </div>
+                                <span class="small text-body-secondary" id="permSelectedCount" aria-live="polite"></span>
+                                <span class="spinner-border spinner-border-sm text-secondary d-none" id="permBusy" role="status" aria-label="@Localizer["PermAdmin_Saving"]"></span>
+                            </div>
+                        }
+                    </div>
+
+                    <div id="permAlert" class="alert d-none py-2 small" role="status" aria-live="polite"></div>
+
                     <div class="table-responsive">
-                        <table class="table table-enterprise">
-                            <thead><tr><th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th><th>@Localizer["Destructive"]</th></tr></thead>
+                        <table class="table table-enterprise" id="permTableAllowed">
+                            <thead><tr>
+                                <th class="perm-select-cell"><input type="checkbox" class="form-check-input perm-select-all" @(canEditPermissions ? "" : "disabled") aria-label="@Localizer["PermAdmin_SelectAllInTable"]" /></th>
+                                <th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th><th>@Localizer["Destructive"]</th>
+                            </tr></thead>
                             <tbody>
                             @foreach (var row in Model.EffectivePermissions.Where(r => r.Allowed))
                             {
-                                <tr>
-                                    <td>@row.ResourceName</td>
-                                    <td>@row.ActionName</td>
-                                    <td><code>@row.PermissionName</code></td>
-                                    <td><span class="admin-status active"><i class="bi bi-check2-circle"></i> @Localizer["Allowed"]</span></td>
-                                    <td>@if (row.IsDestructive) { <span class="text-danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Yes"]</span> } else { <span class="text-body-secondary">&mdash;</span> }</td>
-                                </tr>
+                                <partial name="_EffectivePermissionRow" model="new PEMS.Web.Areas.Admin.Models.UserEffectivePermissionRowVm { Row = row, LockedReason = canEditPermissions ? RowLock(row) : (Model.RoleNames.Count == 0 ? PEMS.Application.DTOs.PermissionChangeReasons.NoRoles : PEMS.Application.DTOs.PermissionChangeReasons.SystemAdmin) }" />
                             }
                             </tbody>
                         </table>
                     </div>
                     <details class="mt-3">
-                        <summary class="text-body-secondary small">@Localizer["Show not-granted permissions"] (@(Model.EffectivePermissions.Count - Model.AllowedCount))</summary>
+                        <summary class="text-body-secondary small">@Localizer["Show not-granted permissions"] (<span id="permNotGrantedCount">@(Model.EffectivePermissions.Count - Model.AllowedCount)</span>)</summary>
                         <div class="table-responsive mt-2">
-                            <table class="table table-enterprise">
-                                <thead><tr><th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th></tr></thead>
+                            <table class="table table-enterprise" id="permTableDenied">
+                                <thead><tr>
+                                    <th class="perm-select-cell"><input type="checkbox" class="form-check-input perm-select-all" @(canEditPermissions ? "" : "disabled") aria-label="@Localizer["PermAdmin_SelectAllInTable"]" /></th>
+                                    <th>@Localizer["Resource"]</th><th>@Localizer["Action"]</th><th>@Localizer["Permission"]</th><th>@Localizer["Status"]</th><th>@Localizer["Destructive"]</th>
+                                </tr></thead>
                                 <tbody>
                                 @foreach (var row in Model.EffectivePermissions.Where(r => !r.Allowed))
                                 {
-                                    <tr class="text-body-secondary">
-                                        <td>@row.ResourceName</td>
-                                        <td>@row.ActionName</td>
-                                        <td><code>@row.PermissionName</code></td>
-                                        <td><span class="admin-status inactive"><i class="bi bi-dash-circle"></i> @Localizer["Not granted"]</span></td>
-                                    </tr>
+                                    <partial name="_EffectivePermissionRow" model="new PEMS.Web.Areas.Admin.Models.UserEffectivePermissionRowVm { Row = row, LockedReason = canEditPermissions ? RowLock(row) : (Model.RoleNames.Count == 0 ? PEMS.Application.DTOs.PermissionChangeReasons.NoRoles : PEMS.Application.DTOs.PermissionChangeReasons.SystemAdmin) }" />
                                 }
                                 </tbody>
                             </table>

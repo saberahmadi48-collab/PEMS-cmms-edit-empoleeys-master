@@ -8,7 +8,9 @@
        می‌ماند)، این‌جا باید در هر سه تم خوانا بماند */
     --auth-card-bg: #ffffff;
     --auth-card-text: #1b2733;
-    --auth-card-text-muted: #6c7a89;
+    --auth-card-text-muted: #5f6f83;
+    --auth-input-border: #7a8ba0;
+    --auth-focus: #2563eb;
     --auth-card-label: #33475b;
     --auth-card-border: #dde3ea;
 }
@@ -19,29 +21,28 @@
     --auth-card-text-muted: #93a2b8;
     --auth-card-label: #cbd6e4;
     --auth-card-border: #2a3444;
+    --auth-input-border: #6a7f99;
+    --auth-focus: #7db3ff;
 }
 
 [data-theme="turquoise"] {
-    --auth-card-bg: #16202b;
-    --auth-card-text: #e7f2f1;
-    --auth-card-text-muted: #8fa8ab;
+    /* کارت ورود در Persian Turquoise v3: همان سطح elev-2 جوهری-فیروزه‌ای؛ برچسب‌ها و متن کم‌رنگ ≥۴.۵:۱ */
+    --auth-card-bg: #0f2530;
+    --auth-card-text: #e8f3f1;
+    --auth-card-text-muted: #97b2b6;
     --auth-card-label: #cfe4e3;
-    --auth-card-border: #223040;
-    --pems-accent: #b5651d;
-    --pems-accent-dark: #9a5217;
+    --auth-card-border: #4a7a8c;
 }
 
 /* =========================================================================================
-   طبق «PEMS Premium Three-Theme UI/UX Redesign» (بند ۲۸): صفحه‌ی ورود باید ویترین کامل هویت
-   Persian Turquoise باشد - سیاه‌غالب، الگوی هندسی بسیار کم‌رنگ، پنل شیشه‌ای، فیروزه‌ی محدود.
-   قاب بیرونی (گرادیان برند) طبق همون قاعده‌ی سایدبار (بند ۲.۱ گزارش قبلی) ثابت می‌ماند - فقط
-   خودِ .auth-body و .auth-card برای این تم تغییر می‌کنند.
+   صفحه‌ی ورود = ویترین هویت Persian Turquoise: پایه‌ی جوهری، نقش هندسی بزرگ، دو نور فیروزه‌ای/لاجوردی، کارت کدر
+   با لبه‌ی لعاب فیروزه‌ای→زر، نشان برند دو رنگ کاشی با حلقه‌ی زر، دکمه‌ی اصلی زر با متن تیره.
    ========================================================================================= */
 [data-theme="turquoise"] .auth-body {
     background:
-        radial-gradient(900px 480px at 12% -6%, rgba(14,165,166,.07), transparent 58%),
-        radial-gradient(700px 420px at 105% 6%, rgba(28,63,118,.09), transparent 55%),
-        #080c11;
+        radial-gradient(900px 520px at 88% -8%, rgba(27, 197, 179, .13), transparent 60%),
+        radial-gradient(820px 540px at 4% 108%, rgba(44, 95, 184, .17), transparent 58%),
+        #061219;
     position: relative;
     overflow: hidden;
 }
@@ -51,11 +52,11 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: .07;
+    opacity: .085;
     background-image: var(--pems-pattern-hero);
     background-repeat: no-repeat;
-    background-position: center 15%;
-    background-size: 640px 640px;
+    background-position: center 12%;
+    background-size: 680px 680px;
 }
 
 [data-theme="turquoise"] .auth-wrapper {
@@ -64,30 +65,47 @@
 }
 
 [data-theme="turquoise"] .auth-card {
-    background: var(--pems-glass-bg-strong, var(--auth-card-bg));
+    background:
+        linear-gradient(90deg, transparent, rgba(27, 197, 179, .6) 18%, rgba(229, 176, 74, .42) 82%, transparent) top / 100% 1px no-repeat,
+        linear-gradient(180deg, rgba(27, 197, 179, .06), transparent 40%),
+        var(--pems-glass-bg-strong, var(--auth-card-bg));
     border: 1px solid var(--pems-glass-border, var(--auth-card-border));
-    box-shadow: 0 24px 64px rgba(0,0,0,.55), inset 0 1px 0 var(--pems-glass-highlight, transparent);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, .55), inset 0 1px 0 var(--pems-glass-highlight, transparent);
 }
 
-@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    [data-theme="turquoise"] .auth-card {
-        backdrop-filter: blur(var(--pems-glass-blur-strong, 20px));
-        -webkit-backdrop-filter: blur(var(--pems-glass-blur-strong, 20px));
-    }
+[data-theme="turquoise"] .auth-card .form-control {
+    background: var(--pems-input-bg, var(--auth-card-bg));
+    border-color: var(--pems-border-strong, var(--auth-card-border));
+}
+
+[data-theme="turquoise"] .auth-card .form-control:focus {
+    border-color: var(--pems-turquoise-bright);
+    box-shadow: 0 0 0 3px rgba(95, 224, 210, .24);
 }
 
 [data-theme="turquoise"] .auth-brand-icon {
-    background: linear-gradient(135deg, var(--pems-turquoise, #0ea5a6), var(--pems-lapis, #1c3f76));
-    box-shadow: 0 0 0 1px rgba(45,212,213,.3), 0 8px 24px rgba(14,165,166,.25);
+    background: linear-gradient(135deg, var(--pems-turquoise-dark), var(--pems-lapis));
+    box-shadow: 0 0 0 1px rgba(229, 176, 74, .7), 0 10px 28px rgba(27, 197, 179, .28);
 }
 
+[data-theme="turquoise"] .auth-brand-text span { color: var(--pems-text-muted); }
+
 [data-theme="turquoise"] .btn-pems {
-    background: linear-gradient(135deg, var(--pems-copper, #b5651d), var(--pems-accent-dark, #9a5217));
-    box-shadow: 0 0 0 1px rgba(14,165,166,.18);
+    background: linear-gradient(135deg, var(--pems-gold-hi), var(--pems-gold-lo));
+    border: 1px solid rgba(255, 255, 255, .14);
+    color: var(--pems-on-gold);
+    font-weight: 700;
+    box-shadow: 0 8px 20px rgba(201, 143, 42, .25);
+}
+
+[data-theme="turquoise"] .btn-pems:hover {
+    background: linear-gradient(135deg, #ffe08b, var(--pems-gold));
+    color: var(--pems-on-gold);
+    opacity: 1;
 }
 
 [data-theme="turquoise"] .btn-pems:focus-visible {
-    outline: 2px solid var(--pems-turquoise, #2dd4d5);
+    outline: 2px solid var(--pems-turquoise-bright);
     outline-offset: 2px;
 }
 
@@ -173,21 +191,21 @@
 .auth-card .form-control {
     border-radius: 8px;
     padding: 10px 12px;
-    border: 1px solid var(--auth-card-border);
+    border: 1px solid var(--auth-input-border, var(--auth-card-border));
     background: var(--auth-card-bg);
     color: var(--auth-card-text);
 }
 
 .auth-card .form-control:focus {
-    border-color: var(--pems-accent);
-    box-shadow: 0 0 0 0.2rem rgba(217, 140, 43, 0.15);
+    border-color: var(--auth-focus, var(--pems-accent));
+    box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--auth-focus, var(--pems-accent)) 25%, transparent);
 }
 
 .btn-pems {
-    background: linear-gradient(135deg, var(--pems-accent), var(--pems-accent-dark));
+    background: linear-gradient(135deg, #f5bb5f, #d98c2b);
     border: none;
-    color: #fff;
-    font-weight: 600;
+    color: #1a1305;
+    font-weight: 700;
     padding: 10px 0;
     border-radius: 8px;
     width: 100%;
@@ -195,8 +213,8 @@
 }
 
 .btn-pems:hover {
-    opacity: 0.92;
-    color: #fff;
+    background: linear-gradient(135deg, #ffcb78, #f5bb5f);
+    color: #1a1305;
 }
 
 .auth-links {

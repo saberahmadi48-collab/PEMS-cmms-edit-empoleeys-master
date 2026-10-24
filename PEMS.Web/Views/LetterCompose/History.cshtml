@@ -1,0 +1,77 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@model PEMS.Web.Controllers.LetterHistoryViewModel
+@inject IStringLocalizer<SharedResource> Localizer
+@section Styles {
+    <link rel="stylesheet" href="~/css/letter-compose.css" asp-append-version="true" />
+}
+<div class="lc-page">
+    <div class="lc-header">
+        <h2 class="vs-section__title mb-0">@Localizer["Lc_HistoryTitle"]</h2>
+        <span class="lc-number">@Model.Report.LetterNumber</span>
+        <span class="badge text-bg-secondary">@Model.Report.Status</span>
+        <span class="lc-savestate">
+            <a class="btn btn-sm btn-outline-secondary" asp-controller="Letter" asp-action="Details" asp-route-id="@Model.Report.LetterId">@Localizer["Lc_BackToLetter"]</a>
+            <a class="btn btn-sm btn-outline-primary" asp-action="ComplianceExport" asp-route-id="@Model.Report.LetterId"><i class="bi bi-download" aria-hidden="true"></i> @Localizer["Lc_ExportCsv"]</a>
+        </span>
+    </div>
+    <p class="text-muted">@Model.Report.Subject</p>
+
+    <section class="lc-card" aria-labelledby="lhViews">
+        <h3 id="lhViews"><i class="bi bi-eye" aria-hidden="true"></i> @Localizer["Lc_WhoViewed"]</h3>
+        @if (!Model.Views.Any())
+        {
+            <p class="text-muted mb-0">@Localizer["Lc_NobodyViewed"]</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-sm lh-table">
+                    <thead><tr><th scope="col">@Localizer["Lc_Name"]</th><th scope="col">@Localizer["Lc_FirstViewed"]</th><th scope="col">@Localizer["Lc_LastViewed"]</th><th scope="col">@Localizer["Lc_ViewCount"]</th></tr></thead>
+                    <tbody>
+                        @foreach (var v in Model.Views)
+                        {
+                            <tr><td>@v.UserName</td><td>@v.FirstViewedDate.ToString("yyyy-MM-dd HH:mm")</td><td>@v.LastViewedDate.ToString("yyyy-MM-dd HH:mm")</td><td>@v.ViewCount</td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </section>
+
+    <section class="lc-card" aria-labelledby="lhVersions">
+        <h3 id="lhVersions"><i class="bi bi-clock-history" aria-hidden="true"></i> @Localizer["Lc_Versions"]</h3>
+        @if (!Model.Versions.Any())
+        {
+            <p class="text-muted mb-0">@Localizer["Lc_NoVersions"]</p>
+        }
+        else
+        {
+            @foreach (var v in Model.Versions.OrderByDescending(x => x.VersionNo))
+            {
+                <details class="mb-2">
+                    <summary>
+                        <strong>v@(v.VersionNo)</strong> · @v.Reason · @v.SavedByName · @v.SavedDate.ToString("yyyy-MM-dd HH:mm") — @v.Subject
+                    </summary>
+                    @* نسخه‌ها هنگام ذخیره Sanitize شده‌اند *@
+                    <div class="lh-body mt-2">@Html.Raw(v.Body)</div>
+                </details>
+            }
+        }
+    </section>
+
+    <section class="lc-card" aria-labelledby="lhAudit">
+        <h3 id="lhAudit"><i class="bi bi-shield-check" aria-hidden="true"></i> @Localizer["Lc_AuditTrail"]</h3>
+        <div class="table-responsive">
+            <table class="table table-sm lh-table">
+                <thead><tr><th scope="col">@Localizer["Lc_When"]</th><th scope="col">@Localizer["Lc_Who"]</th><th scope="col">@Localizer["Lc_Category"]</th><th scope="col">@Localizer["Lc_Event"]</th><th scope="col">@Localizer["Lc_DetailCol"]</th></tr></thead>
+                <tbody>
+                    @foreach (var r in Model.Report.Rows)
+                    {
+                        <tr><td class="text-nowrap">@r.Timestamp.ToString("yyyy-MM-dd HH:mm")</td><td>@r.Actor</td><td>@r.Category</td><td>@r.Event</td><td>@r.Detail</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
