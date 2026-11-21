@@ -1,0 +1,80 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("matrix", Category = "data", Icon = "bi-grid-3x3")]
+@inject IPemsLocale Locale
+@if (Options.Rows.Count == 0 || Options.Columns.Count == 0)
+{
+    <p class="pems-state pems-state--empty" role="status" id="@Options.Id">@Locale.Text(Options.Texts.Empty)</p>
+}
+else
+{
+    <div class="@Join("pems-matrix", Options.Css, Options.PageClass)" id="@Options.Id" data-pems-matrix="@(Options.ActionUrl ?? "")" @attributes="Options.Attributes">
+        <div class="pems-matrix__scroll">
+            <table class="table table-sm pems-matrix__table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="pems-matrix__corner">@Locale.Text(Options.Texts.Corner)</th>
+                        @foreach (var c in Options.Columns)
+                        {
+                            <th scope="col">@c.Label</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Options.Rows)
+                    {
+                        <tr>
+                            <th scope="row">@r.Label</th>
+                            @foreach (var c in Options.Columns)
+                            {
+                                <td>@Cell(r, c)</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <span class="pems-matrix__status visually-hidden" role="status" aria-live="polite" data-saving="@Locale.Text(Options.Texts.Saving)" data-saved="@Locale.Text(Options.Texts.Saved)" data-error="@Locale.Text(Options.Texts.Error)"></span>
+    </div>
+}
+@code {
+    [Parameter, EditorRequired] public MatrixOptions Options { get; set; } = default!;
+
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+
+    private MatrixCell? Get(MatrixAxis r, MatrixAxis c) => Options.Cells.GetValueOrDefault(r.Key + "|" + c.Key);
+
+    private RenderFragment Cell(MatrixAxis r, MatrixAxis c) => b =>
+    {
+        var cell = Get(r, c);
+        var value = cell?.Value ?? "";
+        var label = r.Label + " / " + c.Label;
+        if (Options.ActionUrl is null)
+        {
+            b.AddContent(0, value);
+            return;
+        }
+        if (Options.CellType == "select")
+        {
+            b.OpenElement(1, "select");
+            b.AddAttribute(2, "class", "form-select form-select-sm");
+            b.AddAttribute(3, "aria-label", label);
+            b.AddAttribute(4, "data-row", r.Key); b.AddAttribute(5, "data-column", c.Key);
+            if (cell?.Id is not null) b.AddAttribute(6, "data-id", cell.Id);
+            b.OpenElement(7, "option"); b.AddAttribute(8, "value", ""); b.AddAttribute(9, "selected", value == ""); b.CloseElement();
+            foreach (var o in Options.Choices)
+            {
+                b.OpenElement(10, "option"); b.AddAttribute(11, "value", o.Value); b.AddAttribute(12, "selected", o.Value == value); b.AddContent(13, Locale.Text(o.Label)); b.CloseElement();
+            }
+            b.CloseElement();
+            return;
+        }
+        b.OpenElement(20, "input");
+        b.AddAttribute(21, "class", "form-control form-control-sm");
+        b.AddAttribute(22, "type", Options.CellType == "number" ? "number" : "text");
+        b.AddAttribute(23, "value", value);
+        b.AddAttribute(24, "aria-label", label);
+        b.AddAttribute(25, "data-row", r.Key); b.AddAttribute(26, "data-column", c.Key);
+        if (cell?.Id is not null) b.AddAttribute(27, "data-id", cell.Id);
+        b.CloseElement();
+    };
+}

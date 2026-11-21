@@ -1,0 +1,124 @@
+{
+  "kind": "page",
+  "key": "numbering",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document numbering",
+    "fa": "شماره‌گذاری اسناد"
+  },
+  "description": {
+    "en": "Document numbering (page definition)",
+    "fa": "شماره‌گذاری اسناد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "numbering",
+    "template": "entity-list",
+    "args": {
+      "id": "numbering",
+      "url": "/d/numbering-schemes-rows",
+      "idField": "documentType",
+      "columns": [
+        {
+          "key": "documentType",
+          "header": {
+            "en": "Document type",
+            "fa": "نوع سند"
+          },
+          "width": 200
+        },
+        {
+          "key": "pattern",
+          "header": {
+            "en": "Pattern",
+            "fa": "الگو"
+          },
+          "width": 260
+        },
+        {
+          "key": "padWidth",
+          "header": {
+            "en": "Pad",
+            "fa": "ارقام"
+          },
+          "width": 80,
+          "type": "number"
+        },
+        {
+          "key": "calendar",
+          "header": {
+            "en": "Calendar",
+            "fa": "تقویم"
+          },
+          "width": 110
+        },
+        {
+          "key": "resetPeriod",
+          "header": {
+            "en": "Reset",
+            "fa": "بازنشانی"
+          },
+          "width": 100
+        },
+        {
+          "key": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "width": 80,
+          "type": "bool"
+        },
+        {
+          "key": "allowManualEntry",
+          "header": {
+            "en": "Manual entry",
+            "fa": "ثبت دستی"
+          },
+          "width": 110,
+          "type": "bool"
+        },
+        {
+          "key": "preview",
+          "header": {
+            "en": "Preview",
+            "fa": "پیش‌نمایش"
+          },
+          "width": 200
+        },
+        {
+          "key": "version",
+          "header": {
+            "en": "Version",
+            "fa": "نسخه"
+          },
+          "width": 90,
+          "type": "number"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 120,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/numbering-edit/{id}",
+              "method": "get"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

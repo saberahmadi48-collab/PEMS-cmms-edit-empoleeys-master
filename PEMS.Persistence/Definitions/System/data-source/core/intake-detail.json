@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "intake-detail",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Intake file",
+    "fa": "فایل دریافت"
+  },
+  "description": {
+    "en": "Intake file",
+    "fa": "فایل دریافت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Intake",
+      "action": "Detail",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

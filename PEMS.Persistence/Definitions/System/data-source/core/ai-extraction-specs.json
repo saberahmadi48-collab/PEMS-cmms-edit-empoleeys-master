@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "ai-extraction-specs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI extracted specifications",
+    "fa": "مشخصات استخراج‌شده"
+  },
+  "description": {
+    "en": "AI extracted specifications",
+    "fa": "مشخصات استخراج‌شده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "AiExtraction",
+      "action": "Specs",
+      "args": {
+        "attachmentId": "param:id"
+      }
+    }
+  }
+}

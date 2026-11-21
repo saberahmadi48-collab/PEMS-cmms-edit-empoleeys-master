@@ -1,0 +1,40 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("page-filters", Category = "data", Icon = "bi-funnel")]
+@inject IPemsLocale Locale
+@* Batch 5: the filter bar of a report or search page. A GET form: the page gets the values back in its query. Text only; a select is the choices of the definition. *@
+<form method="get" role="search" class="@Join("pems-page-filters", "row", "g-2", "align-items-end", "mb-3", Options.Css, Options.PageClass)" id="@Options.Id" @attributes="Options.Attributes">
+    @foreach (var field in Options.Fields)
+    {
+        <div class="col-12 col-md-3">
+            <label class="form-label small mb-1" for="@InputId(field)">@Locale.Text(field.Label)</label>
+            @if (field.Kind == "select")
+            {
+                <select class="form-select form-select-sm" id="@InputId(field)" name="@field.Name">
+                    <option value="">@Locale.Text(Options.All)</option>
+                    @foreach (var option in field.Options)
+                    {
+                        <option value="@option.Value" selected="@(option.Value == field.Value)">@Locale.Text(option.Label)</option>
+                    }
+                </select>
+            }
+            else
+            {
+                <input class="form-control form-control-sm" id="@InputId(field)" name="@field.Name" type="@(field.Kind == "date" ? "date" : "text")" value="@field.Value" />
+            }
+        </div>
+    }
+    <div class="col-12 col-md-auto d-flex gap-2">
+        <button type="submit" class="btn btn-sm btn-primary">@Locale.Text(Options.Submit)</button>
+        @if (!string.IsNullOrWhiteSpace(Options.ResetUrl) && Options.ResetUrl.StartsWith('/') && !Options.ResetUrl.StartsWith("//", StringComparison.Ordinal))
+        {
+            <a class="btn btn-sm btn-outline-secondary" href="@Options.ResetUrl">@Locale.Text(Options.Reset)</a>
+        }
+    </div>
+</form>
+@code {
+    [Parameter, EditorRequired] public PageFiltersOptions Options { get; set; } = default!;
+
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+
+    private string InputId(PageFilterField field) => (Options.Id ?? "filters") + "-" + field.Name;
+}

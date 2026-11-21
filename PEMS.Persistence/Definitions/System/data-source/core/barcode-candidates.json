@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "barcode-candidates",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment for bulk barcodes",
+    "fa": "تجهیزات برای بارکد گروهی"
+  },
+  "description": {
+    "en": "Equipment for bulk barcodes",
+    "fa": "تجهیزات برای بارکد گروهی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Barcode",
+      "action": "Candidates",
+      "args": {
+        "disciplineId": "param:disciplineId",
+        "equipmentType": "param:equipmentType",
+        "tagSearch": "param:tagSearch"
+      }
+    }
+  }
+}

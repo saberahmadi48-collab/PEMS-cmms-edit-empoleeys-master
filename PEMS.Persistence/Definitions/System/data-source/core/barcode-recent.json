@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "barcode-recent",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Recent barcodes",
+    "fa": "بارکدهای اخیر"
+  },
+  "description": {
+    "en": "Recent barcodes",
+    "fa": "بارکدهای اخیر"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Barcode",
+      "action": "Recent"
+    }
+  }
+}

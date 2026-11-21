@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-admin-sections",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin: Sections",
+    "fa": "مدیریت کاتالوگ قطعه: Sections"
+  },
+  "description": {
+    "en": "Part Catalogue admin: Sections",
+    "fa": "مدیریت کاتالوگ قطعه: Sections"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "Sections",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId"
+      }
+    }
+  }
+}

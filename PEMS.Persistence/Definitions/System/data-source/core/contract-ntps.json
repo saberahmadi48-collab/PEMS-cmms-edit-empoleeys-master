@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "contract-ntps",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contract: NTPs",
+    "fa": "قرارداد: NTPs"
+  },
+  "description": {
+    "en": "Contract: NTPs",
+    "fa": "قرارداد: NTPs"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ContractPage",
+      "action": "Ntps",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

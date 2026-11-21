@@ -1,0 +1,13 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("action-button", Category = "actions", Icon = "bi-lightning")]
+@inject IPemsLocale Locale
+<form @attributes="Options.Attributes" action="@("/a/" + Options.Action)" method="post" class="@Join("pems-action-button", Options.Css, Options.PageClass)">
+    @if (Options.Antiforgery is not null) { <input type="hidden" name="@Options.Antiforgery.Name" value="@Options.Antiforgery.Token" /> }
+    @if (!string.IsNullOrEmpty(Options.ReturnUrl)) { <input type="hidden" name="returnUrl" value="@Options.ReturnUrl" /> }
+    @foreach (var v in Options.Values) { <input type="hidden" name="@v.Key" value="@v.Value" /> }
+    <button type="submit" class="@("btn btn-" + (Options.Tone == "secondary" ? "outline-secondary" : Options.Tone))" data-pems-confirm="@(Options.Confirm is null ? null : Locale.Text(Options.Confirm))">@if (!string.IsNullOrEmpty(Options.Icon)) { <i class="@("bi " + Options.Icon)" aria-hidden="true"></i><text> </text> }@Locale.Text(Options.Label)</button>
+</form>
+@code {
+    [Parameter, EditorRequired] public ActionButtonOptions Options { get; set; } = default!;
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+}

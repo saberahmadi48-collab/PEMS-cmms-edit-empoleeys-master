@@ -240,22 +240,7 @@ public class EnterpriseMaintenanceMasterDataTests
 
     // ================= Integrity: duplicate codes rejected (controller-level, mutation-proof) =================
 
-    private static MaintenanceMasterDataController CreateController(PEMS.Persistence.Context.PEMSDbContext ctx, string role)
-    {
-        var accessControl = new AccessControlService(ctx);
-        var permissionService = new PermissionService(ctx, accessControl);
-        permissionService.SeedDefaultsAsync().GetAwaiter().GetResult();
-
-        foreach (var roleName in SystemRoles.All)
-            if (!ctx.Roles.Any(r => r.Name == roleName))
-                ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
-        ctx.SaveChanges();
-
-        AccessControlSeeder.SeedFromLegacyAsync(BuildProvider(ctx)).GetAwaiter().GetResult();
-
-        var currentUser = new FakeCurrentUserService { Roles = new List<string> { role } };
-        return new MaintenanceMasterDataController(ctx, currentUser, permissionService, new OrganizationStructureService(ctx)).WithTempData();
-    }
+    private static PEMS.Web.Services.MaintenanceMasterDataOperations CreateController(PEMS.Persistence.Context.PEMSDbContext ctx, string role) => new(ctx, new OrganizationStructureService(ctx));
 
     [Fact]
     public async Task CreateMaintenanceType_DuplicateCode_Rejected_NoMutation()
@@ -264,7 +249,7 @@ public class EnterpriseMaintenanceMasterDataTests
         var countBefore = await ctx.MaintenanceTypes.CountAsync();
         var controller = CreateController(ctx, SystemRoles.MaintenanceEngineer);
 
-        await controller.CreateMaintenanceType("PREVENTIVE", "Duplicate Attempt", null, null);
+        await controller.CreateMaintenanceTypeAsync("PREVENTIVE", "Duplicate Attempt", null, null);
 
         Assert.Equal(countBefore, await ctx.MaintenanceTypes.CountAsync());
     }
@@ -276,7 +261,7 @@ public class EnterpriseMaintenanceMasterDataTests
         var countBefore = await ctx.EquipmentClasses.CountAsync();
         var controller = CreateController(ctx, SystemRoles.MaintenanceEngineer);
 
-        await controller.CreateEquipmentClass("PUMP_CENT", "Duplicate Attempt", null, null);
+        await controller.CreateEquipmentClassAsync("PUMP_CENT", "Duplicate Attempt", null, null);
 
         Assert.Equal(countBefore, await ctx.EquipmentClasses.CountAsync());
     }
@@ -290,7 +275,7 @@ public class EnterpriseMaintenanceMasterDataTests
         var countBefore = await ctx.StandardReferences.CountAsync();
         var controller = CreateController(ctx, SystemRoles.MaintenanceEngineer);
 
-        await controller.CreateStandardReference("ISO-14224-DUP", "ISO", "14224", "Duplicate Attempt", null, null);
+        await controller.CreateStandardReferenceAsync("ISO-14224-DUP", "ISO", "14224", "Duplicate Attempt", null, null);
 
         Assert.Equal(countBefore, await ctx.StandardReferences.CountAsync());
     }
@@ -303,7 +288,7 @@ public class EnterpriseMaintenanceMasterDataTests
         var countBefore = await ctx.MaintenanceActivities.CountAsync();
         var controller = CreateController(ctx, SystemRoles.MaintenanceEngineer);
 
-        await controller.CreateMaintenanceActivity("ACT_ORPHAN_TEST", "Orphan Test", null, maintenanceGroupId: 999999, maintenanceTypeId: null, description: null);
+        await controller.CreateMaintenanceActivityAsync("ACT_ORPHAN_TEST", "Orphan Test", null, maintenanceGroupId: 999999, maintenanceTypeId: null, description: null);
 
         Assert.Equal(countBefore, await ctx.MaintenanceActivities.CountAsync());
     }
@@ -315,9 +300,9 @@ public class EnterpriseMaintenanceMasterDataTests
         var groupId = await ctx.MaintenanceGroups.Where(x => x.Code == "MECH-ROT").Select(x => x.MaintenanceGroupId).SingleAsync();
         var controller = CreateController(ctx, SystemRoles.MaintenanceEngineer);
 
-        var result = await controller.CreateMaintenanceActivity("ACT_CUSTOM_TEST", "Custom Activity", null, groupId, null, null);
+        var result = await controller.CreateMaintenanceActivityAsync("ACT_CUSTOM_TEST", "Custom Activity", null, groupId, null, null);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.True(await ctx.MaintenanceActivities.AnyAsync(x => x.Code == "ACT_CUSTOM_TEST" && !x.IsSystemDefault));
     }
 
@@ -333,7 +318,7 @@ public class EnterpriseMaintenanceMasterDataTests
         Assert.True(type.IsSystemDefault);
         var controller = CreateController(ctx, SystemRoles.MaintenanceEngineer);
 
-        await controller.ToggleMaintenanceTypeActive(type.MaintenanceTypeId);
+        await controller.ToggleMaintenanceTypeActiveAsync(type.MaintenanceTypeId);
 
         var afterToggle = await ctx.MaintenanceTypes.SingleAsync(x => x.MaintenanceTypeId == type.MaintenanceTypeId);
         Assert.False(afterToggle.IsActive); // غیرفعال شد
@@ -342,16 +327,4 @@ public class EnterpriseMaintenanceMasterDataTests
 
     // ================= Permission (reusing the existing hardened "MaintenanceMasterData" module) =================
 
-    [Fact]
-    public async Task CreateMaintenanceType_WithoutPermission_ReturnsForbid_NoMutation()
-    {
-        var ctx = await SeedFullBaselineAsync(nameof(CreateMaintenanceType_WithoutPermission_ReturnsForbid_NoMutation));
-        var countBefore = await ctx.MaintenanceTypes.CountAsync();
-        var controller = CreateController(ctx, SystemRoles.Viewer);
-
-        var result = await controller.CreateMaintenanceType("NEW_TYPE", "New Type", null, null);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Equal(countBefore, await ctx.MaintenanceTypes.CountAsync());
-    }
 }

@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "mmd-create-evaluation-profile",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateEvaluationProfile",
+    "fa": "Evaluation Profile ساخته شد. حالا آستانه‌های واقعی را از دکمه‌ی «Add Limit» وارد کنید."
+  },
+  "description": {
+    "en": "CreateEvaluationProfile",
+    "fa": "Evaluation Profile ساخته شد. حالا آستانه‌های واقعی را از دکمه‌ی «Add Limit» وارد کنید."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "CreateEvaluationProfile",
+      "args": {
+        "code": "field:code",
+        "name": "field:name",
+        "nameFa": "field:nameFa",
+        "variableType": "field:variableType",
+        "standardReferenceId": "field:standardReferenceId",
+        "equipmentClassId": "field:equipmentClassId",
+        "operatingCondition": "field:operatingCondition",
+        "effectiveFrom": "field:effectiveFrom"
+      }
+    },
+    "success": {
+      "en": "Evaluation Profile ساخته شد. حالا آستانه‌های واقعی را از دکمه‌ی «Add Limit» وارد کنید.",
+      "fa": "Evaluation Profile ساخته شد. حالا آستانه‌های واقعی را از دکمه‌ی «Add Limit» وارد کنید."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

@@ -31,6 +31,8 @@ public class LetterSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "Letter";
     public string DisplayName => "نامه‌نگاری (Correspondence)";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser(rowScope: "confidential letters: Correspondence/Approve, registrar or referral recipient");
 
     public LetterSearchProvider(PEMSDbContext context, IKnowledgeBaseService knowledgeBaseService,
         IPermissionService permissionService, ICurrentUserContext currentUser)
@@ -132,9 +134,9 @@ public class LetterSearchProvider : ISearchableEntityProvider
                 SubLabel = string.Join(" — ", new[]
                 {
                     x.Letter.Subject,
-                    x.Letter.Sender ?? x.Letter.Receiver,
-                    x.Letter.LetterType
+                    x.Letter.Sender ?? x.Letter.Receiver
                 }.Where(s => !string.IsNullOrWhiteSpace(s))),
+                SubLabelSuffixKey = x.Letter.LetterType,
                 Url = $"/Letter/Details/{x.Letter.LetterId}",
                 Score = x.Score
             })

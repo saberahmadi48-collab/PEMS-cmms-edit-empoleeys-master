@@ -6,54 +6,54 @@
     var documents = (IEnumerable<dynamic>)ViewBag.Documents;
 }
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+<pems-content-card css="mb-3">
+    <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
-            <h5 class="mb-0">MDB - @Model.EquipmentTagNumber</h5>
+            <pems-heading level="5" class="mb-0">MDB - @Model.EquipmentTagNumber</pems-heading>
             <span class="text-muted small">@Model.VendorName &middot; @Model.ProjectName @(Model.PoNumber != null ? $"· PO {Model.PoNumber}" : "")</span>
         </div>
-        <span class="badge bg-secondary fs-6">@Model.Status</span>
-    </div>
+        <pems-badge tone="neutral" css="fs-6">@Model.Status</pems-badge>
+    </pems-flex>
 
-    <hr class="my-2" />
+    <pems-divider class="my-2" />
 
-    <div class="row g-3">
-        <div class="col-md-3"><strong>Planned Final Issue:</strong> @(Model.PlannedFinalIssueDate?.ToString("yyyy-MM-dd") ?? "-")</div>
-        <div class="col-md-3">
-            <strong>Index of Contents Due:</strong> @(Model.IndexOfContentsDueDate?.ToString("yyyy-MM-dd") ?? "-")
+    <pems-row gap="3">
+        <pems-col md="3"><strong>Planned Final Issue:</strong> @(PemsDates.Date(Model.PlannedFinalIssueDate) ?? "-")</pems-col>
+        <pems-col md="3">
+            <strong>Index of Contents Due:</strong> @(PemsDates.Date(Model.IndexOfContentsDueDate) ?? "-")
             @if (Model.IsIndexOverdue)
             {
-                <span class="badge bg-danger">@Localizer["overdue"]</span>
+                <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge>
             }
-        </div>
-        <div class="col-md-3"><strong>Index Submitted:</strong> @(Model.IndexOfContentsSubmittedDate?.ToString("yyyy-MM-dd") ?? "-")</div>
-        <div class="col-md-3"><strong>Hard Copy:</strong> @(Model.HardCopyShippedDate.HasValue ? $"Shipped {Model.HardCopyShippedDate:yyyy-MM-dd} ({Model.HardCopyCount} vol)" : "Not shipped")</div>
-        <div class="col-md-3"><strong>Soft Copy:</strong> @(Model.SoftCopyDeliveredDate.HasValue ? $"Delivered {Model.SoftCopyDeliveredDate:yyyy-MM-dd}" : "Not delivered")</div>
-    </div>
+        </pems-col>
+        <pems-col md="3"><strong>Index Submitted:</strong> @(PemsDates.Date(Model.IndexOfContentsSubmittedDate) ?? "-")</pems-col>
+        <pems-col md="3"><strong>Hard Copy:</strong> @(Model.HardCopyShippedDate.HasValue ? $"Shipped {Model.HardCopyShippedDate:yyyy-MM-dd} ({Model.HardCopyCount} vol)" : "Not shipped")</pems-col>
+        <pems-col md="3"><strong>Soft Copy:</strong> @(Model.SoftCopyDeliveredDate.HasValue ? $"Delivered {Model.SoftCopyDeliveredDate:yyyy-MM-dd}" : "Not delivered")</pems-col>
+    </pems-row>
 
-    <div class="d-flex flex-wrap gap-2 mt-3">
+    <pems-flex wrap="true" gap="2" css="mt-3">
         @if (Model.IndexOfContentsSubmittedDate == null)
         {
-            <form asp-action="MarkIndexSubmitted" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><button class="btn btn-sm btn-outline-primary">Mark Index Submitted</button></form>
+            <pems-form asp-action="MarkIndexSubmitted" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Index Submitted</pems-button></pems-form>
         }
         @if (Model.Status != "FinalIssued" && Model.Status != "Delivered")
         {
-            <form asp-action="MarkFinalIssued" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><button class="btn btn-sm btn-outline-primary">Mark Final Issued</button></form>
+            <pems-form asp-action="MarkFinalIssued" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Final Issued</pems-button></pems-form>
         }
         @if (!Model.HardCopyShippedDate.HasValue)
         {
-            <form asp-action="MarkHardCopyShipped" method="post" class="d-flex gap-1">
+            <pems-form asp-action="MarkHardCopyShipped" method="post"><pems-flex gap="1">
                 <input type="hidden" name="mdbId" value="@Model.MDBId" />
-                <input type="number" name="hardCopyCount" class="form-control form-control-sm" style="width:90px;" placeholder="# volumes" />
-                <button class="btn btn-sm btn-outline-primary">Mark Hard Copy Shipped</button>
-            </form>
+                <pems-input class="pems-w-90" scale="small" type="number" name="hardCopyCount" placeholder="# volumes" />
+                <pems-button tone="primary" size="small" outline="true">Mark Hard Copy Shipped</pems-button>
+            </pems-flex></pems-form>
         }
         @if (!Model.SoftCopyDeliveredDate.HasValue)
         {
-            <form asp-action="MarkSoftCopyDelivered" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><button class="btn btn-sm btn-outline-primary">Mark Soft Copy Delivered</button></form>
+            <pems-form asp-action="MarkSoftCopyDelivered" method="post"><input type="hidden" name="mdbId" value="@Model.MDBId" /><pems-button tone="primary" size="small" outline="true">Mark Soft Copy Delivered</pems-button></pems-form>
         }
-    </div>
-</div>
+    </pems-flex>
+</pems-content-card>
 
 @{
     var parts = new[] {
@@ -65,54 +65,43 @@
 
 @foreach (var (code, label, docs) in parts)
 {
-    <div class="content-card mb-3">
-        <h6 class="mb-3">@label</h6>
-        <table class="table table-enterprise">
-            <thead><tr><th>@Localizer["Document No"]</th><th>@Localizer["Title"]</th><th>DVD Volume</th><th>N/A</th><th>@Localizer["Notes"]</th><th></th></tr></thead>
-            <tbody>
-                @foreach (var d in docs)
-                {
-                    <tr>
-                        <td>@d.DocumentNo</td>
-                        <td>@d.Title</td>
-                        <td>@d.DvdVolumeNo</td>
-                        <td>@(d.IsNotApplicable ? "Not applicable" : "")</td>
-                        <td>@d.Notes</td>
-                        <td>
-                            <form asp-action="RemoveDocument" method="post">
+    <pems-content-card css="mb-3">
+        <pems-heading level="6" class="mb-3">@label</pems-heading>
+        @{
+            var rows_47 = docs;
+            var cell_47_5 = DataCell.Template(rows_47, @<text>@{ var d = item; }
+                            <pems-form asp-action="RemoveDocument" method="post">
                                 <input type="hidden" name="mdbId" value="@Model.MDBId" />
                                 <input type="hidden" name="mdbDocumentId" value="@d.MDBDocumentId" />
-                                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                                <pems-button tone="danger" size="small" outline="true"><pems-icon name="bi-trash" /></pems-button>
+                            </pems-form>
+                        </text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_47, c_ => c_.Add(((Localizer["Document No"])?.ToString() ?? ""), d => (object?)(d.DocumentNo)).Add(((Localizer["Title"])?.ToString() ?? ""), d => (object?)(d.Title)).Add("DVD Volume", d => (object?)(d.DvdVolumeNo)).Add("N/A", d => (object?)((d.IsNotApplicable ? "Not applicable" : ""))).Add(((Localizer["Notes"])?.ToString() ?? ""), d => (object?)(d.Notes)).Add("", d => (object?)cell_47_5(d))))" />
         @if (!docs.Any())
         {
-            <p class="text-muted small mb-2">No documents in this part yet.</p>
+            <pems-text class="text-muted small mb-2">No documents in this part yet.</pems-text>
         }
 
-        <form asp-action="AddDocument" method="post" class="row g-2 mt-2">
+        <pems-form asp-action="AddDocument" method="post"><pems-row gap="2" css="mt-2">
             <input type="hidden" name="mdbId" value="@Model.MDBId" />
             <input type="hidden" name="part" value="@code" />
-            <div class="col-md-3">
-                <select name="documentId" class="form-select form-select-sm">
+            <pems-col md="3">
+                <pems-select scale="small" name="documentId">
                     <option value="">-- Link existing document (optional) --</option>
                     @foreach (var doc in documents)
                     {
                         <option value="@doc.DocumentId">@doc.DocumentNo - @doc.Title</option>
                     }
-                </select>
-            </div>
-            <div class="col-md-3"><input name="title" class="form-control form-control-sm" placeholder="Title (if not linking a document)" /></div>
-            <div class="col-md-2"><input name="dvdVolumeNo" type="number" class="form-control form-control-sm" placeholder="DVD Vol #" /></div>
-            <div class="col-md-2 form-check d-flex align-items-center">
-                <input type="checkbox" name="isNotApplicable" value="true" class="form-check-input me-1" id="na_@code" />
+                </pems-select>
+            </pems-col>
+            <pems-col md="3"><pems-input scale="small" name="title" placeholder="Title (if not linking a document)" /></pems-col>
+            <pems-col md="2"><pems-input scale="small" name="dvdVolumeNo" type="number" placeholder="DVD Vol #" /></pems-col>
+            <pems-col md="2" css="form-check d-flex align-items-center">
+                <pems-input kind="check" css="me-1" type="checkbox" name="isNotApplicable" value="true" id="na_@code" />
                 <label class="form-check-label small" for="na_@code">Not applicable</label>
-            </div>
-            <div class="col-md-2"><button class="btn btn-sm btn-outline-primary w-100"><i class="bi bi-plus-lg"></i> @Localizer["Add"]</button></div>
-        </form>
-    </div>
+            </pems-col>
+            <pems-col md="2"><pems-button tone="primary" size="small" outline="true" css="w-100"><pems-icon name="bi-plus-lg" /> @Localizer["Add"]</pems-button></pems-col>
+        </pems-row></pems-form>
+    </pems-content-card>
 }

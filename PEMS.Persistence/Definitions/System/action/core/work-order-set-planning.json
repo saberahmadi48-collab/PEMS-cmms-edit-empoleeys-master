@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "work-order-set-planning",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set responsible maintenance discipline",
+    "fa": "ثبت دیسیپلین مسئول نگهداری"
+  },
+  "description": {
+    "en": "Set responsible maintenance discipline",
+    "fa": "ثبت دیسیپلین مسئول نگهداری"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrder",
+      "action": "SetPlanning",
+      "sectionGuard": {
+        "section": "ResponsibleDiscipline",
+        "action": "Edit",
+        "workOrderId": "field:id",
+        "audit": "ResponsibleDisciplineId={responsibleDisciplineId}"
+      },
+      "args": {
+        "workOrderId": "field:id",
+        "responsibleDisciplineId": "field:responsibleDisciplineId"
+      }
+    },
+    "success": {
+      "en": "Responsible maintenance discipline saved.",
+      "fa": "دیسیپلین مسئول نگهداری ثبت شد."
+    },
+    "redirect": "/WorkOrder/Details/{id}"
+  }
+}

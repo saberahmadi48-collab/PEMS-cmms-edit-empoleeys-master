@@ -77,6 +77,12 @@ public class ContractApprovalAuthorityRuleService : IContractApprovalAuthorityRu
         return (true, null);
     }
 
+    public async Task<(bool Success, string? Error)> ValidateRuleAsync(int? ruleId, decimal? minValue, decimal? maxValue, string? criticalityClass, string requiredApproverRole)
+    {
+        var problem = await ValidateAsync(ruleId, minValue, maxValue, criticalityClass, requiredApproverRole);
+        return problem is null ? (true, null) : (false, problem);
+    }
+
     // طبق Gap ۳: فقط اعتبارسنجی‌هایی که معماری موجود واقعاً می‌تواند با اطمینان تعیین کند - نه
     // یک آستانه‌ی کسب‌وکاری اختراعی
     private async Task<string?> ValidateAsync(

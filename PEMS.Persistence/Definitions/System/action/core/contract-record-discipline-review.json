@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "contract-record-discipline-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record discipline review",
+    "fa": "ثبت تصمیم بازبینی"
+  },
+  "description": {
+    "en": "Record discipline review",
+    "fa": "ثبت تصمیم بازبینی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Contract",
+      "action": "RecordDisciplineReview",
+      "args": {
+        "contractId": "field:contractId",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "disciplineRole": "field:disciplineRole",
+        "decision": "field:decision",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "The review decision was recorded.",
+      "fa": "تصمیم بازبینی ثبت شد."
+    },
+    "redirect": "/Contract/Details/{contractId}"
+  }
+}

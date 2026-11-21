@@ -1,0 +1,10 @@
+/* Moved verbatim from the <style> block of PEMS.Web/Areas/Admin/Views/Users/Details.cshtml (SCRUM-347). */
+.navvis-module { border: 1px solid var(--bs-border-color); border-radius: 8px; padding: 2px 12px; background: var(--bs-body-bg); }
+.navvis-module-summary { cursor: pointer; padding: 10px 4px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.navvis-title { flex: 1 1 auto; }
+.navvis-subgroup { margin: 6px 0 6px 18px; border-left: 2px solid var(--bs-border-color); padding-left: 12px; }
+.navvis-subgroup-summary { cursor: pointer; font-weight: 500; padding: 6px 0; color: var(--bs-secondary-color); }
+.navvis-children { padding: 2px 0 10px 18px; }
+.navvis-item-flat { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-top: 1px dashed var(--bs-border-color); flex-wrap: wrap; }
+.navvis-item-flat:first-child { border-top: none; }
+.navvis-item-name { font-weight: 500; }

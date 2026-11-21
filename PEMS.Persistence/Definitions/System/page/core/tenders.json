@@ -1,0 +1,162 @@
+{
+  "kind": "page",
+  "key": "tenders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tenders",
+    "fa": "مناقصه‌ها"
+  },
+  "description": {
+    "en": "Tenders, all or of one package (page definition)",
+    "fa": "مناقصه‌ها، همه یا یک پکیج (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "tenders",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "tender-filters",
+            "resetUrl": "/p/tenders",
+            "fields": [
+              {
+                "name": "procurementPackageId",
+                "label": {
+                  "en": "Package id",
+                  "fa": "شناسه‌ی پکیج"
+                },
+                "kind": "text",
+                "value": "{{params.procurementPackageId}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/tender-create?procurementPackageId={{params.procurementPackageId}}",
+                "text": {
+                  "en": "New tender",
+                  "fa": "مناقصه جدید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "tenders",
+          "component": "data-grid",
+          "options": {
+            "id": "tenders",
+            "url": "/d/tender-list?f.procurementPackageId={{params.procurementPackageId|url}}",
+            "idField": "tenderId",
+            "columns": [
+              {
+                "key": "tenderNumber",
+                "header": {
+                  "en": "Tender",
+                  "fa": "مناقصه"
+                },
+                "width": 140
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 300
+              },
+              {
+                "key": "package",
+                "header": {
+                  "en": "Package",
+                  "fa": "پکیج"
+                },
+                "width": 140
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "issueDate",
+                "header": {
+                  "en": "Issued",
+                  "fa": "انتشار"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "responseDeadline",
+                "header": {
+                  "en": "Deadline",
+                  "fa": "مهلت"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "bidCount",
+                "header": {
+                  "en": "Bids",
+                  "fa": "پیشنهادها"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "contractId",
+                "header": {
+                  "en": "Contract",
+                  "fa": "قرارداد"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/Tender/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "Tender.View"
+  }
+}

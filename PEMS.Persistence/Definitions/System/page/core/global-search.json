@@ -1,0 +1,72 @@
+{
+  "kind": "page",
+  "key": "global-search",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Global search",
+    "fa": "جستجوی سراسری"
+  },
+  "description": {
+    "en": "Every record the user may open that matches the search (page definition)",
+    "fa": "همه‌ی رکوردهای قابل‌دسترس مطابق جستجو (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "global-search",
+    "template": "entity-list",
+    "args": {
+      "id": "global-search",
+      "url": "/d/global-search-grid?q={{params.q}}",
+      "idField": "url",
+      "columns": [
+        {
+          "key": "type",
+          "header": {
+            "en": "Type",
+            "fa": "نوع"
+          },
+          "width": 200
+        },
+        {
+          "key": "label",
+          "header": {
+            "en": "Result",
+            "fa": "نتیجه"
+          },
+          "width": 420
+        },
+        {
+          "key": "sub",
+          "header": {
+            "en": "Details",
+            "fa": "جزئیات"
+          },
+          "width": 360
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 110,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "open",
+              "label": {
+                "en": "Open",
+                "fa": "باز کردن"
+              },
+              "url": "{raw.url}",
+              "method": "get"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

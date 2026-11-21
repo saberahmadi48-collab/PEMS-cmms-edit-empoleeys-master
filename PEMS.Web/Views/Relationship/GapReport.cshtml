@@ -3,72 +3,36 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-clipboard-x"></i> @Localizer["گزارش تحلیل شکاف - رابطه‌های ناقص تجهیزات"]</h5>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["بازگشت به Explorer"]</a>
-</div>
+<pems-flex justify="between" align="center" css="mb-3">
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-clipboard-x" /> @Localizer["گزارش تحلیل شکاف - رابطه‌های ناقص تجهیزات"]</pems-heading>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["بازگشت به Explorer"]</pems-button>
+</pems-flex>
 
-<p class="text-muted small">
+<pems-text class="text-muted small">
     این گزارش برعکس Explorer عمل می‌کنه: به‌جای کاوش از یک تجهیز مشخص، همه‌ی تجهیزات رو بررسی
     می‌کنه و نشون می‌ده کدوم‌ها هنوز به مدرک مهندسی، VDR، MR یا WorkOrder وصل نشدن - برای
     برنامه‌ریزی و پیگیری شکاف‌های داده.
-</p>
+</pems-text>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold">@Model.TotalEquipmentCount</div>
-            <div class="text-muted small">@Localizer["کل تجهیزات"]</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-success">@Model.FullyLinkedCount</div>
-            <div class="text-muted small">@Localizer["کاملاً وصل (هر ۴ نوع رابطه)"]</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-warning">@Model.PartiallyLinkedCount</div>
-            <div class="text-muted small">@Localizer["ناقص (بعضی روابط)"]</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-danger">@Model.UnlinkedCount</div>
-            <div class="text-muted small">@Localizer["کاملاً بدون رابطه"]</div>
-        </div>
-    </div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3">
+        <pems-kpi-tile label="@Localizer["کل تجهیزات"]">@Model.TotalEquipmentCount</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="3">
+        <pems-kpi-tile tone="success" label="@Localizer["کاملاً وصل (هر ۴ نوع رابطه)"]">@Model.FullyLinkedCount</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="3">
+        <pems-kpi-tile tone="warning" label="@Localizer["ناقص (بعضی روابط)"]">@Model.PartiallyLinkedCount</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="3">
+        <pems-kpi-tile tone="danger" label="@Localizer["کاملاً بدون رابطه"]">@Model.UnlinkedCount</pems-kpi-tile>
+    </pems-col>
+</pems-row>
 
-<div class="content-card">
-    <table class="table table-enterprise mb-0">
-        <thead>
-            <tr>
-                <th>@Localizer["Tag"]</th><th>@Localizer["Name"]</th><th>@Localizer["Area"]</th><th>@Localizer["Discipline"]</th>
-                <th class="text-center">@Localizer["مدارک"]</th><th class="text-center">@Localizer["VDR"]</th>
-                <th class="text-center">MR</th><th class="text-center">WorkOrder</th><th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Items)
-            {
-                <tr>
-                    <td><strong>@item.TagNumber</strong></td>
-                    <td class="small">@item.Name</td>
-                    <td class="small">@item.Area</td>
-                    <td class="small">@item.DisciplineName</td>
-                    <td class="text-center">@(item.HasDocuments ? "✅" : "❌")</td>
-                    <td class="text-center">@(item.HasVdrItems ? "✅" : "❌")</td>
-                    <td class="text-center">@(item.HasMR ? "✅" : "❌")</td>
-                    <td class="text-center">@(item.HasWorkOrders ? "✅" : "❌")</td>
-                    <td><a asp-action="Equipment" asp-route-id="@item.EquipmentId" class="btn btn-sm btn-outline-primary"><i class="bi bi-diagram-3"></i></a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<pems-content-card>
+    <pems-data-table data="@(DataRows.Of(Model.Items, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), item => (object?)(DataCell.Span(null, item.TagNumber).WithTag("strong"))).Add(((Localizer["Name"])?.ToString() ?? ""), item => (object?)(item.Name), css: "small").Add(((Localizer["Area"])?.ToString() ?? ""), item => (object?)(item.Area), css: "small").Add(((Localizer["Discipline"])?.ToString() ?? ""), item => (object?)(item.DisciplineName), css: "small").Add(((Localizer["مدارک"])?.ToString() ?? ""), item => (object?)((item.HasDocuments ? "✅" : "❌")), css: "text-center", headerCss: "text-center").Add(((Localizer["VDR"])?.ToString() ?? ""), item => (object?)((item.HasVdrItems ? "✅" : "❌")), css: "text-center", headerCss: "text-center").Add("MR", item => (object?)((item.HasMR ? "✅" : "❌")), css: "text-center", headerCss: "text-center").Add("WorkOrder", item => (object?)((item.HasWorkOrders ? "✅" : "❌")), css: "text-center", headerCss: "text-center").Add("", item => (object?)(DataCell.ButtonLink(Url.Action("Equipment", null, new { id = item.EquipmentId }), "primary", "small", true, null, DataCell.Icon("bi-diagram-3"))))))" css="mb-0" />
     @if (!Model.Items.Any())
     {
-        <p class="text-muted text-center py-4 mb-0">همه‌ی تجهیزات کاملاً وصل هستن - عالیه!</p>
+        <pems-text class="text-muted text-center py-4 mb-0">همه‌ی تجهیزات کاملاً وصل هستن - عالیه!</pems-text>
     }
-</div>
+</pems-content-card>

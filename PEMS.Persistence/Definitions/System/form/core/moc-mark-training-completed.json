@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "moc-mark-training-completed",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark training completed",
+    "fa": "اعلام تکمیل آموزش"
+  },
+  "description": {
+    "en": "Mark training completed",
+    "fa": "اعلام تکمیل آموزش"
+  },
+  "payload": {
+    "id": "moc-mark-training-completed",
+    "title": {
+      "en": "Mark training completed",
+      "fa": "اعلام تکمیل آموزش"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "moc-mark-training-completed",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "mocId",
+        "label": {
+          "en": "MOC id",
+          "fa": "شناسه‌ی MOC"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

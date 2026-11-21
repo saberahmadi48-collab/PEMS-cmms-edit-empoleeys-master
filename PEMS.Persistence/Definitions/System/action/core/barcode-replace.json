@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "barcode-replace",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Replace a barcode",
+    "fa": "جایگزینی بارکد"
+  },
+  "description": {
+    "en": "Replace a barcode",
+    "fa": "جایگزینی بارکد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Barcode",
+      "action": "Replace",
+      "args": {
+        "id": "field:id",
+        "symbology": "field:symbology",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The barcode was replaced.",
+      "fa": "بارکد جایگزین شد."
+    },
+    "redirect": "/p/barcodes"
+  }
+}

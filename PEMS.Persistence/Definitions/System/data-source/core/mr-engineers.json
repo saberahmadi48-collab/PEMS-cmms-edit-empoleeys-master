@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "mr-engineers",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineers",
+    "fa": "مهندسان"
+  },
+  "description": {
+    "en": "Engineers",
+    "fa": "مهندسان"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MaterialRequisition",
+      "action": "Engineers",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

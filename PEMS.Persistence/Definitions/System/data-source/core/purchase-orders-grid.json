@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "purchase-orders-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Purchase orders",
+    "fa": "سفارش‌های خرید"
+  },
+  "description": {
+    "en": "Purchase orders",
+    "fa": "سفارش‌های خرید"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "List"
+    }
+  }
+}

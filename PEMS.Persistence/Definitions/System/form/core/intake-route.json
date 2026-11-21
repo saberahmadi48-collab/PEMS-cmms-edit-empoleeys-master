@@ -1,0 +1,184 @@
+{
+  "kind": "form",
+  "key": "intake-route",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Confirm and route",
+    "fa": "تأیید و مسیریابی"
+  },
+  "description": {
+    "en": "Confirm and route",
+    "fa": "تأیید و مسیریابی"
+  },
+  "payload": {
+    "id": "intake-route",
+    "title": {
+      "en": "Confirm and route",
+      "fa": "تأیید و مسیریابی"
+    },
+    "submitLabel": {
+      "en": "Confirm and route",
+      "fa": "تأیید و مسیریابی"
+    },
+    "actionKey": "intake-route",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "attachmentId",
+        "label": {
+          "en": "File id",
+          "fa": "شناسه‌ی فایل"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "targetModule",
+        "label": {
+          "en": "Target module",
+          "fa": "ماژول مقصد"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "MDR",
+            "label": {
+              "en": "MDR",
+              "fa": "MDR"
+            }
+          },
+          {
+            "value": "VDR",
+            "label": {
+              "en": "VDR",
+              "fa": "VDR"
+            }
+          },
+          {
+            "value": "MR",
+            "label": {
+              "en": "MR",
+              "fa": "MR"
+            }
+          },
+          {
+            "value": "MRQ",
+            "label": {
+              "en": "MRQ",
+              "fa": "MRQ"
+            }
+          },
+          {
+            "value": "Contract",
+            "label": {
+              "en": "Contract",
+              "fa": "Contract"
+            }
+          },
+          {
+            "value": "CMMS",
+            "label": {
+              "en": "CMMS",
+              "fa": "CMMS"
+            }
+          },
+          {
+            "value": "Unrouted",
+            "label": {
+              "en": "Unrouted",
+              "fa": "Unrouted"
+            }
+          }
+        ]
+      },
+      {
+        "name": "category",
+        "label": {
+          "en": "Category",
+          "fa": "دسته"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "documentType",
+        "label": {
+          "en": "Document type",
+          "fa": "نوع مدرک"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "optionsFrom": "intake-projects"
+      },
+      {
+        "name": "disciplineCode",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "optionsFrom": "intake-disciplines"
+      },
+      {
+        "name": "area",
+        "label": {
+          "en": "Area",
+          "fa": "منطقه"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "revisionNo",
+        "label": {
+          "en": "Revision",
+          "fa": "بازنگری"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "issuePurpose",
+        "label": {
+          "en": "Issue purpose",
+          "fa": "هدف صدور"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "vendorName",
+        "label": {
+          "en": "Vendor",
+          "fa": "فروشنده"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "mrNumber",
+        "label": {
+          "en": "MR number",
+          "fa": "شماره MR"
+        },
+        "kind": "text"
+      }
+    ]
+  }
+}

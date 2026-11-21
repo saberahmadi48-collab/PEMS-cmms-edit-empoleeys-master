@@ -1,0 +1,107 @@
+{
+  "kind": "form",
+  "key": "workflow-transition-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a transition",
+    "fa": "افزودن گذار"
+  },
+  "description": {
+    "en": "Add a transition",
+    "fa": "افزودن گذار"
+  },
+  "payload": {
+    "id": "workflow-transition-add",
+    "title": {
+      "en": "Add a transition",
+      "fa": "افزودن گذار"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "workflow-transition-add",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "fromStageId",
+        "label": {
+          "en": "From stage id (blank = start)",
+          "fa": "از مرحله (خالی = شروع)"
+        },
+        "kind": "number",
+        "min": 1
+      },
+      {
+        "name": "toStageId",
+        "label": {
+          "en": "To stage id (blank = end)",
+          "fa": "به مرحله (خالی = پایان)"
+        },
+        "kind": "number",
+        "min": 1
+      },
+      {
+        "name": "actionType",
+        "label": {
+          "en": "Action (Approve, Reject, Return, Hold, Cancel, Skip or your own)",
+          "fa": "کنش"
+        },
+        "required": true,
+        "maxLength": 100
+      },
+      {
+        "name": "label",
+        "label": {
+          "en": "Label",
+          "fa": "برچسب"
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "labelFa",
+        "label": {
+          "en": "Label (Persian)",
+          "fa": "برچسب (فارسی)"
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "requiredPermission",
+        "label": {
+          "en": "Required permission",
+          "fa": "مجوز لازم"
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "conditionExpression",
+        "label": {
+          "en": "Condition expression",
+          "fa": "شرط"
+        },
+        "maxLength": 500,
+        "span": 2
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "number",
+        "min": 0
+      },
+      {
+        "name": "forbidInitiator",
+        "label": {
+          "en": "Forbid the initiator",
+          "fa": "ممنوعیت آغازکننده"
+        },
+        "kind": "switch"
+      }
+    ]
+  }
+}

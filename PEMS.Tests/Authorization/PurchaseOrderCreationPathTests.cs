@@ -52,7 +52,11 @@ public class PurchaseOrderCreationPathTests
     [Fact]
     public void PurchaseOrderEntities_AreOnlyConstructed_ByTheServiceAndTheVdrImport()
     {
-        var files = FilesContaining("new PurchaseOrder");
+        // SCRUM-470: an exact match, so "new PurchaseOrderLine" / "new PurchaseOrderAuthorityRule" do not count as building a PO
+        var root = Root();
+        var files = ProductionSources()
+            .Where(f => System.Text.RegularExpressions.Regex.IsMatch(File.ReadAllText(root + f), @"new PurchaseOrder\s*[({]"))
+            .OrderBy(f => f).ToList();
 
         Assert.Equal(new[] { "/PEMS.Persistence/Servises/PurchaseOrderService.cs", "/PEMS.Persistence/Servises/VDRImportService.cs" }, files);
     }

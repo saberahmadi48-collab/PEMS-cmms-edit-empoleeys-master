@@ -1,0 +1,111 @@
+{
+  "kind": "form",
+  "key": "mmd-create-standard-reference",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateStandardReference",
+    "fa": "CreateStandardReference"
+  },
+  "description": {
+    "en": "CreateStandardReference",
+    "fa": "CreateStandardReference"
+  },
+  "payload": {
+    "id": "mmd-create-standard-reference",
+    "title": {
+      "en": "CreateStandardReference",
+      "fa": "CreateStandardReference"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-create-standard-reference",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "code"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "organization",
+        "label": {
+          "en": "Organization",
+          "fa": "organization"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "standardNumber",
+        "label": {
+          "en": "Standard number",
+          "fa": "standardNumber"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "title"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "category",
+        "label": {
+          "en": "Category",
+          "fa": "category"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "description"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

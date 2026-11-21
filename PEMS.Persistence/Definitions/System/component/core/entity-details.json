@@ -1,0 +1,112 @@
+{
+  "kind": "component",
+  "key": "entity-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Details page of a record",
+    "fa": "صفحه جزئیات رکورد"
+  },
+  "description": {
+    "en": "The read-only fields of one record, read through a grid data source for the id of the request (params.id).",
+    "fa": "فیلدهای فقط‌خواندنی یک رکورد از منبع داده جدولی برای شناسه درخواست (params.id)."
+  },
+  "payload": {
+    "parameters": {
+      "id": {
+        "type": "string",
+        "required": true,
+        "description": "The id of the record view"
+      },
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "The url of the grid data source that holds the record: /d/{key}"
+      },
+      "idField": {
+        "type": "string",
+        "required": true,
+        "description": "The row property that holds the record id"
+      },
+      "fields": {
+        "type": "array",
+        "required": true,
+        "description": "The fields shown (key, label, type, wide, mono)"
+      },
+      "backUrl": {
+        "type": "string",
+        "description": "Where the back button goes; none without it"
+      },
+      "backLabel": {
+        "type": "text",
+        "description": "The label of the back button"
+      },
+      "editUrl": {
+        "type": "string",
+        "description": "Where the edit button goes (the id is added as /{id}); none without it"
+      },
+      "editLabel": {
+        "type": "text",
+        "description": "The label of the edit button"
+      },
+      "related": {
+        "type": "array",
+        "description": "Child tables under the record (id, title, url, idField, columns); the url filters a grid data source by the record id, for example /d/children?f.parentId={{params.id|url}}"
+      }
+    },
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "${id}",
+            "fields": "${fields}"
+          },
+          "bindings": {
+            "record": {
+              "source": "${url}",
+              "idField": "${idField}",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "related",
+          "each": "${related}",
+          "as": "rel",
+          "component": "def:related-table",
+          "options": {
+            "id": "${rel.id}",
+            "title": "${rel.title}",
+            "url": "${rel.url}",
+            "idField": "${rel.idField}",
+            "columns": "${rel.columns}"
+          }
+        }
+      ],
+      "header": [
+        {
+          "id": "back",
+          "if": "${backUrl}",
+          "component": "button",
+          "options": {
+            "label": "${backLabel}",
+            "tone": "neutral",
+            "href": "${backUrl}"
+          }
+        },
+        {
+          "id": "edit",
+          "if": "${editUrl}",
+          "component": "button",
+          "options": {
+            "label": "${editLabel}",
+            "tone": "primary",
+            "href": "${editUrl}/{{params.id|url}}"
+          }
+        }
+      ]
+    }
+  }
+}

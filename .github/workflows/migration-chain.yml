@@ -1,0 +1,81 @@
+# Migration chain gate (SCRUM-413 / #383): applies the EF migration chain to a real SQL Server before anything is uploaded.
+# Manual (Actions > PEMS Migration Chain Gate > Run workflow) and reusable (called by deploy-site.yml once proven).
+# The SQL Server is a throw-away container with a random password generated here; no secrets, no customer data, no deployment.
+# What it checks: scripts/ci/test-migration-chain.sh (install on empty, upgrade from the base ref, model agrees), then
+# SCRUM-280 (#262): an upgrade from every supported release (deploy/db/supported-releases.json) with data, compared with a
+# fresh install, the pre-update backup and its restore, and the released-migration rules (DatabaseUpgradePathSqlTests,
+# MigrationCompatibilityRulesTests).
+
+name: PEMS Migration Chain Gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_ref:
+        description: 'Ref whose last migration is the starting point of the upgrade test (previous release)'
+        required: false
+        default: 'origin/main'
+        type: string
+  workflow_call:
+    inputs:
+      base_ref:
+        description: 'Ref whose last migration is the starting point of the upgrade test (previous release)'
+        required: false
+        default: 'origin/main'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  chain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # the upgrade test reads the migration list of the base ref
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Build PEMS.Web (Release)
+        run: dotnet build PEMS.Web/PEMS.Web.csproj --configuration Release
+
+      - name: Install dotnet-ef
+        run: |
+          dotnet tool install --global dotnet-ef --version 10.0.10
+          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+
+      - name: Start a throw-away SQL Server
+        run: |
+          SA_PASSWORD="$(openssl rand -hex 16)Aa1!"
+          echo "::add-mask::$SA_PASSWORD"
+          echo "SA_PASSWORD=$SA_PASSWORD" >> "$GITHUB_ENV"
+          docker run -d --name chain-sql -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD="$SA_PASSWORD" -p 127.0.0.1:1433:1433 mcr.microsoft.com/mssql/server:2022-latest
+          for i in $(seq 1 60); do
+            if docker exec chain-sql /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P "$SA_PASSWORD" -Q "SELECT 1" >/dev/null 2>&1; then echo "SQL Server ready after ${i} tries"; exit 0; fi
+            sleep 2
+          done
+          docker logs chain-sql | tail -n 40
+          echo "::error::SQL Server did not become ready"; exit 1
+
+      - name: Migration chain (install, upgrade from base, model agrees)
+        env:
+          PEMS_CHAIN_SERVER_CONNECTION: Server=127.0.0.1,1433;User Id=sa;Password=${{ env.SA_PASSWORD }};TrustServerCertificate=True
+        run: |
+          base="${{ inputs.base_ref }}"; base="${base:-origin/main}"
+          bash scripts/ci/test-migration-chain.sh "$base"
+
+      - name: Upgrade from every supported release, with data (SCRUM-280)
+        env:
+          PEMS_TEST_CONNECTION: Server=127.0.0.1,1433;User Id=sa;Password=${{ env.SA_PASSWORD }};TrustServerCertificate=True
+        run: >
+          dotnet test PEMS.Tests/PEMS.Tests.csproj --configuration Release
+          --filter "Category=DbUpgrade|FullyQualifiedName~MigrationCompatibilityRulesTests"
+          --logger "console;verbosity=normal"
+
+      - name: Stop SQL Server
+        if: always()
+        run: docker rm -f chain-sql || true

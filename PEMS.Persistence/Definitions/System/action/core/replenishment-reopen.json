@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "replenishment-reopen",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reopen a recommendation",
+    "fa": "بازگشایی توصیه"
+  },
+  "description": {
+    "en": "Reopen a recommendation",
+    "fa": "بازگشایی توصیه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Replenishment",
+      "action": "Reopen",
+      "args": {
+        "id": "field:id",
+        "note": "field:note"
+      },
+      "guard": {
+        "resource": "ReplenishmentRecommendation",
+        "action": "Edit",
+        "resourceId": "field:id",
+        "mode": "strict"
+      }
+    },
+    "success": {
+      "en": "The recommendation was reopened.",
+      "fa": "توصیه دوباره باز شد."
+    },
+    "redirect": "/p/replenishment-details?id={id}"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "isolation-deisolate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "De-isolate",
+    "fa": "برداشتن ایزوله‌سازی"
+  },
+  "description": {
+    "en": "De-isolate",
+    "fa": "برداشتن ایزوله‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Isolation",
+      "action": "AdvanceStatus",
+      "args": {
+        "isolationPointId": "field:id",
+        "nextStatus": "literal:Deisolated",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The isolation was removed.",
+      "fa": "ایزوله‌سازی برداشته شد."
+    },
+    "redirect": "/Permit/Details/{permitId}",
+    "permission": "LOTO.Deisolate"
+  }
+}

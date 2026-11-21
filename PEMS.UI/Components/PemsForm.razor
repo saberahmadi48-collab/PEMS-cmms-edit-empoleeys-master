@@ -1,0 +1,43 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("form", Category = "forms", Icon = "bi-ui-checks")]
+@inject IPemsLocale Locale
+<form method="post" action="@Definition.Action" enctype="multipart/form-data" id="@Definition.Id" class="pems-form" data-pems-dirty-guard="@(Definition.WarnOnLeave ? "" : null)" data-pems-rules="@RulesJson">
+    @if (RequestToken is not null)
+    {
+        <input type="hidden" name="@RequestTokenName" value="@RequestToken" />
+    }
+    <h2 class="pems-form__title">@Locale.Text(Definition.Title)</h2>
+    @if (State.FormErrors.Count > 0)
+    {
+        <div class="pems-form__errors" role="alert">
+            @foreach (var e in State.FormErrors) { <div>@Locale.Text(e)</div> }
+        </div>
+    }
+    @if (Definition.Columns > 1) { <div class="pems-form__grid">@Fields</div> } else { @Fields }
+    <PemsButton Options="@(new ButtonOptions { Label = Definition.SubmitLabel, Type = "submit" })" />
+</form>
+@code {
+    private RenderFragment Fields => @<text>
+    @foreach (var f in Definition.Fields)
+    {
+        @if (Definition.Columns > 1 || !string.IsNullOrEmpty(f.Visible) || f.Span is > 1)
+        {
+            <div class="@(f.Span is > 1 ? "pems-form__cell pems-form__cell--span" : "pems-form__cell")" data-field="@f.Name" hidden="@State.Hidden.Contains(f.Name)">
+                <PemsField Descriptor="f" Value="@State.ValueOf(f.Name)" Error="@State.ErrorOf(f.Name)" />
+            </div>
+        }
+        else
+        {
+            <PemsField Descriptor="f" Value="@State.ValueOf(f.Name)" Error="@State.ErrorOf(f.Name)" />
+        }
+    }
+    </text>;
+
+    [Parameter, EditorRequired] public FormDefinition Definition { get; set; } = default!;
+    [Parameter] public FormState State { get; set; } = FormState.Empty;
+    /// <summary>The antiforgery request token, supplied by the caller (see ADR-0007 for why it is a parameter).</summary>
+    [Parameter] public string? RequestToken { get; set; }
+    [Parameter] public string RequestTokenName { get; set; } = "__RequestVerificationToken";
+    /// <summary>The conditions of the fields as JSON for pems-form-rules.js (form engine, SCRUM-578); null for a form without conditions.</summary>
+    [Parameter] public string? RulesJson { get; set; }
+}

@@ -1,0 +1,76 @@
+{
+  "kind": "form",
+  "key": "meeting-add-action-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add an action item",
+    "fa": "افزودن اقدام"
+  },
+  "description": {
+    "en": "Add an action item",
+    "fa": "افزودن اقدام"
+  },
+  "payload": {
+    "id": "meeting-add-action-item",
+    "title": {
+      "en": "Add an action item",
+      "fa": "افزودن اقدام"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "meeting-add-action-item",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "meetingId",
+        "label": {
+          "en": "Meeting id",
+          "fa": "شناسه‌ی جلسه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 300
+      },
+      {
+        "name": "assignedToEmployeeId",
+        "label": {
+          "en": "Employee id",
+          "fa": "شناسه‌ی کارمند"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "dueDate",
+        "label": {
+          "en": "Due date",
+          "fa": "سررسید"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}

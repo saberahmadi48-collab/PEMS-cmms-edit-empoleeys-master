@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "employee-certification-choices",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Certifications",
+    "fa": "گواهینامه‌ها"
+  },
+  "description": {
+    "en": "Certifications",
+    "fa": "گواهینامه‌ها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Employee",
+      "action": "CertificationChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

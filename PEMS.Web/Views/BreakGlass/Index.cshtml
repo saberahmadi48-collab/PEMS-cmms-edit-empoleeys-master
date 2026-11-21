@@ -1,0 +1,53 @@
+@model PEMS.Web.Models.Account.BreakGlassViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = "Break-glass recovery";
+    Layout = "_AuthLayout";
+}
+
+<pems-heading level="2">@Localizer["Break-glass recovery"]</pems-heading>
+@if (Model.Window.IsOpen)
+{
+    <pems-text class="subtitle">@Localizer["A recovery request file is present on the server. This page closes at"] <span dir="ltr">@PemsDates.Time(Model.Window.ExpiresAtUtc) UTC</span>.</pems-text>
+}
+else
+{
+    <pems-text class="subtitle">@Localizer["No recovery request file is present. Paste a vendor recovery token issued for this server."]</pems-text>
+}
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <pems-alert tone="danger" css="py-2 px-3 small">@Model.Error</pems-alert>
+}
+
+@if (Model.Admins.Count == 0)
+{
+    <pems-alert tone="warning" css="small">@Localizer["There is no active administrator account to reset."]</pems-alert>
+}
+else
+{
+    <pems-form asp-controller="BreakGlass" asp-action="Index" method="post" autocomplete="off">
+        <pems-form-group css="mb-3">
+            <pems-label for="TargetUserId">@Localizer["Administrator account"]</pems-label>
+            <pems-select id="TargetUserId" name="TargetUserId" required>
+                <option value="">-</option>
+                @foreach (var a in Model.Admins)
+                {
+                    <option value="@a.UserId">@a.UserName @(string.IsNullOrWhiteSpace(a.FullName) ? "" : $"({a.FullName})")</option>
+                }
+            </pems-select>
+        </pems-form-group>
+        @if (!Model.Window.IsOpen)
+        {
+            <pems-form-group css="mb-3">
+                <pems-label for="VendorToken">@Localizer["Vendor recovery token"]</pems-label>
+                <pems-textarea id="VendorToken" name="VendorToken" dir="ltr" rows="4" required spellcheck="false"></pems-textarea>
+            </pems-form-group>
+        }
+        <pems-button tone="danger" type="submit">@Localizer["Reset account"]</pems-button>
+    </pems-form>
+}
+
+<pems-text class="small text-muted mt-3">@Localizer["The reset issues a temporary password shown once, forces a password change, resets MFA, signs the account out everywhere and notifies every administrator. The request can be used only once."]</pems-text>

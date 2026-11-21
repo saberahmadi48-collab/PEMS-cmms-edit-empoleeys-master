@@ -1,0 +1,27 @@
+{
+  "kind": "action",
+  "key": "departments-toggle",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Activate or deactivate",
+    "fa": "فعال یا غیرفعال کردن"
+  },
+  "description": {
+    "en": "Activate or deactivate",
+    "fa": "فعال یا غیرفعال کردن"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.toggle",
+    "parameters": {
+      "entity": "Department",
+      "property": "IsActive"
+    },
+    "success": {
+      "en": "Status updated.",
+      "fa": "وضعیت به‌روز شد."
+    },
+    "redirect": "/p/departments"
+  }
+}

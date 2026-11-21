@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "help-article-publish",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Publish an article",
+    "fa": "انتشار مقاله"
+  },
+  "description": {
+    "en": "Publish an article",
+    "fa": "انتشار مقاله"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "ArticleSetPublished",
+      "args": {
+        "articleId": "field:id",
+        "isPublished": "literal:true"
+      }
+    },
+    "success": {
+      "en": "Article published.",
+      "fa": "مقاله منتشر شد."
+    },
+    "redirect": "/p/help-admin"
+  }
+}

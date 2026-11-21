@@ -1,0 +1,49 @@
+{
+  "kind": "data-source",
+  "key": "authorization-audit-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Authorization audit rows",
+    "fa": "ردیف‌های ممیزی دسترسی"
+  },
+  "description": {
+    "en": "The rows of the authorization audit grid",
+    "fa": "ردیف‌های جدول ممیزی دسترسی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "AuthorizationAuditLog",
+      "fields": [
+        "AuthorizationAuditLogId",
+        "Timestamp",
+        "ResourceName",
+        "ActionName",
+        "ResourceId",
+        "Decision",
+        "Reason",
+        "IpAddress",
+        "UserId"
+      ],
+      "search": [
+        "ResourceName",
+        "ActionName",
+        "ResourceId"
+      ],
+      "sort": [
+        "-Timestamp",
+        "-AuthorizationAuditLogId"
+      ],
+      "lookups": [
+        {
+          "name": "user",
+          "entity": "ApplicationUser",
+          "foreignKey": "UserId",
+          "label": "UserName"
+        }
+      ]
+    }
+  }
+}

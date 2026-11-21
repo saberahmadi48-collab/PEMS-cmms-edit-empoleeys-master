@@ -1,0 +1,54 @@
+{
+  "kind": "action",
+  "key": "users-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Update user",
+    "fa": "به‌روزرسانی کاربر"
+  },
+  "description": {
+    "en": "Update user",
+    "fa": "به‌روزرسانی کاربر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Users",
+      "action": "Update",
+      "args": {
+        "input": {
+          "Id": "field:id",
+          "UserName": "field:userName",
+          "Email": "field:email",
+          "FullName": "field:fullName",
+          "Password": "field:password",
+          "IsActive": "field:isActive",
+          "Roles": "field:roles",
+          "ExistingEmployeeId": "field:existingEmployeeId",
+          "DepartmentId": "field:departmentId",
+          "DisciplineId": "field:disciplineId",
+          "PositionId": "field:positionId"
+        },
+        "actorId": "context:userId",
+        "actorName": "context:userName",
+        "ip": "context:ip"
+      },
+      "load": {
+        "operation": {
+          "model": "Users",
+          "action": "UserOf",
+          "args": {
+            "id": "param:id"
+          }
+        }
+      }
+    },
+    "success": {
+      "en": "User updated successfully.",
+      "fa": "کاربر با موفقیت به‌روزرسانی شد."
+    },
+    "redirect": "/p/users"
+  }
+}

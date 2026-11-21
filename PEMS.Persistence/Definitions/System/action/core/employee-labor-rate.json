@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "employee-labor-rate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set a labor rate",
+    "fa": "ثبت نرخ دستمزد"
+  },
+  "description": {
+    "en": "Set a labor rate",
+    "fa": "ثبت نرخ دستمزد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Employee",
+      "action": "SetLaborRate",
+      "args": {
+        "employeeId": "field:employeeId",
+        "rateType": "field:rateType",
+        "rate": "field:rate",
+        "currency": "field:currency",
+        "effectiveFrom": "field:effectiveFrom"
+      }
+    },
+    "success": {
+      "en": "Labor rate saved.",
+      "fa": "نرخ دستمزد ثبت شد."
+    },
+    "redirect": "/p/employee-details?id={employeeId}"
+  }
+}

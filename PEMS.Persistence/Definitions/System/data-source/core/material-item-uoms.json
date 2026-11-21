@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "material-item-uoms",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Units of measure",
+    "fa": "واحدها"
+  },
+  "description": {
+    "en": "Units of measure",
+    "fa": "واحدها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MaterialItem",
+      "action": "Uoms",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

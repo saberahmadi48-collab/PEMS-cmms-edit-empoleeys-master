@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "tender-submit-bid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit bid",
+    "fa": "ثبت پیشنهاد"
+  },
+  "description": {
+    "en": "Submit bid",
+    "fa": "ثبت پیشنهاد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Tender",
+      "action": "SubmitBid",
+      "args": {
+        "tenderId": "field:tenderId",
+        "vendorId": "field:vendorId",
+        "originalValue": "field:originalValue",
+        "currency": "field:currency",
+        "technicalSubmissionReference": "field:technicalSubmissionReference",
+        "commercialSubmissionReference": "field:commercialSubmissionReference"
+      }
+    },
+    "success": {
+      "en": "The bid was submitted.",
+      "fa": "پیشنهاد ثبت شد."
+    },
+    "redirect": "/Tender/Details/{tenderId}"
+  }
+}

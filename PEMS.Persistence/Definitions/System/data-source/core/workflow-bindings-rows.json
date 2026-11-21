@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "workflow-bindings-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Workflow bindings",
+    "fa": "Workflow bindings"
+  },
+  "description": {
+    "en": "Workflow bindings rows",
+    "fa": "Workflow bindings rows"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "Bindings",
+      "args": {
+        "definitionId": "param:definitionId"
+      }
+    }
+  }
+}

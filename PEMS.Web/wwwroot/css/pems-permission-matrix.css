@@ -1,0 +1,98 @@
+/* Admin/PermissionMatrix: compact grid with sticky header + module column, risk-coloured actions,
+   per-cell auto-save feedback, search/filter toolbar and toasts. Scoped to .admin-area like admin-enterprise.css. */
+
+.admin-area {
+    --pm-safe: #198754;
+    --pm-normal: #0d6efd;
+    --pm-warn: #b7791f;
+    --pm-caution: #d9822b;
+    --pm-danger: #dc3545;
+    /* header icon/label TEXT uses the AA-safe theme tokens; the raw colours above stay for checkbox fills */
+    --pm-safe-text: var(--pems-chart-positive-text, #15803d);
+    --pm-normal-text: var(--pems-chart-info-text, #1d4ed8);
+    --pm-warn-text: var(--pems-chart-warning-text, #b45309);
+    --pm-caution-text: var(--pems-chart-caution-text, #c2410c);
+    --pm-danger-text: var(--pems-chart-danger-text, #b91c1c);
+}
+
+/* ---- toolbar ---- */
+.admin-area .pm-toolbar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    padding: 10px 18px; position: sticky; top: 0; z-index: 6;
+    background: var(--pems-surface); border-bottom: 1px solid var(--pems-surface-border);
+}
+.admin-area .pm-search { position: relative; min-width: 180px; flex: 1 1 200px; max-width: 280px; }
+.admin-area .pm-search > i { position: absolute; inset-inline-start: 9px; top: 50%; transform: translateY(-50%); color: var(--pems-text-muted); pointer-events: none; }
+.admin-area .pm-search > input { padding-inline-start: 30px; }
+.admin-area .pm-filter { width: auto; min-width: 160px; }
+.admin-area .pm-global-status.is-saving { color: var(--pems-text-muted); }
+.admin-area .pm-global-status.is-error { color: var(--pm-danger); }
+.admin-area .permission-role-jump { padding: 12px 18px 0; }
+.admin-area .pm-chip.is-hidden, .admin-area .permission-role.is-hidden, .admin-area tr.is-hidden { display: none !important; }
+
+/* ---- grid ---- */
+.admin-area .pm-grid { max-height: 68vh; } /* vertical scroll inside the grid so the header can stay visible */
+.admin-area .pm-table { table-layout: fixed; width: 100%; min-width: 860px; margin-bottom: 0; }
+.admin-area .pm-table .pm-module-col,
+.admin-area .pm-table .pm-module-cell { width: 220px; }
+.admin-area .pm-table thead th { position: sticky; top: 0; z-index: 2; background: var(--pems-surface); vertical-align: bottom; white-space: nowrap; padding: 6px 4px; }
+.admin-area .pm-table thead th.pm-module-col { z-index: 4; }
+.admin-area .pm-table td.pm-module-cell { z-index: 1; }
+.admin-area .pm-col-label { display: flex; flex-direction: column; align-items: center; gap: 1px; font-size: 11px; font-weight: 700; line-height: 1.15; }
+.admin-area .pm-col-label > i { font-size: 15px; }
+.admin-area .pm-col-all { margin-top: 4px; width: 14px; height: 14px; opacity: .55; cursor: pointer; }
+.admin-area .pm-col-all:hover, .admin-area .pm-col-all:checked, .admin-area .pm-col-all:indeterminate { opacity: 1; }
+.admin-area .pm-module-wrap { display: inline-flex; align-items: center; gap: 8px; }
+.admin-area .pm-row-all { width: 14px; height: 14px; opacity: .45; cursor: pointer; flex: 0 0 auto; }
+.admin-area .pm-row-all:hover, .admin-area .pm-row-all:checked, .admin-area .pm-row-all:indeterminate { opacity: 1; }
+.admin-area .pm-module-name { overflow-wrap: anywhere; }
+.admin-area .pm-module-name mark.pm-hit { padding: 0 1px; border-radius: 2px; background: rgba(255, 193, 7, .45); color: inherit; }
+.admin-area .pm-table tbody tr:hover td { background: rgba(13, 110, 253, .06); }
+.admin-area .pm-table tbody tr:hover td.pm-module-cell { background: var(--pems-surface); }
+
+/* ---- risk colours: header/icon tint + checked colour ---- */
+.admin-area .pm-col.pm-risk-safe .pm-col-label { color: var(--pm-safe-text); }
+.admin-area .pm-col.pm-risk-normal .pm-col-label { color: var(--pm-normal-text); }
+.admin-area .pm-col.pm-risk-warn .pm-col-label { color: var(--pm-warn-text); }
+.admin-area .pm-col.pm-risk-caution .pm-col-label { color: var(--pm-caution-text); }
+.admin-area .pm-col.pm-risk-danger .pm-col-label { color: var(--pm-danger-text); }
+.admin-area .pm-cell.pm-risk-safe .form-check-input:checked { background-color: var(--pm-safe); border-color: var(--pm-safe); }
+.admin-area .pm-cell.pm-risk-warn .form-check-input:checked { background-color: var(--pm-warn); border-color: var(--pm-warn); }
+.admin-area .pm-cell.pm-risk-caution .form-check-input:checked { background-color: var(--pm-caution); border-color: var(--pm-caution); }
+.admin-area .pm-cell.pm-risk-danger .form-check-input:checked { background-color: var(--pm-danger); border-color: var(--pm-danger); }
+.admin-area .pm-cell.pm-risk-danger { background: rgba(220, 53, 69, .035); }
+
+/* ---- per-cell save feedback ---- */
+.admin-area .pm-cell { position: relative; }
+.admin-area .pm-cell.is-saving .pm-box { opacity: .35; pointer-events: none; }
+.admin-area .pm-cell.is-saving::after {
+    content: ""; position: absolute; inset: 0; margin: auto; width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid var(--pems-text-muted); border-top-color: transparent; animation: pm-spin .7s linear infinite;
+}
+.admin-area .pm-cell.is-saved { animation: pm-saved 1.2s ease-out; }
+.admin-area .pm-cell.is-error { outline: 2px solid var(--pm-danger); outline-offset: -2px; }
+@keyframes pm-spin { to { transform: rotate(360deg); } }
+@keyframes pm-saved { 0% { background: rgba(25, 135, 84, .35); } 100% { background: transparent; } }
+
+.admin-area .pm-role-status.is-saving { color: var(--pems-text-muted); }
+.admin-area .pm-role-status.is-saved { color: var(--pm-safe); }
+.admin-area .pm-role-status.is-error { color: var(--pm-danger); font-weight: 600; }
+
+/* ---- no-JS fallback keeps the Save button; with JS the grid auto-saves ---- */
+.pm-js .admin-area .pm-fallback-save { display: none; }
+
+/* ---- toasts ---- */
+.pm-toasts { position: fixed; top: 16px; inset-inline-end: 16px; z-index: 1080; display: flex; flex-direction: column; gap: 8px; max-width: min(360px, calc(100vw - 32px)); }
+.pm-toast {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 13px;
+    background: var(--pems-surface); border: 1px solid var(--pems-surface-border); box-shadow: 0 6px 20px rgba(0, 0, 0, .15);
+}
+.pm-toast.is-success { border-inline-start: 4px solid var(--pm-safe); }
+.pm-toast.is-error { border-inline-start: 4px solid var(--pm-danger); }
+.pm-toast .pm-toast-msg { flex: 1 1 auto; }
+.pm-toast button { white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-area .pm-cell.is-saving::after { animation-duration: 2s; }
+    .admin-area .pm-cell.is-saved { animation: none; }
+}

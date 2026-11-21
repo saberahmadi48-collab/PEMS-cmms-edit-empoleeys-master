@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-group-item", Category = "display", Icon = "bi-list-ul")]
+@FrameMarkup.Element(Options.As, PEMS.UI.TagHelpers.FrameState.ListGroupItem(Options.Action, Options.Active, Options.Css), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public ListGroupItemOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

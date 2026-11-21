@@ -1,0 +1,65 @@
+{
+  "kind": "form",
+  "key": "qualifications-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit qualification",
+    "fa": "ویرایش صلاحیت"
+  },
+  "description": {
+    "en": "Edit qualification",
+    "fa": "ویرایش صلاحیت"
+  },
+  "payload": {
+    "id": "qualifications-edit",
+    "title": {
+      "en": "Edit qualification",
+      "fa": "ویرایش صلاحیت"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "qualifications-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "optionsFrom": "qualifications-discipline-id-options"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "key": "flex",
+  "component": "PEMS.UI.Components.PemsFlex",
+  "category": "layout",
+  "icon": "bi-distribute-horizontal",
+  "nameKey": "component.flex",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "as": {
+        "type": "string"
+      },
+      "inline": {
+        "type": "boolean"
+      },
+      "dir": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "justify": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "align": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "wrap": {
+        "type": "boolean"
+      },
+      "gap": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "FlexOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "justify": "between",
+    "align": "center",
+    "wrap": true,
+    "gap": "2",
+    "css": "mb-3"
+  }
+}

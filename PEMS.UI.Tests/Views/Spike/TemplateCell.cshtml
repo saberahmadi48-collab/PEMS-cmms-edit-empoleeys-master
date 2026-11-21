@@ -1,0 +1,6 @@
+@using Microsoft.AspNetCore.Html
+@{
+    var rows_1 = new[] { "alpha", "beta & <gamma>" };
+    var cell_1_1 = DataCell.Template(rows_1, @<text>@{ var r = item; }<pems-form asp-action="FormPost" method="post" class="d-inline"><input type="hidden" name="key" value="@r" /><pems-button type="submit" tone="neutral">@r.ToUpper()</pems-button></pems-form></text>);
+}
+<pems-data-table data="@(DataRows.Of(rows_1, c_ => c_.Add("Name", r => (object?)r).Add("Act", r => (object?)cell_1_1(r))))" dense="true" />

@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "job-plan-add-task",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a task",
+    "fa": "افزودن مرحله"
+  },
+  "description": {
+    "en": "Add a task",
+    "fa": "افزودن مرحله"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "JobPlan",
+      "action": "AddTask",
+      "args": {
+        "jobPlanId": "field:jobPlanId",
+        "taskNumber": "field:taskNumber",
+        "title": "field:title",
+        "description": "field:description",
+        "estimatedDurationMinutes": "field:estimatedDurationMinutes"
+      }
+    },
+    "success": {
+      "en": "The task was added.",
+      "fa": "مرحله افزوده شد."
+    },
+    "redirect": "/JobPlan/Details/{jobPlanId}"
+  }
+}

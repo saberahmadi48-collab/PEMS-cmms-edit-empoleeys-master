@@ -1,0 +1,65 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("modal", Category = "overlays", Icon = "bi-window")]
+@inject IPemsLocale Locale
+@if (Options.Frame)
+{
+    <div id="@Options.Id" class="@FrameCss" @attributes="Options.Attributes">
+        <div class="@DialogClass">
+            <div class="modal-content">@ChildContent</div>
+        </div>
+    </div>
+}
+else if (Options.Skin == ComponentSkin.Bootstrap)
+{
+    <div id="@Options.Id" class="modal fade" tabindex="-1" aria-labelledby="@(Options.Id)-title" aria-hidden="true">
+        <div class="@DialogClass">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="@(Options.Id)-title">@Locale.Text(Options.Title)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@Locale.Text(Options.CloseLabel)"></button>
+                </div>
+                <div class="modal-body">
+                    @if (Options.Body is not null)
+                    {
+                        <p>@Locale.Text(Options.Body)</p>
+                    }
+                    @ChildContent
+                </div>
+                @if (Footer is not null)
+                {
+                    <div class="modal-footer">@Footer</div>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <dialog id="@Options.Id" class="pems-modal pems-modal--@Options.Size.ToString().ToLowerInvariant()" aria-labelledby="@(Options.Id)-title" data-pems-dialog>
+        <div class="pems-modal__panel">
+            <header class="pems-modal__header">
+                <h2 class="pems-modal__title" id="@(Options.Id)-title">@Locale.Text(Options.Title)</h2>
+                <button type="button" class="pems-modal__close" data-pems-close aria-label="@Locale.Text(Options.CloseLabel)"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+            </header>
+            <div class="pems-modal__body">
+                @if (Options.Body is not null)
+                {
+                    <p>@Locale.Text(Options.Body)</p>
+                }
+                @ChildContent
+            </div>
+            @if (Footer is not null)
+            {
+                <footer class="pems-modal__footer">@Footer</footer>
+            }
+        </div>
+    </dialog>
+}
+@code {
+    [Parameter, EditorRequired] public ModalOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? Footer { get; set; }
+    private string DialogClass => Options.Size switch { OverlaySize.Small => "modal-dialog modal-sm", OverlaySize.Large => "modal-dialog modal-lg", OverlaySize.ExtraLarge => "modal-dialog modal-xl", _ => "modal-dialog" }
+        + (Options.Frame && !string.IsNullOrWhiteSpace(Options.DialogCssClass) ? " " + Options.DialogCssClass.Trim() : "");
+    private string FrameCss => string.IsNullOrWhiteSpace(Options.CssClass) ? "modal fade" : "modal fade " + Options.CssClass.Trim();
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "barcode-print",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Print the label",
+    "fa": "چاپ برچسب"
+  },
+  "description": {
+    "en": "Print the label",
+    "fa": "چاپ برچسب"
+  },
+  "payload": {
+    "id": "barcode-print",
+    "title": {
+      "en": "Print the label",
+      "fa": "چاپ برچسب"
+    },
+    "submitLabel": {
+      "en": "Record the print and download",
+      "fa": "ثبت چاپ و دریافت"
+    },
+    "actionKey": "barcode-print",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Barcode id",
+          "fa": "شناسه‌ی بارکد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

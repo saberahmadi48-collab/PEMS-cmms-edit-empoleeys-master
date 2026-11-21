@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("related-add", Category = "list", Icon = "bi-plus-lg")]
+<form action="@(Options.Action ?? "")" class="lp-rel-add" method="post">@if (Options.Antiforgery is not null){<input name="@Options.Antiforgery.Name" type="hidden" value="@Options.Antiforgery.Token" />}@if (!string.IsNullOrEmpty(Options.ParentName)){<input name="@Options.ParentName" type="hidden" value="@(Options.ParentValue ?? "")" />}@ChildContent<button class="btn btn-sm btn-pems-solid lp-rel-submit" type="submit"><i aria-hidden="true" class="bi bi-plus-lg"></i>@(" " + Options.SubmitLabel)</button></form>
+@code {
+    [Parameter, EditorRequired] public RelatedAddOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

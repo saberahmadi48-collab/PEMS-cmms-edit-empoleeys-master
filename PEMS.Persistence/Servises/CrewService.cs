@@ -22,6 +22,9 @@ public class CrewService : ICrewService
         if (await _context.Crews.AnyAsync(x => x.Code == code.Trim()))
             return (false, $"Crew با کد «{code}» قبلاً وجود دارد.", null);
 
+        if (workOrderId.HasValue && !await _context.WorkOrders.AnyAsync(x => x.WorkOrderId == workOrderId.Value))
+            return (false, "Work Order انتخاب‌شده یافت نشد.", null);
+
         var crew = new Crew
         {
             Code = code.Trim(),

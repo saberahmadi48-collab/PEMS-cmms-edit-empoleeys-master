@@ -7,51 +7,51 @@
     var equipments = (IEnumerable<dynamic>)ViewBag.Equipments;
 }
 
-<div class="vs-page">
+<pems-page-shell kind="workspace">
 
 
-<div class="content-card" style="max-width:800px;">
-    <form asp-action="Create" method="post">
-        <div class="row g-3">
-            <div class="col-md-3"><label class="form-label">@Localizer["Vc_SeqNo"]</label><input name="SequenceNo" type="number" class="form-control" value="1" /></div>
-            <div class="col-md-3">
-                <label class="form-label">@Localizer["Vs_Project"]</label>
-                <select name="ProjectId" class="form-select" required>
+<pems-content-card css="pems-s-3f7efa5f">
+    <pems-form asp-action="Create" method="post">
+        <pems-row gap="3">
+            <pems-col md="3"><pems-label>@Localizer["Vc_SeqNo"]</pems-label><pems-input name="SequenceNo" type="number" value="1" /></pems-col>
+            <pems-col md="3">
+                <pems-label>@Localizer["Vs_Project"]</pems-label>
+                <pems-select name="ProjectId" required>
                     @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">@Localizer["Vendor"]</label>
-                <select name="VendorId" class="form-select" required>
+                </pems-select>
+            </pems-col>
+            <pems-col md="3">
+                <pems-label>@Localizer["Vendor"]</pems-label>
+                <pems-select name="VendorId" required>
                     @foreach (var v in vendors) { <option value="@v.VendorId">@v.Name</option> }
-                </select>
-            </div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Vc_DisciplineCode"]</label><input name="DisciplineCodeRaw" class="form-control" placeholder="ME / EL / IN / PI / PM / HV / HS" /></div>
-            <div class="col-md-4">
-                <label class="form-label">@Localizer["Vc_RelatedEquipment"] <span class="text-muted small">@Localizer["Vd_Optional"]</span></label>
-                <select name="EquipmentId" class="form-select">
+                </pems-select>
+            </pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Vc_DisciplineCode"]</pems-label><pems-input name="DisciplineCodeRaw" placeholder="ME / EL / IN / PI / PM / HV / HS" /></pems-col>
+            <pems-col md="4">
+                <pems-label>@Localizer["Vc_RelatedEquipment"] <span class="text-muted small">@Localizer["Vd_Optional"]</span></pems-label>
+                <pems-select name="EquipmentId">
                     <option value="">@Localizer["Vc_None"]</option>
                     @foreach (var eq in equipments) { <option value="@eq.EquipmentId">@eq.TagNumber</option> }
-                </select>
-            </div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Vc_DocType"]</label><input name="DocumentTypeCode" class="form-control" placeholder="DWG / DSH / PRC ..." required /></div>
-            <div class="col-md-5"><label class="form-label">@Localizer["Vc_DocNumber"]</label><input name="DocumentNumber" class="form-control" required /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Vc_MrNumber"]</label><input name="MRNumber" class="form-control" /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Vd_MaterialCode"] <span class="text-muted small">@Localizer["Vc_MaterialCodeHint"]</span></label><input name="MaterialCode" class="form-control" placeholder="e.g. 0611" /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Vd_TypologyCode"] <span class="text-muted small">@Localizer["Vc_TypologyHint"]</span></label><input name="TypologyCode" class="form-control" placeholder="e.g. GS, LG, IS ..." /></div>
-            <div class="col-12"><label class="form-label">@Localizer["Vc_DocDescription"]</label><input name="DocumentDescription" class="form-control" /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Vc_ResponsibleParty"]</label><input name="ResponsiblePartyCode" class="form-control" placeholder="PJPC-Eng / QC / Procurement ..." /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Vs_Class"]</label><input name="DocumentClass" type="number" min="1" max="3" class="form-control" /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Vc_PlannedIssue"]</label><input name="PlannedFirstIssueDate" type="date" class="form-control" /></div>
-        </div>
-        <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
-        </div>
-    </form>
-</div>
+                </pems-select>
+            </pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Vc_DocType"]</pems-label><pems-input name="DocumentTypeCode" placeholder="DWG / DSH / PRC ..." required /></pems-col>
+            <pems-col md="5"><pems-label>@Localizer["Vc_DocNumber"]</pems-label><pems-input name="DocumentNumber" required /></pems-col>
+            <pems-col md="4"><pems-label>@Localizer["Vc_MrNumber"]</pems-label><pems-input name="MRNumber" /></pems-col>
+            <pems-col md="4"><pems-label>@Localizer["Vd_MaterialCode"] <span class="text-muted small">@Localizer["Vc_MaterialCodeHint"]</span></pems-label><pems-input name="MaterialCode" placeholder="e.g. 0611" /></pems-col>
+            <pems-col md="4"><pems-label>@Localizer["Vd_TypologyCode"] <span class="text-muted small">@Localizer["Vc_TypologyHint"]</span></pems-label><pems-input name="TypologyCode" placeholder="e.g. GS, LG, IS ..." /></pems-col>
+            <pems-col span="12"><pems-label>@Localizer["Vc_DocDescription"]</pems-label><pems-input name="DocumentDescription" /></pems-col>
+            <pems-col md="4"><pems-label>@Localizer["Vc_ResponsibleParty"]</pems-label><pems-input name="ResponsiblePartyCode" placeholder="PJPC-Eng / QC / Procurement ..." /></pems-col>
+            <pems-col md="4"><pems-label>@Localizer["Vs_Class"]</pems-label><pems-input name="DocumentClass" type="number" min="1" max="3" /></pems-col>
+            <pems-col md="4"><pems-label>@Localizer["Vc_PlannedIssue"]</pems-label><pems-date name="PlannedFirstIssueDate" /></pems-col>
+        </pems-row>
+        <pems-action-bar css="mt-4">
+            <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>
 
-</div>
+</pems-page-shell>
 
 @{ ViewData["Title"] = Localizer["Vs_ManualEntry"].Value; }
 @section Styles {

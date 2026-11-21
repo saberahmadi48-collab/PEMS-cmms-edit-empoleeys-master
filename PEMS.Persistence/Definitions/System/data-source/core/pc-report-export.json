@@ -1,0 +1,37 @@
+{
+  "kind": "data-source",
+  "key": "pc-report-export",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue report workbook",
+    "fa": "فایل اکسل گزارش کاتالوگ قطعه"
+  },
+  "description": {
+    "en": "Part Catalogue report workbook",
+    "fa": "فایل اکسل گزارش کاتالوگ قطعه"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueReport",
+      "action": "Export",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "culture": "context:culture",
+        "sheet": "param:sheet",
+        "period": "param:period",
+        "from": "param:from",
+        "to": "param:to",
+        "sectionId": "param:sectionId",
+        "requestType": "param:requestType",
+        "status": "param:status",
+        "employeeId": "param:employeeId",
+        "equipmentId": "param:equipmentId"
+      },
+      "disposition": "attachment"
+    }
+  }
+}

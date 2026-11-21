@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "crew-remove-member",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a crew member",
+    "fa": "خروج عضو"
+  },
+  "description": {
+    "en": "Remove a crew member",
+    "fa": "خروج عضو"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "CrewAdmin",
+      "action": "RemoveMember",
+      "args": {
+        "userId": "context:userId",
+        "userName": "context:userName",
+        "employeeId": "context:employeeId",
+        "userRoles": "context:roles",
+        "ip": "context:ip",
+        "crewMemberId": "field:crewMemberId"
+      }
+    },
+    "success": {
+      "en": "The member was removed from the crew.",
+      "fa": "عضو از Crew خارج شد."
+    },
+    "redirect": "/p/crews"
+  }
+}

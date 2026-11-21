@@ -1,0 +1,224 @@
+{
+  "kind": "page",
+  "key": "my-profile",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My Profile",
+    "fa": "پروفایل من"
+  },
+  "description": {
+    "en": "My photo and my drawn signature (page definition)",
+    "fa": "عکس و امضای ترسیمی من (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "my-profile",
+    "regions": {
+      "content": [
+        {
+          "id": "t-message",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Account",
+              "fa": "حساب کاربری"
+            },
+            "icon": "bi-info-circle"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/my-profile",
+              "first": true,
+              "map": {
+                "value": "message"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-name",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Employee",
+              "fa": "کارمند"
+            },
+            "icon": "bi-person-circle"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/my-profile",
+              "first": true,
+              "map": {
+                "value": "fullName"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-position",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Position",
+              "fa": "سمت"
+            },
+            "icon": "bi-briefcase"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/my-profile",
+              "first": true,
+              "map": {
+                "value": "position"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-code",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Personnel code",
+              "fa": "کد پرسنلی"
+            },
+            "icon": "bi-hash"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/my-profile",
+              "first": true,
+              "map": {
+                "value": "personnelCode"
+              }
+            }
+          }
+        },
+        {
+          "id": "h-photo",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-photo",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Profile photo",
+                  "fa": "عکس پروفایل"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "photo",
+          "component": "image",
+          "options": {
+            "alt": {
+              "en": "Profile photo",
+              "fa": "عکس پروفایل"
+            },
+            "css": "rounded-circle",
+            "size": 150,
+            "empty": {
+              "en": "No photo yet.",
+              "fa": "هنوز عکسی ثبت نشده."
+            }
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/my-profile",
+              "first": true,
+              "map": {
+                "src": "photoUrl"
+              }
+            }
+          }
+        },
+        {
+          "id": "photo-link",
+          "component": "content-blocks",
+          "options": {
+            "id": "photo-link",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/my-profile-photo",
+                "text": {
+                  "en": "Change the photo",
+                  "fa": "تغییر عکس"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-signature",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-signature",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Digital signature (drawn)",
+                  "fa": "امضای دیجیتال (ترسیمی)"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "signature",
+          "component": "signature-pad",
+          "options": {
+            "id": "signature",
+            "action": "profile-signature-save",
+            "field": "signatureDataUrl",
+            "clearLabel": {
+              "en": "Clear",
+              "fa": "پاک کردن"
+            },
+            "saveLabel": {
+              "en": "Save signature",
+              "fa": "ذخیره امضا"
+            },
+            "emptyText": {
+              "en": "Draw your signature first.",
+              "fa": "ابتدا امضا کنید."
+            },
+            "savedText": {
+              "en": "Signature saved.",
+              "fa": "امضا ذخیره شد."
+            },
+            "errorText": {
+              "en": "The signature was not saved.",
+              "fa": "امضا ذخیره نشد."
+            },
+            "hint": {
+              "en": "Draw in the box below with the mouse or your finger. The signature is used where an approver's signature is shown (for example workflow approvals).",
+              "fa": "با موس یا انگشت روی کادر زیر امضا کنید. این امضا در جاهایی که امضای تأییدکننده نمایش داده می‌شود (مثلاً تأییدهای گردش‌کار) استفاده می‌شود."
+            },
+            "currentLabel": {
+              "en": "Current signature",
+              "fa": "امضای فعلی"
+            }
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/my-profile",
+              "first": true,
+              "map": {
+                "currentUrl": "signatureUrl"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

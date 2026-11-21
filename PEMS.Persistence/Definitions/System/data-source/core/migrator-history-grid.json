@@ -1,0 +1,20 @@
+{
+  "kind": "data-source",
+  "key": "migrator-history-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Packages run on this installation",
+    "fa": "بسته‌های اجراشده روی این نصب"
+  },
+  "description": {
+    "en": "History of the migrator center",
+    "fa": "تاریخچه مرکز مهاجرت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "migrator-history",
+    "permission": "Definitions.Create",
+    "parameters": {}
+  }
+}

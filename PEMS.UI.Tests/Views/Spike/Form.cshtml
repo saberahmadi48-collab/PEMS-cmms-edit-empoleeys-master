@@ -1,0 +1,10 @@
+@model PEMS.UI.Tests.Host.SpikeModel
+<form method="post" enctype="multipart/form-data" asp-action="FormPost">
+    <pems-field asp-for="Name" help="Unique tag name" />
+    <pems-field asp-for="Quantity" />
+    <pems-field asp-for="Due" />
+    <pems-field asp-for="Price" />
+    <pems-field asp-for="Active" />
+    <pems-field asp-for="Attachment" kind="@FieldKind.File" />
+    <button type="submit">Save</button>
+</form>

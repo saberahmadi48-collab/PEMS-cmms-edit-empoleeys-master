@@ -1,230 +1,146 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using PEMS.Application.Common;
+using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
-using PEMS.Domain.Entities;
+using PEMS.Domain.Common;
 using PEMS.Persistence.Context;
+using PEMS.Web.Resources;
 using PEMS.Web.Security;
+using PEMS.Web.ViewModels;
 
 namespace PEMS.Web.Controllers;
 
 /// <summary>
-/// طبق درخواست: تکمیل بخش‌های CMMS - برنامه‌ی نگهداری واقعی (چه زمانی، چند روز یک‌بار) که از
-/// یک Maintenance Strategy می‌آید و می‌تواند Work Order بسازد.
+/// برنامه‌ی نگهداری (PM Plan). از RCM کلاس‌محور به بعد Plan فقط از یک «تخصیص» (نسخه‌ی استراتژی +
+/// تگ) ساخته می‌شود: تجهیز سمت سرور از تخصیص مشتق می‌شود و هرگز equipmentId از کلاینت پذیرفته نمی‌شود
+/// (رفع ناهم‌خوانی equipmentId/strategyId و خطای FK با HTTP 500). ورودی نامعتبر = 400 + پیام محلی‌شده.
 /// </summary>
 public class MaintenancePlanController : Controller
 {
+    private const string Module = "MaintenancePlan";
+
     private readonly PEMSDbContext _context;
-    private readonly INumberingService _numberingService;
     private readonly IMaintenancePlanService _maintenancePlanService;
+    private readonly IMaintenancePlanCommandService _planCommands;
+    private readonly IStrategyAssignmentService _assignments;
     private readonly IPMGenerationService _pmGenerationService;
     private readonly ICurrentUserService _currentUser;
     private readonly IPermissionService _permissionService;
+    private readonly IStringLocalizer<SharedResource>? _l;
 
     private readonly IWorkOrderLifecycleService? _workOrderLifecycle;
 
-    public MaintenancePlanController(PEMSDbContext context, INumberingService numberingService,
-        IMaintenancePlanService maintenancePlanService, IPMGenerationService pmGenerationService,
-        ICurrentUserService currentUser, IPermissionService permissionService, IWorkOrderLifecycleService? workOrderLifecycle = null)
+    public MaintenancePlanController(PEMSDbContext context,
+        IMaintenancePlanService maintenancePlanService, IMaintenancePlanCommandService planCommands,
+        IStrategyAssignmentService assignments, IPMGenerationService pmGenerationService,
+        ICurrentUserService currentUser, IPermissionService permissionService,
+        IWorkOrderLifecycleService? workOrderLifecycle = null, IStringLocalizer<SharedResource>? localizer = null)
     {
         _workOrderLifecycle = workOrderLifecycle;
         _context = context;
-        _numberingService = numberingService;
         _maintenancePlanService = maintenancePlanService;
+        _planCommands = planCommands;
+        _assignments = assignments;
         _pmGenerationService = pmGenerationService;
         _currentUser = currentUser;
         _permissionService = permissionService;
+        _l = localizer;
     }
 
-    // طبق سند «PEMS — Global Data Grid Standard»: قبلاً کل جدول MaintenancePlans با
-    // Include(Equipment)+Include(MaintenanceStrategy)+ToListAsync (بدون Skip/Take) بارگذاری
-    // می‌شد. این Grid فیلتری نداشت؛ فقط صفحه‌بندی اضافه شد.
-    // طبق ممیزی مستقل فاز ۶B Wave B1 (نهایی) بند P0: این کنترلر هیچ بررسی مجوزی نداشت - هر
-    // کاربر احرازهویت‌شده‌ای می‌توانست Plan بسازد، غیرفعال کند، از آن WorkOrder بسازد، یا
-    // قرائت Meter ثبت کند.
-    public async Task<IActionResult> Index(int page = 1, int? pageSize = null)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "View"))
-            return Forbid();
+    private Task<bool> Can(string action) => _permissionService.HasPermissionAsync(_currentUser.Roles, Module, action);
 
-        ViewData["Title"] = "Maintenance Plans";
-        ViewData["HelpKey"] = "MaintenancePlans.Index";
-        ViewData["Section"] = "CMMS Integration";
+    // ==================== Create (from an assignment) ====================
 
-        var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
-        var result = await _maintenancePlanService.GetListAsync(page, normalizedPageSize);
-
-        return View(result);
-    }
-
+    /// <summary>
+    /// Create?assignmentId=N  → فرم با تگ فقط‌خواندنی.
+    /// Create?strategyId=N&amp;equipmentId=M → تخصیص متناظر پیدا می‌شود (تگ از تخصیص می‌آید).
+    /// بدون پارامتر → انتخاب از میان تخصیص‌های مجاز (برچسب متمایز: تگ · نوع · حالت خرابی · نسخه).
+    /// </summary>
     [HttpGet]
-    public async Task<IActionResult> Create(int? strategyId, int? equipmentId)
+    public async Task<IActionResult> Create(int? assignmentId, int? strategyId, int? equipmentId)
     {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "Create"))
-            return Forbid();
+        if (!await Can("Create")) return Forbid();
 
         ViewData["Title"] = "New Maintenance Plan";
         ViewData["Section"] = "CMMS Integration";
 
-        ViewBag.Strategies = await _context.MaintenanceStrategies.Where(x => x.IsActive)
-            .Select(x => new { x.MaintenanceStrategyId, x.EquipmentId, x.StrategyType, x.Frequency, x.RecommendedTriggerType }).ToListAsync();
+        var vm = new PlanFormViewModel { JobPlans = await JobPlanLookupAsync() };
 
-        ViewBag.JobPlans = await _context.JobPlans.Where(x => x.IsActive)
-            .OrderBy(x => x.JobPlanNumber)
-            .Select(x => new { x.JobPlanId, x.JobPlanNumber, x.Title }).ToListAsync();
-
-        ViewBag.PreselectedStrategyId = strategyId;
-        ViewBag.PreselectedEquipmentId = equipmentId;
-
-        if (strategyId.HasValue)
+        if (!assignmentId.HasValue && strategyId.HasValue && equipmentId.HasValue)
         {
-            ViewBag.PreselectedTriggerType = await _context.MaintenanceStrategies
-                .Where(x => x.MaintenanceStrategyId == strategyId.Value)
-                .Select(x => x.RecommendedTriggerType)
-                .FirstOrDefaultAsync();
+            var match = await _assignments.GetPlanEligibleAssignmentsAsync(equipmentId, strategyId);
+            assignmentId = match.FirstOrDefault()?.AssignmentId;
         }
 
-        if (equipmentId.HasValue)
+        if (assignmentId.HasValue)
         {
-            ViewBag.PreselectedEquipmentLabel = await _context.Equipments
-                .Where(x => x.EquipmentId == equipmentId.Value)
-                .Select(x => x.TagNumber + " - " + x.Name)
-                .FirstOrDefaultAsync();
+            vm.Context = await _planCommands.GetFormContextAsync(assignmentId.Value);
+            if (vm.Context == null)
+            {
+                Response.StatusCode = StatusCodes.Status404NotFound;
+                vm.Errors.Add(T("Rcm_Err_AssignmentNotFound"));
+            }
+            else
+            {
+                vm.Input = new PlanInputDto
+                {
+                    MaintenanceStrategyAssignmentId = vm.Context.AssignmentId,
+                    Title = vm.Context.SuggestedTitle,
+                    TriggerType = vm.Context.RecommendedTriggerType,
+                    IntervalDays = vm.Context.SuggestedIntervalDays,
+                    ScheduleMode = RcmCodes.ScheduleMode.Fixed
+                };
+            }
+        }
+        else
+        {
+            vm.Choices = await _assignments.GetPlanEligibleAssignmentsAsync(equipmentId, strategyId);
         }
 
-        return View();
+        return View(vm);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(int equipmentId, int maintenanceStrategyId, string title,
-        string triggerType, int? intervalDays, string? meterType, decimal? meterInterval,
-        DateTime? nextDueDate, string? description, int? jobPlanId)
+    public async Task<IActionResult> Create(PlanInputDto input)
     {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "Create"))
-            return Forbid();
+        if (!await Can("Create")) return Forbid();
 
-        var equipment = await _context.Equipments.FirstOrDefaultAsync(x => x.EquipmentId == equipmentId);
-        var planNumber = await _numberingService.GetNextNumberAsync("MaintenancePlan", equipment?.TagNumber ?? equipmentId.ToString());
-
-        await _context.MaintenancePlans.AddAsync(new MaintenancePlan
+        var result = await _planCommands.CreateAsync(input, await _context.ResolveStrategyActorAsync(_currentUser));
+        if (result.Success)
         {
-            EquipmentId = equipmentId,
-            MaintenanceStrategyId = maintenanceStrategyId,
-            PlanNumber = planNumber,
-            Title = title,
-            TriggerType = string.IsNullOrWhiteSpace(triggerType) ? "Calendar" : triggerType,
-            IntervalDays = intervalDays,
-            MeterType = meterType,
-            MeterInterval = meterInterval,
-            NextDueDate = nextDueDate,
-            Description = description,
-            JobPlanId = jobPlanId,
-            IsActive = true,
-            CreatedDate = DateTime.Now
-        });
-
-        await _context.SaveChangesAsync();
-
-        TempData["Message"] = "Maintenance plan created";
-        return RedirectToAction(nameof(Index));
-    }
-
-    // ==============================================================================
-    // طبق بازنگری CMMS/RCM: اگه تریگر مبتنی بر Meter باشه، اجرا با ثبت قرائت فعلی Meter
-    // انجام می‌شه، نه فقط تاریخ - سررسید بعدی از روی همین قرائت محاسبه می‌شه
-    // ==============================================================================
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RecordMeterReading(int planId, decimal currentReading)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "Edit"))
-            return Forbid();
-
-        var plan = await _context.MaintenancePlans.FirstOrDefaultAsync(x => x.MaintenancePlanId == planId);
-        if (plan == null) return NotFound();
-
-        if (plan.TriggerType is "Meter" or "Both" && plan.MeterInterval.HasValue)
-        {
-            plan.LastExecutionMeterReading = currentReading;
-            plan.NextDueMeterReading = currentReading + plan.MeterInterval.Value;
+            TempData["Message"] = T("Rcm_Info_PlanCreated");
+            return Redirect("/p/maintenance-plans");
         }
 
-        await _context.SaveChangesAsync();
-
-        TempData["Message"] = "قرائت Meter ثبت شد.";
-        return RedirectToAction(nameof(Index));
-    }
-
-    // طبق «PEMS Phase 6» بند ۱۵/۵۵-۵۶: منطق واقعی به PMGenerationService منتقل شد (Controller
-    // نازک‌تر شود) و حالا Idempotent است - کلیک تکراری/Double-Submit دیگر WorkOrder تکراری نمی‌سازد.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> GenerateWorkOrder(int planId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "Edit"))
-            return Forbid();
-
-        var workOrderNumber = await _pmGenerationService.GenerateForPlanAsync(planId);
-
-        if (workOrderNumber == null)
+        var vm = new PlanFormViewModel
         {
-            TempData["Error"] = "این Plan یا وجود ندارد یا از قبل یک Work Order فعال (تکمیل‌نشده) دارد - برای جلوگیری از تکرار، Work Order جدیدی ساخته نشد.";
-            return RedirectToAction(nameof(Index));
+            Input = input,
+            JobPlans = await JobPlanLookupAsync(),
+            Context = await _planCommands.GetFormContextAsync(input.MaintenanceStrategyAssignmentId)
+        };
+        foreach (var e in result.Errors)
+        {
+            var msg = _l.Translate(e);
+            vm.Errors.Add(msg);
+            if (!string.IsNullOrEmpty(e.Field)) ModelState.AddModelError(e.Field, msg);
         }
 
-        await GovernGeneratedAsync();
-        var workOrderId = await _context.WorkOrders
-            .Where(x => x.WorkOrderNumber == workOrderNumber)
-            .Select(x => x.WorkOrderId)
-            .FirstOrDefaultAsync();
-
-        TempData["Message"] = $"Work order {workOrderNumber} generated from plan";
-        return RedirectToAction("Details", "WorkOrder", new { id = workOrderId });
+        // تخصیص نامعتبر/ناموجود = 404؛ سایر ورودی‌های نامعتبر = 400 (هرگز 500)
+        Response.StatusCode = vm.Context == null ? StatusCodes.Status404NotFound : StatusCodes.Status400BadRequest;
+        ViewData["Title"] = "New Maintenance Plan";
+        ViewData["Section"] = "CMMS Integration";
+        return View(vm);
     }
 
-    // طبق «PEMS Phase 6» بند ۱۵/۳۹/۵۶: اجرای دستی (انسان‌محور) روی همه‌ی Plan های سررسیدرسیده -
-    // Hangfire زیرساخت موجود است اما بند ۵۶ صراحتاً هیچ زمان‌بند خودکار جدیدی را الزامی نمی‌کند؛
-    // این دکمه دقیقاً همان GenerateForPlanAsync Idempotent را برای هر Plan سررسیدرسیده صدا می‌زند.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> GenerateDueWorkOrders()
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "Edit"))
-            return Forbid();
+    // ==================== Helpers ====================
 
-        var result = await _pmGenerationService.GenerateDueWorkOrdersAsync();
-        await GovernGeneratedAsync();
+    private Task<List<LookupItem>> JobPlanLookupAsync()
+        => _context.JobPlans.AsNoTracking().Where(x => x.IsActive).OrderBy(x => x.JobPlanNumber)
+            .Select(x => new LookupItem { Id = x.JobPlanId, Code = x.JobPlanNumber, Text = x.Title }).ToListAsync();
 
-        TempData["Message"] = $"{result.WorkOrdersGenerated} Work Order جدید ساخته شد؛ {result.PlansSkippedAlreadyHasOpenWorkOrder} مورد به‌دلیل داشتن Work Order فعال از قبل، رد شد.";
-        return RedirectToAction(nameof(Index));
-    }
-
-
-    // Phase 3B: Work Order تولیدشده باید حاکمیتی شود (Snapshot مبدأ از کاربر اجراکننده + شروع چرخه‌عمر)؛ بدون Binding بی‌اثر است.
-    private async Task GovernGeneratedAsync()
-    {
-        if (_workOrderLifecycle == null) return;
-        var employeeId = _currentUser.UserId.HasValue
-            ? await _context.Users.Where(u => u.Id == _currentUser.UserId.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync() : null;
-        var (ok, error, _) = await _workOrderLifecycle.GovernPendingNewAsync(new PEMS.Application.DTOs.WorkOrderActor(employeeId, _currentUser.Roles));
-        if (!ok) TempData["Error"] = error;
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Deactivate(int planId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenancePlan", "Edit"))
-            return Forbid();
-
-        var plan = await _context.MaintenancePlans.FirstOrDefaultAsync(x => x.MaintenancePlanId == planId);
-        if (plan == null) return NotFound();
-
-        plan.IsActive = false;
-        await _context.SaveChangesAsync();
-
-        TempData["Message"] = "Plan deactivated";
-        return RedirectToAction(nameof(Index));
-    }
+    private string T(string key, params object[] args) => _l == null ? key : _l[key, args].Value;
 }

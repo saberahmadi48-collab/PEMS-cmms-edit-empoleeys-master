@@ -3,79 +3,70 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Index" class="small">@Localizer["← Fleet Reliability"]</a>
-</div>
-<p class="text-muted small">
+<pems-flex justify="end" align="center" css="mb-2">
+    <pems-link asp-action="Index" class="small">@Localizer["← Fleet Reliability"]</pems-link>
+</pems-flex>
+<pems-text class="text-muted small">
     این صفحه هیچ رکوردی را تغییر نمی‌دهد - فقط نشان می‌دهد چه چیزی موجود است و چه چیزی غایب،
     تا کیفیت هر معیار قابلیت‌اطمینان شفاف باشد.
-</p>
+</pems-text>
 
-<div class="content-card mb-3">
-    <div class="row g-3 text-center">
-        <div class="col-md-3">
-            <div class="fs-4 fw-bold">@Model.EquipmentReliabilityCoveragePercent.ToString("N1")%</div>
-            <div class="text-muted small">Equipment Reliability Coverage</div>
-        </div>
-        <div class="col-md-3">
-            <div class="fs-4 fw-bold">@Model.FailureTaxonomyCoveragePercent.ToString("N1")%</div>
-            <div class="text-muted small">@Localizer["Failure Taxonomy Coverage"]</div>
-        </div>
-        <div class="col-md-3">
-            <div class="fs-4 fw-bold">@Model.RepairDataCoveragePercent.ToString("N1")%</div>
-            <div class="text-muted small">Repair Data Coverage</div>
-        </div>
-        <div class="col-md-3">
-            <div class="fs-4 fw-bold">@Model.TotalFailureRecords</div>
-            <div class="text-muted small">Total Failure Records</div>
-        </div>
-    </div>
-</div>
+<pems-content-card css="mb-3">
+    <pems-row gap="3">
+        <pems-col md="3">
+            <pems-kpi-tile compact label="Equipment Reliability Coverage">@Model.EquipmentReliabilityCoveragePercent.ToString("N1")%</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="3">
+            <pems-kpi-tile compact label="@Localizer["Failure Taxonomy Coverage"]">@Model.FailureTaxonomyCoveragePercent.ToString("N1")%</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="3">
+            <pems-kpi-tile compact label="Repair Data Coverage">@Model.RepairDataCoveragePercent.ToString("N1")%</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="3">
+            <pems-kpi-tile compact label="Total Failure Records">@Model.TotalFailureRecords</pems-kpi-tile>
+        </pems-col>
+    </pems-row>
+</pems-content-card>
 
-<div class="content-card mb-3">
-    <h6 class="mb-2">Maintenance Chain Coverage <span class="badge text-bg-light border">Phase 7</span></h6>
-    <div class="row g-3 text-center">
-        <div class="col-md-2">
-            <div class="fs-5 fw-bold">@Model.MaintenanceTypeCompletenessPercent.ToString("N1")%</div>
-            <div class="text-muted small">Maintenance Type Completeness</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-5 fw-bold">@Model.WorkOrderCompletionCoveragePercent.ToString("N1")%</div>
-            <div class="text-muted small">Work Order Completion Coverage</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-5 fw-bold">@Model.CriticalityCoveragePercent.ToString("N1")%</div>
-            <div class="text-muted small">Criticality Coverage</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-5 fw-bold">@Model.MaintenanceStrategyCoveragePercent.ToString("N1")%</div>
-            <div class="text-muted small">Maintenance Strategy Coverage</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-5 fw-bold">@Model.MaintenancePlanCoveragePercent.ToString("N1")%</div>
-            <div class="text-muted small">Maintenance Plan Coverage</div>
-        </div>
-    </div>
-</div>
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-2">Maintenance Chain Coverage <pems-badge tone="light">Phase 7</pems-badge></pems-heading>
+    <pems-row gap="3">
+        <pems-col md="2">
+            <pems-kpi-tile compact label="Maintenance Type Completeness">@Model.MaintenanceTypeCompletenessPercent.ToString("N1")%</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="2">
+            <pems-kpi-tile compact label="Work Order Completion Coverage">@Model.WorkOrderCompletionCoveragePercent.ToString("N1")%</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="2">
+            <pems-kpi-tile compact label="Criticality Coverage">@Model.CriticalityCoveragePercent.ToString("N1")%</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="2">
+            <pems-kpi-tile compact label="Maintenance Strategy Coverage">@Model.MaintenanceStrategyCoveragePercent.ToString("N1")%</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="2">
+            <pems-kpi-tile compact label="Maintenance Plan Coverage">@Model.MaintenancePlanCoveragePercent.ToString("N1")%</pems-kpi-tile>
+        </pems-col>
+    </pems-row>
+</pems-content-card>
 
-<div class="content-card">
-    <table class="table table-enterprise table-sm mb-0">
-        <tbody>
-            <tr><td>@Localizer["Total Active Equipment"]</td><td class="text-end">@Model.TotalActiveEquipment</td></tr>
-            <tr><td>@Localizer["Equipment with Failure History"]</td><td class="text-end">@Model.EquipmentWithFailureHistory</td></tr>
-            <tr><td>Equipment with Criticality</td><td class="text-end">@Model.EquipmentWithCriticality</td></tr>
-            <tr><td>Equipment with Maintenance Strategy</td><td class="text-end">@Model.EquipmentWithMaintenanceStrategy</td></tr>
-            <tr><td>Equipment with Maintenance Plan</td><td class="text-end">@Model.EquipmentWithMaintenancePlan</td></tr>
-            <tr><td>Failure Records without Failure Mode</td><td class="text-end">@Model.FailureRecordsWithoutFailureMode</td></tr>
-            <tr><td>Failure Records without Failure Cause</td><td class="text-end">@Model.FailureRecordsWithoutFailureCause</td></tr>
-            <tr><td>Failure Records without Downtime Hours</td><td class="text-end">@Model.FailureRecordsWithoutDowntimeHours</td></tr>
-            <tr><td>Failure Records with Invalid (Future) Date</td><td class="text-end">@Model.FailureRecordsWithInvalidDate</td></tr>
-            <tr><td>Failure Records Linked to WorkOrder Missing Start/Completion Date</td><td class="text-end">@Model.FailureRecordsLinkedToWorkOrderMissingDuration</td></tr>
-            <tr><td>Failure Records with Negative Repair Duration</td><td class="text-end">@Model.FailureRecordsWithNegativeDuration</td></tr>
-            <tr><td>Total Work Orders</td><td class="text-end">@Model.TotalWorkOrders</td></tr>
-            <tr><td>Work Orders Missing Work Order Type</td><td class="text-end">@Model.WorkOrdersMissingWorkOrderType</td></tr>
-            <tr><td>Completed/Closed Work Orders</td><td class="text-end">@Model.CompletedOrClosedWorkOrders</td></tr>
-            <tr><td>Completed/Closed Work Orders Missing Completion Date</td><td class="text-end">@Model.WorkOrdersMissingCompletionDate</td></tr>
-        </tbody>
-    </table>
-</div>
+<pems-content-card>
+    <pems-table kind="enterprise" scale="small" css="mb-0">
+        <pems-table-body>
+            <pems-table-row><pems-table-cell>@Localizer["Total Active Equipment"]</pems-table-cell><pems-table-cell class="text-end">@Model.TotalActiveEquipment</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>@Localizer["Equipment with Failure History"]</pems-table-cell><pems-table-cell class="text-end">@Model.EquipmentWithFailureHistory</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Equipment with Criticality</pems-table-cell><pems-table-cell class="text-end">@Model.EquipmentWithCriticality</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Equipment with Maintenance Strategy</pems-table-cell><pems-table-cell class="text-end">@Model.EquipmentWithMaintenanceStrategy</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Equipment with Maintenance Plan</pems-table-cell><pems-table-cell class="text-end">@Model.EquipmentWithMaintenancePlan</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Failure Records without Failure Mode</pems-table-cell><pems-table-cell class="text-end">@Model.FailureRecordsWithoutFailureMode</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Failure Records without Failure Cause</pems-table-cell><pems-table-cell class="text-end">@Model.FailureRecordsWithoutFailureCause</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Failure Records without Downtime Hours</pems-table-cell><pems-table-cell class="text-end">@Model.FailureRecordsWithoutDowntimeHours</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Failure Records with Invalid (Future) Date</pems-table-cell><pems-table-cell class="text-end">@Model.FailureRecordsWithInvalidDate</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Failure Records Linked to WorkOrder Missing Start/Completion Date</pems-table-cell><pems-table-cell class="text-end">@Model.FailureRecordsLinkedToWorkOrderMissingDuration</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Failure Records with Negative Repair Duration</pems-table-cell><pems-table-cell class="text-end">@Model.FailureRecordsWithNegativeDuration</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Total Work Orders</pems-table-cell><pems-table-cell class="text-end">@Model.TotalWorkOrders</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Work Orders Missing Work Order Type</pems-table-cell><pems-table-cell class="text-end">@Model.WorkOrdersMissingWorkOrderType</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Completed/Closed Work Orders</pems-table-cell><pems-table-cell class="text-end">@Model.CompletedOrClosedWorkOrders</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>Completed/Closed Work Orders Missing Completion Date</pems-table-cell><pems-table-cell class="text-end">@Model.WorkOrdersMissingCompletionDate</pems-table-cell></pems-table-row>
+        </pems-table-body>
+    </pems-table>
+</pems-content-card>

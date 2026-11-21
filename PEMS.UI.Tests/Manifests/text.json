@@ -1,0 +1,50 @@
+{
+  "key": "text",
+  "component": "PEMS.UI.Components.PemsText",
+  "category": "display",
+  "icon": "bi-text-paragraph",
+  "nameKey": "component.text",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "TextBlockOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "css": "small text-muted"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "work-order-reopen",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reopen closed work order",
+    "fa": "بازگشایی Work Order"
+  },
+  "description": {
+    "en": "Reopen closed work order",
+    "fa": "بازگشایی Work Order"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrder",
+      "action": "Reopen",
+      "args": {
+        "workOrderId": "field:id",
+        "reason": "field:reason",
+        "userName": "context:userName",
+        "ipAddress": "context:ip",
+        "userId": "context:userId"
+      }
+    },
+    "success": {
+      "en": "The Work Order was reopened and returned to verification.",
+      "fa": "Work Order بازگشایی شد و به مرحله‌ی تأیید برگشت."
+    },
+    "redirect": "/WorkOrder/Details/{id}"
+  }
+}

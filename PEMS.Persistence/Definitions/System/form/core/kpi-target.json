@@ -1,0 +1,64 @@
+{
+  "kind": "form",
+  "key": "kpi-target",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change a KPI target",
+    "fa": "تغییر هدف شاخص"
+  },
+  "description": {
+    "en": "Save the target and the near-target threshold of a KPI (empty = none)",
+    "fa": "ذخیره هدف و آستانه هشدار یک شاخص (خالی = بدون هدف)"
+  },
+  "payload": {
+    "id": "kpi-target",
+    "title": {
+      "en": "KPI target",
+      "fa": "هدف شاخص"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "kpi-save-target",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "key",
+        "label": {
+          "en": "KPI",
+          "fa": "شاخص"
+        },
+        "kind": "select",
+        "required": true,
+        "span": 2,
+        "messages": {
+          "required": {
+            "en": "KPI key is required.",
+            "fa": "کلید شاخص الزامی است."
+          }
+        },
+        "optionsFrom": "kpi-target-options"
+      },
+      {
+        "name": "target",
+        "label": {
+          "en": "Target",
+          "fa": "هدف"
+        },
+        "kind": "text",
+        "maxLength": 20
+      },
+      {
+        "name": "warn",
+        "label": {
+          "en": "Near-target threshold",
+          "fa": "آستانه نزدیک به هدف"
+        },
+        "kind": "text",
+        "maxLength": 20
+      }
+    ]
+  }
+}

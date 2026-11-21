@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-check-manufacturer",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup CheckManufacturer (old address)",
+    "fa": "Part Catalogue lookup CheckManufacturer (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue lookup CheckManufacturer (old address)",
+    "fa": "Part Catalogue lookup CheckManufacturer (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueLookup/CheckManufacturer",
+    "target": "/x/pc-check-manufacturer",
+    "permanent": false
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "kind": "action",
+  "key": "storage-providers-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create storage provider",
+    "fa": "ایجاد ارائه‌دهنده‌ی ذخیره‌سازی"
+  },
+  "description": {
+    "en": "Create storage provider",
+    "fa": "ایجاد ارائه‌دهنده‌ی ذخیره‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StorageProvider",
+      "action": "Create",
+      "args": {
+        "request": {
+          "Name": "field:name",
+          "Code": "field:code",
+          "ProviderType": "field:providerType",
+          "Host": "field:host",
+          "Port": "field:port",
+          "Username": "field:username",
+          "Password": "field:password",
+          "RootPath": "field:rootPath",
+          "BaseUrl": "field:baseUrl",
+          "UseSsl": "field:useSsl",
+          "UsePassiveMode": "literal:true",
+          "AllowRead": "literal:true",
+          "AllowWrite": "literal:true",
+          "AllowDelete": "literal:true",
+          "IsEnabled": "literal:true"
+        },
+        "createdBy": "context:userName"
+      }
+    },
+    "success": {
+      "en": "Storage provider created.",
+      "fa": "ارائه‌دهنده‌ی ذخیره‌سازی ایجاد شد."
+    },
+    "redirect": "/p/storage-providers"
+  }
+}

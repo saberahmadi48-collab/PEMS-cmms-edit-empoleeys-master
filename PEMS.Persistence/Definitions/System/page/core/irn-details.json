@@ -1,0 +1,521 @@
+{
+  "kind": "page",
+  "key": "irn-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Incoming receipt",
+    "fa": "رسید ورودی"
+  },
+  "description": {
+    "en": "One IRN: lines, inspection result, disposition, QA approval, receiving against PO lines (page definition)",
+    "fa": "یک IRN: اقلام، نتیجه‌ی بازرسی، Disposition، تأیید QA، دریافت از خطوط سفارش (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "irn-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "irn-record",
+            "fields": [
+              {
+                "key": "irnNumber",
+                "label": {
+                  "en": "IRN",
+                  "fa": "IRN"
+                },
+                "mono": true
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "vendor",
+                "label": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                }
+              },
+              {
+                "key": "warehouse",
+                "label": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                }
+              },
+              {
+                "key": "purchaseOrder",
+                "label": {
+                  "en": "Purchase order",
+                  "fa": "سفارش خرید"
+                }
+              },
+              {
+                "key": "receivedBy",
+                "label": {
+                  "en": "Received by",
+                  "fa": "دریافت‌کننده"
+                }
+              },
+              {
+                "key": "receivingDate",
+                "label": {
+                  "en": "Receiving date",
+                  "fa": "تاریخ دریافت"
+                },
+                "type": "date"
+              },
+              {
+                "key": "notes",
+                "label": {
+                  "en": "Notes",
+                  "fa": "یادداشت"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/irn-detail",
+              "idField": "irnReceiptId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/irn-add-line?irnReceiptId={{params.id}}",
+                "text": {
+                  "en": "Add a line (Draft only)",
+                  "fa": "افزودن قلم (فقط پیش‌نویس)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/irn-submit?id={{params.id}}",
+                "text": {
+                  "en": "Submit for inspection",
+                  "fa": "ارسال برای بازرسی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/irn-cancel?id={{params.id}}",
+                "text": {
+                  "en": "Cancel the IRN",
+                  "fa": "لغو IRN"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/irn-disposition?id={{params.id}}",
+                "text": {
+                  "en": "Record the disposition (every line)",
+                  "fa": "ثبت Disposition (همه‌ی اقلام)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/irn-disposition-lines?id={{params.id}}",
+                "text": {
+                  "en": "Record the disposition (chosen lines)",
+                  "fa": "ثبت Disposition (اقلام انتخابی)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/irn-approve?id={{params.id}}",
+                "text": {
+                  "en": "QA decision (approve or reject the disposition)",
+                  "fa": "تصمیم QA (تأیید یا رد Disposition)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/irn-receive-from-po?id={{params.id}}",
+                "text": {
+                  "en": "Receive against an order line",
+                  "fa": "دریافت از خط سفارش"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/irn-osd?id={{params.id}}",
+                "text": {
+                  "en": "OS&D report",
+                  "fa": "گزارش OS&D"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/irn-receipts",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "irnLines",
+          "component": "def:related-table",
+          "options": {
+            "id": "irnLines",
+            "title": {
+              "en": "Lines",
+              "fa": "اقلام"
+            },
+            "url": "/d/irn-lines?f.id={{params.id|url}}",
+            "idField": "irnReceiptLineId",
+            "columns": [
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 300
+              },
+              {
+                "key": "received",
+                "header": {
+                  "en": "Received",
+                  "fa": "دریافتی"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "accepted",
+                "header": {
+                  "en": "Accepted",
+                  "fa": "پذیرفته"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "rejected",
+                "header": {
+                  "en": "Rejected",
+                  "fa": "ردشده"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "hold",
+                "header": {
+                  "en": "Hold",
+                  "fa": "معلق"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "unit",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 70
+              },
+              {
+                "key": "rejectionAction",
+                "header": {
+                  "en": "Rejection decision",
+                  "fa": "تصمیم رد"
+                },
+                "width": 140
+              },
+              {
+                "key": "holdResolution",
+                "header": {
+                  "en": "Hold resolved (accepted / rejected)",
+                  "fa": "رفع تعلیق (پذیرفته / ردشده)"
+                },
+                "width": 180
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 260,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "reject",
+                    "label": {
+                      "en": "Decide the rejection",
+                      "fa": "تصمیم درباره‌ی رد"
+                    },
+                    "url": "/f/irn-decide-rejection?id={{params.id}}&lineId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "hold",
+                    "label": {
+                      "en": "Resolve the hold",
+                      "fa": "رفع تعلیق"
+                    },
+                    "url": "/f/irn-resolve-hold?id={{params.id}}&lineId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "irnPoLines",
+          "component": "def:related-table",
+          "options": {
+            "id": "irnPoLines",
+            "title": {
+              "en": "Order lines",
+              "fa": "خطوط سفارش"
+            },
+            "url": "/d/irn-po-lines?f.id={{params.id|url}}",
+            "idField": "purchaseOrderLineId",
+            "columns": [
+              {
+                "key": "lineNo",
+                "header": {
+                  "en": "No",
+                  "fa": "ردیف"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 260
+              },
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 140
+              },
+              {
+                "key": "ordered",
+                "header": {
+                  "en": "Ordered",
+                  "fa": "سفارش"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "received",
+                "header": {
+                  "en": "Received",
+                  "fa": "دریافتی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "inQc",
+                "header": {
+                  "en": "In QC",
+                  "fa": "در QC"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "accepted",
+                "header": {
+                  "en": "Accepted",
+                  "fa": "پذیرفته"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "onHold",
+                "header": {
+                  "en": "On hold",
+                  "fa": "معلق"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "outstanding",
+                "header": {
+                  "en": "Outstanding",
+                  "fa": "باقی‌مانده"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 180,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "receive",
+                    "label": {
+                      "en": "Receive this line",
+                      "fa": "دریافت این خط"
+                    },
+                    "url": "/f/irn-receive-from-po?id={{params.id}}&purchaseOrderLineId={id}&quantity={raw.outstanding}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "irnDispositions",
+          "component": "def:related-table",
+          "options": {
+            "id": "irnDispositions",
+            "title": {
+              "en": "Dispositions",
+              "fa": "Dispositionها"
+            },
+            "url": "/d/irn-dispositions?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 150,
+                "type": "date"
+              },
+              {
+                "key": "by",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "result",
+                "header": {
+                  "en": "Result",
+                  "fa": "نتیجه"
+                },
+                "width": 140
+              },
+              {
+                "key": "notes",
+                "header": {
+                  "en": "Notes",
+                  "fa": "یادداشت"
+                },
+                "width": 260
+              },
+              {
+                "key": "workflowOutcome",
+                "header": {
+                  "en": "Workflow outcome",
+                  "fa": "نتیجه‌ی گردش‌کار"
+                },
+                "width": 150
+              }
+            ]
+          }
+        },
+        {
+          "id": "irnHistory",
+          "component": "def:related-table",
+          "options": {
+            "id": "irnHistory",
+            "title": {
+              "en": "Status history",
+              "fa": "تاریخچه‌ی وضعیت"
+            },
+            "url": "/d/irn-history?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 150,
+                "type": "date"
+              },
+              {
+                "key": "from",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 130
+              },
+              {
+                "key": "to",
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                },
+                "width": 130
+              },
+              {
+                "key": "by",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 260
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "IRN.View"
+  }
+}

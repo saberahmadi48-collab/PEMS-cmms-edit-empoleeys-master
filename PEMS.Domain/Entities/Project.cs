@@ -1,15 +1,21 @@
-﻿namespace PEMS.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PEMS.Domain.Entities;
 
 public class Project
 {
     public int ProjectId { get; set; }
 
 
-    // کد یکتا پروژه
+    // کد یکتا پروژه (SCRUM-539: required; an empty form was saved as a project without code and name)
+    [Required]
+    [Display(Name = "Project Code")]   // SCRUM-540: the message names the field in the page language
     public string ProjectCode { get; set; } = string.Empty;
 
 
     // نام پروژه
+    [Required]
+    [Display(Name = "Project Name")]
     public string ProjectName { get; set; } = string.Empty;
 
 

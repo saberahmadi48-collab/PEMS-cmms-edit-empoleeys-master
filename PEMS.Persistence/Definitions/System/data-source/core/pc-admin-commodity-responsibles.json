@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-admin-commodity-responsibles",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin: Commodity responsibles",
+    "fa": "مدیریت کاتالوگ قطعه: Commodity responsibles"
+  },
+  "description": {
+    "en": "Part Catalogue admin: Commodity responsibles",
+    "fa": "مدیریت کاتالوگ قطعه: Commodity responsibles"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "CommodityResponsibles",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId"
+      }
+    }
+  }
+}

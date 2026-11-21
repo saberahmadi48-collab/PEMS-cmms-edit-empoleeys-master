@@ -1,73 +1,18 @@
-@* کامپوننت مشترک Pagination - طبق سند «PEMS — Global Data Grid Standard» (بندهای ۳، ۷، ۸، ۹،
-   ۱۰، ۲۲): علاوه بر ناوبری صفحه (الگوی قبلی)، حالا شامل انتخاب‌گر Rows-per-page (فقط وقتی
-   GridKey پر باشد - یعنی این Grid به استاندارد جدید مهاجرت کرده)، متن «نمایش X تا Y از Z»
-   بومی‌سازی‌شده، و جهت صحیح فلش‌های ناوبری در RTL است. Grid هایی که هنوز GridKey ست نمی‌کنند
-   (کد قدیمی) دقیقاً همان رفتار قبلی را می‌بینند - این افزونه‌ای است، نه یک شکست سازگاری.
+@* Adapter of the shared pagination footer. The markup lives in PEMS.UI (_PemsPagination.cshtml); this file only fills the
+   texts from the resource files, so the 54 list pages keep calling _Pagination with a PaginationViewModel.
    Model: PEMS.Web.ViewModels.PaginationViewModel *@
 @model PEMS.Web.ViewModels.PaginationViewModel
-@using System.Globalization
 @using Microsoft.Extensions.Localization
+@using PEMS.UI.Abstractions
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-@{
-    var isRtl = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft;
-    // در RTL جهت بصری «قبلی/بعدی» برعکس می‌شود - طبق بند ۲۲ سند، الگوریتم تغییر اندازه/ناوبری
-    // نباید فقط برای LTR درست کار کند
-    var prevGlyph = isRtl ? "»" : "«"; // »/«
-    var nextGlyph = isRtl ? "«" : "»";
-    var hasGridKey = !string.IsNullOrWhiteSpace(Model.GridKey);
-    var rangeStart = Model.TotalCount == 0 ? 0 : ((Model.Page - 1) * Math.Max(Model.PageSize, 1)) + 1;
-    var rangeEnd = Model.TotalCount == 0 ? 0 : Math.Min(Model.Page * Math.Max(Model.PageSize, 1), Model.TotalCount);
-}
-<div class="pems-grid-footer d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3" dir="@(isRtl ? "rtl" : "ltr")">
-    <div class="d-flex align-items-center gap-3 flex-wrap">
-        <span class="text-muted small">
-            @if (Model.TotalCount > 0 && Model.PageSize > 0)
-            {
-                @string.Format(Localizer["ShowingRecords"], rangeStart, rangeEnd, Model.TotalCount)
-            }
-            else
-            {
-                @Localizer["NoResultsFound"]
-            }
-        </span>
-
-        @if (hasGridKey)
-        {
-            <div class="pems-grid-pagesize btn-group btn-group-sm" role="group" aria-label="@Localizer["RowsPerPage"]">
-                <span class="text-muted small align-self-center me-1">@Localizer["RowsPerPage"]:</span>
-                @foreach (var size in Model.AllowedPageSizes)
-                {
-                    <a class="btn btn-sm @(size == Model.PageSize ? "btn-pems-solid" : "btn-outline-secondary")"
-                       href="@Model.BuildPageSizeUrl(size)" aria-label="@size">@size</a>
-                }
-            </div>
-        }
-    </div>
-
-    @if (Model.TotalPages > 1)
-    {
-        <nav aria-label="@Localizer["RowsPerPage"]">
-            <ul class="pagination pagination-sm mb-0">
-                @{
-                    var start = Math.Max(1, Model.Page - 2);
-                    var end = Math.Min(Model.TotalPages, Model.Page + 2);
-                }
-                @if (Model.Page > 1)
-                {
-                    <li class="page-item"><a class="page-link" href="@Model.BuildUrl(1)" aria-label="@Localizer["FirstPage"]">@prevGlyph@prevGlyph</a></li>
-                    <li class="page-item"><a class="page-link" href="@Model.BuildUrl(Model.Page - 1)" aria-label="@Localizer["PreviousPage"]">@prevGlyph</a></li>
-                }
-                @for (int p = start; p <= end; p++)
-                {
-                    <li class="page-item @(p == Model.Page ? "active" : "")"><a class="page-link" href="@Model.BuildUrl(p)">@p</a></li>
-                }
-                @if (Model.Page < Model.TotalPages)
-                {
-                    <li class="page-item"><a class="page-link" href="@Model.BuildUrl(Model.Page + 1)" aria-label="@Localizer["NextPage"]">@nextGlyph</a></li>
-                    <li class="page-item"><a class="page-link" href="@Model.BuildUrl(Model.TotalPages)" aria-label="@Localizer["LastPage"]">@nextGlyph@nextGlyph</a></li>
-                }
-            </ul>
-        </nav>
-    }
-</div>
+@await Html.PartialAsync("_PemsPagination", new PaginationView(Model, new PaginationTexts
+{
+    ShowingRecords = TranslatableText.Literal(Localizer["ShowingRecords"].Value),
+    NoResults = TranslatableText.Literal(Localizer["NoResultsFound"].Value),
+    RowsPerPage = TranslatableText.Literal(Localizer["RowsPerPage"].Value),
+    FirstPage = TranslatableText.Literal(Localizer["FirstPage"].Value),
+    PreviousPage = TranslatableText.Literal(Localizer["PreviousPage"].Value),
+    NextPage = TranslatableText.Literal(Localizer["NextPage"].Value),
+    LastPage = TranslatableText.Literal(Localizer["LastPage"].Value)
+}))

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "barcode-svg",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode image (old address)",
+    "fa": "Barcode image (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Barcode image (old address)",
+    "fa": "Barcode image (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Barcode/Svg/{id}",
+    "target": "/x/barcode-svg?id={id}",
+    "permanent": false
+  }
+}

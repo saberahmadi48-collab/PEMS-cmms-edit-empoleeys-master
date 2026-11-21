@@ -1,0 +1,71 @@
+{
+  "kind": "form",
+  "key": "irn-disposition-lines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the disposition of chosen lines",
+    "fa": "ثبت Disposition اقلام انتخابی"
+  },
+  "description": {
+    "en": "Record the disposition of chosen lines",
+    "fa": "ثبت Disposition اقلام انتخابی"
+  },
+  "payload": {
+    "id": "irn-disposition-lines",
+    "title": {
+      "en": "Record the disposition of chosen lines",
+      "fa": "ثبت Disposition اقلام انتخابی"
+    },
+    "submitLabel": {
+      "en": "Record",
+      "fa": "ثبت"
+    },
+    "actionKey": "irn-disposition-lines",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "IRN id",
+          "fa": "شناسه‌ی IRN"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "lines",
+        "label": {
+          "en": "Lines: lineId:accepted:rejected:hold, separated by semicolons (every line of the receipt)",
+          "fa": "اقلام: شناسه:پذیرفته:ردشده:معلق، با نقطه‌ویرگول (همه‌ی اقلام رسید)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 2000,
+        "span": 2
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت"
+        },
+        "kind": "textArea",
+        "maxLength": 1000,
+        "span": 2
+      }
+    ]
+  }
+}

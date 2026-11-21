@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "employee-departments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Departments",
+    "fa": "دپارتمان‌ها"
+  },
+  "description": {
+    "en": "Departments",
+    "fa": "دپارتمان‌ها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Employee",
+      "action": "Departments",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

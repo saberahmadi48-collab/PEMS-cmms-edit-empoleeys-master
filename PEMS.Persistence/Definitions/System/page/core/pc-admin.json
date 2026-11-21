@@ -1,0 +1,1037 @@
+{
+  "kind": "page",
+  "key": "pc-admin",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue Administration",
+    "fa": "مدیریت کاتالوگ قطعه"
+  },
+  "description": {
+    "en": "Reference imports, sections, workflow steps, responsibilities and settings of the part catalogue (page definition)",
+    "fa": "ورود مرجع‌ها، بخش‌ها، گام‌های مسیر، مسئولیت‌ها و تنظیمات کاتالوگ قطعه (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "pc-admin",
+    "regions": {
+      "content": [
+        {
+          "id": "commands",
+          "component": "content-blocks",
+          "options": {
+            "id": "commands",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/pc-admin-import",
+                "text": {
+                  "en": "Import a reference workbook",
+                  "fa": "ورود فایل مرجع"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pc-admin-save-settings",
+                "text": {
+                  "en": "Part number settings",
+                  "fa": "تنظیمات شماره‌ی قطعه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pc-admin-add-section-group",
+                "text": {
+                  "en": "Add a commodity group to a section",
+                  "fa": "افزودن گروه کالا به بخش"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pc-admin-add-group-child",
+                "text": {
+                  "en": "Map a group 2 under a group 1",
+                  "fa": "نگاشت گروه ۲ زیر گروه ۱"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pc-admin-add-approver",
+                "text": {
+                  "en": "Add a step approver",
+                  "fa": "افزودن تأییدکننده"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pc-admin-save-responsibility",
+                "text": {
+                  "en": "Save a responsibility",
+                  "fa": "ذخیره‌ی مسئولیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pc-admin-add-commodity-responsible",
+                "text": {
+                  "en": "Add a commodity responsible",
+                  "fa": "افزودن مسئول گروه کالا"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-counts",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-counts",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Reference counts",
+                  "fa": "تعداد مرجع‌ها"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "counts",
+          "component": "data-grid",
+          "options": {
+            "id": "counts",
+            "url": "/d/pc-admin-counts",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "key",
+                "header": {
+                  "en": "Reference",
+                  "fa": "مرجع"
+                },
+                "width": 260
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 100,
+                "type": "number"
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-settings",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-settings",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Part number settings",
+                  "fa": "تنظیمات شماره‌ی قطعه"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "settings",
+          "component": "data-grid",
+          "options": {
+            "id": "settings",
+            "url": "/d/pc-admin-settings",
+            "idField": "partNoGenerationMethod",
+            "columns": [
+              {
+                "key": "partNoGenerationMethod",
+                "header": {
+                  "en": "Method",
+                  "fa": "روش"
+                },
+                "width": 140
+              },
+              {
+                "key": "partNoFormat",
+                "header": {
+                  "en": "Format",
+                  "fa": "قالب"
+                },
+                "width": 200
+              },
+              {
+                "key": "modifiedDate",
+                "header": {
+                  "en": "Modified",
+                  "fa": "ویرایش"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "modifiedBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "isPersisted",
+                "header": {
+                  "en": "Saved",
+                  "fa": "ذخیره‌شده"
+                },
+                "width": 100,
+                "type": "bool"
+              }
+            ],
+            "pageSize": 5,
+            "height": 160
+          }
+        },
+        {
+          "id": "h-sections",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-sections",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Sections",
+                  "fa": "بخش‌ها"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "sections",
+          "component": "data-grid",
+          "options": {
+            "id": "sections",
+            "url": "/d/pc-admin-sections",
+            "idField": "sectionId",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 140
+              },
+              {
+                "key": "nameFa",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 200
+              },
+              {
+                "key": "requiresSparePartsReview",
+                "header": {
+                  "en": "Spare parts review",
+                  "fa": "بررسی قطعات یدکی"
+                },
+                "width": 140,
+                "type": "bool"
+              },
+              {
+                "key": "routingNeedsConfirmation",
+                "header": {
+                  "en": "Routing needs confirmation",
+                  "fa": "مسیر نیازمند تأیید"
+                },
+                "width": 160,
+                "type": "bool"
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "set",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/pc-admin-set-section?sectionId={id}&requiresSparePartsReview={raw.requiresSparePartsReview}&isActive={raw.isActive}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 420
+          }
+        },
+        {
+          "id": "h-section-groups",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-section-groups",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Section commodity groups",
+                  "fa": "گروه‌های کالای هر بخش"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "section-groups",
+          "component": "data-grid",
+          "options": {
+            "id": "section-groups",
+            "url": "/d/pc-admin-section-groups",
+            "idField": "mapId",
+            "columns": [
+              {
+                "key": "section",
+                "header": {
+                  "en": "Section",
+                  "fa": "بخش"
+                },
+                "width": 140
+              },
+              {
+                "key": "group",
+                "header": {
+                  "en": "Commodity group",
+                  "fa": "گروه کالا"
+                },
+                "width": 320
+              },
+              {
+                "key": "needsConfirmation",
+                "header": {
+                  "en": "Needs confirmation",
+                  "fa": "نیازمند تأیید"
+                },
+                "width": 140,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/f/pc-admin-remove-section-group?mapId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 420
+          }
+        },
+        {
+          "id": "h-group2-maps",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-group2-maps",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Group 1 to group 2 maps",
+                  "fa": "نگاشت گروه ۱ به گروه ۲"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "group2-maps",
+          "component": "data-grid",
+          "options": {
+            "id": "group2-maps",
+            "url": "/d/pc-admin-group2-maps",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "parent",
+                "header": {
+                  "en": "Group 1",
+                  "fa": "گروه ۱"
+                },
+                "width": 260
+              },
+              {
+                "key": "child",
+                "header": {
+                  "en": "Group 2",
+                  "fa": "گروه ۲"
+                },
+                "width": 260
+              },
+              {
+                "key": "needsConfirmation",
+                "header": {
+                  "en": "Needs confirmation",
+                  "fa": "نیازمند تأیید"
+                },
+                "width": 140,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/f/pc-admin-remove-group-child?mapId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 420
+          }
+        },
+        {
+          "id": "h-steps",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-steps",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Workflow steps",
+                  "fa": "گام‌های مسیر"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "steps",
+          "component": "data-grid",
+          "options": {
+            "id": "steps",
+            "url": "/d/pc-admin-steps",
+            "idField": "stepId",
+            "columns": [
+              {
+                "key": "order",
+                "header": {
+                  "en": "Order",
+                  "fa": "ترتیب"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "stepKey",
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                },
+                "width": 160
+              },
+              {
+                "key": "nameEn",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 200
+              },
+              {
+                "key": "nameFa",
+                "header": {
+                  "en": "Name (fa)",
+                  "fa": "نام (فارسی)"
+                },
+                "width": 200
+              },
+              {
+                "key": "kind",
+                "header": {
+                  "en": "Kind",
+                  "fa": "نوع"
+                },
+                "width": 110
+              },
+              {
+                "key": "source",
+                "header": {
+                  "en": "Source",
+                  "fa": "منبع"
+                },
+                "width": 140
+              },
+              {
+                "key": "condition",
+                "header": {
+                  "en": "Condition",
+                  "fa": "شرط"
+                },
+                "width": 160
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "needsConfirmation",
+                "header": {
+                  "en": "Needs confirmation",
+                  "fa": "نیازمند تأیید"
+                },
+                "width": 140,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/pc-admin-update-step?stepId={id}&order={raw.order}&isActive={raw.isActive}&conditionKey={raw.condition}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "approver",
+                    "label": {
+                      "en": "Add approver",
+                      "fa": "افزودن تأییدکننده"
+                    },
+                    "url": "/f/pc-admin-add-approver?stepKey={raw.stepKey}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 420
+          }
+        },
+        {
+          "id": "h-approvers",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-approvers",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Step approvers",
+                  "fa": "تأییدکنندگان گام‌ها"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "approvers",
+          "component": "data-grid",
+          "options": {
+            "id": "approvers",
+            "url": "/d/pc-admin-approvers",
+            "idField": "assignmentId",
+            "columns": [
+              {
+                "key": "stepKey",
+                "header": {
+                  "en": "Step",
+                  "fa": "گام"
+                },
+                "width": 160
+              },
+              {
+                "key": "employee",
+                "header": {
+                  "en": "Employee",
+                  "fa": "کارمند"
+                },
+                "width": 240
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/f/pc-admin-remove-approver?assignmentId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-responsibilities",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-responsibilities",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Responsibilities",
+                  "fa": "مسئولیت‌ها"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "responsibilities",
+          "component": "data-grid",
+          "options": {
+            "id": "responsibilities",
+            "url": "/d/pc-admin-responsibilities",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "key",
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                },
+                "width": 160
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 200
+              },
+              {
+                "key": "kind",
+                "header": {
+                  "en": "Kind",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "requiredAction",
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                },
+                "width": 110
+              },
+              {
+                "key": "role",
+                "header": {
+                  "en": "Role",
+                  "fa": "نقش"
+                },
+                "width": 130
+              },
+              {
+                "key": "scopeType",
+                "header": {
+                  "en": "Scope",
+                  "fa": "محدوده"
+                },
+                "width": 110
+              },
+              {
+                "key": "scopeValue",
+                "header": {
+                  "en": "Scope value",
+                  "fa": "مقدار محدوده"
+                },
+                "width": 130
+              },
+              {
+                "key": "managerLevel",
+                "header": {
+                  "en": "Manager level",
+                  "fa": "سطح مدیر"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "strategy",
+                "header": {
+                  "en": "Strategy",
+                  "fa": "روش انتخاب"
+                },
+                "width": 110
+              },
+              {
+                "key": "positions",
+                "header": {
+                  "en": "Positions",
+                  "fa": "پست‌ها"
+                },
+                "width": 240
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 240,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/pc-admin-save-responsibility?id={id}&kind={raw.kind}&requiredAction={raw.requiredAction}&roleName={raw.role}&scopeType={raw.scopeType}&scopeValue={raw.scopeValue}&selectionStrategy={raw.strategy}&isActive={raw.isActive}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "cr",
+                    "label": {
+                      "en": "Add commodity responsible",
+                      "fa": "افزودن مسئول گروه"
+                    },
+                    "url": "/f/pc-admin-add-commodity-responsible?responsibilityKey={raw.key}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 420
+          }
+        },
+        {
+          "id": "h-commodity-responsibles",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-commodity-responsibles",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Commodity responsibles",
+                  "fa": "مسئولان گروه کالا"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "commodity-responsibles",
+          "component": "data-grid",
+          "options": {
+            "id": "commodity-responsibles",
+            "url": "/d/pc-admin-commodity-responsibles",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "responsibilityKey",
+                "header": {
+                  "en": "Responsibility",
+                  "fa": "مسئولیت"
+                },
+                "width": 160
+              },
+              {
+                "key": "group",
+                "header": {
+                  "en": "Commodity group",
+                  "fa": "گروه کالا"
+                },
+                "width": 300
+              },
+              {
+                "key": "position",
+                "header": {
+                  "en": "Position",
+                  "fa": "پست"
+                },
+                "width": 180
+              },
+              {
+                "key": "employee",
+                "header": {
+                  "en": "Employee",
+                  "fa": "کارمند"
+                },
+                "width": 180
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/f/pc-admin-remove-commodity-responsible?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 420
+          }
+        },
+        {
+          "id": "h-findings",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-findings",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Configuration findings",
+                  "fa": "یافته‌های پیکربندی"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "findings",
+          "component": "data-grid",
+          "options": {
+            "id": "findings",
+            "url": "/d/pc-admin-findings",
+            "idField": "code",
+            "columns": [
+              {
+                "key": "severity",
+                "header": {
+                  "en": "Severity",
+                  "fa": "شدت"
+                },
+                "width": 100
+              },
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 160
+              },
+              {
+                "key": "responsibilityKey",
+                "header": {
+                  "en": "Responsibility",
+                  "fa": "مسئولیت"
+                },
+                "width": 160
+              },
+              {
+                "key": "message",
+                "header": {
+                  "en": "Message",
+                  "fa": "پیام"
+                },
+                "width": 480
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-stages",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-stages",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Workflow stages",
+                  "fa": "مراحل گردش کار"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "stages",
+          "component": "data-grid",
+          "options": {
+            "id": "stages",
+            "url": "/d/pc-admin-stages",
+            "idField": "name",
+            "columns": [
+              {
+                "key": "order",
+                "header": {
+                  "en": "Order",
+                  "fa": "ترتیب"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Stage",
+                  "fa": "مرحله"
+                },
+                "width": 220
+              },
+              {
+                "key": "responsibilityKey",
+                "header": {
+                  "en": "Responsibility",
+                  "fa": "مسئولیت"
+                },
+                "width": 180
+              },
+              {
+                "key": "entryCondition",
+                "header": {
+                  "en": "Entry condition",
+                  "fa": "شرط ورود"
+                },
+                "width": 280
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        }
+      ]
+    }
+  }
+}

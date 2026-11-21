@@ -1,0 +1,136 @@
+{
+  "kind": "page",
+  "key": "roles",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Roles",
+    "fa": "نقش‌ها"
+  },
+  "description": {
+    "en": "Roles list (page definition)",
+    "fa": "فهرست نقش‌ها (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "roles",
+    "template": "entity-list",
+    "args": {
+      "id": "roles",
+      "url": "/d/roles-grid",
+      "idField": "id",
+      "viewsKey": "roles",
+      "columns": [
+        {
+          "key": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 180
+        },
+        {
+          "key": "displayName",
+          "header": {
+            "en": "Display name",
+            "fa": "نام نمایشی"
+          },
+          "width": 200
+        },
+        {
+          "key": "description",
+          "header": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "width": 280
+        },
+        {
+          "key": "category",
+          "header": {
+            "en": "Category",
+            "fa": "دسته"
+          },
+          "width": 120
+        },
+        {
+          "key": "domain",
+          "header": {
+            "en": "Domain",
+            "fa": "حوزه"
+          },
+          "width": 120
+        },
+        {
+          "key": "isSystemRole",
+          "header": {
+            "en": "System role",
+            "fa": "نقش سیستمی"
+          },
+          "width": 110,
+          "type": "bool"
+        },
+        {
+          "key": "users",
+          "header": {
+            "en": "Users",
+            "fa": "کاربران"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "permissions",
+          "header": {
+            "en": "Permissions",
+            "fa": "مجوزها"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "sortOrder",
+          "header": {
+            "en": "Order",
+            "fa": "ترتیب"
+          },
+          "width": 90,
+          "type": "number"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "delete",
+              "label": {
+                "en": "Delete",
+                "fa": "حذف"
+              },
+              "url": "/a/roles-delete",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Delete this record?",
+                "fa": "این رکورد حذف شود؟"
+              },
+              "showWhen": "row.isSystemRole == false"
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/roles-create",
+      "newLabel": {
+        "en": "New role",
+        "fa": "نقش جدید"
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "pc-request-retry-routing",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Retry the routing",
+    "fa": "تلاش مجدد مسیریابی"
+  },
+  "description": {
+    "en": "Retry the routing",
+    "fa": "تلاش مجدد مسیریابی"
+  },
+  "payload": {
+    "id": "pc-request-retry-routing",
+    "title": {
+      "en": "Retry the routing",
+      "fa": "تلاش مجدد مسیریابی"
+    },
+    "submitLabel": {
+      "en": "Retry",
+      "fa": "تلاش مجدد"
+    },
+    "actionKey": "pc-request-retry-routing",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Request id",
+          "fa": "شناسه‌ی درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

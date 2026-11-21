@@ -10,7 +10,7 @@ The repository points at two different things named `PEMSDB`:
 | Local developer instance `localhost\SQLEXPRESS`, database `PEMSDB` (clone: `PEMSDB_PcatClone`) | `PEMS.Web/appsettings.json` | read-only, reference only |
 | `PEMSDB` inside the Docker SQL Server on the configured Linux test VM | `deploy/` kit (`pems-docker.sh db-backup/db-apply` always target `PEMSDB`); a real host is configured in the git-ignored `deploy/targets.local.json` | **not reachable from here and not touched** |
 
-Because the request did not name the target and the VM's database state is unknown, the diagnostics are delivered as a script to run against the **explicitly confirmed** database: `docs/procurement/P4_P5_PREFLIGHT_DIAGNOSTICS.sql` (SELECT-only; section 0 prints the server and database actually connected to). The local reference run (read-only) is in §6.
+Because the request did not name the target and the VM's database state is unknown, the diagnostics are delivered as a script to run against the **explicitly confirmed** database: `legacy-trash/manual-sql/docs/procurement/P4_P5_PREFLIGHT_DIAGNOSTICS.sql` (SELECT-only; section 0 prints the server and database actually connected to). The local reference run (read-only) is in §6.
 
 ## 2. Pending migrations, order and dependencies
 Code has 105 migrations; both local databases have 103 applied (last `20261008075704_OrganizationAssignmentEmployeeIndex`). The pending set is exactly:
@@ -21,7 +21,7 @@ Code has 105 migrations; both local databases have 103 applied (last `2026100807
 Dependencies: P5 only needs existing `MaterialItems` and `Warehouses` (FKs) — no dependency on the P4 index. Apply **P4 first** anyway (the duplicate diagnostic is its gate and P5 results are only trustworthy on clean stock rows), then P5. Both are reversible (`Down`: drop index / drop the four tables).
 **The target must already have everything up to `20261008075704` applied**; if its last migration is older, other pending migrations exist and must be reviewed first — use the kit's idempotent script (`deploy.ps1 -Action MigrationScript`, then `-FromMigration <last applied>` for the delta).
 
-Artifacts (generated without a database connection): `docs/procurement/P4_P5_delta_after_20261008075704.sql` (P4 then P5, each in its own transaction), `MaterialStockNoLocationUniqueness.migration.sql`, `ReplenishmentRecommendations.migration.sql`.
+Artifacts (generated without a database connection): `legacy-trash/manual-sql/docs/procurement/P4_P5_delta_after_20261008075704.sql` (P4 then P5, each in its own transaction), `MaterialStockNoLocationUniqueness.migration.sql`, `ReplenishmentRecommendations.migration.sql`.
 
 ## 3. Rehearsal evidence (disposable databases only)
 Two databases created at the pre-P4 schema (103 migrations):

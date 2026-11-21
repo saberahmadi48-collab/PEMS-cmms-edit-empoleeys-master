@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "global-search-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Global search rows",
+    "fa": "ردیف‌های جستجوی سراسری"
+  },
+  "description": {
+    "en": "The records the user may open that match the search",
+    "fa": "رکوردهایی که کاربر می‌تواند باز کند و با جستجو مطابقت دارند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "GlobalSearch",
+      "action": "Search",
+      "args": {
+        "query": "param:search"
+      }
+    }
+  }
+}

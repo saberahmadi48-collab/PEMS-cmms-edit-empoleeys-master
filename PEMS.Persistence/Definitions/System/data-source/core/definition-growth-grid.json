@@ -1,0 +1,20 @@
+{
+  "kind": "data-source",
+  "key": "definition-growth-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Definition storage growth per month",
+    "fa": "رشد حجم تعریف‌ها در هر ماه"
+  },
+  "description": {
+    "en": "Definition storage growth per month",
+    "fa": "رشد حجم تعریف‌ها در هر ماه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "definition-growth",
+    "permission": "Definitions.View",
+    "parameters": {}
+  }
+}

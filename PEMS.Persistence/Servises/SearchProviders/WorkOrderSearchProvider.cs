@@ -20,6 +20,8 @@ public class WorkOrderSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "WorkOrder";
     public string DisplayName => "دستورکارهای تعمیر و نگهداری (CMMS)";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.Permission("WorkOrder");
 
     public WorkOrderSearchProvider(PEMSDbContext context, IPermissionService permissionService, ICurrentUserContext currentUser)
     {

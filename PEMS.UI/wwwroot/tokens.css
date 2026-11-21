@@ -1,0 +1,387 @@
+/* PEMS design tokens (Light + Dark), single source for the --pems-* colour, layout and Bootstrap bridge tokens.
+   Moved verbatim from PEMS.Web site.css (SCRUM-29 step 2 / SCRUM-19): same selectors, same order, loaded right before site.css,
+   so every computed value is unchanged. Turquoise and the other themes still live in site.css, pems-glass.css and admin.css. */
+
+:root {
+    /* Brand Colors */
+    --pems-navy: #142033;
+    --pems-navy-2: #1b2a44;
+    --pems-navy-dark: #0c1524;
+    --pems-accent: #d98c2b;
+    --pems-accent-dark: #b8721e;
+    --pems-steel: #5c6f85;
+    /* Layout */
+    --sidebar-width: 260px;
+    --topbar-height: 60px;
+    /* Semantic Colors (Light Mode Default) */
+    --pems-bg: #f3f5f8;
+    --pems-surface: #ffffff;
+    --pems-surface-border: #edf0f4;
+    --pems-text: #1b2733;
+    --pems-text-muted: #5c6f85;
+    --pems-topbar-bg: #ffffff;
+    --pems-topbar-border: #e4e8ee;
+    --pems-table-header-bg: #f5f7fa;
+    --pems-row-hover: rgba(31, 78, 120, 0.04);
+
+    /* =========================================
+       PEMS Global Three-Theme System - semantic token layer
+       طبق «PEMS Global Three-Theme Design System»: توکن‌های معنایی تازه که کنار توکن‌های
+       برند/سطح موجود اضافه می‌شوند - نه جایگزین آن‌ها. هدف اصلی --pems-primary: چند جای
+       موجود (`.pems-topbar .brand`, `.pems-page-title`, `.kpi-value`, ...) مستقیماً از
+       var(--pems-navy) به‌عنوان رنگ متن استفاده می‌کردند؛ چون --pems-navy در هیچ تمی override
+       نمی‌شد، آن متن‌ها در تم Dark/Midnight تقریباً نامرئی بودند (navy تیره روی پس‌زمینه‌ی تیره).
+       --pems-primary اکنون آن نقش را برعهده می‌گیرد و به‌ازای هر تم override می‌شود؛
+       --pems-navy/--pems-navy-dark دست‌نخورده می‌مانند چون هنوز به‌عنوان رنگ پس‌زمینه‌ی ثابت
+       (آواتار، سایدبار) درست کار می‌کنند - جایی که مشکل کنتراست وجود نداشت. */
+    --pems-primary: var(--pems-navy);
+    --pems-primary-hover: var(--pems-navy-2);
+    --pems-primary-active: var(--pems-navy-dark);
+    --pems-accent-hover: var(--pems-accent-dark);
+    --pems-focus: #2563eb;
+    --pems-selection: rgba(217, 140, 43, 0.25);
+    --pems-shadow: rgba(20, 32, 51, 0.08);
+
+    /* Chart tokens - همان مقادیری که پیش از این در ۶ صفحه‌ی گزارش/داشبورد hard-code شده
+       بودند؛ این‌جا فقط به توکن تبدیل می‌شوند - مقدار پیش‌فرض دقیقاً همان است، پس تم روشن
+       هیچ تغییر بصری نمی‌کند. */
+    --pems-chart-primary: #3b82f6;
+    --pems-chart-secondary: #a855f7;
+    --pems-chart-tertiary: #14b8a6;
+    --pems-chart-positive: #22c55e;
+    --pems-chart-negative: #ef4444;
+    --pems-chart-warning: #f59e0b;
+    --pems-chart-neutral: #94a3b8;
+    --pems-chart-accent: var(--pems-accent);
+
+    /* Status colours for TEXT and thin UI parts (WCAG AA 4.5:1 on this theme's surface/background).
+       The --pems-chart-* tokens above stay for bars/fills/graphics, where 3:1 is enough. */
+    --pems-chart-positive-text: #15803d;
+    --pems-chart-warning-text: #b45309;
+    --pems-chart-danger-text: #b91c1c;
+    --pems-chart-info-text: #1d4ed8;
+    --pems-chart-caution-text: #c2410c;
+
+    /* ممیزی رنگ (Light/Dark): توکن‌های تازه‌ی معنایی. همه‌ی جفت‌رنگ‌ها با فرمول WCAG در ThemeContrastTests نگهداری می‌شوند.
+       - text-faint: placeholder و راهنمای کم‌اهمیت (≥۴.۵:۱)   - border-strong: مرز کنترل‌های فرم (≥۳:۱، WCAG 1.4.11)
+       - link/primary: «آبی مهندسی» برند؛ Bootstrap پیش‌فرض #0d6efd را (که با navy برند و کهربایی دو آبی/دو لهجه‌ی رقیب می‌ساخت)
+         جایگزین می‌کند - on-accent: متن تیره روی دکمه‌ی کهربایی (متن سفید روی کهربایی فقط ۳.۸:۱ بود) */
+    --pems-text-faint: #5f6f83;
+    --pems-border-strong: #7a8ba0;
+    --pems-input-bg: #ffffff;
+    --pems-link: #1a56b8;
+    --pems-link-hover: #12408c;
+    --pems-on-accent: #1a1305;
+    --pems-cta-start: #f5bb5f;
+    --pems-cta-end: #d98c2b;
+
+    --bs-link-color: var(--pems-link);
+    --bs-link-color-rgb: 26, 86, 184;
+    --bs-link-hover-color: var(--pems-link-hover);
+    --bs-link-hover-color-rgb: 18, 64, 140;
+    --bs-primary: #1d4ed8;
+    --bs-primary-rgb: 29, 78, 216;
+}
+
+/* =========================================
+   Theme Engine (Multi-Theme Support)
+   ========================================= */
+
+[data-theme="dark"] {
+    --pems-bg: #10161f;
+    --pems-surface: #1a2230;
+    --pems-surface-border: #2a3444;
+    --pems-text: #e4e9f0;
+    --pems-text-muted: #93a2b8;
+    --pems-topbar-bg: #1a2230;
+    --pems-topbar-border: #2a3444;
+    --pems-table-header-bg: #212b3a;
+    --pems-row-hover: rgba(217, 140, 43, 0.08);
+
+    /* Primary: engineering blue (طبق سند طراحی، بند ۹) */
+    --pems-primary: #3b82f6;
+    --pems-primary-hover: #60a5fa;
+    --pems-primary-active: #1d4ed8;
+    --pems-accent-hover: #c98a12;
+    --pems-focus: #60a5fa;
+    --pems-selection: rgba(96, 165, 250, 0.25);
+
+    /* Status colours for TEXT and thin UI parts (WCAG AA 4.5:1 on this theme's surface/background).
+       The --pems-chart-* tokens above stay for bars/fills/graphics, where 3:1 is enough. */
+    --pems-chart-positive-text: #4ade80;
+    --pems-chart-warning-text: #fbbf24;
+    --pems-chart-danger-text: #f87171;
+    --pems-chart-info-text: #60a5fa;
+    --pems-chart-caution-text: #fb923c;
+    --pems-shadow: rgba(0, 0, 0, 0.45);
+}
+
+/* Dark - ممیزی رنگ: متن کم‌رنگ/برچسب KPI/نقش کاربر قبلاً با --pems-steel (#5c6f85 روی #1a2230 فقط ۳.۱:۱) و .text-muted
+   بوت‌استرپ (≈۱:۱، تیره روی تیره) نوشته می‌شد و تقریباً نامرئی بود؛ پیوندها آبی پیش‌فرض (۳.۵:۱)، هشدار/تب/لیست/منوی کشویی روشن
+   (پاستلی روی تیره). _Layout اکنون data-bs-theme="dark" می‌گذارد و این بلوک Bootstrap را به توکن‌ها وصل می‌کند.
+   :root[data-theme] (نه فقط [data-theme]) تا admin.css (که یک :root روشن دارد) آن را بازنویسی نکند. */
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --pems-primary: #5b9cf8;           /* برند/عنوان/عدد KPI: ≥۴.۵:۱ روی همه‌ی سطح‌ها (قبلاً #3b82f6 → ۴.۳) */
+    --pems-primary-hover: #8bbbff;
+    --pems-text-muted: #a3b1c4;
+    --pems-steel: var(--pems-text-muted);
+    --pems-text-faint: #8a9bb2;
+    --pems-border-strong: #6a7f99;
+    --pems-input-bg: #141b27;
+    --pems-link: #7db3ff;
+    --pems-link-hover: #a9ccff;
+    --pems-on-accent: #1a1305;
+    --pems-cta-start: #f5bb5f;
+    --pems-cta-end: #d98c2b;
+    --pems-elev-menu: #212b3a;
+
+    --bs-body-bg: var(--pems-bg);
+    --bs-body-bg-rgb: 16, 22, 31;
+    --bs-body-color: var(--pems-text);
+    --bs-body-color-rgb: 228, 233, 240;
+    --bs-emphasis-color: #ffffff;
+    --bs-secondary-color: var(--pems-text-muted);
+    --bs-tertiary-color: var(--pems-text-faint);
+    --bs-secondary-bg: var(--pems-table-header-bg);
+    --bs-tertiary-bg: var(--pems-table-header-bg);
+    --bs-border-color: var(--pems-surface-border);
+    --bs-border-color-translucent: rgba(255, 255, 255, 0.08);
+    --bs-heading-color: var(--pems-text);
+    --bs-link-color: var(--pems-link);
+    --bs-link-color-rgb: 125, 179, 255;
+    --bs-link-hover-color: var(--pems-link-hover);
+    --bs-link-hover-color-rgb: 169, 204, 255;
+    --bs-primary: #3b82f6;
+    --bs-primary-rgb: 59, 130, 246;
+    --bs-focus-ring-color: rgba(125, 179, 255, 0.30);
+    --bs-form-invalid-color: #ff8f84;
+    --bs-form-invalid-border-color: #ff8f84;
+}
+
+/* ---- Other themes (moved verbatim from site.css, SCRUM-476) ---- */
+
+/* مهم (علت اصلی ظاهر خراب تم): admin.css بعد از site.css بارگذاری می‌شود و یک بلوک :root با مقادیر «روشن»
+   (--pems-bg / surface / text / topbar-bg ...) دارد و برای dark/ocean/warm/midnight بلوک اختصاصی خودش را دوباره
+   اعلام می‌کند، ولی برای turquoise هیچ بلوکی نداشت. :root و [data-theme] هم‌مشخصیت‌اند و بلوک دیرتر برنده می‌شود، پس
+   توکن‌های پایه‌ی این تم (پس‌زمینه/سطح/متن/نوار بالا) با مقادیر روشن بازنویسی می‌شدند و شیشه‌ی تیره روی صفحه‌ی سفید
+   با متن تیره می‌نشست. انتخابگر :root[data-theme] مشخصیت بالاتر دارد و مستقل از ترتیب بارگذاری فایل‌ها برنده است. */
+:root[data-theme="turquoise"] {
+    /* =========================================
+       PEMS Persian Turquoise v3 - «کاشی‌کاری فیروزه‌ای»
+       هویت: سه رنگ کاشی ایرانی - فیروزه‌ی نیشابور (رنگ اصلی/فعال/پیوند)، لاجورد (رنگ ثانویه/اطلاعات)، و زر/طلایی
+       (فقط اقدام اصلی و جزئیات تزیینی). پایه‌ی تیره‌ی «جوهری-فیروزه‌ای» است (نه خاکستری خنثی): همه‌ی سطح‌ها کمی به
+       سمت فیروزه‌ای می‌روند تا فیروزه یک رنگ «بومی» تم باشد، نه یک لکه‌ی روی خاکستری. v2 مس را برای دکمه‌ی اصلی
+       انتخاب کرده بود (قهوه‌ای کدر)؛ طلایی روشن با متن تیره هم هویت ایرانی‌تری دارد و کنتراست بالاتری (۶.۵ تا ۱۱.۹).
+       تمام جفت‌رنگ‌های متن/زمینه با فرمول WCAG محاسبه و در تست (ThemeContrastTests) نگهداری می‌شوند. */
+    color-scheme: dark;
+
+    --pems-turquoise: #1bc5b3;
+    --pems-turquoise-bright: #5fe0d2;
+    --pems-turquoise-dark: #0c7f76;
+    --pems-turquoise-deep: #0a6a63;
+    --pems-lapis: #2c5fb8;
+    --pems-lapis-light: #8db6ff;
+    --pems-lapis-dark: #17305f;
+    --pems-gold: #e5b04a;
+    --pems-gold-hi: #f3cb6f;
+    --pems-gold-lo: #c98f2a;
+    --pems-on-gold: #1a1305;
+    --pems-copper: var(--pems-gold-lo);   /* نام قدیمی (auth.css و ...) - اکنون طلایی تیره */
+
+    /* Elevation scale (ui-ux-pro-max `elevation-consistent`): ۰ پایه، ۱ کارت/جدول، ۲ لایه‌ی بالاتر (هدر جدول، تب فعال)،
+       ۳ شناور (منو/مودال). همه جوهری-فیروزه‌ای، با اختلاف روشنایی کافی برای تشخیص لایه‌ها. */
+    --pems-bg: #061219;
+    --pems-elev-0: #061219;
+    --pems-elev-1: #0b1b24;
+    --pems-elev-2: #10242f;
+    --pems-elev-3: #162d3a;
+    --pems-input-bg: #08161d;
+
+    --pems-surface: var(--pems-elev-1);
+    --pems-surface-border: #1f3d4b;
+    --pems-border-strong: #4a7a8c;           /* مرز کنترل‌های فرم: ≥۳:۱ (WCAG 1.4.11) */
+    --pems-text: #e8f3f1;
+    --pems-text-muted: #97b2b6;
+    --pems-text-faint: #7a999f;              /* placeholder و راهنمای کم‌اهمیت: هنوز ≥۴.۵:۱ */
+    --pems-steel: var(--pems-text-muted);    /* برخی استایل‌های قدیمی متن را با steel می‌نویسند */
+    --pems-topbar-bg: rgba(8, 22, 30, 0.86);
+    --pems-topbar-border: rgba(27, 197, 179, 0.22);
+    --pems-table-header-bg: #0e2530;
+    --pems-row-hover: rgba(27, 197, 179, 0.07);
+
+    /* Glass فقط برای لایه‌های «بالای صفحه» (هدر چسبان، مودال/منو). کارت‌ها عمداً کدر شدند: Blur روی پس‌زمینه‌ی یکدست
+       هیچ چیزی را نشان نمی‌داد و backdrop-filter روی یک عنصر آن را «Containing Block» فرزندان fixed می‌کند؛ چون pems-ui.js
+       همه‌ی منوهای کشویی را با Popper strategy=fixed باز می‌کند، منوهای داخل کارت با فاصله‌ی غلط رندر می‌شدند. */
+    --pems-glass-bg: rgba(16, 36, 47, 0.72);
+    --pems-glass-bg-strong: rgba(11, 27, 36, 0.92);
+    --pems-glass-border: rgba(255, 255, 255, 0.08);
+    --pems-glass-border-accent: rgba(95, 224, 210, 0.30);
+    --pems-glass-blur: 14px;
+    --pems-glass-blur-strong: 20px;
+    --pems-glass-highlight: rgba(255, 255, 255, 0.04);
+
+    --pems-primary: var(--pems-turquoise);
+    --pems-primary-hover: var(--pems-turquoise-bright);
+    --pems-primary-active: var(--pems-turquoise-dark);
+    --pems-accent: var(--pems-gold);
+    --pems-accent-dark: var(--pems-gold-lo);   /* هم متن (≥۴.۵ روی تیره) هم انتهای گرادیان دکمه با متن تیره */
+    --pems-accent-hover: var(--pems-gold-hi);
+    --pems-focus: var(--pems-turquoise-bright);
+    --pems-selection: rgba(27, 197, 179, 0.22);
+    --pems-shadow: rgba(0, 0, 0, 0.55);
+
+    --pems-accent-glow: 0 0 0 1px rgba(95, 224, 210, 0.32), 0 0 16px rgba(27, 197, 179, 0.14);
+    --pems-accent-edge: 2px solid var(--pems-turquoise);
+
+    /* آواتار/نشان برند و پس‌زمینه‌های توپر با متن سفید: لاجورد (سفید روی آن ۶.۱:۱) */
+    --pems-navy: var(--pems-lapis);
+    --pems-navy-2: #3a72d6;
+    --pems-navy-dark: #061219;
+
+    --pems-chart-primary: #1bc5b3;
+    --pems-chart-secondary: #6f9cf0;
+    --pems-chart-tertiary: var(--pems-gold);
+    --pems-chart-positive: #4fd18b;
+    --pems-chart-negative: #ff7a6e;
+    --pems-chart-warning: #f2c14e;
+    --pems-chart-neutral: #7e9ca3;
+    --pems-chart-accent: var(--pems-gold);
+
+    /* Status colours for TEXT and thin UI parts (WCAG AA 4.5:1 on this theme's surface/background).
+       The --pems-chart-* tokens above stay for bars/fills/graphics, where 3:1 is enough. */
+    --pems-chart-positive-text: #7ee0a1;
+    --pems-chart-warning-text: #f2c14e;
+    --pems-chart-danger-text: #ff8f84;
+    --pems-chart-info-text: #8db6ff;
+    --pems-chart-caution-text: #ffa561;
+
+    /* Bootstrap 5.3 را به توکن‌های PEMS وصل می‌کند (همراه data-bs-theme="dark" در _Layout): هشدار، تب، لیست، صفحه‌بندی،
+       منوی کشویی و متن کم‌رنگ دیگر رنگ‌های روشن/آبی پیش‌فرض Bootstrap را نمی‌آورند. */
+    --bs-body-bg: var(--pems-bg);
+    --bs-body-bg-rgb: 6, 18, 25;
+    --bs-body-color: var(--pems-text);
+    --bs-body-color-rgb: 232, 243, 241;
+    --bs-emphasis-color: #ffffff;
+    --bs-secondary-color: var(--pems-text-muted);
+    --bs-tertiary-color: var(--pems-text-faint);
+    --bs-secondary-bg: var(--pems-elev-2);
+    --bs-tertiary-bg: var(--pems-elev-2);
+    --bs-border-color: var(--pems-surface-border);
+    --bs-border-color-translucent: rgba(255, 255, 255, 0.08);
+    --bs-heading-color: var(--pems-text);
+    --bs-link-color: var(--pems-turquoise-bright);
+    --bs-link-color-rgb: 95, 224, 210;
+    --bs-link-hover-color: #a6f0e8;
+    --bs-link-hover-color-rgb: 166, 240, 232;
+    --bs-primary: var(--pems-turquoise);
+    --bs-primary-rgb: 27, 197, 179;
+    --bs-focus-ring-color: rgba(95, 224, 210, 0.30);
+    --bs-code-color: var(--pems-gold-hi);
+    --bs-highlight-bg: rgba(229, 176, 74, 0.25);
+    --bs-form-invalid-color: #ff8f84;
+    --bs-form-invalid-border-color: #ff8f84;
+}
+
+[data-theme="ocean"] {
+    --pems-bg: #f0f9ff;
+    --pems-surface: #ffffff;
+    --pems-surface-border: #bae6fd;
+    --pems-topbar-bg: #ffffff;
+    --pems-topbar-border: #7dd3fc;
+    --pems-table-header-bg: #e0f2fe;
+    --pems-row-hover: rgba(6, 182, 212, 0.08);
+}
+
+[data-theme="warm"] {
+    --pems-bg: #fafaf9;
+    --pems-surface: #ffffff;
+    --pems-surface-border: #e7e5e4;
+    --pems-topbar-bg: #ffffff;
+    --pems-topbar-border: #d6d3d1;
+    --pems-table-header-bg: #f5f5f4;
+    --pems-row-hover: rgba(217, 119, 6, 0.08);
+}
+
+[data-theme="midnight"] {
+    --pems-bg: #0f172a;
+    --pems-surface: #1e293b;
+    --pems-surface-border: #334155;
+    --pems-text: #f1f5f9;
+    --pems-text-muted: #94a3b8;
+    --pems-topbar-bg: #1e293b;
+    --pems-topbar-border: #334155;
+    --pems-table-header-bg: #1e293b;
+    --pems-row-hover: rgba(217, 140, 43, 0.12);
+    --pems-navy-dark: #0f172a;
+}
+
+/* ---- Raw palette for the shared stylesheets (SCRUM-476) ---- */
+
+:root {
+    /* Raw palette: one token per literal colour that the shared stylesheets used to hard-code (SCRUM-476). Same value as before,
+       declared once; a theme or a white-label build overrides the token instead of editing the stylesheet. Semantic names
+       (--pems-primary, --pems-surface, ...) stay above; these only replace literal hex colours. */
+    --pems-color-000: #000;
+    --pems-color-00497c: #00497c;
+    --pems-color-04070b: #04070b;
+    --pems-color-081d2f: #081d2f;
+    --pems-color-0d9488: #0d9488;
+    --pems-color-12365a: #12365a;
+    --pems-color-137333: #137333;
+    --pems-color-142033: #142033;
+    --pems-color-143d24: #143d24;
+    --pems-color-166534: #166534;
+    --pems-color-1b2733: #1b2733;
+    --pems-color-1d4ed8: #1d4ed8;
+    --pems-color-2457a6: #2457a6;
+    --pems-color-2563eb: #2563eb;
+    --pems-color-2a3444: #2a3444;
+    --pems-color-2c3a4d: #2c3a4d;
+    --pems-color-34425a: #34425a;
+    --pems-color-3a4a60: #3a4a60;
+    --pems-color-4a3210: #4a3210;
+    --pems-color-5a1d19: #5a1d19;
+    --pems-color-5c6f85: #5c6f85;
+    --pems-color-667085: #667085;
+    --pems-color-6b7280: #6b7280;
+    --pems-color-6c757d: #6c757d;
+    --pems-color-6e4100: #6e4100;
+    --pems-color-6f42c1: #6f42c1;
+    --pems-color-7a8fa6: #7a8fa6;
+    --pems-color-912018: #912018;
+    --pems-color-93000a: #93000a;
+    --pems-color-a4b3c6: #a4b3c6;
+    --pems-color-aebccd: #aebccd;
+    --pems-color-b3261e: #b3261e;
+    --pems-color-b42318: #b42318;
+    --pems-color-b8721e: #b8721e;
+    --pems-color-b8e6c6: #b8e6c6;
+    --pems-color-ba1a1a: #ba1a1a;
+    --pems-color-c8dcf5: #c8dcf5;
+    --pems-color-cbd6e4: #cbd6e4;
+    --pems-color-cfe4ff: #cfe4ff;
+    --pems-color-d1e4ff: #d1e4ff;
+    --pems-color-d98c2b: #d98c2b;
+    --pems-color-dc2626: #dc2626;
+    --pems-color-e3e8ef: #e3e8ef;
+    --pems-color-e4e9f0: #e4e9f0;
+    --pems-color-e6f4ea: #e6f4ea;
+    --pems-color-e8eef6: #e8eef6;
+    --pems-color-ecfdf3: #ecfdf3;
+    --pems-color-edf0f4: #edf0f4;
+    --pems-color-eef4ff: #eef4ff;
+    --pems-color-f2f4f7: #f2f4f7;
+    --pems-color-f59e0b: #f59e0b;
+    --pems-color-f5f7fa: #f5f7fa;
+    --pems-color-fd7e14: #fd7e14;
+    --pems-color-fef3f2: #fef3f2;
+    --pems-color-ff8f84: #ff8f84;
+    --pems-color-ffcb78: #ffcb78;
+    --pems-color-ffd0cb: #ffd0cb;
+    --pems-color-ffd9a3: #ffd9a3;
+    --pems-color-ffdad6: #ffdad6;
+    --pems-color-fff: #fff;
+    --pems-color-fff0d6: #fff0d6;
+}

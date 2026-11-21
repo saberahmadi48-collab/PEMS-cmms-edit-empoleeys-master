@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "production-run-resume",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Resume the run",
+    "fa": "ازسرگیری اجرا"
+  },
+  "description": {
+    "en": "Resume the run",
+    "fa": "ازسرگیری اجرا"
+  },
+  "payload": {
+    "id": "production-run-resume",
+    "title": {
+      "en": "Resume the run",
+      "fa": "ازسرگیری اجرا"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-run-resume",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Run id",
+          "fa": "شناسه‌ی اجرا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

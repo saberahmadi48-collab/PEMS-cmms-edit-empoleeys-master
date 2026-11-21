@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "job-plan-remove-skill",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a required skill",
+    "fa": "حذف مهارت لازم"
+  },
+  "description": {
+    "en": "Remove a required skill",
+    "fa": "حذف مهارت لازم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "JobPlan",
+      "action": "RemoveRequiredSkill",
+      "args": {
+        "jobPlanRequiredSkillId": "field:jobPlanRequiredSkillId"
+      }
+    },
+    "success": {
+      "en": "The skill was removed.",
+      "fa": "مهارت حذف شد."
+    },
+    "redirect": "/JobPlan/Details/{jobPlanId}"
+  }
+}

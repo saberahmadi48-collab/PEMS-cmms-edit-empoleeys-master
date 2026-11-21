@@ -21,11 +21,13 @@ public interface IMaterialStockService
     // می‌داند این حرکت موجودی واقعاً به یک ProductionBatch وصل است، آن را این‌جا می‌دهد تا روی
     // InventoryTransaction.ProductionBatchId ثبت شود؛ در غیر این‌صورت Null می‌ماند - هیچ حدس یا
     // بازسازی خودکار بچ انجام نمی‌شود.
+    [PEMS.Application.Common.PemsOperation("MaterialStock", "Receive", "MaterialItem.Create")]
     Task<(bool Success, string? Error)> ReceiveAsync(
         int materialItemId, int warehouseId, int? storageLocationId, decimal quantity,
         string? reason, int? employeeId, string? referenceType = null, int? referenceId = null,
         int? productionBatchId = null);
 
+    [PEMS.Application.Common.PemsOperation("MaterialStock", "Adjust", "MaterialItem.Edit")]
     Task<(bool Success, string? Error)> AdjustAsync(
         int materialItemId, int warehouseId, int? storageLocationId, decimal newOnHandQuantity,
         string? reason, int? employeeId, string? referenceType = null, int? referenceId = null,
@@ -61,6 +63,7 @@ public interface IMaterialStockService
     /// movement»): اگر productionBatchId داده شود، هر دو طرفِ جفتِ Transfer همان مقدار را روی
     /// ProductionBatchId می‌گیرند - هویت بچ در طول انتقال گم نمی‌شود.
     /// </summary>
+    [PEMS.Application.Common.PemsOperation("MaterialStock", "Transfer", "MaterialItem.Edit")]
     Task<(bool Success, string? Error)> TransferAsync(
         int materialItemId, int fromWarehouseId, int? fromStorageLocationId,
         int toWarehouseId, int? toStorageLocationId, decimal quantity, string? reason, int? employeeId,

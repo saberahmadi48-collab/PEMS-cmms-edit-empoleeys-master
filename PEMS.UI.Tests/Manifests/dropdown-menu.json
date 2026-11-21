@@ -1,0 +1,56 @@
+{
+  "key": "dropdown-menu",
+  "component": "PEMS.UI.Components.PemsDropdownMenu",
+  "category": "navigation",
+  "icon": "bi-menu-button",
+  "nameKey": "component.dropdown-menu",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "end": {
+        "type": "boolean"
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "as": {
+        "type": "string"
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "DropdownMenuOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "end": true
+  }
+}

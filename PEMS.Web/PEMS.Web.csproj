@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -53,14 +54,44 @@
     <ProjectReference Include="..\PEMS.AI\PEMS.AI.csproj" />
     <ProjectReference Include="..\PEMS.Application\PEMS.Application.csproj" />
     <ProjectReference Include="..\PEMS.Infrastructure\PEMS.Infrastructure.csproj" />
+    <ProjectReference Include="..\PEMS.Licensing\PEMS.Licensing.csproj" />
     <ProjectReference Include="..\PEMS.Persistence\PEMS.Persistence.csproj" />
+    <ProjectReference Include="..\PEMS.Migrations\PEMS.Migrations.csproj" />
     <ProjectReference Include="..\PEMS.Shared\PEMS.Shared.csproj" />
+    <ProjectReference Include="..\PEMS.UI\PEMS.UI.csproj" />
     <ProjectReference Include="..\PEMS.WorkflowPlatform\PEMS.WorkflowPlatform.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- قالب چاپ فرم INWH-PLA-FO-001 (Rev.3) - داخل Assembly تا به مسیر Deploy وابسته نباشد -->
     <EmbeddedResource Include="Templates\PartCatalogue\INWH-PLA-FO-001.xlsx" LogicalName="PEMS.Templates.INWH-PLA-FO-001.xlsx" />
+  </ItemGroup>
+
+  <!-- Smaller deployment package (env publishes only: dotnet publish -p:PemsEnv=<name>): no debug symbols, and only the UI languages' satellite resources
+       (the self-contained build otherwise ships ~14 MB of zh/ja/ko/... resource folders of third-party libraries). -->
+  <PropertyGroup Condition="'$(PemsEnv)' != ''">
+    <SatelliteResourceLanguages>en;fa</SatelliteResourceLanguages>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+  <!-- Runtime user uploads are data, not part of a release: never ship whatever is in wwwroot/uploads on the build machine. -->
+  <ItemGroup>
+    <Content Update="wwwroot\uploads\**" CopyToPublishDirectory="Never" />
+  </ItemGroup>
+
+  <!-- The hosts run 64-bit Windows only: leave the x86 native libraries of Tesseract/SQL client out of an environment package. -->
+  <Target Name="PemsPruneX86FromPublish" AfterTargets="ComputeResolvedFilesToPublishList" Condition="'$(PemsEnv)' != '' And '$(RuntimeIdentifier)' == 'win-x64'">
+    <ItemGroup>
+      <_PemsX86 Include="@(ResolvedFileToPublish)" Condition="$([System.String]::new('%(RelativePath)').StartsWith('x86'))" />
+      <ResolvedFileToPublish Remove="@(_PemsX86)" />
+    </ItemGroup>
+  </Target>
+
+
+  <ItemGroup>
+    <!-- Non-secret settings of ONE environment ship with a publish: dotnet publish -p:PemsEnv=demo (env/demo.env -> publish/env/).
+         Secret files (env/*.secrets.env) are never packaged; they are placed on the server separately. -->
+    <Content Include="..\env\$(PemsEnv).env" Link="env\$(PemsEnv).env" Condition="'$(PemsEnv)' != ''" CopyToOutputDirectory="Never" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mmd-condition-priorities",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Condition to priority mappings",
+    "fa": "نگاشت وضعیت به اولویت"
+  },
+  "description": {
+    "en": "Condition to priority mappings",
+    "fa": "نگاشت وضعیت به اولویت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "ConditionPriorities"
+    }
+  }
+}

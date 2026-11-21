@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "maintenance-plans",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance plans (old address)",
+    "fa": "Maintenance plans (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Maintenance plans (old address)",
+    "fa": "Maintenance plans (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenancePlan",
+    "target": "/p/maintenance-plans",
+    "permanent": false
+  }
+}

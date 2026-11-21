@@ -1,0 +1,34 @@
+{
+  "kind": "data-source",
+  "key": "pc-report-by-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue report: By status",
+    "fa": "گزارش کاتالوگ قطعه: By status"
+  },
+  "description": {
+    "en": "Part Catalogue report: By status",
+    "fa": "گزارش کاتالوگ قطعه: By status"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueReport",
+      "action": "ByStatus",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "period": "param:period",
+        "from": "param:from",
+        "to": "param:to",
+        "sectionId": "param:sectionId",
+        "requestType": "param:requestType",
+        "status": "param:status",
+        "employeeId": "param:employeeId",
+        "equipmentId": "param:equipmentId"
+      }
+    }
+  }
+}

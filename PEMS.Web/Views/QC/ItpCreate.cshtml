@@ -1,69 +1,68 @@
 ﻿@using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-<div class="content-card" style="max-width:800px;">
-    <h6 class="mb-3"><i class="bi bi-clipboard-check"></i> New Inspection &amp; Test Plan</h6>
+<pems-content-card css="pems-s-3f7efa5f">
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-clipboard-check" /> New Inspection &amp; Test Plan</pems-heading>
 
-    <form asp-action="ItpCreate" method="post">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">ITP Number</label>
-                <input name="itpNumber" class="form-control" required placeholder="e.g. ITP-P-101-001" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Project"]</label>
-                <select name="projectId" class="form-select" required>
+    <pems-form asp-action="ItpCreate" method="post">
+        <pems-row gap="3">
+            <pems-col md="6">
+                <pems-label>ITP Number</pems-label>
+                <pems-input name="itpNumber" required placeholder="e.g. ITP-P-101-001" />
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Project"]</pems-label>
+                <pems-select name="projectId" required>
                     @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                </select>
-            </div>
+                </pems-select>
+            </pems-col>
 
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["QC Discipline"]</label>
-                <select name="qcDisciplineId" class="form-select" required>
+            <pems-col md="6">
+                <pems-label>@Localizer["QC Discipline"]</pems-label>
+                <pems-select name="qcDisciplineId" required>
                     @foreach (var d in (IEnumerable<PEMS.Domain.Entities.QCDiscipline>)ViewBag.QCDisciplines)
                     {
                         <option value="@d.QCDisciplineId">@d.Name</option>
                     }
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Equipment <span class="text-muted small">@Localizer["(optional)"]</span></label>
-                <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]"
-                       data-pems-search data-search-type="Equipment" data-search-hidden="#equipmentIdHidden" autocomplete="off" />
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>Equipment <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
+                <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]" data-pems-search data-search-type="Equipment" data-search-hidden="#equipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="equipmentId" id="equipmentIdHidden" />
-            </div>
+            </pems-col>
 
             @* طبق ممیزی نهایی §13: بازرسی می‌تواند به یک Procurement Package یا Contract هم وصل
                باشد - نه فقط تجهیز - این دو فیلد پیش از این جلسه در دسترس نبودند *@
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Package"] <span class="text-muted small">@Localizer["(optional)"]</span></label>
-                <select name="procurementPackageId" class="form-select">
-                    <option value="">@Localizer["-- none --"]</option>
+            <pems-col md="6">
+                <pems-label>@Localizer["Package"] <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
+                <pems-select name="procurementPackageId">
+                    <option value="">@Localizer["-- None --"]</option>
                     @foreach (var p in (IEnumerable<dynamic>)ViewBag.ProcurementPackages)
                     {
                         <option value="@p.ProcurementPackageId" selected="@(ViewBag.PrefillPackageId != null && (int)ViewBag.PrefillPackageId == (int)p.ProcurementPackageId)">@p.PackageNumber</option>
                     }
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Contract"] <span class="text-muted small">@Localizer["(optional)"]</span></label>
-                <select name="contractId" class="form-select">
-                    <option value="">@Localizer["-- none --"]</option>
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Contract"] <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
+                <pems-select name="contractId">
+                    <option value="">@Localizer["-- None --"]</option>
                     @foreach (var c in (IEnumerable<dynamic>)ViewBag.Contracts)
                     {
                         <option value="@c.ContractId" selected="@(ViewBag.PrefillContractId != null && (int)ViewBag.PrefillContractId == (int)c.ContractId)">@c.ContractNo</option>
                     }
-                </select>
-            </div>
+                </pems-select>
+            </pems-col>
 
-            <div class="col-12"><label class="form-label">@Localizer["Title"]</label><input name="title" class="form-control" required /></div>
-            <div class="col-md-6"><label class="form-label">Reference Code/Standard</label><input name="referenceCodeStandard" class="form-control" placeholder="e.g. ASME Section IX" /></div>
-            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="3"></textarea></div>
-        </div>
+            <pems-col span="12"><pems-label>@Localizer["Title"]</pems-label><pems-input name="title" required /></pems-col>
+            <pems-col md="6"><pems-label>Reference Code/Standard</pems-label><pems-input name="referenceCodeStandard" placeholder="e.g. ASME Section IX" /></pems-col>
+            <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="3"></pems-textarea></pems-col>
+        </pems-row>
 
-        <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">@Localizer["Create"]</button>
-            <a asp-action="ItpIndex" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
-        </div>
-    </form>
-</div>
+        <pems-action-bar css="mt-4">
+            <pems-button tone="primary" type="submit">@Localizer["Create"]</pems-button>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="ItpIndex">@Localizer["Cancel"]</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>

@@ -1,0 +1,75 @@
+{
+  "kind": "form",
+  "key": "job-plan-add-material",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a required material",
+    "fa": "افزودن ماده‌ی لازم"
+  },
+  "description": {
+    "en": "Add a required material",
+    "fa": "افزودن ماده‌ی لازم"
+  },
+  "payload": {
+    "id": "job-plan-add-material",
+    "title": {
+      "en": "Add a required material",
+      "fa": "افزودن ماده‌ی لازم"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "job-plan-add-material",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "jobPlanId",
+        "label": {
+          "en": "Job plan id",
+          "fa": "شناسه‌ی طرح کار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "materialItemId",
+        "label": {
+          "en": "Material",
+          "fa": "ماده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "job-plan-materials"
+      },
+      {
+        "name": "requiredQuantity",
+        "label": {
+          "en": "Quantity",
+          "fa": "مقدار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

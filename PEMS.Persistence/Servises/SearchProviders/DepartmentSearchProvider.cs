@@ -12,6 +12,8 @@ public class DepartmentSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "Department";
     public string DisplayName => "دپارتمان‌ها";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.Roles(PEMS.Persistence.Identity.SystemRoles.SystemAdmin, PEMS.Persistence.Identity.SystemRoles.EngineeringManager).LookupOnly();
 
     public DepartmentSearchProvider(PEMSDbContext context)
     {

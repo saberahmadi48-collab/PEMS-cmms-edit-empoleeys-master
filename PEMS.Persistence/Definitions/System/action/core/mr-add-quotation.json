@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "mr-add-quotation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a quotation (MRQ)",
+    "fa": "افزودن استعلام (MRQ)"
+  },
+  "description": {
+    "en": "Add a quotation (MRQ)",
+    "fa": "افزودن استعلام (MRQ)"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaterialRequisition",
+      "action": "AddQuotation",
+      "args": {
+        "mrId": "field:mrId",
+        "mrqNumber": "field:mrqNumber",
+        "vendorName": "field:vendorName",
+        "inquiryDate": "field:inquiryDate",
+        "quotedAmount": "field:quotedAmount",
+        "currency": "field:currency",
+        "notes": "field:notes"
+      }
+    },
+    "success": {
+      "en": "The quotation was added.",
+      "fa": "استعلام افزوده شد."
+    },
+    "redirect": "/p/mr-details?id={mrId}"
+  }
+}

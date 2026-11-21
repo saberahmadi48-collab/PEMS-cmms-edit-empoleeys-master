@@ -1,0 +1,53 @@
+{
+  "kind": "action",
+  "key": "departments-export",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Export departments",
+    "fa": "خروجی دپارتمان‌ها"
+  },
+  "description": {
+    "en": "Export the departments to Excel",
+    "fa": "خروجی دپارتمان‌ها به اکسل"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "file.export",
+    "parameters": {
+      "dataSource": "departments-grid",
+      "format": "xlsx",
+      "fileName": "Departments",
+      "columns": [
+        {
+          "field": "code",
+          "header": {
+            "en": "Code",
+            "fa": "کد"
+          }
+        },
+        {
+          "field": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          }
+        },
+        {
+          "field": "description",
+          "header": {
+            "en": "Description",
+            "fa": "توضیحات"
+          }
+        },
+        {
+          "field": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          }
+        }
+      ]
+    }
+  }
+}

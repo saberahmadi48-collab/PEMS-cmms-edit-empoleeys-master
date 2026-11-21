@@ -1,0 +1,17 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("related-table", Category = "list", Icon = "bi-table")]
+<div class="lp-rel-scroll"><table @attributes="TableAttrs">@ChildContent</table></div>
+@code {
+    [Parameter, EditorRequired] public RelatedTableOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private IEnumerable<KeyValuePair<string, object>> TableAttrs
+    {
+        get
+        {
+            var all = new List<KeyValuePair<string, string?>> { new("class", "table table-sm align-middle mb-0 lp-rel-table") };
+            if (!string.IsNullOrEmpty(Options.Id)) all.Add(new("id", Options.Id));
+            if (Options.DataAttributes is not null) all.AddRange(Options.DataAttributes.Select(a => new KeyValuePair<string, string?>(a.Key, a.Value)));
+            return ListMarkup.Sorted(all);
+        }
+    }
+}

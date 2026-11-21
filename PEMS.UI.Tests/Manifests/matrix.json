@@ -1,0 +1,245 @@
+{
+  "key": "matrix",
+  "component": "PEMS.UI.Components.PemsMatrix",
+  "category": "data",
+  "icon": "bi-grid-3x3",
+  "nameKey": "component.matrix",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "rows": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "key",
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "columns": {
+        "type": "array",
+        "items": {
+          "$ref": "#/properties/rows/items"
+        }
+      },
+      "cells": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "cellType": {
+        "type": "string"
+      },
+      "choices": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "string"
+            },
+            "label": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          },
+          "required": [
+            "value",
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "actionUrl": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "texts": {
+        "type": "object",
+        "properties": {
+          "saving": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "saved": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "error": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "empty": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "corner": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "id",
+      "rows",
+      "columns"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "MatrixOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "fmea",
+    "rows": [
+      {
+        "key": "r1",
+        "label": "Pump"
+      },
+      {
+        "key": "r2",
+        "label": "Valve"
+      }
+    ],
+    "columns": [
+      {
+        "key": "s",
+        "label": "Severity"
+      },
+      {
+        "key": "o",
+        "label": "Occurrence"
+      }
+    ],
+    "cells": {
+      "r1|s": {
+        "value": "7",
+        "id": "11"
+      },
+      "r1|o": {
+        "value": "3",
+        "id": "12"
+      }
+    },
+    "cellType": "number",
+    "actionUrl": "/a/fmea-cell"
+  }
+}

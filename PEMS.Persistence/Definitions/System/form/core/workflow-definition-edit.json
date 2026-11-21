@@ -1,0 +1,57 @@
+{
+  "kind": "form",
+  "key": "workflow-definition-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a workflow definition",
+    "fa": "ویرایش تعریف گردش‌کار"
+  },
+  "description": {
+    "en": "Edit a workflow definition",
+    "fa": "ویرایش تعریف گردش‌کار"
+  },
+  "payload": {
+    "id": "workflow-definition-edit",
+    "title": {
+      "en": "Edit a workflow definition",
+      "fa": "ویرایش تعریف گردش‌کار"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "workflow-definition-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "required": true,
+        "maxLength": 200
+      },
+      {
+        "name": "nameFa",
+        "label": {
+          "en": "Name (Persian)",
+          "fa": "نام (فارسی)"
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 1000,
+        "span": 2
+      }
+    ]
+  }
+}

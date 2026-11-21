@@ -1,0 +1,82 @@
+{
+  "kind": "form",
+  "key": "material-categories-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create material category",
+    "fa": "ایجاد دسته‌بندی مواد"
+  },
+  "description": {
+    "en": "Create a new material category",
+    "fa": "ایجاد دسته‌بندی مواد جدید"
+  },
+  "payload": {
+    "id": "material-categories-create",
+    "title": {
+      "en": "New material category",
+      "fa": "دسته‌بندی مواد جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "material-categories-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "owner": "platform",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "maxLength": 30,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Code is required.",
+            "fa": "کد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "parentCategoryId",
+        "label": {
+          "en": "Parent category",
+          "fa": "دسته‌ی والد"
+        },
+        "kind": "select",
+        "optionsFrom": "material-categories-parent-category-id-options"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

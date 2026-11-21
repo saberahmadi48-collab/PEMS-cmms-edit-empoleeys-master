@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "execution-gate-emergency-override",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Emergency override",
+    "fa": "Emergency Override"
+  },
+  "description": {
+    "en": "Emergency override",
+    "fa": "Emergency Override"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ExecutionGate",
+      "action": "EmergencyOverride",
+      "args": {
+        "userRoles": "context:roles",
+        "userId": "context:userId",
+        "employeeId": "context:employeeId",
+        "permitId": "field:permitId",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "Emergency override recorded and work started.",
+      "fa": "Emergency Override ثبت و کار آغاز شد."
+    },
+    "redirect": "/Permit/Details/{permitId}",
+    "permission": "ExecutionGate.EmergencyOverride",
+    "stepUp": {
+      "resource": "ExecutionGate",
+      "action": "EmergencyOverride"
+    }
+  }
+}

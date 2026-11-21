@@ -12,6 +12,8 @@ public class MOCSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "MOC";
     public string DisplayName => "MOC (Management of Change)";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser();
 
     public MOCSearchProvider(PEMSDbContext context)
     {

@@ -1,0 +1,43 @@
+{
+  "kind": "action",
+  "key": "numbering-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a numbering scheme",
+    "fa": "ذخیره‌ی الگو"
+  },
+  "description": {
+    "en": "Save a numbering scheme",
+    "fa": "ذخیره‌ی الگو"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Numbering",
+      "action": "Save",
+      "args": {
+        "input": {
+          "DocumentType": "field:id",
+          "Pattern": "field:pattern",
+          "PadWidth": "field:padWidth",
+          "Calendar": "field:calendar",
+          "ResetPeriod": "field:resetPeriod",
+          "IsActive": "field:isActive",
+          "AllowManualEntry": "field:allowManualEntry"
+        }
+      },
+      "load": {
+        "operation": {
+          "model": "Numbering",
+          "action": "SchemeOf",
+          "args": {
+            "documentType": "param:id"
+          }
+        }
+      }
+    },
+    "redirect": "/p/numbering"
+  }
+}

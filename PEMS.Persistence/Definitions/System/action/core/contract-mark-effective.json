@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "contract-mark-effective",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark contract effective",
+    "fa": "مؤثر شدن قرارداد"
+  },
+  "description": {
+    "en": "Mark contract effective",
+    "fa": "مؤثر شدن قرارداد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Contract",
+      "action": "MarkEffective",
+      "args": {
+        "contractId": "field:contractId",
+        "actorRoles": "context:roles"
+      }
+    },
+    "success": {
+      "en": "The contract is now Effective.",
+      "fa": "قرارداد به وضعیت Effective رسید."
+    },
+    "redirect": "/Contract/Details/{contractId}"
+  }
+}

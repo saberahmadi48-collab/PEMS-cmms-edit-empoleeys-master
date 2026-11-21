@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-existing-parts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue existing parts (old address)",
+    "fa": "Part Catalogue existing parts (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue existing parts (old address)",
+    "fa": "Part Catalogue existing parts (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueDedup/ExistingParts",
+    "target": "/x/pc-existing-parts",
+    "permanent": false
+  }
+}

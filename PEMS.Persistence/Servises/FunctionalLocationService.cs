@@ -16,6 +16,26 @@ public class FunctionalLocationService : IFunctionalLocationService
         _context = context;
     }
 
+    public async Task<TreeNodePage> GetTreeNodesAsync(int? parentId, string? query, int page, int pageSize)
+    {
+        page = Math.Max(page, 1);
+        pageSize = Math.Clamp(pageSize, 1, 100);
+        var q = (query ?? "").Trim();
+        var source = _context.FunctionalLocations.AsNoTracking().Where(x => x.IsActive);
+        var lower = q.ToLowerInvariant();
+        source = q.Length >= 2
+            ? source.Where(x => x.Code.ToLower().Contains(lower) || x.Name.ToLower().Contains(lower))
+            : source.Where(x => x.ParentId == parentId);
+        var rows = await source.OrderBy(x => x.Code).ThenBy(x => x.FunctionalLocationId)
+            .Skip((page - 1) * pageSize).Take(pageSize + 1)
+            .Select(x => new { x.FunctionalLocationId, x.Code, x.Name, x.Plant, x.Area, x.Unit, HasChildren = x.Children.Any(c => c.IsActive) })
+            .ToListAsync();
+        var items = rows.Take(pageSize).Select(x => new TreeNodeDto(x.FunctionalLocationId, x.Code + " - " + x.Name,
+            string.Join(" / ", new[] { x.Plant, x.Area, x.Unit }.Where(p => !string.IsNullOrWhiteSpace(p))) is { Length: > 0 } sub ? sub : null,
+            q.Length < 2 && x.HasChildren)).ToList();
+        return new TreeNodePage(items, rows.Count > pageSize);
+    }
+
     public async Task<List<FunctionalLocationListDto>> GetListAsync()
     {
         var all = await _context.FunctionalLocations.Where(x => x.IsActive).ToListAsync();

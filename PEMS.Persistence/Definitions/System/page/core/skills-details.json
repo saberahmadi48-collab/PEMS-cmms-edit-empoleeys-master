@@ -1,0 +1,65 @@
+{
+  "kind": "page",
+  "key": "skills-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Skills details",
+    "fa": "جزئیات مهارت‌ها"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "skills-record",
+      "url": "/d/skills-grid",
+      "idField": "skillId",
+      "fields": [
+        {
+          "key": "name",
+          "label": {
+            "en": "Name",
+            "fa": "نام"
+          }
+        },
+        {
+          "key": "discipline",
+          "label": {
+            "en": "Discipline",
+            "fa": "دیسیپلین"
+          }
+        },
+        {
+          "key": "description",
+          "label": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "wide": true
+        },
+        {
+          "key": "isActive",
+          "label": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "type": "bool"
+        }
+      ],
+      "backUrl": "/p/skills",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/skills-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

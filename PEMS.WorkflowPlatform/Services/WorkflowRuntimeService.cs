@@ -169,6 +169,32 @@ public class WorkflowRuntimeService : IWorkflowRuntime, IWorkflowInstanceControl
         return true;
     }
 
+    public async Task<bool> ReopenInstanceAsync(int workflowInstanceId, int toStageId, int? actorEmployeeId, string reason, CancellationToken ct = default)
+    {
+        if (string.IsNullOrWhiteSpace(reason)) throw new InvalidOperationException("بازگشایی گردش‌کار بدون دلیل مجاز نیست.");
+
+        var instance = await _db.WorkflowInstances.FirstOrDefaultAsync(i => i.WorkflowInstanceId == workflowInstanceId, ct);
+        if (instance == null || instance.Status != "Completed") return false;
+
+        var stage = await _db.WorkflowStages.FirstOrDefaultAsync(s => s.WorkflowStageId == toStageId && s.WorkflowVersionId == instance.WorkflowVersionId, ct);
+        if (stage == null) return false;
+
+        instance.Status = "Running";
+        instance.CompletionDate = null;
+        instance.CurrentStageId = stage.WorkflowStageId;
+
+        _db.WorkflowHistories.Add(new WorkflowHistory
+        {
+            Instance = instance, FromStageId = null, ToStageId = stage.WorkflowStageId, ActionType = "Reopen", Decision = "Reopen",
+            Comment = reason, UserId = actorEmployeeId, ActionDate = DateTime.Now
+        });
+
+        await EnterStageAsync(instance, stage, null);
+        await _db.SaveChangesAsync(ct);
+        await EmitAsync("StageEntered", instance, stage, "Reopen", actorEmployeeId);
+        return true;
+    }
+
     public async Task<int> StartInstanceAsync(
         string module,
         string businessObjectType,

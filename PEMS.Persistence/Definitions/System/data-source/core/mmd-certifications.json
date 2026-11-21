@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mmd-certifications",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Certifications",
+    "fa": "گواهینامه‌ها"
+  },
+  "description": {
+    "en": "Certifications",
+    "fa": "گواهینامه‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "Certifications"
+    }
+  }
+}

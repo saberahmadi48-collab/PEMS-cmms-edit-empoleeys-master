@@ -1,0 +1,87 @@
+{
+  "kind": "page",
+  "key": "security-events-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Security events details",
+    "fa": "جزئیات رویدادهای امنیتی"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "security-events-record",
+      "url": "/d/security-events-grid",
+      "idField": "securityEventId",
+      "fields": [
+        {
+          "key": "occurredAtUtc",
+          "label": {
+            "en": "When (UTC)",
+            "fa": "زمان (UTC)"
+          },
+          "type": "datetime"
+        },
+        {
+          "key": "eventType",
+          "label": {
+            "en": "Event",
+            "fa": "رویداد"
+          }
+        },
+        {
+          "key": "method",
+          "label": {
+            "en": "Method",
+            "fa": "روش"
+          }
+        },
+        {
+          "key": "result",
+          "label": {
+            "en": "Result",
+            "fa": "نتیجه"
+          }
+        },
+        {
+          "key": "failureReason",
+          "label": {
+            "en": "Failure reason",
+            "fa": "دلیل شکست"
+          }
+        },
+        {
+          "key": "actorUserName",
+          "label": {
+            "en": "Actor",
+            "fa": "انجام‌دهنده"
+          }
+        },
+        {
+          "key": "targetUserName",
+          "label": {
+            "en": "Target account",
+            "fa": "حساب هدف"
+          }
+        },
+        {
+          "key": "ipAddress",
+          "label": {
+            "en": "IP address",
+            "fa": "نشانی IP"
+          }
+        }
+      ],
+      "backUrl": "/p/security-events",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      }
+    }
+  }
+}

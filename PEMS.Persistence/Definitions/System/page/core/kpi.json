@@ -1,0 +1,88 @@
+{
+  "kind": "page",
+  "key": "kpi",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "KPI dashboard",
+    "fa": "داشبورد KPI"
+  },
+  "description": {
+    "en": "Cost, maintenance and reliability indicators (page definition)",
+    "fa": "شاخص‌های هزینه، نگهداری و قابلیت اطمینان (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "kpi",
+    "permission": "Reliability.View",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "kpi-filters",
+            "resetUrl": "/p/kpi",
+            "fields": [
+              {
+                "name": "fromDate",
+                "label": {
+                  "en": "From",
+                  "fa": "از تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.fromDate}}"
+              },
+              {
+                "name": "toDate",
+                "label": {
+                  "en": "To",
+                  "fa": "تا تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.toDate}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "kpi-rows",
+          "component": "data-grid",
+          "options": {
+            "id": "kpi-rows",
+            "url": "/d/kpi-dashboard-grid?f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "idField": "name",
+            "columns": [
+              {
+                "key": "section",
+                "header": {
+                  "en": "Section",
+                  "fa": "بخش"
+                },
+                "width": 240
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 300
+              },
+              {
+                "key": "value",
+                "header": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                },
+                "width": 200
+              }
+            ],
+            "pageSize": 50,
+            "height": 560
+          }
+        }
+      ]
+    }
+  }
+}

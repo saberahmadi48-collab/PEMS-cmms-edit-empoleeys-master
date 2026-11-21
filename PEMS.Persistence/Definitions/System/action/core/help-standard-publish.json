@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "help-standard-publish",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Publish a standard reference",
+    "fa": "انتشار مرجع"
+  },
+  "description": {
+    "en": "Publish a standard reference",
+    "fa": "انتشار مرجع"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "StandardSetPublished",
+      "args": {
+        "standardId": "field:id",
+        "isPublished": "literal:true"
+      }
+    },
+    "success": {
+      "en": "Standard reference published.",
+      "fa": "مرجع منتشر شد."
+    },
+    "redirect": "/p/help-standards"
+  }
+}

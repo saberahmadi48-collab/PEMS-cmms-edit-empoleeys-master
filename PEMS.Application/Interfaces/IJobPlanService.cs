@@ -14,20 +14,33 @@ public interface IJobPlanService
 
     Task<JobPlanDetailDto?> GetDetailsAsync(int jobPlanId);
 
+    [PEMS.Application.Common.PemsOperation("JobPlan", "Create", "JobPlan.Create")]
+
     Task<(bool Success, string? Error, int? Id)> CreateAsync(
         string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements, string? currentUserName,
         int? equipmentClassId = null, bool permitRequired = false, bool lotoRequired = false);
+
+    [PEMS.Application.Common.PemsOperation("JobPlan", "Update", "JobPlan.Edit")]
 
     Task<(bool Success, string? Error)> UpdateAsync(
         int jobPlanId, string title, string? scope, decimal? estimatedDurationHours, string? safetyRequirements, string? currentUserName,
         int? equipmentClassId = null, bool permitRequired = false, bool lotoRequired = false);
 
+    [PEMS.Application.Common.PemsOperation("JobPlan", "AddTask", "JobPlan.Edit")]
+
     Task<(bool Success, string? Error)> AddTaskAsync(int jobPlanId, int taskNumber, string title, string? description, int? estimatedDurationMinutes);
+    [PEMS.Application.Common.PemsOperation("JobPlan", "RemoveTask", "JobPlan.Edit")]
     Task RemoveTaskAsync(int maintenanceTaskId);
 
+    [PEMS.Application.Common.PemsOperation("JobPlan", "AddRequiredSkill", "JobPlan.Edit")]
+
     Task<(bool Success, string? Error)> AddRequiredSkillAsync(int jobPlanId, int skillId, string? minimumProficiencyLevel, decimal? plannedHours);
+    [PEMS.Application.Common.PemsOperation("JobPlan", "RemoveRequiredSkill", "JobPlan.Edit")]
     Task RemoveRequiredSkillAsync(int jobPlanRequiredSkillId);
 
+    [PEMS.Application.Common.PemsOperation("JobPlan", "AddRequiredMaterial", "JobPlan.Edit")]
+
     Task<(bool Success, string? Error)> AddRequiredMaterialAsync(int jobPlanId, int materialItemId, decimal requiredQuantity);
+    [PEMS.Application.Common.PemsOperation("JobPlan", "RemoveRequiredMaterial", "JobPlan.Edit")]
     Task RemoveRequiredMaterialAsync(int jobPlanRequiredMaterialId);
 }

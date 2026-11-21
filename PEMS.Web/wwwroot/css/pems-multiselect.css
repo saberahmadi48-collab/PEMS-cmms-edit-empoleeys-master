@@ -1,0 +1,58 @@
+/* Searchable multi-select (SCRUM-407): the vendored Tom Select Bootstrap 5 theme mapped onto the PEMS theme tokens,
+   so it follows the light, dark and turquoise themes. Only colours and spacing; no layout of the host form. */
+
+.ts-wrapper.multi .ts-control,
+.ts-dropdown {
+    background-color: var(--pems-input-bg, var(--pems-surface, #fff));
+    color: var(--pems-text, inherit);
+    border-color: var(--pems-surface-border, #ced4da);
+}
+
+.ts-wrapper.focus .ts-control {
+    border-color: var(--pems-focus, var(--pems-primary, #86b7fe));
+    box-shadow: 0 0 0 .2rem color-mix(in srgb, var(--pems-focus, var(--pems-primary, #0d6efd)) 25%, transparent);
+}
+
+.ts-wrapper .ts-control input {
+    color: var(--pems-text, inherit);
+}
+
+.ts-wrapper .ts-control input::placeholder {
+    color: var(--pems-text-muted, #6c757d);
+}
+
+/* selected roles as chips */
+.ts-wrapper.multi .ts-control > .item {
+    background-color: var(--pems-selection, color-mix(in srgb, var(--pems-primary, #0d6efd) 15%, transparent));
+    color: var(--pems-text, inherit);
+    border: 1px solid var(--pems-surface-border, transparent);
+    border-radius: .375rem;
+}
+
+.ts-wrapper.plugin-remove_button .item .remove {
+    border-inline-start-color: var(--pems-surface-border, rgba(0, 0, 0, .15));
+}
+
+.ts-dropdown .optgroup-header {
+    background-color: var(--pems-table-header-bg, var(--pems-bg, #f8f9fa));
+    color: var(--pems-text-muted, #6c757d);
+    font-size: .8rem;
+}
+
+.ts-dropdown .option {
+    color: var(--pems-text, inherit);
+}
+
+.ts-dropdown .active {
+    background-color: var(--pems-row-hover, rgba(13, 110, 253, .08));
+    color: var(--pems-text, inherit);
+}
+
+.ts-dropdown .no-results {
+    color: var(--pems-text-muted, #6c757d);
+}
+
+/* checkbox_options: keep the box and the label apart in both directions */
+.ts-dropdown .option input[type="checkbox"] {
+    margin-inline-end: .5rem;
+}

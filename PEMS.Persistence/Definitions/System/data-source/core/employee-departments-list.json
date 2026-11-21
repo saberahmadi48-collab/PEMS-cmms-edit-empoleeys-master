@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "employee-departments-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Departments",
+    "fa": "دپارتمان‌ها"
+  },
+  "description": {
+    "en": "Departments",
+    "fa": "دپارتمان‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Employee",
+      "action": "Departments",
+      "args": {}
+    }
+  }
+}

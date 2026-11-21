@@ -1,0 +1,17 @@
+@* Page title row (docs/design/WORKSPACE_DESIGN_SYSTEM.md): one compact row = page title + optional muted module label.
+   No URL, no route, no breadcrumb chain, no duplicated title. Texts are inputs (PageHeaderModel); the host localizes them. *@
+@model PEMS.UI.Abstractions.PageHeaderModel
+@using PEMS.UI.Abstractions
+@inject IPemsLocale Locale
+@{
+    var title = Locale.Text(Model.Title);
+    var moduleLabel = Locale.Text(Model.Section);
+    var showSection = !string.IsNullOrWhiteSpace(moduleLabel) && !string.Equals(moduleLabel, title, StringComparison.OrdinalIgnoreCase);
+}
+@if (!string.IsNullOrWhiteSpace(title))
+{
+    <div class="pems-page-head">
+        <h1 class="pems-page-title">@title</h1>
+        @if (showSection) { <span class="pems-page-section">@moduleLabel</span> }
+    </div>
+}

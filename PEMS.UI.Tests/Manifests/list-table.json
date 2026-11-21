@@ -1,0 +1,76 @@
+{
+  "key": "list-table",
+  "component": "PEMS.UI.Components.PemsListTable",
+  "category": "list",
+  "icon": "bi-table",
+  "nameKey": "component.list-table",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "gridKey": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "empty": {
+        "type": "boolean"
+      },
+      "emptyText": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "filtered": {
+        "type": "boolean"
+      },
+      "clearHref": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "noResultsHint": {
+        "type": "string"
+      },
+      "clearAllText": {
+        "type": "string"
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ListTableOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "gridKey": "docs",
+    "empty": true,
+    "emptyText": "Nothing here"
+  }
+}

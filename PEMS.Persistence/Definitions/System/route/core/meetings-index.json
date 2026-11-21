@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "meetings-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Meetings (index) (old address)",
+    "fa": "Meetings (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Meetings (index) (old address)",
+    "fa": "Meetings (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Meeting/Index",
+    "target": "/p/meetings",
+    "permanent": false
+  }
+}

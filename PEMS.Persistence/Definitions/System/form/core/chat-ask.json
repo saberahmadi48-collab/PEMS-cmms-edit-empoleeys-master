@@ -1,0 +1,45 @@
+{
+  "kind": "form",
+  "key": "chat-ask",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Ask the assistant",
+    "fa": "پرسش از دستیار"
+  },
+  "description": {
+    "en": "Ask a question about the system data",
+    "fa": "پرسش درباره داده‌های سیستم"
+  },
+  "payload": {
+    "id": "chat-ask",
+    "title": {
+      "en": "Ask a question about the system...",
+      "fa": "درباره سیستم بپرسید..."
+    },
+    "submitLabel": {
+      "en": "Ask",
+      "fa": "بپرس"
+    },
+    "actionKey": "chat-ask",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "message",
+        "label": {
+          "en": "Question",
+          "fa": "پرسش"
+        },
+        "kind": "textArea",
+        "maxLength": 2000,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Type a question.",
+            "fa": "یک پرسش بنویسید."
+          }
+        }
+      }
+    ]
+  }
+}

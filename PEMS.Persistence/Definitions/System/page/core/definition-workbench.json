@@ -1,0 +1,175 @@
+{
+  "kind": "page",
+  "key": "definition-workbench",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Definition workbench",
+    "fa": "میز کار تعریف‌ها"
+  },
+  "description": {
+    "en": "Every definition of the store: create, edit as a draft, validate, publish, roll back",
+    "fa": "همه تعریف‌ها"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "definition-workbench",
+    "permission": "Definitions.View",
+    "template": "entity-list",
+    "args": {
+      "id": "definition-workbench",
+      "url": "/d/definitions-grid",
+      "idField": "ref",
+      "viewsKey": "definition-workbench",
+      "newUrl": "/f/definition-create",
+      "newLabel": {
+        "en": "New definition",
+        "fa": "تعریف جدید"
+      },
+      "columns": [
+        {
+          "key": "key",
+          "header": {
+            "en": "Key",
+            "fa": "کلید"
+          },
+          "width": 240
+        },
+        {
+          "key": "kind",
+          "header": {
+            "en": "Kind",
+            "fa": "نوع"
+          },
+          "width": 130
+        },
+        {
+          "key": "appKey",
+          "header": {
+            "en": "App",
+            "fa": "برنامه"
+          },
+          "width": 90
+        },
+        {
+          "key": "title",
+          "header": {
+            "en": "Title",
+            "fa": "عنوان"
+          },
+          "width": 220
+        },
+        {
+          "key": "origin",
+          "header": {
+            "en": "Origin",
+            "fa": "منشأ"
+          },
+          "width": 100
+        },
+        {
+          "key": "publishedVersion",
+          "header": {
+            "en": "Published",
+            "fa": "منتشرشده"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "hasDraft",
+          "header": {
+            "en": "Draft",
+            "fa": "پیش‌نویس"
+          },
+          "width": 90,
+          "type": "bool"
+        },
+        {
+          "key": "isCustomized",
+          "header": {
+            "en": "Customised",
+            "fa": "سفارشی"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 420,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "details",
+              "label": {
+                "en": "Details",
+                "fa": "جزئیات"
+              },
+              "url": "/p/definition-details?id={id}",
+              "method": "get"
+            },
+            {
+              "key": "validate",
+              "label": {
+                "en": "Validate",
+                "fa": "اعتبارسنجی"
+              },
+              "url": "/a/definition-validate",
+              "method": "post"
+            },
+            {
+              "key": "publish",
+              "label": {
+                "en": "Publish",
+                "fa": "انتشار"
+              },
+              "url": "/a/definition-publish",
+              "method": "post",
+              "tone": "primary",
+              "confirm": {
+                "en": "Publish the draft?",
+                "fa": "پیش‌نویس منتشر شود؟"
+              }
+            },
+            {
+              "key": "discard",
+              "label": {
+                "en": "Discard draft",
+                "fa": "حذف پیش‌نویس"
+              },
+              "url": "/a/definition-discard",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Discard the draft?",
+                "fa": "پیش‌نویس حذف شود؟"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "regions": {
+      "toolbar": [
+        {
+          "id": "import",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Import package",
+              "fa": "ورود بسته"
+            },
+            "tone": "neutral",
+            "href": "/f/definition-import"
+          }
+        }
+      ]
+    }
+  }
+}

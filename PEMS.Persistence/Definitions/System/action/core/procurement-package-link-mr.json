@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "procurement-package-link-mr",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Link an MR",
+    "fa": "پیوند MR"
+  },
+  "description": {
+    "en": "Link an MR",
+    "fa": "پیوند MR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProcurementPackage",
+      "action": "LinkMR",
+      "args": {
+        "packageId": "field:packageId",
+        "mrId": "field:mrId"
+      }
+    },
+    "success": {
+      "en": "The MR was linked to the package.",
+      "fa": "MR به بسته پیوند شد."
+    },
+    "redirect": "/p/procurement-package-details?id={packageId}"
+  }
+}

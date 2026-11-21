@@ -1,0 +1,203 @@
+{
+  "kind": "form",
+  "key": "moc-raise",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New MOC",
+    "fa": "MOC جدید"
+  },
+  "description": {
+    "en": "New MOC",
+    "fa": "MOC جدید"
+  },
+  "payload": {
+    "id": "moc-raise",
+    "title": {
+      "en": "New MOC",
+      "fa": "MOC جدید"
+    },
+    "submitLabel": {
+      "en": "Raise",
+      "fa": "ثبت"
+    },
+    "actionKey": "moc-raise",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 300
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 4000
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      },
+      {
+        "name": "changeType",
+        "label": {
+          "en": "Change type",
+          "fa": "نوع تغییر"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Permanent",
+            "label": {
+              "en": "Permanent",
+              "fa": "دائمی"
+            }
+          },
+          {
+            "value": "Temporary",
+            "label": {
+              "en": "Temporary",
+              "fa": "موقت"
+            }
+          }
+        ]
+      },
+      {
+        "name": "riskLevel",
+        "label": {
+          "en": "Risk level",
+          "fa": "سطح ریسک"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Low",
+            "label": {
+              "en": "Low",
+              "fa": "کم"
+            }
+          },
+          {
+            "value": "Medium",
+            "label": {
+              "en": "Medium",
+              "fa": "متوسط"
+            }
+          },
+          {
+            "value": "High",
+            "label": {
+              "en": "High",
+              "fa": "زیاد"
+            }
+          }
+        ]
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "moc-projects"
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "moc-disciplines"
+      },
+      {
+        "name": "relatedDocumentId",
+        "label": {
+          "en": "Related document id",
+          "fa": "شناسه‌ی سند مرتبط"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "relatedEquipmentId",
+        "label": {
+          "en": "Related equipment id",
+          "fa": "شناسه‌ی تجهیز مرتبط"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "temporaryExpiryDate",
+        "label": {
+          "en": "Temporary expiry date",
+          "fa": "تاریخ پایان موقت"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "trainingRequired",
+        "label": {
+          "en": "Training required",
+          "fa": "نیازمند آموزش"
+        },
+        "kind": "checkbox"
+      }
+    ]
+  }
+}

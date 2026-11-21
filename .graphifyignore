@@ -2,3 +2,22 @@
 # architecture — indexing them pollutes the knowledge graph with nodes
 # unrelated to the CMMS domain.
 .claude/skills/graphify/
+
+# Only code belongs in the graph: plans, docs, data, config, vendored and generated files are not architecture.
+plan/
+docs/
+.github/
+.claude/
+WebApplication1/
+graphify-out/
+PEMS.Web/wwwroot/lib/
+PEMS.Web/wwwroot/dist/
+*.md
+*.csv
+*.json
+*.yml
+*.yaml
+*.min.js
+*.min.mjs
+*.min.css
+*.Designer.cs

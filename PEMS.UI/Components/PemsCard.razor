@@ -1,0 +1,8 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("card", Category = "display", Icon = "bi-card-text")]
+<div class="@Css">@ChildContent</div>
+@code {
+    [Parameter, EditorRequired] public CardOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string Css => string.IsNullOrWhiteSpace(Options.CssClass) ? "card" : "card " + Options.CssClass.Trim();
+}

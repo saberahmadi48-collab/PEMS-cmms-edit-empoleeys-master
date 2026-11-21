@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("form-group", Category = "forms", Icon = "bi-input-cursor-text")]
+@FrameMarkup.Element("div", Options.Css, Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public FormGroupOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

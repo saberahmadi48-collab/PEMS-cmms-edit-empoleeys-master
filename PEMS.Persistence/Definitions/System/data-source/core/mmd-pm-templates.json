@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mmd-pm-templates",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "PM templates",
+    "fa": "قالب‌های PM"
+  },
+  "description": {
+    "en": "PM templates",
+    "fa": "قالب‌های PM"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "PmTemplates"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "kind": "form",
+  "key": "pc-admin-add-commodity-responsible",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a commodity responsible",
+    "fa": "افزودن مسئول گروه کالا"
+  },
+  "description": {
+    "en": "Add a commodity responsible",
+    "fa": "افزودن مسئول گروه کالا"
+  },
+  "payload": {
+    "id": "pc-admin-add-commodity-responsible",
+    "title": {
+      "en": "Add a commodity responsible",
+      "fa": "افزودن مسئول گروه کالا"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-admin-add-commodity-responsible",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "responsibilityKey",
+        "label": {
+          "en": "Responsibility key",
+          "fa": "کلید مسئولیت"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "commodityGroupId",
+        "label": {
+          "en": "Commodity group id",
+          "fa": "شناسه‌ی گروه کالا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "positionId",
+        "label": {
+          "en": "Position id",
+          "fa": "شناسه‌ی پست"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "responsibleEmployeeId",
+        "label": {
+          "en": "Employee id",
+          "fa": "شناسه‌ی کارمند"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

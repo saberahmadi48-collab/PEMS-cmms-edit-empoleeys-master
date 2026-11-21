@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-request-summary",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue request counts",
+    "fa": "شمارش درخواست‌های کاتالوگ قطعه"
+  },
+  "description": {
+    "en": "Part Catalogue request counts",
+    "fa": "شمارش درخواست‌های کاتالوگ قطعه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "Summary",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId"
+      }
+    }
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "kind": "page",
+  "key": "navigation-menu",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Menu",
+    "fa": "منو"
+  },
+  "description": {
+    "en": "The menu tree and its editor (page definition)",
+    "fa": "درخت منو و ویرایشگر آن (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "navigation-menu",
+    "template": "entity-list",
+    "args": {
+      "id": "navigation-menu",
+      "url": "/d/navigation-menu-rows",
+      "idField": "key",
+      "columns": [
+        {
+          "key": "title",
+          "header": {
+            "en": "Title",
+            "fa": "عنوان"
+          },
+          "width": 320,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "kind",
+          "header": {
+            "en": "Kind",
+            "fa": "نوع"
+          },
+          "width": 120,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "route",
+          "header": {
+            "en": "Route",
+            "fa": "مسیر"
+          },
+          "width": 260,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "width": 90,
+          "sortable": false,
+          "filterable": false,
+          "type": "bool"
+        },
+        {
+          "key": "isSystem",
+          "header": {
+            "en": "System",
+            "fa": "سیستمی"
+          },
+          "width": 90,
+          "sortable": false,
+          "filterable": false,
+          "type": "bool"
+        },
+        {
+          "key": "noPermissionSignal",
+          "header": {
+            "en": "No permission",
+            "fa": "بدون مجوز"
+          },
+          "width": 130,
+          "sortable": false,
+          "filterable": false,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 420,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/navigation-menu-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "up",
+              "label": {
+                "en": "Up",
+                "fa": "بالا"
+              },
+              "url": "/a/navigation-menu-up",
+              "method": "post",
+              "showWhen": "row.isFirst == false"
+            },
+            {
+              "key": "down",
+              "label": {
+                "en": "Down",
+                "fa": "پایین"
+              },
+              "url": "/a/navigation-menu-down",
+              "method": "post",
+              "showWhen": "row.isLast == false"
+            },
+            {
+              "key": "child",
+              "label": {
+                "en": "Add a link here",
+                "fa": "افزودن پیوند در اینجا"
+              },
+              "url": "/f/navigation-menu-create?parentKey={id}",
+              "method": "get",
+              "showWhen": "row.kind != 'Link'"
+            },
+            {
+              "key": "delete",
+              "label": {
+                "en": "Delete",
+                "fa": "حذف"
+              },
+              "url": "/a/navigation-menu-delete",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Delete this link?",
+                "fa": "این پیوند حذف شود؟"
+              },
+              "showWhen": "row.isSystem == false"
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/navigation-menu-create",
+      "newLabel": {
+        "en": "Add a custom link",
+        "fa": "افزودن پیوند سفارشی"
+      }
+    }
+  }
+}

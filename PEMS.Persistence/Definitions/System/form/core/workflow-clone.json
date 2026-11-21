@@ -1,0 +1,39 @@
+{
+  "kind": "form",
+  "key": "workflow-clone",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Clone a version into a draft",
+    "fa": "ایجاد پیش‌نویس از یک نسخه"
+  },
+  "description": {
+    "en": "Clone a version into a draft",
+    "fa": "ایجاد پیش‌نویس از یک نسخه"
+  },
+  "payload": {
+    "id": "workflow-clone",
+    "title": {
+      "en": "Clone a version into a draft",
+      "fa": "ایجاد پیش‌نویس از یک نسخه"
+    },
+    "submitLabel": {
+      "en": "Clone",
+      "fa": "ایجاد"
+    },
+    "actionKey": "workflow-clone",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "summary",
+        "label": {
+          "en": "Change summary",
+          "fa": "خلاصه‌ی تغییر"
+        },
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("modal-body", Category = "overlays", Icon = "bi-card-text")]
+@FrameMarkup.Element("div", string.IsNullOrWhiteSpace(Options.Css) ? "modal-body" : "modal-body " + Options.Css.Trim(), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public ModalBodyOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

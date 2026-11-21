@@ -1,0 +1,54 @@
+{
+  "key": "list-menu",
+  "component": "PEMS.UI.Components.PemsListMenu",
+  "category": "list",
+  "icon": "bi-three-dots-vertical",
+  "nameKey": "component.list-menu",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "icon": {
+        "type": "string"
+      },
+      "label": {
+        "type": "string"
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ListMenuOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "views",
+    "label": "Views"
+  }
+}

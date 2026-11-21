@@ -1,0 +1,106 @@
+{
+  "kind": "page",
+  "key": "dashboard-settings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Customize dashboard",
+    "fa": "سفارشی‌سازی داشبورد"
+  },
+  "description": {
+    "en": "Choose which widgets appear on your dashboard, their order and size (page definition)",
+    "fa": "انتخاب ابزارک‌ها، ترتیب و اندازه آن‌ها (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "dashboard-settings",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/dashboard-widget",
+                "text": {
+                  "en": "Change a widget",
+                  "fa": "تغییر یک ابزارک"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/",
+                "text": {
+                  "en": "Back to dashboard",
+                  "fa": "بازگشت به داشبورد"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "reset",
+          "component": "action-button",
+          "options": {
+            "action": "dashboard-reset",
+            "label": {
+              "en": "Reset to default",
+              "fa": "بازگشت به پیش‌فرض"
+            },
+            "tone": "danger",
+            "icon": "bi-arrow-counterclockwise"
+          }
+        },
+        {
+          "id": "layout",
+          "component": "data-grid",
+          "options": {
+            "id": "dashboard-layout",
+            "url": "/d/dashboard-layout-grid",
+            "idField": "widgetKey",
+            "columns": [
+              {
+                "key": "name",
+                "header": {
+                  "en": "Widget",
+                  "fa": "ابزارک"
+                },
+                "width": 320
+              },
+              {
+                "key": "visible",
+                "header": {
+                  "en": "Shown",
+                  "fa": "نمایش"
+                },
+                "width": 100
+              },
+              {
+                "key": "displayOrder",
+                "header": {
+                  "en": "Order",
+                  "fa": "ترتیب"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "size",
+                "header": {
+                  "en": "Size",
+                  "fa": "اندازه"
+                },
+                "width": 120
+              }
+            ],
+            "pageSize": 50,
+            "height": 460
+          }
+        }
+      ]
+    }
+  }
+}

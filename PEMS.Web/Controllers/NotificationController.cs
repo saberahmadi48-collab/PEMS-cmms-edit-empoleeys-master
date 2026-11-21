@@ -22,18 +22,6 @@ public class NotificationController : Controller
 
     private bool IsAjax => Request.Headers.XRequestedWith == "XMLHttpRequest";
 
-    public async Task<IActionResult> Index(string? filter = "all", int page = 1, int pageSize = 25)
-    {
-        ViewData["Title"] = "Notifications";
-        ViewData["Section"] = "Correspondence Management";
-
-        if (_currentUser.UserId == null) return View(new PagedResult<NotificationDto>());
-
-        ViewBag.Filter = (filter ?? "all").ToLowerInvariant();
-        var result = await _service.GetInboxAsync(_currentUser.UserId.Value, filter, page, pageSize);
-        return View(result);
-    }
-
     [HttpGet]
     public async Task<IActionResult> Dropdown()
     {
@@ -62,7 +50,7 @@ public class NotificationController : Controller
         if (!string.IsNullOrWhiteSpace(linkUrl) && Url.IsLocalUrl(linkUrl))
             return LocalRedirect(linkUrl);
 
-        return RedirectToAction(nameof(Index));
+        return Redirect("/p/notifications");   // SCRUM-731: the inbox is a definition page
     }
 
     [HttpPost]
@@ -109,7 +97,7 @@ public class NotificationController : Controller
 
     private async Task<IActionResult> Done()
     {
-        if (!IsAjax) return RedirectToAction(nameof(Index));
+        if (!IsAjax) return Redirect("/p/notifications");
 
         return Json(new { unread = await _service.GetUnreadCountAsync(_currentUser.UserId!.Value) });
     }

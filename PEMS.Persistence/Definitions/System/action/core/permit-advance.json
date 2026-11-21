@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "permit-advance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Advance the status",
+    "fa": "پیشبرد وضعیت"
+  },
+  "description": {
+    "en": "Advance the status",
+    "fa": "پیشبرد وضعیت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PermitPage",
+      "action": "AdvanceStatus",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "id": "field:id",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The status was changed.",
+      "fa": "وضعیت تغییر کرد."
+    },
+    "redirect": "/Permit/Details/{id}"
+  }
+}

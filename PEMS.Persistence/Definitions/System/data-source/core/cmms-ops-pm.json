@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "cmms-ops-pm",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "PM compliance",
+    "fa": "تطابق PM"
+  },
+  "description": {
+    "en": "PM compliance",
+    "fa": "تطابق PM"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CmmsOperations",
+      "action": "PmCompliance"
+    }
+  }
+}

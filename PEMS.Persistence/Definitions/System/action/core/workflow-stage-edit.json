@@ -1,0 +1,53 @@
+{
+  "kind": "action",
+  "key": "workflow-stage-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a stage",
+    "fa": "ذخیره‌ی مرحله"
+  },
+  "description": {
+    "en": "Save a stage",
+    "fa": "ذخیره‌ی مرحله"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "SaveStageOf",
+      "args": {
+        "id": "field:id",
+        "stage": {
+          "Name": "field:name",
+          "NameFa": "field:nameFa",
+          "BusinessStatus": "field:businessStatus",
+          "StageOrder": "field:stageOrder",
+          "ResponsibleRole": "field:responsibleRole",
+          "ResponsibleEmployeeId": "field:responsibleEmployeeId",
+          "StageType": "field:stageType",
+          "ApprovalStrategy": "field:approvalStrategy",
+          "MinimumApprovalCount": "field:minimumApprovalCount",
+          "IsMandatory": "field:isMandatory",
+          "TimeoutHours": "field:timeoutHours",
+          "Description": "field:description"
+        }
+      },
+      "load": {
+        "operation": {
+          "model": "WorkflowManagement",
+          "action": "StageOf",
+          "args": {
+            "id": "param:id"
+          }
+        }
+      }
+    },
+    "success": {
+      "en": "Stage saved.",
+      "fa": "مرحله ذخیره شد."
+    },
+    "redirect": "/p/workflow-management"
+  }
+}

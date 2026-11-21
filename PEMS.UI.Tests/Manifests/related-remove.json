@@ -1,0 +1,82 @@
+{
+  "key": "related-remove",
+  "component": "PEMS.UI.Components.PemsRelatedRemove",
+  "category": "list",
+  "icon": "bi-x-lg",
+  "nameKey": "component.related-remove",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string"
+      },
+      "keyName": {
+        "type": "string"
+      },
+      "keyValue": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "parentName": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "parentValue": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "label": {
+        "type": "string"
+      },
+      "confirm": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "antiforgery": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "token"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "RelatedRemoveOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "action": "/jobplan/remove",
+    "keyName": "taskId",
+    "keyValue": "5",
+    "label": "Remove",
+    "confirm": "Sure?"
+  }
+}

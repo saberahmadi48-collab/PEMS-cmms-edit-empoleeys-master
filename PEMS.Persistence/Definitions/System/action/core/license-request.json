@@ -1,0 +1,28 @@
+{
+  "kind": "action",
+  "key": "license-request",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create the licence request file",
+    "fa": "ایجاد فایل درخواست مجوز"
+  },
+  "description": {
+    "en": "Downloads the signed request file",
+    "fa": "فایل امضاشده‌ی درخواست را دریافت می‌کند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Licence",
+      "action": "CreateRequest",
+      "args": {
+        "requestType": "field:requestType",
+        "customerRef": "field:customerRef",
+        "orderRef": "field:orderRef",
+        "reason": "field:reason"
+      }
+    }
+  }
+}

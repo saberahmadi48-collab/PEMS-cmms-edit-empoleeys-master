@@ -1,0 +1,65 @@
+{
+  "kind": "form",
+  "key": "skills-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create skill",
+    "fa": "ایجاد مهارت"
+  },
+  "description": {
+    "en": "Create a new skill",
+    "fa": "ایجاد مهارت جدید"
+  },
+  "payload": {
+    "id": "skills-create",
+    "title": {
+      "en": "New skill",
+      "fa": "مهارت جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "skills-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "optionsFrom": "skills-discipline-id-options"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

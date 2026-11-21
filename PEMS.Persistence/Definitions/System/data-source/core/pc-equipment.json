@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-equipment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup: Equipment",
+    "fa": "جستجوی کاتالوگ قطعه: Equipment"
+  },
+  "description": {
+    "en": "Part Catalogue lookup: Equipment",
+    "fa": "جستجوی کاتالوگ قطعه: Equipment"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueLookup",
+      "action": "Equipment",
+      "args": {
+        "userRoles": "context:roles",
+        "q": "param:q"
+      },
+      "disposition": "inline"
+    }
+  }
+}

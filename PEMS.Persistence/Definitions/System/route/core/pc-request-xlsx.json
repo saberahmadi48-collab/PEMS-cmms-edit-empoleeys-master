@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-request-xlsx",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue request Excel (old address)",
+    "fa": "Part Catalogue request Excel (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue request Excel (old address)",
+    "fa": "Part Catalogue request Excel (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueRequest/ExportXlsx/{id}",
+    "target": "/x/pc-request-xlsx?id={id}",
+    "permanent": false
+  }
+}

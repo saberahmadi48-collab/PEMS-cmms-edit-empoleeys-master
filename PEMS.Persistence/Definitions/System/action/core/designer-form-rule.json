@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "designer-form-rule",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a form rule",
+    "fa": "افزودن قاعده فرم"
+  },
+  "description": {
+    "en": "Add a form rule",
+    "fa": "افزودن قاعده فرم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The rule was added to the draft.",
+      "fa": "قاعده به پیش‌نویس افزوده شد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "AddFormRule",
+      "args": {
+        "reference": "field:ref",
+        "expression": "field:expression",
+        "field": "field:field",
+        "messageEn": "field:messageEn",
+        "messageFa": "field:messageFa",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

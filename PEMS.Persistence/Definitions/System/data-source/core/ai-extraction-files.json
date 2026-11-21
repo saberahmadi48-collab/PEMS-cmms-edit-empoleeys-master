@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "ai-extraction-files",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI analysed files",
+    "fa": "فایل‌های تحلیل‌شده با هوش مصنوعی"
+  },
+  "description": {
+    "en": "AI analysed files",
+    "fa": "فایل‌های تحلیل‌شده با هوش مصنوعی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "AiExtraction",
+      "action": "Files",
+      "args": {}
+    }
+  }
+}

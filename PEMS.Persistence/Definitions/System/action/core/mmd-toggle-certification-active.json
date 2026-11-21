@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mmd-toggle-certification-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleCertificationActive",
+    "fa": "وضعیت گواهینامه به‌روزرسانی شد."
+  },
+  "description": {
+    "en": "ToggleCertificationActive",
+    "fa": "وضعیت گواهینامه به‌روزرسانی شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "ToggleCertificationActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "وضعیت گواهینامه به‌روزرسانی شد.",
+      "fa": "وضعیت گواهینامه به‌روزرسانی شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

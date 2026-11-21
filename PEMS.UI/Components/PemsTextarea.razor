@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("textarea", Category = "forms", Icon = "bi-textarea-t")]
+@FrameMarkup.Element("textarea", ControlState.Css(new ControlOptions { Kind = ControlKind.Text, Size = Options.Scale?.ToLowerInvariant() switch { "small" => Size.Small, "large" => Size.Large, _ => Size.Medium }, CssClass = Options.Css }), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public TextareaOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

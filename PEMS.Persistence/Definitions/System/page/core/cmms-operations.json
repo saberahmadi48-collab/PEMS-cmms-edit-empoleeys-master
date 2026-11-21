@@ -1,0 +1,353 @@
+{
+  "kind": "page",
+  "key": "cmms-operations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CMMS operations dashboard",
+    "fa": "داشبورد عملیات CMMS"
+  },
+  "description": {
+    "en": "Work requests, work orders, PM compliance and maintenance types (page definition)",
+    "fa": "درخواست‌ها، دستورکارها، تطابق PM و نوع تعمیرات (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "cmms-operations",
+    "permission": "WorkOrder.View",
+    "regions": {
+      "content": [
+        {
+          "id": "wr-total",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Work requests (total active)",
+              "fa": "درخواست‌های کار (کل فعال)"
+            },
+            "icon": "bi-clipboard-check"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-ops-totals",
+              "first": true,
+              "map": {
+                "value": "workRequestTotal"
+              }
+            }
+          }
+        },
+        {
+          "id": "wr-pending",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "WR pending action (submitted, under review, approved)",
+              "fa": "درخواست‌های منتظر اقدام"
+            },
+            "icon": "bi-hourglass-split",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-ops-totals",
+              "first": true,
+              "map": {
+                "value": "workRequestPendingAction"
+              }
+            }
+          }
+        },
+        {
+          "id": "wo-total",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Work orders (total active)",
+              "fa": "دستورکارها (کل فعال)"
+            },
+            "icon": "bi-tools"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-ops-totals",
+              "first": true,
+              "map": {
+                "value": "workOrderTotal"
+              }
+            }
+          }
+        },
+        {
+          "id": "wo-overdue",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Work orders overdue (due date passed)",
+              "fa": "دستورکارهای معوق (گذشتن از سررسید)"
+            },
+            "icon": "bi-alarm",
+            "tone": "danger"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-ops-totals",
+              "first": true,
+              "map": {
+                "value": "workOrderOverdue"
+              }
+            }
+          }
+        },
+        {
+          "id": "wr-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "wr-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Work request: by status",
+                  "fa": "درخواست کار: به تفکیک وضعیت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "wr-status",
+          "component": "data-grid",
+          "options": {
+            "id": "wr-status",
+            "url": "/d/cmms-ops-wr-status",
+            "idField": "name",
+            "columns": [
+              {
+                "key": "name",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 240
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 120,
+                "type": "number"
+              }
+            ],
+            "pageSize": 20,
+            "height": 320
+          }
+        },
+        {
+          "id": "wo-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "wo-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Work order: by status",
+                  "fa": "دستورکار: به تفکیک وضعیت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "wo-status",
+          "component": "data-grid",
+          "options": {
+            "id": "wo-status",
+            "url": "/d/cmms-ops-wo-status",
+            "idField": "name",
+            "columns": [
+              {
+                "key": "name",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 240
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 120,
+                "type": "number"
+              }
+            ],
+            "pageSize": 20,
+            "height": 360
+          }
+        },
+        {
+          "id": "pm-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "pm-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "PM compliance",
+                  "fa": "تطابق PM"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "pm",
+          "component": "record-view",
+          "options": {
+            "id": "pm",
+            "fields": [
+              {
+                "key": "dataStatus",
+                "label": {
+                  "en": "Data status",
+                  "fa": "وضعیت داده"
+                }
+              },
+              {
+                "key": "compliancePercent",
+                "label": {
+                  "en": "Compliance",
+                  "fa": "تطابق"
+                }
+              },
+              {
+                "key": "compliantCount",
+                "label": {
+                  "en": "Compliant",
+                  "fa": "منطبق"
+                },
+                "type": "number"
+              },
+              {
+                "key": "completedLateCount",
+                "label": {
+                  "en": "Completed late",
+                  "fa": "با تأخیر انجام‌شده"
+                },
+                "type": "number"
+              },
+              {
+                "key": "overdueCount",
+                "label": {
+                  "en": "Overdue",
+                  "fa": "معوق"
+                },
+                "type": "number"
+              },
+              {
+                "key": "notYetDueCount",
+                "label": {
+                  "en": "Not yet due",
+                  "fa": "هنوز سررسید نشده"
+                },
+                "type": "number"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-ops-pm",
+              "first": true
+            }
+          }
+        },
+        {
+          "id": "types-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "types-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Maintenance type breakdown",
+                  "fa": "تفکیک نوع تعمیرات"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "type-summary",
+          "component": "record-view",
+          "options": {
+            "id": "type-summary",
+            "fields": [
+              {
+                "key": "dataStatus",
+                "label": {
+                  "en": "Data status",
+                  "fa": "وضعیت داده"
+                }
+              },
+              {
+                "key": "emergencyWorkRatio",
+                "label": {
+                  "en": "Emergency work ratio",
+                  "fa": "نسبت کار اضطراری"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-ops-type-summary",
+              "first": true
+            }
+          }
+        },
+        {
+          "id": "types",
+          "component": "data-grid",
+          "options": {
+            "id": "types",
+            "url": "/d/cmms-ops-types",
+            "idField": "name",
+            "columns": [
+              {
+                "key": "name",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 240
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 120,
+                "type": "number"
+              }
+            ],
+            "pageSize": 20,
+            "height": 280
+          }
+        }
+      ]
+    }
+  }
+}

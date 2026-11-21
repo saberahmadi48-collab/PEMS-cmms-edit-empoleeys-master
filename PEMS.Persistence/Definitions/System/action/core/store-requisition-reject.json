@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "store-requisition-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject",
+    "fa": "Reject"
+  },
+  "description": {
+    "en": "Reject",
+    "fa": "Reject"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StoreRequisition",
+      "action": "Reject",
+      "args": {
+        "id": "field:id",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The requisition was rejected.",
+      "fa": "درخواست رد شد."
+    },
+    "redirect": "/p/store-requisition-details?id={id}"
+  }
+}

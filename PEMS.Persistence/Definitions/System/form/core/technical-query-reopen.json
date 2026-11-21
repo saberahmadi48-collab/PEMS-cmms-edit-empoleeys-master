@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "technical-query-reopen",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reopen",
+    "fa": "بازگشایی"
+  },
+  "description": {
+    "en": "Reopen",
+    "fa": "بازگشایی"
+  },
+  "payload": {
+    "id": "technical-query-reopen",
+    "title": {
+      "en": "Reopen",
+      "fa": "بازگشایی"
+    },
+    "submitLabel": {
+      "en": "Reopen",
+      "fa": "بازگشایی"
+    },
+    "actionKey": "technical-query-reopen",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "technicalQueryId",
+        "label": {
+          "en": "TQ id",
+          "fa": "شناسه‌ی TQ"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 1000
+      }
+    ]
+  }
+}

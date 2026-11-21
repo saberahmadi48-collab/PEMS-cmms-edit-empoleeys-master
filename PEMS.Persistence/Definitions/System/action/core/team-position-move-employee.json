@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "team-position-move-employee",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move an employee between positions",
+    "fa": "جابه‌جایی کارمند بین سمت‌ها"
+  },
+  "description": {
+    "en": "Move an employee between positions",
+    "fa": "جابه‌جایی کارمند بین سمت‌ها"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "MoveEmployee",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "fromPositionId": "field:fromPositionId",
+        "toPositionId": "field:toPositionId",
+        "notes": "field:notes"
+      }
+    },
+    "success": {
+      "en": "Employee moved.",
+      "fa": "کارمند منتقل شد."
+    },
+    "redirect": "/p/team-details?teamId={returnTeamId}"
+  }
+}

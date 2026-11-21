@@ -1,0 +1,200 @@
+{
+  "kind": "form",
+  "key": "work-request-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New work request",
+    "fa": "درخواست کار جدید"
+  },
+  "description": {
+    "en": "New work request",
+    "fa": "درخواست کار جدید"
+  },
+  "payload": {
+    "id": "work-request-create",
+    "title": {
+      "en": "New work request",
+      "fa": "درخواست کار جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "work-request-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 300
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Low",
+            "label": {
+              "en": "Low",
+              "fa": "کم"
+            }
+          },
+          {
+            "value": "Medium",
+            "label": {
+              "en": "Medium",
+              "fa": "متوسط"
+            }
+          },
+          {
+            "value": "High",
+            "label": {
+              "en": "High",
+              "fa": "زیاد"
+            }
+          },
+          {
+            "value": "Urgent",
+            "label": {
+              "en": "Urgent",
+              "fa": "فوری"
+            }
+          }
+        ]
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "text",
+        "maxLength": 4000
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment id",
+          "fa": "شناسه‌ی تجهیز"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "assetId",
+        "label": {
+          "en": "Asset id",
+          "fa": "شناسه‌ی دارایی"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "functionalLocationId",
+        "label": {
+          "en": "Functional location",
+          "fa": "مکان عملکردی"
+        },
+        "kind": "select",
+        "optionsFrom": "work-request-locations"
+      },
+      {
+        "name": "reportedCondition",
+        "label": {
+          "en": "Reported condition",
+          "fa": "وضعیت گزارش‌شده"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      },
+      {
+        "name": "suggestedDisciplineId",
+        "label": {
+          "en": "Suggested discipline",
+          "fa": "دیسیپلین پیشنهادی"
+        },
+        "kind": "select",
+        "optionsFrom": "work-request-disciplines"
+      },
+      {
+        "name": "isHseRelated",
+        "label": {
+          "en": "HSE related",
+          "fa": "مرتبط با HSE"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "isEmergency",
+        "label": {
+          "en": "Emergency",
+          "fa": "اضطراری"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "riskLikelihood",
+        "label": {
+          "en": "Risk likelihood",
+          "fa": "احتمال ریسک"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "riskSeverity",
+        "label": {
+          "en": "Risk severity",
+          "fa": "شدت ریسک"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "failureModeId",
+        "label": {
+          "en": "Failure mode",
+          "fa": "حالت خرابی"
+        },
+        "kind": "select",
+        "optionsFrom": "work-request-failure-modes"
+      },
+      {
+        "name": "failureEffect",
+        "label": {
+          "en": "Failure effect",
+          "fa": "اثر خرابی"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      },
+      {
+        "name": "reportedDowntimeHours",
+        "label": {
+          "en": "Reported downtime hours",
+          "fa": "ساعت توقف"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

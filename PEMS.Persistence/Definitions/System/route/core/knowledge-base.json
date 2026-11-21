@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "knowledge-base",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Knowledge base (old address)",
+    "fa": "پایگاه دانش (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Knowledge base (old address)",
+    "fa": "پایگاه دانش (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "KnowledgeBase/{*rest}",
+    "target": "/p/knowledge-base",
+    "permanent": false
+  }
+}

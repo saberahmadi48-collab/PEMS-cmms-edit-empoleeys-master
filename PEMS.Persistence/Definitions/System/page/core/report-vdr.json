@@ -1,0 +1,165 @@
+{
+  "kind": "page",
+  "key": "report-vdr",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "VDR report",
+    "fa": "گزارش VDR"
+  },
+  "description": {
+    "en": "Vendor data requirement items and submissions (page definition)",
+    "fa": "آیتم‌ها و ارسال‌های داده‌های وندور (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "report-vdr",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "report-vdr-filters",
+            "resetUrl": "/p/report-vdr",
+            "fields": [
+              {
+                "name": "projectId",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "kind": "select",
+                "value": "{{params.projectId}}"
+              },
+              {
+                "name": "disciplineId",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "kind": "select",
+                "value": "{{params.disciplineId}}"
+              },
+              {
+                "name": "fromDate",
+                "label": {
+                  "en": "From",
+                  "fa": "از تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.fromDate}}"
+              },
+              {
+                "name": "toDate",
+                "label": {
+                  "en": "To",
+                  "fa": "تا تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.toDate}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "projectId",
+                "source": "/d/report-projects",
+                "valueField": "value",
+                "labelField": "label"
+              },
+              {
+                "field": "disciplineId",
+                "source": "/d/report-disciplines",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "chart-submissions-by-month",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/report-vdr-chart-submissions-by-month?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
+              }
+            ],
+            "kind": "line",
+            "ariaLabel": {
+              "en": "Submissions by month",
+              "fa": "ارسال‌ها به تفکیک ماه"
+            }
+          }
+        },
+        {
+          "id": "chart-by-workflow-status",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/report-vdr-chart-by-workflow-status?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
+              }
+            ],
+            "kind": "donut",
+            "ariaLabel": {
+              "en": "By workflow status",
+              "fa": "بر اساس وضعیت گردش"
+            }
+          }
+        },
+        {
+          "id": "report-vdr-rows",
+          "component": "data-grid",
+          "options": {
+            "id": "report-vdr-rows",
+            "url": "/d/report-vdr-grid?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "idField": "name",
+            "columns": [
+              {
+                "key": "section",
+                "header": {
+                  "en": "Section",
+                  "fa": "بخش"
+                },
+                "width": 260
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 320
+              },
+              {
+                "key": "value",
+                "header": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                },
+                "width": 220
+              }
+            ],
+            "pageSize": 50,
+            "height": 520
+          }
+        }
+      ]
+    }
+  }
+}

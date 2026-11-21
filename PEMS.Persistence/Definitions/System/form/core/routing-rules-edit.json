@@ -1,0 +1,123 @@
+{
+  "kind": "form",
+  "key": "routing-rules-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit routing rule",
+    "fa": "ویرایش قاعده‌ی مسیریابی"
+  },
+  "description": {
+    "en": "Edit routing rule",
+    "fa": "ویرایش قاعده‌ی مسیریابی"
+  },
+  "payload": {
+    "id": "routing-rules-edit",
+    "title": {
+      "en": "Edit routing rule",
+      "fa": "ویرایش قاعده‌ی مسیریابی"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "routing-rules-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "documentCategory",
+        "label": {
+          "en": "Category",
+          "fa": "دسته"
+        },
+        "kind": "text",
+        "readOnly": true
+      },
+      {
+        "name": "targetModule",
+        "label": {
+          "en": "Target module",
+          "fa": "ماژول مقصد"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "MDR",
+            "label": {
+              "en": "MDR",
+              "fa": "MDR"
+            }
+          },
+          {
+            "value": "VDR",
+            "label": {
+              "en": "VDR",
+              "fa": "VDR"
+            }
+          },
+          {
+            "value": "MR",
+            "label": {
+              "en": "MR",
+              "fa": "MR"
+            }
+          },
+          {
+            "value": "MRQ",
+            "label": {
+              "en": "MRQ",
+              "fa": "MRQ"
+            }
+          },
+          {
+            "value": "Contract",
+            "label": {
+              "en": "Contract",
+              "fa": "Contract"
+            }
+          },
+          {
+            "value": "CMMS",
+            "label": {
+              "en": "CMMS",
+              "fa": "CMMS"
+            }
+          },
+          {
+            "value": "Unrouted",
+            "label": {
+              "en": "Unrouted",
+              "fa": "Unrouted"
+            }
+          }
+        ],
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Target module is required.",
+            "fa": "ماژول مقصد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "allowAutoRouting",
+        "label": {
+          "en": "Allow automatic routing",
+          "fa": "مسیریابی خودکار مجاز باشد"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

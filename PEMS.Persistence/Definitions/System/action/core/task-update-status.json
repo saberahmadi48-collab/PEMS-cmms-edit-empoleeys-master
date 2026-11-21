@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "task-update-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change the status of a task",
+    "fa": "تغییر وضعیت وظیفه"
+  },
+  "description": {
+    "en": "Change the status of a task",
+    "fa": "تغییر وضعیت وظیفه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskItem",
+      "action": "UpdateStatus",
+      "args": {
+        "taskItemId": "field:taskItemId",
+        "status": "field:status",
+        "completionNote": "field:completionNote",
+        "rowVersion": "field:rowVersion"
+      }
+    },
+    "success": {
+      "en": "The status was changed.",
+      "fa": "وضعیت تغییر کرد."
+    },
+    "redirect": "/Task/Index?tab={tab}"
+  }
+}

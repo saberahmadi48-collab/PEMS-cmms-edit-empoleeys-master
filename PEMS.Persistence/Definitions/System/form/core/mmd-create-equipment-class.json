@@ -1,0 +1,79 @@
+{
+  "kind": "form",
+  "key": "mmd-create-equipment-class",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateEquipmentClass",
+    "fa": "CreateEquipmentClass"
+  },
+  "description": {
+    "en": "CreateEquipmentClass",
+    "fa": "CreateEquipmentClass"
+  },
+  "payload": {
+    "id": "mmd-create-equipment-class",
+    "title": {
+      "en": "CreateEquipmentClass",
+      "fa": "CreateEquipmentClass"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-create-equipment-class",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "code"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "name"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "nameFa",
+        "label": {
+          "en": "Name fa",
+          "fa": "nameFa"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "description"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

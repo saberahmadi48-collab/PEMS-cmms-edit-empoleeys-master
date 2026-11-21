@@ -1,0 +1,18 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("form-section", Category = "forms", Icon = "bi-card-heading")]
+@inject IPemsLocale Locale
+<fieldset class="pems-form-section">
+    <legend class="pems-form-section__title">@Locale.Text(Options.Title)</legend>
+    @if (Options.Description is not null)
+    {
+        <p class="pems-form-section__text">@Locale.Text(Options.Description)</p>
+    }
+    @foreach (var f in Options.Fields)
+    {
+        <PemsField Descriptor="f" Value="@State.ValueOf(f.Name)" Error="@State.ErrorOf(f.Name)" />
+    }
+</fieldset>
+@code {
+    [Parameter, EditorRequired] public FormSectionOptions Options { get; set; } = default!;
+    [Parameter] public FormState State { get; set; } = FormState.Empty;
+}

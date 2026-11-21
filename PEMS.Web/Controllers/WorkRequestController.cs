@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
@@ -29,78 +29,6 @@ public class WorkRequestController : Controller
         _permissionService = permissionService;
         _currentUser = currentUser;
         _functionalLocationService = functionalLocationService;
-    }
-
-    // طبق سند «PEMS — Global Data Grid Standard» (فاز ۶B - Wave A): قبلاً کل جدول فیلترشده
-    // با ToListAsync (بدون Skip/Take) بارگذاری می‌شد.
-    public async Task<IActionResult> Index(string? status, int page = 1, int? pageSize = null)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "View"))
-            return Forbid();
-
-        ViewData["HelpKey"] = "WorkRequests.Index";
-
-        ViewData["Title"] = "Work Requests";
-        ViewData["Section"] = "CMMS Integration";
-
-        var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
-        var result = await _service.GetListAsync(page, normalizedPageSize, status);
-        ViewBag.SelectedStatus = status;
-
-        return View(result);
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Create(int? equipmentId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "Create"))
-            return Forbid();
-
-        // پیش‌پر کردن تجهیز وقتی از Digital Equipment Passport آمده (فقط نمایشی؛ ثبت همچنان از همین Action)
-        if (equipmentId.HasValue)
-        {
-            var eq = await _context.Equipments.Where(e => e.EquipmentId == equipmentId.Value)
-                .Select(e => new { e.EquipmentId, e.TagNumber, e.Name }).FirstOrDefaultAsync();
-            if (eq != null) { ViewBag.PrefillEquipmentId = eq.EquipmentId; ViewBag.PrefillEquipmentText = eq.TagNumber + " — " + eq.Name; }
-        }
-
-        ViewData["Title"] = "New Work Request";
-        ViewData["Section"] = "CMMS Integration";
-
-        ViewBag.Disciplines = await _context.Disciplines.Where(x => x.IsActive)
-            .Select(x => new { x.DisciplineId, x.Name }).ToListAsync();
-        ViewBag.FunctionalLocations = await _functionalLocationService.GetPickerListAsync();
-
-        return View();
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(string title, string? description, int? equipmentId, int? assetId,
-        int? functionalLocationId, string? reportedCondition, string priority, int? suggestedDisciplineId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "Create"))
-            return Forbid();
-
-        var employeeId = await GetCurrentEmployeeIdAsync();
-        if (!employeeId.HasValue)
-        {
-            TempData["Error"] = L("کارمند مرتبط با این کاربر پیدا نشد.", "No employee is linked to this user.");
-            return RedirectToAction(nameof(Index));
-        }
-
-        var (success, error, id) = await _service.CreateAsync(
-            title, description, employeeId.Value, equipmentId, assetId, functionalLocationId,
-            reportedCondition, priority, suggestedDisciplineId);
-
-        if (!success)
-        {
-            TempData["Error"] = error;
-            return RedirectToAction(nameof(Create));
-        }
-
-        TempData["Message"] = "Work Request created";
-        return RedirectToAction(nameof(Details), new { id });
     }
 
     public async Task<IActionResult> Details(int id)
@@ -135,104 +63,8 @@ public class WorkRequestController : Controller
         return View(wr);
     }
 
-    /// <summary>ارسال پیش‌نویس به گردش‌کار مرکزی (شروع Instance از طریق Binding صریح). مجوز سمت‌سرور در سرویس اعمال می‌شود.</summary>
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Submit(int id)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "View"))
-            return Forbid();
-
-        var (success, error) = await _service.SubmitAsync(id, await BuildActorAsync());
-        TempData[success ? "Message" : "Error"] = success ? L("درخواست به گردش‌کار ارسال شد.", "The request was submitted to the workflow.") : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    /// <summary>
-    /// اجرای اکشن گردش‌کار. actionType از کاربر می‌آید اما «مجاز بودن» را سرور از مدل مرکزی تعیین می‌کند
-    /// (شرکت‌کننده + RequiredPermission + SoD + شرط‌ها)؛ نه مخفی‌بودن دکمه و نه هیچ وضعیتی که کلاینت بفرستد مرجع امنیت نیست.
-    /// </summary>
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> WorkflowAction(int id, string actionType, string? comment)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "View"))
-            return Forbid();
-
-        var (success, error) = await _service.ExecuteWorkflowActionAsync(id, actionType, comment, await BuildActorAsync());
-        TempData[success ? "Message" : "Error"] = success ? L($"اقدام «{actionType}» انجام شد.", $"Action \"{actionType}\" completed.") : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    // --- مسیر Legacy: فقط برای رکوردهای بدون Instance گردش‌کار (سرویس رکوردهای تحت گردش‌کار را رد می‌کند) ---
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AdvanceStatus(int id, string? reason)
-    {
-        var wr = await _service.GetDetailsAsync(id);
-        if (wr == null) return NotFound();
-
-        var next = _service.GetLegacyNextStatus(wr.Status);
-        if (next == null)
-        {
-            TempData["Error"] = L("این درخواست در وضعیت نهایی است.", "This request is in a final status.");
-            return RedirectToAction(nameof(Details), new { id });
-        }
-
-        // Submitted->UnderReview فقط نیازمند Create است (خودِ درخواست‌دهنده)؛ UnderReview->Approved
-        // و Approved->Planned تصمیم نظارتی‌اند و نیازمند Approve.
-        var requiredAction = next is "Approved" or "Planned" ? "Approve" : "Create";
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", requiredAction))
-            return Forbid();
-
-        var (success, error) = await _service.AdvanceStatusAsync(id, next, reason, await GetCurrentEmployeeIdAsync());
-
-        TempData[success ? "Message" : "Error"] = success ? L($"وضعیت به {next} تغییر کرد.", $"Status changed to {next}.") : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Reject(int id, string? reason)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "Approve"))
-            return Forbid();
-
-        var (success, error) = await _service.AdvanceStatusAsync(id, "Rejected", reason, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? L("درخواست رد شد.", "The request was rejected.") : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Cancel(int id, string? reason)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "Create"))
-            return Forbid();
-
-        var (success, error) = await _service.AdvanceStatusAsync(id, "Cancelled", reason, await GetCurrentEmployeeIdAsync());
-        TempData[success ? "Message" : "Error"] = success ? L("درخواست لغو شد.", "The request was cancelled.") : error;
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ConvertToWorkOrder(int id, string workOrderType)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkRequest", "Approve"))
-            return Forbid();
-
-        var (success, error, workOrderId) = await _service.ConvertToWorkOrderAsync(id, workOrderType, _currentUser.UserName, await BuildActorAsync());
-
-        if (!success)
-        {
-            TempData["Error"] = error;
-            return RedirectToAction(nameof(Details), new { id });
-        }
-
-        TempData["Message"] = L("WorkOrder ساخته شد.", "Work Order created.");
-        return RedirectToAction("Details", "WorkOrder", new { id = workOrderId });
-    }
+    // SCRUM-437: Submit and WorkflowAction are action definitions (work-request-submit, work-request-workflow-action) that run the service operations WorkRequest.Submit and
+    // WorkRequest.WorkflowAction through the generic handler operation.invoke; the service keeps every rule.
 
     private static string L(string fa, string en)
         => System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa" ? fa : en;

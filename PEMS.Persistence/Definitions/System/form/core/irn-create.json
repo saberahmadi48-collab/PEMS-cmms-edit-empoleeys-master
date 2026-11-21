@@ -1,0 +1,88 @@
+{
+  "kind": "form",
+  "key": "irn-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New incoming receipt",
+    "fa": "رسید ورودی جدید"
+  },
+  "description": {
+    "en": "New incoming receipt",
+    "fa": "رسید ورودی جدید"
+  },
+  "payload": {
+    "id": "irn-create",
+    "title": {
+      "en": "New incoming receipt",
+      "fa": "رسید ورودی جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "irn-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "vendorId",
+        "label": {
+          "en": "Vendor",
+          "fa": "فروشنده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "irn-vendors"
+      },
+      {
+        "name": "warehouseId",
+        "label": {
+          "en": "Warehouse",
+          "fa": "انبار"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "irn-warehouses"
+      },
+      {
+        "name": "receivingDate",
+        "label": {
+          "en": "Receiving date",
+          "fa": "تاریخ دریافت"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "purchaseOrderId",
+        "label": {
+          "en": "Issued purchase order (optional)",
+          "fa": "سفارش صادرشده (اختیاری)"
+        },
+        "kind": "select",
+        "optionsFrom": "irn-purchase-orders"
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت"
+        },
+        "kind": "textArea",
+        "maxLength": 1000,
+        "span": 2
+      }
+    ]
+  }
+}

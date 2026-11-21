@@ -1,0 +1,62 @@
+{
+  "kind": "action",
+  "key": "help-standard-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a standard reference",
+    "fa": "ذخیره‌ی مرجع استاندارد"
+  },
+  "description": {
+    "en": "Save a standard reference",
+    "fa": "ذخیره‌ی مرجع استاندارد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "SaveStandard",
+      "args": {
+        "standardId": "field:id",
+        "dto": {
+          "Identifier": "field:identifier",
+          "IssuingOrganization": "field:issuingOrganization",
+          "EditionOrYear": "field:editionOrYear",
+          "OfficialReferenceUrl": "field:officialReferenceUrl",
+          "RelatedModule": "field:relatedModule",
+          "ApplicabilityStatus": "field:applicabilityStatus",
+          "VerificationStatus": "field:verificationStatus",
+          "PEMSImplementationStatus": "field:pEMSImplementationStatus",
+          "EvidencePath": "field:evidencePath",
+          "Notes": "field:notes",
+          "Code": "field:code",
+          "HelpCategoryId": "field:helpCategoryId",
+          "DisplayOrder": "field:displayOrder",
+          "IsPublished": "field:isPublished",
+          "TitleEn": "field:titleEn",
+          "SummaryEn": "field:summaryEn",
+          "ContentEn": "field:contentEn",
+          "TitleFa": "field:titleFa",
+          "SummaryFa": "field:summaryFa",
+          "ContentFa": "field:contentFa"
+        },
+        "relatedArticleIds": "field:relatedArticleIds"
+      },
+      "load": {
+        "operation": {
+          "model": "Help",
+          "action": "StandardOf",
+          "args": {
+            "standardId": "param:id"
+          }
+        }
+      }
+    },
+    "success": {
+      "en": "Standard reference updated.",
+      "fa": "مرجع استاندارد به‌روز شد."
+    },
+    "redirect": "/p/help-standards"
+  }
+}

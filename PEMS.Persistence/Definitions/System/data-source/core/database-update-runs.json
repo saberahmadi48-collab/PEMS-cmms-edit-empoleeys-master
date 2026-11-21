@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "database-update-runs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Database update runs",
+    "fa": "اجراهای به‌روزرسانی پایگاه داده"
+  },
+  "description": {
+    "en": "Recent database update runs",
+    "fa": "اجراهای اخیر به‌روزرسانی پایگاه داده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DatabaseUpdate",
+      "action": "Status",
+      "path": "RecentRuns"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "barcode-generate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate a barcode",
+    "fa": "ساخت بارکد"
+  },
+  "description": {
+    "en": "Generate a barcode",
+    "fa": "ساخت بارکد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Barcode",
+      "action": "Generate",
+      "args": {
+        "targetType": "field:targetType",
+        "targetId": "field:targetId",
+        "symbology": "field:symbology",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The barcode was generated.",
+      "fa": "بارکد ساخته شد."
+    },
+    "redirect": "/p/barcodes"
+  }
+}

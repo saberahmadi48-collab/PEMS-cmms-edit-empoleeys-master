@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "help-article-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete an article",
+    "fa": "حذف مقاله"
+  },
+  "description": {
+    "en": "Delete an article",
+    "fa": "حذف مقاله"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "DeleteArticle",
+      "args": {
+        "articleId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Article deleted.",
+      "fa": "مقاله حذف شد."
+    },
+    "redirect": "/p/help-admin"
+  }
+}

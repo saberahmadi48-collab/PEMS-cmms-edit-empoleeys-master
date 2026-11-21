@@ -1,0 +1,114 @@
+{
+  "kind": "page",
+  "key": "po-authority",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "PO authority levels",
+    "fa": "سطوح اختیار سفارش خرید"
+  },
+  "description": {
+    "en": "PO authority levels list (page definition)",
+    "fa": "فهرست سطوح اختیار سفارش خرید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "po-authority",
+    "template": "entity-list",
+    "args": {
+      "id": "po-authority",
+      "url": "/d/po-authority-grid",
+      "idField": "purchaseOrderAuthorityRuleId",
+      "viewsKey": "po-authority",
+      "columns": [
+        {
+          "key": "level",
+          "header": {
+            "en": "Level",
+            "fa": "سطح"
+          },
+          "width": 80,
+          "type": "number"
+        },
+        {
+          "key": "currency",
+          "header": {
+            "en": "Currency",
+            "fa": "ارز"
+          },
+          "width": 100
+        },
+        {
+          "key": "minAmount",
+          "header": {
+            "en": "From",
+            "fa": "از مبلغ"
+          },
+          "width": 140,
+          "type": "number"
+        },
+        {
+          "key": "maxAmount",
+          "header": {
+            "en": "To",
+            "fa": "تا مبلغ"
+          },
+          "width": 140,
+          "type": "number"
+        },
+        {
+          "key": "approverRole",
+          "header": {
+            "en": "Approver role",
+            "fa": "نقش تأییدکننده"
+          },
+          "width": 180
+        },
+        {
+          "key": "description",
+          "header": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "width": 300
+        },
+        {
+          "key": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/po-authority-edit/{id}",
+              "method": "get"
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/po-authority-create",
+      "newLabel": {
+        "en": "New authority level",
+        "fa": "سطح اختیار جدید"
+      }
+    }
+  }
+}

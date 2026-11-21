@@ -1,0 +1,53 @@
+{
+  "key": "input",
+  "component": "PEMS.UI.Components.PemsInput",
+  "category": "forms",
+  "icon": "bi-input-cursor-text",
+  "nameKey": "component.input",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "kind": {
+        "type": "string"
+      },
+      "scale": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "InputOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "scale": "small"
+  }
+}

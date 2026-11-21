@@ -1,0 +1,104 @@
+{
+  "kind": "form",
+  "key": "storage-routing-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit storage route",
+    "fa": "ویرایش قانون مسیریابی ذخیره‌سازی"
+  },
+  "description": {
+    "en": "Edit storage route",
+    "fa": "ویرایش قانون مسیریابی ذخیره‌سازی"
+  },
+  "payload": {
+    "id": "storage-routing-edit",
+    "title": {
+      "en": "Edit storage route",
+      "fa": "ویرایش قانون مسیریابی ذخیره‌سازی"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "storage-routing-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "module",
+        "label": {
+          "en": "Module (for example EngineeringDocuments, VDR, Contracts)",
+          "fa": "ماژول (مثلاً EngineeringDocuments، VDR، Contracts)"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Module (for example EngineeringDocuments, VDR, Contracts) is required.",
+            "fa": "ماژول (مثلاً EngineeringDocuments، VDR، Contracts) الزامی است."
+          }
+        }
+      },
+      {
+        "name": "documentType",
+        "label": {
+          "en": "Document type (optional, blank = module-wide default)",
+          "fa": "نوع سند (اختیاری؛ خالی = پیش‌فرض ماژول)"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "storageProviderId",
+        "label": {
+          "en": "Storage provider",
+          "fa": "ارائه‌دهنده‌ی ذخیره‌سازی"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Storage provider is required.",
+            "fa": "ارائه‌دهنده‌ی ذخیره‌سازی الزامی است."
+          }
+        },
+        "optionsFrom": "storage-routing-storage-provider-id-options"
+      },
+      {
+        "name": "relativeRootPath",
+        "label": {
+          "en": "Relative root path (optional subfolder)",
+          "fa": "مسیر نسبی (زیرپوشه‌ی اختیاری)"
+        },
+        "kind": "text",
+        "maxLength": 300
+      },
+      {
+        "name": "isEnabled",
+        "label": {
+          "en": "Enabled",
+          "fa": "فعال"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "isDefault",
+        "label": {
+          "en": "Default route of the module",
+          "fa": "پیش‌فرض ماژول"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

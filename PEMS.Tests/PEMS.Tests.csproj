@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -26,7 +26,11 @@
     <ProjectReference Include="..\PEMS.Application\PEMS.Application.csproj" />
     <ProjectReference Include="..\PEMS.Domain\PEMS.Domain.csproj" />
     <ProjectReference Include="..\PEMS.Persistence\PEMS.Persistence.csproj" />
+    <ProjectReference Include="..\PEMS.Migrations\PEMS.Migrations.csproj" />
     <ProjectReference Include="..\PEMS.Web\PEMS.Web.csproj" />
+    <ProjectReference Include="..\PEMS.Licensing\PEMS.Licensing.csproj" />
+    <!-- Test-only reference: the vendor tool is exercised here but must never be referenced by PEMS.Web (PackageScanTests). -->
+    <ProjectReference Include="..\tools\PemsVendorTool\PemsVendorTool.csproj" Aliases="VendorTool" />
   </ItemGroup>
 
   <ItemGroup>

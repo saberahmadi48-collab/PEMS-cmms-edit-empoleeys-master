@@ -1,0 +1,67 @@
+{
+  "key": "date",
+  "component": "PEMS.UI.Components.PemsDate",
+  "category": "forms",
+  "icon": "bi-calendar-date",
+  "nameKey": "component.date",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      },
+      "hidden": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "value": {
+            "type": "string"
+          },
+          "disabled": {
+            "type": "boolean"
+          },
+          "form": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "DateOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "attributes": {
+      "class": "form-control",
+      "type": "date",
+      "name": "due",
+      "value": "2026-11-05"
+    }
+  }
+}

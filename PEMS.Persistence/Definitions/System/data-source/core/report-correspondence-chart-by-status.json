@@ -1,0 +1,31 @@
+{
+  "kind": "data-source",
+  "key": "report-correspondence-chart-by-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondence chart: By status",
+    "fa": "نمودار correspondence: بر اساس وضعیت"
+  },
+  "description": {
+    "en": "Correspondence chart: By status",
+    "fa": "نمودار correspondence: بر اساس وضعیت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Correspondence",
+      "args": {
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      },
+      "where": {
+        "key": "ByStatus"
+      }
+    }
+  }
+}

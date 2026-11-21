@@ -1,0 +1,13 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-new", Category = "list", Icon = "bi-plus-lg")]
+@if (!string.IsNullOrEmpty(Options.Modal))
+{
+    <button class="btn btn-sm btn-pems-solid lp-compose" data-bs-target="@("#" + Options.Modal)" data-bs-toggle="modal" type="button"><i aria-hidden="true" class="bi bi-plus-lg"></i> <span class="lp-compose-label">@Options.Text</span></button>
+}
+else
+{
+    <a class="btn btn-sm btn-pems-solid lp-compose" href="@Options.Href"><i aria-hidden="true" class="bi bi-plus-lg"></i> <span class="lp-compose-label">@Options.Text</span></a>
+}
+@code {
+    [Parameter, EditorRequired] public ListNewOptions Options { get; set; } = default!;
+}

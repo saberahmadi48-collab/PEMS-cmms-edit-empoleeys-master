@@ -1,0 +1,33 @@
+{
+  "key": "list-reset-columns",
+  "component": "PEMS.UI.Components.PemsListResetColumns",
+  "category": "list",
+  "icon": "bi-arrow-counterclockwise",
+  "nameKey": "component.list-reset-columns",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "gridKey": {
+        "type": "string"
+      },
+      "label": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "ListResetColumnsOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "gridKey": "docs",
+    "label": "Reset columns"
+  }
+}

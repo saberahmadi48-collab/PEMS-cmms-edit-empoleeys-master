@@ -1,0 +1,228 @@
+{
+    "metrics": {
+        "data_received": {
+            "count": 23304453,
+            "rate": 384371.4625821094
+        },
+        "vus": {
+            "value": 5,
+            "min": 5,
+            "max": 5
+        },
+        "http_req_receiving": {
+            "avg": 2.205281886792454,
+            "min": 0,
+            "med": 0,
+            "max": 15.9581,
+            "p(90)": 8.006200000000002,
+            "p(95)": 10.5237
+        },
+        "http_req_waiting": {
+            "avg": 29.46271841509439,
+            "min": 1.523,
+            "med": 21.0331,
+            "max": 437.0399,
+            "p(90)": 43.580200000000005,
+            "p(95)": 52.91973999999999
+        },
+        "http_req_connecting": {
+            "med": 0,
+            "max": 0,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0,
+            "min": 0
+        },
+        "http_req_duration": {
+            "avg": 31.706393433962283,
+            "min": 2.9335,
+            "med": 23.2284,
+            "max": 437.9292,
+            "p(90)": 46.08780000000001,
+            "p(95)": 55.56836
+        },
+        "http_req_duration{name:GET /api/v1/definitions/{id}}": {
+            "avg": 26.38807680608364,
+            "min": 6.3778,
+            "med": 22.0095,
+            "max": 188.9594,
+            "p(90)": 34.68170000000002,
+            "p(95)": 41.37274,
+            "thresholds": {
+                "p(95)<200": false
+            }
+        },
+        "http_reqs": {
+            "count": 1325,
+            "rate": 21.8538571972187
+        },
+        "vus_max": {
+            "value": 5,
+            "min": 5,
+            "max": 5
+        },
+        "http_req_duration{name:GET /api/v1/disciplines}": {
+            "max": 409.4526,
+            "p(90)": 47.87092000000001,
+            "p(95)": 70.77671999999998,
+            "avg": 35.52414980988595,
+            "min": 9.6768,
+            "med": 25.6403,
+            "thresholds": {
+                "p(95)<300": false
+            }
+        },
+        "iterations": {
+            "count": 263,
+            "rate": 4.3377844851837875
+        },
+        "http_req_duration{name:GET /api/v1/openapi.json}": {
+            "p(95)": 55.07538999999997,
+            "avg": 46.736039923954415,
+            "min": 13.2827,
+            "med": 41.4212,
+            "max": 437.9292,
+            "p(90)": 50.78658,
+            "thresholds": {
+                "p(95)<500": false
+            }
+        },
+        "http_req_failed": {
+            "passes": 0,
+            "fails": 1325,
+            "thresholds": {
+                "rate<0.01": false
+            },
+            "value": 0
+        },
+        "http_req_sending": {
+            "min": 0,
+            "med": 0,
+            "max": 11.1672,
+            "p(90)": 0,
+            "p(95)": 0.12619999999999898,
+            "avg": 0.038393132075471695
+        },
+        "iteration_duration": {
+            "avg": 1149.1185456273763,
+            "min": 629.2159,
+            "med": 1118.308,
+            "max": 3050.0387,
+            "p(90)": 1530.3612,
+            "p(95)": 1603.1573899999999
+        },
+        "http_req_duration{name:GET /api/v1/definitions}": {
+            "med": 19.4766,
+            "max": 209.3864,
+            "p(90)": 36.039080000000006,
+            "p(95)": 40.56973,
+            "avg": 24.811291254752863,
+            "min": 5.7955,
+            "thresholds": {
+                "p(95)<300": false
+            }
+        },
+        "pems_api_error_rate": {
+            "passes": 0,
+            "fails": 1320,
+            "thresholds": {
+                "rate<0.01": false
+            },
+            "value": 0
+        },
+        "http_req_tls_handshaking": {
+            "avg": 0,
+            "min": 0,
+            "med": 0,
+            "max": 0,
+            "p(90)": 0,
+            "p(95)": 0
+        },
+        "checks": {
+            "passes": 1320,
+            "fails": 0,
+            "value": 1
+        },
+        "data_sent": {
+            "count": 1660703,
+            "rate": 27390.76695018316
+        },
+        "http_req_duration{name:GET /api/v1/disciplines/{id}}": {
+            "med": 18.3111,
+            "max": 68.8132,
+            "p(90)": 30.088820000000002,
+            "p(95)": 44.311819999999955,
+            "avg": 20.17925779467681,
+            "min": 2.9335,
+            "thresholds": {
+                "p(95)<200": false
+            }
+        },
+        "http_req_duration{expected_response:true}": {
+            "avg": 31.706393433962283,
+            "min": 2.9335,
+            "med": 23.2284,
+            "max": 437.9292,
+            "p(90)": 46.08780000000001,
+            "p(95)": 55.56836
+        },
+        "http_req_blocked": {
+            "min": 0,
+            "med": 0,
+            "max": 20.4314,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0.0845137358490566
+        }
+    },
+    "root_group": {
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {},
+        "checks": {
+                "login succeeded (302)": {
+                    "name": "login succeeded (302)",
+                    "path": "::login succeeded (302)",
+                    "id": "177cbabd294a268b7f4dc315d7db0a11",
+                    "passes": 5,
+                    "fails": 0
+                },
+                "GET /api/v1/disciplines => 200": {
+                    "path": "::GET /api/v1/disciplines => 200",
+                    "id": "c20c8e8afa175d3ab7ed46e00c940318",
+                    "passes": 263,
+                    "fails": 0,
+                    "name": "GET /api/v1/disciplines => 200"
+                },
+                "GET /api/v1/disciplines/{id} => 200": {
+                    "name": "GET /api/v1/disciplines/{id} => 200",
+                    "path": "::GET /api/v1/disciplines/{id} => 200",
+                    "id": "4c7a19d197024bbe89ab072a9c516215",
+                    "passes": 263,
+                    "fails": 0
+                },
+                "GET /api/v1/definitions => 200": {
+                    "name": "GET /api/v1/definitions => 200",
+                    "path": "::GET /api/v1/definitions => 200",
+                    "id": "fe4370270d2529d8f56e33204d53c4a9",
+                    "passes": 263,
+                    "fails": 0
+                },
+                "GET /api/v1/definitions/{id} => 200": {
+                    "id": "7247a17a88a1b6a56ad9782a72260acf",
+                    "passes": 263,
+                    "fails": 0,
+                    "name": "GET /api/v1/definitions/{id} => 200",
+                    "path": "::GET /api/v1/definitions/{id} => 200"
+                },
+                "GET /api/v1/openapi.json => 200": {
+                    "name": "GET /api/v1/openapi.json => 200",
+                    "path": "::GET /api/v1/openapi.json => 200",
+                    "id": "e10e42ff99e78d5f9f2e67baf459232c",
+                    "passes": 263,
+                    "fails": 0
+                }
+            }
+    }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-help-standardmatrix",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help administration (old address)",
+    "fa": "مدیریت راهنما (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Help administration (old address)",
+    "fa": "مدیریت راهنما (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/Help/StandardMatrix/{*rest}",
+    "target": "/p/help-standards",
+    "permanent": false
+  }
+}

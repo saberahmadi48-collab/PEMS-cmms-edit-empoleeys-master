@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "barcode-revoke",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Revoke a barcode",
+    "fa": "ابطال بارکد"
+  },
+  "description": {
+    "en": "Revoke a barcode",
+    "fa": "ابطال بارکد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Barcode",
+      "action": "Revoke",
+      "args": {
+        "id": "field:id",
+        "reason": "field:reason",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The barcode was revoked.",
+      "fa": "بارکد باطل شد."
+    },
+    "redirect": "/p/barcodes"
+  }
+}

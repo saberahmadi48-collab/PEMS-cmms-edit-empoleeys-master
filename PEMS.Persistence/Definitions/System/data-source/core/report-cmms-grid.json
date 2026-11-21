@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "report-cmms-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CMMS report rows",
+    "fa": "ردیف‌های گزارش CMMS"
+  },
+  "description": {
+    "en": "CMMS report rows",
+    "fa": "ردیف‌های گزارش CMMS"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Cmms",
+      "args": {
+        "status": "param:status",
+        "priority": "param:priority",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      }
+    }
+  }
+}

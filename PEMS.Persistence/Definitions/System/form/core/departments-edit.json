@@ -1,0 +1,74 @@
+{
+  "kind": "form",
+  "key": "departments-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit department",
+    "fa": "ویرایش دپارتمان"
+  },
+  "description": {
+    "en": "Edit department",
+    "fa": "ویرایش دپارتمان"
+  },
+  "payload": {
+    "id": "departments-edit",
+    "title": {
+      "en": "Edit department",
+      "fa": "ویرایش دپارتمان"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "departments-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "owner": "platform",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "maxLength": 20,
+        "pattern": "[A-Za-z0-9_-]+",
+        "messages": {
+          "pattern": {
+            "en": "The code may only contain letters, digits, hyphen and underscore.",
+            "fa": "کد فقط می‌تواند شامل حروف انگلیسی، عدد، خط تیره و زیرخط باشد."
+          }
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "minLength": 2,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "employee-position",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set the organizational position",
+    "fa": "تعیین سمت سازمانی"
+  },
+  "description": {
+    "en": "Assign a vacant position (SystemAdmin only)",
+    "fa": "تخصیص یک سمت خالی (فقط SystemAdmin)"
+  },
+  "payload": {
+    "id": "employee-position",
+    "title": {
+      "en": "Position",
+      "fa": "سمت"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "employee-position",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "employeeId",
+        "label": {
+          "en": "Employee id",
+          "fa": "شناسه کارمند"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Employee id is required.",
+            "fa": "شناسه کارمند الزامی است."
+          }
+        }
+      },
+      {
+        "name": "positionId",
+        "label": {
+          "en": "Position",
+          "fa": "سمت"
+        },
+        "kind": "select",
+        "optionsFrom": "employee-vacant-positions"
+      }
+    ]
+  }
+}

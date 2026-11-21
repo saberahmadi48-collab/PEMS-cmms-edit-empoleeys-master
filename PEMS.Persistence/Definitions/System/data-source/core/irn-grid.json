@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "irn-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Incoming receipts (IRN)",
+    "fa": "رسیدهای ورودی (IRN)"
+  },
+  "description": {
+    "en": "Incoming receipts (IRN)",
+    "fa": "رسیدهای ورودی (IRN)"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Irn",
+      "action": "List",
+      "args": {
+        "status": "param:status"
+      }
+    }
+  }
+}

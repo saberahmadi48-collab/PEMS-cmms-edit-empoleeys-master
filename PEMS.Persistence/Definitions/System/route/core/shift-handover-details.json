@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "shift-handover-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Shift handover details (old address)",
+    "fa": "Shift handover details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Shift handover details (old address)",
+    "fa": "Shift handover details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ShiftHandover/Details/{id}",
+    "target": "/p/shift-handover-details?id={id}",
+    "permanent": false
+  }
+}

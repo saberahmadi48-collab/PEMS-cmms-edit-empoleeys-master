@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "employee-qualification-remove",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a qualification",
+    "fa": "حذف صلاحیت"
+  },
+  "description": {
+    "en": "Remove a qualification",
+    "fa": "حذف صلاحیت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Employee",
+      "action": "RemoveQualification",
+      "args": {
+        "employeeQualificationId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Qualification removed.",
+      "fa": "صلاحیت حذف شد."
+    }
+  }
+}

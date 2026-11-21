@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "numbering-vdr-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "VDR items for numbering",
+    "fa": "مدارک VDR برای شماره‌گذاری"
+  },
+  "description": {
+    "en": "VDR items found by the search",
+    "fa": "مدارک یافت‌شده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Numbering",
+      "action": "VdrSearch",
+      "args": {
+        "search": "param:search"
+      }
+    }
+  }
+}

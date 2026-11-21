@@ -6,63 +6,37 @@
     ViewData["Title"] = "Manage Passkeys";
 }
 
-<p class="text-muted small">
+<pems-text class="text-muted small">
     طبق سند PEMS-SEC-PERMIT-AUTH-001: تایید/رد Permit، تایید ایزوله‌سازی، اقدامات SIMOPS، و
     Execution Gate نیازمند Step-up Authentication با Passkey (اثر انگشت/Face ID/PIN دستگاه) هستند.
     بدون حداقل یک Passkey ثبت‌شده، این اقدامات مسدود می‌شوند. PEMS هرگز داده‌ی بیومتریک شما را
     نمی‌بیند یا ذخیره نمی‌کند - فقط دستگاه شما آن را تایید می‌کند.
-</p>
+</pems-text>
 
 <div id="pems-passkey-alert"></div>
 
-<div class="content-card mb-3">
-    <h6 class="mb-3">@Localizer["Register New Passkey"]</h6>
-    <form id="registerForm" class="row g-2 align-items-end" onsubmit="return false;">
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3">@Localizer["Register New Passkey"]</pems-heading>
+    <pems-form id="registerForm" data-pems-submit="prevent"><pems-row gap="2" css="align-items-end">
         @Html.AntiForgeryToken()
-        <div class="col-md-4">
-            <label class="form-label small">@Localizer["Nickname (optional)"]</label>
-            <input type="text" id="nickname" class="form-control form-control-sm" placeholder="e.g. My Laptop Windows Hello" />
-        </div>
-        <div class="col-md-2">
-            <button type="button" class="btn btn-sm btn-pems-solid" onclick="registerNow()">
-                <i class="bi bi-fingerprint"></i> @Localizer["Register Passkey"]
-            </button>
-        </div>
-    </form>
-</div>
+        <pems-col md="4">
+            <pems-label css="small">@Localizer["Nickname (optional)"]</pems-label>
+            <pems-input scale="small" type="text" id="nickname" placeholder="e.g. My Laptop Windows Hello" />
+        </pems-col>
+        <pems-col md="2">
+            <pems-button tone="primary" size="small" type="button" data-pems-click="call" data-pems-fn="registerNow" data-pems-arg="none">
+                <pems-icon name="bi-fingerprint" /> @Localizer["Register Passkey"]
+            </pems-button>
+        </pems-col>
+    </pems-row></pems-form>
+</pems-content-card>
 
-<div class="content-card">
-    <h6 class="mb-3">@Localizer["Registered Passkeys"]</h6>
-    <table class="table table-enterprise table-sm mb-0">
-        <thead><tr><th>@Localizer["Nickname"]</th><th>@Localizer["Registered"]</th><th>@Localizer["Last Used"]</th></tr></thead>
-        <tbody>
-            @foreach (var c in Model)
-            {
-                <tr>
-                    <td class="small">@(c.Nickname ?? "-")</td>
-                    <td class="small">@c.CreatedDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="small">@(c.LastUsedDate?.ToString("yyyy-MM-dd HH:mm") ?? "Never")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز Passkey ای ثبت نشده."]</p> }
-</div>
+<pems-content-card>
+    <pems-heading level="6" class="mb-3">@Localizer["Registered Passkeys"]</pems-heading>
+    <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Nickname"])?.ToString() ?? ""), c => (object?)(c.Nickname ?? "-"), css: "small").Add(((Localizer["Registered"])?.ToString() ?? ""), c => (object?)(PemsDates.DateTime(c.CreatedDate)), css: "small").Add(((Localizer["Last Used"])?.ToString() ?? ""), c => (object?)(PemsDates.DateTime(c.LastUsedDate) ?? "Never"), css: "small")))" dense="true" css="mb-0" />
+    @if (!Model.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["هنوز Passkey ای ثبت نشده."]</pems-text> }
+</pems-content-card>
 
+<pems-script-templates set="manage-passkeys"></pems-script-templates>
 <script src="~/js/webauthn.js"></script>
-<script>
-    async function registerNow() {
-        const nickname = document.getElementById('nickname').value;
-        const token = document.querySelector('#registerForm input[name="__RequestVerificationToken"]').value;
-        const alertBox = document.getElementById('pems-passkey-alert');
-        alertBox.innerHTML = '';
-
-        const result = await pemsRegisterPasskey(nickname, token);
-
-        if (result.success) {
-            location.reload();
-        } else {
-            alertBox.innerHTML = '<div class="alert alert-danger py-2 px-3 small">' + (result.error || 'ثبت ناموفق بود.') + '</div>';
-        }
-    }
-</script>
+<script src="~/js/views/account-managepasskeys.js" asp-append-version="true"></script>

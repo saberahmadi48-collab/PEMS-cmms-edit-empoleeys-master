@@ -1,163 +1,173 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MechanicalEquipmentListDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var equipmentOptions = (IEnumerable<dynamic>)ViewBag.Equipments;
+    var q = (string?)ViewBag.SearchTerm;
+    var subType = (string?)ViewBag.SelectedSubType;
+    var subTypes = new[] { "Rotating", "Static", "Unclassified" };
+    var filterCount = string.IsNullOrEmpty(subType) ? 0 : 1;
+
+    var qsParts = new List<string>();
+    if (!string.IsNullOrEmpty(subType)) qsParts.Add($"subType={Uri.EscapeDataString(subType)}");
+    if (!string.IsNullOrEmpty(q)) qsParts.Add($"q={Uri.EscapeDataString(q)}");
+
+    string SubTypeText(string? s) => VdrUi.Loc(Localizer, "Me_Sub_", s);
+    string SubTypeTone(string? s) => s switch { "Rotating" => "vs-pill--info", "Static" => "vs-pill--current", _ => "vs-pill--neutral" };
 }
 
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-<div class="content-card mb-3">
-    <div class="row g-3 text-center">
-        <div class="col-md-3"><div class="border rounded p-3"><div class="text-muted small">@Localizer["Total Mechanical Equipment"]</div><div class="fs-4 fw-bold">@ViewBag.TotalCount</div></div></div>
-        <div class="col-md-2"><div class="border rounded p-3"><div class="text-muted small">@Localizer["Rotating"]</div><div class="fs-4 fw-bold text-primary">@ViewBag.RotatingCount</div></div></div>
-        <div class="col-md-2"><div class="border rounded p-3"><div class="text-muted small">@Localizer["Static"]</div><div class="fs-4 fw-bold text-info">@ViewBag.StaticCount</div></div></div>
-        <div class="col-md-2"><div class="border rounded p-3"><div class="text-muted small">@Localizer["Unclassified"]</div><div class="fs-4 fw-bold text-secondary">@ViewBag.UnclassifiedCount</div></div></div>
-        <div class="col-md-3">
-            <div class="border rounded p-3 d-flex flex-column gap-2 h-100 justify-content-center">
-                <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createMechanicalModal">
-                    <i class="bi bi-plus-lg"></i> @Localizer["New Mechanical Equipment"]
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+@* SCRUM-337 W2b: built from the PEMS.UI list-page component; the page keeps its search, sub-type filter, counts (KPI row,
+   sub-type chips filter the list), columns and row actions; "New mechanical equipment" still opens the create modal. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-<div class="content-card">
-    <form method="get" class="d-flex flex-wrap gap-2 mb-3">
-        <input type="search" name="q" value="@ViewBag.SearchTerm" class="form-control form-control-sm" style="max-width:260px;" placeholder="@Localizer["Search tag / manufacturer..."]" />
-        <select name="subType" class="form-select form-select-sm" style="max-width:180px;">
-            <option value="">@Localizer["All types"]</option>
-            @foreach (var s in new[] { "Rotating", "Static", "Unclassified" })
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Me_Title"]" total="@Model.TotalCount">
+            <pems-list-search id="meSearchForm" action="@Url.Action("Index")" input-id="meQuickSearch" name="q" value="@q"
+                              placeholder="@Localizer["Me_SearchPlaceholder"]">
+                @if (!string.IsNullOrEmpty(subType)) { <input type="hidden" name="subType" value="@subType" /> }
+            </pems-list-search>
+
+            <pems-list-tools search-for="meSearchForm">
+                <pems-list-filters form-id="meFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index", new { q })">
+                    <input type="hidden" name="q" value="@q" />
+                    <div>
+                        <label class="lp-lbl" for="meFilterSubType">@Localizer["Me_SubType"]</label>
+                        <pems-select scale="small" id="meFilterSubType" name="subType">
+                            <option value="">@Localizer["Eq_AllTypes"]</option>
+                            @foreach (var s in subTypes)
+                            { <option value="@s" selected="@(s == subType)">@SubTypeText(s)</option> }
+                        </pems-select>
+                    </div>
+                </pems-list-filters>
+                <pems-list-kpi-toggle target="meKpis" storage-key="pems.mechanicalEquipment.kpis" />
+                <pems-list-reset-columns grid-key="MechanicalEquipment" />
+                <pems-list-new modal="createMechanicalModal" text="@Localizer["Me_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-kpis id="meKpis">
+            <span class="vs-chip">@Localizer["Eq_Total"] <strong>@ViewBag.TotalCount</strong></span>
+            @foreach (var s in subTypes)
             {
-                <option value="@s" selected="@(s == (string?)ViewBag.SelectedSubType)">@s</option>
+                var count = s switch { "Rotating" => ViewBag.RotatingCount, "Static" => ViewBag.StaticCount, _ => ViewBag.UnclassifiedCount };
+                <pems-link class="vs-chip" href="@Url.Action("Index", new { subType = s, q })">@SubTypeText(s) <strong>@count</strong></pems-link>
             }
-        </select>
-        <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-funnel"></i> @Localizer["Filter"]</button>
-        <a asp-action="Index" class="btn btn-sm btn-outline-secondary">@Localizer["Reset"]</a>
-    </form>
+        </pems-list-kpis>
 
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('MechanicalEquipment')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="MechanicalEquipment">
-            <thead>
-                <tr>
-                    <th data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Tag"]</th>
-                    <th data-col-key="mfr" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Manufacturer / Model"]</th>
-                    <th data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="180" style="width:110px">@Localizer["Type"]</th>
-                    <th data-col-key="subtype" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Sub-Type"]</th>
-                    <th data-col-key="actions" data-resizable="false" style="width:90px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var m in Model.Items)
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(q))
+            { <pems-list-chip label="@Localizer["Search"]" value="@q" remove-href="@Url.Action("Index", new { subType })" /> }
+            @if (!string.IsNullOrEmpty(subType))
+            { <pems-list-chip label="@Localizer["Me_SubType"]" value="@SubTypeText(subType)" remove-href="@Url.Action("Index", new { q })" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="MechanicalEquipment" empty="@(!Model.Items.Any())" empty-text="@Localizer["Me_Empty"]"
+                             filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Me_Tag"]</pems-table-header>
+                        <pems-table-header class="pems-w-220" data-col-key="mfr" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Cm_ManufacturerModel"]</pems-table-header>
+                        <pems-table-header class="pems-w-140" data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="200">@Localizer["Cm_Type"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="subtype" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Me_SubType"]</pems-table-header>
+                        <pems-table-header class="pems-w-90" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var m in Model.Items)
+                    {
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId" class="lp-subject"><span class="vs-num">@m.TagNumber</span></pems-link></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-title-cell" title="@m.Manufacturer / @m.Model">@m.Manufacturer / @m.Model</span></pems-table-cell>
+                            <pems-table-cell class="small">@m.EquipmentType</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @SubTypeTone(m.SubType)">@SubTypeText(m.SubType)</span></pems-table-cell>
+                            <pems-table-cell class="text-end text-nowrap">
+                                <pems-link asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId" class="lp-act lp-act--always" title="@Localizer["Me_Passport"]" aria-label="@Localizer["Me_Passport"]"><pems-icon name="bi-card-text" aria-hidden="true" /></pems-link>
+                                <pems-link asp-action="Edit" asp-route-id="@m.MechanicalEquipmentId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></pems-link>
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
                 {
-                    var badgeClass = m.SubType switch { "Rotating" => "bg-primary", "Static" => "bg-info text-dark", _ => "bg-secondary" };
-                    <tr>
-                        <td><a asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId">@m.TagNumber</a></td>
-                        <td class="small">@m.Manufacturer / @m.Model</td>
-                        <td>@m.EquipmentType</td>
-                        <td><span class="badge @badgeClass">@m.SubType</span></td>
-                        <td class="text-end">
-                            <a asp-action="Passport" asp-route-id="@m.MechanicalEquipmentId" class="btn btn-sm btn-outline-secondary" title="@Localizer["Passport"]"><i class="bi bi-card-text"></i></a>
-                            <a asp-action="Edit" asp-route-id="@m.MechanicalEquipmentId" class="btn btn-sm btn-outline-secondary" title="@Localizer["Edit"]"><i class="bi bi-pencil"></i></a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["No mechanical equipment found."]</p> }
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "MechanicalEquipment",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.Join("&", qsParts)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
-    @{
-        var qsParts = new List<string>();
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedSubType)) qsParts.Add($"subType={Uri.EscapeDataString((string)ViewBag.SelectedSubType)}");
-        if (!string.IsNullOrEmpty((string?)ViewBag.SearchTerm)) qsParts.Add($"q={Uri.EscapeDataString((string)ViewBag.SearchTerm)}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "MechanicalEquipment",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('MechanicalEquipment');
-        });
-    </script>
-}
-
-<div class="modal fade" id="createMechanicalModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">@Localizer["New Mechanical Equipment"]</h6></div>
-                <div class="modal-body">
-                    <p class="text-muted small">
+<pems-modal size="large" id="createMechanicalModal" tabindex="-1">
+            <pems-form asp-action="Create" method="post">
+                <pems-modal-header>@Localizer["Me_New"]</pems-modal-header>
+                <pems-modal-body>
+                    <pems-text class="text-muted small">
                         @Localizer["Equipment link is optional - only fill it when this mechanical record represents an existing Equipment tag. Rotating/Static sub-type details are added afterwards from the Passport page."]
-                    </p>
-                    <div class="mb-3">
-                        <label class="form-label">@Localizer["Equipment (اختیاری)"]</label>
-                        <select name="equipmentId" class="form-select">
+                    </pems-text>
+                    <pems-form-group css="mb-3">
+                        <pems-label>@Localizer["Equipment (اختیاری)"]</pems-label>
+                        <pems-select name="equipmentId">
                             <option value="">@Localizer["-- ندارد --"]</option>
                             @foreach (var e in equipmentOptions)
                             {
                                 <option value="@e.EquipmentId">@e.Label</option>
                             }
-                        </select>
-                    </div>
+                        </pems-select>
+                    </pems-form-group>
 
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Tag Number"]</label>
-                            <input name="tagNumber" class="form-control" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Equipment Type"]</label>
-                            <input name="equipmentType" class="form-control" required placeholder="@Localizer["Pump, Compressor, Vessel, Tank, Heat Exchanger ..."]" />
-                        </div>
-                    </div>
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Tag Number"]</pems-label>
+                            <pems-input name="tagNumber" required />
+                        </pems-col>
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Equipment Type"]</pems-label>
+                            <pems-input name="equipmentType" required placeholder="@Localizer["Pump, Compressor, Vessel, Tank, Heat Exchanger ..."]" />
+                        </pems-col>
+                    </pems-row>
 
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Manufacturer"]</label>
-                            <input name="manufacturer" class="form-control" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Model"]</label>
-                            <input name="model" class="form-control" />
-                        </div>
-                    </div>
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Manufacturer"]</pems-label>
+                            <pems-input name="manufacturer" />
+                        </pems-col>
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Model"]</pems-label>
+                            <pems-input name="model" />
+                        </pems-col>
+                    </pems-row>
 
-                    <div class="mb-2">
-                        <label class="form-label">@Localizer["توضیحات (اختیاری)"]</label>
-                        <textarea name="description" class="form-control" rows="2"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                    <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ساخت"]</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                    <pems-form-group css="mb-2">
+                        <pems-label>@Localizer["توضیحات (اختیاری)"]</pems-label>
+                        <pems-textarea name="description" rows="2"></pems-textarea>
+                    </pems-form-group>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                    <pems-button tone="primary" size="small" type="submit">@Localizer["ساخت"]</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

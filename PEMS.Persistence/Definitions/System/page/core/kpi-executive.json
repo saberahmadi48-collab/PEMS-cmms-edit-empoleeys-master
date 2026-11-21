@@ -1,0 +1,304 @@
+{
+  "kind": "page",
+  "key": "kpi-executive",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Executive KPI dashboard",
+    "fa": "داشبورد مدیریتی KPI"
+  },
+  "description": {
+    "en": "KPI tiles against targets, with a form to change a target (page definition)",
+    "fa": "شاخص‌ها نسبت به هدف و فرم تغییر هدف (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "kpi-executive",
+    "permission": "Reliability.View",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "kpi-executive-filters",
+            "resetUrl": "/p/kpi-executive",
+            "fields": [
+              {
+                "name": "fromDate",
+                "label": {
+                  "en": "From",
+                  "fa": "از تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.fromDate}}"
+              },
+              {
+                "name": "toDate",
+                "label": {
+                  "en": "To",
+                  "fa": "تا تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.toDate}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/kpi",
+                "text": {
+                  "en": "Classic KPI dashboard",
+                  "fa": "داشبورد کلاسیک KPI"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/kpi-target",
+                "text": {
+                  "en": "Change a target",
+                  "fa": "تغییر هدف"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "kpi-tiles",
+          "component": "data-grid",
+          "options": {
+            "id": "kpi-tiles",
+            "url": "/d/kpi-tiles-grid?f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "idField": "kpi",
+            "columns": [
+              {
+                "key": "section",
+                "header": {
+                  "en": "Section",
+                  "fa": "بخش"
+                },
+                "width": 160
+              },
+              {
+                "key": "kpi",
+                "header": {
+                  "en": "KPI",
+                  "fa": "شاخص"
+                },
+                "width": 220
+              },
+              {
+                "key": "value",
+                "header": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                },
+                "width": 130
+              },
+              {
+                "key": "target",
+                "header": {
+                  "en": "Target",
+                  "fa": "هدف"
+                },
+                "width": 130
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Detail",
+                  "fa": "توضیح"
+                },
+                "width": 320
+              }
+            ],
+            "pageSize": 50,
+            "height": 460
+          }
+        },
+        {
+          "id": "chart-equipment-by-status",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/kpi-chart-equipment-by-status?f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                }
+              }
+            ],
+            "kind": "donut",
+            "ariaLabel": {
+              "en": "Equipment by status",
+              "fa": "تجهیزات بر اساس وضعیت"
+            }
+          }
+        },
+        {
+          "id": "chart-top-equipment-by-cost",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/kpi-chart-top-equipment-by-cost?f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                }
+              }
+            ],
+            "kind": "hbar",
+            "ariaLabel": {
+              "en": "Top equipment by cost",
+              "fa": "پرهزینه‌ترین تجهیزات"
+            }
+          }
+        },
+        {
+          "id": "kpi-breakdown",
+          "component": "data-grid",
+          "options": {
+            "id": "kpi-breakdown",
+            "url": "/d/kpi-breakdown-grid?f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "idField": "name",
+            "columns": [
+              {
+                "key": "section",
+                "header": {
+                  "en": "Section",
+                  "fa": "بخش"
+                },
+                "width": 240
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 300
+              },
+              {
+                "key": "value",
+                "header": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                },
+                "width": 200
+              }
+            ],
+            "pageSize": 50,
+            "height": 300
+          }
+        },
+        {
+          "id": "targets-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "targets-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Targets",
+                  "fa": "اهداف"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "kpi-targets",
+          "component": "data-grid",
+          "options": {
+            "id": "kpi-targets",
+            "url": "/d/kpi-targets-grid",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "key",
+                "header": {
+                  "en": "KPI",
+                  "fa": "شاخص"
+                },
+                "width": 220
+              },
+              {
+                "key": "section",
+                "header": {
+                  "en": "Section",
+                  "fa": "بخش"
+                },
+                "width": 140
+              },
+              {
+                "key": "direction",
+                "header": {
+                  "en": "Direction",
+                  "fa": "جهت"
+                },
+                "width": 140
+              },
+              {
+                "key": "unit",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 90
+              },
+              {
+                "key": "target",
+                "header": {
+                  "en": "Target",
+                  "fa": "هدف"
+                },
+                "width": 100
+              },
+              {
+                "key": "warn",
+                "header": {
+                  "en": "Warn",
+                  "fa": "هشدار"
+                },
+                "width": 100
+              },
+              {
+                "key": "source",
+                "header": {
+                  "en": "Source",
+                  "fa": "منبع"
+                },
+                "width": 100
+              }
+            ],
+            "pageSize": 50,
+            "height": 460
+          }
+        }
+      ]
+    }
+  }
+}

@@ -8,203 +8,170 @@
 
     string StatusBadge(string status) => status switch
     {
-        "APPROVED" => "text-bg-success",
-        "UNDER_REVIEW" => "text-bg-warning",
-        "SUPERSEDED" => "text-bg-secondary",
-        _ => "text-bg-light border"
+        "APPROVED" => "success",
+        "UNDER_REVIEW" => "warning",
+        "SUPERSEDED" => "neutral",
+        _ => "light"
     };
 
     string ScoreLabel(int? score) => score switch
     {
-        1 => "1 — Negligible", 2 => "2 — Minor", 3 => "3 — Moderate", 4 => "4 — Major", 5 => "5 — Severe", _ => "Not scored"
+        1 => "1 — " + Localizer["Negligible"].Value, 2 => "2 — " + Localizer["Minor"].Value, 3 => "3 — " + Localizer["Moderate"].Value, 4 => "4 — " + Localizer["Major"].Value, 5 => "5 — " + Localizer["Severe"].Value, _ => Localizer["Not scored"].Value
     };
 }
 
-@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
-@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+@if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+@if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-<div class="content-card mb-3">
-    <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
-        <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-shield-exclamation"></i></div>
+<pems-content-card css="mb-3">
+    <pems-flex align="center" gap="3" wrap="true" css="mb-2">
+        <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-shield-exclamation" /></div>
         <div>
-            <h5 class="mb-0">@Model.EquipmentTagNumber <span class="text-muted small">(@(Model.EquipmentClassName ?? "Unclassified"))</span></h5>
+            <pems-heading level="5" class="mb-0">@Model.EquipmentTagNumber <span class="text-muted small">(@(Model.EquipmentClassName ?? "Unclassified"))</span></pems-heading>
             <span class="text-muted small">Framework @Model.FrameworkVersion</span>
         </div>
-        <span class="badge @StatusBadge(Model.Status) ms-auto" style="font-size:1rem;">@Model.Status</span>
-    </div>
+        <pems-badge class="fs-6" tone="@StatusBadge(Model.Status)" css="ms-auto">@Model.Status</pems-badge>
+    </pems-flex>
 
-    <div class="row g-2 small mt-2">
-        <div class="col-md-3"><strong>@Localizer["Prepared By"]</strong><div>@(Model.PreparedBy ?? "-")</div></div>
-        <div class="col-md-3"><strong>@Localizer["Reviewed By"]</strong><div>@(Model.ReviewedBy ?? "-")</div></div>
-        <div class="col-md-3"><strong>@Localizer["Approved By"]</strong><div>@(Model.ApprovedBy ?? "-")</div></div>
-        <div class="col-md-3"><strong>Approved At</strong><div>@(Model.ApprovedAt?.ToString("yyyy-MM-dd HH:mm") ?? "-")</div></div>
-    </div>
+    <pems-row gap="2" css="small mt-2">
+        <pems-col md="3"><strong>@Localizer["Prepared By"]</strong><div>@(Model.PreparedBy ?? "-")</div></pems-col>
+        <pems-col md="3"><strong>@Localizer["Reviewed By"]</strong><div>@(Model.ReviewedBy ?? "-")</div></pems-col>
+        <pems-col md="3"><strong>@Localizer["Approved By"]</strong><div>@(Model.ApprovedBy ?? "-")</div></pems-col>
+        <pems-col md="3"><strong>Approved At</strong><div>@(PemsDates.DateTime(Model.ApprovedAt) ?? "-")</div></pems-col>
+    </pems-row>
 
-    <div class="row g-2 mt-3">
+    <pems-row gap="2" css="mt-3">
         @if (Model.Status == "DRAFT" && canEdit)
         {
-            <div class="col-auto">
-                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#scoresModal">@Localizer["Set Dimension Scores"]</button>
-            </div>
+            <pems-col span="auto">
+                <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#scoresModal">@Localizer["Set Dimension Scores"]</pems-button>
+            </pems-col>
         }
         @if (Model.Status != "APPROVED" && Model.Status != "SUPERSEDED" && canEdit)
         {
-            <div class="col-auto">
-                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#evidenceModal">@Localizer["Add Evidence"]</button>
-            </div>
+            <pems-col span="auto">
+                <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#evidenceModal">@Localizer["Add Evidence"]</pems-button>
+            </pems-col>
         }
         @if (Model.Status == "DRAFT" && canEdit)
         {
-            <div class="col-auto">
-                <form asp-action="SubmitForReview" method="post">
+            <pems-col span="auto">
+                <pems-form asp-action="SubmitForReview" method="post">
                     <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
-                    <button type="submit" class="btn btn-sm btn-outline-warning">@Localizer["Submit for Review"]</button>
-                </form>
-            </div>
+                    <pems-button tone="warning" size="small" outline="true" type="submit">@Localizer["Submit for Review"]</pems-button>
+                </pems-form>
+            </pems-col>
         }
         @if (Model.Status == "UNDER_REVIEW" && canApprove)
         {
-            <div class="col-auto">
-                <form asp-action="Approve" method="post" onsubmit="return confirm('تایید این ارزیابی، نتیجه را بلافاصله در EquipmentCriticality منتشر می‌کند. ادامه می‌دهید؟');">
+            <pems-col span="auto">
+                <pems-form asp-action="Approve" method="post" data-pems-confirm="تایید این ارزیابی، نتیجه را بلافاصله در EquipmentCriticality منتشر می‌کند. ادامه می‌دهید؟">
                     <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
-                    <button type="submit" class="btn btn-sm btn-success">Approve &amp; Publish</button>
-                </form>
-            </div>
-            <div class="col-auto">
-                <form asp-action="Reject" method="post">
+                    <pems-button tone="success" size="small" type="submit">Approve &amp; Publish</pems-button>
+                </pems-form>
+            </pems-col>
+            <pems-col span="auto">
+                <pems-form asp-action="Reject" method="post">
                     <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
-                    <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Reject → Draft"]</button>
-                </form>
-            </div>
+                    <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject → Draft"]</pems-button>
+                </pems-form>
+            </pems-col>
         }
-    </div>
-</div>
+    </pems-row>
+</pems-content-card>
 
-<ul class="nav nav-tabs mb-3">
-    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-scores">Dimension Scores</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-evidence">Evidence (@Model.Evidence.Count)</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-history">History (@Model.PriorAssessments.Count)</button></li>
-</ul>
+<pems-nav css="mb-3">
+    <pems-tab target="tab-scores" active="true">Dimension Scores</pems-tab>
+    <pems-tab target="tab-evidence">Evidence (@Model.Evidence.Count)</pems-tab>
+    <pems-tab target="tab-history">History (@Model.PriorAssessments.Count)</pems-tab>
+</pems-nav>
 
-<div class="tab-content">
-    <div class="tab-pane fade show active" id="tab-scores">
-        <div class="content-card">
-            <p class="text-muted small">
+<pems-tab-content>
+    <pems-tab-pane fade="true" active="true" id="tab-scores">
+        <pems-content-card>
+            <pems-text class="text-muted small">
                 طبق «PEMS Phase 7.6»: نتیجه از قاعده‌ی «بدترین بُعد حاکم است» (Max، نه میانگین)
                 محاسبه می‌شود - یک تجهیز با پیامد ایمنی شدید صرفاً به این دلیل که پیامد
                 تولید/محیط‌زیستی پایین است، کم‌اهمیت جلوه نمی‌کند.
-            </p>
-            <table class="table table-enterprise table-sm mb-0">
-                <tbody>
-                    <tr><td>@Localizer["Safety"]</td><td class="text-end">@ScoreLabel(Model.SafetyScore)</td></tr>
-                    <tr><td>@Localizer["Production / Availability"]</td><td class="text-end">@ScoreLabel(Model.ProductionScore)</td></tr>
-                    <tr><td>@Localizer["Environment"]</td><td class="text-end">@ScoreLabel(Model.EnvironmentScore)</td></tr>
-                    <tr class="table-active"><td><strong>Calculated (Max) Score</strong></td><td class="text-end"><strong>@(Model.CalculatedMaxScore?.ToString() ?? "N/A — incomplete")</strong></td></tr>
-                    <tr class="table-active"><td><strong>Proposed Criticality Class</strong></td><td class="text-end"><strong>@(Model.ProposedCriticalityClass ?? "N/A")</strong></td></tr>
-                </tbody>
-            </table>
+            </pems-text>
+            <pems-table kind="enterprise" scale="small" css="mb-0">
+                <pems-table-body>
+                    <pems-table-row><pems-table-cell>@Localizer["Safety"]</pems-table-cell><pems-table-cell class="text-end">@ScoreLabel(Model.SafetyScore)</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>@Localizer["Production / Availability"]</pems-table-cell><pems-table-cell class="text-end">@ScoreLabel(Model.ProductionScore)</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-cell>@Localizer["Environment"]</pems-table-cell><pems-table-cell class="text-end">@ScoreLabel(Model.EnvironmentScore)</pems-table-cell></pems-table-row>
+                    <pems-table-row class="table-active"><pems-table-cell><strong>Calculated (Max) Score</strong></pems-table-cell><pems-table-cell class="text-end"><strong>@(Model.CalculatedMaxScore?.ToString() ?? "N/A — incomplete")</strong></pems-table-cell></pems-table-row>
+                    <pems-table-row class="table-active"><pems-table-cell><strong>Proposed Criticality Class</strong></pems-table-cell><pems-table-cell class="text-end"><strong>@(Model.ProposedCriticalityClass ?? "N/A")</strong></pems-table-cell></pems-table-row>
+                </pems-table-body>
+            </pems-table>
             @if (!string.IsNullOrWhiteSpace(Model.Rationale))
             {
                 <div class="small text-muted mt-2"><strong>Rationale:</strong> @Model.Rationale</div>
             }
-        </div>
-    </div>
+        </pems-content-card>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-evidence">
-        <div class="content-card">
-            <table class="table table-enterprise table-sm mb-0">
-                <thead><tr><th>@Localizer["Source Type"]</th><th>@Localizer["Identifier"]</th><th>@Localizer["Reference"]</th><th>@Localizer["Description"]</th><th>By</th><th>@Localizer["Date"]</th></tr></thead>
-                <tbody>
-                    @foreach (var e in Model.Evidence)
-                    {
-                        <tr>
-                            <td class="small">@e.SourceType</td>
-                            <td class="small">@(e.SourceIdentifier ?? "-")</td>
-                            <td class="small">@(e.Reference ?? "-")</td>
-                            <td class="small">@e.Description</td>
-                            <td class="small">@(e.CreatedBy ?? "-")</td>
-                            <td class="small">@e.CreatedDate.ToString("yyyy-MM-dd")</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            @if (!Model.Evidence.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز هیچ شاهدی ثبت نشده - قبل از ارسال برای بازبینی، حداقل یکی الزامی است."]</p> }
-        </div>
-    </div>
+    <pems-tab-pane fade="true" id="tab-evidence">
+        <pems-content-card>
+            <pems-data-table data="@(DataRows.Of(Model.Evidence, c_ => c_.Add(((Localizer["Source Type"])?.ToString() ?? ""), e => (object?)(e.SourceType), css: "small").Add(((Localizer["Identifier"])?.ToString() ?? ""), e => (object?)(e.SourceIdentifier ?? "-"), css: "small").Add(((Localizer["Reference"])?.ToString() ?? ""), e => (object?)(e.Reference ?? "-"), css: "small").Add(((Localizer["Description"])?.ToString() ?? ""), e => (object?)(e.Description), css: "small").Add("By", e => (object?)(e.CreatedBy ?? "-"), css: "small").Add(((Localizer["Date"])?.ToString() ?? ""), e => (object?)(PemsDates.Date(e.CreatedDate)), css: "small")))" dense="true" css="mb-0" />
+            @if (!Model.Evidence.Any()) { <pems-text class="text-muted text-center py-4 mb-0">@Localizer["هنوز هیچ شاهدی ثبت نشده - قبل از ارسال برای بازبینی، حداقل یکی الزامی است."]</pems-text> }
+        </pems-content-card>
+    </pems-tab-pane>
 
-    <div class="tab-pane fade" id="tab-history">
-        <div class="content-card">
-            <p class="text-muted small">طبق بند ۱۳: نسخه‌های قبلی هرگز حذف نمی‌شوند - فقط SUPERSEDED علامت می‌خورند.</p>
-            <table class="table table-enterprise table-sm mb-0">
-                <thead><tr><th>@Localizer["Status"]</th><th>@Localizer["Proposed"]</th><th>@Localizer["Prepared By"]</th><th>@Localizer["Approved By"]</th><th>@Localizer["Created"]</th><th></th></tr></thead>
-                <tbody>
-                    @foreach (var p in Model.PriorAssessments)
-                    {
-                        <tr>
-                            <td><span class="badge @StatusBadge(p.Status)">@p.Status</span></td>
-                            <td>@(p.ProposedCriticalityClass ?? "-")</td>
-                            <td class="small">@(p.PreparedBy ?? "-")</td>
-                            <td class="small">@(p.ApprovedBy ?? "-")</td>
-                            <td class="small">@p.CreatedDate.ToString("yyyy-MM-dd")</td>
-                            <td><a asp-action="Details" asp-route-id="@p.CriticalityAssessmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            @if (!Model.PriorAssessments.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["این اولین ارزیابی این تجهیز است."]</p> }
-        </div>
-    </div>
-</div>
+    <pems-tab-pane fade="true" id="tab-history">
+        <pems-content-card>
+            <pems-text class="text-muted small">طبق بند ۱۳: نسخه‌های قبلی هرگز حذف نمی‌شوند - فقط SUPERSEDED علامت می‌خورند.</pems-text>
+            <pems-data-table data="@(DataRows.Of(Model.PriorAssessments, c_ => c_.Add(((Localizer["Status"])?.ToString() ?? ""), p => (object?)(DataCell.Badge(StatusBadge(p.Status), p.Status))).Add(((Localizer["Proposed"])?.ToString() ?? ""), p => (object?)((p.ProposedCriticalityClass ?? "-"))).Add(((Localizer["Prepared By"])?.ToString() ?? ""), p => (object?)((p.PreparedBy ?? "-")), css: "small").Add(((Localizer["Approved By"])?.ToString() ?? ""), p => (object?)((p.ApprovedBy ?? "-")), css: "small").Add(((Localizer["Created"])?.ToString() ?? ""), p => (object?)((PemsDates.Date(p.CreatedDate))), css: "small").Add("", p => (object?)(DataCell.ButtonLink(Url.Action("Details", null, new { id = p.CriticalityAssessmentId }), "neutral", "small", true, null, DataCell.Icon("bi-eye"))))))" dense="true" css="mb-0" />
+            @if (!Model.PriorAssessments.Any()) { <pems-text class="text-muted text-center py-4 mb-0">@Localizer["این اولین ارزیابی این تجهیز است."]</pems-text> }
+        </pems-content-card>
+    </pems-tab-pane>
+</pems-tab-content>
 
 @if (canEdit)
 {
-    <div class="modal fade" id="scoresModal" tabindex="-1">
-        <div class="modal-dialog"><div class="modal-content">
-            <form asp-action="SetScores" method="post">
+    <pems-modal id="scoresModal" tabindex="-1">
+            <pems-form asp-action="SetScores" method="post">
                 <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
-                <div class="modal-header"><h6 class="modal-title">@Localizer["Set Dimension Scores"]</h6></div>
-                <div class="modal-body">
-                    <p class="text-muted small">مقیاس ۱ (Negligible) تا ۵ (Severe) برای هر بُعد.</p>
-                    <div class="mb-2">
-                        <label class="form-label small">@Localizer["Safety"]</label>
-                        <select name="safetyScore" class="form-select form-select-sm">
+                <pems-modal-header>@Localizer["Set Dimension Scores"]</pems-modal-header>
+                <pems-modal-body>
+                    <pems-text class="text-muted small">مقیاس ۱ (Negligible) تا ۵ (Severe) برای هر بُعد.</pems-text>
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small">@Localizer["Safety"]</pems-label>
+                        <pems-select scale="small" name="safetyScore">
                             <option value="">@Localizer["Not scored"]</option>
                             @for (var i = 1; i <= 5; i++) { <option value="@i" selected="@(Model.SafetyScore == i)">@i</option> }
-                        </select>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label small">@Localizer["Production / Availability"]</label>
-                        <select name="productionScore" class="form-select form-select-sm">
+                        </pems-select>
+                    </pems-form-group>
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small">@Localizer["Production / Availability"]</pems-label>
+                        <pems-select scale="small" name="productionScore">
                             <option value="">@Localizer["Not scored"]</option>
                             @for (var i = 1; i <= 5; i++) { <option value="@i" selected="@(Model.ProductionScore == i)">@i</option> }
-                        </select>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label small">@Localizer["Environment"]</label>
-                        <select name="environmentScore" class="form-select form-select-sm">
+                        </pems-select>
+                    </pems-form-group>
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small">@Localizer["Environment"]</pems-label>
+                        <pems-select scale="small" name="environmentScore">
                             <option value="">@Localizer["Not scored"]</option>
                             @for (var i = 1; i <= 5; i++) { <option value="@i" selected="@(Model.EnvironmentScore == i)">@i</option> }
-                        </select>
-                    </div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Rationale"]</label><textarea name="rationale" class="form-control form-control-sm" rows="2">@Model.Rationale</textarea></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
-                </div>
-            </form>
-        </div></div>
-    </div>
+                        </pems-select>
+                    </pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Rationale"]</pems-label><pems-textarea scale="small" name="rationale" rows="2">@Model.Rationale</pems-textarea></pems-form-group>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
 
-    <div class="modal fade" id="evidenceModal" tabindex="-1">
-        <div class="modal-dialog"><div class="modal-content">
-            <form asp-action="AddEvidence" method="post">
+    <pems-modal id="evidenceModal" tabindex="-1">
+            <pems-form asp-action="AddEvidence" method="post">
                 <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
-                <div class="modal-header"><h6 class="modal-title">@Localizer["Add Evidence"]</h6></div>
-                <div class="modal-body">
-                    <div class="mb-2">
-                        <label class="form-label small">@Localizer["Source Type"]</label>
-                        <select name="sourceType" class="form-select form-select-sm">
+                <pems-modal-header>@Localizer["Add Evidence"]</pems-modal-header>
+                <pems-modal-body>
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small">@Localizer["Source Type"]</pems-label>
+                        <pems-select scale="small" name="sourceType">
                             <option value="Equipment">Equipment Record</option>
                             <option value="EquipmentClass">@Localizer["Equipment Class"]</option>
                             <option value="EngineeringDocument">Engineering Document</option>
@@ -214,17 +181,16 @@
                             <option value="FailureTaxonomy">Failure Taxonomy</option>
                             <option value="MaintenanceRecord">Maintenance Record</option>
                             <option value="Other">@Localizer["Other"]</option>
-                        </select>
-                    </div>
-                    <div class="mb-2"><label class="form-label small">Source Identifier</label><input name="sourceIdentifier" class="form-control form-control-sm" placeholder="e.g. document number, tag" /></div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Reference"]</label><input name="reference" class="form-control form-control-sm" placeholder="e.g. revision, path" /></div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Description"]</label><textarea name="description" class="form-control form-control-sm" rows="2" required></textarea></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
-                </div>
-            </form>
-        </div></div>
-    </div>
+                        </pems-select>
+                    </pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label css="small">Source Identifier</pems-label><pems-input scale="small" name="sourceIdentifier" placeholder="e.g. document number, tag" /></pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Reference"]</pems-label><pems-input scale="small" name="reference" placeholder="e.g. revision, path" /></pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label><pems-textarea scale="small" name="description" rows="2" required></pems-textarea></pems-form-group>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
 }

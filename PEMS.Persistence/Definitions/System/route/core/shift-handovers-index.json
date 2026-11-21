@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "shift-handovers-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Shift handovers (index) (old address)",
+    "fa": "Shift handovers (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Shift handovers (index) (old address)",
+    "fa": "Shift handovers (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ShiftHandover/Index",
+    "target": "/p/shift-handovers",
+    "permanent": false
+  }
+}

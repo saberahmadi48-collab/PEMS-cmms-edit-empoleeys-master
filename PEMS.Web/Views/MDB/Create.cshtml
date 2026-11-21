@@ -8,57 +8,57 @@
     var pos = (IEnumerable<dynamic>)ViewBag.PurchaseOrders;
 }
 
-<div class="content-card" style="max-width:700px;">
-    <div asp-validation-summary="All" class="alert alert-danger py-2 px-3 small" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></div>
+<pems-content-card css="pems-s-bcaa1805">
+    <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-validation-summary>
 
-    <form asp-action="Create" method="post">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Project"]</label>
-                <select name="projectId" class="form-select" required>
+    <pems-form asp-action="Create" method="post">
+        <pems-row gap="3">
+            <pems-col md="6">
+                <pems-label>@Localizer["Project"]</pems-label>
+                <pems-select name="projectId" required>
                     @foreach (var p in projects)
                     {
                         <option value="@p.ProjectId">@p.ProjectName</option>
                     }
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Equipment"]</label>
-                <select name="equipmentId" class="form-select" required>
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Equipment"]</pems-label>
+                <pems-select name="equipmentId" required>
                     @foreach (var eq in equipments)
                     {
                         <option value="@eq.EquipmentId">@eq.TagNumber</option>
                     }
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Vendor"]</label>
-                <select name="vendorId" class="form-select" required>
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Vendor"]</pems-label>
+                <pems-select name="vendorId" required>
                     @foreach (var v in vendors)
                     {
                         <option value="@v.VendorId">@v.Name</option>
                     }
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Purchase Order <span class="text-muted small">@Localizer["(optional)"]</span></label>
-                <select name="poId" class="form-select">
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Purchase Order"] <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
+                <pems-select name="poId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var po in pos)
                     {
                         <option value="@po.PoId">@po.PoNumber</option>
                     }
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Planned Final Issue Date <span class="text-muted small">(index due 4 weeks before)</span></label>
-                <input name="plannedFinalIssueDate" type="date" class="form-control" />
-            </div>
-        </div>
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["MDB_PlannedFinalIssueDate"] <span class="text-muted small">@Localizer["MDB_IndexDueHint"]</span></pems-label>
+                <pems-date name="plannedFinalIssueDate" />
+            </pems-col>
+        </pems-row>
 
-        <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">Create MDB</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
-        </div>
-    </form>
-</div>
+        <pems-action-bar css="mt-4">
+            <pems-button tone="primary" type="submit">@Localizer["MDB_Create"]</pems-button>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>

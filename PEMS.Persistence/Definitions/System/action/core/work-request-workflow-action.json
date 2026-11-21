@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "work-request-workflow-action",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work request workflow action",
+    "fa": "اقدام گردش‌کار درخواست کار"
+  },
+  "description": {
+    "en": "Work request workflow action",
+    "fa": "اقدام گردش‌کار درخواست کار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkRequest",
+      "action": "WorkflowAction",
+      "args": {
+        "workRequestId": "field:id",
+        "actionType": "field:actionType",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "The action was completed.",
+      "fa": "اقدام انجام شد."
+    },
+    "redirect": "/WorkRequest/Details/{id}"
+  }
+}

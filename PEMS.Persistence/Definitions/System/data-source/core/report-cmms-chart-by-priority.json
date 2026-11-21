@@ -1,0 +1,31 @@
+{
+  "kind": "data-source",
+  "key": "report-cmms-chart-by-priority",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cmms chart: By priority",
+    "fa": "نمودار cmms: بر اساس اولویت"
+  },
+  "description": {
+    "en": "Cmms chart: By priority",
+    "fa": "نمودار cmms: بر اساس اولویت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Cmms",
+      "args": {
+        "status": "param:status",
+        "priority": "param:priority",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      },
+      "where": {
+        "key": "ByPriority"
+      }
+    }
+  }
+}

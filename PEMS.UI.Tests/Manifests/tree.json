@@ -1,0 +1,54 @@
+{
+  "key": "tree",
+  "component": "PEMS.UI.Components.PemsTree",
+  "category": "navigation",
+  "icon": "bi-diagram-3",
+  "nameKey": "component.tree",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "label": {
+        "type": "string"
+      },
+      "rememberKey": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "TreeOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "label": "Disciplines",
+    "rememberKey": "pems.tree"
+  }
+}

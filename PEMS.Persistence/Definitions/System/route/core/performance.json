@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "performance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Performance testing (old address)",
+    "fa": "تست عملکرد (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Performance testing (old address)",
+    "fa": "تست عملکرد (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Performance/{*rest}",
+    "target": "/p/performance",
+    "permanent": false
+  }
+}

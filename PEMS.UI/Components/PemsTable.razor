@@ -1,0 +1,37 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("table", Category = "data", Icon = "bi-table")]
+@inject IPemsLocale Locale
+@{ var empty = Locale.Text(EmptyText ?? View.EmptyText); }
+<table class="pems-table" id="@View.Id">
+    <caption class="pems-table__caption">@Locale.Text(View.Title)</caption>
+    <thead>
+        <tr>
+            @foreach (var c in View.Columns)
+            {
+                <th scope="col" class="pems-align-@c.Alignment.ToString().ToLowerInvariant()">@Locale.Text(c.Header)</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (Rows.Count == 0 && empty.Length > 0)
+        {
+            <tr><td colspan="@View.Columns.Count" class="pems-table__empty">@empty</td></tr>
+        }
+        @foreach (var row in Rows)
+        {
+            <tr>
+                @foreach (var c in View.Columns)
+                {
+                    <td class="pems-align-@c.Alignment.ToString().ToLowerInvariant()">@TableCells.Text(Locale, c, row)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+    [Parameter, EditorRequired] public ViewDescriptor View { get; set; } = default!;
+    /// <summary>Row data: column key to value (any type; formatted by the locale, never translated).</summary>
+    [Parameter] public IReadOnlyList<IReadOnlyDictionary<string, object?>> Rows { get; set; } = [];
+    /// <summary>Overrides <see cref="ViewDescriptor.EmptyText"/> for this render.</summary>
+    [Parameter] public TranslatableText? EmptyText { get; set; }
+}

@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "material-stock-receive",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Receive stock",
+    "fa": "دریافت کالا"
+  },
+  "description": {
+    "en": "Receive stock",
+    "fa": "دریافت کالا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaterialStock",
+      "action": "Receive",
+      "args": {
+        "materialItemId": "field:materialItemId",
+        "warehouseId": "field:warehouseId",
+        "quantity": "field:quantity",
+        "reason": "field:reason",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Stock was received.",
+      "fa": "دریافت کالا ثبت شد."
+    },
+    "redirect": "/p/material-item-details?id={materialItemId}"
+  }
+}

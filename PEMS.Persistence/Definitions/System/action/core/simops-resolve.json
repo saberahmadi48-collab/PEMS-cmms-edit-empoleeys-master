@@ -1,0 +1,40 @@
+{
+  "kind": "action",
+  "key": "simops-resolve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Resolve a conflict",
+    "fa": "رفع تعارض"
+  },
+  "description": {
+    "en": "Resolve a conflict",
+    "fa": "رفع تعارض"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Simops",
+      "action": "Resolve",
+      "args": {
+        "userRoles": "context:roles",
+        "userId": "context:userId",
+        "employeeId": "context:employeeId",
+        "conflictId": "field:id",
+        "permitId": "field:permitId",
+        "resolutionNotes": "field:resolutionNotes"
+      }
+    },
+    "success": {
+      "en": "The conflict was resolved.",
+      "fa": "تعارض رفع شد."
+    },
+    "redirect": "/Permit/Details/{permitId}",
+    "permission": "Simops.Resolve",
+    "stepUp": {
+      "resource": "Simops",
+      "action": "Resolve"
+    }
+  }
+}

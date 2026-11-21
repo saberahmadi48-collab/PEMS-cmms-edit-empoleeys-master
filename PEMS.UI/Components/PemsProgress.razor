@@ -1,0 +1,36 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("progress", Category = "feedback", Icon = "bi-bar-chart-steps")]
+@using System.Globalization
+@inject IPemsLocale Locale
+<div class="@Css" style="@TrackStyle" role="progressbar" aria-valuenow="@Number(Options.Value)" aria-valuemin="0" aria-valuemax="@Number(Options.Max)"
+     aria-label="@(Options.Label is null ? null : Locale.Text(Options.Label))" title="@Options.Title">
+    <div class="@BarCss" style="width:@(Number(Percent))%">@ChildContent</div>
+    @if (Options.Segments is not null)
+    {
+        @foreach (var segment in Options.Segments)
+        {
+            <div class="@BarCssFor(segment.Tone)" style="width:@(Number(Share(segment.Value)))%"></div>
+        }
+    }
+</div>
+@code {
+    [Parameter, EditorRequired] public ProgressOptions Options { get; set; } = default!;
+    /// <summary>Text shown inside the bar (the tag helper passes what is between its tags).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private double Percent => Options.Max <= 0 ? 0 : Math.Clamp(Options.Value * 100 / Options.Max, 0, 100);
+    private static string Number(double v) => Math.Round(v, 1).ToString("0.#", CultureInfo.InvariantCulture);
+    private string Css => string.IsNullOrWhiteSpace(Options.CssClass) ? "progress" : "progress " + Options.CssClass.Trim();
+    private double Share(double value) => Options.Max <= 0 ? 0 : Math.Clamp(value * 100 / Options.Max, 0, 100);
+    private static string BarCssFor(Tone? tone) => tone is { } t ? "progress-bar bg-" + (t == Tone.Neutral ? "secondary" : t.ToString().ToLowerInvariant()) : "progress-bar";
+    private string BarCss => Options.Tone is { } t ? "progress-bar bg-" + (t == Tone.Neutral ? "secondary" : t.ToString().ToLowerInvariant()) : "progress-bar";
+    private string? TrackStyle
+    {
+        get
+        {
+            var h = string.IsNullOrWhiteSpace(Options.Height) ? null : "height:" + Options.Height.Trim() + ";";
+            var s = string.IsNullOrWhiteSpace(Options.Style) ? null : Options.Style.Trim();
+            return h is null && s is null ? null : h + (h is not null && s is not null ? " " : "") + s;
+        }
+    }
+}

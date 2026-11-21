@@ -1,0 +1,141 @@
+{
+  "kind": "page",
+  "key": "meetings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Meetings",
+    "fa": "جلسات"
+  },
+  "description": {
+    "en": "Meetings with their attendees and action items (page definition)",
+    "fa": "جلسات با حاضران و اقدام‌ها (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "meetings",
+    "regions": {
+      "content": [
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/meeting-create",
+                "text": {
+                  "en": "Schedule a meeting",
+                  "fa": "برگزاری جلسه"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "meetings",
+          "component": "data-grid",
+          "options": {
+            "id": "meetings",
+            "url": "/d/meeting-list",
+            "idField": "meetingId",
+            "columns": [
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 280
+              },
+              {
+                "key": "meetingDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 150,
+                "type": "date"
+              },
+              {
+                "key": "location",
+                "header": {
+                  "en": "Location",
+                  "fa": "محل"
+                },
+                "width": 160
+              },
+              {
+                "key": "organizer",
+                "header": {
+                  "en": "Organizer",
+                  "fa": "برگزارکننده"
+                },
+                "width": 160
+              },
+              {
+                "key": "project",
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "width": 160
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "attendeeCount",
+                "header": {
+                  "en": "Attendees",
+                  "fa": "حاضران"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "actionItemCount",
+                "header": {
+                  "en": "Action items",
+                  "fa": "اقدام‌ها"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/meeting-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    }
+  }
+}

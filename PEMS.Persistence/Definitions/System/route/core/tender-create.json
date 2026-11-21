@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "tender-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New tender (old address)",
+    "fa": "New tender (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New tender (old address)",
+    "fa": "New tender (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Tender/Create",
+    "target": "/f/tender-create",
+    "permanent": false
+  }
+}

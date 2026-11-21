@@ -18,9 +18,13 @@ public class ProcurementPackageService : IProcurementPackageService
     private static readonly string[] StageOrder =
         { "MR", "VendorInquiry", "TechnicalClarification", "MRQ", "Response", "Approval", "Closeout" };
 
-    public ProcurementPackageService(PEMSDbContext context)
+    private readonly INumberingService _numbering;
+
+    // SCRUM-40: شماره‌گذاری اختیاری در سازنده تا تست‌های تک‌پارامتری سازگار بمانند؛ DI آن را می‌دهد
+    public ProcurementPackageService(PEMSDbContext context, INumberingService? numbering = null)
     {
         _context = context;
+        _numbering = numbering ?? new NumberingService(context);
     }
 
     public async Task<List<ProcurementPackageDto>> GetAllAsync()
@@ -189,6 +193,13 @@ public class ProcurementPackageService : IProcurementPackageService
 
     public async Task<int> CreateAsync(string packageNumber, int projectId, int? disciplineId, string title, string? description)
     {
+        // SCRUM-40: شماره خودکار از الگوی مدیر (شماره‌ی واردشده فقط اگر الگو ورود دستی را مجاز کرده باشد)؛ یکتایی همچنان در سرویس بررسی می‌شود.
+        packageNumber = await _numbering.ResolveNumberAsync("ProcurementPackage", packageNumber, projectId, disciplineId);
+        if (packageNumber.Length == 0)
+            throw new InvalidOperationException("شماره‌ی بسته‌ی تدارکات الزامی است.");
+        if (await _context.ProcurementPackages.AnyAsync(x => x.PackageNumber == packageNumber))
+            throw new InvalidOperationException($"بسته‌ای با شماره‌ی «{packageNumber}» از قبل وجود دارد.");
+
         var package = new ProcurementPackage
         {
             PackageNumber = packageNumber,

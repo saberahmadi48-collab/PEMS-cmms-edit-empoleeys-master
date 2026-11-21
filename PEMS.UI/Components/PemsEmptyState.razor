@@ -1,0 +1,21 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("empty-state", Category = "feedback", Icon = "bi-inbox")]
+@inject IPemsLocale Locale
+<div class="pems-state pems-state--empty" role="status">
+    @if (!string.IsNullOrWhiteSpace(Options.Icon))
+    {
+        <i class="bi @Options.Icon pems-state__icon" aria-hidden="true"></i>
+    }
+    <p class="pems-state__title">@Locale.Text(Options.Title)</p>
+    @if (Options.Description is not null)
+    {
+        <p class="pems-state__text">@Locale.Text(Options.Description)</p>
+    }
+    @if (Options.Action is not null)
+    {
+        <PemsButton Options="@(new ButtonOptions { Label = Options.Action.Label, Tone = Tone.Primary, Skin = ComponentSkin.Pems, Href = Options.Action.Href })" />
+    }
+</div>
+@code {
+    [Parameter, EditorRequired] public EmptyStateOptions Options { get; set; } = default!;
+}

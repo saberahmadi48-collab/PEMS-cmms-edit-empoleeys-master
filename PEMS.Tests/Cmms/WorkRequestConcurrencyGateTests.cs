@@ -81,6 +81,8 @@ public class WorkRequestConcurrencyGateTests : IAsyncLifetime
         var prj = await ctx.Projects.FirstAsync();
         ctx.Employees.Add(new Employee { FirstName = "Conc", LastName = "One", DepartmentId = dept.DepartmentId, DisciplineId = disc.DisciplineId, IsActive = true });
         ctx.Employees.Add(new Employee { FirstName = "Conc", LastName = "Two", DepartmentId = dept.DepartmentId, DisciplineId = disc.DisciplineId, IsActive = true });
+        // A3 (SoD پیش‌فرض روشن): ثبت‌کننده‌ی درخواست باید با بازبین/تأییدکننده متفاوت باشد؛ کارمند سوم فقط درخواست‌دهنده است
+        ctx.Employees.Add(new Employee { FirstName = "Conc", LastName = "Requester", DepartmentId = dept.DepartmentId, DisciplineId = disc.DisciplineId, IsActive = true });
         ctx.Equipments.Add(new Equipment { TagNumber = "CONC-101", Name = "Pump", DisciplineId = disc.DisciplineId, ProjectId = prj.ProjectId, IsActive = true });
         await ctx.SaveChangesAsync();
 
@@ -123,7 +125,7 @@ public class WorkRequestConcurrencyGateTests : IAsyncLifetime
     private async Task<int> NewDraftAsync()
     {
         await using var ctx = new PEMSDbContext(Options());
-        var emp = await ctx.Employees.OrderBy(e => e.EmployeeId).Select(e => e.EmployeeId).FirstAsync();
+        var emp = await ctx.Employees.OrderByDescending(e => e.EmployeeId).Select(e => e.EmployeeId).FirstAsync();   // درخواست‌دهنده = کارمند سوم
         var eq = await ctx.Equipments.Select(e => e.EquipmentId).FirstAsync();
         var (ok, err, id) = await NewService(ctx).CreateAsync("Concurrent submit", "d", emp, eq, null, null, null, "Medium", null);
         Assert.True(ok, err);

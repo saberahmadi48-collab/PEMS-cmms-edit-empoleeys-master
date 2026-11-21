@@ -10,6 +10,7 @@ public interface IKnowledgeBaseService
 {
     Task IndexAsync(string sourceType, int sourceId, string content);
 
+    [PEMS.Application.Common.PemsOperation("KnowledgeBase", "Search")]   // SCRUM-712: the semantic search page is a data source over this method
     Task<List<KnowledgeBaseSearchResultDto>> SearchAsync(string query, int topK = 5);
 
     Task<int> GetEntryCountAsync();

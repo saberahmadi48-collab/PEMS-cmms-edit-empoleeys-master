@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mmd-toggle-maintenance-activity-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleMaintenanceActivityActive",
+    "fa": "وضعیت Maintenance Activity به‌روزرسانی شد."
+  },
+  "description": {
+    "en": "ToggleMaintenanceActivityActive",
+    "fa": "وضعیت Maintenance Activity به‌روزرسانی شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "ToggleMaintenanceActivityActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "وضعیت Maintenance Activity به‌روزرسانی شد.",
+      "fa": "وضعیت Maintenance Activity به‌روزرسانی شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

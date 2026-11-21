@@ -1,0 +1,97 @@
+{
+  "kind": "page",
+  "key": "migrator-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Migrator center history",
+    "fa": "تاریخچه مرکز مهاجرت"
+  },
+  "description": {
+    "en": "Packages run on this installation, with the backup point and the result",
+    "fa": "بسته‌های اجراشده با نقطه پشتیبان و نتیجه"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "migrator-history",
+    "permission": "Definitions.Create",
+    "template": "entity-list",
+    "args": {
+      "id": "migrator-history",
+      "url": "/d/migrator-history-grid",
+      "idField": "id",
+      "newUrl": "/f/migrator-run",
+      "newLabel": {
+        "en": "Run a package",
+        "fa": "اجرای بسته"
+      },
+      "columns": [
+        {
+          "key": "at",
+          "header": {
+            "en": "Run (UTC)",
+            "fa": "اجرا (UTC)"
+          },
+          "width": 170,
+          "type": "datetime"
+        },
+        {
+          "key": "kind",
+          "header": {
+            "en": "Kind",
+            "fa": "نوع"
+          },
+          "width": 90
+        },
+        {
+          "key": "version",
+          "header": {
+            "en": "Version",
+            "fa": "نسخه"
+          },
+          "width": 100
+        },
+        {
+          "key": "result",
+          "header": {
+            "en": "Result",
+            "fa": "نتیجه"
+          },
+          "width": 100
+        },
+        {
+          "key": "summary",
+          "header": {
+            "en": "What it did",
+            "fa": "نتیجه کار"
+          },
+          "width": 420
+        },
+        {
+          "key": "backup",
+          "header": {
+            "en": "Backup point",
+            "fa": "نقطه پشتیبان"
+          },
+          "width": 260
+        },
+        {
+          "key": "by",
+          "header": {
+            "en": "By",
+            "fa": "توسط"
+          },
+          "width": 140
+        },
+        {
+          "key": "hash",
+          "header": {
+            "en": "Package",
+            "fa": "بسته"
+          },
+          "width": 120
+        }
+      ]
+    }
+  }
+}

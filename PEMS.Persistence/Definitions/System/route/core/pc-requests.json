@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-requests",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue requests (old address)",
+    "fa": "Part Catalogue requests (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue requests (old address)",
+    "fa": "Part Catalogue requests (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueRequest",
+    "target": "/p/pc-requests",
+    "permanent": false
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "kind": "page",
+  "key": "organization-department-consistency",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Department consistency",
+    "fa": "سازگاری دپارتمان"
+  },
+  "description": {
+    "en": "Department consistency (page definition)",
+    "fa": "سازگاری دپارتمان (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "organization-department-consistency",
+    "template": "entity-list",
+    "args": {
+      "id": "organization-department-consistency",
+      "url": "/d/organization-department-consistency-rows",
+      "idField": "employeeId",
+      "columns": [
+        {
+          "key": "employeeName",
+          "header": {
+            "en": "Employee",
+            "fa": "کارمند"
+          },
+          "width": 220
+        },
+        {
+          "key": "employeeDepartment",
+          "header": {
+            "en": "Employee department",
+            "fa": "دپارتمان کارمند"
+          },
+          "width": 200
+        },
+        {
+          "key": "primaryPositionTitle",
+          "header": {
+            "en": "Primary position",
+            "fa": "سمت اصلی"
+          },
+          "width": 220
+        },
+        {
+          "key": "positionDepartment",
+          "header": {
+            "en": "Position department",
+            "fa": "دپارتمان سمت"
+          },
+          "width": 200
+        },
+        {
+          "key": "status",
+          "header": {
+            "en": "Status",
+            "fa": "وضعیت"
+          },
+          "width": 140
+        }
+      ]
+    }
+  }
+}

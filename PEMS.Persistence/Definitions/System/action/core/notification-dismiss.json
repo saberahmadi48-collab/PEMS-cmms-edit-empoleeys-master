@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "notification-dismiss",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Dismiss notification",
+    "fa": "رد کردن اعلان"
+  },
+  "description": {
+    "en": "Dismiss notification",
+    "fa": "رد کردن اعلان"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Notification",
+      "action": "Dismiss",
+      "args": {
+        "userName": "context:userName",
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Notification dismissed.",
+      "fa": "اعلان رد شد."
+    },
+    "redirect": "/p/notifications"
+  }
+}

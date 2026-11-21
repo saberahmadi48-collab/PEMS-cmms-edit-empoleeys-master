@@ -1,0 +1,95 @@
+{
+  "kind": "page",
+  "key": "numbering-vdr",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "VDR document numbers",
+    "fa": "شماره‌ی مدارک VDR"
+  },
+  "description": {
+    "en": "VDR document numbers (page definition)",
+    "fa": "شماره‌ی مدارک VDR (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "numbering-vdr",
+    "template": "entity-list",
+    "args": {
+      "id": "numbering-vdr",
+      "url": "/d/numbering-vdr-rows",
+      "idField": "vdrItemId",
+      "columns": [
+        {
+          "key": "search",
+          "header": {
+            "en": "Search (type document number, description or vendor)",
+            "fa": "جستجو"
+          },
+          "width": 340
+        },
+        {
+          "key": "documentNumber",
+          "header": {
+            "en": "Document number",
+            "fa": "شماره‌ی مدرک"
+          },
+          "width": 200,
+          "filterable": false,
+          "sortable": false
+        },
+        {
+          "key": "documentDescription",
+          "header": {
+            "en": "Description",
+            "fa": "شرح"
+          },
+          "width": 300,
+          "filterable": false,
+          "sortable": false
+        },
+        {
+          "key": "vendorName",
+          "header": {
+            "en": "Vendor",
+            "fa": "فروشنده"
+          },
+          "width": 200,
+          "filterable": false,
+          "sortable": false
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 380,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "official",
+              "label": {
+                "en": "Official number",
+                "fa": "شماره‌ی رسمی"
+              },
+              "url": "/f/numbering-vdr-official/{id}",
+              "method": "get"
+            },
+            {
+              "key": "vendor",
+              "label": {
+                "en": "Vendor-format number",
+                "fa": "شماره‌ی فرمت Vendor"
+              },
+              "url": "/f/numbering-vdr-vendor/{id}",
+              "method": "get"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "material-items-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material master",
+    "fa": "اقلام مواد"
+  },
+  "description": {
+    "en": "Material master",
+    "fa": "اقلام مواد"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaterialItem",
+      "action": "List",
+      "args": {
+        "q": "param:q",
+        "categoryId": "param:categoryId",
+        "lowStockOnly": "param:lowStockOnly",
+        "criticalOnly": "param:criticalOnly"
+      }
+    }
+  }
+}

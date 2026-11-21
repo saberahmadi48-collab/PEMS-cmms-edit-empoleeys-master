@@ -1,0 +1,681 @@
+{
+  "key": "data-grid",
+  "component": "PEMS.UI.Components.PemsDataGrid",
+  "category": "data",
+  "icon": "bi-grid-3x3-gap",
+  "nameKey": "component.data-grid",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "url": {
+        "type": "string"
+      },
+      "idField": {
+        "type": "string"
+      },
+      "columns": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "header": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "type": {
+              "type": "string"
+            },
+            "width": {
+              "type": [
+                "string",
+                "integer"
+              ],
+              "pattern": "^-?(?:0|[1-9]\\d*)$"
+            },
+            "sortable": {
+              "type": "boolean"
+            },
+            "filterable": {
+              "type": "boolean"
+            },
+            "hidden": {
+              "type": "boolean"
+            },
+            "pinned": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "align": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "actions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "object",
+                        "minProperties": 1,
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      }
+                    ]
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "method": {
+                    "type": "string"
+                  },
+                  "confirm": {
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "object",
+                        "minProperties": 1,
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      }
+                    ]
+                  },
+                  "tone": {
+                    "type": "string"
+                  },
+                  "showWhen": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "key",
+                  "label",
+                  "url"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "key",
+            "header"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "texts": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "search": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "columns": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "density": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "compact": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "comfortable": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "export": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "views": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "saveView": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "viewName": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "loading": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "empty": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "error": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "rows": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "selected": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "selectAllMatching": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "clearSelection": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "delete": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        },
+        "required": [
+          "search",
+          "columns",
+          "density",
+          "compact",
+          "comfortable",
+          "export",
+          "views",
+          "saveView",
+          "viewName",
+          "loading",
+          "empty",
+          "error",
+          "rows",
+          "selected",
+          "selectAllMatching",
+          "clearSelection",
+          "filter",
+          "delete"
+        ],
+        "additionalProperties": false
+      },
+      "pageSize": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "rowHeight": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "height": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "density": {
+        "type": "string"
+      },
+      "selectable": {
+        "type": "boolean"
+      },
+      "bulkActions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "label": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "url": {
+              "type": "string"
+            },
+            "confirm": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "tone": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "key",
+            "label",
+            "url"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "exportUrl": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "viewsKey": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "id",
+      "url",
+      "columns"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "DataGridOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "items",
+    "url": "/Items/Grid",
+    "idField": "id",
+    "selectable": true,
+    "viewsKey": "items",
+    "exportUrl": "/Items/Export",
+    "columns": [
+      {
+        "key": "code",
+        "header": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "type": "text",
+        "width": 140,
+        "pinned": "start"
+      },
+      {
+        "key": "name",
+        "header": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "width": 220
+      },
+      {
+        "key": "qty",
+        "header": {
+          "en": "Quantity",
+          "fa": "تعداد"
+        },
+        "type": "number",
+        "width": 110
+      },
+      {
+        "key": "created",
+        "header": {
+          "en": "Created",
+          "fa": "ایجاد"
+        },
+        "type": "date",
+        "width": 130
+      }
+    ],
+    "bulkActions": [
+      {
+        "key": "close",
+        "label": {
+          "en": "Close",
+          "fa": "بستن"
+        },
+        "url": "/Items/Close",
+        "confirm": {
+          "en": "Close the selected items?",
+          "fa": "موارد انتخابی بسته شوند؟"
+        }
+      }
+    ],
+    "texts": {
+      "search": {
+        "en": "Search",
+        "fa": "جستجو"
+      },
+      "columns": {
+        "en": "Columns",
+        "fa": "ستون‌ها"
+      },
+      "density": {
+        "en": "Density",
+        "fa": "تراکم"
+      },
+      "compact": {
+        "en": "Compact",
+        "fa": "فشرده"
+      },
+      "comfortable": {
+        "en": "Comfortable",
+        "fa": "راحت"
+      },
+      "export": {
+        "en": "Export",
+        "fa": "خروجی"
+      },
+      "views": {
+        "en": "Views",
+        "fa": "نماها"
+      },
+      "saveView": {
+        "en": "Save view",
+        "fa": "ذخیره نما"
+      },
+      "viewName": {
+        "en": "View name",
+        "fa": "نام نما"
+      },
+      "loading": {
+        "en": "Loading",
+        "fa": "در حال بارگذاری"
+      },
+      "empty": {
+        "en": "No rows",
+        "fa": "ردیفی نیست"
+      },
+      "error": {
+        "en": "Could not load",
+        "fa": "بارگذاری نشد"
+      },
+      "rows": {
+        "en": "{0} rows",
+        "fa": "{0} ردیف"
+      },
+      "selected": {
+        "en": "{0} selected",
+        "fa": "{0} انتخاب شد"
+      },
+      "selectAllMatching": {
+        "en": "Select all {0}",
+        "fa": "انتخاب همه {0}"
+      },
+      "clearSelection": {
+        "en": "Clear",
+        "fa": "پاک کردن"
+      },
+      "filter": {
+        "en": "Filter",
+        "fa": "فیلتر"
+      },
+      "delete": {
+        "en": "Delete",
+        "fa": "حذف"
+      }
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "kind": "form",
+  "key": "finding-create-from-inspection",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Raise a finding from an inspection",
+    "fa": "ثبت یافته از بازرسی"
+  },
+  "description": {
+    "en": "Raise a finding from an inspection",
+    "fa": "ثبت یافته از بازرسی"
+  },
+  "payload": {
+    "id": "finding-create-from-inspection",
+    "title": {
+      "en": "Raise a finding from an inspection",
+      "fa": "ثبت یافته از بازرسی"
+    },
+    "submitLabel": {
+      "en": "Record",
+      "fa": "ثبت"
+    },
+    "actionKey": "finding-create-from-inspection",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "inspectionRecordId",
+        "label": {
+          "en": "Inspection record id",
+          "fa": "شناسه‌ی بازرسی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment id",
+          "fa": "شناسه‌ی تجهیز"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیح"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 2000
+      },
+      {
+        "name": "recommendedAction",
+        "label": {
+          "en": "Recommended action",
+          "fa": "اقدام پیشنهادی"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      },
+      {
+        "name": "failureModeId",
+        "label": {
+          "en": "Failure mode",
+          "fa": "حالت خرابی"
+        },
+        "kind": "select",
+        "optionsFrom": "finding-failure-modes"
+      },
+      {
+        "name": "failureCauseId",
+        "label": {
+          "en": "Failure cause",
+          "fa": "علت خرابی"
+        },
+        "kind": "select",
+        "optionsFrom": "finding-failure-causes"
+      }
+    ]
+  }
+}

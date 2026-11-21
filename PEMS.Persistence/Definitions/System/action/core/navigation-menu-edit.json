@@ -1,0 +1,44 @@
+{
+  "kind": "action",
+  "key": "navigation-menu-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a menu item",
+    "fa": "ذخیره‌ی آیتم منو"
+  },
+  "description": {
+    "en": "Save a menu item",
+    "fa": "ذخیره‌ی آیتم منو"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "NavigationMenu",
+      "action": "Save",
+      "args": {
+        "input": {
+          "Key": "field:id",
+          "ParentKey": "field:parentKey",
+          "TitleEn": "field:titleEn",
+          "TitleFa": "field:titleFa",
+          "Icon": "field:icon",
+          "BadgeKey": "field:badgeKey",
+          "IsActive": "field:isActive",
+          "RowVersion": "field:rowVersion"
+        }
+      },
+      "load": {
+        "operation": {
+          "model": "NavigationMenu",
+          "action": "ItemOf",
+          "args": {
+            "key": "param:id"
+          }
+        }
+      }
+    },
+    "redirect": "/p/navigation-menu"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "work-request-advance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Next status (legacy)",
+    "fa": "وضعیت بعدی (قدیمی)"
+  },
+  "description": {
+    "en": "Next status (legacy)",
+    "fa": "وضعیت بعدی (قدیمی)"
+  },
+  "payload": {
+    "id": "work-request-advance",
+    "title": {
+      "en": "Next status (legacy)",
+      "fa": "وضعیت بعدی (قدیمی)"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "work-request-advance",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Request id",
+          "fa": "شناسه‌ی درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

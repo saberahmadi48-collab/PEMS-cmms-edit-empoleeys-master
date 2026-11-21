@@ -1,0 +1,359 @@
+/* PEMS.UI component styles. Tokens only (var(--pems-*)), logical properties only (RTL from the same markup), no URLs. */
+.pems-btn { display: inline-flex; align-items: center; gap: .5rem; padding-block: .4rem; padding-inline: 1rem; border: 1px solid transparent; border-radius: .375rem; font: inherit; cursor: pointer; text-decoration: none; }
+.pems-btn:disabled { opacity: .6; cursor: not-allowed; }
+.pems-btn:focus-visible, .pems-input:focus-visible { outline: 2px solid var(--pems-focus); outline-offset: 2px; }
+.pems-btn--neutral { background: var(--pems-surface); color: var(--pems-text); border-color: var(--pems-surface-border); }
+.pems-btn--primary { background: var(--pems-primary); color: var(--pems-surface); }
+.pems-btn--primary:hover { background: var(--pems-primary-hover); }
+.pems-btn--danger { background: var(--pems-chart-negative-text, var(--pems-primary)); color: var(--pems-surface); }
+.pems-btn--success { background: var(--pems-chart-positive-text, var(--pems-primary)); color: var(--pems-surface); }
+.pems-btn--warning { background: var(--pems-chart-warning-text, var(--pems-primary)); color: var(--pems-surface); }
+.pems-btn--small { padding-block: .2rem; padding-inline: .6rem; font-size: .85rem; }
+.pems-btn--large { padding-block: .6rem; padding-inline: 1.4rem; font-size: 1.1rem; }
+.pems-badge { display: inline-block; padding-block: .1rem; padding-inline: .5rem; border-radius: 999px; font-size: .8rem; background: var(--pems-selection); color: var(--pems-text); }
+.pems-field { margin-block-end: 1rem; }
+.pems-field__label { display: block; margin-block-end: .25rem; color: var(--pems-text); }
+.pems-field__required { margin-inline-start: .25rem; color: var(--pems-chart-negative-text, var(--pems-text)); }
+.pems-field__help { margin-block-start: .25rem; color: var(--pems-text-muted); font-size: .85rem; }
+.pems-field__error { margin-block-start: .25rem; color: var(--pems-chart-negative-text, var(--pems-text)); font-size: .85rem; }
+.pems-input { box-sizing: border-box; inline-size: 100%; padding-block: .4rem; padding-inline: .6rem; border: 1px solid var(--pems-surface-border); border-radius: .375rem; background: var(--pems-input-bg); color: var(--pems-text); font: inherit; }
+.pems-input--invalid { border-color: var(--pems-chart-negative-text, var(--pems-surface-border)); }
+.pems-table { inline-size: 100%; border-collapse: collapse; }
+.pems-table__caption { text-align: start; font-weight: 600; padding-block-end: .5rem; }
+.pems-table th, .pems-table td { padding-block: .4rem; padding-inline: .6rem; border-block-end: 1px solid var(--pems-surface-border); }
+.pems-table thead th { background: var(--pems-table-header-bg); }
+.pems-table tbody tr:hover { background: var(--pems-row-hover); }
+.pems-align-start { text-align: start; } .pems-align-center { text-align: center; } .pems-align-end { text-align: end; }
+.pems-skeleton__line { display: block; block-size: 1rem; margin-block-end: .5rem; border-radius: .25rem; background: var(--pems-surface-border); }
+@media (prefers-reduced-motion: no-preference) { .pems-skeleton__line { animation: pems-pulse 1.4s ease-in-out infinite; } }
+@keyframes pems-pulse { 50% { opacity: .5; } }
+/* SCRUM-337 Skeleton kinds (<pems-skeleton kind="...">, PemsSkeleton.show) */
+.pems-skeleton__line--short { inline-size: 60%; }
+.pems-skeleton__line--title { block-size: 1.25rem; inline-size: 45%; margin-block-end: .875rem; }
+.pems-skeleton--card, .pems-skeleton--kpi { padding-block: 1.1rem; padding-inline: 1.25rem; border: 1px solid var(--pems-surface-border); border-radius: .75rem; background: var(--pems-surface); }
+.pems-skeleton--kpi { display: flex; align-items: center; gap: .875rem; }
+.pems-skeleton__line--square { flex-shrink: 0; inline-size: 2.875rem; block-size: 2.875rem; margin: 0; border-radius: .625rem; }
+.pems-skeleton__stack { display: block; flex: 1; }
+.pems-skeleton__line--value { block-size: 1.375rem; inline-size: 40%; }
+.pems-skeleton__row { display: flex; gap: 1rem; padding-block: .625rem; padding-inline: .75rem; border-block-end: 1px solid var(--pems-surface-border); }
+
+/* SCRUM-530 file preview: a stored file shown inline (Files/Preview). */
+.pems-file-preview { border: 1px solid var(--pems-surface-border); border-radius: 8px; overflow: hidden; background: var(--pems-surface); }
+.pems-file-preview__frame { display: block; width: 100%; height: min(75vh, 900px); border: 0; }
+.pems-file-preview--empty { padding: 2rem 1rem; text-align: center; color: var(--pems-text-muted); font-size: .875rem; }
+.pems-skeleton__row .pems-skeleton__line { flex: 1; block-size: .8rem; margin: 0; }
+.pems-skeleton__line--label { block-size: .75rem; inline-size: 30%; margin-block-end: .375rem; }
+.pems-skeleton__line--field { block-size: 2rem; margin-block-end: 1rem; }
+.pems-state { display: flex; flex-direction: column; align-items: center; gap: .5rem; padding-block: 2rem; padding-inline: 1rem; text-align: center; color: var(--pems-text); }
+.pems-state__icon { font-size: 2rem; color: var(--pems-text-muted); }
+.pems-state__title { margin: 0; font-weight: 600; }
+.pems-state__text, .pems-state__detail { margin: 0; color: var(--pems-text-muted); font-size: .9rem; }
+.pems-state--error .pems-state__title { color: var(--pems-chart-negative-text, var(--pems-text)); }
+.pems-state--loading .pems-skeleton__line { inline-size: min(24rem, 100%); }
+
+/* Overlays and navigation (SCRUM-338). Native <dialog>: focus trap, Escape and top-layer stacking come from the platform, so no z-index patches. */
+.pems-form-section { margin-block-end: 1.5rem; padding: 0; border: 0; }
+.pems-form-section__title { padding: 0; font-size: 1.05rem; font-weight: 600; }
+.pems-form-section__text { margin-block: 0 .75rem; color: var(--pems-text-muted); font-size: .9rem; }
+.pems-field__group { margin-block-end: 1rem; padding: 0; border: 0; }
+.pems-field__check { display: flex; align-items: center; gap: .5rem; }
+.pems-actionbar { display: flex; flex-wrap: wrap; gap: .5rem; padding-block: .75rem; }
+.pems-actionbar--sticky { position: sticky; inset-block-end: 0; padding-inline: 1rem; border-block-start: 1px solid var(--pems-surface-border); background: var(--pems-surface); }
+.pems-alert { position: relative; display: block; padding-block: .75rem; padding-inline: 1rem 2.5rem; border: 1px solid var(--pems-surface-border); border-inline-start-width: 4px; border-radius: .375rem; background: var(--pems-surface); color: var(--pems-text); }
+.pems-alert__title { margin: 0; font-weight: 600; }
+.pems-alert__text, .pems-alert__trace { margin-block: .25rem 0; color: var(--pems-text-muted); font-size: .9rem; }
+.pems-alert__copy, .pems-alert__dismiss { border: 0; background: transparent; color: var(--pems-link, var(--pems-primary)); cursor: pointer; font: inherit; }
+.pems-alert__copy { margin-inline-start: .5rem; text-decoration: underline; }
+.pems-alert__dismiss { position: absolute; inset-block-start: .5rem; inset-inline-end: .5rem; color: var(--pems-text-muted); }
+.pems-alert--info { border-inline-start-color: var(--pems-chart-info-text); }
+.pems-alert--success { border-inline-start-color: var(--pems-chart-positive-text); }
+.pems-alert--warning { border-inline-start-color: var(--pems-chart-warning-text); }
+.pems-alert--danger { border-inline-start-color: var(--pems-chart-danger-text); }
+.pems-modal, .pems-drawer { padding: 0; border: 1px solid var(--pems-surface-border); border-radius: .5rem; background: var(--pems-surface); color: var(--pems-text); box-shadow: 0 .5rem 2rem var(--pems-shadow); }
+.pems-modal::backdrop, .pems-drawer::backdrop { background: rgb(0 0 0 / .45); }
+.pems-modal--small { inline-size: min(24rem, 100%); }
+.pems-modal--medium { inline-size: min(36rem, 100%); }
+.pems-modal--large { inline-size: min(56rem, 100%); }
+.pems-modal__panel, .pems-drawer__panel { display: flex; flex-direction: column; margin: 0; max-block-size: 90vh; }
+.pems-modal__header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .75rem; padding-inline: 1rem; border-block-end: 1px solid var(--pems-surface-border); }
+.pems-modal__title { margin: 0; font-size: 1.1rem; }
+.pems-modal__close { border: 0; background: transparent; color: var(--pems-text-muted); cursor: pointer; }
+.pems-modal__body { overflow: auto; padding: 1rem; }
+.pems-confirm__message { margin: 0; white-space: pre-line; }
+.pems-modal__footer { display: flex; justify-content: flex-end; gap: .5rem; padding-block: .75rem; padding-inline: 1rem; border-block-start: 1px solid var(--pems-surface-border); }
+.pems-drawer { margin-block: 0; max-block-size: 100vh; block-size: 100vh; inline-size: min(26rem, 100%); border-radius: 0; }
+.pems-drawer--end { margin-inline: auto 0; }
+.pems-drawer--start { margin-inline: 0 auto; }
+.pems-drawer__panel { block-size: 100%; max-block-size: none; }
+.pems-tabs__list { display: flex; gap: .25rem; border-block-end: 1px solid var(--pems-surface-border); }
+.pems-tabs__tab { padding-block: .5rem; padding-inline: 1rem; border: 0; border-block-end: 2px solid transparent; background: transparent; color: var(--pems-text-muted); cursor: pointer; font: inherit; }
+.pems-tabs__tab[aria-selected="true"] { border-block-end-color: var(--pems-primary); color: var(--pems-text); font-weight: 600; }
+.pems-tabs__tab:focus-visible { outline: 2px solid var(--pems-focus); outline-offset: -2px; }
+.pems-tabs__panel { padding-block: 1rem; }
+.pems-breadcrumb__list { display: flex; flex-wrap: wrap; gap: .25rem; margin: 0; padding: 0; list-style: none; color: var(--pems-text-muted); }
+.pems-breadcrumb__item + .pems-breadcrumb__item::before { content: "/"; margin-inline-end: .25rem; }
+.pems-breadcrumb__item a { color: var(--pems-link, var(--pems-primary)); }
+.pems-stepper__list { display: flex; flex-wrap: wrap; gap: 1rem; margin: 0; padding: 0; list-style: none; }
+.pems-stepper__step { display: flex; align-items: center; gap: .5rem; color: var(--pems-text-muted); }
+.pems-stepper__mark { inline-size: .75rem; block-size: .75rem; border: 2px solid var(--pems-surface-border); border-radius: 50%; }
+.pems-stepper__step--done { color: var(--pems-text); }
+.pems-stepper__step--done .pems-stepper__mark { border-color: var(--pems-chart-positive-text); background: var(--pems-chart-positive-text); }
+.pems-stepper__step--current { color: var(--pems-text); font-weight: 600; }
+.pems-stepper__step--current .pems-stepper__mark { border-color: var(--pems-primary); }
+.pems-menu { position: relative; display: inline-block; }
+.pems-menu__trigger { list-style: none; cursor: pointer; }
+.pems-menu__trigger::-webkit-details-marker { display: none; }
+.pems-menu__list { position: absolute; inset-inline-start: 0; z-index: 10; min-inline-size: 10rem; margin-block: .25rem 0; padding-block: .25rem; padding-inline: 0; list-style: none; border: 1px solid var(--pems-surface-border); border-radius: .375rem; background: var(--pems-surface); box-shadow: 0 .25rem 1rem var(--pems-shadow); }
+.pems-menu__item { display: block; padding-block: .4rem; padding-inline: 1rem; color: var(--pems-text); text-decoration: none; }
+.pems-menu__item:hover, .pems-menu__item:focus-visible { background: var(--pems-row-hover); }
+.pems-sidenav__list { margin: 0; padding: 0; list-style: none; }
+.pems-sidenav__item { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding-block: .4rem; padding-inline: .75rem; border-radius: .375rem; color: var(--pems-text); text-decoration: none; }
+.pems-sidenav__item:hover { background: var(--pems-row-hover); }
+.pems-sidenav__item--active { background: var(--pems-selection); font-weight: 600; }
+.pems-sidenav__count { color: var(--pems-text-muted); font-size: .85rem; }
+/* SCRUM-337 InfoGrid: <pems-info-grid> / <pems-info-item>, the label / value block of a detail page */
+.pems-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px 24px; margin: 0; }
+.pems-info__item { min-inline-size: 0; }
+.pems-info__item--wide { grid-column: 1 / -1; }
+.pems-info__label { margin: 0 0 2px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--pems-text-muted); }
+.pems-info__value { margin: 0; font-weight: 600; color: var(--pems-text); overflow-wrap: anywhere; }
+.pems-info__num { display: inline-block; unicode-bidi: isolate; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; }
+.pems-info__value--mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: var(--pems-text-muted); }
+.pems-info__value--warning { color: var(--pems-chart-warning-text, var(--pems-text)); }
+.pems-info__value--success { color: var(--pems-chart-positive-text, var(--pems-text)); }
+.pems-info--rows { grid-template-columns: fit-content(220px) 1fr; gap: 6px 12px; }
+.pems-info--rows .pems-info__item { display: contents; }
+.pems-info--rows .pems-info__label { margin: 0; font-size: inherit; font-weight: 600; letter-spacing: normal; text-transform: none; }
+.pems-info--rows .pems-info__value { font-weight: inherit; }
+@media (max-width: 575.98px) { .pems-info--rows { grid-template-columns: 1fr; gap: 2px; } .pems-info--rows .pems-info__label { margin-block-start: 6px; } }
+/* SCRUM-337 TreeView: <pems-tree> / <pems-tree-item> (pems-tree.js) */
+.pems-tree, .pems-tree__group { margin: 0; padding: 0; list-style: none; }
+.pems-tree__group { margin-inline-start: .875rem; border-inline-start: 1px dashed var(--pems-surface-border); }
+.pems-tree__group[hidden] { display: none; }
+.pems-tree__row { display: flex; align-items: center; gap: 2px; border-radius: .25rem; }
+.pems-tree__toggle { flex: none; inline-size: 1.25rem; block-size: 1.5rem; padding: 0; border: 0; background: transparent; color: inherit; opacity: .7; cursor: pointer; }
+.pems-tree__toggle .bi { display: inline-block; transition: transform .15s; }
+.pems-tree__toggle[aria-expanded="true"] .bi { transform: rotate(90deg); }
+[dir="rtl"] .pems-tree__toggle .bi { transform: scaleX(-1); }
+[dir="rtl"] .pems-tree__toggle[aria-expanded="true"] .bi { transform: scaleX(-1) rotate(90deg); }
+.pems-tree__spacer { flex: none; inline-size: 1.25rem; }
+.pems-tree__link, .pems-tree__text { flex: 1 1 auto; min-inline-size: 0; color: inherit; }
+.pems-tree__count { margin-inline-start: .5rem; color: var(--pems-text-muted); font-size: .85em; }
+.pems-tree__item:focus { outline: none; }
+.pems-tree__item:focus-visible > .pems-tree__row { outline: 2px solid var(--pems-focus); outline-offset: -2px; }
+@media (prefers-reduced-motion: reduce) { .pems-tree__toggle .bi { transition: none; } }
+
+/* SCRUM-508: fixed widths that views wrote as inline styles; one class per value in use, !important like an inline style and like the Bootstrap w-100 utility (named, so a view never writes style="width:..." again) */
+.pems-maxw-100pct{max-width:100%}
+.pems-maxw-120{max-width:120px}
+.pems-maxw-140{max-width:140px}
+.pems-maxw-150{max-width:150px}
+.pems-maxw-160{max-width:160px}
+.pems-maxw-180{max-width:180px}
+.pems-maxw-220{max-width:220px}
+.pems-maxw-240{max-width:240px}
+.pems-maxw-260{max-width:260px}
+.pems-maxw-280{max-width:280px}
+.pems-maxw-720{max-width:720px}
+.pems-maxw-75pct{max-width:75%}
+.pems-maxw-820{max-width:820px}
+.pems-minw-110{min-width:110px}
+.pems-minw-140{min-width:140px}
+.pems-minw-160{min-width:160px}
+.pems-minw-200{min-width:200px}
+.pems-minw-320{min-width:320px}
+.pems-minw-70{min-width:70px}
+.pems-w-100{width:100px}
+.pems-w-100pct{width:100%}
+.pems-w-104{width:104px}
+.pems-w-110{width:110px}
+.pems-w-112{width:112px}
+.pems-w-118{width:118px}
+.pems-w-120{width:120px}
+.pems-w-130{width:130px}
+.pems-w-140{width:140px}
+.pems-w-150{width:150px}
+.pems-w-160{width:160px}
+.pems-w-170{width:170px}
+.pems-w-180{width:180px}
+.pems-w-190{width:190px}
+.pems-w-200{width:200px}
+.pems-w-220{width:220px}
+.pems-w-240{width:240px}
+.pems-w-260{width:260px}
+.pems-w-280{width:280px}
+.pems-w-30{width:30px}
+.pems-w-300{width:300px}
+.pems-w-30pct{width:30%}
+.pems-w-320{width:320px}
+.pems-w-34{width:34px}
+.pems-w-34pct{width:34%}
+.pems-w-36{width:36px}
+.pems-w-360{width:360px}
+.pems-w-38{width:38px}
+.pems-w-40{width:40px}
+.pems-w-40pct{width:40%}
+.pems-w-50{width:50px}
+.pems-w-60{width:60px}
+.pems-w-70{width:70px}
+.pems-w-80{width:80px}
+.pems-w-88{width:88px}
+.pems-w-90{width:90px}
+.pems-w-92{width:92px}
+.pems-w-96{width:96px}
+.pems-pre-line { white-space: pre-line; }   /* a server text with line breaks, shown as text (script templates, SCRUM-508) */
+.pems-readonly-field { display: block; width: 100%; padding: .375rem .75rem; line-height: 1.5; background-color: var(--bs-secondary-bg); border: var(--bs-border-width) solid var(--bs-border-color); border-radius: var(--bs-border-radius); }   /* a read-only value shown in a form row (SCRUM-508) */
+.pm-chip[data-empty="true"] .badge { color: var(--bs-white); background-color: RGBA(var(--bs-secondary-rgb), 1); }   /* permission-matrix role chip with no module (SCRUM-508) */
+.pm-chip[data-empty="false"] .badge { color: var(--bs-black); background-color: RGBA(var(--bs-light-rgb), 1); border: var(--bs-border-width) solid var(--bs-border-color); }
+
+/* SCRUM-508: the last inline styles of the views, one named class per use */
+.pems-fs-11rem { font-size: 1.1rem; }
+.pems-fs-12 { font-size: 12px; }
+.pems-fs-26rem { font-size: 2.6rem; }
+.pems-h-fit { height: fit-content; }
+.pems-notif-menu { min-width: 320px; max-height: 400px; overflow-y: auto; }
+.pems-pdf-canvas { position: relative; border: 1px solid var(--pems-surface-border, var(--bs-border-color)); overflow: auto; max-height: 75vh; text-align: center; cursor: crosshair; }
+.pems-photo-150 { width: 150px; height: 150px; object-fit: cover; border: 2px solid var(--bs-border-color); }
+.pems-photo-96 { width: 96px; height: 96px; object-fit: cover; }
+.pems-scroll-320 { max-height: 320px; overflow-y: auto; }
+.pems-signature-pad { width: 100%; height: 200px; cursor: crosshair; }
+.pems-signature-small { height: 32px; vertical-align: middle; margin-inline-start: 8px; background: var(--bs-white); border: var(--bs-border-width) solid var(--bs-border-color-translucent); border-radius: 3px; }
+.pems-signature-view { max-height: 100px; border: 1px solid var(--bs-border-color); background: var(--bs-white); padding: 4px; border-radius: 4px; }
+.pems-size-24 { width: 24px; height: 24px; }
+.pems-wrap-start { white-space: normal; text-align: start; }
+.pems-indent-0 { padding-inline-start: 0.0rem; }
+.pems-indent-1 { padding-inline-start: 1.5rem; }
+.pems-indent-2 { padding-inline-start: 3.0rem; }
+.pems-indent-3 { padding-inline-start: 4.5rem; }
+.pems-indent-4 { padding-inline-start: 6.0rem; }
+.pems-indent-5 { padding-inline-start: 7.5rem; }
+.pems-indent-6 { padding-inline-start: 9.0rem; }
+.pems-indent-7 { padding-inline-start: 10.5rem; }
+.pems-indent-8 { padding-inline-start: 12.0rem; }
+.pems-tag-indent-0 { padding-inline-start: 0.75rem; }
+.pems-tag-indent-1 { padding-inline-start: 1.65rem; }
+.pems-tag-indent-2 { padding-inline-start: 2.55rem; }
+.pems-tag-indent-3 { padding-inline-start: 3.45rem; }
+.pems-tag-indent-4 { padding-inline-start: 4.35rem; }
+.pems-tag-indent-5 { padding-inline-start: 5.25rem; }
+.pems-tag-indent-6 { padding-inline-start: 6.15rem; }
+.pems-tag-indent-7 { padding-inline-start: 7.05rem; }
+.pems-tag-indent-8 { padding-inline-start: 7.95rem; }
+.pems-bar { width: 100%; min-height: 4px; }
+.pems-h-pct-0 { height: 0%; }
+.pems-h-pct-1 { height: 1%; }
+.pems-h-pct-2 { height: 2%; }
+.pems-h-pct-3 { height: 3%; }
+.pems-h-pct-4 { height: 4%; }
+.pems-h-pct-5 { height: 5%; }
+.pems-h-pct-6 { height: 6%; }
+.pems-h-pct-7 { height: 7%; }
+.pems-h-pct-8 { height: 8%; }
+.pems-h-pct-9 { height: 9%; }
+.pems-h-pct-10 { height: 10%; }
+.pems-h-pct-11 { height: 11%; }
+.pems-h-pct-12 { height: 12%; }
+.pems-h-pct-13 { height: 13%; }
+.pems-h-pct-14 { height: 14%; }
+.pems-h-pct-15 { height: 15%; }
+.pems-h-pct-16 { height: 16%; }
+.pems-h-pct-17 { height: 17%; }
+.pems-h-pct-18 { height: 18%; }
+.pems-h-pct-19 { height: 19%; }
+.pems-h-pct-20 { height: 20%; }
+.pems-h-pct-21 { height: 21%; }
+.pems-h-pct-22 { height: 22%; }
+.pems-h-pct-23 { height: 23%; }
+.pems-h-pct-24 { height: 24%; }
+.pems-h-pct-25 { height: 25%; }
+.pems-h-pct-26 { height: 26%; }
+.pems-h-pct-27 { height: 27%; }
+.pems-h-pct-28 { height: 28%; }
+.pems-h-pct-29 { height: 29%; }
+.pems-h-pct-30 { height: 30%; }
+.pems-h-pct-31 { height: 31%; }
+.pems-h-pct-32 { height: 32%; }
+.pems-h-pct-33 { height: 33%; }
+.pems-h-pct-34 { height: 34%; }
+.pems-h-pct-35 { height: 35%; }
+.pems-h-pct-36 { height: 36%; }
+.pems-h-pct-37 { height: 37%; }
+.pems-h-pct-38 { height: 38%; }
+.pems-h-pct-39 { height: 39%; }
+.pems-h-pct-40 { height: 40%; }
+.pems-h-pct-41 { height: 41%; }
+.pems-h-pct-42 { height: 42%; }
+.pems-h-pct-43 { height: 43%; }
+.pems-h-pct-44 { height: 44%; }
+.pems-h-pct-45 { height: 45%; }
+.pems-h-pct-46 { height: 46%; }
+.pems-h-pct-47 { height: 47%; }
+.pems-h-pct-48 { height: 48%; }
+.pems-h-pct-49 { height: 49%; }
+.pems-h-pct-50 { height: 50%; }
+.pems-h-pct-51 { height: 51%; }
+.pems-h-pct-52 { height: 52%; }
+.pems-h-pct-53 { height: 53%; }
+.pems-h-pct-54 { height: 54%; }
+.pems-h-pct-55 { height: 55%; }
+.pems-h-pct-56 { height: 56%; }
+.pems-h-pct-57 { height: 57%; }
+.pems-h-pct-58 { height: 58%; }
+.pems-h-pct-59 { height: 59%; }
+.pems-h-pct-60 { height: 60%; }
+.pems-h-pct-61 { height: 61%; }
+.pems-h-pct-62 { height: 62%; }
+.pems-h-pct-63 { height: 63%; }
+.pems-h-pct-64 { height: 64%; }
+.pems-h-pct-65 { height: 65%; }
+.pems-h-pct-66 { height: 66%; }
+.pems-h-pct-67 { height: 67%; }
+.pems-h-pct-68 { height: 68%; }
+.pems-h-pct-69 { height: 69%; }
+.pems-h-pct-70 { height: 70%; }
+.pems-h-pct-71 { height: 71%; }
+.pems-h-pct-72 { height: 72%; }
+.pems-h-pct-73 { height: 73%; }
+.pems-h-pct-74 { height: 74%; }
+.pems-h-pct-75 { height: 75%; }
+.pems-h-pct-76 { height: 76%; }
+.pems-h-pct-77 { height: 77%; }
+.pems-h-pct-78 { height: 78%; }
+.pems-h-pct-79 { height: 79%; }
+.pems-h-pct-80 { height: 80%; }
+.pems-h-pct-81 { height: 81%; }
+.pems-h-pct-82 { height: 82%; }
+.pems-h-pct-83 { height: 83%; }
+.pems-h-pct-84 { height: 84%; }
+.pems-h-pct-85 { height: 85%; }
+.pems-h-pct-86 { height: 86%; }
+.pems-h-pct-87 { height: 87%; }
+.pems-h-pct-88 { height: 88%; }
+.pems-h-pct-89 { height: 89%; }
+.pems-h-pct-90 { height: 90%; }
+.pems-h-pct-91 { height: 91%; }
+.pems-h-pct-92 { height: 92%; }
+.pems-h-pct-93 { height: 93%; }
+.pems-h-pct-94 { height: 94%; }
+.pems-h-pct-95 { height: 95%; }
+.pems-h-pct-96 { height: 96%; }
+.pems-h-pct-97 { height: 97%; }
+.pems-h-pct-98 { height: 98%; }
+.pems-h-pct-99 { height: 99%; }
+.pems-h-pct-100 { height: 100%; }
+/* Stat tiles <pems-stat-grid>/<pems-stat> (SCRUM-551): the grid and the label/value work on every page, not only inside .admin-page;
+ admin pages keep their own, more specific rules in administration-design-system.css. 4 columns, 2 below 992px, 1 below 576px. */
+.admin-kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-block-end: 1rem; }
+.admin-kpi-label { color: var(--pems-text-muted); font-size: .82rem; }
+.admin-kpi-value { font-size: 1.65rem; font-weight: 700; margin-block-start: .35rem; }
+@media (max-width: 992px) { .admin-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 576px) { .admin-kpi-grid { grid-template-columns: 1fr; } }
+
+/* SCRUM-625: the print-page layout (labels, forms, reports that are printed): narrow, centred, no screen chrome when printed */
+.pems-print-page { max-inline-size: 210mm; margin-inline: auto; padding: 16px; }
+@media print { .pems-print-page { max-inline-size: none; padding: 0; } .pems-print-page .btn, .pems-print-page nav { display: none !important; } }
+
+/* SCRUM-627: the editable matrix (rows by columns of cells) */
+.pems-matrix__scroll { overflow-x: auto; }
+.pems-matrix__table th[scope="row"] { white-space: nowrap; position: sticky; inset-inline-start: 0; background: var(--pems-surface); }
+.pems-matrix__table input, .pems-matrix__table select { min-inline-size: 7rem; }

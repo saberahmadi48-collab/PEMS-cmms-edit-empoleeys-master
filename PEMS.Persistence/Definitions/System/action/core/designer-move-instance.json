@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "designer-move-instance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move a component",
+    "fa": "جابه‌جایی مؤلفه"
+  },
+  "description": {
+    "en": "Move a component",
+    "fa": "جابه‌جایی مؤلفه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The component was moved in the draft.",
+      "fa": "مؤلفه در پیش‌نویس جابه‌جا شد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "MoveInstance",
+      "args": {
+        "reference": "field:ref",
+        "instanceId": "field:instanceId",
+        "region": "field:region",
+        "position": "field:position",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

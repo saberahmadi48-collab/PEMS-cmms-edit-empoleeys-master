@@ -1,0 +1,149 @@
+{
+  "kind": "page",
+  "key": "teams",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance Teams",
+    "fa": "تیم‌های نگهداری"
+  },
+  "description": {
+    "en": "Maintenance teams: create and open a team (page definition)",
+    "fa": "تیم‌های نگهداری: ساخت و باز کردن تیم (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "teams",
+    "permission": "Team.View",
+    "regions": {
+      "content": [
+        {
+          "id": "add",
+          "component": "content-blocks",
+          "options": {
+            "id": "add",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/team-create",
+                "text": {
+                  "en": "Create a team",
+                  "fa": "ساخت تیم"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "chart",
+          "component": "content-blocks",
+          "options": {
+            "id": "chart",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/Team/OrganizationChart",
+                "text": {
+                  "en": "Organization chart",
+                  "fa": "نمودار سازمانی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "teams",
+          "component": "data-grid",
+          "options": {
+            "id": "teams",
+            "url": "/d/teams-grid",
+            "idField": "teamId",
+            "pageSize": 25,
+            "height": 560,
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 110
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Team",
+                  "fa": "تیم"
+                },
+                "width": 220
+              },
+              {
+                "key": "group",
+                "header": {
+                  "en": "Group",
+                  "fa": "گروه"
+                },
+                "width": 180
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 160
+              },
+              {
+                "key": "shift",
+                "header": {
+                  "en": "Shift",
+                  "fa": "شیفت"
+                },
+                "width": 120
+              },
+              {
+                "key": "supervisor",
+                "header": {
+                  "en": "Supervisor",
+                  "fa": "سرپرست"
+                },
+                "width": 180
+              },
+              {
+                "key": "members",
+                "header": {
+                  "en": "Members",
+                  "fa": "اعضا"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/team-details?teamId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

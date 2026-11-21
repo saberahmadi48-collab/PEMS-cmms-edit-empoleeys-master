@@ -395,13 +395,30 @@ public class ReliabilityIntelligenceService : IReliabilityIntelligenceService
             .Select(g => new { EquipmentId = g.Key, Count = g.Count() })
             .ToDictionaryAsync(x => x.EquipmentId, x => x.Count);
 
-        var activeStrategiesByEquipment = await _context.MaintenanceStrategies.AsNoTracking()
+        // طبق بازطراحی RCM کلاس‌محور: استراتژی‌های جدید «الگو» هستند و EquipmentId آن‌ها Null است - پوشش واقعی هر تگ از
+        // MaintenanceStrategyAssignment فعال می‌آید. استراتژی‌های قدیمی تک‌تگی (EquipmentId پر) هم همچنان پوشش حساب می‌شوند.
+        // کلید Dictionary هرگز Null نیست (قبلاً ToDictionary روی EquipmentId؟ می‌ترکید) و جفت (تجهیز، استراتژی) یک‌بار شمرده
+        // می‌شود، چون مهاجرت RCM برای هر استراتژی قدیمی یک Assignment هم می‌سازد.
+        var activeStrategies = await _context.MaintenanceStrategies.AsNoTracking()
             .Where(x => x.IsActive)
-            .Select(x => new { x.EquipmentId, x.StrategyType })
+            .Select(x => new { x.MaintenanceStrategyId, x.EquipmentId, x.StrategyType })
             .ToListAsync();
-        var strategiesByEquipmentId = activeStrategiesByEquipment
-            .GroupBy(x => x.EquipmentId)
-            .ToDictionary(g => g.Key, g => g.Select(x => x.StrategyType).ToList());
+        var strategyTypeById = activeStrategies.ToDictionary(x => x.MaintenanceStrategyId, x => x.StrategyType);
+
+        var activeAssignments = await _context.MaintenanceStrategyAssignments.AsNoTracking()
+            .Where(a => a.IsActive && a.Status == PEMS.Domain.Common.RcmCodes.AssignmentStatus.Active)
+            .Select(a => new { a.EquipmentId, a.MaintenanceStrategyId })
+            .ToListAsync();
+
+        var coveredPairs = new HashSet<(int EquipmentId, int StrategyId)>();
+        foreach (var s in activeStrategies)
+            if (s.EquipmentId.HasValue) coveredPairs.Add((s.EquipmentId.Value, s.MaintenanceStrategyId));
+        foreach (var a in activeAssignments)
+            if (strategyTypeById.ContainsKey(a.MaintenanceStrategyId)) coveredPairs.Add((a.EquipmentId, a.MaintenanceStrategyId));
+
+        var strategiesByEquipmentId = coveredPairs
+            .GroupBy(p => p.EquipmentId)
+            .ToDictionary(g => g.Key, g => g.Select(p => strategyTypeById[p.StrategyId]).ToList());
 
         var approvedRcmClassIds = await _context.RCMAnalyses.AsNoTracking()
             .Where(x => x.IsActive && x.Status == "APPROVED")

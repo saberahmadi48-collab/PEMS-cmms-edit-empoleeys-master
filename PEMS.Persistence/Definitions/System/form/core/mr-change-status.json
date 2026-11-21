@@ -1,0 +1,110 @@
+{
+  "kind": "form",
+  "key": "mr-change-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change the MR status",
+    "fa": "تغییر وضعیت MR"
+  },
+  "description": {
+    "en": "Change the MR status",
+    "fa": "تغییر وضعیت MR"
+  },
+  "payload": {
+    "id": "mr-change-status",
+    "title": {
+      "en": "Change the MR status",
+      "fa": "تغییر وضعیت MR"
+    },
+    "submitLabel": {
+      "en": "Change",
+      "fa": "تغییر"
+    },
+    "actionKey": "mr-change-status",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "mrId",
+        "label": {
+          "en": "MR id",
+          "fa": "شناسه‌ی MR"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "status",
+        "label": {
+          "en": "Status",
+          "fa": "وضعیت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Draft",
+            "label": {
+              "en": "Draft",
+              "fa": "پیش‌نویس"
+            }
+          },
+          {
+            "value": "Submitted",
+            "label": {
+              "en": "Submitted",
+              "fa": "ارسال‌شده"
+            }
+          },
+          {
+            "value": "Under Technical Review",
+            "label": {
+              "en": "Under Technical Review",
+              "fa": "در بررسی فنی"
+            }
+          },
+          {
+            "value": "Approved",
+            "label": {
+              "en": "Approved",
+              "fa": "تأییدشده"
+            }
+          },
+          {
+            "value": "Issued to Procurement",
+            "label": {
+              "en": "Issued to Procurement",
+              "fa": "ارسال به خرید"
+            }
+          },
+          {
+            "value": "Closed",
+            "label": {
+              "en": "Closed",
+              "fa": "بسته"
+            }
+          },
+          {
+            "value": "Cancelled",
+            "label": {
+              "en": "Cancelled",
+              "fa": "لغوشده"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

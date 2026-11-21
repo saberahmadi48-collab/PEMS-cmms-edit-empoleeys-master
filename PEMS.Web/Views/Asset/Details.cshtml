@@ -3,203 +3,160 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+<pems-content-card css="mb-3">
+    <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
-            <h5 class="mb-0">@Model.AssetNumber</h5>
+            <pems-heading level="5" class="mb-0">@Model.AssetNumber</pems-heading>
             <span class="text-muted small">@Model.EquipmentTagNumber - @Model.EquipmentName</span>
         </div>
-        <div class="d-flex gap-2">
-            <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-box-arrow-up-right"></i> @Localizer["Equipment"]</a>
-            <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back</a>
-        </div>
-    </div>
-</div>
+        <pems-flex gap="2">
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId"><pems-icon name="bi-box-arrow-up-right" /> @Localizer["Equipment"]</pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-arrow-left" /> Back</pems-button>
+        </pems-flex>
+    </pems-flex>
+</pems-content-card>
 
 @if (TempData["Message"] != null)
 {
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
+    <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert>
 }
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+    <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
 }
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">@Localizer["Status"]</div><div class="fs-5 fw-bold">@Model.Status</div></div></div>
-    <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">@Localizer["Criticality"]</div><div class="fs-5 fw-bold">@(Model.CriticalityClass ?? "-")</div></div></div>
-    <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">Open Work Orders</div><div class="fs-5 fw-bold">@Model.WorkOrders.Count(w => w.Status != "Completed" && w.Status != "Closed")</div></div></div>
-    <div class="col-md-3"><div class="content-card text-center"><div class="text-muted small">Total Cost</div><div class="fs-5 fw-bold">@Model.TotalCost.ToString("N0")</div></div></div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3"><pems-kpi-tile compact label="@Localizer["Status"]">@Model.Status</pems-kpi-tile></pems-col>
+    <pems-col md="3"><pems-kpi-tile compact label="@Localizer["Criticality"]">@Model.CriticalityClass</pems-kpi-tile></pems-col>
+    <pems-col md="3"><pems-kpi-tile compact label="Open Work Orders">@Model.WorkOrders.Count(w => w.Status != "Completed" && w.Status != "Closed")</pems-kpi-tile></pems-col>
+    <pems-col md="3"><pems-kpi-tile compact label="Total Cost">@Model.TotalCost.ToString("N0")</pems-kpi-tile></pems-col>
+</pems-row>
 
-<div class="row g-3">
-    <div class="col-md-6">
-        <div class="content-card mb-3">
-            <h6 class="mb-3">Asset Info</h6>
-            <table class="table table-sm">
-                <tr><th class="text-muted" style="width:40%;">@Localizer["Manufacturer / Model"]</th><td>@Model.Manufacturer / @Model.Model</td></tr>
-                <tr><th class="text-muted">@Localizer["Functional Location"]</th><td>@(Model.FunctionalLocationBreadcrumb ?? "not linked")</td></tr>
-                <tr><th class="text-muted">@Localizer["Functional Location (raw text, legacy)"]</th><td>@(Model.FunctionalLocation ?? "N/A")</td></tr>
-                <tr><th class="text-muted">@Localizer["Maintenance Class"]</th><td>@(Model.MaintenanceClass ?? "N/A")</td></tr>
-                <tr><th class="text-muted">@Localizer["Commissioning Date"]</th><td>@(Model.CommissioningDate?.ToString("yyyy-MM-dd") ?? "N/A")</td></tr>
-                <tr><th class="text-muted">@Localizer["Risk Level"]</th><td>@(Model.RiskLevel ?? "N/A")</td></tr>
-                <tr><th class="text-muted">@Localizer["Description"]</th><td>@(Model.Description ?? "N/A")</td></tr>
-            </table>
-            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editAssetModal"><i class="bi bi-pencil"></i> @Localizer["Edit"]</button>
-        </div>
+<pems-row gap="3">
+    <pems-col md="6">
+        <pems-content-card css="mb-3">
+            <pems-heading level="6" class="mb-3">Asset Info</pems-heading>
+            <pems-table scale="small">
+                <pems-table-row><pems-table-header class="text-muted pems-w-40pct">@Localizer["Manufacturer / Model"]</pems-table-header><pems-table-cell>@Model.Manufacturer / @Model.Model</pems-table-cell></pems-table-row>
+                <pems-table-row><pems-table-header class="text-muted">@Localizer["Functional Location"]</pems-table-header><pems-table-cell>@(Model.FunctionalLocationBreadcrumb ?? "not linked")</pems-table-cell></pems-table-row>
+                <pems-table-row><pems-table-header class="text-muted">@Localizer["Functional Location (raw text, legacy)"]</pems-table-header><pems-table-cell>@(Model.FunctionalLocation ?? "N/A")</pems-table-cell></pems-table-row>
+                <pems-table-row><pems-table-header class="text-muted">@Localizer["Maintenance Class"]</pems-table-header><pems-table-cell>@(Model.MaintenanceClass ?? "N/A")</pems-table-cell></pems-table-row>
+                <pems-table-row><pems-table-header class="text-muted">@Localizer["Commissioning Date"]</pems-table-header><pems-table-cell>@(PemsDates.Date(Model.CommissioningDate) ?? "N/A")</pems-table-cell></pems-table-row>
+                <pems-table-row><pems-table-header class="text-muted">@Localizer["Risk Level"]</pems-table-header><pems-table-cell>@(Model.RiskLevel ?? "N/A")</pems-table-cell></pems-table-row>
+                <pems-table-row><pems-table-header class="text-muted">@Localizer["Description"]</pems-table-header><pems-table-cell>@(Model.Description ?? "N/A")</pems-table-cell></pems-table-row>
+            </pems-table>
+            <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#editAssetModal"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
+        </pems-content-card>
 
-        <div class="content-card">
-            <h6 class="mb-3">@Localizer["Latest Maintenance"]</h6>
+        <pems-content-card>
+            <pems-heading level="6" class="mb-3">@Localizer["Latest Maintenance"]</pems-heading>
             @if (Model.LatestMaintenance != null)
             {
-                <table class="table table-sm">
-                    <tr><th class="text-muted" style="width:40%;">@Localizer["Execution Date"]</th><td>@Model.LatestMaintenance.ExecutionDate.ToString("yyyy-MM-dd")</td></tr>
-                    <tr><th class="text-muted">@Localizer["Action Taken"]</th><td>@(Model.LatestMaintenance.ActionTaken ?? "N/A")</td></tr>
-                    <tr><th class="text-muted">@Localizer["Technician"]</th><td>@(Model.LatestMaintenance.Technician ?? "N/A")</td></tr>
-                    <tr><th class="text-muted">Duration (h)</th><td>@(Model.LatestMaintenance.DurationHours?.ToString("N1") ?? "N/A")</td></tr>
-                </table>
+                <pems-table scale="small">
+                    <pems-table-row><pems-table-header class="text-muted pems-w-40pct">@Localizer["Execution Date"]</pems-table-header><pems-table-cell>@PemsDates.Date(Model.LatestMaintenance.ExecutionDate)</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-header class="text-muted">@Localizer["Action Taken"]</pems-table-header><pems-table-cell>@(Model.LatestMaintenance.ActionTaken ?? "N/A")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-header class="text-muted">@Localizer["Technician"]</pems-table-header><pems-table-cell>@(Model.LatestMaintenance.Technician ?? "N/A")</pems-table-cell></pems-table-row>
+                    <pems-table-row><pems-table-header class="text-muted">Duration (h)</pems-table-header><pems-table-cell>@(Model.LatestMaintenance.DurationHours?.ToString("N1") ?? "N/A")</pems-table-cell></pems-table-row>
+                </pems-table>
             }
             else
             {
-                <p class="text-muted small mb-0">No completed maintenance recorded yet - populated automatically when a Work Order on this equipment is marked Completed.</p>
+                <pems-text class="text-muted small mb-0">No completed maintenance recorded yet - populated automatically when a Work Order on this equipment is marked Completed.</pems-text>
             }
-        </div>
-    </div>
+        </pems-content-card>
+    </pems-col>
 
-    <div class="col-md-6">
-        <div class="content-card mb-3">
-            <h6 class="mb-3">Work Orders (@Model.WorkOrders.Count)</h6>
+    <pems-col md="6">
+        <pems-content-card css="mb-3">
+            <pems-heading level="6" class="mb-3">Work Orders (@Model.WorkOrders.Count)</pems-heading>
             @if (Model.WorkOrders.Any())
             {
-                <table class="table table-sm">
-                    <thead><tr><th>No.</th><th>@Localizer["Description"]</th><th>@Localizer["Status"]</th><th>@Localizer["Created"]</th></tr></thead>
-                    <tbody>
-                        @foreach (var w in Model.WorkOrders.Take(10))
-                        {
-                            <tr>
-                                <td><a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNo</a></td>
-                                <td class="small">@(w.Description ?? "-")</td>
-                                <td><span class="badge bg-secondary">@w.Status</span></td>
-                                <td class="small">@(w.CreatedDate?.ToString("yyyy-MM-dd") ?? "-")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                <pems-data-table data="@(DataRows.Of(Model.WorkOrders.Take(10), c_ => c_.Add("No.", w => (object?)(DataCell.Link(Url.Action("Details", "WorkOrder", new { id = w.WorkOrderId }), w.WorkOrderNo))).Add(((Localizer["Description"])?.ToString() ?? ""), w => (object?)((w.Description ?? "-")), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), w => (object?)(DataCell.Badge("neutral", w.Status))).Add(((Localizer["Created"])?.ToString() ?? ""), w => (object?)((PemsDates.Date(w.CreatedDate) ?? "-")), css: "small")))" dense="true" enterprise="false" />
             }
             else
             {
-                <p class="text-muted small mb-0">@Localizer["No work orders yet."]</p>
+                <pems-text class="text-muted small mb-0">@Localizer["No work orders yet."]</pems-text>
             }
-        </div>
+        </pems-content-card>
 
-        <div class="content-card mb-3">
-            <h6 class="mb-3">Inspections (@Model.Inspections.Count)</h6>
+        <pems-content-card css="mb-3">
+            <pems-heading level="6" class="mb-3">Inspections (@Model.Inspections.Count)</pems-heading>
             @if (Model.Inspections.Any())
             {
-                <table class="table table-sm">
-                    <thead><tr><th>@Localizer["Type"]</th><th>@Localizer["Date"]</th><th>@Localizer["Inspector"]</th><th>@Localizer["Result"]</th></tr></thead>
-                    <tbody>
-                        @foreach (var i in Model.Inspections.Take(10))
-                        {
-                            <tr>
-                                <td>@i.InspectionType</td>
-                                <td class="small">@(i.InspectionDate?.ToString("yyyy-MM-dd") ?? "-")</td>
-                                <td class="small">@(i.Inspector ?? "-")</td>
-                                <td>@(i.Result ?? "-")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                <pems-data-table data="@(DataRows.Of(Model.Inspections.Take(10), c_ => c_.Add(((Localizer["Type"])?.ToString() ?? ""), i => (object?)(i.InspectionType)).Add(((Localizer["Date"])?.ToString() ?? ""), i => (object?)(PemsDates.Date(i.InspectionDate) ?? "-"), css: "small").Add(((Localizer["Inspector"])?.ToString() ?? ""), i => (object?)(i.Inspector ?? "-"), css: "small").Add(((Localizer["Result"])?.ToString() ?? ""), i => (object?)(i.Result ?? "-"))))" enterprise="false" dense="true" />
             }
             else
             {
-                <p class="text-muted small mb-0">No inspections recorded yet.</p>
+                <pems-text class="text-muted small mb-0">No inspections recorded yet.</pems-text>
             }
-        </div>
+        </pems-content-card>
 
-        <div class="content-card">
-            <h6 class="mb-3">Failures (@Model.Failures.Count)</h6>
+        <pems-content-card>
+            <pems-heading level="6" class="mb-3">Failures (@Model.Failures.Count)</pems-heading>
             @if (Model.Failures.Any())
             {
-                <table class="table table-sm">
-                    <thead><tr><th>@Localizer["Date"]</th><th>@Localizer["Mode"]</th><th>@Localizer["Cause"]</th><th>Downtime (h)</th></tr></thead>
-                    <tbody>
-                        @foreach (var f in Model.Failures.Take(10))
-                        {
-                            <tr>
-                                <td class="small">@f.FailureDate.ToString("yyyy-MM-dd")</td>
-                                <td>@f.FailureMode</td>
-                                <td class="small">@(f.FailureCause ?? "-")</td>
-                                <td>@(f.DowntimeHours?.ToString("N1") ?? "-")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                <pems-data-table data="@(DataRows.Of(Model.Failures.Take(10), c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), f => (object?)(PemsDates.Date(f.FailureDate)), css: "small").Add(((Localizer["Mode"])?.ToString() ?? ""), f => (object?)(f.FailureMode)).Add(((Localizer["Cause"])?.ToString() ?? ""), f => (object?)(f.FailureCause ?? "-"), css: "small").Add("Downtime (h)", f => (object?)(f.DowntimeHours?.ToString("N1") ?? "-"))))" enterprise="false" dense="true" />
             }
             else
             {
-                <p class="text-muted small mb-0">No failures recorded yet - populated automatically when a Corrective/Emergency Work Order on this equipment is marked Completed.</p>
+                <pems-text class="text-muted small mb-0">No failures recorded yet - populated automatically when a Corrective/Emergency Work Order on this equipment is marked Completed.</pems-text>
             }
-        </div>
-    </div>
-</div>
+        </pems-content-card>
+    </pems-col>
+</pems-row>
 
-<div class="modal fade" id="editAssetModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-action="Edit" method="post">
+<pems-modal id="editAssetModal" tabindex="-1">
+            <pems-form asp-action="Edit" method="post">
                 <input type="hidden" name="assetId" value="@Model.AssetId" />
-                <div class="modal-header"><h6 class="modal-title">Edit Asset</h6></div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">@Localizer["Asset Number"]</label>
-                        <input name="assetNumber" class="form-control" value="@Model.AssetNumber" required />
-                    </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Functional Location"]</label>
-                            <select name="functionalLocationId" class="form-select">
+                <pems-modal-header>@Localizer["Edit Asset"]</pems-modal-header>
+                <pems-modal-body>
+                    <pems-form-group css="mb-3">
+                        <pems-label>@Localizer["Asset Number"]</pems-label>
+                        <pems-input name="assetNumber" value="@Model.AssetNumber" required />
+                    </pems-form-group>
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Functional Location"]</pems-label>
+                            <pems-select name="functionalLocationId">
                                 <option value="">@Localizer["-- not linked --"]</option>
                                 @foreach (var fl in (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.FunctionalLocations)
                                 {
                                     <option value="@fl.FunctionalLocationId" selected="@(fl.FunctionalLocationId == Model.FunctionalLocationId)">@fl.PathBreadcrumb</option>
                                 }
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Maintenance Class"]</label>
-                            <input name="maintenanceClass" class="form-control" value="@Model.MaintenanceClass" />
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">@Localizer["Functional Location (raw text, legacy)"]</label>
-                        <input name="functionalLocation" class="form-control" value="@Model.FunctionalLocation" />
-                    </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Commissioning Date"]</label>
-                            <input name="commissioningDate" type="date" class="form-control" value="@Model.CommissioningDate?.ToString("yyyy-MM-dd")" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Status"]</label>
-                            <select name="status" class="form-select">
+                            </pems-select>
+                        </pems-col>
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Maintenance Class"]</pems-label>
+                            <pems-input name="maintenanceClass" value="@Model.MaintenanceClass" />
+                        </pems-col>
+                    </pems-row>
+                    <pems-form-group css="mb-3">
+                        <pems-label>@Localizer["Functional Location (raw text, legacy)"]</pems-label>
+                        <pems-input name="functionalLocation" value="@Model.FunctionalLocation" />
+                    </pems-form-group>
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Commissioning Date"]</pems-label>
+                            <pems-date name="commissioningDate" value="@PemsDates.Date(Model.CommissioningDate)" />
+                        </pems-col>
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Status"]</pems-label>
+                            <pems-select name="status">
                                 @foreach (var s in new[] { "Active", "Standby", "Retired" })
                                 {
                                     <option value="@s" selected="@(s == Model.Status)">@s</option>
                                 }
-                            </select>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">@Localizer["Description"]</label>
-                        <textarea name="description" class="form-control" rows="2">@Model.Description</textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                            </pems-select>
+                        </pems-col>
+                    </pems-row>
+                    <pems-form-group css="mb-3">
+                        <pems-label>@Localizer["Description"]</pems-label>
+                        <pems-textarea name="description" rows="2">@Model.Description</pems-textarea>
+                    </pems-form-group>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>

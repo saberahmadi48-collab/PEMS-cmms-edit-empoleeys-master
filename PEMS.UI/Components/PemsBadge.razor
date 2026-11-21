@@ -1,0 +1,22 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("badge", Category = "display", Icon = "bi-tag")]
+@inject IPemsLocale Locale
+<span class="@Css" @attributes="Options.Attributes">@(ChildContent ?? (RenderFragment)(b => b.AddContent(0, Locale.Text(Options.Label))))</span>
+@code {
+    [Parameter, EditorRequired] public BadgeOptions Options { get; set; } = default!;
+    /// <summary>Page markup shown instead of the label (the tag helper passes what is between its tags).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string Css => With(Options.Skin == ComponentSkin.Bootstrap
+        ? (Options.Tone is { } t ? "badge " + BootstrapColor(t) : "badge")
+        : (Options.Tone is { } p ? "pems-badge pems-badge--" + p.ToString().ToLowerInvariant() : "pems-badge"), Options.CssClass);
+    private static string With(string css, string? extra) => string.IsNullOrWhiteSpace(extra) ? css : css + " " + extra.Trim();
+    private static string BootstrapColor(Tone tone) => tone switch
+    {
+        Tone.Neutral => "bg-secondary",
+        Tone.Warning => "bg-warning text-dark",
+        Tone.Info => "bg-info text-dark",
+        Tone.Light => "bg-light text-dark border",
+        _ => "bg-" + tone.ToString().ToLowerInvariant()
+    };
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-authorization-audit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Authorization audit (old address)",
+    "fa": "ممیزی دسترسی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Authorization audit (old address)",
+    "fa": "ممیزی دسترسی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/AuthorizationAudit/{*rest}",
+    "target": "/p/authorization-audit",
+    "permanent": false
+  }
+}

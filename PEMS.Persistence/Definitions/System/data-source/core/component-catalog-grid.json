@@ -1,0 +1,19 @@
+{
+  "kind": "data-source",
+  "key": "component-catalog-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Component catalog rows",
+    "fa": "ردیف‌های فهرست مؤلفه‌ها"
+  },
+  "description": {
+    "en": "Every registered component with its category, parameters and sample",
+    "fa": "همه مؤلفه‌های ثبت‌شده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "components",
+    "parameters": {}
+  }
+}

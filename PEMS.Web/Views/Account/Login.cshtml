@@ -3,63 +3,48 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = Localizer["Login_Title"];
     Layout = "_AuthLayout";
 }
 
-<h2>Welcome back</h2>
-<p class="subtitle">Sign in to access the Engineering Command Center</p>
+<pems-heading level="2">@Localizer["Login_Welcome"]</pems-heading>
+<pems-text class="subtitle">@Localizer["Login_Subtitle"]</pems-text>
 
-<div asp-validation-summary="All" class="alert alert-danger py-2 px-3 small" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></div>
+<pems-validation-summary css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-validation-summary>
 
-<form asp-controller="Account" asp-action="Login" method="post">
+<pems-form asp-controller="Account" asp-action="Login" method="post">
     <input type="hidden" asp-for="ReturnUrl" />
 
-    <div class="mb-3">
-        <label asp-for="UserName" class="form-label">@Localizer["Username"]</label>
-        <input asp-for="UserName" class="form-control" placeholder="e.g. admin" autofocus />
+    <pems-form-group css="mb-3">
+        <pems-label asp-for="UserName">@Localizer["Login_UserName"]</pems-label>
+        <pems-input asp-for="UserName" placeholder="@Localizer["Login_UserNamePlaceholder"]" autofocus />
         <span asp-validation-for="UserName" class="text-danger small"></span>
-    </div>
+    </pems-form-group>
 
-    <div class="mb-2">
-        <label asp-for="Password" class="form-label">@Localizer["Password"]</label>
-        <input asp-for="Password" class="form-control" placeholder="••••••••" />
+    <pems-form-group css="mb-2">
+        <pems-label asp-for="Password">@Localizer["Login_Password"]</pems-label>
+        <pems-input asp-for="Password" placeholder="@Localizer["Login_PasswordPlaceholder"]" />
         <span asp-validation-for="Password" class="text-danger small"></span>
-    </div>
+    </pems-form-group>
 
-    <div class="form-check mb-3 mt-2">
-        <input asp-for="RememberMe" class="form-check-input" />
-        <label asp-for="RememberMe" class="form-check-label small">Remember Me</label>
-    </div>
+    <pems-check-row css="mb-3 mt-2">
+        <pems-input kind="check" asp-for="RememberMe" />
+        <label asp-for="RememberMe" class="form-check-label small">@Localizer["Login_RememberMe"]</label>
+    </pems-check-row>
 
-    <button type="submit" class="btn btn-pems" id="loginSubmitBtn">
-        <span id="loginSubmitLabel">Sign In</span>
-    </button>
+    <pems-button tone="none" css="btn-pems" type="submit" id="loginSubmitBtn">
+        <span id="loginSubmitLabel" data-signing-in="@Localizer["Login_SigningIn"]">@Localizer["Login_SignIn"]</span>
+    </pems-button>
 
     <div class="auth-links">
-        <a asp-action="ForgotPassword">Forgot Password?</a>
+        <pems-link asp-action="ForgotPassword">@Localizer["Login_ForgotPassword"]</pems-link>
+        <pems-link asp-controller="AccountRecovery" asp-action="Index">@Localizer["Use a recovery code"]</pems-link>
         <span class="text-muted">PEMS v1.0</span>
     </div>
-</form>
+</pems-form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        // طبق «PEMS Premium Three-Theme UI/UX Redesign» (بند ۲۳/۲۸): نمونه‌ی محدود و کم‌ریسک
-        // از سیستم Loading تازه - فقط روی همین فرم، بدون دست‌زدن به رفتار Submit یا اعتبارسنجی
-        // موجود (طبق بند ۹ (touch/loading-buttons) اسکیل ui-ux-pro-max: دکمه باید حین کار
-        // async غیرفعال شود و بازخورد بدهد).
-        (function () {
-            var form = document.querySelector('form[action*="Login"], form');
-            var btn = document.getElementById('loginSubmitBtn');
-            var label = document.getElementById('loginSubmitLabel');
-            if (!form || !btn || !label) return;
-            form.addEventListener('submit', function () {
-                if (!form.checkValidity || form.checkValidity()) {
-                    btn.disabled = true;
-                    label.innerHTML = '<span class="pems-inline-progress" style="color:#fff"><span class="pems-dot"></span><span class="pems-dot"></span><span class="pems-dot"></span></span> Signing in…';
-                }
-            });
-        })();
-    </script>
+    <pems-script-templates set="account-login"></pems-script-templates>
+    <script src="~/js/views/account-login.js" asp-append-version="true"></script>
 }

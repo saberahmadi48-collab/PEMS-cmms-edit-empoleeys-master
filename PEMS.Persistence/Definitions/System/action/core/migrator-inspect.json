@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "migrator-inspect",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Inspect a migration package",
+    "fa": "بررسی بسته مهاجرت"
+  },
+  "description": {
+    "en": "Verifies the signature and shows what the migrator would do",
+    "fa": "امضا را بررسی و کار مهاجرت‌گر را نشان می‌دهد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The package was read.",
+      "fa": "بسته خوانده شد."
+    },
+    "redirect": "/f/migrator-inspect",
+    "parameters": {
+      "model": "Migrator",
+      "action": "Inspect",
+      "args": {
+        "package": "file:file",
+        "actor": "context:userName"
+      },
+      "upload": {
+        "profile": "migrationPackage",
+        "maxFileMb": 100
+      }
+    }
+  }
+}

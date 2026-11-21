@@ -1,0 +1,68 @@
+{
+  "kind": "form",
+  "key": "procurement-package-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record an approval decision",
+    "fa": "ثبت تصمیم تأیید"
+  },
+  "description": {
+    "en": "Record an approval decision",
+    "fa": "ثبت تصمیم تأیید"
+  },
+  "payload": {
+    "id": "procurement-package-approve",
+    "title": {
+      "en": "Record an approval decision",
+      "fa": "ثبت تصمیم تأیید"
+    },
+    "submitLabel": {
+      "en": "Record",
+      "fa": "ثبت"
+    },
+    "actionKey": "procurement-package-approve",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "packageId",
+        "label": {
+          "en": "Package id",
+          "fa": "شناسه‌ی بسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "decision",
+        "label": {
+          "en": "Decision (Approved, Rejected)",
+          "fa": "تصمیم (Approved, Rejected)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment",
+          "fa": "توضیح"
+        },
+        "kind": "textArea",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

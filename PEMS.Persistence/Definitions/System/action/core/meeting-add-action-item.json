@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "meeting-add-action-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add an action item",
+    "fa": "افزودن اقدام"
+  },
+  "description": {
+    "en": "Add an action item",
+    "fa": "افزودن اقدام"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Meeting",
+      "action": "AddActionItem",
+      "args": {
+        "meetingId": "field:meetingId",
+        "title": "field:title",
+        "assignedToEmployeeId": "field:assignedToEmployeeId",
+        "dueDate": "field:dueDate"
+      }
+    },
+    "success": {
+      "en": "Action item added.",
+      "fa": "اقدام افزوده شد."
+    },
+    "redirect": "/Meeting/Details/{meetingId}"
+  }
+}

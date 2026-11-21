@@ -1,0 +1,39 @@
+{
+  "kind": "data-source",
+  "key": "skills-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Skills rows",
+    "fa": "ردیف‌های مهارت‌ها"
+  },
+  "description": {
+    "en": "The rows of the skills grid",
+    "fa": "ردیف‌های جدول مهارت‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "Skill",
+      "fields": [
+        "Name",
+        "Description",
+        "IsActive",
+        "DisciplineId"
+      ],
+      "search": [
+        "Name",
+        "Description"
+      ],
+      "lookups": [
+        {
+          "name": "discipline",
+          "entity": "Discipline",
+          "foreignKey": "DisciplineId",
+          "label": "Name"
+        }
+      ]
+    }
+  }
+}

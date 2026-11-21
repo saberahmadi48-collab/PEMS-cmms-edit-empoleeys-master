@@ -1,0 +1,59 @@
+{
+  "kind": "layout",
+  "key": "detail-page",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "fa": "صفحه جزئیات",
+    "en": "Detail page"
+  },
+  "description": {
+    "fa": "نمایش یک رکورد با خلاصه، بخش‌ها و تاریخچه",
+    "en": "One record with summary, sections and history"
+  },
+  "payload": {
+    "root": {
+      "tag": "div",
+      "css": "vs-page",
+      "children": [
+        {
+          "region": "header"
+        },
+        {
+          "region": "messages"
+        },
+        {
+          "region": "summary"
+        },
+        {
+          "tag": "div",
+          "css": "row g-3",
+          "children": [
+            {
+              "tag": "main",
+              "css": "col-lg-8",
+              "children": [
+                {
+                  "region": "content",
+                  "required": true
+                }
+              ]
+            },
+            {
+              "tag": "aside",
+              "css": "col-lg-4",
+              "children": [
+                {
+                  "region": "side"
+                },
+                {
+                  "region": "history"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

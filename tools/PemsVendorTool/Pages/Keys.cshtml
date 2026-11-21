@@ -1,0 +1,50 @@
+@page
+@model KeysModel
+@{ ViewData["Title"] = "Keys"; }
+<h1>Signing keys</h1>
+<p>Offline mode: the private key is created here, stored only encrypted on this computer and never shown or exported. Procedure (custody, two backups, rotation, compromise plan): docs/process/KEY_MANAGEMENT.md (plan row #107).</p>
+@if (Model.Message is not null) { <p class="warn">@Model.Message</p> }
+<table>
+    <thead><tr><th>Key id</th><th>Public key (safe to share)</th><th>Created (UTC)</th></tr></thead>
+    <tbody>@foreach (var k in Model.Keys.List()) { <tr><td>@k.KeyId</td><td><code>@k.PublicKey</code></td><td>@k.CreatedUtc.ToString("u")</td></tr> }</tbody>
+</table>
+<form method="post" asp-page-handler="Generate" class="card">
+    <h2>Generate a key pair</h2>
+    <label for="keyId">Key id (letters, digits, '-')</label>
+    <input id="keyId" name="keyId" required pattern="[A-Za-z0-9-]+" />
+    <label for="passphrase">Passphrase (at least 12 characters; not stored)</label>
+    <input id="passphrase" name="passphrase" type="password" required minlength="12" autocomplete="new-password" />
+    <p><button type="submit">Generate</button></p>
+</form>
+<div class="card">
+    <h2>Public keys for the product (trusted-keys.json)</h2>
+    <p>Commit only this public content to PEMS.Licensing/Crypto/trusted-keys.json (plan row #107).</p>
+    <pre><code>@Model.Keys.ExportTrustedKeys()</code></pre>
+</div>
+@functions {
+    public class KeysModel : Microsoft.AspNetCore.Mvc.RazorPages.PageModel
+    {
+        public VendorKeyStore Keys { get; }
+        private readonly Ledger _ledger;
+        private readonly VendorSettings _settings;
+        private readonly TimeProvider _time;
+        public string? Message { get; private set; }
+
+        public KeysModel(VendorKeyStore keys, Ledger ledger, VendorSettings settings, TimeProvider time) { Keys = keys; _ledger = ledger; _settings = settings; _time = time; }
+
+        public void OnPostGenerate(string keyId, string passphrase)
+        {
+            try
+            {
+                var now = _time.GetUtcNow();
+                var info = Keys.Generate(keyId, passphrase, now);
+                using var c = _ledger.Open();
+                using var t = c.BeginTransaction();
+                _ledger.Audit(c, t, _settings.OperatorName, "key_generate", info.KeyId, "public=" + info.PublicKey, now);
+                t.Commit();
+                Message = "Key generated. Make the two encrypted backups now, as the procedure requires.";
+            }
+            catch (Exception ex) when (ex is ArgumentException or InvalidOperationException) { Message = ex.Message; }
+        }
+    }
+}

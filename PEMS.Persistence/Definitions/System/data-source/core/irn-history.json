@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "irn-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "IRN status history",
+    "fa": "IRN status history"
+  },
+  "description": {
+    "en": "IRN status history",
+    "fa": "IRN status history"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Irn",
+      "action": "History",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

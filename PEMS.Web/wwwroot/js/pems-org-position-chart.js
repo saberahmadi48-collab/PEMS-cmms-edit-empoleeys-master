@@ -12,42 +12,61 @@
     var warnEl = document.getElementById("pemsOpcWarnings");
     var chart = null, byId = {}, nodes = [], selectedId = null;
 
-    function esc(v) {
-        return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; });
-    }
+    // markup comes from the page's registered templates (script-templates component, pems-template.js), never from a string in this file
+    var Tpl = window.PemsTemplate;
+    function tpl(name, values) { return Tpl.fill(Tpl.clone(name), values || {}); }
     function showState(msg) { stateEl.textContent = msg; stateEl.hidden = false; canvas.hidden = true; }
     function hideState() { stateEl.hidden = true; canvas.hidden = false; }
+    // SCRUM-337: the shared skeleton while the chart data loads
+    function showLoading() { window.PemsSkeleton.show(stateEl, "card", { label: T("loading") }); stateEl.hidden = false; canvas.hidden = true; }
 
+    // d3-org-chart takes the node content as a markup string: it is the serialisation of a cloned template, not hand-built text
     function nodeHtml(d) {
         var n = d.data || d;
-        if (n.nodeKind === "container") return '<div class="pems-opc-node kind-container">' + esc(T("container")) + " (" + n.childCount + ")</div>";
-        var cls = "pems-opc-node kind-" + esc(n.nodeKind) + (n.isVacant ? " is-vacant" : "") + (n.id === selectedId ? " is-selected" : "");
-        var holder = n.isVacant ? '<div class="pems-opc-vacant">' + esc(T("vacant")) + "</div>"
-            : '<div class="pems-opc-emp">' + esc(n.employeeName) + "</div>";
-        var badge = (n.nodeKind === "orphan" || n.nodeKind === "cycle" || (n.issueCodes && n.issueCodes.length))
-            ? ' <span class="pems-opc-badge" title="' + esc((n.issueCodes || []).join(", ")) + '">&#9888; ' + esc(T(n.nodeKind === "cycle" ? "cycle" : n.nodeKind === "orphan" ? "orphan" : "issue")) + "</span>" : "";
-        return '<div class="' + cls + '" role="button" tabindex="0" aria-label="' + esc(n.positionTitle) + '">' +
-            '<div><div class="pems-opc-label">' + esc(T("position")) + badge + "</div>" +
-            '<div class="pems-opc-title">' + esc(n.positionTitle) + "</div></div>" + holder +
-            '<div class="pems-opc-unit">' + esc(n.departmentName || n.teamName || "") + "</div></div>";
+        if (n.nodeKind === "container") return tpl("opc-node-container", { text: T("container") + " (" + n.childCount + ")" }).outerHTML;
+        var hasIssue = n.nodeKind === "orphan" || n.nodeKind === "cycle" || (n.issueCodes && n.issueCodes.length);
+        var title = n.positionTitle == null ? "" : n.positionTitle;
+        var el = tpl("opc-node", {
+            root: { addClass: "kind-" + n.nodeKind + (n.isVacant ? " is-vacant" : "") + (n.id === selectedId ? " is-selected" : ""), attrs: { "aria-label": title } },
+            label: T("position"), title: title,
+            vacant: n.isVacant ? T("vacant") : null,
+            emp: n.isVacant ? null : (n.employeeName == null ? "" : n.employeeName),
+            unit: n.departmentName || n.teamName || "",
+            badge: hasIssue ? { text: "⚠ " + T(n.nodeKind === "cycle" ? "cycle" : n.nodeKind === "orphan" ? "orphan" : "issue"), attrs: { title: (n.issueCodes || []).join(", ") } } : null
+        });
+        return el.outerHTML;
     }
 
     function showDetails(n) {
-        if (!n || n.nodeKind === "container") { panelEl.innerHTML = '<p class="text-muted small mb-0">' + esc(T("select")) + "</p>"; return; }
+        if (!n || n.nodeKind === "container") { panelEl.replaceChildren(tpl("opc-hint", { text: T("select") })); return; }
         var parent = n.parentId && byId[n.parentId] && byId[n.parentId].nodeKind !== "container" ? byId[n.parentId] : null;
         var reports = nodes.filter(function (x) { return x.parentId === n.id; });
-        var li = reports.map(function (r) { return "<li>" + esc(r.positionTitle) + " — " + esc(r.isVacant ? T("vacant") : r.employeeName) + "</li>"; }).join("");
         var kind = { root: T("validRoot"), position: "", orphan: T("orphan"), cycle: T("cycle") }[n.nodeKind] || "";
-        panelEl.innerHTML =
-            "<h2 class='h6 mb-2'>" + esc(n.positionTitle) + (n.positionCode ? " <small class='text-muted'>[" + esc(n.positionCode) + "]</small>" : "") + "</h2><dl>" +
-            "<dt>" + esc(T("employee")) + "</dt><dd>" + (n.isVacant ? esc(T("vacant")) : esc(n.employeeName) + (n.holderIsPrimary ? "" : " (" + esc(T("secondary")) + ")")) + "</dd>" +
-            (n.assignmentFrom ? "<dt>" + esc(T("assignment")) + "</dt><dd>" + esc(n.assignmentFrom) + " → " + esc(n.assignmentTo || "—") + "</dd>" : "") +
-            "<dt>" + esc(T("unit")) + "</dt><dd>" + esc(n.departmentName || "—") + "</dd>" +
-            (n.teamName ? "<dt>" + esc(T("team")) + "</dt><dd>" + esc(n.teamName) + "</dd>" : "") +
-            "<dt>" + esc(T("parent")) + "</dt><dd>" + (parent ? esc(parent.positionTitle) : "—") + (kind ? " <span class='text-muted'>(" + esc(kind) + ")</span>" : "") + "</dd>" +
-            "<dt>" + esc(T("reports")) + " (" + reports.length + ")</dt><dd>" + (li ? "<ul>" + li + "</ul>" : "—") + "</dd>" +
-            ((n.issueCodes && n.issueCodes.length) ? "<dt>" + esc(T("issues")) + "</dt><dd>" + esc(n.issueCodes.join(", ")) + "</dd>" : "") +
-            "</dl><div class='mt-3'><a class='btn btn-outline-secondary btn-sm' href='" + esc(root.getAttribute("data-manage-url")) + "'>" + esc(T("manage")) + "</a></div>";
+        var f = Tpl.fill(Tpl.fragment("opc-detail"), {
+            title: n.positionTitle == null ? "" : n.positionTitle,
+            code: n.positionCode ? "[" + n.positionCode + "]" : null,
+            manage: { text: T("manage"), attrs: { href: root.getAttribute("data-manage-url") } }
+        });
+        var dl = f.querySelector("dl");
+        function row(term, value) {
+            var r = Tpl.fill(Tpl.fragment("opc-detail-row"), { term: term });
+            var dd = r.querySelector("dd");
+            dd.replaceChildren.apply(dd, [].concat(value));
+            dl.appendChild(r);
+        }
+        row(T("employee"), n.isVacant ? T("vacant") : n.employeeName + (n.holderIsPrimary ? "" : " (" + T("secondary") + ")"));
+        if (n.assignmentFrom) row(T("assignment"), n.assignmentFrom + " → " + (n.assignmentTo || "—"));
+        row(T("unit"), n.departmentName || "—");
+        if (n.teamName) row(T("team"), n.teamName);
+        row(T("parent"), [parent ? parent.positionTitle : "—"].concat(kind ? [" ", tpl("opc-note", { text: "(" + kind + ")" })] : []));
+        var ul = null;
+        if (reports.length) {
+            ul = tpl("opc-reports");
+            reports.forEach(function (r) { ul.appendChild(tpl("opc-report-item", { text: r.positionTitle + " — " + (r.isVacant ? T("vacant") : r.employeeName) })); });
+        }
+        row(T("reports") + " (" + reports.length + ")", ul || "—");
+        if (n.issueCodes && n.issueCodes.length) row(T("issues"), n.issueCodes.join(", "));
+        panelEl.replaceChildren(f);
     }
 
     function select(id) {
@@ -62,9 +81,9 @@
         if (!nodes.length) { showState(T("empty")); return; }
         hideState();
 
-        var warns = (dto.warnings || []).map(function (w) { return esc(T(w.code === "HIERARCHY_CYCLE" ? "cycle" : "orphan")) + ": " + w.count; });
+        var warns = (dto.warnings || []).map(function (w) { return T(w.code === "HIERARCHY_CYCLE" ? "cycle" : "orphan") + ": " + w.count; });
         warnEl.hidden = warns.length === 0;
-        warnEl.innerHTML = warns.join(" · ");
+        warnEl.textContent = warns.join(" · ");
 
         chart = new d3.OrgChart()
             .container("#pemsOpcCanvas")
@@ -80,7 +99,7 @@
             .nodeContent(nodeHtml)
             .buttonContent(function (o) {
                 var n = o.node;
-                return '<div class="pems-opc-btn">' + (n.children ? "−" : "+") + " " + (n.data._directSubordinates || "") + "</div>";
+                return tpl("opc-button", { text: (n.children ? "−" : "+") + " " + (n.data._directSubordinates || "") }).outerHTML;
             })
             .onNodeClick(function (d) { var n = d.data || d; select(n.id); })
             .render();
@@ -108,7 +127,7 @@
     });
     if (search) search.addEventListener("input", function () { search.classList.remove("is-invalid"); });
 
-    showState(T("loading"));
+    showLoading();
     fetch(root.getAttribute("data-url"), { credentials: "same-origin", headers: { Accept: "application/json" } })
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
         .then(build)

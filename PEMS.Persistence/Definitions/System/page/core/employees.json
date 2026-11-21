@@ -1,0 +1,253 @@
+{
+  "kind": "page",
+  "key": "employees",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employees",
+    "fa": "کارکنان"
+  },
+  "description": {
+    "en": "Employees: filters, details, edit, activate and export (page definition)",
+    "fa": "کارکنان: فیلتر، جزئیات، ویرایش، فعال‌سازی و خروجی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "employees",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "employees-filters",
+            "resetUrl": "/p/employees",
+            "fields": [
+              {
+                "name": "q",
+                "label": {
+                  "en": "Search",
+                  "fa": "جستجو"
+                },
+                "kind": "text",
+                "value": "{{params.q}}"
+              },
+              {
+                "name": "departmentId",
+                "label": {
+                  "en": "Department",
+                  "fa": "دپارتمان"
+                },
+                "kind": "select",
+                "value": "{{params.departmentId}}",
+                "options": []
+              },
+              {
+                "name": "disciplineId",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "kind": "select",
+                "value": "{{params.disciplineId}}",
+                "options": []
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "departmentId",
+                "source": "/d/employee-departments-list",
+                "valueField": "value",
+                "labelField": "label"
+              },
+              {
+                "field": "disciplineId",
+                "source": "/d/employee-disciplines-list",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "add",
+          "component": "content-blocks",
+          "options": {
+            "id": "add",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/employee-create",
+                "text": {
+                  "en": "Add an employee",
+                  "fa": "افزودن کارمند"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "import",
+          "component": "content-blocks",
+          "options": {
+            "id": "import",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/employee-import",
+                "text": {
+                  "en": "Import from Excel",
+                  "fa": "ورود از اکسل"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "export",
+          "component": "action-button",
+          "options": {
+            "action": "employee-export",
+            "label": {
+              "en": "Export to Excel",
+              "fa": "خروجی اکسل"
+            },
+            "tone": "neutral",
+            "icon": "bi-download"
+          }
+        },
+        {
+          "id": "employees",
+          "component": "data-grid",
+          "options": {
+            "id": "employees",
+            "idField": "employeeId",
+            "pageSize": 25,
+            "height": 560,
+            "url": "/d/employees-grid?f.search={{params.q|url}}&f.departmentId={{params.departmentId|url}}&f.disciplineId={{params.disciplineId|url}}",
+            "columns": [
+              {
+                "key": "personnelCode",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 110
+              },
+              {
+                "key": "fullName",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 220
+              },
+              {
+                "key": "position",
+                "header": {
+                  "en": "Position",
+                  "fa": "سمت"
+                },
+                "width": 180
+              },
+              {
+                "key": "department",
+                "header": {
+                  "en": "Department",
+                  "fa": "دپارتمان"
+                },
+                "width": 160
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 160
+              },
+              {
+                "key": "personnelType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 110
+              },
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 140
+              },
+              {
+                "key": "email",
+                "header": {
+                  "en": "Email",
+                  "fa": "ایمیل"
+                },
+                "width": 200
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 330,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "details",
+                    "label": {
+                      "en": "Details",
+                      "fa": "جزئیات"
+                    },
+                    "url": "/p/employee-details?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/employee-edit/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Activate / deactivate",
+                      "fa": "فعال / غیرفعال"
+                    },
+                    "url": "/a/employee-toggle-active",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Change the status of this employee?",
+                      "fa": "وضعیت این کارمند تغییر کند؟"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "team-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a team",
+    "fa": "ساخت تیم"
+  },
+  "description": {
+    "en": "Create a team",
+    "fa": "ساخت تیم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "CreateTeam",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "code": "field:code",
+        "name": "field:name",
+        "maintenanceGroupId": "field:maintenanceGroupId",
+        "shift": "field:shift",
+        "supervisorEmployeeId": "field:supervisorEmployeeId"
+      }
+    },
+    "success": {
+      "en": "Team created.",
+      "fa": "تیم ساخته شد."
+    },
+    "redirect": "/p/teams"
+  }
+}

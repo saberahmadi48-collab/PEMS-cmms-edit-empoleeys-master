@@ -1,0 +1,149 @@
+{
+  "kind": "page",
+  "key": "purchase-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Purchase Orders",
+    "fa": "سفارش‌های خرید"
+  },
+  "description": {
+    "en": "Purchase orders with status and value (page definition)",
+    "fa": "سفارش‌های خرید با وضعیت و مبلغ (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "purchase-orders",
+    "regions": {
+      "content": [
+        {
+          "id": "go",
+          "component": "content-blocks",
+          "options": {
+            "id": "go",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/po-create",
+                "text": {
+                  "en": "New purchase order",
+                  "fa": "سفارش خرید جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/material-requisitions",
+                "text": {
+                  "en": "Material requisitions",
+                  "fa": "درخواست‌های مواد"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "orders",
+          "component": "data-grid",
+          "options": {
+            "id": "orders",
+            "url": "/d/purchase-orders-grid",
+            "idField": "poId",
+            "columns": [
+              {
+                "key": "poNumber",
+                "header": {
+                  "en": "PO",
+                  "fa": "سفارش"
+                },
+                "width": 140
+              },
+              {
+                "key": "project",
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "width": 180
+              },
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 200
+              },
+              {
+                "key": "contract",
+                "header": {
+                  "en": "Contract",
+                  "fa": "قرارداد"
+                },
+                "width": 130
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 260
+              },
+              {
+                "key": "value",
+                "header": {
+                  "en": "Value",
+                  "fa": "مبلغ"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "vdrItems",
+                "header": {
+                  "en": "VDR items",
+                  "fa": "اقلام VDR"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "details",
+                    "label": {
+                      "en": "Details",
+                      "fa": "جزئیات"
+                    },
+                    "url": "/p/purchase-order-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "PurchaseOrder.View"
+  }
+}

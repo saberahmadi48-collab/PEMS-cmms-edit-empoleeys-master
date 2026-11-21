@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "users-summary",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "One user",
+    "fa": "یک کاربر"
+  },
+  "description": {
+    "en": "One user",
+    "fa": "یک کاربر"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Users",
+      "action": "Summary",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

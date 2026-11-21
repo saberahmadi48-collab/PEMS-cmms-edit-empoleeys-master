@@ -1,0 +1,1432 @@
+{
+  "kind": "page",
+  "key": "maintenance-master-data",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance Master Data",
+    "fa": "داده‌های پایه‌ی نگهداری"
+  },
+  "description": {
+    "en": "Groups, skills, qualifications, certifications, types, classes, standards, activities, failure modes, templates, evaluation profiles and priority mappings (page definition)",
+    "fa": "گروه‌ها، مهارت‌ها، صلاحیت‌ها، گواهینامه‌ها، انواع، کلاس‌ها، استانداردها، فعالیت‌ها، حالت‌های خرابی، قالب‌ها، پروفایل‌های ارزیابی و نگاشت اولویت (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "maintenance-master-data",
+    "regions": {
+      "content": [
+        {
+          "id": "h-groups",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-groups",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Maintenance groups",
+                  "fa": "گروه‌های تعمیراتی"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "new-groups",
+          "component": "content-blocks",
+          "options": {
+            "id": "new-groups",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mmd-create-group",
+                "text": {
+                  "en": "Create group",
+                  "fa": "create-group"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/mmd-create-sub-group",
+                "text": {
+                  "en": "Create sub group",
+                  "fa": "create-sub-group"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/mmd-move-group",
+                "text": {
+                  "en": "Move group",
+                  "fa": "move-group"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-groups",
+          "component": "data-grid",
+          "options": {
+            "id": "g-groups",
+            "url": "/d/mmd-groups",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-group-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-skills",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-skills",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Skills",
+                  "fa": "مهارت‌ها"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "new-skills",
+          "component": "content-blocks",
+          "options": {
+            "id": "new-skills",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mmd-create-skill",
+                "text": {
+                  "en": "Create skill",
+                  "fa": "create-skill"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-skills",
+          "component": "data-grid",
+          "options": {
+            "id": "g-skills",
+            "url": "/d/mmd-skills",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-skill-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-qualifications",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-qualifications",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Qualifications",
+                  "fa": "صلاحیت‌ها"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "new-qualifications",
+          "component": "content-blocks",
+          "options": {
+            "id": "new-qualifications",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mmd-create-qualification",
+                "text": {
+                  "en": "Create qualification",
+                  "fa": "create-qualification"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-qualifications",
+          "component": "data-grid",
+          "options": {
+            "id": "g-qualifications",
+            "url": "/d/mmd-qualifications",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-qualification-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-certifications",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-certifications",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Certifications",
+                  "fa": "گواهینامه‌ها"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "new-certifications",
+          "component": "content-blocks",
+          "options": {
+            "id": "new-certifications",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mmd-create-certification",
+                "text": {
+                  "en": "Create certification",
+                  "fa": "create-certification"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-certifications",
+          "component": "data-grid",
+          "options": {
+            "id": "g-certifications",
+            "url": "/d/mmd-certifications",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-certification-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-maintenance-types",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-maintenance-types",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Maintenance types",
+                  "fa": "انواع نگهداری"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "new-maintenance-types",
+          "component": "content-blocks",
+          "options": {
+            "id": "new-maintenance-types",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mmd-create-maintenance-type",
+                "text": {
+                  "en": "Create maintenance type",
+                  "fa": "create-maintenance-type"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-maintenance-types",
+          "component": "data-grid",
+          "options": {
+            "id": "g-maintenance-types",
+            "url": "/d/mmd-maintenance-types",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-maintenance-type-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-strategy-types",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-strategy-types",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Strategy types",
+                  "fa": "انواع استراتژی"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "new-strategy-types",
+          "component": "content-blocks",
+          "options": {
+            "id": "new-strategy-types",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mmd-create-maintenance-strategy-type",
+                "text": {
+                  "en": "Create maintenance strategy type",
+                  "fa": "create-maintenance-strategy-type"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-strategy-types",
+          "component": "data-grid",
+          "options": {
+            "id": "g-strategy-types",
+            "url": "/d/mmd-strategy-types",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-maintenance-strategy-type-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-equipment-classes",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-equipment-classes",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Equipment classes",
+                  "fa": "کلاس‌های تجهیز"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "new-equipment-classes",
+          "component": "content-blocks",
+          "options": {
+            "id": "new-equipment-classes",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mmd-create-equipment-class",
+                "text": {
+                  "en": "Create equipment class",
+                  "fa": "create-equipment-class"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-equipment-classes",
+          "component": "data-grid",
+          "options": {
+            "id": "g-equipment-classes",
+            "url": "/d/mmd-equipment-classes",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-equipment-class-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-standards",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-standards",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Standard references",
+                  "fa": "استانداردهای مرجع"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "new-standards",
+          "component": "content-blocks",
+          "options": {
+            "id": "new-standards",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mmd-create-standard-reference",
+                "text": {
+                  "en": "Create standard reference",
+                  "fa": "create-standard-reference"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-standards",
+          "component": "data-grid",
+          "options": {
+            "id": "g-standards",
+            "url": "/d/mmd-standards",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-standard-reference-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-activities",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-activities",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Maintenance activities",
+                  "fa": "فعالیت‌های نگهداری"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "new-activities",
+          "component": "content-blocks",
+          "options": {
+            "id": "new-activities",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mmd-create-maintenance-activity",
+                "text": {
+                  "en": "Create maintenance activity",
+                  "fa": "create-maintenance-activity"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-activities",
+          "component": "data-grid",
+          "options": {
+            "id": "g-activities",
+            "url": "/d/mmd-activities",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-maintenance-activity-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-failure-modes",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-failure-modes",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Failure modes",
+                  "fa": "حالت‌های خرابی"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-failure-modes",
+          "component": "data-grid",
+          "options": {
+            "id": "g-failure-modes",
+            "url": "/d/mmd-failure-modes",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-failure-mode-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-pm-templates",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-pm-templates",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "PM templates",
+                  "fa": "قالب‌های PM"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-pm-templates",
+          "component": "data-grid",
+          "options": {
+            "id": "g-pm-templates",
+            "url": "/d/mmd-pm-templates",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-p-m-template-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-evaluation-profiles",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-evaluation-profiles",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Evaluation profiles",
+                  "fa": "پروفایل‌های ارزیابی"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "new-evaluation-profiles",
+          "component": "content-blocks",
+          "options": {
+            "id": "new-evaluation-profiles",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mmd-create-evaluation-profile",
+                "text": {
+                  "en": "Create evaluation profile",
+                  "fa": "create-evaluation-profile"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/mmd-add-evaluation-limit",
+                "text": {
+                  "en": "Add evaluation limit",
+                  "fa": "add-evaluation-limit"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-evaluation-profiles",
+          "component": "data-grid",
+          "options": {
+            "id": "g-evaluation-profiles",
+            "url": "/d/mmd-evaluation-profiles",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-evaluation-profile-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-evaluation-limits",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-evaluation-limits",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Evaluation limits",
+                  "fa": "حدود ارزیابی"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-evaluation-limits",
+          "component": "data-grid",
+          "options": {
+            "id": "g-evaluation-limits",
+            "url": "/d/mmd-evaluation-limits",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-evaluation-limit-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-condition-priorities",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-condition-priorities",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Condition to priority",
+                  "fa": "وضعیت به اولویت"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "new-condition-priorities",
+          "component": "content-blocks",
+          "options": {
+            "id": "new-condition-priorities",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mmd-create-condition-priority-mapping",
+                "text": {
+                  "en": "Create condition priority mapping",
+                  "fa": "create-condition-priority-mapping"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/mmd-update-condition-priority-mapping",
+                "text": {
+                  "en": "Update condition priority mapping",
+                  "fa": "update-condition-priority-mapping"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "g-condition-priorities",
+          "component": "data-grid",
+          "options": {
+            "id": "g-condition-priorities",
+            "url": "/d/mmd-condition-priorities",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 130
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 260
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 300
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Toggle active",
+                      "fa": "تغییر فعال بودن"
+                    },
+                    "url": "/f/mmd-toggle-condition-priority-mapping-active?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 360
+          }
+        }
+      ]
+    },
+    "permission": "MaintenanceMasterData.View"
+  }
+}

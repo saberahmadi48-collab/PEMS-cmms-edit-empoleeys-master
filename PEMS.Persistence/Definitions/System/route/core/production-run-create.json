@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "production-run-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New production run (old address)",
+    "fa": "New production run (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New production run (old address)",
+    "fa": "New production run (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ProductionRun/Create",
+    "target": "/f/production-run-create",
+    "permanent": false
+  }
+}

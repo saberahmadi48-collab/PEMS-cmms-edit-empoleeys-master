@@ -1,0 +1,122 @@
+{
+  "kind": "form",
+  "key": "mmd-create-evaluation-profile",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateEvaluationProfile",
+    "fa": "CreateEvaluationProfile"
+  },
+  "description": {
+    "en": "CreateEvaluationProfile",
+    "fa": "CreateEvaluationProfile"
+  },
+  "payload": {
+    "id": "mmd-create-evaluation-profile",
+    "title": {
+      "en": "CreateEvaluationProfile",
+      "fa": "CreateEvaluationProfile"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-create-evaluation-profile",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "code"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "name"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "nameFa",
+        "label": {
+          "en": "Name fa",
+          "fa": "nameFa"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "variableType",
+        "label": {
+          "en": "Variable type",
+          "fa": "variableType"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "standardReferenceId",
+        "label": {
+          "en": "Standard reference id",
+          "fa": "standardReferenceId"
+        },
+        "kind": "select",
+        "optionsFrom": "mmd-standards-choices"
+      },
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class id",
+          "fa": "equipmentClassId"
+        },
+        "kind": "select",
+        "optionsFrom": "mmd-equipment-classes-choices"
+      },
+      {
+        "name": "operatingCondition",
+        "label": {
+          "en": "Operating condition",
+          "fa": "operatingCondition"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "effectiveFrom",
+        "label": {
+          "en": "Effective from",
+          "fa": "effectiveFrom"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

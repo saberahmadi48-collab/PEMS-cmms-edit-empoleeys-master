@@ -1,0 +1,265 @@
+{
+  "kind": "page",
+  "key": "material-items",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material Master",
+    "fa": "اقلام مواد"
+  },
+  "description": {
+    "en": "The material catalogue: search, filter, create and edit (page definition)",
+    "fa": "فهرست مواد: جستجو، فیلتر، ایجاد و ویرایش (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "material-items",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "material-filters",
+            "resetUrl": "/p/material-items",
+            "fields": [
+              {
+                "name": "q",
+                "label": {
+                  "en": "Search",
+                  "fa": "جستجو"
+                },
+                "kind": "text",
+                "value": "{{params.q}}"
+              },
+              {
+                "name": "categoryId",
+                "label": {
+                  "en": "Category",
+                  "fa": "دسته‌بندی"
+                },
+                "kind": "select",
+                "value": "{{params.categoryId}}",
+                "options": []
+              },
+              {
+                "name": "lowStockOnly",
+                "label": {
+                  "en": "Low stock only",
+                  "fa": "فقط کم‌موجودی"
+                },
+                "kind": "select",
+                "value": "{{params.lowStockOnly}}",
+                "options": [
+                  {
+                    "value": "true",
+                    "label": {
+                      "en": "Yes",
+                      "fa": "بله"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "criticalOnly",
+                "label": {
+                  "en": "Critical only",
+                  "fa": "فقط بحرانی"
+                },
+                "kind": "select",
+                "value": "{{params.criticalOnly}}",
+                "options": [
+                  {
+                    "value": "true",
+                    "label": {
+                      "en": "Yes",
+                      "fa": "بله"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "categoryId",
+                "source": "/d/material-item-categories",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/material-item-create",
+                "text": {
+                  "en": "New material",
+                  "fa": "ماده‌ی جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/inventory",
+                "text": {
+                  "en": "Inventory dashboard",
+                  "fa": "داشبورد موجودی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "materials",
+          "component": "data-grid",
+          "options": {
+            "id": "materials",
+            "url": "/d/material-items-grid?f.q={{params.q|url}}&f.categoryId={{params.categoryId|url}}&f.lowStockOnly={{params.lowStockOnly|url}}&f.criticalOnly={{params.criticalOnly|url}}",
+            "idField": "materialItemId",
+            "columns": [
+              {
+                "key": "materialCode",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 150
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 300
+              },
+              {
+                "key": "category",
+                "header": {
+                  "en": "Category",
+                  "fa": "دسته‌بندی"
+                },
+                "width": 160
+              },
+              {
+                "key": "uom",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 90
+              },
+              {
+                "key": "manufacturer",
+                "header": {
+                  "en": "Manufacturer",
+                  "fa": "سازنده"
+                },
+                "width": 160
+              },
+              {
+                "key": "totalOnHand",
+                "header": {
+                  "en": "On hand",
+                  "fa": "موجودی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "totalAvailable",
+                "header": {
+                  "en": "Available",
+                  "fa": "در دسترس"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "isCritical",
+                "header": {
+                  "en": "Critical",
+                  "fa": "بحرانی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "isLowStock",
+                "header": {
+                  "en": "Low",
+                  "fa": "کم"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 330,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "details",
+                    "label": {
+                      "en": "Details",
+                      "fa": "جزئیات"
+                    },
+                    "url": "/p/material-item-details?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/material-item-edit/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Activate / deactivate",
+                      "fa": "فعال / غیرفعال"
+                    },
+                    "url": "/a/material-item-toggle",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Change the status of this material?",
+                      "fa": "وضعیت این ماده تغییر کند؟"
+                    }
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "MaterialItem.View"
+  }
+}

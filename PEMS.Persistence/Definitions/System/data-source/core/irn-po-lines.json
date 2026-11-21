@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "irn-po-lines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Order lines of the IRN",
+    "fa": "Order lines of the IRN"
+  },
+  "description": {
+    "en": "Order lines of the IRN",
+    "fa": "Order lines of the IRN"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Irn",
+      "action": "PoLines",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

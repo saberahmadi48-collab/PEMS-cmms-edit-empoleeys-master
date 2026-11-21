@@ -12,6 +12,8 @@ public class SparePartSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "SparePart";
     public string DisplayName => "قطعات یدکی";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser();
 
     public SparePartSearchProvider(PEMSDbContext context)
     {

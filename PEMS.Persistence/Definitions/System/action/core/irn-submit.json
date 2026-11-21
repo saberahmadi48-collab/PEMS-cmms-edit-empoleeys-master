@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "irn-submit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit for inspection",
+    "fa": "ارسال برای بازرسی"
+  },
+  "description": {
+    "en": "Submit for inspection",
+    "fa": "ارسال برای بازرسی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Irn",
+      "action": "Submit",
+      "args": {
+        "irnReceiptId": "field:id",
+        "reason": "field:reason",
+        "changedByEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The IRN was submitted for inspection.",
+      "fa": "IRN برای بازرسی ارسال شد."
+    },
+    "redirect": "/p/irn-details?id={id}"
+  }
+}

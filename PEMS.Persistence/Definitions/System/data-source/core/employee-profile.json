@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "employee-profile",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employee profile",
+    "fa": "پروفایل کارمند"
+  },
+  "description": {
+    "en": "Employee profile",
+    "fa": "پروفایل کارمند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Employee",
+      "action": "Profile",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

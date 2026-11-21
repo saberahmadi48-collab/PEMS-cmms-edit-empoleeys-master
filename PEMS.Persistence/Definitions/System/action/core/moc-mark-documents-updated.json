@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "moc-mark-documents-updated",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark MOC documents updated",
+    "fa": "Mark MOC documents updated"
+  },
+  "description": {
+    "en": "Mark MOC documents updated",
+    "fa": "Mark MOC documents updated"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MOC",
+      "action": "MarkDocumentsUpdated",
+      "args": {
+        "mocId": "field:mocId",
+        "note": "field:note",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The document update was recorded.",
+      "fa": "به‌روزرسانی مدارک ثبت شد."
+    },
+    "redirect": "/MOC/Details/{mocId}"
+  }
+}

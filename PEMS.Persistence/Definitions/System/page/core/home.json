@@ -1,0 +1,516 @@
+{
+  "kind": "page",
+  "key": "home",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Dashboard",
+    "fa": "داشبورد"
+  },
+  "description": {
+    "en": "Home dashboard: counts, my work, documents by status, discipline performance and my widgets (page definition)",
+    "fa": "داشبورد اصلی: شمارنده‌ها، کارهای من، مدارک بر اساس وضعیت، عملکرد دیسیپلین‌ها و ویجت‌های من (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "home",
+    "regions": {
+      "content": [
+        {
+          "id": "h-attention",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-attention",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "What requires your attention",
+                  "fa": "موارد نیازمند توجه شما"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "attention",
+          "component": "data-grid",
+          "options": {
+            "id": "home-attention",
+            "url": "/d/home-attention",
+            "idField": "name",
+            "pageSize": 10,
+            "height": 280,
+            "columns": [
+              {
+                "key": "name",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 420
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 120
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "{raw.url}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "t-projects",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Active Projects",
+              "fa": "پروژه‌های فعال"
+            },
+            "icon": "bi-kanban",
+            "tone": "primary"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/home-kpis",
+              "first": true,
+              "map": {
+                "value": "projects"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-documents",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Engineering Documents",
+              "fa": "مدارک مهندسی"
+            },
+            "icon": "bi-file-earmark-text"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/home-kpis",
+              "first": true,
+              "map": {
+                "value": "documents"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-pending",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Pending Approval",
+              "fa": "در انتظار تأیید"
+            },
+            "icon": "bi-hourglass-split",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/home-kpis",
+              "first": true,
+              "map": {
+                "value": "pendingApproval"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-rejected",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Rejected Documents",
+              "fa": "مدارک ردشده"
+            },
+            "icon": "bi-x-circle",
+            "tone": "danger"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/home-kpis",
+              "first": true,
+              "map": {
+                "value": "rejected"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-returned",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Returned With Comments (CO/AC)",
+              "fa": "بازگشتی با نظر (CO/AC)"
+            },
+            "icon": "bi-chat-left-text",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/home-kpis",
+              "first": true,
+              "map": {
+                "value": "returnedWithComments"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-revisions",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Open Revisions",
+              "fa": "بازنگری‌های باز"
+            },
+            "icon": "bi-clock-history"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/home-kpis",
+              "first": true,
+              "map": {
+                "value": "openRevisions"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-mr",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Open MR / MRQ",
+              "fa": "MR / MRQ باز"
+            },
+            "icon": "bi-cart-check"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/home-kpis",
+              "first": true,
+              "map": {
+                "value": "openMr"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-contracts",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Active Contracts",
+              "fa": "قراردادهای فعال"
+            },
+            "icon": "bi-file-earmark-ruled"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/home-kpis",
+              "first": true,
+              "map": {
+                "value": "activeContracts"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-work-orders",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Open Work Orders (CMMS)",
+              "fa": "دستورکارهای باز (CMMS)"
+            },
+            "icon": "bi-clipboard-check"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/home-kpis",
+              "first": true,
+              "map": {
+                "value": "openWorkOrders"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-ai",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "AI Alerts (Failed Analysis)",
+              "fa": "هشدارهای هوش مصنوعی (تحلیل ناموفق)"
+            },
+            "icon": "bi-robot",
+            "tone": "danger"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/home-kpis",
+              "first": true,
+              "map": {
+                "value": "aiAlerts"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-equipment",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Registered Equipment",
+              "fa": "تجهیزات ثبت‌شده"
+            },
+            "icon": "bi-gear",
+            "tone": "success"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/home-kpis",
+              "first": true,
+              "map": {
+                "value": "equipment"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-transmittals",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Transmittals",
+              "fa": "ترنسمیتال‌ها"
+            },
+            "icon": "bi-send"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/home-kpis",
+              "first": true,
+              "map": {
+                "value": "transmittals"
+              }
+            }
+          }
+        },
+        {
+          "id": "h-status",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-status",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Documents by Status",
+                  "fa": "مدارک بر اساس وضعیت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "chart-status",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/home-documents-by-status",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Documents",
+                  "fa": "مدارک"
+                }
+              }
+            ],
+            "kind": "donut",
+            "ariaLabel": {
+              "en": "Documents by status",
+              "fa": "مدارک بر اساس وضعیت"
+            },
+            "emptyText": {
+              "en": "No documents to chart yet.",
+              "fa": "هنوز مدرکی برای نمودار نیست."
+            }
+          }
+        },
+        {
+          "id": "h-disciplines",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-disciplines",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Discipline Performance",
+                  "fa": "عملکرد دیسیپلین‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "disciplines",
+          "component": "data-grid",
+          "options": {
+            "id": "home-disciplines",
+            "url": "/d/home-disciplines",
+            "idField": "discipline",
+            "pageSize": 10,
+            "height": 360,
+            "columns": [
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 240
+              },
+              {
+                "key": "total",
+                "header": {
+                  "en": "Documents",
+                  "fa": "مدارک"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "approved",
+                "header": {
+                  "en": "Approved",
+                  "fa": "تأییدشده"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "pending",
+                "header": {
+                  "en": "Pending Approval",
+                  "fa": "در انتظار تأیید"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "approvedPercent",
+                "header": {
+                  "en": "Approved %",
+                  "fa": "درصد تأیید"
+                },
+                "width": 120,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-widgets",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-widgets",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "My Dashboard",
+                  "fa": "داشبورد من"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "customize",
+          "component": "content-blocks",
+          "options": {
+            "id": "customize",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/dashboard-settings",
+                "text": {
+                  "en": "Customize",
+                  "fa": "شخصی‌سازی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "widgets",
+          "component": "data-grid",
+          "options": {
+            "id": "home-widgets",
+            "url": "/d/home-widgets",
+            "idField": "title",
+            "pageSize": 10,
+            "height": 320,
+            "columns": [
+              {
+                "key": "title",
+                "header": {
+                  "en": "Widget",
+                  "fa": "ویجت"
+                },
+                "width": 260
+              },
+              {
+                "key": "value",
+                "header": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                },
+                "width": 520
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "authorization-effective-user-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Effective permissions of a user",
+    "fa": "مجوزهای مؤثر یک کاربر"
+  },
+  "description": {
+    "en": "Effective permissions of a user rows",
+    "fa": "ردیف‌های مجوزهای مؤثر یک کاربر"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Authorization",
+      "action": "EffectiveForUser",
+      "args": {
+        "userId": "param:userId"
+      }
+    }
+  }
+}

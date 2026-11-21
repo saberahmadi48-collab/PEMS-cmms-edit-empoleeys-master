@@ -1,0 +1,110 @@
+{
+  "kind": "page",
+  "key": "my-work",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My work",
+    "fa": "کارهای من"
+  },
+  "description": {
+    "en": "The approvals waiting for the user (page definition)",
+    "fa": "تأییدهای منتظر اقدام کاربر (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "my-work",
+    "template": "entity-list",
+    "args": {
+      "id": "my-work",
+      "url": "/d/my-work-grid",
+      "idField": "workflowInstanceStageId",
+      "columns": [
+        {
+          "key": "moduleLabel",
+          "header": {
+            "en": "Module",
+            "fa": "ماژول"
+          },
+          "width": 180
+        },
+        {
+          "key": "stage",
+          "header": {
+            "en": "Stage",
+            "fa": "مرحله"
+          },
+          "width": 240
+        },
+        {
+          "key": "isPersonal",
+          "header": {
+            "en": "Assigned to me",
+            "fa": "ارجاع شخصی"
+          },
+          "width": 120,
+          "type": "bool"
+        },
+        {
+          "key": "recordId",
+          "header": {
+            "en": "Record",
+            "fa": "رکورد"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "assignedDate",
+          "header": {
+            "en": "Assigned",
+            "fa": "تاریخ ارجاع"
+          },
+          "width": 170,
+          "type": "datetime"
+        },
+        {
+          "key": "dueDate",
+          "header": {
+            "en": "Due",
+            "fa": "سررسید"
+          },
+          "width": 170,
+          "type": "datetime"
+        },
+        {
+          "key": "isOverdue",
+          "header": {
+            "en": "Overdue",
+            "fa": "معوق"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 120,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "open",
+              "label": {
+                "en": "Open",
+                "fa": "باز کردن"
+              },
+              "url": "{raw.recordPath}",
+              "method": "get",
+              "showWhen": "row.recordPath != ''"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

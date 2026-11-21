@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "permit-revoke",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The permit was revoked.",
+    "fa": "Permit ابطال شد."
+  },
+  "description": {
+    "en": "The permit was revoked.",
+    "fa": "Permit ابطال شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Permit",
+      "action": "AdvanceStatus",
+      "args": {
+        "permitId": "field:id",
+        "nextStatus": "literal:Revoked",
+        "reason": "field:reason",
+        "changedByEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The permit was revoked.",
+      "fa": "Permit ابطال شد."
+    },
+    "redirect": "/Permit/Details/{id}",
+    "permission": "Permit.Revoke"
+  }
+}

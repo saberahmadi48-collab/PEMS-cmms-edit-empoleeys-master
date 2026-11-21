@@ -9,21 +9,21 @@
 }
 
 <nav aria-label="breadcrumb" class="mb-2">
-    <ol class="breadcrumb mb-0 small">
-        <li class="breadcrumb-item"><a asp-action="Index">@L("Help Center", "مرکز راهنما")</a></li>
-        <li class="breadcrumb-item"><a asp-action="Category" asp-route-id="@Model.HelpCategoryId">@Model.CategoryName</a></li>
-        <li class="breadcrumb-item active">@Model.Title</li>
-    </ol>
+    <pems-crumb-trail css="mb-0 small">
+        <pems-bullet class="breadcrumb-item"><pems-link href="/p/help">@L("Help Center", "مرکز راهنما")</pems-link></pems-bullet>
+        <pems-bullet class="breadcrumb-item"><pems-link href="@("/p/help?categoryId=" + Model.HelpCategoryId)">@Model.CategoryName</pems-link></pems-bullet>
+        <pems-bullet class="breadcrumb-item active">@Model.Title</pems-bullet>
+    </pems-crumb-trail>
 </nav>
 
-<div class="row g-3">
-    <div class="col-lg-9">
-        <div class="content-card">
-            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
-                <h4 class="mb-0">@Model.Title</h4>
-                <span class="badge bg-light text-dark border">@Model.ArticleType</span>
-            </div>
-            <p class="text-muted">@Model.Summary</p>
+<pems-row gap="3">
+    <pems-col lg="9">
+        <pems-content-card>
+            <pems-flex justify="between" align="start" wrap="true" gap="2" css="mb-2">
+                <pems-heading level="4" class="mb-0">@Model.Title</pems-heading>
+                <pems-badge tone="light">@Model.ArticleType</pems-badge>
+            </pems-flex>
+            <pems-text class="text-muted">@Model.Summary</pems-text>
 
             @if (standardReference != null)
             {
@@ -35,73 +35,53 @@
                رندر می‌شود - این بخش هیچ‌وقت خالی/شکسته نمایش داده نمی‌شود. *@
             @if (visuals.Any())
             {
-                <hr />
+                <pems-divider />
                 @foreach (var visual in visuals)
                 {
                     @await Html.PartialAsync("_HelpVisual", visual)
                 }
             }
 
-            <hr />
+            <pems-divider />
             <div class="pems-help-article-body">
                 @Html.Raw(Model.Content)
             </div>
-            <p class="text-muted small mt-3 mb-0">
-                <i class="bi bi-clock-history"></i> @L("Last updated", "آخرین به‌روزرسانی"): @Model.ModifiedDate.ToString("yyyy-MM-dd")
-            </p>
-        </div>
+            <pems-text class="text-muted small mt-3 mb-0">
+                <pems-icon name="bi-clock-history" /> @L("Last updated", "آخرین به‌روزرسانی"): @PemsDates.Date(Model.ModifiedDate)
+            </pems-text>
+        </pems-content-card>
 
         @if (Model.RelatedArticles.Any())
         {
-            <div class="content-card mt-3">
-                <h6 class="mb-3">@L("Related Help", "راهنمای مرتبط")</h6>
-                <div class="d-flex flex-wrap gap-2">
+            <pems-content-card css="mt-3">
+                <pems-heading level="6" class="mb-3">@L("Related Help", "راهنمای مرتبط")</pems-heading>
+                <pems-flex wrap="true" gap="2">
                     @foreach (var r in Model.RelatedArticles)
                     {
-                        <a asp-action="Article" asp-route-code="@r.Code" class="btn btn-sm btn-outline-secondary">@r.Title</a>
+                        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Article" asp-route-code="@r.Code">@r.Title</pems-button>
                     }
-                </div>
-            </div>
+                </pems-flex>
+            </pems-content-card>
         }
-    </div>
+    </pems-col>
 
-    <div class="col-lg-3">
-        <div class="content-card">
-            <h6 class="mb-3"><i class="bi bi-robot"></i> @L("Ask PEMS AI", "پرسش از هوش مصنوعی PEMS")</h6>
-            <p class="text-muted small">@L("Ask a question about this article - the answer is based only on its content.", "درباره‌ی همین مقاله سوال بپرسید - پاسخ فقط بر اساس محتوای همین مقاله است.")</p>
-            <textarea id="helpAiQuestion" class="form-control form-control-sm mb-2" rows="3" placeholder="@L("e.g. What happens if I don't respond to IDC?", "مثلاً اگر به IDC پاسخ ندهم چه می‌شود؟")"></textarea>
-            <button type="button" class="btn btn-sm btn-pems-solid w-100" id="helpAiAskBtn">
-                <i class="bi bi-send"></i> @L("Ask", "پرسیدن")
-            </button>
+    <pems-col lg="3">
+        <pems-content-card>
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-robot" /> @L("Ask PEMS AI", "پرسش از هوش مصنوعی PEMS")</pems-heading>
+            <pems-text class="text-muted small">@L("Ask a question about this article - the answer is based only on its content.", "درباره‌ی همین مقاله سوال بپرسید - پاسخ فقط بر اساس محتوای همین مقاله است.")</pems-text>
+            <pems-textarea scale="small" css="mb-2" id="helpAiQuestion" rows="3" placeholder="@L("e.g. What happens if I don't respond to IDC?", "مثلاً اگر به IDC پاسخ ندهم چه می‌شود؟")"></pems-textarea>
+            <pems-button tone="primary" size="small" css="w-100" type="button" id="helpAiAskBtn" data-code="@Model.Code" data-url="@Url.Action("AskAi", "Help")" data-thinking="@L("Thinking...", "در حال فکر کردن...")" data-error="@L("Could not reach the AI assistant.", "ارتباط با دستیار هوش مصنوعی برقرار نشد.")">
+                <pems-icon name="bi-send" /> @L("Ask", "پرسیدن")
+            </pems-button>
             <div id="helpAiAnswer" class="small mt-2" hidden></div>
-        </div>
-    </div>
-</div>
+        </pems-content-card>
+    </pems-col>
+</pems-row>
 
 @* توکن ضد جعل برای درخواست fetch به AskAi - فرم واقعی وجود ندارد، فقط برای گرفتن توکن *@
-<form id="helpAiTokenForm" style="display:none">@Html.AntiForgeryToken()</form>
+<pems-form id="helpAiTokenForm" hidden>@Html.AntiForgeryToken()</pems-form>
 
 @section Scripts {
-    <script>
-        document.getElementById('helpAiAskBtn').addEventListener('click', async function () {
-            var question = document.getElementById('helpAiQuestion').value.trim();
-            if (!question) return;
-            var answerBox = document.getElementById('helpAiAnswer');
-            answerBox.hidden = false;
-            answerBox.innerHTML = '<span class="text-muted">@L("Thinking...", "در حال فکر کردن...")</span>';
-
-            var form = new FormData();
-            form.append('articleCode', '@Model.Code');
-            form.append('question', question);
-            form.append('__RequestVerificationToken', document.querySelector('input[name="__RequestVerificationToken"]')?.value || '');
-
-            try {
-                var res = await fetch('@Url.Action("AskAi", "Help")', { method: 'POST', body: form });
-                var data = await res.json();
-                answerBox.innerHTML = '<div class="p-2 rounded bg-body-tertiary">' + (data.answer || '').replace(/\n/g, '<br/>') + '</div>';
-            } catch (e) {
-                answerBox.innerHTML = '<span class="text-danger">@L("Could not reach the AI assistant.", "ارتباط با دستیار هوش مصنوعی برقرار نشد.")</span>';
-            }
-        });
-    </script>
+    <pems-script-templates set="help-article"></pems-script-templates>
+    <script src="~/js/views/help-article.js" asp-append-version="true"></script>
 }

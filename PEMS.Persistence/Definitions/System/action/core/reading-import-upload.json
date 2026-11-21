@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "reading-import-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload a workbook",
+    "fa": "بارگذاری فایل"
+  },
+  "description": {
+    "en": "Upload a workbook",
+    "fa": "بارگذاری فایل"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ConditionReadingImport",
+      "action": "Upload",
+      "args": {
+        "employeeId": "context:employeeId",
+        "file": "file:file",
+        "fileName": "field:fileName"
+      },
+      "upload": {
+        "profile": "spreadsheet",
+        "maxFileMb": 20
+      }
+    },
+    "success": {
+      "en": "The file was staged; open the new batch to review it.",
+      "fa": "فایل مرحله‌بندی شد؛ دسته‌ی جدید را برای بررسی باز کنید."
+    },
+    "redirect": "/p/reading-import"
+  }
+}

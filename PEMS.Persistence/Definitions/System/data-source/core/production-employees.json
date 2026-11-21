@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "production-employees",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "People",
+    "fa": "People"
+  },
+  "description": {
+    "en": "People",
+    "fa": "People"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Production",
+      "action": "EmployeeChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

@@ -27,7 +27,8 @@ public class EngineeringRevisionQualityTests
         services.AddSingleton(ctx);
         await EngineeringDocumentWorkflowSeeder.SeedAsync(services.BuildServiceProvider());
 
-        var project = new Project { ProjectName = $"RQ Test {tag}", ProjectCode = $"RQ{tag}{Guid.NewGuid():N}".Substring(0, 8) };
+        // SCRUM-558: the random part must survive the cut (it was cut off, so every run left a repeating code in the shared database)
+        var project = new Project { ProjectName = $"RQ Test {tag}", ProjectCode = $"RQ{Guid.NewGuid():N}".Substring(0, 10) };
         var discipline = new Discipline { Name = $"RQ Disc {tag}", Code = $"RQD{tag}{Guid.NewGuid():N}".Substring(0, 6) };
         ctx.Projects.Add(project);
         ctx.Disciplines.Add(discipline);

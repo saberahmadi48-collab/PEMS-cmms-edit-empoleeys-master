@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "store-requisition-issue-all",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Issue everything reserved",
+    "fa": "تحویل همه‌ی رزرو"
+  },
+  "description": {
+    "en": "Issue everything reserved",
+    "fa": "تحویل همه‌ی رزرو"
+  },
+  "payload": {
+    "id": "store-requisition-issue-all",
+    "title": {
+      "en": "Issue everything reserved",
+      "fa": "تحویل همه‌ی رزرو"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "store-requisition-issue-all",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Requisition id",
+          "fa": "شناسه‌ی درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

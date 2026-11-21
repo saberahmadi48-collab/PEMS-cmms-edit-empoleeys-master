@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "mmd-toggle-failure-mode-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleFailureModeActive",
+    "fa": "ToggleFailureModeActive"
+  },
+  "description": {
+    "en": "ToggleFailureModeActive",
+    "fa": "ToggleFailureModeActive"
+  },
+  "payload": {
+    "id": "mmd-toggle-failure-mode-active",
+    "title": {
+      "en": "ToggleFailureModeActive",
+      "fa": "ToggleFailureModeActive"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-toggle-failure-mode-active",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "id"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "procurement-package-respond",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Respond to a clarification",
+    "fa": "پاسخ به شفاف‌سازی"
+  },
+  "description": {
+    "en": "Respond to a clarification",
+    "fa": "پاسخ به شفاف‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProcurementPackage",
+      "action": "RespondToCommunication",
+      "args": {
+        "packageId": "field:packageId",
+        "communicationId": "field:communicationId",
+        "responseText": "field:responseText",
+        "respondedByName": "context:userName"
+      }
+    },
+    "success": {
+      "en": "The response was saved.",
+      "fa": "پاسخ ثبت شد."
+    },
+    "redirect": "/p/procurement-package-details?id={packageId}"
+  }
+}

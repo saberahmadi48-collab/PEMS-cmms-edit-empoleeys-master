@@ -1,0 +1,27 @@
+{
+  "kind": "action",
+  "key": "packager-install",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Build an install package",
+    "fa": "ساخت بسته نصب"
+  },
+  "description": {
+    "en": "Build an install package",
+    "fa": "ساخت بسته نصب"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Packager",
+      "action": "BuildInstall",
+      "args": {
+        "toVersion": "field:toVersion",
+        "schemaLevel": "field:schemaLevel",
+        "definitionRefs": "field:definitions"
+      }
+    }
+  }
+}

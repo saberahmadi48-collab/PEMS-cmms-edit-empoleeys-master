@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "store-requisition-close-short",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CloseShort",
+    "fa": "CloseShort"
+  },
+  "description": {
+    "en": "CloseShort",
+    "fa": "CloseShort"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StoreRequisition",
+      "action": "CloseShort",
+      "args": {
+        "id": "field:id",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The requisition was closed with a shortage.",
+      "fa": "درخواست با کسری بسته شد."
+    },
+    "redirect": "/p/store-requisition-details?id={id}"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-admin-commodity-groups",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin: commodity groups",
+    "fa": "مدیریت کاتالوگ قطعه: گروه‌های کالا"
+  },
+  "description": {
+    "en": "Part Catalogue admin: commodity groups",
+    "fa": "مدیریت کاتالوگ قطعه: گروه‌های کالا"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "CommodityGroups",
+      "args": {
+        "userRoles": "context:roles",
+        "q": "param:q"
+      },
+      "disposition": "inline"
+    }
+  }
+}

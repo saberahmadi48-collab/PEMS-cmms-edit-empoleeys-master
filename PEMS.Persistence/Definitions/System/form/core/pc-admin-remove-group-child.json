@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "pc-admin-remove-group-child",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a group map",
+    "fa": "حذف نگاشت گروه"
+  },
+  "description": {
+    "en": "Remove a group map",
+    "fa": "حذف نگاشت گروه"
+  },
+  "payload": {
+    "id": "pc-admin-remove-group-child",
+    "title": {
+      "en": "Remove a group map",
+      "fa": "حذف نگاشت گروه"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-admin-remove-group-child",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "mapId",
+        "label": {
+          "en": "Map id",
+          "fa": "شناسه‌ی نگاشت"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "kind": "form",
+  "key": "navigation-menu-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a menu item",
+    "fa": "ویرایش آیتم منو"
+  },
+  "description": {
+    "en": "Edit the admin-owned fields of a menu item",
+    "fa": "ویرایش فیلدهای قابل ویرایش یک آیتم منو"
+  },
+  "payload": {
+    "id": "navigation-menu-edit",
+    "title": {
+      "en": "Edit a menu item",
+      "fa": "ویرایش آیتم منو"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "navigation-menu-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "titleEn",
+        "label": {
+          "en": "Title (English)",
+          "fa": "عنوان (انگلیسی)"
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "titleFa",
+        "label": {
+          "en": "Title (Persian)",
+          "fa": "عنوان (فارسی)"
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "parentKey",
+        "label": {
+          "en": "Parent",
+          "fa": "والد"
+        },
+        "kind": "select",
+        "optionsFrom": "navigation-menu-parents"
+      },
+      {
+        "name": "icon",
+        "label": {
+          "en": "Icon",
+          "fa": "نماد"
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "badgeKey",
+        "label": {
+          "en": "Counter badge",
+          "fa": "شمارنده"
+        },
+        "kind": "select",
+        "optionsFrom": "navigation-menu-badges"
+      },
+      {
+        "name": "isActive",
+        "label": {
+          "en": "Active",
+          "fa": "فعال"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "rowVersion",
+        "label": {
+          "en": "Version (read only)",
+          "fa": "نسخه (فقط خواندنی)"
+        },
+        "readOnly": true
+      }
+    ]
+  }
+}

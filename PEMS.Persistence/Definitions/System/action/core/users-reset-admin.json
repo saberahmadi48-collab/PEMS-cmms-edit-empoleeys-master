@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "users-reset-admin",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reset an administrator account",
+    "fa": "ریست حساب مدیر"
+  },
+  "description": {
+    "en": "Reset an administrator account",
+    "fa": "ریست حساب مدیر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Users",
+      "action": "ResetAdmin",
+      "args": {
+        "id": "field:id",
+        "actorId": "context:userId",
+        "ip": "context:ip"
+      },
+      "require": {
+        "confirm": {
+          "en": "Confirm the reset first.",
+          "fa": "ابتدا ریست را تأیید کنید."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "kind": "page",
+  "key": "component-catalog-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Component details",
+    "fa": "جزئیات مؤلفه"
+  },
+  "description": {
+    "en": "One component: parameters, sample and options schema",
+    "fa": "یک مؤلفه"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "component-record",
+      "url": "/d/component-catalog-grid",
+      "idField": "key",
+      "fields": [
+        {
+          "key": "key",
+          "label": {
+            "en": "Key",
+            "fa": "کلید"
+          },
+          "mono": true
+        },
+        {
+          "key": "component",
+          "label": {
+            "en": "Component",
+            "fa": "مؤلفه"
+          },
+          "mono": true
+        },
+        {
+          "key": "category",
+          "label": {
+            "en": "Category",
+            "fa": "دسته"
+          }
+        },
+        {
+          "key": "icon",
+          "label": {
+            "en": "Icon",
+            "fa": "نماد"
+          },
+          "mono": true
+        },
+        {
+          "key": "parameters",
+          "label": {
+            "en": "Parameters (* required)",
+            "fa": "پارامترها"
+          },
+          "wide": true
+        },
+        {
+          "key": "sample",
+          "label": {
+            "en": "Sample options (JSON)",
+            "fa": "نمونه گزینه‌ها"
+          },
+          "wide": true,
+          "mono": true
+        },
+        {
+          "key": "options",
+          "label": {
+            "en": "Options schema (JSON)",
+            "fa": "طرح گزینه‌ها"
+          },
+          "wide": true,
+          "mono": true
+        }
+      ],
+      "backUrl": "/p/component-catalog",
+      "backLabel": {
+        "en": "Back to the catalog",
+        "fa": "بازگشت به فهرست"
+      }
+    },
+    "regions": {
+      "header": [
+        {
+          "id": "preview-fa",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Live preview (fa, RTL)",
+              "fa": "پیش‌نمایش زنده (فارسی، راست‌به‌چپ)"
+            },
+            "tone": "primary",
+            "href": "/preview/component/{{params.id|url}}?culture=fa&dir=rtl&theme=light"
+          }
+        },
+        {
+          "id": "preview-en",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Live preview (en, LTR)",
+              "fa": "پیش‌نمایش زنده (انگلیسی، چپ‌به‌راست)"
+            },
+            "tone": "primary",
+            "href": "/preview/component/{{params.id|url}}?culture=en&dir=ltr&theme=light"
+          }
+        }
+      ]
+    }
+  }
+}

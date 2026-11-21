@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- EF Core migrations of PEMSDbContext (migration files, model snapshot, design-time factory) in their own assembly, so that
+       PEMS.Persistence.dll changes - and is deployed - only when its own code changes, and this assembly only when the schema does.
+       The context points here by default (PEMSDbContext.MigrationsAssemblyName); every host and test project references this project.
+       Add a migration: dotnet ef migrations add NAME with the project option set to PEMS.Migrations and the startup-project option set to PEMS.Web (see docs/guidelines/05). -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- new migrations keep the namespace PEMS.Persistence.Migrations used by the existing ones -->
+    <RootNamespace>PEMS.Persistence</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PEMS.Persistence\PEMS.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

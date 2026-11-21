@@ -27,7 +27,7 @@
     string NavUrl(string? v = null, DateTime? d = null) => Url.Action("Index", new
     {
         view = v ?? view,
-        date = (d ?? anchor).ToString("yyyy-MM-dd"),
+        date = PemsDates.Date((d ?? anchor)),
         teamId = ViewBag.TeamId, employeeId = ViewBag.EmployeeId, status = ViewBag.Status,
         workOrderType = ViewBag.WorkOrderType, priority = ViewBag.Priority, equipmentId = ViewBag.EquipmentId
     }) ?? "#";
@@ -37,55 +37,55 @@
 }
 @Html.AntiForgeryToken()
 
-<div class="content-card mb-3">
-    <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-3">
-        <div class="d-flex gap-2 align-items-center">
-            <a class="btn btn-sm btn-outline-secondary" href="@NavUrl(d: DateTime.Today)">@Localizer["Today"]</a>
-            <a class="btn btn-sm btn-outline-secondary" href="@NavUrl(d: StepPrev())"><i class="bi bi-chevron-left"></i></a>
-            <a class="btn btn-sm btn-outline-secondary" href="@NavUrl(d: StepNext())"><i class="bi bi-chevron-right"></i></a>
+<pems-content-card css="mb-3">
+    <pems-flex wrap="true" gap="2" align="center" justify="between" css="mb-3">
+        <pems-flex gap="2" align="center">
+            <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: DateTime.Today)">@Localizer["Today"]</pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: StepPrev())"><pems-icon name="bi-chevron-left" /></pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" href="@NavUrl(d: StepNext())"><pems-icon name="bi-chevron-right" /></pems-button>
             <strong class="ms-2" dir="@(view == "week" ? "ltr" : null)">@(view == "month" ? anchor.ToString("MMMM yyyy") : view == "week" ? $"{ViewBag.RangeStart:MMM d} - {((DateTime)ViewBag.RangeEnd).AddDays(-1):MMM d, yyyy}" : anchor.ToString("dddd, MMM d yyyy"))</strong>
-        </div>
+        </pems-flex>
         <div class="btn-group btn-group-sm">
-            <a class="btn @(view == "day" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("day")">@Localizer["Day"]</a>
-            <a class="btn @(view == "week" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("week")">@Localizer["Week"]</a>
-            <a class="btn @(view == "month" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("month")">@Localizer["Month"]</a>
+            <pems-button as="a" tone="none" css="@(view == "day" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("day")">@Localizer["Day"]</pems-button>
+            <pems-button as="a" tone="none" css="@(view == "week" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("week")">@Localizer["Week"]</pems-button>
+            <pems-button as="a" tone="none" css="@(view == "month" ? "btn-pems-solid" : "btn-outline-secondary")" href="@NavUrl("month")">@Localizer["Month"]</pems-button>
         </div>
-    </div>
+    </pems-flex>
 
-    <form method="get" class="d-flex flex-wrap gap-2 align-items-end mb-1">
+    <pems-form class="mb-1" method="get"><pems-flex wrap="true" gap="2" align="end">
         <input type="hidden" name="view" value="@view" />
-        <input type="hidden" name="date" value="@anchor.ToString("yyyy-MM-dd")" />
-        <div><label class="form-label small mb-1">@Localizer["Maintenance Team"]</label>
-            <select name="teamId" class="form-select form-select-sm" onchange="this.form.submit()">
+        <input type="hidden" name="date" value="@PemsDates.Date(anchor)" />
+        <div><pems-label css="small mb-1">@Localizer["Maintenance Team"]</pems-label>
+            <pems-select scale="small" name="teamId" data-pems-change="submit-form">
                 <option value="">@Localizer["All Teams"]</option>
                 @foreach (var t in teams) { <option value="@t.Id" selected="@(ViewBag.TeamId == t.Id)">@t.Name</option> }
-            </select></div>
-        <div><label class="form-label small mb-1">@Localizer["Executor"]</label>
-            <select name="employeeId" class="form-select form-select-sm" onchange="this.form.submit()">
+            </pems-select></div>
+        <div><pems-label css="small mb-1">@Localizer["Executor"]</pems-label>
+            <pems-select scale="small" name="employeeId" data-pems-change="submit-form">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var e in employees) { <option value="@e.EmployeeId" selected="@(ViewBag.EmployeeId == (int)e.EmployeeId)">@e.FullName</option> }
-            </select></div>
-        <div><label class="form-label small mb-1">@Localizer["Ed_Status"]</label>
-            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+            </pems-select></div>
+        <div><pems-label css="small mb-1">@Localizer["Ed_Status"]</pems-label>
+            <pems-select scale="small" name="status" data-pems-change="submit-form">
                 <option value="">@Localizer["Eq_AllStatuses"]</option>
                 @foreach (var s in new[] { "Open", "Assigned", "InProgress", "OnHold", "Completed", "Closed" })
                 { <option value="@s" selected="@(s == (string?)ViewBag.Status)">@s</option> }
-            </select></div>
-        <div><label class="form-label small mb-1">@Localizer["Work Type"]</label>
-            <select name="workOrderType" class="form-select form-select-sm" onchange="this.form.submit()">
+            </pems-select></div>
+        <div><pems-label css="small mb-1">@Localizer["Work Type"]</pems-label>
+            <pems-select scale="small" name="workOrderType" data-pems-change="submit-form">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var s in new[] { "Preventive", "Corrective", "Emergency", "Predictive" })
                 { <option value="@s" selected="@(s == (string?)ViewBag.WorkOrderType)">@s</option> }
-            </select></div>
-        <div><label class="form-label small mb-1">@Localizer["Cm_Priority"]</label>
-            <select name="priority" class="form-select form-select-sm" onchange="this.form.submit()">
+            </pems-select></div>
+        <div><pems-label css="small mb-1">@Localizer["Cm_Priority"]</pems-label>
+            <pems-select scale="small" name="priority" data-pems-change="submit-form">
                 <option value="">@Localizer["All"]</option>
                 @foreach (var s in new[] { "Low", "Medium", "High", "Critical" })
                 { <option value="@s" selected="@(s == (string?)ViewBag.Priority)">@s</option> }
-            </select></div>
-        <a class="btn btn-sm btn-outline-secondary" href="@Url.Action("Index", new { view })">@Localizer["Reset"]</a>
-    </form>
-</div>
+            </pems-select></div>
+        <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Index", new { view })">@Localizer["Reset"]</pems-button>
+    </pems-flex></pems-form>
+</pems-content-card>
 
 @if (view == "month")
 {
@@ -93,7 +93,7 @@
     var gridStart = firstOfMonth.AddDays(-(int)((7 + (firstOfMonth.DayOfWeek - DayOfWeek.Monday) % 7) % 7));
     var byDay = Model.Items.GroupBy(x => x.PlannedStart.Date).ToDictionary(g => g.Key, g => g.ToList());
 
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="pems-cal-month">
             @for (var w = 0; w < 6; w++)
             {
@@ -104,19 +104,19 @@
                         var dayItems = byDay.TryGetValue(cellDate, out var li) ? li : new List<PEMS.Application.DTOs.WorkOrderCalendarItemDto>();
                         var isCurrentMonth = cellDate.Month == anchor.Month;
                         var isToday = cellDate == DateTime.Today;
-                        <a class="pems-cal-month-cell text-decoration-none @(isCurrentMonth ? "" : "pems-cal-dim") @(isToday ? "pems-cal-today" : "")"
+                        <pems-link class="pems-cal-month-cell text-decoration-none @(isCurrentMonth ? "" : "pems-cal-dim") @(isToday ? "pems-cal-today" : "")"
                            href="@NavUrl("day", cellDate)">
                             <div class="pems-cal-daynum">@cellDate.Day</div>
                             @if (dayItems.Count > 0)
                             {
                                 <div class="pems-cal-summary">
-                                    <span class="badge bg-secondary">@dayItems.Count</span>
+                                    <pems-badge tone="neutral">@dayItems.Count</pems-badge>
                                     @{
                                         var critical = dayItems.Count(x => x.Priority == "Critical" || x.Priority == "High");
                                         var overdue = dayItems.Count(x => x.IsOverdue);
                                     }
-                                    @if (critical > 0) { <span class="badge bg-danger">@critical @Localizer["High/Critical"]</span> }
-                                    @if (overdue > 0) { <span class="badge bg-dark">@overdue @Localizer["Overdue"]</span> }
+                                    @if (critical > 0) { <pems-badge tone="danger">@critical @Localizer["High/Critical"]</pems-badge> }
+                                    @if (overdue > 0) { <pems-badge tone="dark">@overdue @Localizer["Overdue"]</pems-badge> }
                                 </div>
                                 @foreach (var it in dayItems.Take(2))
                                 {
@@ -124,12 +124,12 @@
                                 }
                                 @if (dayItems.Count > 2) { <div class="small text-muted">+@(dayItems.Count - 2) @Localizer["more"]</div> }
                             }
-                        </a>
+                        </pems-link>
                     }
                 </div>
             }
         </div>
-    </div>
+    </pems-content-card>
 }
 else if (view == "week")
 {
@@ -138,119 +138,119 @@ else if (view == "week")
         .OrderBy(x => x.Item2).ToList();
     var noTeamItems = Model.Items.Where(x => !x.AssignedTeamId.HasValue).ToList();
 
-    <div class="content-card mb-3">
-        <div class="table-responsive">
-            <table class="table table-enterprise table-sm pems-cal-week" id="pemsCalWeekTable">
-                <thead>
-                    <tr>
-                        <th style="min-width:160px;">@Localizer["Maintenance Team"]</th>
-                        @foreach (var d in days) { <th class="text-center @(d.Date == DateTime.Today ? "pems-cal-today" : "")">@d.ToString("ddd")<br /><span class="small text-muted">@d.ToString("MMM d")</span></th> }
-                    </tr>
-                </thead>
-                <tbody>
+    <pems-content-card css="mb-3">
+        <pems-table-scroll>
+            <pems-table kind="enterprise" scale="small" css="pems-cal-week" id="pemsCalWeekTable">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-s-94253f99">@Localizer["Maintenance Team"]</pems-table-header>
+                        @foreach (var d in days) { <pems-table-header class="text-center @(d.Date == DateTime.Today ? "pems-cal-today" : "")">@d.ToString("ddd")<br /><span class="small text-muted">@d.ToString("MMM d")</span></pems-table-header> }
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
                     @foreach (var (teamId, teamName) in teamRows)
                     {
-                        <tr>
-                            <td class="fw-bold">@teamName</td>
+                        <pems-table-row>
+                            <pems-table-cell class="fw-bold">@teamName</pems-table-cell>
                             @foreach (var d in days)
                             {
                                 var cellItems = Model.Items.Where(x => x.AssignedTeamId == teamId && x.PlannedStart.Date == d.Date).ToList();
-                                <td class="pems-cal-week-cell" data-date="@d.ToString("yyyy-MM-dd")" data-team="@teamId">
+                                <pems-table-cell class="pems-cal-week-cell" data-date="@PemsDates.Date(d)" data-team="@teamId">
                                     @foreach (var it in cellItems)
                                     {
-                                        <a class="pems-cal-card @TypeBadgeClass(it.WorkOrderType) @(it.HasEmployeeConflict ? "pems-cal-conflict" : "")" draggable="true"
+                                        <pems-link class="pems-cal-card @TypeBadgeClass(it.WorkOrderType) @(it.HasEmployeeConflict ? "pems-cal-conflict" : "")" draggable="true"
                                            data-wo="@it.WorkOrderId" data-start="@it.PlannedStart.ToString("O")" data-finish="@it.PlannedFinish.ToString("O")"
                                            href="@Url.Action("Details", "WorkOrder", new { id = it.WorkOrderId })" title="@it.EquipmentDescription">
                                             <div class="small fw-bold">@it.WorkOrderNumber</div>
                                             <div class="small">@it.EquipmentTagNumber</div>
-                                            <div class="small" dir="ltr">@it.PlannedStart.ToString("HH:mm")-@it.PlannedFinish.ToString("HH:mm")</div>
-                                            @if (it.HasEmployeeConflict) { <div class="small text-danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Conflict"]</div> }
-                                        </a>
+                                            <div class="small" dir="ltr">@PemsDates.Time(it.PlannedStart)-@PemsDates.Time(it.PlannedFinish)</div>
+                                            @if (it.HasEmployeeConflict) { <div class="small text-danger"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Conflict"]</div> }
+                                        </pems-link>
                                     }
-                                </td>
+                                </pems-table-cell>
                             }
-                        </tr>
+                        </pems-table-row>
                     }
                     @if (noTeamItems.Count > 0)
                     {
-                        <tr>
-                            <td class="fw-bold text-muted">@Localizer["Unassigned Team"]</td>
+                        <pems-table-row>
+                            <pems-table-cell class="fw-bold text-muted">@Localizer["Unassigned Team"]</pems-table-cell>
                             @foreach (var d in days)
                             {
                                 var cellItems = noTeamItems.Where(x => x.PlannedStart.Date == d.Date).ToList();
-                                <td class="pems-cal-week-cell">
+                                <pems-table-cell class="pems-cal-week-cell">
                                     @foreach (var it in cellItems)
                                     {
-                                        <a class="pems-cal-card @TypeBadgeClass(it.WorkOrderType)" href="@Url.Action("Details", "WorkOrder", new { id = it.WorkOrderId })">
+                                        <pems-link class="pems-cal-card @TypeBadgeClass(it.WorkOrderType)" href="@Url.Action("Details", "WorkOrder", new { id = it.WorkOrderId })">
                                             <div class="small fw-bold">@it.WorkOrderNumber</div>
-                                            <div class="small" dir="ltr">@it.PlannedStart.ToString("HH:mm")-@it.PlannedFinish.ToString("HH:mm")</div>
-                                        </a>
+                                            <div class="small" dir="ltr">@PemsDates.Time(it.PlannedStart)-@PemsDates.Time(it.PlannedFinish)</div>
+                                        </pems-link>
                                     }
-                                </td>
+                                </pems-table-cell>
                             }
-                        </tr>
+                        </pems-table-row>
                     }
                     @if (teamRows.Count == 0 && noTeamItems.Count == 0)
                     {
-                        <tr><td colspan="8" class="text-center text-muted py-4">@Localizer["No scheduled work this week."]</td></tr>
+                        <pems-table-row><pems-table-cell colspan="8" class="text-center text-muted py-4">@Localizer["No scheduled work this week."]</pems-table-cell></pems-table-row>
                     }
-                </tbody>
-            </table>
-        </div>
-    </div>
+                </pems-table-body>
+            </pems-table>
+        </pems-table-scroll>
+    </pems-content-card>
 }
 else
 {
-    <div class="content-card mb-3">
+    <pems-content-card css="mb-3">
         <div class="pems-cal-day-timeline">
             @if (!Model.Items.Any())
             {
-                <p class="text-muted text-center py-4">@Localizer["No scheduled work this day."]</p>
+                <pems-text class="text-muted text-center py-4">@Localizer["No scheduled work this day."]</pems-text>
             }
             @foreach (var it in Model.Items.OrderBy(x => x.PlannedStart))
             {
-                <a class="pems-cal-day-card @TypeBadgeClass(it.WorkOrderType) @(it.HasEmployeeConflict ? "pems-cal-conflict" : "")"
+                <pems-link class="pems-cal-day-card @TypeBadgeClass(it.WorkOrderType) @(it.HasEmployeeConflict ? "pems-cal-conflict" : "")"
                    href="@Url.Action("Details", "WorkOrder", new { id = it.WorkOrderId })">
-                    <div class="pems-cal-day-time" dir="ltr">@it.PlannedStart.ToString("HH:mm") &ndash; @it.PlannedFinish.ToString("HH:mm")</div>
+                    <div class="pems-cal-day-time" dir="ltr">@PemsDates.Time(it.PlannedStart) &ndash; @PemsDates.Time(it.PlannedFinish)</div>
                     <div class="pems-cal-day-body">
                         <div class="fw-bold">@it.WorkOrderNumber &middot; @it.EquipmentTagNumber</div>
                         <div class="small">@it.EquipmentDescription</div>
                         <div class="small">
-                            <span class="badge @TypeBadgeClass(it.WorkOrderType)">@it.WorkOrderType</span>
-                            <span class="badge @PriorityBadgeClass(it.Priority)">@it.Priority</span>
-                            <span class="badge bg-secondary">@it.Status</span>
-                            @if (it.IsOverdue) { <span class="badge bg-dark">@Localizer["Overdue"]</span> }
-                            @if (it.HasEmployeeConflict) { <span class="badge bg-danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Conflict"]</span> }
+                            <pems-badge tone="none" css="@TypeBadgeClass(it.WorkOrderType)">@it.WorkOrderType</pems-badge>
+                            <pems-badge tone="none" css="@PriorityBadgeClass(it.Priority)">@it.Priority</pems-badge>
+                            <pems-badge tone="neutral">@it.Status</pems-badge>
+                            @if (it.IsOverdue) { <pems-badge tone="dark">@Localizer["Overdue"]</pems-badge> }
+                            @if (it.HasEmployeeConflict) { <pems-badge tone="danger"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Conflict"]</pems-badge> }
                         </div>
                         <div class="small text-muted">@it.AssignedTeamName @(it.AssignedEmployeeName != null ? "· " + it.AssignedEmployeeName : "")</div>
                     </div>
-                </a>
+                </pems-link>
             }
         </div>
-    </div>
+    </pems-content-card>
 }
 
 @if (Model.Unscheduled.Any())
 {
-    <div class="content-card mb-3">
-        <h6 class="mb-3">@Localizer["Unscheduled Work"] <span class="badge bg-secondary">@Model.Unscheduled.Count</span></h6>
-        <div class="row g-2">
+    <pems-content-card css="mb-3">
+        <pems-heading level="6" class="mb-3">@Localizer["Unscheduled Work"] <pems-badge tone="neutral">@Model.Unscheduled.Count</pems-badge></pems-heading>
+        <pems-row gap="2">
             @foreach (var u in Model.Unscheduled)
             {
-                <div class="col-md-4 col-lg-3">
-                    <a class="pems-cal-unscheduled-card text-decoration-none d-block" href="@Url.Action("Details", "WorkOrder", new { id = u.WorkOrderId })">
+                <pems-col md="4" lg="3">
+                    <pems-link class="pems-cal-unscheduled-card text-decoration-none d-block" href="@Url.Action("Details", "WorkOrder", new { id = u.WorkOrderId })">
                         <div class="fw-bold small">@u.WorkOrderNumber</div>
                         <div class="small">@u.EquipmentTagNumber &middot; @u.EquipmentDescription</div>
                         <div class="small">
-                            <span class="badge @PriorityBadgeClass(u.Priority)">@u.Priority</span>
-                            <span class="badge bg-secondary">@u.WorkOrderType</span>
+                            <pems-badge tone="none" css="@PriorityBadgeClass(u.Priority)">@u.Priority</pems-badge>
+                            <pems-badge tone="neutral">@u.WorkOrderType</pems-badge>
                         </div>
                         <div class="small text-muted">@(u.AssignedTeamName ?? Localizer["No team"])</div>
-                    </a>
-                </div>
+                    </pems-link>
+                </pems-col>
             }
-        </div>
-    </div>
+        </pems-row>
+    </pems-content-card>
 }
 
 @section Styles {
@@ -258,5 +258,6 @@ else
 }
 
 @section Scripts {
+    <pems-script-templates set="maintenance-calendar"></pems-script-templates>
     <script src="~/js/pems-maintenance-calendar.js" asp-append-version="true"></script>
 }

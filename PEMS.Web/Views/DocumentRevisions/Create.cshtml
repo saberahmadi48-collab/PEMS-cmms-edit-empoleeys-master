@@ -6,43 +6,43 @@
     dynamic document = ViewBag.Document;
 }
 
-<div class="content-card" style="max-width:640px;">
-    <p class="text-muted mb-3">Document: <strong>@document.DocumentNo - @document.Title</strong> (current revision: @document.RevisionNo)</p>
+<pems-content-card css="pems-s-e2b01b0d">
+    <pems-text class="text-muted mb-3">Document: <strong>@document.DocumentNo - @document.Title</strong> (current revision: @document.RevisionNo)</pems-text>
 
-    <form asp-action="Create" method="post">
+    <pems-form asp-action="Create" method="post">
         <input type="hidden" asp-for="DocumentId" />
 
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">New Revision No</label>
-                <input asp-for="RevisionNo" class="form-control" placeholder="e.g. 01" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Previous Revision No</label>
-                <input asp-for="PreviousRevisionNo" class="form-control" readonly />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Status"]</label>
-                <select asp-for="Status" class="form-select">
+        <pems-row gap="3">
+            <pems-col md="6">
+                <pems-label>New Revision No</pems-label>
+                <pems-input asp-for="RevisionNo" placeholder="e.g. 01" />
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>Previous Revision No</pems-label>
+                <pems-input asp-for="PreviousRevisionNo" readonly />
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Status"]</pems-label>
+                <pems-select asp-for="Status">
                     <option>@Localizer["Draft"]</option>
                     <option>@Localizer["Review"]</option>
                     <option>@Localizer["Approved"]</option>
                     <option>@Localizer["Rejected"]</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Issue Purpose"]</label>
-                <input asp-for="IssuePurpose" class="form-control" placeholder="For Approval / For Construction / For Information" />
-            </div>
-            <div class="col-12">
-                <label class="form-label">@Localizer["Comment"]</label>
-                <textarea asp-for="Comment" class="form-control" rows="3"></textarea>
-            </div>
-        </div>
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Issue Purpose"]</pems-label>
+                <pems-input asp-for="IssuePurpose" placeholder="For Approval / For Construction / For Information" />
+            </pems-col>
+            <pems-col span="12">
+                <pems-label>@Localizer["Comment"]</pems-label>
+                <pems-textarea asp-for="Comment" rows="3"></pems-textarea>
+            </pems-col>
+        </pems-row>
 
-        <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">Save Revision</button>
-            <a asp-action="Index" asp-route-documentId="@document.DocumentId" class="btn btn-outline-secondary">Cancel</a>
-        </div>
-    </form>
-</div>
+        <pems-action-bar css="mt-4">
+            <pems-button tone="primary" type="submit">Save Revision</pems-button>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Index" asp-route-documentId="@document.DocumentId">Cancel</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>

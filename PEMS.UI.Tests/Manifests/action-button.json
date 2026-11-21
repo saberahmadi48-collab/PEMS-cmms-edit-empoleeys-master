@@ -1,0 +1,137 @@
+{
+  "key": "action-button",
+  "component": "PEMS.UI.Components.PemsActionButton",
+  "category": "actions",
+  "icon": "bi-lightning",
+  "nameKey": "component.action-button",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string"
+      },
+      "label": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "tone": {
+        "type": "string"
+      },
+      "icon": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "confirm": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "values": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "returnUrl": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "antiforgery": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "token"
+        ],
+        "additionalProperties": false
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "action",
+      "label"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "ActionButtonOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "action": "department-create",
+    "label": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "tone": "success",
+    "icon": "bi-plus-lg",
+    "confirm": {
+      "en": "Create it?",
+      "fa": "ایجاد شود؟"
+    },
+    "values": {
+      "id": "12"
+    },
+    "returnUrl": "/Department",
+    "antiforgery": {
+      "name": "__RequestVerificationToken",
+      "token": "t"
+    }
+  }
+}

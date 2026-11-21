@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "strategy-unassign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a tag from the strategy",
+    "fa": "حذف تگ از استراتژی"
+  },
+  "description": {
+    "en": "Remove a tag from the strategy",
+    "fa": "حذف تگ از استراتژی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceStrategy",
+      "action": "Unassign",
+      "args": {
+        "assignmentId": "field:assignmentId",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "The tag was removed.",
+      "fa": "تگ حذف شد."
+    },
+    "redirect": "/MaintenanceStrategy/Details/{strategyId}"
+  }
+}

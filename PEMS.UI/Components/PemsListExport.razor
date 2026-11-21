@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-export", Category = "list", Icon = "bi-file-earmark-excel")]
+<PemsListIconTool Options="@Tool" />
+@code {
+    [Parameter, EditorRequired] public ListExportOptions Options { get; set; } = default!;
+    private ListIconToolOptions Tool => new() { Tag = "a", Icon = "bi-file-earmark-excel", Label = Options.Label, Attributes = new Dictionary<string, string> { ["href"] = Options.Href } };
+}

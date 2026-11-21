@@ -1,0 +1,89 @@
+{
+  "kind": "page",
+  "key": "audit-log-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Audit log details",
+    "fa": "جزئیات گزارش ممیزی"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "audit-log-record",
+      "url": "/d/audit-log-grid",
+      "idField": "auditLogId",
+      "fields": [
+        {
+          "key": "auditLogId",
+          "label": {
+            "en": "Id",
+            "fa": "شناسه"
+          },
+          "type": "number"
+        },
+        {
+          "key": "timestamp",
+          "label": {
+            "en": "When",
+            "fa": "زمان"
+          },
+          "type": "datetime"
+        },
+        {
+          "key": "entityName",
+          "label": {
+            "en": "Entity",
+            "fa": "موجودیت"
+          }
+        },
+        {
+          "key": "entityKeyValue",
+          "label": {
+            "en": "Key",
+            "fa": "کلید"
+          }
+        },
+        {
+          "key": "action",
+          "label": {
+            "en": "Action",
+            "fa": "عملیات"
+          }
+        },
+        {
+          "key": "changedFieldsSummary",
+          "label": {
+            "en": "Changed fields",
+            "fa": "فیلدهای تغییریافته"
+          }
+        },
+        {
+          "key": "userName",
+          "label": {
+            "en": "User",
+            "fa": "کاربر"
+          }
+        },
+        {
+          "key": "isAIAssisted",
+          "label": {
+            "en": "AI assisted",
+            "fa": "با کمک هوش مصنوعی"
+          },
+          "type": "bool"
+        }
+      ],
+      "backUrl": "/p/audit-log",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      }
+    }
+  }
+}

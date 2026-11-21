@@ -1,0 +1,14 @@
+{
+  "id": "instrument-form",
+  "title": { "fa": "ثبت ابزار", "en": "Register instrument" },
+  "action": "/instruments",
+  "submitLabel": { "fa": "ذخیره", "en": "Save" },
+  "fields": [
+    { "name": "tag", "label": { "fa": "تگ", "en": "Tag" }, "kind": "text", "required": true, "maxLength": 30,
+      "helpText": { "fa": "شناسه یکتا", "en": "Unique identifier" }, "placeholder": { "*": "PT-0001" } },
+    { "name": "area", "label": { "fa": "ناحیه", "en": "Area" }, "kind": "select",
+      "options": [ { "value": "u1", "label": { "fa": "واحد ۱", "en": "Unit 1" } }, { "value": "u2", "label": { "en": "Unit 2" } } ] },
+    { "name": "due", "label": { "fa": "سررسید", "en": "Due date" }, "kind": "date" },
+    { "name": "active", "label": "Active", "kind": "checkbox" }
+  ]
+}

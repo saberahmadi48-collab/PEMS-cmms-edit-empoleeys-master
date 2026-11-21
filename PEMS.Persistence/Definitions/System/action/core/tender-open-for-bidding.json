@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "tender-open-for-bidding",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Open tender for bidding",
+    "fa": "بازکردن مناقصه برای پیشنهاد"
+  },
+  "description": {
+    "en": "Open tender for bidding",
+    "fa": "بازکردن مناقصه برای پیشنهاد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Tender",
+      "action": "OpenForBidding",
+      "args": {
+        "tenderId": "field:tenderId"
+      }
+    },
+    "success": {
+      "en": "The tender was opened for bidding.",
+      "fa": "مناقصه برای پیشنهاد باز شد."
+    },
+    "redirect": "/Tender/Details/{tenderId}"
+  }
+}

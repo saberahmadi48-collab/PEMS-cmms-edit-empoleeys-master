@@ -1,0 +1,9 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("row", Category = "layout", Icon = "bi-layout-three-columns")]
+@FrameMarkup.Element("div", Css, Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public RowOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string Css => string.Join(" ", new[] { "row", Part("g", Options.Gap), Part("gx", Options.GapX), Part("gy", Options.GapY), Options.Css }.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+    private static string? Part(string prefix, string? value) => string.IsNullOrWhiteSpace(value) ? null : prefix + "-" + value.Trim();
+}

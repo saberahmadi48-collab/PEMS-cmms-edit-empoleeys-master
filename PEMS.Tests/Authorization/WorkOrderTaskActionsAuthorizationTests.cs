@@ -1,179 +1,80 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using PEMS.Domain.Entities;
-using PEMS.Persistence.Identity;
-using PEMS.Persistence.Seed;
-using PEMS.Persistence.Services;
+using PEMS.Persistence.Context;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Controllers;
+using PEMS.Web.Services;
 
 namespace PEMS.Tests.Authorization;
 
 /// <summary>
-/// طبق «PEMS Phase 6B Wave A — ممیزی مستقل» بند P0: WorkOrderController.CompleteTask/
-/// ReopenTask هیچ بررسی مجوزی نداشتند - برخلاف بقیه‌ی جهش‌های همین کنترلر (Hold/Resume/
-/// AddLaborEntry/...) که همه به "WorkOrder"/"Edit" گیت شده‌اند.
+/// SCRUM-764: the task check-off is an operation (WorkOrderTaskOperations); the permission (WorkOrder.Edit) and the section guard are the action definition's (see WorkOrderSectionGuardTests).
+/// Here: both ids must belong together, a task of another work order is never touched (audit P1-01).
 /// </summary>
 public class WorkOrderTaskActionsAuthorizationTests
 {
-    private static async Task<(WorkOrderController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(
-        string dbName, string? role = SystemRoles.MaintenanceEngineer)
+    private static WorkOrderTaskOperations Ops(PEMSDbContext ctx) => new(ctx, null!, null!, null!);
+
+    private static PEMSDbContext Db(string name) => PemsDbContextFactory.CreateInMemory($"WOTaskAuth_{name}");
+
+    [Fact]
+    public async Task CompleteTask_MatchingWorkOrderId_Completes()
     {
-        var ctx = PemsDbContextFactory.CreateInMemory($"WOTaskAuth_{dbName}");
-        foreach (var roleName in SystemRoles.All)
-            ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
+        var ctx = Db(nameof(CompleteTask_MatchingWorkOrderId_Completes));
+        ctx.WorkOrderTasks.Add(new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 100, TaskNumber = 1, Title = "T", IsCompleted = false });
         await ctx.SaveChangesAsync();
 
-        var accessControl = new AccessControlService(ctx);
-        var permissionService = new PermissionService(ctx, accessControl);
-        await permissionService.SeedDefaultsAsync();
+        var result = await Ops(ctx).CompleteTaskAsync(500, 100, "tester");
 
-        var services = new ServiceCollection();
-        services.AddSingleton(ctx);
-        await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
-
-        var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
-
-        var controller = new WorkOrderController(ctx, null!, currentUser, permissionService, null!, null!, null!, null!, null!);
-        return (controller, ctx);
+        Assert.True(result.Success);
+        var task = ctx.WorkOrderTasks.Single();
+        Assert.True(task.IsCompleted);
+        Assert.Equal("tester", task.CompletedBy);
     }
 
     [Fact]
-    public async Task CompleteTask_WithoutEditPermission_ReturnsForbid()
+    public async Task ReopenTask_MatchingWorkOrderId_Reopens()
     {
-        var (controller, ctx) = await CreateController(nameof(CompleteTask_WithoutEditPermission_ReturnsForbid), role: null);
-        var task = new WorkOrderTask { WorkOrderTaskId = 1, WorkOrderId = 1, TaskNumber = 1, Title = "T", IsCompleted = false };
-        ctx.WorkOrderTasks.Add(task);
+        var ctx = Db(nameof(ReopenTask_MatchingWorkOrderId_Reopens));
+        ctx.WorkOrderTasks.Add(new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 100, TaskNumber = 1, Title = "T", IsCompleted = true, CompletedDate = DateTime.Now, CompletedBy = "someone" });
         await ctx.SaveChangesAsync();
 
-        var result = await controller.CompleteTask(task.WorkOrderTaskId, task.WorkOrderId);
+        var result = await Ops(ctx).ReopenTaskAsync(500, 100);
 
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(ctx.WorkOrderTasks.Single().IsCompleted);
+        Assert.True(result.Success);
+        var task = ctx.WorkOrderTasks.Single();
+        Assert.False(task.IsCompleted);
+        Assert.Null(task.CompletedBy);
+        Assert.Null(task.CompletedDate);
     }
 
     [Fact]
-    public async Task CompleteTask_WithEditPermission_CompletesTask()
+    public async Task CompleteTask_MismatchedWorkOrderId_Fails_DoesNotModifyAnyTask()
     {
-        var (controller, ctx) = await CreateController(nameof(CompleteTask_WithEditPermission_CompletesTask));
-        var task = new WorkOrderTask { WorkOrderTaskId = 1, WorkOrderId = 1, TaskNumber = 1, Title = "T", IsCompleted = false };
-        ctx.WorkOrderTasks.Add(task);
+        var ctx = Db(nameof(CompleteTask_MismatchedWorkOrderId_Fails_DoesNotModifyAnyTask));
+        ctx.WorkOrderTasks.AddRange(
+            new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 200, TaskNumber = 1, Title = "Target", IsCompleted = false },
+            new WorkOrderTask { WorkOrderTaskId = 501, WorkOrderId = 100, TaskNumber = 1, Title = "Unrelated in claimed WorkOrder", IsCompleted = false },
+            new WorkOrderTask { WorkOrderTaskId = 502, WorkOrderId = 300, TaskNumber = 1, Title = "Unrelated elsewhere", IsCompleted = false });
         await ctx.SaveChangesAsync();
 
-        var result = await controller.CompleteTask(task.WorkOrderTaskId, task.WorkOrderId);
+        // the request claims task 500 belongs to work order 100, but it belongs to 200
+        var result = await Ops(ctx).CompleteTaskAsync(500, 100, "tester");
 
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(ctx.WorkOrderTasks.Single().IsCompleted);
-    }
-
-    [Fact]
-    public async Task ReopenTask_WithoutEditPermission_ReturnsForbid()
-    {
-        var (controller, ctx) = await CreateController(nameof(ReopenTask_WithoutEditPermission_ReturnsForbid), role: null);
-        var task = new WorkOrderTask { WorkOrderTaskId = 1, WorkOrderId = 1, TaskNumber = 1, Title = "T", IsCompleted = true, CompletedDate = DateTime.Now };
-        ctx.WorkOrderTasks.Add(task);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.ReopenTask(task.WorkOrderTaskId, task.WorkOrderId);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.True(ctx.WorkOrderTasks.Single().IsCompleted);
-    }
-
-    [Fact]
-    public async Task ReopenTask_WithEditPermission_ReopensTask()
-    {
-        var (controller, ctx) = await CreateController(nameof(ReopenTask_WithEditPermission_ReopensTask));
-        var task = new WorkOrderTask { WorkOrderTaskId = 1, WorkOrderId = 1, TaskNumber = 1, Title = "T", IsCompleted = true, CompletedDate = DateTime.Now };
-        ctx.WorkOrderTasks.Add(task);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.ReopenTask(task.WorkOrderTaskId, task.WorkOrderId);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.False(ctx.WorkOrderTasks.Single().IsCompleted);
-    }
-
-    // ==============================================================================
-    // طبق ممیزی مستقل فاز ۶B Wave A (نهایی) بند P1-01: CompleteTask/ReopenTask قبلاً فقط با
-    // WorkOrderTaskId پیدا می‌شدند - بدون اثبات اینکه واقعاً به workOrderId درخواستی تعلق دارند.
-    // این یعنی درخواست‌کننده می‌توانست Task یک WorkOrder دیگر را با فرستادن workOrderId دلخواه
-    // در فرم تغییر دهد.
-    // ==============================================================================
-
-    [Fact]
-    public async Task CompleteTask_MismatchedWorkOrderId_ReturnsNotFound_DoesNotModifyTask()
-    {
-        var (controller, ctx) = await CreateController(nameof(CompleteTask_MismatchedWorkOrderId_ReturnsNotFound_DoesNotModifyTask));
-        var task = new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 200, TaskNumber = 1, Title = "T", IsCompleted = false };
-        ctx.WorkOrderTasks.Add(task);
-        await ctx.SaveChangesAsync();
-
-        // درخواست ادعا می‌کند Task 500 متعلق به WorkOrder 100 است، اما واقعاً متعلق به 200 است.
-        var result = await controller.CompleteTask(workOrderTaskId: 500, workOrderId: 100);
-
-        Assert.IsType<NotFoundResult>(result);
-        Assert.False(ctx.WorkOrderTasks.Single(x => x.WorkOrderTaskId == 500).IsCompleted);
-    }
-
-    [Fact]
-    public async Task ReopenTask_MismatchedWorkOrderId_ReturnsNotFound_DoesNotModifyTask()
-    {
-        var (controller, ctx) = await CreateController(nameof(ReopenTask_MismatchedWorkOrderId_ReturnsNotFound_DoesNotModifyTask));
-        var task = new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 200, TaskNumber = 1, Title = "T", IsCompleted = true, CompletedDate = DateTime.Now, CompletedBy = "someone" };
-        ctx.WorkOrderTasks.Add(task);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.ReopenTask(workOrderTaskId: 500, workOrderId: 100);
-
-        Assert.IsType<NotFoundResult>(result);
-        var unchanged = ctx.WorkOrderTasks.Single(x => x.WorkOrderTaskId == 500);
-        Assert.True(unchanged.IsCompleted);
-        Assert.Equal("someone", unchanged.CompletedBy);
-    }
-
-    [Fact]
-    public async Task CompleteTask_MismatchedWorkOrderId_DoesNotModifyAnyUnrelatedTask()
-    {
-        var (controller, ctx) = await CreateController(nameof(CompleteTask_MismatchedWorkOrderId_DoesNotModifyAnyUnrelatedTask));
-        var targetTask = new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 200, TaskNumber = 1, Title = "Target", IsCompleted = false };
-        var unrelatedTask1 = new WorkOrderTask { WorkOrderTaskId = 501, WorkOrderId = 100, TaskNumber = 1, Title = "Unrelated in claimed WorkOrder", IsCompleted = false };
-        var unrelatedTask2 = new WorkOrderTask { WorkOrderTaskId = 502, WorkOrderId = 300, TaskNumber = 1, Title = "Unrelated elsewhere", IsCompleted = false };
-        ctx.WorkOrderTasks.AddRange(targetTask, unrelatedTask1, unrelatedTask2);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.CompleteTask(workOrderTaskId: 500, workOrderId: 100);
-
-        Assert.IsType<NotFoundResult>(result);
+        Assert.False(result.Success);
         Assert.All(ctx.WorkOrderTasks, t => Assert.False(t.IsCompleted));
     }
 
     [Fact]
-    public async Task CompleteTask_MatchingWorkOrderId_Succeeds()
+    public async Task ReopenTask_MismatchedWorkOrderId_Fails_DoesNotModifyTask()
     {
-        var (controller, ctx) = await CreateController(nameof(CompleteTask_MatchingWorkOrderId_Succeeds));
-        var task = new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 100, TaskNumber = 1, Title = "T", IsCompleted = false };
-        ctx.WorkOrderTasks.Add(task);
+        var ctx = Db(nameof(ReopenTask_MismatchedWorkOrderId_Fails_DoesNotModifyTask));
+        ctx.WorkOrderTasks.Add(new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 200, TaskNumber = 1, Title = "T", IsCompleted = true, CompletedDate = DateTime.Now, CompletedBy = "someone" });
         await ctx.SaveChangesAsync();
 
-        var result = await controller.CompleteTask(workOrderTaskId: 500, workOrderId: 100);
+        var result = await Ops(ctx).ReopenTaskAsync(500, 100);
 
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(ctx.WorkOrderTasks.Single().IsCompleted);
-    }
-
-    [Fact]
-    public async Task CompleteTask_UnauthorizedUser_MismatchedWorkOrderId_ReturnsForbid_NotNotFound()
-    {
-        // ترتیب کنترل‌ها مهم است: مجوز باید قبل از هر Query ای بررسی شود - حتی وقتی ownership هم
-        // نامعتبر است، پیام باید Forbid باشد (نه NotFound که اطلاعات وجود/عدم‌وجود Task را افشا کند).
-        var (controller, ctx) = await CreateController(nameof(CompleteTask_UnauthorizedUser_MismatchedWorkOrderId_ReturnsForbid_NotNotFound), role: null);
-        var task = new WorkOrderTask { WorkOrderTaskId = 500, WorkOrderId = 200, TaskNumber = 1, Title = "T", IsCompleted = false };
-        ctx.WorkOrderTasks.Add(task);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.CompleteTask(workOrderTaskId: 500, workOrderId: 100);
-
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success);
+        var unchanged = ctx.WorkOrderTasks.Single();
+        Assert.True(unchanged.IsCompleted);
+        Assert.Equal("someone", unchanged.CompletedBy);
     }
 }

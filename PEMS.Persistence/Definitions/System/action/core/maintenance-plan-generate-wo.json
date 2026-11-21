@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "maintenance-plan-generate-wo",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate a work order",
+    "fa": "ساخت دستورکار"
+  },
+  "description": {
+    "en": "Generate a work order",
+    "fa": "ساخت دستورکار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenancePlanPage",
+      "action": "GenerateWorkOrder",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "planId": "field:planId"
+      }
+    },
+    "success": {
+      "en": "The work order was generated from the plan; open it from the work orders.",
+      "fa": "دستورکار از برنامه ساخته شد؛ از فهرست دستورکارها باز کنید."
+    },
+    "redirect": "/p/maintenance-plans"
+  }
+}

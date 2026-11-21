@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("content-card", Category = "layout", Icon = "bi-card-heading")]
+@FrameMarkup.Element(Options.As is "section" or "article" or "details" ? Options.As : "div", string.IsNullOrWhiteSpace(Options.Css) ? "content-card" : "content-card " + Options.Css.Trim(), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public ContentCardOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

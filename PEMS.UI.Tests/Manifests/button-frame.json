@@ -1,0 +1,69 @@
+{
+  "key": "button-frame",
+  "component": "PEMS.UI.Components.PemsButtonFrame",
+  "category": "actions",
+  "icon": "bi-hand-index-thumb",
+  "nameKey": "component.button-frame",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "tone": {
+        "type": "string"
+      },
+      "size": {
+        "type": "string"
+      },
+      "outline": {
+        "type": "boolean"
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "disabled": {
+        "type": "boolean"
+      },
+      "as": {
+        "type": "string"
+      },
+      "plain": {
+        "type": "boolean"
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ButtonFrameOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "tone": "primary",
+    "size": "small"
+  }
+}

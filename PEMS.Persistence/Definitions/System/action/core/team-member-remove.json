@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "team-member-remove",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a member",
+    "fa": "حذف عضو"
+  },
+  "description": {
+    "en": "Remove a member",
+    "fa": "حذف عضو"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "RemoveMember",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "teamMemberId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Member removed.",
+      "fa": "عضو از تیم خارج شد."
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "storage-locations-warehouse-id-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Warehouse options",
+    "fa": "گزینه‌های انبار"
+  },
+  "description": {
+    "en": "Choices for warehouse",
+    "fa": "گزینه‌ها برای انبار"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "entity-options",
+    "parameters": {
+      "entity": "Warehouse",
+      "value": "WarehouseId",
+      "label": "Name",
+      "active": "IsActive"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("stat", Category = "display", Icon = "bi-speedometer")]
+@FrameMarkup.Element("div", string.IsNullOrWhiteSpace(Options.Css) ? "admin-kpi" : "admin-kpi " + Options.Css.Trim(), Options.PageClass, Options.Attributes, Inner)
+@code {
+    [Parameter, EditorRequired] public StatOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private RenderFragment Inner => b =>
+    {
+        b.OpenElement(0, "div"); b.AddAttribute(1, "class", "admin-kpi-label"); b.AddContent(2, Options.Label); b.CloseElement();
+        b.OpenElement(3, "div"); b.AddAttribute(4, "class", "admin-kpi-value"); if (ChildContent is not null) b.AddContent(5, ChildContent); b.CloseElement();
+    };
+}

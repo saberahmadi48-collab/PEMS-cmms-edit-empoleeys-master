@@ -1,0 +1,109 @@
+{
+  "kind": "page",
+  "key": "material-categories",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material categories",
+    "fa": "دسته‌بندی‌های مواد"
+  },
+  "description": {
+    "en": "Material categories list (page definition)",
+    "fa": "فهرست دسته‌بندی‌های مواد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "material-categories",
+    "template": "entity-list",
+    "args": {
+      "id": "material-categories",
+      "url": "/d/material-categories-grid",
+      "idField": "materialCategoryId",
+      "viewsKey": "material-categories",
+      "columns": [
+        {
+          "key": "code",
+          "header": {
+            "en": "Code",
+            "fa": "کد"
+          },
+          "width": 140
+        },
+        {
+          "key": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 240
+        },
+        {
+          "key": "description",
+          "header": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "width": 300
+        },
+        {
+          "key": "parentCategoryId",
+          "header": {
+            "en": "Parent",
+            "fa": "والد"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/material-categories-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "toggle",
+              "label": {
+                "en": "Activate / deactivate",
+                "fa": "فعال / غیرفعال"
+              },
+              "url": "/a/material-categories-toggle",
+              "method": "post",
+              "confirm": {
+                "en": "Change the status?",
+                "fa": "وضعیت تغییر کند؟"
+              }
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/material-categories-create",
+      "newLabel": {
+        "en": "New material category",
+        "fa": "دسته‌بندی مواد جدید"
+      }
+    }
+  }
+}

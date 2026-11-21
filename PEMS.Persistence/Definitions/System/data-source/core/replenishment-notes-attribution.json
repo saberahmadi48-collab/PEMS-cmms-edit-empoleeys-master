@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "replenishment-notes-attribution",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Demand without a warehouse",
+    "fa": "تقاضای بدون انبار"
+  },
+  "description": {
+    "en": "Demand without a warehouse",
+    "fa": "تقاضای بدون انبار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Replenishment",
+      "action": "Notes",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName"
+      },
+      "where": {
+        "kind": "Attribution"
+      }
+    }
+  }
+}

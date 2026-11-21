@@ -1,0 +1,187 @@
+{
+  "kind": "form",
+  "key": "material-item-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New material",
+    "fa": "ماده‌ی جدید"
+  },
+  "description": {
+    "en": "New material",
+    "fa": "ماده‌ی جدید"
+  },
+  "payload": {
+    "id": "material-item-create",
+    "title": {
+      "en": "New material",
+      "fa": "ماده‌ی جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "material-item-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "materialCode",
+        "label": {
+          "en": "Material code",
+          "fa": "کد ماده"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "materialType",
+        "label": {
+          "en": "Material type",
+          "fa": "نوع ماده"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500,
+        "span": 2
+      },
+      {
+        "name": "longDescription",
+        "label": {
+          "en": "Long description",
+          "fa": "شرح کامل"
+        },
+        "kind": "textArea",
+        "maxLength": 2000,
+        "span": 2
+      },
+      {
+        "name": "categoryId",
+        "label": {
+          "en": "Category",
+          "fa": "دسته‌بندی"
+        },
+        "kind": "select",
+        "optionsFrom": "material-item-categories"
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "optionsFrom": "material-item-disciplines"
+      },
+      {
+        "name": "uomId",
+        "label": {
+          "en": "Unit of measure",
+          "fa": "واحد"
+        },
+        "kind": "select",
+        "optionsFrom": "material-item-uoms"
+      },
+      {
+        "name": "vendorId",
+        "label": {
+          "en": "Vendor",
+          "fa": "فروشنده"
+        },
+        "kind": "select",
+        "optionsFrom": "material-item-vendors"
+      },
+      {
+        "name": "manufacturer",
+        "label": {
+          "en": "Manufacturer",
+          "fa": "سازنده"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "manufacturerPartNumber",
+        "label": {
+          "en": "Manufacturer part number",
+          "fa": "شماره قطعه‌ی سازنده"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "model",
+        "label": {
+          "en": "Model",
+          "fa": "مدل"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "size",
+        "label": {
+          "en": "Size",
+          "fa": "اندازه"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "materialGrade",
+        "label": {
+          "en": "Material grade",
+          "fa": "گرید"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "specification",
+        "label": {
+          "en": "Specification",
+          "fa": "مشخصات"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "isStockItem",
+        "label": {
+          "en": "Stock item",
+          "fa": "کالای انباری"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "isCritical",
+        "label": {
+          "en": "Critical",
+          "fa": "بحرانی"
+        },
+        "kind": "switch"
+      }
+    ]
+  }
+}

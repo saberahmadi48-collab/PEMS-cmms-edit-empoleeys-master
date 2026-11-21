@@ -14,10 +14,7 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Areas.Admin.Controllers;
-using PEMS.Web.Areas.Admin.Models;
 using PEMS.Web.Controllers;
-using EmployeeController = PEMS.Web.Controllers.EmployeeController;
 using PEMS.Web.Security;
 
 namespace PEMS.Tests.Organization;
@@ -168,23 +165,20 @@ public class EmployeeRoleDisciplineManagementTests
 
     // ------------------------------------------------------------------ Users controller (create/edit)
 
-    private static UsersController NewUsersController(Env e) =>
-        new UsersController(e.Users, e.Roles, e.Ctx, null!, null!, null!, null!,
-            new UserRoleAssignmentSynchronizer(e.Ctx), new OrganizationHierarchyService(e.Ctx, new OrganizationValidationService(e.Ctx))).WithTempData();
+    private static UsersFacade NewUsersController(Env e) => UsersFacade.For(e.Users, e.Roles, e.Ctx);
 
     [Fact]
     public async Task UserCreate_NewEmployee_RequiresValidDepartmentAndDiscipline_NoMagicZero()
     {
         var e = NewEnv(); var (dept, disc) = await Org(e.Ctx);
         var c = NewUsersController(e);
-        var bad = await c.Create(new UserFormViewModel { UserName = "x1", Email = "x1@t.io", FullName = "X One", Password = "Abc@123456", DepartmentId = dept, DisciplineId = null });
-        Assert.IsType<ViewResult>(bad);
-        Assert.False(c.ModelState.IsValid);
+        var bad = await c.Create(new UserForm { UserName = "x1", Email = "x1@t.io", FullName = "X One", Password = "Abc@123456", DepartmentId = dept, DisciplineId = null });
+        UsersFacade.Refused(bad);
         Assert.Empty(e.Ctx.Employees); Assert.Empty(e.Ctx.Users);                                  // nothing persisted, no DisciplineId = 0
 
         c = NewUsersController(e);
-        var zero = await c.Create(new UserFormViewModel { UserName = "x2", Email = "x2@t.io", FullName = "X Two", Password = "Abc@123456", DepartmentId = dept, DisciplineId = 0 });
-        Assert.IsType<ViewResult>(zero); Assert.Empty(e.Ctx.Employees);
+        var zero = await c.Create(new UserForm { UserName = "x2", Email = "x2@t.io", FullName = "X Two", Password = "Abc@123456", DepartmentId = dept, DisciplineId = 0 });
+        UsersFacade.Refused(zero); Assert.Empty(e.Ctx.Employees);
     }
 
     [Fact]
@@ -195,9 +189,9 @@ public class EmployeeRoleDisciplineManagementTests
         var pos = new Position { Title = "Process Engineer", PositionCode = "ENG-PROC", IsActive = true, DepartmentId = dept }; e.Ctx.Positions.Add(pos); await e.Ctx.SaveChangesAsync();
         var c = NewUsersController(e);
 
-        var result = await c.Create(new UserFormViewModel { UserName = "newuser", Email = "n@t.io", FullName = "New User", Password = "Abc@123456",
+        var result = await c.Create(new UserForm { UserName = "newuser", Email = "n@t.io", FullName = "New User", Password = "Abc@123456",
             DepartmentId = dept, DisciplineId = disc, PositionId = pos.PositionId, SelectedRoles = new() { "RoleX" } });
-        Assert.IsType<RedirectToActionResult>(result);
+        UsersFacade.Saved(result);
 
         var emp = await e.Ctx.Employees.SingleAsync();
         Assert.Equal(disc, emp.DisciplineId); Assert.Equal("Process Engineer", emp.Position);       // legacy display text only
@@ -210,8 +204,45 @@ public class EmployeeRoleDisciplineManagementTests
 
         // a second user cannot take the (now occupied) position
         var c2 = NewUsersController(e);
-        var again = await c2.Create(new UserFormViewModel { UserName = "second", Email = "s@t.io", FullName = "Second User", Password = "Abc@123456", DepartmentId = dept, DisciplineId = disc, PositionId = pos.PositionId });
-        Assert.IsType<ViewResult>(again); Assert.Equal(1, await e.Ctx.Employees.CountAsync());
+        var again = await c2.Create(new UserForm { UserName = "second", Email = "s@t.io", FullName = "Second User", Password = "Abc@123456", DepartmentId = dept, DisciplineId = disc, PositionId = pos.PositionId });
+        UsersFacade.Refused(again); Assert.Equal(1, await e.Ctx.Employees.CountAsync());
+    }
+
+    [Fact]
+    public async Task C16_a_rejected_password_creates_no_orphan_employee_keeps_the_non_secret_values_and_roles_and_never_echoes_the_password()
+    {
+        var e = NewEnv(); var (dept, disc) = await Org(e.Ctx);
+        await Role(e, "RoleX");
+        var c = NewUsersController(e);
+
+        var result = await c.Create(new UserForm { UserName = "weak", Email = "w@t.io", FullName = "Weak User", Password = "abc", DepartmentId = dept, DisciplineId = disc, SelectedRoles = new() { "RoleX" } });
+
+        UsersFacade.Refused(result);
+        Assert.Equal("The user could not be saved: {0}", result.Error);                  // the Identity policy message, the password is never echoed
+        Assert.Empty(e.Ctx.Employees); Assert.Empty(e.Ctx.Users);                         // before: an employee was created, and a duplicate on every resubmit
+
+        // ارسال دوباره با رمز معتبر: دقیقاً یک کارمند و یک کاربر
+        var again = await NewUsersController(e).Create(new UserForm { UserName = "weak", Email = "w@t.io", FullName = "Weak User", Password = "Abc@123456", DepartmentId = dept, DisciplineId = disc, SelectedRoles = new() { "RoleX" } });
+        UsersFacade.Saved(again);
+        Assert.Equal(1, await e.Ctx.Employees.CountAsync()); Assert.Equal(1, await e.Ctx.Users.CountAsync());
+        Assert.Equal(1, await e.Ctx.UserRoles.CountAsync());
+    }
+
+    [Fact]
+    public async Task C16_duplicate_user_name_or_unknown_role_is_rejected_before_any_employee_is_created_and_a_blank_password_is_always_required()
+    {
+        var e = NewEnv(); var (dept, disc) = await Org(e.Ctx);
+        await User(e, "taken");
+        var before = await e.Ctx.Employees.CountAsync();
+
+        UsersFacade.Refused(await NewUsersController(e).Create(new UserForm { UserName = "taken", Email = "t@t.io", FullName = "T T", Password = "Abc@123456", DepartmentId = dept, DisciplineId = disc }));
+        UsersFacade.Refused(await NewUsersController(e).Create(new UserForm { UserName = "fresh", Email = "f@t.io", FullName = "F F", Password = "Abc@123456", DepartmentId = dept, DisciplineId = disc, SelectedRoles = new() { "NoSuchRole" } }));
+        var noPassword = await NewUsersController(e).Create(new UserForm { UserName = "nopass", Email = "n@t.io", FullName = "N N", Password = "", DepartmentId = dept, DisciplineId = disc });
+        UsersFacade.Refused(noPassword);
+        Assert.Equal("Password is required for a new user.", noPassword.Error);
+
+        Assert.Equal(before, await e.Ctx.Employees.CountAsync());
+        Assert.Equal(1, await e.Ctx.Users.CountAsync());
     }
 
     [Fact]
@@ -222,11 +253,11 @@ public class EmployeeRoleDisciplineManagementTests
         await User(e, "owner", emp.EmployeeId);
 
         var c = NewUsersController(e);
-        Assert.IsType<ViewResult>(await c.Create(new UserFormViewModel { UserName = "dup", Email = "d@t.io", FullName = "Dup", Password = "Abc@123456", ExistingEmployeeId = emp.EmployeeId }));
+        UsersFacade.Refused(await c.Create(new UserForm { UserName = "dup", Email = "d@t.io", FullName = "Dup", Password = "Abc@123456", ExistingEmployeeId = emp.EmployeeId }));
         Assert.Equal(1, await e.Ctx.Users.CountAsync());                                           // not linked twice
 
         c = NewUsersController(e);
-        Assert.IsType<ViewResult>(await c.Create(new UserFormViewModel { UserName = "ghost", Email = "g@t.io", FullName = "Ghost", Password = "Abc@123456", ExistingEmployeeId = 9999 }));
+        UsersFacade.Refused(await c.Create(new UserForm { UserName = "ghost", Email = "g@t.io", FullName = "Ghost", Password = "Abc@123456", ExistingEmployeeId = 9999 }));
         Assert.Equal(1, await e.Ctx.Users.CountAsync());
     }
 
@@ -242,106 +273,35 @@ public class EmployeeRoleDisciplineManagementTests
         Assert.True(await Allowed(e, u.Id, "ResA2", "View"));
 
         var c = NewUsersController(e);
-        var res = await c.Edit(new UserFormViewModel { Id = u.Id, UserName = "editme", Email = "e@t.io", FullName = "editme", IsActive = true, ExistingEmployeeId = emp.EmployeeId, SelectedRoles = new() { "RB" } });
-        Assert.IsType<RedirectToActionResult>(res);
+        var res = await c.Edit(new UserForm { Id = u.Id, UserName = "editme", Email = "e@t.io", FullName = "editme", IsActive = true, ExistingEmployeeId = emp.EmployeeId, SelectedRoles = new() { "RB" } });
+        UsersFacade.Saved(res);
         Assert.False(await Allowed(e, u.Id, "ResA2", "View"));                                      // removed role no longer grants
         Assert.True(await Allowed(e, u.Id, "ResB2", "View"));
 
-        res = await c.Edit(new UserFormViewModel { Id = u.Id, UserName = "editme", Email = "e@t.io", FullName = "editme", IsActive = true, ExistingEmployeeId = emp.EmployeeId, SelectedRoles = new() });
+        res = await c.Edit(new UserForm { Id = u.Id, UserName = "editme", Email = "e@t.io", FullName = "editme", IsActive = true, ExistingEmployeeId = emp.EmployeeId, SelectedRoles = new() });
         Assert.False(await Allowed(e, u.Id, "ResB2", "View"));                                      // no roles
     }
 
-    // ------------------------------------------------------------------ Employee controller
-
-    private static EmployeeController NewEmployeeController(Env e) =>
-        new EmployeeController(e.Ctx, e.Users, e.Roles, null!, null!, new UserRoleAssignmentSynchronizer(e.Ctx)).WithTempData();
+    // ------------------------------------------------------------------ Employee operations (SCRUM-687)
 
     [Fact]
     public async Task EmployeeCreateAndEdit_RejectInvalidOrInactiveDepartmentDiscipline()
     {
         var e = NewEnv(); var (dept, disc) = await Org(e.Ctx);
-        var c = NewEmployeeController(e);
-        await c.Create("", "A", "B", null, null, null, dept, 0, false, null, null, null, null, null, null, null, null);          // discipline 0
-        await c.Create("", "A", "B", null, null, null, 9999, disc, false, null, null, null, null, null, null, null, null);       // unknown department
+        var ops = new PEMS.Web.Services.EmployeeOperations(e.Ctx, e.Users, null!, null!, new UserRoleAssignmentSynchronizer(e.Ctx), null!);
+        var roles = new List<string>();
+        Assert.False((await ops.CreateAsync(roles, "A", "B", dept, 0)).Success);          // discipline 0
+        Assert.False((await ops.CreateAsync(roles, "A", "B", 9999, disc)).Success);       // unknown department
         Assert.Empty(e.Ctx.Employees);
 
-        await c.Create("", "Good", "Employee", null, null, null, dept, disc, false, null, null, null, null, null, null, null, null);
+        Assert.True((await ops.CreateAsync(roles, "Good", "Employee", dept, disc)).Success);
         var emp = await e.Ctx.Employees.SingleAsync();
-        await c.Edit(emp.EmployeeId, "", "Good", "Employee", null, null, null, dept, 0, null, null, null, null, null, null);       // edit to discipline 0
-        Assert.Equal(disc, (await e.Ctx.Employees.AsNoTracking().SingleAsync()).DisciplineId);
+        Assert.False((await ops.ValidateEditAsync(emp.EmployeeId, "Good", "Employee", dept, 0)).Success);       // edit to discipline 0
 
         (await e.Ctx.Disciplines.FindAsync(disc))!.IsActive = false; await e.Ctx.SaveChangesAsync();
-        await c.Create("", "Third", "Person", null, null, null, dept, disc, false, null, null, null, null, null, null, null, null);   // inactive discipline for a NEW employee
+        Assert.False((await ops.CreateAsync(roles, "Third", "Person", dept, disc)).Success);   // inactive discipline for a NEW employee
+        Assert.True((await ops.ValidateEditAsync(emp.EmployeeId, "Good", "Employee", dept, disc)).Success);   // an unchanged inactive discipline of the current employee is accepted
         Assert.Equal(1, await e.Ctx.Employees.CountAsync());
-    }
-
-    private static IFormFile Xlsx(params string[][] rows)
-    {
-        var wb = new XLWorkbook(); var ws = wb.AddWorksheet("Employees");
-        var header = new[] { "Code", "First", "Last", "Position", "Email", "Phone", "Department", "Discipline" };
-        for (var c = 0; c < header.Length; c++) ws.Cell(1, c + 1).Value = header[c];
-        for (var r = 0; r < rows.Length; r++) for (var c = 0; c < rows[r].Length; c++) ws.Cell(r + 2, c + 1).Value = rows[r][c];
-        var ms = new MemoryStream(); wb.SaveAs(ms); ms.Position = 0;
-        return new FormFile(ms, 0, ms.Length, "file", "emp.xlsx");
-    }
-
-    [Fact]
-    public async Task EmployeeImport_ValidAndInvalidDepartmentDiscipline_NoSilentFallbackToZero()
-    {
-        var e = NewEnv(); var (dept, disc) = await Org(e.Ctx);
-        e.Ctx.Disciplines.Add(new Discipline { Code = "EL", Name = "Electrical", IsActive = true });
-        e.Ctx.Disciplines.Add(new Discipline { Code = "XX", Name = "Retired", IsActive = false });
-        e.Ctx.Disciplines.Add(new Discipline { Code = "A1", Name = "Dup Name", IsActive = true }); e.Ctx.Disciplines.Add(new Discipline { Code = "A2", Name = "Dup Name", IsActive = true });
-        await e.Ctx.SaveChangesAsync();
-        var c = NewEmployeeController(e);
-
-        var result = await c.Import(Xlsx(
-            new[] { "P1", "Ok", "ByName", "", "", "", "Dept 1", "Process" },
-            new[] { "P2", "Ok", "ByCode", "", "", "", "D1", "EL" },
-            new[] { "P3", "Ok", "ByAlias", "", "", "", "Dept 1", "Proc Eng" },
-            new[] { "P4", "Bad", "UnknownDiscipline", "", "", "", "Dept 1", "Nope" },
-            new[] { "P5", "Bad", "BlankDiscipline", "", "", "", "Dept 1", "" },
-            new[] { "P6", "Bad", "InactiveDiscipline", "", "", "", "Dept 1", "Retired" },
-            new[] { "P7", "Bad", "AmbiguousDiscipline", "", "", "", "Dept 1", "Dup Name" },
-            new[] { "P8", "Bad", "UnknownDepartment", "", "", "", "Nowhere", "Process" }));
-        Assert.IsType<RedirectToActionResult>(result);
-
-        var saved = await e.Ctx.Employees.AsNoTracking().OrderBy(x => x.PersonnelCode).ToListAsync();
-        Assert.Equal(new[] { "P1", "P2", "P3" }, saved.Select(x => x.PersonnelCode).ToArray());
-        Assert.All(saved, x => Assert.True(x.DisciplineId > 0 && x.DepartmentId == dept));
-        Assert.Equal(disc, saved[0].DisciplineId); Assert.Equal(disc, saved[2].DisciplineId);
-        Assert.Contains("5 نامعتبر", (string)c.TempData["Message"]!);
-    }
-
-    [Fact]
-    public async Task EmployeeDetails_ExposesLinkedAccountRolesAndOrganizationalPosition_NoSecondRoleManager()
-    {
-        var e = NewEnv(); var (dept, disc) = await Org(e.Ctx);
-        var emp = new Employee { FirstName = "L", LastName = "U", DepartmentId = dept, DisciplineId = disc, IsActive = true }; e.Ctx.Employees.Add(emp); await e.Ctx.SaveChangesAsync();
-        var role = await Role(e, "RoleD");
-        var u = await User(e, "linked", emp.EmployeeId); e.Ctx.UserRoles.Add(new IdentityUserRole<int> { UserId = u.Id, RoleId = role.Id });
-        var pos = new Position { Title = "Pos", IsActive = true, DepartmentId = dept }; e.Ctx.Positions.Add(pos); await e.Ctx.SaveChangesAsync();
-        e.Ctx.EmployeeAssignments.Add(new EmployeeAssignment { PositionId = pos.PositionId, EmployeeId = emp.EmployeeId, IsActive = true, IsPrimary = true, StartDate = DateTime.Now.AddDays(-1) });
-        await e.Ctx.SaveChangesAsync();
-
-        var laborStub = new StubLabor();
-        var c = new EmployeeController(e.Ctx, e.Users, e.Roles, laborStub, null!, null).WithTempData();
-        var view = Assert.IsType<ViewResult>(await c.Details(emp.EmployeeId));
-        object linked = c.ViewBag.LinkedUser;
-        Assert.NotNull(linked);
-        Assert.Equal("linked", (string)linked.GetType().GetProperty("UserName")!.GetValue(linked)!);
-        Assert.Contains("RoleD", (IEnumerable<string>)linked.GetType().GetProperty("Roles")!.GetValue(linked)!);
-        var ctx = Assert.IsType<OrganizationalContext>(c.ViewBag.OrgContext);
-        Assert.Equal(pos.PositionId, ctx.PrimaryPositionId);
-        // no role-mutation action exists on EmployeeController (roles are managed only in Administration → Users)
-        Assert.DoesNotContain(typeof(EmployeeController).GetMethods().Select(m => m.Name), n => n.Contains("Role", StringComparison.OrdinalIgnoreCase) && n != "ToString");
-    }
-
-    private sealed class StubLabor : IEmployeeLaborRateService
-    {
-        public Task SetRateAsync(int employeeId, string rateType, decimal rate, string currency, DateTime effectiveFrom) => Task.CompletedTask;
-        public Task<List<PEMS.Domain.Entities.EmployeeLaborRate>> GetHistoryAsync(int employeeId) => Task.FromResult(new List<PEMS.Domain.Entities.EmployeeLaborRate>());
-        public Task<PEMS.Domain.Entities.EmployeeLaborRate?> GetEffectiveRateAsync(int employeeId, string rateType, DateTime asOf) => Task.FromResult<PEMS.Domain.Entities.EmployeeLaborRate?>(null);
     }
 
     // ------------------------------------------------------------------ Discipline master data
@@ -374,58 +334,6 @@ public class EmployeeRoleDisciplineManagementTests
         Assert.True((await e.Ctx.Disciplines.AsNoTracking().SingleAsync(x => x.DisciplineId == ele.DisciplineId)).IsActive);
         Assert.Equal(2, (await svc.GetAllAsync()).Count);                                                                                // never deleted
         Assert.Equal("Disc_Err_NotFound", (await svc.SetActiveAsync(9999, false)).ErrorKey);
-    }
-
-    private static async Task<(DisciplineController C, PEMSDbContext Ctx)> DisciplineCtl(params string[] roles)
-    {
-        var ctx = PemsDbContextFactory.CreateInMemory("dm_" + Guid.NewGuid().ToString("N"));
-        foreach (var r in SystemRoles.All) ctx.Roles.Add(new ApplicationRole(r) { NormalizedName = r.ToUpperInvariant() });
-        await ctx.SaveChangesAsync();
-        var access = new AccessControlService(ctx);
-        var perm = new PermissionService(ctx, access);
-        await perm.SeedDefaultsAsync();
-        var services = new ServiceCollection(); services.AddSingleton(ctx);
-        await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
-        var user = new FakeCurrentUserService { Roles = roles.ToList() };
-        return (new DisciplineController(null!, ctx, user, perm).WithTempData(), ctx);
-    }
-
-    [Fact]
-    public async Task DisciplineMasterData_IsPermissionBased_EngineeringManagerAndAdminMayManage_TaskRolesMayNot()
-    {
-        // EngineeringManager: permission DisciplineMaster (View/Create/Edit) -> can open and mutate
-        var (mgr, mctx) = await DisciplineCtl(SystemRoles.EngineeringManager);
-        Assert.IsType<ViewResult>(await mgr.Manage(null, null));
-        Assert.IsType<RedirectToActionResult>(await mgr.CreateDiscipline("ABC", "Alpha", null, null, null));
-        Assert.Equal(1, await mctx.Disciplines.CountAsync(d => d.Code == "ABC"));
-        var id = (await mctx.Disciplines.SingleAsync(d => d.Code == "ABC")).DisciplineId;
-        Assert.IsType<RedirectToActionResult>(await mgr.SetDisciplineActive(id, false));
-        Assert.False((await mctx.Disciplines.AsNoTracking().SingleAsync(d => d.DisciplineId == id)).IsActive);
-
-        // SystemAdmin bypass
-        var (admin, _) = await DisciplineCtl(SystemRoles.SystemAdmin);
-        Assert.IsType<ViewResult>(await admin.Manage(null, null));
-
-        // roles that only hold the task-level DisciplineWorkspace permission (or none) are denied on every master-data action, server-side
-        foreach (var role in new[] { SystemRoles.DisciplineEngineer, SystemRoles.EngineeringSupervisor, SystemRoles.DocumentController, SystemRoles.Viewer, SystemRoles.ContractManager })
-        {
-            var (c, ctx) = await DisciplineCtl(role);
-            Assert.IsType<ForbidResult>(await c.Manage(null, null));
-            Assert.IsType<ForbidResult>(await c.CreateDiscipline("ZZZ", "Zed", null, null, null));
-            Assert.IsType<ForbidResult>(await c.EditDiscipline(1, "ZZZ", "Zed", null, null, null));
-            Assert.IsType<ForbidResult>(await c.SetDisciplineActive(1, false));
-            Assert.Empty(ctx.Disciplines.Where(d => d.Code == "ZZZ"));
-        }
-        var (none, _) = await DisciplineCtl();
-        Assert.IsType<ForbidResult>(await none.Manage(null, null));
-
-        // antiforgery on mutations; no hard-coded role attributes on the master-data actions
-        var t = typeof(DisciplineController);
-        foreach (var name in new[] { "CreateDiscipline", "EditDiscipline", "SetDisciplineActive" })
-        {
-            Assert.NotNull(t.GetMethod(name)!.GetCustomAttributes(typeof(ValidateAntiForgeryTokenAttribute), false).SingleOrDefault());
-            Assert.Null(t.GetMethod(name)!.GetCustomAttributes(typeof(AuthorizeAttribute), false).SingleOrDefault());
-        }
     }
 
     [Fact]

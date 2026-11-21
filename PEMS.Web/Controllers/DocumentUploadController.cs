@@ -51,6 +51,7 @@ public class DocumentUploadController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> Upload(int projectId, List<IFormFile> files)
     {
         // Import Center parity: this action has no module permission, so enforce the same role gate that shows the Import Center card
@@ -87,7 +88,7 @@ public class DocumentUploadController : Controller
         }
 
         TempData["Message"] = $"{attachmentIds.Count} file(s) uploaded to the AI Intake Queue and are being classified.";
-        return RedirectToAction("Index", "Intake");
+        return Redirect("/p/intake");
     }
 
     private async Task<int?> GetCurrentEmployeeIdAsync()

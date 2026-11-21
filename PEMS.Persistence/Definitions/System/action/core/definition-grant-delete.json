@@ -1,0 +1,27 @@
+{
+  "kind": "action",
+  "key": "definition-grant-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a grant",
+    "fa": "حذف مجوز"
+  },
+  "description": {
+    "en": "Removes a grant",
+    "fa": "حذف مجوز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.delete",
+    "permission": "Definitions.Approve",
+    "parameters": {
+      "entity": "DefinitionGrant"
+    },
+    "success": {
+      "en": "The grant was removed.",
+      "fa": "مجوز حذف شد."
+    },
+    "redirect": "/p/definition-grants"
+  }
+}

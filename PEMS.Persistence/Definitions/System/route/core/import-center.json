@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "import-center",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import Center (old address)",
+    "fa": "مرکز ایمپورت (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Import Center (old address)",
+    "fa": "مرکز ایمپورت (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ImportCenter/{*rest}",
+    "target": "/p/import-center",
+    "permanent": false
+  }
+}

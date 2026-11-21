@@ -1,0 +1,232 @@
+{
+  "kind": "form",
+  "key": "employee-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add an employee",
+    "fa": "افزودن کارمند"
+  },
+  "description": {
+    "en": "Add an employee, optionally with a system account",
+    "fa": "افزودن کارمند، در صورت نیاز همراه با حساب کاربری"
+  },
+  "payload": {
+    "id": "employee-create",
+    "title": {
+      "en": "Employee",
+      "fa": "کارمند"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "employee-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "personnelCode",
+        "label": {
+          "en": "Personnel code",
+          "fa": "کد پرسنلی"
+        },
+        "kind": "text",
+        "maxLength": 50
+      },
+      {
+        "name": "firstName",
+        "label": {
+          "en": "First name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "First name is required.",
+            "fa": "نام الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "lastName",
+        "label": {
+          "en": "Last name",
+          "fa": "نام خانوادگی"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Last name is required.",
+            "fa": "نام خانوادگی الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "email",
+        "label": {
+          "en": "Email",
+          "fa": "ایمیل"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "phone",
+        "label": {
+          "en": "Phone",
+          "fa": "تلفن"
+        },
+        "kind": "text",
+        "maxLength": 50
+      },
+      {
+        "name": "departmentId",
+        "label": {
+          "en": "Department",
+          "fa": "دپارتمان"
+        },
+        "kind": "select",
+        "optionsFrom": "employee-departments",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Department is required.",
+            "fa": "دپارتمان الزامی است."
+          }
+        }
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "optionsFrom": "employee-disciplines",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Discipline is required.",
+            "fa": "دیسیپلین الزامی است."
+          }
+        }
+      },
+      {
+        "name": "personnelType",
+        "label": {
+          "en": "Personnel type",
+          "fa": "نوع پرسنل"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Internal",
+            "label": {
+              "en": "Internal",
+              "fa": "داخلی"
+            }
+          },
+          {
+            "value": "Contractor",
+            "label": {
+              "en": "Contractor",
+              "fa": "پیمانکار"
+            }
+          },
+          {
+            "value": "External",
+            "label": {
+              "en": "External",
+              "fa": "خارجی"
+            }
+          },
+          {
+            "value": "Temporary",
+            "label": {
+              "en": "Temporary",
+              "fa": "موقت"
+            }
+          }
+        ]
+      },
+      {
+        "name": "vendorId",
+        "label": {
+          "en": "Vendor (non-internal)",
+          "fa": "فروشنده (غیرداخلی)"
+        },
+        "kind": "select",
+        "optionsFrom": "employee-vendors"
+      },
+      {
+        "name": "hireDate",
+        "label": {
+          "en": "Hire date",
+          "fa": "تاریخ استخدام"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "location",
+        "label": {
+          "en": "Location",
+          "fa": "مکان"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "shift",
+        "label": {
+          "en": "Shift",
+          "fa": "شیفت"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "homeAddress",
+        "label": {
+          "en": "Home address",
+          "fa": "نشانی منزل"
+        },
+        "kind": "text",
+        "maxLength": 500,
+        "span": 2
+      },
+      {
+        "name": "positionId",
+        "label": {
+          "en": "Organizational position (SystemAdmin only)",
+          "fa": "سمت سازمانی (فقط SystemAdmin)"
+        },
+        "kind": "select",
+        "optionsFrom": "employee-vacant-positions",
+        "span": 2
+      },
+      {
+        "name": "createUser",
+        "label": {
+          "en": "Create a system account",
+          "fa": "ساخت حساب کاربری"
+        },
+        "kind": "switch",
+        "span": 2
+      },
+      {
+        "name": "userName",
+        "label": {
+          "en": "User name (when creating an account)",
+          "fa": "نام کاربری (هنگام ساخت حساب)"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "span": 2
+      }
+    ]
+  }
+}

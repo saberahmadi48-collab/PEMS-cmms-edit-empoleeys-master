@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "simops-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record a conflict",
+    "fa": "ثبت تعارض"
+  },
+  "description": {
+    "en": "Record a conflict",
+    "fa": "ثبت تعارض"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Simops",
+      "action": "Create",
+      "args": {
+        "permitAId": "field:permitId",
+        "permitBId": "field:otherPermitId",
+        "raisedByEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The conflict was recorded.",
+      "fa": "تعارض ثبت شد."
+    },
+    "redirect": "/Permit/Details/{permitId}",
+    "permission": "Simops.Create"
+  }
+}

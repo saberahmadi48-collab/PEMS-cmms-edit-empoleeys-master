@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "findings-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Findings (index) (old address)",
+    "fa": "Findings (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Findings (index) (old address)",
+    "fa": "Findings (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Finding/Index",
+    "target": "/p/findings",
+    "permanent": false
+  }
+}

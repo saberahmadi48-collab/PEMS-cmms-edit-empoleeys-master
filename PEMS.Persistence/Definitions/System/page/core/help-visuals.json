@@ -1,0 +1,116 @@
+{
+  "kind": "page",
+  "key": "help-visuals",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help visuals",
+    "fa": "تصاویر راهنما"
+  },
+  "description": {
+    "en": "The visuals of one article: open it from the articles list (page definition)",
+    "fa": "تصاویر یک مقاله (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "help-visuals",
+    "template": "entity-list",
+    "args": {
+      "id": "help-visuals",
+      "url": "/d/help-visuals-rows?f.helpArticleId=eq:{{params.id|url}}",
+      "idField": "helpVisualId",
+      "columns": [
+        {
+          "key": "visualType",
+          "header": {
+            "en": "Type",
+            "fa": "نوع"
+          },
+          "width": 170
+        },
+        {
+          "key": "captionEn",
+          "header": {
+            "en": "Caption",
+            "fa": "عنوان"
+          },
+          "width": 300
+        },
+        {
+          "key": "displayOrder",
+          "header": {
+            "en": "Order",
+            "fa": "ترتیب"
+          },
+          "width": 90,
+          "type": "number"
+        },
+        {
+          "key": "isPublished",
+          "header": {
+            "en": "Published",
+            "fa": "منتشرشده"
+          },
+          "width": 110,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 420,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/help-visual-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "publish",
+              "label": {
+                "en": "Publish",
+                "fa": "انتشار"
+              },
+              "url": "/a/help-visual-publish",
+              "method": "post",
+              "showWhen": "row.isPublished == false"
+            },
+            {
+              "key": "unpublish",
+              "label": {
+                "en": "Unpublish",
+                "fa": "لغو انتشار"
+              },
+              "url": "/a/help-visual-unpublish",
+              "method": "post",
+              "showWhen": "row.isPublished == true"
+            },
+            {
+              "key": "delete",
+              "label": {
+                "en": "Delete",
+                "fa": "حذف"
+              },
+              "url": "/a/help-visual-delete",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Delete this visual?",
+                "fa": "این تصویر حذف شود؟"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

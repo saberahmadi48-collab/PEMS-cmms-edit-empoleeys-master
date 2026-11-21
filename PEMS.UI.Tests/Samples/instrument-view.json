@@ -1,0 +1,11 @@
+{
+  "id": "instrument-list",
+  "title": { "fa": "ابزارها", "en": "Instruments" },
+  "emptyText": { "fa": "رکوردی نیست", "en": "No records" },
+  "columns": [
+    { "key": "tag", "header": { "fa": "تگ", "en": "Tag" } },
+    { "key": "calibrated", "header": { "fa": "کالیبره", "en": "Calibrated" }, "kind": "date" },
+    { "key": "price", "header": { "fa": "قیمت", "en": "Price" }, "alignment": "end", "kind": "number" },
+    { "key": "active", "header": { "fa": "فعال", "en": "Active" }, "trueText": { "fa": "بله", "en": "Yes" }, "falseText": { "fa": "خیر", "en": "No" } }
+  ]
+}

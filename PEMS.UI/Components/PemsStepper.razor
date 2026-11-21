@@ -1,0 +1,18 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("stepper", Category = "navigation", Icon = "bi-diagram-2")]
+@inject IPemsLocale Locale
+<nav class="pems-stepper" aria-label="@Locale.Text(Options.Label)">
+    <ol class="pems-stepper__list">
+        @foreach (var step in Options.Steps)
+        {
+            <li class="pems-stepper__step pems-stepper__step--@StateOf(step)" aria-current="@(step.State == StepState.Current ? "step" : null)">
+                <span class="pems-stepper__mark" aria-hidden="true"></span>
+                <span class="pems-stepper__label">@Locale.Text(step.Label)</span>
+            </li>
+        }
+    </ol>
+</nav>
+@code {
+    [Parameter, EditorRequired] public StepperOptions Options { get; set; } = default!;
+    private static string StateOf(Step step) => step.State.ToString().ToLowerInvariant();
+}

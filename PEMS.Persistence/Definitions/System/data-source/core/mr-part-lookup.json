@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "mr-part-lookup",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Registered parts",
+    "fa": "قطعات ثبت‌شده"
+  },
+  "description": {
+    "en": "Registered parts",
+    "fa": "قطعات ثبت‌شده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaterialRequisition",
+      "action": "PartLookup",
+      "args": {
+        "q": "param:q"
+      }
+    }
+  }
+}

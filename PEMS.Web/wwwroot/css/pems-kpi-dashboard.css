@@ -1,0 +1,56 @@
+/* /Kpi/Executive: tiles with a status that is always shown as icon + text (colour is never the only signal).
+   Only existing theme tokens (--pems-*) so Light/Dark/Iranian themes keep working. */
+
+.pems-kpi-page .pems-kpi-overview {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px;
+    padding: 10px 12px; margin-bottom: 14px; border-radius: 10px;
+    border: 1px solid var(--pems-surface-border); background: var(--pems-surface);
+}
+.pems-kpi-overview-title { font-weight: 700; margin-inline-end: 6px; }
+
+.pems-kpi-section { margin-bottom: 20px; }
+.pems-kpi-section-title { font-weight: 700; color: var(--pems-text); margin-bottom: 8px; cursor: default; }
+details.pems-kpi-targets > summary.pems-kpi-section-title { cursor: pointer; }
+
+.pems-kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+
+.pems-kpi-tile {
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 10px 12px; border-radius: 10px;
+    border: 1px solid var(--pems-surface-border); background: var(--pems-surface);
+    border-inline-start-width: 4px;
+}
+.pems-kpi-name { font-size: .78rem; color: var(--pems-text-muted); font-weight: 600; }
+.pems-kpi-value { font-size: 1.5rem; font-weight: 700; line-height: 1.15; color: var(--pems-text); font-variant-numeric: tabular-nums; }
+.pems-kpi-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: .74rem; }
+.pems-kpi-target { color: var(--pems-text-muted); }
+.pems-kpi-detail { font-size: .72rem; color: var(--pems-text-muted); }
+
+.pems-kpi-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 1px 8px; border-radius: 999px; font-size: .74rem; font-weight: 650;
+    border: 1px solid currentColor; background: transparent;
+}
+
+/* status colours: tile accent bar + chip colour (the text label and icon always accompany them) */
+.pems-kpi-tile.pems-kpi-status-met { border-inline-start-color: var(--pems-chart-positive); }
+.pems-kpi-tile.pems-kpi-status-near { border-inline-start-color: var(--pems-chart-warning); }
+.pems-kpi-tile.pems-kpi-status-missed { border-inline-start-color: var(--pems-chart-negative, #ef4444); }
+.pems-kpi-tile.pems-kpi-status-notarget,
+.pems-kpi-tile.pems-kpi-status-nodata { border-inline-start-color: var(--pems-surface-border); }
+.pems-kpi-tile.pems-kpi-status-nodata .pems-kpi-value { color: var(--pems-text-muted); }
+.pems-kpi-tile.pems-kpi-status-nodata { border-inline-start-style: dashed; }
+
+.pems-kpi-chip.pems-kpi-status-met { color: var(--pems-chart-positive-text, var(--pems-chart-positive)); }
+.pems-kpi-chip.pems-kpi-status-near { color: var(--pems-chart-warning-text, var(--pems-chart-warning)); }
+.pems-kpi-chip.pems-kpi-status-missed { color: var(--pems-chart-danger-text, #b91c1c); }
+.pems-kpi-chip.pems-kpi-status-notarget,
+.pems-kpi-chip.pems-kpi-status-nodata { color: var(--pems-text-muted); }
+
+.pems-kpi-table { max-width: 520px; margin-top: 10px; }
+
+.pems-kpi-nottracked { padding: 12px 14px; border-radius: 10px; border: 1px dashed var(--pems-surface-border); }
+.pems-kpi-nt-list { margin: 0; padding-inline-start: 18px; font-size: .85rem; }
+.pems-kpi-nt-list li { margin-bottom: 3px; }
+
+.pems-kpi-input { max-width: 110px; }

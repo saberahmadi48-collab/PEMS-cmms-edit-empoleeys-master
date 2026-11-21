@@ -1,0 +1,28 @@
+@model PEMS.Web.ViewComponents.DocumentNumberFieldModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var id = "docNo_" + Model.Name;
+    var hintId = id + "_hint";
+    var hint = !Model.Field.Automatic ? null : Model.Field.AllowManualEntry ? Localizer["Num_HintManual"].Value : Localizer["Num_HintAuto"].Value;
+}
+@if (Model.Compact) { <label class="visually-hidden" for="@id">@Model.Label</label> } else { <pems-label for="@id">@Model.Label</pems-label> }
+@if (!Model.Field.Automatic)
+{
+    <pems-input id="@id" name="@Model.Name" scale="@Model.Scale" css="@Model.Css" required placeholder="@(Model.Compact ? Model.Label : null)" />
+}
+else if (Model.Field.AllowManualEntry)
+{
+    @* SCRUM-40: optional manual number; left empty, the next number of the scheme is assigned on save *@
+    <pems-input id="@id" name="@Model.Name" scale="@Model.Scale" css="@Model.Css" placeholder="@Model.Field.NextNumberHint" aria-describedby="@hintId" title="@hint" />
+}
+else
+{
+    @* SCRUM-40: assigned on save; nothing is posted (a typed number would be ignored by the service anyway) *@
+    <pems-input id="@id" scale="@Model.Scale" css="@Model.Css" value="@Model.Field.NextNumberHint" readonly aria-describedby="@hintId" title="@hint" data-auto-number />
+}
+@if (hint != null)
+{
+    <div id="@hintId" class="@(Model.Compact ? "visually-hidden" : "form-text")">@hint</div>
+}

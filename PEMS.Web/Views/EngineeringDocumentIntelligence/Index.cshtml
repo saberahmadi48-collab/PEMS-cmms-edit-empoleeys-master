@@ -7,58 +7,39 @@
 }
 
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3 col-sm-6">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-slate"><i class="bi bi-file-earmark-text"></i></div>
-            <div><div class="kpi-value">@dash.TotalDocuments</div><div class="kpi-label">Total Documents</div></div></div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-amber"><i class="bi bi-robot"></i></div>
-            <div><div class="kpi-value">@dash.PendingClassificationReview</div><div class="kpi-label">Pending AI Classification Review</div></div></div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-purple"><i class="bi bi-tags"></i></div>
-            <div><div class="kpi-value">@dash.PendingTagLinkReview</div><div class="kpi-label">Pending Tag Links</div></div></div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="kpi-card"><div class="kpi-icon bg-icon-red"><i class="bi bi-chat-dots"></i></div>
-            <div><div class="kpi-value">@dash.OpenComments</div><div class="kpi-label">Open Comments</div></div></div>
-    </div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3" sm="6">
+        <pems-kpi-tile icon="bi-file-earmark-text" color="slate" label="Total Documents">@dash.TotalDocuments</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="3" sm="6">
+        <pems-kpi-tile icon="bi-robot" color="amber" label="Pending AI Classification Review">@dash.PendingClassificationReview</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="3" sm="6">
+        <pems-kpi-tile icon="bi-tags" color="purple" label="Pending Tag Links">@dash.PendingTagLinkReview</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="3" sm="6">
+        <pems-kpi-tile icon="bi-chat-dots" color="red" label="Open Comments">@dash.OpenComments</pems-kpi-tile>
+    </pems-col>
+</pems-row>
 
-<div class="content-card mb-3">
-    <h6 class="mb-3">Documents by Workflow Stage</h6>
-    <div class="d-flex flex-wrap gap-2">
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3">Documents by Workflow Stage</pems-heading>
+    <pems-flex wrap="true" gap="2">
         @foreach (var s in new[] { "Uploaded", "AIProcessing", "Classified", "DisciplineAssigned", "UnderReview", "CommentOpen", "Revision", "Approved", "KnowledgeBase" })
         {
             var count = dash.ByStage.TryGetValue(s, out var c) ? c : 0;
-            <span class="badge bg-secondary p-2">@s: @count</span>
+            <pems-badge tone="neutral" css="p-2">@s: @count</pems-badge>
         }
-    </div>
-</div>
+    </pems-flex>
+</pems-content-card>
 
-<div class="content-card">
-    <p class="text-muted">
+<pems-content-card>
+    <pems-text class="text-muted">
         مدارکی که تحلیل AI روی آن‌ها کامل شده و منتظر بازبینی مهندسی هستند (Discipline, Vendor, MR,
         Revision, Tag های پیشنهادی).
-    </p>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
-            <thead><tr><th>@Localizer["Doc No"]</th><th>@Localizer["Title"]</th><th>@Localizer["Stage"]</th><th>Pending Classifications</th><th>@Localizer["Pending Tags"]</th><th></th></tr></thead>
-            <tbody>
-                @foreach (var d in Model)
-                {
-                    <tr>
-                        <td>@d.DocumentNo</td>
-                        <td>@d.Title</td>
-                        <td><span class="badge bg-info text-dark">@d.AIWorkflowStage</span></td>
-                        <td><span class="badge bg-warning text-dark">@d.Classifications.Count(c => c.ReviewStatus == "Draft")</span></td>
-                        <td><span class="badge bg-warning text-dark">@d.TagLinks.Count(t => t.IsAIProposed && t.ReviewStatus == "Draft")</span></td>
-                        <td><a asp-action="Review" asp-route-id="@d.DocumentId" class="btn btn-sm btn-pems-solid">Review</a></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        @if (!Model.Any()) { <p class="text-muted text-center py-4">No documents pending AI classification review.</p> }
-    </div>
-</div>
+    </pems-text>
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
+        <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Doc No"])?.ToString() ?? ""), d => (object?)(d.DocumentNo)).Add(((Localizer["Title"])?.ToString() ?? ""), d => (object?)(d.Title)).Add(((Localizer["Stage"])?.ToString() ?? ""), d => (object?)(DataCell.Badge("info", d.AIWorkflowStage))).Add("Pending Classifications", d => (object?)(DataCell.Badge("warning", (d.Classifications.Count(c => c.ReviewStatus == "Draft"))))).Add(((Localizer["Pending Tags"])?.ToString() ?? ""), d => (object?)(DataCell.Badge("warning", (d.TagLinks.Count(t => t.IsAIProposed && t.ReviewStatus == "Draft"))))).Add("", d => (object?)(DataCell.ButtonLink(Url.Action("Review", null, new { id = d.DocumentId }), "primary", "small", false, null, "Review")))))" />
+        @if (!Model.Any()) { <pems-text class="text-muted text-center py-4">No documents pending AI classification review.</pems-text> }
+    </pems-table-scroll>
+</pems-content-card>

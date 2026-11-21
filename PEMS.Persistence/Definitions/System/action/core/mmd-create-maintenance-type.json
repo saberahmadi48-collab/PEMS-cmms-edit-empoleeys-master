@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "mmd-create-maintenance-type",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateMaintenanceType",
+    "fa": "Maintenance Type ساخته شد."
+  },
+  "description": {
+    "en": "CreateMaintenanceType",
+    "fa": "Maintenance Type ساخته شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "CreateMaintenanceType",
+      "args": {
+        "code": "field:code",
+        "name": "field:name",
+        "nameFa": "field:nameFa",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "Maintenance Type ساخته شد.",
+      "fa": "Maintenance Type ساخته شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

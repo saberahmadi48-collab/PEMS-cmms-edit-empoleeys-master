@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "procurement-package-link-mr",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Link an MR to the package",
+    "fa": "پیوند MR به بسته"
+  },
+  "description": {
+    "en": "Link an MR to the package",
+    "fa": "پیوند MR به بسته"
+  },
+  "payload": {
+    "id": "procurement-package-link-mr",
+    "title": {
+      "en": "Link an MR to the package",
+      "fa": "پیوند MR به بسته"
+    },
+    "submitLabel": {
+      "en": "Link",
+      "fa": "پیوند"
+    },
+    "actionKey": "procurement-package-link-mr",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "packageId",
+        "label": {
+          "en": "Package id",
+          "fa": "شناسه‌ی بسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "mrId",
+        "label": {
+          "en": "MR",
+          "fa": "MR"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "procurement-package-unlinked-mrs"
+      }
+    ]
+  }
+}

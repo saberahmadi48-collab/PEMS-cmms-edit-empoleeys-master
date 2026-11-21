@@ -1,0 +1,66 @@
+{
+  "key": "list-chips",
+  "component": "PEMS.UI.Components.PemsListChips",
+  "category": "list",
+  "icon": "bi-tags",
+  "nameKey": "component.list-chips",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "resetHref": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "count": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "activeFiltersText": {
+        "type": "string"
+      },
+      "resetAllText": {
+        "type": "string"
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ListChipsOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "count": 2,
+    "resetHref": "/docs",
+    "activeFiltersText": "Active filters",
+    "resetAllText": "Reset all"
+  }
+}

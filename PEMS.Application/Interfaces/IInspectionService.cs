@@ -18,6 +18,7 @@ public interface IInspectionService
 
     Task<List<InspectionListItemDto>> GetForEquipmentAsync(int equipmentId);
 
+    [PEMS.Application.Common.PemsOperation("Inspection", "Create", "Inspection.Create")]
     Task<(bool Success, string? Error, int? InspectionRecordId)> CreateAsync(
         int equipmentId, string inspectionType, DateTime inspectionDate, string? inspector,
         decimal? measurementValue, string? measurementUnit, decimal? lowerLimit, decimal? upperLimit,

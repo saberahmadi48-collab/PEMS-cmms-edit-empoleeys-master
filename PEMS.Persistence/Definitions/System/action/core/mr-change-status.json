@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "mr-change-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change the MR status",
+    "fa": "تغییر وضعیت MR"
+  },
+  "description": {
+    "en": "Change the MR status",
+    "fa": "تغییر وضعیت MR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaterialRequisition",
+      "action": "ChangeStatus",
+      "args": {
+        "userRoles": "context:roles",
+        "mrId": "field:mrId",
+        "status": "field:status"
+      }
+    },
+    "success": {
+      "en": "The MR status was updated.",
+      "fa": "وضعیت MR به‌روز شد."
+    },
+    "redirect": "/p/mr-details?id={mrId}"
+  }
+}

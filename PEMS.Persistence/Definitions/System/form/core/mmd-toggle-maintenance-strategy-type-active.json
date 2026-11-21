@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "mmd-toggle-maintenance-strategy-type-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleMaintenanceStrategyTypeActive",
+    "fa": "ToggleMaintenanceStrategyTypeActive"
+  },
+  "description": {
+    "en": "ToggleMaintenanceStrategyTypeActive",
+    "fa": "ToggleMaintenanceStrategyTypeActive"
+  },
+  "payload": {
+    "id": "mmd-toggle-maintenance-strategy-type-active",
+    "title": {
+      "en": "ToggleMaintenanceStrategyTypeActive",
+      "fa": "ToggleMaintenanceStrategyTypeActive"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-toggle-maintenance-strategy-type-active",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "id"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

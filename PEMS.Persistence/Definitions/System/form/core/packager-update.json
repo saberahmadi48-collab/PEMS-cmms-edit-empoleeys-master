@@ -1,0 +1,89 @@
+{
+  "kind": "form",
+  "key": "packager-update",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor: build an update package",
+    "fa": "فروشنده: ساخت بسته به‌روزرسانی"
+  },
+  "description": {
+    "en": "Vendor: build an update package",
+    "fa": "فروشنده: ساخت بسته به‌روزرسانی"
+  },
+  "payload": {
+    "id": "packager-update",
+    "title": {
+      "en": "Vendor: build an update package",
+      "fa": "فروشنده: ساخت بسته به‌روزرسانی"
+    },
+    "submitLabel": {
+      "en": "Build and download",
+      "fa": "ساخت و دریافت"
+    },
+    "actionKey": "packager-update",
+    "permission": "Definitions.Create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "fromVersion",
+        "label": {
+          "en": "From version",
+          "fa": "از نسخه"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "From version is required.",
+            "fa": "از نسخه الزامی است."
+          }
+        },
+        "maxLength": 30
+      },
+      {
+        "name": "toVersion",
+        "label": {
+          "en": "To version",
+          "fa": "به نسخه"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "To version is required.",
+            "fa": "به نسخه الزامی است."
+          }
+        },
+        "maxLength": 30
+      },
+      {
+        "name": "schemaLevel",
+        "label": {
+          "en": "Schema level (last migration id)",
+          "fa": "سطح شما"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Schema level (last migration id) is required.",
+            "fa": "سطح شما الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "definitions",
+        "label": {
+          "en": "Definitions (appKey:kind:key, comma separated)",
+          "fa": "تعریف‌ها (appKey:kind:key)"
+        },
+        "kind": "textArea",
+        "maxLength": 20000,
+        "span": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-kpis", Category = "list", Icon = "bi-speedometer2")]
+<div @attributes="Options.Attributes" class="@ListMarkup.Css("lp-kpis", Options.CssClass)" id="@Options.Id" hidden="@(Options.Open ? null : "hidden")">@ChildContent</div>
+@code {
+    [Parameter, EditorRequired] public ListKpisOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

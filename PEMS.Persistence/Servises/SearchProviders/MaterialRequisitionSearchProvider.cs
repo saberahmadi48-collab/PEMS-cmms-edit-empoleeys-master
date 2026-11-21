@@ -19,6 +19,8 @@ public class MaterialRequisitionSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "MaterialRequisition";
     public string DisplayName => "درخواست‌های خرید (MR/MRQ)";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.Permission("MaterialRequisition");
 
     public MaterialRequisitionSearchProvider(PEMSDbContext context, IPermissionService permissionService, ICurrentUserContext currentUser)
     {

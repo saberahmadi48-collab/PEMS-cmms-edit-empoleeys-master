@@ -388,3 +388,31 @@ public class CommodityGroupResponsibleConfiguration : IEntityTypeConfiguration<C
         b.HasIndex(x => new { x.ResponsibilityKey, x.CommodityGroupId });
     }
 }
+
+/// <summary>تنظیمات سراسری ماژول (یک ردیف): روش تولید شماره‌ی قطعه و قالب آن.</summary>
+public class PartCatalogueSettingsConfiguration : IEntityTypeConfiguration<PartCatalogueSettings>
+{
+    public void Configure(EntityTypeBuilder<PartCatalogueSettings> b)
+    {
+        b.ToTable("PartCatalogueSettings", t => t.HasCheckConstraint("CK_PartCatalogueSettings_Method", "[PartNoGenerationMethod] IN ('MANUAL','API')"));
+        b.HasKey(x => x.PartCatalogueSettingsId);
+        b.Property(x => x.SingletonKey).HasDefaultValue(1);
+        b.HasIndex(x => x.SingletonKey).IsUnique();   // حداکثر یک ردیف تنظیمات
+        b.Property(x => x.PartNoGenerationMethod).HasMaxLength(20).IsRequired().HasDefaultValue(PartNoGenerationMethods.Manual);
+        b.Property(x => x.PartNoFormat).HasMaxLength(50);
+    }
+}
+
+/// <summary>هدف قابل‌ویرایش شاخص‌های داشبورد مدیریتی (یک ردیف به‌ازای هر کلید KpiCatalog).</summary>
+public class KpiTargetConfiguration : IEntityTypeConfiguration<KpiTarget>
+{
+    public void Configure(EntityTypeBuilder<KpiTarget> b)
+    {
+        b.ToTable("KpiTargets");
+        b.HasKey(x => x.KpiTargetId);
+        b.Property(x => x.KpiKey).HasMaxLength(60).IsRequired();
+        b.HasIndex(x => x.KpiKey).IsUnique();
+        b.Property(x => x.TargetValue).HasPrecision(18, 4);
+        b.Property(x => x.WarnValue).HasPrecision(18, 4);
+    }
+}

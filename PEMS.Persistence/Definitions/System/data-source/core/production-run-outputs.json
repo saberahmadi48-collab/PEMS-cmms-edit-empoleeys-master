@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "production-run-outputs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production: Run outputs",
+    "fa": "تولید: Run outputs"
+  },
+  "description": {
+    "en": "Production: Run outputs",
+    "fa": "تولید: Run outputs"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Production",
+      "action": "RunOutputs",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

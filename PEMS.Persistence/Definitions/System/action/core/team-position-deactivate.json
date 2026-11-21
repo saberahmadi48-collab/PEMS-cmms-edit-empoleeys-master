@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "team-position-deactivate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Deactivate a position",
+    "fa": "غیرفعال‌سازی سمت"
+  },
+  "description": {
+    "en": "Deactivate a position",
+    "fa": "غیرفعال‌سازی سمت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "DeactivatePosition",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "positionId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Position deactivated.",
+      "fa": "سمت غیرفعال شد."
+    }
+  }
+}

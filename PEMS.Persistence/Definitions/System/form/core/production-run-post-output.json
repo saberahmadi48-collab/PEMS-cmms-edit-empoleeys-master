@@ -1,0 +1,83 @@
+{
+  "kind": "form",
+  "key": "production-run-post-output",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Post an output to inventory",
+    "fa": "ارسال تولید به موجودی"
+  },
+  "description": {
+    "en": "Post an output to inventory",
+    "fa": "ارسال تولید به موجودی"
+  },
+  "payload": {
+    "id": "production-run-post-output",
+    "title": {
+      "en": "Post an output to inventory",
+      "fa": "ارسال تولید به موجودی"
+    },
+    "submitLabel": {
+      "en": "Post",
+      "fa": "ارسال"
+    },
+    "actionKey": "production-run-post-output",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "productionOutputId",
+        "label": {
+          "en": "Line id",
+          "fa": "شناسه‌ی ردیف"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "productionRunId",
+        "label": {
+          "en": "Run id",
+          "fa": "شناسه‌ی اجرا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "warehouseId",
+        "label": {
+          "en": "Warehouse",
+          "fa": "انبار"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "production-warehouses"
+      },
+      {
+        "name": "storageLocationId",
+        "label": {
+          "en": "Storage location id",
+          "fa": "شناسه‌ی محل نگهداری"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "kind": "page",
+  "key": "database-update",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Database update",
+    "fa": "به‌روزرسانی پایگاه داده"
+  },
+  "description": {
+    "en": "Database update runs (page definition)",
+    "fa": "اجراهای به‌روزرسانی پایگاه داده (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "database-update",
+    "template": "entity-list",
+    "args": {
+      "id": "database-update",
+      "url": "/d/database-update-runs",
+      "idField": "startedAtUtc",
+      "columns": [
+        {
+          "key": "startedAtUtc",
+          "header": {
+            "en": "Started (UTC)",
+            "fa": "شروع (UTC)"
+          },
+          "width": 170,
+          "type": "datetime"
+        },
+        {
+          "key": "trigger",
+          "header": {
+            "en": "Trigger",
+            "fa": "آغازگر"
+          },
+          "width": 100
+        },
+        {
+          "key": "mode",
+          "header": {
+            "en": "Mode",
+            "fa": "حالت"
+          },
+          "width": 100
+        },
+        {
+          "key": "fromMigration",
+          "header": {
+            "en": "From",
+            "fa": "از"
+          },
+          "width": 260
+        },
+        {
+          "key": "toMigration",
+          "header": {
+            "en": "To",
+            "fa": "تا"
+          },
+          "width": 260
+        },
+        {
+          "key": "migrationsApplied",
+          "header": {
+            "en": "Applied",
+            "fa": "اعمال‌شده"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "succeeded",
+          "header": {
+            "en": "Succeeded",
+            "fa": "موفق"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "performedBy",
+          "header": {
+            "en": "By",
+            "fa": "توسط"
+          },
+          "width": 140
+        },
+        {
+          "key": "error",
+          "header": {
+            "en": "Error",
+            "fa": "خطا"
+          },
+          "width": 300
+        }
+      ],
+      "newUrl": "/f/database-update-apply",
+      "newLabel": {
+        "en": "Apply pending updates",
+        "fa": "اعمال به‌روزرسانی‌های در انتظار"
+      }
+    },
+    "regions": {
+      "content": [
+        {
+          "id": "preflight-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "preflight-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Preflight: forms an update would collide with",
+                  "fa": "پیش‌بررسی: فرم‌هایی که به‌روزرسانی با آنها تعارض دارد"
+                }
+              },
+              {
+                "type": "text",
+                "css": "text-muted small",
+                "text": {
+                  "en": "An update that would break a field of the customer stops before it changes anything and lists the form, field and reason here and on /health/database. No rows: the update can be applied.",
+                  "fa": "به‌روزرسانی‌ای که فیلد مشتری را خراب کند پیش از هر تغییر متوقف می‌شود و فرم، فیلد و دلیل را اینجا و در /health/database نشان می‌دهد. بدون ردیف: قابل اعمال است."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "preflight",
+          "component": "data-grid",
+          "options": {
+            "id": "database-update-preflight",
+            "url": "/d/database-update-ownership-grid",
+            "idField": "form",
+            "pageSize": 20,
+            "height": 240,
+            "columns": [
+              {
+                "key": "form",
+                "header": {
+                  "en": "Form",
+                  "fa": "فرم"
+                },
+                "width": 240
+              },
+              {
+                "key": "field",
+                "header": {
+                  "en": "Field",
+                  "fa": "فیلد"
+                },
+                "width": 160
+              },
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 120
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 480
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

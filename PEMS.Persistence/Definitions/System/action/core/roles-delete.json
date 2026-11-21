@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "roles-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete",
+    "fa": "حذف"
+  },
+  "description": {
+    "en": "Delete",
+    "fa": "حذف"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.delete",
+    "parameters": {
+      "entity": "ApplicationRole",
+      "deny": [
+        {
+          "when": "row.IsSystemRole or row.Name in ['ContractManager', 'DisciplineEngineer', 'DocumentController', 'EngineeringManager', 'EngineeringSupervisor', 'Finance', 'HSE', 'Legal', 'MaintenanceEngineer', 'QAManager', 'SystemAdmin', 'Viewer']",
+          "message": {
+            "en": "System roles cannot be deleted.",
+            "fa": "نقش‌های سیستمی حذف نمی‌شوند."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Role deleted.",
+      "fa": "نقش حذف شد."
+    },
+    "redirect": "/p/roles"
+  }
+}

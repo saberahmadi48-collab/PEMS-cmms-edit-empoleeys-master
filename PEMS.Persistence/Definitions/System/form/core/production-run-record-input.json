@@ -1,0 +1,101 @@
+{
+  "kind": "form",
+  "key": "production-run-record-input",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record an input",
+    "fa": "ثبت ورودی"
+  },
+  "description": {
+    "en": "Record an input",
+    "fa": "ثبت ورودی"
+  },
+  "payload": {
+    "id": "production-run-record-input",
+    "title": {
+      "en": "Record an input",
+      "fa": "ثبت ورودی"
+    },
+    "submitLabel": {
+      "en": "Record",
+      "fa": "ثبت"
+    },
+    "actionKey": "production-run-record-input",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "productionRunId",
+        "label": {
+          "en": "Run id",
+          "fa": "شناسه‌ی اجرا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "materialItemId",
+        "label": {
+          "en": "Material",
+          "fa": "ماده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "production-materials"
+      },
+      {
+        "name": "quantity",
+        "label": {
+          "en": "Quantity",
+          "fa": "مقدار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "uomId",
+        "label": {
+          "en": "Unit",
+          "fa": "واحد"
+        },
+        "kind": "select",
+        "optionsFrom": "production-uoms"
+      },
+      {
+        "name": "sourceProductionBatchId",
+        "label": {
+          "en": "Source batch id",
+          "fa": "شناسه‌ی بچ مبدأ"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

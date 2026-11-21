@@ -1,0 +1,123 @@
+{
+  "key": "tree-select",
+  "component": "PEMS.UI.Components.PemsTreeSelect",
+  "category": "forms",
+  "icon": "bi-diagram-3",
+  "nameKey": "component.tree-select",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "value": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "selectedText": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "url": {
+        "type": "string"
+      },
+      "placeholder": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "searchLabel": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "loadingText": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "noResultsText": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "moreText": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "clearText": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "disabled": {
+        "type": "boolean"
+      },
+      "required": {
+        "type": "boolean"
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "name",
+      "url"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "TreeSelectOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "name": "FunctionalLocationId",
+    "url": "/FunctionalLocation/TreeNodes",
+    "value": "2",
+    "selectedText": "U100-CW - Cooling water",
+    "placeholder": "Select a location",
+    "searchLabel": "Search locations",
+    "loadingText": "Loading",
+    "noResultsText": "No results",
+    "moreText": "More",
+    "clearText": "Clear"
+  }
+}

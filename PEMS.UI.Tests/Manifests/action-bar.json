@@ -1,0 +1,158 @@
+{
+  "key": "action-bar",
+  "component": "PEMS.UI.Components.PemsActionBar",
+  "category": "forms",
+  "icon": "bi-layout-three-columns",
+  "nameKey": "component.action-bar",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "actions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "tone": {
+              "enum": [
+                "neutral",
+                "primary",
+                "danger",
+                "success",
+                "warning",
+                "info",
+                "light",
+                "dark",
+                null
+              ]
+            },
+            "size": {
+              "enum": [
+                "small",
+                "medium",
+                "large"
+              ]
+            },
+            "disabled": {
+              "type": "boolean"
+            },
+            "type": {
+              "type": "string"
+            },
+            "href": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "opens": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "rowKey": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "outline": {
+              "type": "boolean"
+            },
+            "cssClass": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "skin": {
+              "enum": [
+                "bootstrap",
+                "pems"
+              ]
+            }
+          },
+          "required": [
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "sticky": {
+        "type": "boolean"
+      },
+      "plain": {
+        "type": "boolean"
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ActionBarOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "actions": [
+      {
+        "label": {
+          "en": "Save",
+          "fa": "ذخیره"
+        },
+        "type": "submit"
+      },
+      {
+        "label": {
+          "en": "Cancel",
+          "fa": "انصراف"
+        },
+        "tone": "neutral",
+        "href": "/x"
+      }
+    ],
+    "sticky": true
+  }
+}

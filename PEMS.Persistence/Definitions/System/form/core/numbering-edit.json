@@ -1,0 +1,116 @@
+{
+  "kind": "form",
+  "key": "numbering-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a numbering scheme",
+    "fa": "ویرایش الگوی شماره‌گذاری"
+  },
+  "description": {
+    "en": "Edit a numbering scheme",
+    "fa": "ویرایش الگوی شماره‌گذاری"
+  },
+  "payload": {
+    "id": "numbering-edit",
+    "title": {
+      "en": "Edit a numbering scheme",
+      "fa": "ویرایش الگوی شماره‌گذاری"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "numbering-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "pattern",
+        "label": {
+          "en": "Pattern",
+          "fa": "الگو"
+        },
+        "required": true,
+        "maxLength": 100
+      },
+      {
+        "name": "padWidth",
+        "label": {
+          "en": "Pad width",
+          "fa": "تعداد ارقام"
+        },
+        "kind": "number",
+        "required": true,
+        "min": 1,
+        "max": 12
+      },
+      {
+        "name": "calendar",
+        "label": {
+          "en": "Calendar",
+          "fa": "تقویم"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "Jalali",
+            "label": {
+              "en": "Jalali",
+              "fa": "Jalali"
+            }
+          },
+          {
+            "value": "Gregorian",
+            "label": {
+              "en": "Gregorian",
+              "fa": "Gregorian"
+            }
+          }
+        ]
+      },
+      {
+        "name": "resetPeriod",
+        "label": {
+          "en": "Reset period",
+          "fa": "دوره‌ی بازنشانی"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "Never",
+            "label": {
+              "en": "Never",
+              "fa": "Never"
+            }
+          },
+          {
+            "value": "Yearly",
+            "label": {
+              "en": "Yearly",
+              "fa": "Yearly"
+            }
+          }
+        ]
+      },
+      {
+        "name": "isActive",
+        "label": {
+          "en": "Active",
+          "fa": "فعال"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "allowManualEntry",
+        "label": {
+          "en": "Allow manual entry",
+          "fa": "ثبت دستی مجاز"
+        },
+        "kind": "switch"
+      }
+    ]
+  }
+}

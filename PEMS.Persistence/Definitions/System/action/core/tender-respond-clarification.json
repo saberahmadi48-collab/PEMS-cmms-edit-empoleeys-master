@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "tender-respond-clarification",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Respond to a clarification",
+    "fa": "پاسخ به شفاف‌سازی"
+  },
+  "description": {
+    "en": "Respond to a clarification",
+    "fa": "پاسخ به شفاف‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TenderPage",
+      "action": "RespondClarification",
+      "args": {
+        "procurementPackageId": "field:procurementPackageId",
+        "communicationId": "field:communicationId",
+        "responseText": "field:responseText"
+      }
+    },
+    "success": {
+      "en": "The response was recorded.",
+      "fa": "پاسخ ثبت شد."
+    },
+    "redirect": "/Tender/Details/{tenderId}"
+  }
+}

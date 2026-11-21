@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "warehouse-intake-header",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Warehouse intake head",
+    "fa": "سربرگ دریافت انبار"
+  },
+  "description": {
+    "en": "Warehouse intake head",
+    "fa": "سربرگ دریافت انبار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WarehouseIntake",
+      "action": "Header",
+      "args": {
+        "workOrderId": "param:id"
+      }
+    }
+  }
+}

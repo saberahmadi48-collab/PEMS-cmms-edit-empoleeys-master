@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "pc-admin-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import a reference workbook",
+    "fa": "ورود فایل مرجع"
+  },
+  "description": {
+    "en": "Import a reference workbook",
+    "fa": "ورود فایل مرجع"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "Import",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "kind": "field:kind",
+        "file": "file:file"
+      },
+      "upload": {
+        "profile": "spreadsheet",
+        "maxFileMb": 15
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/p/pc-admin"
+  }
+}

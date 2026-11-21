@@ -1,0 +1,321 @@
+@model PEMS.Application.DTOs.WorkItemDetailDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var i = Model.Item;
+    var history = (List<PEMS.Application.DTOs.WorkItemHistoryEntryDto>)ViewBag.History;
+    var assignees = (PEMS.Application.DTOs.AssigneeResolutionDto)ViewBag.Assignees;
+    var returnUrl = Url.Action("Details", "Task", new { id = i.Id })!;
+    var subtaskType = Model.Types.FirstOrDefault(t => t.IsSubtask);
+    var title = (i.Key ?? "#" + i.Id);
+}
+@section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
+
+<section class="vs-panel mb-3">
+    <nav aria-label="breadcrumb" class="small mb-1">
+        @if (Model.IsLegacy)
+        {
+            <pems-link asp-controller="Task" asp-action="Index">@Localizer["Tasks"]</pems-link>
+        }
+        else
+        {
+            <pems-link asp-controller="TaskManager" asp-action="Index">@Localizer["Tm_Title"]</pems-link> <span>/</span>
+            <pems-link asp-controller="TaskManager" asp-action="Space" asp-route-key="@i.WorkSpaceKey">@TaskManagerUi.Name(Model.WorkSpaceName, Model.WorkSpaceNameFa)</pems-link>
+            @if (i.ParentKey != null) { <span>/</span> <pems-link asp-action="Details" asp-route-id="@i.ParentId">@i.ParentKey</pems-link> }
+        }
+    </nav>
+    <pems-flex wrap="true" justify="between" align="start" gap="2">
+        <div>
+            <div class="small">
+                @if (!string.IsNullOrEmpty(i.TypeIcon)) { <pems-icon css="@i.TypeIcon" aria-hidden="true" /> }
+                @if (i.TypeName != null) { <span>@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)</span> } else { <span>@Localizer["Tm_Personal"]</span> }
+                · <span class="tm-key">@title</span>
+            </div>
+            <pems-heading level="2" class="h5 mb-1">@i.Title</pems-heading>
+            <pems-badge tone="@TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</pems-badge>
+            @if (i.IsOverdue) { <pems-badge tone="danger">@Localizer["Overdue"]</pems-badge> }
+            @if (!i.IsActive) { <pems-badge tone="light">@Localizer["Tm_Archived"]</pems-badge> }
+        </div>
+        <pems-flex wrap="true" gap="2">
+            <pems-form asp-controller="TaskManager" asp-action="Watch" method="post">
+                <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="watch" value="@(Model.IsWatching ? "false" : "true")" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                <pems-button tone="neutral" size="small" outline="true" aria-pressed="@(Model.IsWatching ? "true" : "false")"><pems-icon css="@(Model.IsWatching ? "bi-eye-slash" : "bi-eye")" aria-hidden="true" /> @(Model.IsWatching ? Localizer["Tm_Unwatch"] : Localizer["Tm_Watch"]) <pems-badge tone="light">@Model.Watchers.Count</pems-badge></pems-button>
+            </pems-form>
+            @if (Model.CanArchive)
+            {
+                <pems-form asp-controller="TaskManager" asp-action="Archive" method="post">
+                    <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="archived" value="@(i.IsActive ? "true" : "false")" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                    <pems-button tone="none" size="small" css="@(i.IsActive ? "btn-outline-danger" : "btn-outline-success")" data-pems-confirm="@(i.IsActive ? Localizer["Tm_ArchiveConfirm"] : Localizer["Tm_RestoreConfirm"])"><pems-icon css="@(i.IsActive ? "bi-archive" : "bi-arrow-counterclockwise")" aria-hidden="true" /> @(i.IsActive ? Localizer["Tm_Archive"] : Localizer["Tm_Restore"])</pems-button>
+                </pems-form>
+            }
+        </pems-flex>
+    </pems-flex>
+</section>
+
+<pems-row gap="3">
+    <pems-col lg="8">
+        <section class="vs-panel mb-3" aria-labelledby="descTitle">
+            <pems-heading level="3" class="h6" id="descTitle">@Localizer["Tm_Field_Description"]</pems-heading>
+            @if (Model.CanEdit)
+            {
+                <pems-form asp-controller="TaskManager" asp-action="Update" method="post" data-pems-dirty-guard data-tm-ctrl-enter><pems-row gap="2">
+                    <input type="hidden" name="Id" value="@i.Id" />
+                    <input type="hidden" name="RowVersion" value="@i.RowVersion" />
+                    <input type="hidden" name="ParentId" value="@i.ParentId" />
+                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                    <pems-col span="12">
+                        <pems-label css="small" for="e-title">@Localizer["Tm_Field_Title"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
+                        <pems-input scale="small" id="e-title" name="Title" value="@i.Title" required maxlength="300" />
+                    </pems-col>
+                    <pems-col span="12">
+                        <pems-label css="small" for="e-desc">@Localizer["Tm_Field_Description"]</pems-label>
+                        <pems-textarea scale="small" id="e-desc" name="Description" rows="6" maxlength="8000">@Model.Description</pems-textarea>
+                    </pems-col>
+                    @if (!Model.IsLegacy)
+                    {
+                        <pems-col md="4">
+                            <pems-label css="small" for="e-type">@Localizer["Tm_Field_Type"]</pems-label>
+                            <pems-select scale="small" id="e-type" name="TypeId">
+                                @foreach (var t in Model.Types.Where(t => !t.IsSubtask || i.ParentId != null || t.Id == i.TypeId))
+                                { <option value="@t.Id" selected="@(t.Id == i.TypeId)">@TaskManagerUi.Name(t.Name, t.NameFa)</option> }
+                            </pems-select>
+                        </pems-col>
+                    }
+                    <pems-col md="4">
+                        <pems-label css="small" for="e-priority">@Localizer["Tm_Field_Priority"]</pems-label>
+                        <pems-select scale="small" id="e-priority" name="Priority">
+                            @foreach (var p in PEMS.Domain.Entities.TaskItemPriorities.All) { <option value="@p" selected="@(p == i.Priority)">@TaskManagerUi.Priority(Localizer, p)</option> }
+                        </pems-select>
+                    </pems-col>
+                    @if (!Model.IsLegacy)
+                    {
+                        <pems-col md="4">
+                            <pems-label css="small" for="e-points">@Localizer["Tm_Field_StoryPoints"]</pems-label>
+                            <pems-input scale="small" id="e-points" name="StoryPoints" type="number" min="0" max="1000" step="0.5" value="@(i.StoryPoints?.ToString(System.Globalization.CultureInfo.InvariantCulture))" />
+                        </pems-col>
+                    }
+                    <pems-col md="4">
+                        <pems-label css="small" for="e-start">@Localizer["Tm_Field_StartDate"]</pems-label>
+                        <pems-date id="e-start" name="StartDate" value="@TaskManagerUi.DateInput(i.StartDate)" scale="small" />
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label css="small" for="e-due">@Localizer["Tm_Field_DueDate"]</pems-label>
+                        <pems-date id="e-due" name="DueDate" value="@TaskManagerUi.DateInput(i.DueDate)" scale="small" />
+                    </pems-col>
+                    <pems-col md="4" css="d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Save"]</pems-button></pems-col>
+                </pems-row></pems-form>
+            }
+            else
+            {
+                @if (string.IsNullOrWhiteSpace(Model.Description)) { <pems-text class="text-muted small mb-0">@Localizer["Tm_NoDescription"]</pems-text> }
+                else { <div class="tm-text">@Model.Description</div> }
+            }
+        </section>
+
+        @if (!Model.IsLegacy)
+        {
+            <section class="vs-panel mb-3" aria-labelledby="subTitle">
+                <pems-heading level="3" class="h6" id="subTitle">@Localizer["Tm_Subtasks"] <pems-badge tone="light">@Model.Subtasks.Count</pems-badge></pems-heading>
+                <partial name="~/Views/TaskManager/_ItemTable.cshtml" model="Model.Subtasks" view-data='new ViewDataDictionary(ViewData) { ["ShowBulk"] = false, ["CanRank"] = false }' />
+                @if (Model.CanEdit && subtaskType != null && i.ParentId == null)
+                {
+                    <pems-form class="mt-2" asp-controller="TaskManager" asp-action="Create" method="post"><pems-flex gap="2">
+                        <input type="hidden" name="WorkSpaceId" value="@i.WorkSpaceId" />
+                        <input type="hidden" name="ParentId" value="@i.Id" />
+                        <input type="hidden" name="TypeId" value="@subtaskType.Id" />
+                        <input type="hidden" name="SprintId" value="@i.SprintId" />
+                        <input type="hidden" name="returnUrl" value="@returnUrl" />
+                        <input type="hidden" name="createAnother" value="true" />
+                        <label class="visually-hidden" for="st-title">@Localizer["Tm_NewSubtask"]</label>
+                        <pems-input scale="small" id="st-title" name="Title" placeholder="@Localizer["Tm_NewSubtask"]" required maxlength="300" />
+                        <pems-button tone="neutral" size="small" outline="true" css="text-nowrap"><pems-icon name="bi-plus-lg" aria-hidden="true" /> @Localizer["Tm_Add"]</pems-button>
+                    </pems-flex></pems-form>
+                }
+            </section>
+        }
+
+        <section class="vs-panel mb-3" aria-labelledby="linkTitle">
+            <pems-heading level="3" class="h6" id="linkTitle">@Localizer["Tm_Links"]</pems-heading>
+            @if (!Model.Links.Any()) { <pems-text class="small text-muted">@Localizer["Tm_NoLinks"]</pems-text> }
+            else
+            {
+                <pems-bullet-list class="list-unstyled mb-2">
+                    @foreach (var l in Model.Links)
+                    {
+                        <pems-flex as="li" justify="between" align="center" gap="2" css="py-1 border-bottom">
+                            <span>
+                                <span class="small text-muted">@TaskManagerUi.LinkType(Localizer, l.LinkType, l.Outward)</span>
+                                @if (l.OtherVisible)
+                                {
+                                    <pems-link asp-action="Details" asp-route-id="@l.OtherId" class="tm-key ms-1">@(l.OtherKey ?? "#" + l.OtherId)</pems-link> <span>@l.OtherTitle</span>
+                                    <pems-badge tone="@TaskManagerUi.CategoryBadge(l.OtherStatusCategory)">@Localizer["Tm_Category_" + l.OtherStatusCategory]</pems-badge>
+                                }
+                                else
+                                {
+                                    <span class="ms-1 text-muted fst-italic"><pems-icon name="bi-lock" aria-hidden="true" /> @Localizer["Tm_RestrictedItem"]</span>
+                                }
+                            </span>
+                            @if (l.CanRemove)
+                            {
+                                <pems-form asp-controller="TaskManager" asp-action="RemoveLink" method="post">
+                                    <input type="hidden" name="linkId" value="@l.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                                    <pems-button tone="none" size="small" css="btn-link text-danger p-0" aria-label="@Localizer["Tm_RemoveLink"]" data-pems-confirm="@Localizer["Tm_RemoveLinkConfirm"]"><pems-icon name="bi-x-lg" aria-hidden="true" /></pems-button>
+                                </pems-form>
+                            }
+                        </pems-flex>
+                    }
+                </pems-bullet-list>
+            }
+            @if (Model.CanLink)
+            {
+                <pems-form asp-controller="TaskManager" asp-action="AddLink" method="post"><pems-row gap="2">
+                    <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                    <pems-col md="4">
+                        <label class="visually-hidden" for="lk-type">@Localizer["Tm_LinkType"]</label>
+                        <pems-select scale="small" id="lk-type" name="linkType">
+                            @foreach (var lt in PEMS.Domain.Entities.WorkItemLinkTypes.All) { <option value="@lt">@TaskManagerUi.LinkType(Localizer, lt, true)</option> }
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="5">
+                        <label class="visually-hidden" for="lk-target">@Localizer["Tm_LinkTarget"]</label>
+                        <pems-input scale="small" id="lk-target" name="target" placeholder="@Localizer["Tm_LinkTargetPlaceholder"]" required maxlength="30" />
+                    </pems-col>
+                    <pems-col md="3"><pems-button tone="neutral" size="small" outline="true" css="w-100"><pems-icon name="bi-link-45deg" aria-hidden="true" /> @Localizer["Tm_AddLink"]</pems-button></pems-col>
+                </pems-row></pems-form>
+            }
+        </section>
+
+        <section class="vs-panel mb-3" aria-labelledby="commentTitle">
+            <pems-heading level="3" class="h6" id="commentTitle">@Localizer["Tm_Comments"] <pems-badge tone="light">@Model.Comments.Count(c => !c.IsDeleted)</pems-badge></pems-heading>
+            @if (Model.CanComment)
+            {
+                <pems-form asp-controller="TaskManager" asp-action="Comment" method="post" class="mb-3" data-pems-dirty-guard data-tm-ctrl-enter>
+                    <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                    <label class="visually-hidden" for="c-body">@Localizer["Tm_AddComment"]</label>
+                    <pems-textarea scale="small" css="mb-2" id="c-body" name="body" rows="3" maxlength="5000" required placeholder="@Localizer["Tm_AddComment"]"></pems-textarea>
+                    <pems-flex justify="between" align="center">
+                        <span class="small text-muted">@Localizer["Tm_CtrlEnterHint"]</span>
+                        <pems-button tone="primary" size="small">@Localizer["Tm_AddComment"]</pems-button>
+                    </pems-flex>
+                </pems-form>
+            }
+            @if (!Model.Comments.Any()) { <pems-text class="small text-muted mb-0">@Localizer["Tm_NoComments"]</pems-text> }
+            @foreach (var c in Model.Comments)
+            {
+                <article class="tm-comment">
+                    <pems-flex justify="between" css="small text-muted">
+                        <span><strong class="text-body">@c.AuthorName</strong> · @c.CreatedDate.ToString("yyyy-MM-dd HH:mm", System.Globalization.CultureInfo.InvariantCulture)</span>
+                        @if (c.CanDelete)
+                        {
+                            <pems-form asp-controller="TaskManager" asp-action="DeleteComment" method="post">
+                                <input type="hidden" name="commentId" value="@c.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                                <pems-button tone="none" size="small" css="btn-link text-danger p-0" data-pems-confirm="@Localizer["Tm_DeleteCommentConfirm"]">@Localizer["Tm_Delete"]</pems-button>
+                            </pems-form>
+                        }
+                    </pems-flex>
+                    @if (c.IsDeleted) { <div class="small fst-italic text-muted">@Localizer["Tm_CommentDeleted"]</div> }
+                    else { <div class="tm-text">@c.Body</div> }
+                </article>
+            }
+        </section>
+
+        <section class="vs-panel mb-3" aria-labelledby="histTitle">
+            <pems-heading level="3" class="h6" id="histTitle">@Localizer["Tm_History"]</pems-heading>
+            @if (!history.Any()) { <pems-text class="small text-muted mb-0">@Localizer["Tm_NoHistory"]</pems-text> }
+            else
+            {
+                <pems-table-scroll>
+                    <pems-data-table data="@(DataRows.Of(history, c_ => c_.Add(((Localizer["Tm_When"])?.ToString() ?? ""), h => (object?)(h.Timestamp.ToString("yyyy-MM-dd HH:mm", System.Globalization.CultureInfo.InvariantCulture)), css: "small text-nowrap").Add(((Localizer["Tm_Who"])?.ToString() ?? ""), h => (object?)(h.UserName), css: "small").Add(((Localizer["Tm_Action"])?.ToString() ?? ""), h => (object?)(TaskManagerUi.Localized(Localizer, "Tm_Audit_" + h.Action, h.Action)), css: "small").Add(((Localizer["Tm_Changes"])?.ToString() ?? ""), h => (object?)(h.Changes), css: "small tm-text")))" enterprise="false" dense="true" css="vs-dense mb-0" />
+                </pems-table-scroll>
+            }
+        </section>
+    </pems-col>
+
+    <pems-col lg="4">
+        <section class="vs-panel mb-3" aria-labelledby="statusTitle">
+            <pems-heading level="3" class="h6" id="statusTitle">@Localizer["Tm_Field_Status"]</pems-heading>
+            @if (Model.CanTransition && Model.AllowedTransitions.Any())
+            {
+                <pems-form asp-controller="TaskManager" asp-action="Transition" method="post"><pems-flex dir="column" gap="2">
+                    <input type="hidden" name="id" value="@i.Id" />
+                    <input type="hidden" name="rowVersion" value="@i.RowVersion" />
+                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                    <label class="visually-hidden" for="tr-target">@Localizer["Tm_MoveTo"]</label>
+                    @if (Model.IsLegacy)
+                    {
+                        <pems-select scale="small" id="tr-target" name="legacyStatus">
+                            @foreach (var o in Model.AllowedTransitions) { <option value="@o.Value">@TaskManagerUi.LegacyStatus(Localizer, o.Value)</option> }
+                        </pems-select>
+                    }
+                    else
+                    {
+                        <pems-select scale="small" id="tr-target" name="statusId">
+                            @foreach (var o in Model.AllowedTransitions) { <option value="@o.StatusId">@TaskManagerUi.Name(o.Name, o.NameFa)</option> }
+                        </pems-select>
+                    }
+                    <label class="visually-hidden" for="tr-note">@Localizer["Tm_CompletionNote"]</label>
+                    <pems-input scale="small" id="tr-note" name="note" maxlength="2000" placeholder="@Localizer["Tm_CompletionNoteOptional"]" />
+                    <pems-button tone="primary" size="small">@Localizer["Tm_ChangeStatus"]</pems-button>
+                </pems-flex></pems-form>
+            }
+            else
+            {
+                <pems-badge tone="@TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</pems-badge>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.CompletionNote)) { <div class="small mt-2"><strong>@Localizer["Tm_CompletionNote"]:</strong> @Model.CompletionNote</div> }
+        </section>
+
+        <section class="vs-panel mb-3" aria-labelledby="detailsTitle">
+            <pems-heading level="3" class="h6" id="detailsTitle">@Localizer["Tm_Details"]</pems-heading>
+            <pems-info-grid layout="rows" class="small mb-0">
+                <pems-info-item label="@Localizer["Tm_Field_Assignee"]">
+                    @if (Model.CanAssign)
+                    {
+                        <pems-form asp-controller="TaskManager" asp-action="Assign" method="post"><pems-flex gap="1">
+                            <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="rowVersion" value="@i.RowVersion" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                            <label class="visually-hidden" for="as-emp">@Localizer["Tm_Field_Assignee"]</label>
+                            <pems-select scale="small" id="as-emp" name="assigneeEmployeeId" aria-describedby="as-help">
+                                <option value="">@Localizer["Tm_Unassigned"]</option>
+                                @foreach (var e in assignees.Candidates) { <option value="@e.EmployeeId" selected="@(e.EmployeeId == i.AssigneeEmployeeId)">@e.Name</option> }
+                                @if (i.AssigneeEmployeeId != null && assignees.Candidates.All(e => e.EmployeeId != i.AssigneeEmployeeId))
+                                { <option value="@i.AssigneeEmployeeId" selected>@i.AssigneeName (@Localizer["Tm_NotEligible"])</option> }
+                            </pems-select>
+                            <pems-button tone="neutral" size="small" outline="true">@Localizer["Tm_Save"]</pems-button>
+                        </pems-flex></pems-form>
+                        @if (assignees.State != "RESOLVED") { <pems-help-text css="text-warning" id="as-help">@Localizer["Tm_Diag_" + assignees.State]</pems-help-text> }
+                    }
+                    else { @(i.AssigneeName ?? Localizer["Tm_Unassigned"].Value) }
+                </pems-info-item>
+                <pems-info-item label="@Localizer["Tm_Reporter"]">@(i.ReporterName ?? "—")</pems-info-item>
+                @if (Model.AssignedByName != null && Model.AssignedByName != i.ReporterName) { <pems-info-item label="@Localizer["Tm_AssignedBy"]">@Model.AssignedByName</pems-info-item> }
+                <pems-info-item label="@Localizer["Tm_Field_Priority"]"><pems-icon css="@TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true" /> @TaskManagerUi.Priority(Localizer, i.Priority)</pems-info-item>
+                @if (!Model.IsLegacy)
+                {
+                    <pems-info-item label="@Localizer["Tm_Field_Sprint"]">@(Model.SprintName ?? Localizer["Tm_Backlog"].Value)</pems-info-item>
+                    <pems-info-item label="@Localizer["Tm_Field_StoryPoints"]">@(i.StoryPoints?.ToString("0.#") ?? "—")</pems-info-item>
+                }
+                <pems-info-item label="@Localizer["Tm_Field_StartDate"]">@(TaskManagerUi.Date(i.StartDate) is { Length: > 0 } sd ? sd : "—")</pems-info-item>
+                <pems-info-item label="@Localizer["Tm_Field_DueDate"]" tone="@(i.IsOverdue ? "danger" : "")" value-class="@(i.IsOverdue ? "fw-semibold" : "")">@(TaskManagerUi.Date(i.DueDate) is { Length: > 0 } dd ? dd : "—")</pems-info-item>
+                <pems-info-item label="@Localizer["Tm_Created"]">@TaskManagerUi.Date(i.CreatedDate)</pems-info-item>
+                @if (Model.CompletedDate != null) { <pems-info-item label="@Localizer["Tm_Completed"]">@TaskManagerUi.Date(Model.CompletedDate)</pems-info-item> }
+                @if (!string.IsNullOrEmpty(Model.RelatedType))
+                {
+                    <pems-info-item label="@Localizer["Tm_Related"]">
+                        @* فقط برچسب و پیوند به ماژول مالک؛ داده‌ی ماژول اینجا خوانده نمی‌شود و دسترسی همان ماژول اعمال می‌شود *@
+                        @switch (Model.RelatedType)
+                        {
+                            case "Letter": <pems-link asp-controller="Letter" asp-action="Details" asp-route-id="@Model.RelatedId">@Localizer["Tm_Related_Letter"] #@Model.RelatedId</pems-link> break;
+                            case "Meeting": <pems-link href="/p/meeting-details?id=@Model.RelatedId">@Localizer["Tm_Related_Meeting"] #@Model.RelatedId</pems-link> break;
+                            default: <span>@Model.RelatedType #@Model.RelatedId</span> break;
+                        }
+                    </pems-info-item>
+                }
+                <pems-info-item label="@Localizer["Tm_Watchers"]">@(Model.Watchers.Any() ? string.Join(TaskManagerUi.IsFa ? "، " : ", ", Model.Watchers) : "—")</pems-info-item>
+            </pems-info-grid>
+        </section>
+    </pems-col>
+</pems-row>
+
+@section Scripts { <script src="~/js/pems-task-manager.js" asp-append-version="true"></script> }

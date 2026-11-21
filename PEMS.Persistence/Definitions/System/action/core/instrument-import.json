@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "instrument-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import instruments",
+    "fa": "ایمپورت ابزار دقیق"
+  },
+  "description": {
+    "en": "Import instruments",
+    "fa": "ایمپورت ابزار دقیق"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ImportCenter",
+      "action": "ImportInstruments",
+      "args": {
+        "file": "file:file",
+        "userRoles": "context:roles"
+      },
+      "upload": {
+        "profile": "spreadsheet",
+        "maxFileMb": 20
+      }
+    },
+    "success": {
+      "en": "Import finished.",
+      "fa": "ایمپورت تمام شد."
+    },
+    "redirect": "/p/import-center"
+  }
+}

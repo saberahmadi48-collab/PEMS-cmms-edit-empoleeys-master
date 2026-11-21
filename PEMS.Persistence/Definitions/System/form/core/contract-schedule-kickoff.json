@@ -1,0 +1,77 @@
+{
+  "kind": "form",
+  "key": "contract-schedule-kickoff",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Schedule the kick-off meeting",
+    "fa": "برنامه‌ریزی جلسه Kick-off"
+  },
+  "description": {
+    "en": "Schedule the kick-off meeting",
+    "fa": "برنامه‌ریزی جلسه Kick-off"
+  },
+  "payload": {
+    "id": "contract-schedule-kickoff",
+    "title": {
+      "en": "Schedule the kick-off meeting",
+      "fa": "برنامه‌ریزی جلسه Kick-off"
+    },
+    "submitLabel": {
+      "en": "Schedule",
+      "fa": "برنامه‌ریزی"
+    },
+    "actionKey": "contract-schedule-kickoff",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "contractId",
+        "label": {
+          "en": "Contract id",
+          "fa": "شناسه‌ی قرارداد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "meetingDate",
+        "label": {
+          "en": "Date and time",
+          "fa": "تاریخ و ساعت"
+        },
+        "kind": "datetime",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "location",
+        "label": {
+          "en": "Location",
+          "fa": "محل"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "agenda",
+        "label": {
+          "en": "Agenda",
+          "fa": "دستور جلسه"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

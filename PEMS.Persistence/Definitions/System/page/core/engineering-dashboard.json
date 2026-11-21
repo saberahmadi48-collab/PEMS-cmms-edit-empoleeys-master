@@ -1,0 +1,656 @@
+{
+  "kind": "page",
+  "key": "engineering-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering Dashboard",
+    "fa": "داشبورد مهندسی"
+  },
+  "description": {
+    "en": "Engineering documents: summary, quality, revision pressure and risk (page definition)",
+    "fa": "مدارک مهندسی: خلاصه، کیفیت، فشار بازنگری و ریسک (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "engineering-dashboard",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "eng-dash-filters",
+            "resetUrl": "/p/engineering-dashboard",
+            "fields": [
+              {
+                "name": "projectId",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "kind": "select",
+                "value": "{{params.projectId}}",
+                "options": []
+              },
+              {
+                "name": "disciplineId",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "kind": "select",
+                "value": "{{params.disciplineId}}",
+                "options": []
+              },
+              {
+                "name": "minRevisionCount",
+                "label": {
+                  "en": "Min revision count",
+                  "fa": "حداقل تعداد بازنگری"
+                },
+                "kind": "text",
+                "value": "{{params.minRevisionCount}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "projectId",
+                "source": "/d/eng-dash-projects",
+                "valueField": "value",
+                "labelField": "label"
+              },
+              {
+                "field": "disciplineId",
+                "source": "/d/eng-dash-disciplines",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "t-total",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Total",
+              "fa": "کل"
+            },
+            "icon": "bi-file-earmark-text"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/eng-dash-summary?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+              "first": true,
+              "map": {
+                "value": "total"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-approved",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Approved",
+              "fa": "تأیید شده"
+            },
+            "icon": "bi-check-circle",
+            "tone": "success"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/eng-dash-summary?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+              "first": true,
+              "map": {
+                "value": "approved"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-pending",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Pending review",
+              "fa": "در انتظار بررسی"
+            },
+            "icon": "bi-hourglass-split",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/eng-dash-summary?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+              "first": true,
+              "map": {
+                "value": "pending"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-rejected",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Rejected",
+              "fa": "ردشده"
+            },
+            "icon": "bi-x-circle",
+            "tone": "danger"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/eng-dash-summary?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+              "first": true,
+              "map": {
+                "value": "rejected"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-frozen",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Frozen",
+              "fa": "منجمد"
+            },
+            "icon": "bi-snow"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/eng-dash-summary?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+              "first": true,
+              "map": {
+                "value": "frozen"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-overdue",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Delayed",
+              "fa": "دارای تأخیر"
+            },
+            "icon": "bi-exclamation-triangle",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/eng-dash-summary?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+              "first": true,
+              "map": {
+                "value": "overdue"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-health",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Engineering health (0-100)",
+              "fa": "سلامت مهندسی (۰ تا ۱۰۰)"
+            },
+            "icon": "bi-shield-check"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/eng-dash-summary?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+              "first": true,
+              "map": {
+                "value": "healthScore"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-first-pass",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "First-pass approval rate",
+              "fa": "نرخ تأیید در اولین بار"
+            },
+            "icon": "bi-graph-up-arrow"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/eng-dash-summary?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+              "first": true,
+              "map": {
+                "value": "firstPassRate"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-approved-rate",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Approved rate",
+              "fa": "نرخ تأیید"
+            },
+            "icon": "bi-percent"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/eng-dash-summary?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+              "first": true,
+              "map": {
+                "value": "approvedRate"
+              }
+            }
+          }
+        },
+        {
+          "id": "h-rejected",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-rejected",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Most rejected documents",
+                  "fa": "پربرگشت‌ترین مدارک"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "most-rejected",
+          "component": "data-grid",
+          "options": {
+            "id": "most-rejected",
+            "url": "/d/eng-dash-most-rejected?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+            "idField": "documentId",
+            "columns": [
+              {
+                "key": "documentNo",
+                "header": {
+                  "en": "Document",
+                  "fa": "مدرک"
+                },
+                "width": 200
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 160
+              },
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 160
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 130
+              },
+              {
+                "key": "rejections",
+                "header": {
+                  "en": "Rejections",
+                  "fa": "ردها"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "revisions",
+                "header": {
+                  "en": "Revisions",
+                  "fa": "بازنگری‌ها"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "firstPass",
+                "header": {
+                  "en": "First pass",
+                  "fa": "تأیید در اولین بار"
+                },
+                "width": 130
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/EngineeringDocuments/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-revision",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-revision",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Revision pressure",
+                  "fa": "فشار بازنگری"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "revision-pressure",
+          "component": "data-grid",
+          "options": {
+            "id": "revision-pressure",
+            "url": "/d/eng-dash-revision-pressure?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+            "idField": "documentId",
+            "columns": [
+              {
+                "key": "documentNo",
+                "header": {
+                  "en": "Document",
+                  "fa": "مدرک"
+                },
+                "width": 200
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 160
+              },
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 160
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 130
+              },
+              {
+                "key": "rejections",
+                "header": {
+                  "en": "Rejections",
+                  "fa": "ردها"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "revisions",
+                "header": {
+                  "en": "Revisions",
+                  "fa": "بازنگری‌ها"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "firstPass",
+                "header": {
+                  "en": "First pass",
+                  "fa": "تأیید در اولین بار"
+                },
+                "width": 130
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/EngineeringDocuments/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-attention",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-attention",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Management attention queue",
+                  "fa": "صف توجه مدیریت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "attention",
+          "component": "data-grid",
+          "options": {
+            "id": "attention",
+            "url": "/d/eng-dash-attention?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+            "idField": "documentId",
+            "columns": [
+              {
+                "key": "documentNo",
+                "header": {
+                  "en": "Document",
+                  "fa": "مدرک"
+                },
+                "width": 200
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 160
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 200
+              },
+              {
+                "key": "severity",
+                "header": {
+                  "en": "Severity",
+                  "fa": "شدت"
+                },
+                "width": 110
+              },
+              {
+                "key": "revisions",
+                "header": {
+                  "en": "Revisions",
+                  "fa": "بازنگری‌ها"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "rejections",
+                "header": {
+                  "en": "Rejections",
+                  "fa": "ردها"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/EngineeringDocuments/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-risk",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-risk",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Discipline risk overview",
+                  "fa": "نمای ریسک دیسیپلین‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "discipline-risk",
+          "component": "data-grid",
+          "options": {
+            "id": "discipline-risk",
+            "url": "/d/eng-dash-discipline-risk?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+            "idField": "discipline",
+            "columns": [
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 220
+              },
+              {
+                "key": "documents",
+                "header": {
+                  "en": "Documents",
+                  "fa": "مدارک"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "rejections",
+                "header": {
+                  "en": "Rejections",
+                  "fa": "ردها"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "averageRevisions",
+                "header": {
+                  "en": "Avg revisions",
+                  "fa": "میانگین بازنگری"
+                },
+                "width": 140
+              },
+              {
+                "key": "riskScore",
+                "header": {
+                  "en": "Risk (0-100)",
+                  "fa": "ریسک (۰ تا ۱۰۰)"
+                },
+                "width": 130,
+                "type": "number"
+              }
+            ],
+            "pageSize": 10,
+            "height": 360
+          }
+        }
+      ]
+    }
+  }
+}

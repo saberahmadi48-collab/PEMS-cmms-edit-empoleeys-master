@@ -1,0 +1,65 @@
+{
+  "kind": "page",
+  "key": "routing-rules-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI routing rules details",
+    "fa": "جزئیات قواعد مسیریابی هوش مصنوعی"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "routing-rules-record",
+      "url": "/d/routing-rules-grid",
+      "idField": "routingRuleId",
+      "fields": [
+        {
+          "key": "documentCategory",
+          "label": {
+            "en": "Category",
+            "fa": "دسته"
+          }
+        },
+        {
+          "key": "targetModule",
+          "label": {
+            "en": "Target module",
+            "fa": "ماژول مقصد"
+          }
+        },
+        {
+          "key": "allowAutoRouting",
+          "label": {
+            "en": "Auto route",
+            "fa": "مسیریابی خودکار"
+          },
+          "type": "bool"
+        },
+        {
+          "key": "description",
+          "label": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "wide": true
+        }
+      ],
+      "backUrl": "/p/routing-rules",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/routing-rules-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "kind": "data-source",
+  "key": "definition-versions-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Versions of a definition",
+    "fa": "نسخه‌های یک تعریف"
+  },
+  "description": {
+    "en": "Versions of a definition",
+    "fa": "نسخه‌های یک تعریف"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "definition-versions",
+    "permission": "Definitions.View",
+    "parameters": {}
+  }
+}

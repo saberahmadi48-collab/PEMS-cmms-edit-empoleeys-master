@@ -1,0 +1,117 @@
+{
+  "kind": "form",
+  "key": "production-run-record-output",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record an output",
+    "fa": "ثبت خروجی"
+  },
+  "description": {
+    "en": "Record an output",
+    "fa": "ثبت خروجی"
+  },
+  "payload": {
+    "id": "production-run-record-output",
+    "title": {
+      "en": "Record an output",
+      "fa": "ثبت خروجی"
+    },
+    "submitLabel": {
+      "en": "Record",
+      "fa": "ثبت"
+    },
+    "actionKey": "production-run-record-output",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "productionRunId",
+        "label": {
+          "en": "Run id",
+          "fa": "شناسه‌ی اجرا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "materialItemId",
+        "label": {
+          "en": "Material",
+          "fa": "ماده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "production-materials"
+      },
+      {
+        "name": "productionBatchId",
+        "label": {
+          "en": "Existing batch id (empty = new batch)",
+          "fa": "شناسه‌ی بچ موجود (خالی = بچ جدید)"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "quantity",
+        "label": {
+          "en": "Quantity",
+          "fa": "مقدار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "uomId",
+        "label": {
+          "en": "Unit",
+          "fa": "واحد"
+        },
+        "kind": "select",
+        "optionsFrom": "production-uoms"
+      },
+      {
+        "name": "outputClassification",
+        "label": {
+          "en": "Classification",
+          "fa": "طبقه‌بندی"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

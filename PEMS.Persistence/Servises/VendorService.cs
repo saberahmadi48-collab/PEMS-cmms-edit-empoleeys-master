@@ -103,10 +103,43 @@ public class VendorService : IVendorService
 
     public async Task<int> CreateAsync(Vendor vendor)
     {
-        vendor.CreatedDate = DateTime.Now;
-        await _context.Vendors.AddAsync(vendor);
+        // P0 / F-01: فرم ثبت فروشنده فقط اطلاعات پایه (نام، کد، کشور، مشخصات تماس) را می‌پذیرد. وضعیت صلاحیت، ریسک،
+        // فعال‌بودن و فیلدهای Qualification هرگز از ورودی کلاینت گرفته نمی‌شوند؛ تغییر صلاحیت فقط از مسیر کنترل‌شده‌ی
+        // VendorQualificationService.SetQualificationAsync (با تاریخچه‌ی Append-only) انجام می‌شود. موجودیت جدید ساخته
+        // می‌شود (نه ذخیره‌ی مستقیم شیء Bind شده) تا هیچ فیلد اضافه‌ای از POST جعلی نشت نکند.
+        var name = vendor.Name?.Trim();
+        if (string.IsNullOrWhiteSpace(name))
+            throw new InvalidOperationException("نام فروشنده الزامی است.");
+
+        var nameKey = name.ToLower();
+        if (await _context.Vendors.AnyAsync(x => x.Name.ToLower() == nameKey))
+            throw new InvalidOperationException($"فروشنده‌ای با نام «{name}» از قبل ثبت شده است.");
+
+        var code = string.IsNullOrWhiteSpace(vendor.VendorCode) ? null : vendor.VendorCode.Trim();
+        if (code != null)
+        {
+            var codeKey = code.ToLower();
+            if (await _context.Vendors.AnyAsync(x => x.VendorCode != null && x.VendorCode.ToLower() == codeKey))
+                throw new InvalidOperationException($"فروشنده‌ای با کد «{code}» از قبل ثبت شده است.");
+        }
+
+        var entity = new Vendor
+        {
+            Name = name,
+            VendorCode = code,
+            Country = vendor.Country,
+            ContactName = vendor.ContactName,
+            ContactEmail = vendor.ContactEmail,
+            ContactPhone = vendor.ContactPhone,
+            RiskLevel = "Unknown",
+            QualificationStatus = "NotQualified",
+            IsActive = true,
+            CreatedDate = DateTime.Now
+        };
+
+        await _context.Vendors.AddAsync(entity);
         await _context.SaveChangesAsync();
-        return vendor.VendorId;
+        return entity.VendorId;
     }
 
     public async Task UpdateAsync(Vendor vendor)

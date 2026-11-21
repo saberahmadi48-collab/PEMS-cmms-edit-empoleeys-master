@@ -1,0 +1,500 @@
+{
+  "kind": "page",
+  "key": "production-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production Dashboard",
+    "fa": "داشبورد تولید"
+  },
+  "description": {
+    "en": "Active orders and runs, today's output and loss, the latest batches (page definition)",
+    "fa": "سفارش‌ها و اجراهای فعال، خروجی و افت امروز، آخرین بچ‌ها (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "production-dashboard",
+    "regions": {
+      "content": [
+        {
+          "id": "k-orders",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Active orders",
+              "fa": "سفارش‌های فعال"
+            },
+            "icon": "bi-clipboard-data"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/production-summary",
+              "first": true,
+              "map": {
+                "value": "activeOrderCount"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-released",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Released orders",
+              "fa": "سفارش‌های Release"
+            },
+            "icon": "bi-send-check"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/production-summary",
+              "first": true,
+              "map": {
+                "value": "releasedOrderCount"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-runs",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Active runs",
+              "fa": "اجراهای فعال"
+            },
+            "icon": "bi-play-circle",
+            "tone": "success"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/production-summary",
+              "first": true,
+              "map": {
+                "value": "activeRunCount"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-held",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Held runs",
+              "fa": "اجراهای معلق"
+            },
+            "icon": "bi-pause-circle",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/production-summary",
+              "first": true,
+              "map": {
+                "value": "heldRunCount"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-out",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Today's output",
+              "fa": "خروجی امروز"
+            },
+            "icon": "bi-box-seam"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/production-summary",
+              "first": true,
+              "map": {
+                "value": "todaysOutputQuantity"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-loss",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Today's loss",
+              "fa": "افت امروز"
+            },
+            "icon": "bi-exclamation-triangle",
+            "tone": "danger"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/production-summary",
+              "first": true,
+              "map": {
+                "value": "todaysLossQuantity"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-issues",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Open reconciliation issues",
+              "fa": "مغایرت‌های باز"
+            },
+            "icon": "bi-journal-x",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/production-summary",
+              "first": true,
+              "map": {
+                "value": "unresolvedReconciliationIssueCount"
+              }
+            }
+          }
+        },
+        {
+          "id": "nav",
+          "component": "content-blocks",
+          "options": {
+            "id": "nav",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/production-orders",
+                "text": {
+                  "en": "Production orders",
+                  "fa": "سفارش‌های تولید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-order-create",
+                "text": {
+                  "en": "New production order",
+                  "fa": "سفارش تولید جدید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-orders",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-orders",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Active orders",
+                  "fa": "سفارش‌های فعال"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "orders",
+          "component": "data-grid",
+          "options": {
+            "id": "orders",
+            "url": "/d/production-active-orders",
+            "idField": "productionOrderId",
+            "columns": [
+              {
+                "key": "orderNumber",
+                "header": {
+                  "en": "Order",
+                  "fa": "سفارش"
+                },
+                "width": 140
+              },
+              {
+                "key": "materialCode",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 140
+              },
+              {
+                "key": "materialDescription",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 240
+              },
+              {
+                "key": "plannedQuantity",
+                "header": {
+                  "en": "Planned",
+                  "fa": "برنامه"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "uom",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 70
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "workCenter",
+                "header": {
+                  "en": "Work center",
+                  "fa": "مرکز کار"
+                },
+                "width": 120
+              },
+              {
+                "key": "runCount",
+                "header": {
+                  "en": "Runs",
+                  "fa": "اجراها"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/production-order-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 320
+          }
+        },
+        {
+          "id": "h-batches",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-batches",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Recent batches",
+                  "fa": "بچ‌های اخیر"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "batches",
+          "component": "data-grid",
+          "options": {
+            "id": "batches",
+            "url": "/d/production-recent-batches",
+            "idField": "productionBatchId",
+            "columns": [
+              {
+                "key": "batchNumber",
+                "header": {
+                  "en": "Batch",
+                  "fa": "بچ"
+                },
+                "width": 140
+              },
+              {
+                "key": "orderNumber",
+                "header": {
+                  "en": "Order",
+                  "fa": "سفارش"
+                },
+                "width": 130
+              },
+              {
+                "key": "runNumber",
+                "header": {
+                  "en": "Run",
+                  "fa": "اجرا"
+                },
+                "width": 120
+              },
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 240
+              },
+              {
+                "key": "quantity",
+                "header": {
+                  "en": "Quantity",
+                  "fa": "مقدار"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "qualityStatus",
+                "header": {
+                  "en": "Quality",
+                  "fa": "کیفیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "producedDate",
+                "header": {
+                  "en": "Produced",
+                  "fa": "تولید"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/production-batch-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 320
+          }
+        },
+        {
+          "id": "h-losses",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-losses",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Recent losses",
+                  "fa": "افت‌های اخیر"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "losses",
+          "component": "data-grid",
+          "options": {
+            "id": "losses",
+            "url": "/d/production-recent-losses",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "transactionDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "quantity",
+                "header": {
+                  "en": "Quantity",
+                  "fa": "مقدار"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "uom",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 70
+              },
+              {
+                "key": "category",
+                "header": {
+                  "en": "Category",
+                  "fa": "دسته"
+                },
+                "width": 140
+              },
+              {
+                "key": "employee",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "notes",
+                "header": {
+                  "en": "Notes",
+                  "fa": "یادداشت"
+                },
+                "width": 260
+              }
+            ],
+            "pageSize": 10,
+            "height": 320
+          }
+        }
+      ]
+    },
+    "permission": "Production.View"
+  }
+}

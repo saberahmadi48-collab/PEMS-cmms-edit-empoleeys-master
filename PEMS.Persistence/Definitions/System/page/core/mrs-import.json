@@ -1,0 +1,170 @@
+{
+  "kind": "page",
+  "key": "mrs-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MRS Import",
+    "fa": "ورود MRS"
+  },
+  "description": {
+    "en": "Upload an Excel MRS, review the staged rows, then commit or reject them (page definition)",
+    "fa": "بارگذاری فایل Excel برای MRS، بررسی ردیف‌ها و سپس تأیید یا رد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "mrs-import",
+    "regions": {
+      "content": [
+        {
+          "id": "go",
+          "component": "content-blocks",
+          "options": {
+            "id": "go",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mrs-import-upload",
+                "text": {
+                  "en": "Upload an MRS file (.xlsx)",
+                  "fa": "بارگذاری فایل MRS (.xlsx)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/import-center",
+                "text": {
+                  "en": "Import center",
+                  "fa": "مرکز ورود داده"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "batches",
+          "component": "data-grid",
+          "options": {
+            "id": "batches",
+            "url": "/d/mrs-import-batches",
+            "idField": "mrsImportBatchId",
+            "columns": [
+              {
+                "key": "sourceFile",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 240
+              },
+              {
+                "key": "sheet",
+                "header": {
+                  "en": "Sheet",
+                  "fa": "شیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "totalRows",
+                "header": {
+                  "en": "Rows",
+                  "fa": "ردیف‌ها"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "newCount",
+                "header": {
+                  "en": "New",
+                  "fa": "جدید"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "matchedCount",
+                "header": {
+                  "en": "Matched",
+                  "fa": "منطبق"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "duplicateCount",
+                "header": {
+                  "en": "Duplicate",
+                  "fa": "تکراری"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "invalidCount",
+                "header": {
+                  "en": "Invalid",
+                  "fa": "نامعتبر"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "approvedCount",
+                "header": {
+                  "en": "Approved",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "importDate",
+                "header": {
+                  "en": "Imported",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "review",
+                    "label": {
+                      "en": "Review",
+                      "fa": "بررسی"
+                    },
+                    "url": "/p/mrs-import-review?batchId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "MrsImport.View"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "maintenance-backlog-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance backlog rows",
+    "fa": "ردیف‌های بک‌لاگ تعمیرات"
+  },
+  "description": {
+    "en": "Maintenance backlog rows",
+    "fa": "ردیف‌های بک‌لاگ تعمیرات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CmmsOperations",
+      "action": "Backlog",
+      "args": {
+        "status": "param:status",
+        "priority": "param:priority"
+      }
+    }
+  }
+}

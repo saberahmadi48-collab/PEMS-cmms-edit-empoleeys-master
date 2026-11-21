@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "history-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance History Import (old address)",
+    "fa": "Maintenance History Import (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Maintenance History Import (old address)",
+    "fa": "Maintenance History Import (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenanceHistoryImport",
+    "target": "/p/history-import",
+    "permanent": false
+  }
+}

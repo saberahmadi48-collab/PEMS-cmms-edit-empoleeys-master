@@ -9,10 +9,10 @@
 
     string StatusBadge(string status) => status switch
     {
-        "ACCEPTED" => "text-bg-success",
-        "REJECTED" => "text-bg-secondary",
-        "PENDING" => "text-bg-warning",
-        _ => "text-bg-light border"
+        "ACCEPTED" => "success",
+        "REJECTED" => "neutral",
+        "PENDING" => "warning",
+        _ => "light"
     };
 
     string TriggerLabel(string reason) => reason switch
@@ -25,84 +25,59 @@
     };
 }
 
-@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
-@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+@if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+@if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <div>
-        <a asp-action="Intelligence" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clipboard-data-fill"></i> @Localizer["Maintenance Intelligence"]</a>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Intelligence"><pems-icon name="bi-clipboard-data-fill" /> @Localizer["Maintenance Intelligence"]</pems-button>
         @if (canGenerate)
         {
-            <form asp-action="GenerateRcmEvidence" method="post" class="d-inline">
-                <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-search"></i> Generate Evidence</button>
-            </form>
+            <pems-form asp-action="GenerateRcmEvidence" method="post" class="d-inline">
+                <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-search" /> Generate Evidence</pems-button>
+            </pems-form>
         }
     </div>
-</div>
-<p class="text-muted small">
+</pems-flex>
+<pems-text class="text-muted small">
     طبق «PEMS Phase 7» بند ۲۰: این‌جا فقط شواهد و توصیه‌ی بازبینی تولید می‌شود - هیچ‌چیز خودکار
     تغییر نمی‌کند. پذیرفتن یک توصیه یعنی مهندس با تغییر دستی MaintenanceStrategy/MaintenancePlan
     موافق است؛ آن تغییر همچنان جدا و توسط خودِ مهندس (با ابزارهای موجود) انجام می‌شود.
-</p>
+</pems-text>
 
-<div class="content-card mb-3">
-    <form method="get" class="row g-2 align-items-end">
-        <div class="col-md-3">
-            <label class="form-label small">@Localizer["Status"]</label>
-            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+<pems-content-card css="mb-3">
+    <pems-form method="get"><pems-row gap="2" css="align-items-end">
+        <pems-col md="3">
+            <pems-label css="small">@Localizer["Status"]</pems-label>
+            <pems-select scale="small" name="status" data-pems-change="submit-form">
                 <option value="" selected="@(string.IsNullOrEmpty(statusFilter))">All</option>
                 <option value="PENDING" selected="@(statusFilter == "PENDING")">Pending</option>
                 <option value="ACCEPTED" selected="@(statusFilter == "ACCEPTED")">Accepted</option>
                 <option value="REJECTED" selected="@(statusFilter == "REJECTED")">Rejected</option>
-            </select>
-        </div>
-    </form>
-</div>
+            </pems-select>
+        </pems-col>
+    </pems-row></pems-form>
+</pems-content-card>
 
-<div class="content-card">
-    <table class="table table-enterprise table-sm mb-0">
-        <thead>
-            <tr>
-                <th>@Localizer["Equipment"]</th><th>@Localizer["Strategy"]</th><th>@Localizer["Trigger"]</th><th>Evidence</th><th>@Localizer["Status"]</th>
-                <th>Generated</th><th>Reviewed</th><th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var r in Model)
-            {
-                <tr>
-                    <td class="fw-bold">@r.EquipmentTagNumber</td>
-                    <td class="small text-muted">@(r.MaintenanceStrategyType ?? "-") @(r.FailureModeCode != null ? $"({r.FailureModeCode})" : "")</td>
-                    <td><span class="badge text-bg-info">@TriggerLabel(r.TriggerReason)</span></td>
-                    <td class="small">@r.Evidence</td>
-                    <td><span class="badge @StatusBadge(r.Status)">@r.Status</span></td>
-                    <td class="small">@r.GeneratedDate.ToString("yyyy-MM-dd")</td>
-                    <td class="small text-muted">
-                        @if (r.ReviewedBy != null)
-                        {
-                            @($"{r.ReviewedBy} · {r.ReviewedAt:yyyy-MM-dd}")
-                            @if (r.ReviewNotes != null) { <div>@r.ReviewNotes</div> }
-                        }
-                        else { <span>-</span> }
-                    </td>
-                    <td>
+<pems-content-card>
+    @{
+        var rows_76 = Model;
+        var cell_76_7 = DataCell.Template(rows_76, @<text>@{ var r = item; }
                         @if (r.Status == "PENDING" && canReview)
                         {
-                            <form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
+                            <pems-form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
                                 <input type="hidden" name="recommendationId" value="@r.RcmReviewRecommendationId" />
                                 <input type="hidden" name="accept" value="true" />
-                                <button type="submit" class="btn btn-sm btn-outline-success"><i class="bi bi-check-lg"></i></button>
-                            </form>
-                            <form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
+                                <pems-button tone="success" size="small" outline="true" type="submit"><pems-icon name="bi-check-lg" /></pems-button>
+                            </pems-form>
+                            <pems-form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
                                 <input type="hidden" name="recommendationId" value="@r.RcmReviewRecommendationId" />
                                 <input type="hidden" name="accept" value="false" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i></button>
-                            </form>
+                                <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-x-lg" /></pems-button>
+                            </pems-form>
                         }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ توصیه‌ای موجود نیست. @(canGenerate ? "برای تولید شواهد، دکمه‌ی Generate Evidence را بزنید." : "")</p> }
-</div>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_76, c_ => c_.Add(((Localizer["Equipment"])?.ToString() ?? ""), r => (object?)(r.EquipmentTagNumber), css: "fw-bold").Add(((Localizer["Strategy"])?.ToString() ?? ""), r => (object?)(DataCell.Group((r.MaintenanceStrategyType ?? "-"), " ", (r.FailureModeCode != null ? $"({r.FailureModeCode})" : ""))), css: "small text-muted").Add(((Localizer["Trigger"])?.ToString() ?? ""), r => (object?)(DataCell.Badge("info", (TriggerLabel(r.TriggerReason))))).Add("Evidence", r => (object?)(r.Evidence), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)(DataCell.Badge(StatusBadge(r.Status), r.Status))).Add("Generated", r => (object?)((PemsDates.Date(r.GeneratedDate))), css: "small").Add("Reviewed", r => (object?)((r.ReviewedBy != null ? (object?)DataCell.Group(($"{r.ReviewedBy} · {r.ReviewedAt:yyyy-MM-dd}"), " ", (r.ReviewNotes != null ? (object?)DataCell.Span(null, r.ReviewNotes).WithTag("div") : null)) : DataCell.Span(null, "-"))), css: "small text-muted").Add("", r => (object?)cell_76_7(r))))" dense="true" css="mb-0" />
+    @if (!Model.Any()) { <pems-text class="text-muted text-center py-4 mb-0">هیچ توصیه‌ای موجود نیست. @(canGenerate ? "برای تولید شواهد، دکمه‌ی Generate Evidence را بزنید." : "")</pems-text> }
+</pems-content-card>

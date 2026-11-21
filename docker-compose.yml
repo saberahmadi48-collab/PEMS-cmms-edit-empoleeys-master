@@ -11,9 +11,11 @@ services:
     container_name: pems-sqlserver
     environment:
       ACCEPT_EULA: "Y"
-      MSSQL_SA_PASSWORD: "${SQL_SA_PASSWORD:-Pems@2026StrongPass}"
+      MSSQL_SA_PASSWORD: "${SQL_SA_PASSWORD:?SQL_SA_PASSWORD is not set - put it in env/docker.secrets.env and run: docker compose --env-file env/docker.secrets.env up}"
+    # Published on the loopback interface only: the database must never be reachable from the network (SCRUM-17).
+    # pems-web reaches it over the compose network (sqlserver:1433). To allow an admin tool from another host, tunnel instead of widening this.
     ports:
-      - "1433:1433"
+      - "127.0.0.1:1433:1433"
     volumes:
       - pems-sql-data:/var/opt/mssql
     healthcheck:
@@ -25,8 +27,9 @@ services:
   ollama:
     image: ollama/ollama:latest
     container_name: pems-ollama
+    # Loopback only: the Ollama API has no authentication (SCRUM-17). pems-web uses http://ollama:11434 over the compose network.
     ports:
-      - "11434:11434"
+      - "127.0.0.1:11434:11434"
     volumes:
       - pems-ollama-data:/root/.ollama
     # اولین بار بعد از بالا آمدن، مدل را دستی Pull کنید:
@@ -42,13 +45,16 @@ services:
         condition: service_healthy
       ollama:
         condition: service_started
+    # Loopback only, like the deploy kit (deploy/docker/compose.pems-web.yml): publish through a TLS reverse proxy, not plain HTTP (SCRUM-17).
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
+    # Settings: env/docker.env; secrets: env/docker.secrets.env (copy env/docker.secrets.env.example). Nothing is hard-coded here.
+    env_file:
+      - env/docker.env
+      - env/docker.secrets.env
     environment:
       ASPNETCORE_ENVIRONMENT: "Production"
-      ConnectionStrings__PEMSConnection: "Server=sqlserver;Database=PEMSDB;User Id=sa;Password=${SQL_SA_PASSWORD:-Pems@2026StrongPass};TrustServerCertificate=True"
-      Ollama__Url: "http://ollama:11434"
-      Ollama__Model: "${OLLAMA_MODEL:-qwen2.5:3b}"
+      PEMS_ENV: "docker"
     volumes:
       - pems-uploads:/app/wwwroot/uploads
       - pems-logs:/app/logs

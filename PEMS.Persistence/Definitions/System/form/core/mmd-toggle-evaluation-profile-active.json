@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "mmd-toggle-evaluation-profile-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleEvaluationProfileActive",
+    "fa": "ToggleEvaluationProfileActive"
+  },
+  "description": {
+    "en": "ToggleEvaluationProfileActive",
+    "fa": "ToggleEvaluationProfileActive"
+  },
+  "payload": {
+    "id": "mmd-toggle-evaluation-profile-active",
+    "title": {
+      "en": "ToggleEvaluationProfileActive",
+      "fa": "ToggleEvaluationProfileActive"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-toggle-evaluation-profile-active",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "id"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

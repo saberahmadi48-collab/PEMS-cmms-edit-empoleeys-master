@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "eng-dash-discipline-risk",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline risk overview",
+    "fa": "نمای ریسک دیسیپلین‌ها"
+  },
+  "description": {
+    "en": "Discipline risk overview",
+    "fa": "نمای ریسک دیسیپلین‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EngineeringDashboard",
+      "action": "DisciplineRisk",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "minRevisionCount": "param:minRevisionCount"
+      }
+    }
+  }
+}

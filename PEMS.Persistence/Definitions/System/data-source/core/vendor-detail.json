@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "vendor-detail",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor",
+    "fa": "فروشنده"
+  },
+  "description": {
+    "en": "Vendor",
+    "fa": "فروشنده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Vendor",
+      "action": "Detail",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-existing-parts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue: existing parts",
+    "fa": "کاتالوگ قطعه: قطعات موجود"
+  },
+  "description": {
+    "en": "Part Catalogue: existing parts",
+    "fa": "کاتالوگ قطعه: قطعات موجود"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueDedup",
+      "action": "ExistingParts",
+      "args": {
+        "userRoles": "context:roles",
+        "q": "param:q"
+      },
+      "disposition": "inline"
+    }
+  }
+}

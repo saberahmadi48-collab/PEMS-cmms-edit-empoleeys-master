@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "technical-query-confirm",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Confirm technical query response",
+    "fa": "تایید پاسخ پرسش فنی"
+  },
+  "description": {
+    "en": "Confirm technical query response",
+    "fa": "تایید پاسخ پرسش فنی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TechnicalQuery",
+      "action": "Confirm",
+      "args": {
+        "technicalQueryId": "field:technicalQueryId",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "The query was closed.",
+      "fa": "بسته شد."
+    },
+    "redirect": "/TechnicalQuery/Details/{technicalQueryId}"
+  }
+}

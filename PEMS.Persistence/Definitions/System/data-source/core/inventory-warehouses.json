@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "inventory-warehouses",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Warehouses",
+    "fa": "انبارها"
+  },
+  "description": {
+    "en": "Warehouses",
+    "fa": "انبارها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Inventory",
+      "action": "Warehouses",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "kind": "action",
+  "key": "material-item-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New material",
+    "fa": "ماده‌ی جدید"
+  },
+  "description": {
+    "en": "New material",
+    "fa": "ماده‌ی جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "MaterialItem",
+      "map": {
+        "materialCode": "MaterialCode",
+        "materialType": "MaterialType",
+        "description": "Description",
+        "longDescription": "LongDescription",
+        "categoryId": "CategoryId",
+        "disciplineId": "DisciplineId",
+        "uomId": "UomId",
+        "vendorId": "VendorId",
+        "manufacturer": "Manufacturer",
+        "manufacturerPartNumber": "ManufacturerPartNumber",
+        "model": "Model",
+        "size": "Size",
+        "materialGrade": "MaterialGrade",
+        "specification": "Specification",
+        "isStockItem": "IsStockItem",
+        "isCritical": "IsCritical"
+      },
+      "required": [
+        "MaterialCode",
+        "Description"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "MaterialCode"
+          ],
+          "message": {
+            "en": "This material code is already used.",
+            "fa": "این کد ماده قبلاً استفاده شده است."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "The material was created.",
+      "fa": "ماده ساخته شد."
+    },
+    "redirect": "/p/material-items"
+  }
+}

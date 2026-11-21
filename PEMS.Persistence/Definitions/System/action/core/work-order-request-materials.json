@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "work-order-request-materials",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Request the materials",
+    "fa": "درخواست متریال"
+  },
+  "description": {
+    "en": "Request the materials",
+    "fa": "درخواست متریال"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderWarehouse",
+      "action": "RequestMaterials",
+      "args": {
+        "actorEmployeeId": "context:employeeId",
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "workOrderId": "field:workOrderId"
+      }
+    },
+    "success": {
+      "en": "The materials were requested.",
+      "fa": "درخواست متریال ارسال شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

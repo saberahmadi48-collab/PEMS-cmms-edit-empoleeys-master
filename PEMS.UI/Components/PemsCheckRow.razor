@@ -1,0 +1,8 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("check-row", Category = "forms", Icon = "bi-check-square")]
+@FrameMarkup.Element("div", Css, Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public CheckRowOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string Css => string.Join(" ", new[] { "form-check", Options.Switch ? "form-switch" : null, Options.Inline ? "form-check-inline" : null, Options.Css }.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+}

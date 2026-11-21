@@ -1,0 +1,19 @@
+{
+  "kind": "action",
+  "key": "grid-view-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete a saved view",
+    "fa": "حذف نمای ذخیره‌شده"
+  },
+  "description": {
+    "en": "Deletes the user's own view or a view of a role the user holds",
+    "fa": "نمای خود کاربر یا نقشی که دارد را حذف می‌کند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "grid.view.delete",
+    "parameters": {}
+  }
+}

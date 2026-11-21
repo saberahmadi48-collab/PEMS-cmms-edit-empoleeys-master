@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "production-batch-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production batch details (old address)",
+    "fa": "Production batch details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Production batch details (old address)",
+    "fa": "Production batch details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ProductionRun/BatchDetails/{id}",
+    "target": "/p/production-batch-details?id={id}",
+    "permanent": false
+  }
+}

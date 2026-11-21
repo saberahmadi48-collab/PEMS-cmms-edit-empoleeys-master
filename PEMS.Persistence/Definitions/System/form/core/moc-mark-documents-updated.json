@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "moc-mark-documents-updated",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark documents updated",
+    "fa": "اعلام به‌روزرسانی مدارک"
+  },
+  "description": {
+    "en": "Mark documents updated",
+    "fa": "اعلام به‌روزرسانی مدارک"
+  },
+  "payload": {
+    "id": "moc-mark-documents-updated",
+    "title": {
+      "en": "Mark documents updated",
+      "fa": "اعلام به‌روزرسانی مدارک"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "moc-mark-documents-updated",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "mocId",
+        "label": {
+          "en": "MOC id",
+          "fa": "شناسه‌ی MOC"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "note",
+        "label": {
+          "en": "Note",
+          "fa": "یادداشت"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

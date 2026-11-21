@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-report-export",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue report workbook (old address)",
+    "fa": "Part Catalogue report workbook (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue report workbook (old address)",
+    "fa": "Part Catalogue report workbook (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueReport/ExportXlsx",
+    "target": "/x/pc-report-export",
+    "permanent": false
+  }
+}

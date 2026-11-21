@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-admin-preview",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin preview (old address)",
+    "fa": "Part Catalogue admin preview (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue admin preview (old address)",
+    "fa": "Part Catalogue admin preview (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueAdmin/Preview",
+    "target": "/x/pc-admin-preview",
+    "permanent": false
+  }
+}

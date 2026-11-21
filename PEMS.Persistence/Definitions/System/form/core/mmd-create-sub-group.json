@@ -1,0 +1,102 @@
+{
+  "kind": "form",
+  "key": "mmd-create-sub-group",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateSubGroup",
+    "fa": "CreateSubGroup"
+  },
+  "description": {
+    "en": "CreateSubGroup",
+    "fa": "CreateSubGroup"
+  },
+  "payload": {
+    "id": "mmd-create-sub-group",
+    "title": {
+      "en": "CreateSubGroup",
+      "fa": "CreateSubGroup"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-create-sub-group",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "code"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "name"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline id",
+          "fa": "disciplineId"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "mmd-disciplines-choices"
+      },
+      {
+        "name": "parentMaintenanceGroupId",
+        "label": {
+          "en": "Parent maintenance group id",
+          "fa": "parentMaintenanceGroupId"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "mmd-groups-choices"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "description"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

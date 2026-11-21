@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "sod-policies-permission-bid-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permission B options",
+    "fa": "گزینه‌های مجوز دوم"
+  },
+  "description": {
+    "en": "Choices for permission b",
+    "fa": "گزینه‌ها برای مجوز دوم"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "entity-options",
+    "parameters": {
+      "entity": "Permission",
+      "value": "PermissionId",
+      "label": "Name",
+      "active": "IsActive"
+    }
+  }
+}

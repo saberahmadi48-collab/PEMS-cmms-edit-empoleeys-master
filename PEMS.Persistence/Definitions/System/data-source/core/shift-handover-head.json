@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "shift-handover-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Shift handover",
+    "fa": "Shift handover"
+  },
+  "description": {
+    "en": "Shift handover",
+    "fa": "Shift handover"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ShiftHandoverPage",
+      "action": "Head",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

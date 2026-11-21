@@ -1,0 +1,45 @@
+{
+  "kind": "action",
+  "key": "qualifications-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit qualification",
+    "fa": "ویرایش صلاحیت"
+  },
+  "description": {
+    "en": "Edit qualification",
+    "fa": "ویرایش صلاحیت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.update",
+    "parameters": {
+      "entity": "Qualification",
+      "map": {
+        "name": "Name",
+        "disciplineId": "DisciplineId",
+        "description": "Description"
+      },
+      "required": [
+        "Name"
+      ],
+      "unique": [
+        {
+          "fields": [
+            "Name"
+          ],
+          "message": {
+            "en": "A qualification with this name already exists.",
+            "fa": "صلاحیتی با همین نام از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Qualification saved.",
+      "fa": "صلاحیت ذخیره شد."
+    },
+    "redirect": "/p/qualifications"
+  }
+}

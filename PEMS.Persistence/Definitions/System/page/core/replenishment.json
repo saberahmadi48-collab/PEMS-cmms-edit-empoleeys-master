@@ -1,0 +1,466 @@
+{
+  "kind": "page",
+  "key": "replenishment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Replenishment Recommendations",
+    "fa": "توصیه‌های تأمین"
+  },
+  "description": {
+    "en": "Stock shortages and what to order, read only until you hand one to procurement (page definition)",
+    "fa": "کمبودهای موجودی و پیشنهاد سفارش؛ فقط خواندنی تا وقتی یکی را به خرید می‌سپارید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "replenishment",
+    "regions": {
+      "content": [
+        {
+          "id": "note",
+          "component": "content-blocks",
+          "options": {
+            "id": "note",
+            "blocks": [
+              {
+                "type": "text",
+                "text": {
+                  "en": "This page only looks at stock. It creates no requisition, order, reservation or stock movement; a shortage reaches procurement only when you send it.",
+                  "fa": "این صفحه فقط موجودی را می‌سنجد. هیچ درخواست، سفارش، رزرو یا حرکت موجودی نمی‌سازد؛ کمبود فقط با ارسال شما به خرید می‌رسد."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "replenishment-filters",
+            "resetUrl": "/p/replenishment",
+            "fields": [
+              {
+                "name": "q",
+                "label": {
+                  "en": "Search",
+                  "fa": "جستجو"
+                },
+                "kind": "text",
+                "value": "{{params.q}}"
+              },
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز"
+                    }
+                  },
+                  {
+                    "value": "Dismissed",
+                    "label": {
+                      "en": "Dismissed",
+                      "fa": "ردشده"
+                    }
+                  },
+                  {
+                    "value": "Closed",
+                    "label": {
+                      "en": "Closed",
+                      "fa": "بسته"
+                    }
+                  },
+                  {
+                    "value": "Converted",
+                    "label": {
+                      "en": "Converted",
+                      "fa": "تبدیل‌شده"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "definitiveOnly",
+                "label": {
+                  "en": "Definitive only",
+                  "fa": "فقط قطعی"
+                },
+                "kind": "select",
+                "value": "{{params.definitiveOnly}}",
+                "options": [
+                  {
+                    "value": "true",
+                    "label": {
+                      "en": "Yes",
+                      "fa": "بله"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "run",
+          "component": "action-button",
+          "options": {
+            "action": "replenishment-run",
+            "label": {
+              "en": "Run the calculation",
+              "fa": "اجرای محاسبه"
+            },
+            "tone": "primary",
+            "icon": "bi-calculator"
+          }
+        },
+        {
+          "id": "t-run",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Last run",
+              "fa": "آخرین اجرا"
+            },
+            "icon": "bi-hash"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/replenishment-last-run",
+              "first": true,
+              "map": {
+                "value": "runId"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-run-status",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Run status",
+              "fa": "وضعیت اجرا"
+            },
+            "icon": "bi-flag"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/replenishment-last-run",
+              "first": true,
+              "map": {
+                "value": "status"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-run-evaluated",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Evaluated",
+              "fa": "بررسی‌شده"
+            },
+            "icon": "bi-search"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/replenishment-last-run",
+              "first": true,
+              "map": {
+                "value": "evaluated"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-run-created",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "New",
+              "fa": "جدید"
+            },
+            "icon": "bi-plus-circle",
+            "tone": "success"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/replenishment-last-run",
+              "first": true,
+              "map": {
+                "value": "created"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-run-updated",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Updated",
+              "fa": "به‌روز"
+            },
+            "icon": "bi-arrow-repeat"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/replenishment-last-run",
+              "first": true,
+              "map": {
+                "value": "updated"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-run-closed",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Closed",
+              "fa": "بسته‌شده"
+            },
+            "icon": "bi-x-circle"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/replenishment-last-run",
+              "first": true,
+              "map": {
+                "value": "closed"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-run-nd",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Not definitive",
+              "fa": "غیرقطعی"
+            },
+            "icon": "bi-exclamation-triangle",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/replenishment-last-run",
+              "first": true,
+              "map": {
+                "value": "notDefinitive"
+              }
+            }
+          }
+        },
+        {
+          "id": "fresh",
+          "component": "content-blocks",
+          "options": {
+            "id": "fresh",
+            "blocks": [
+              {
+                "type": "text",
+                "text": {
+                  "en": "The figures are as of the last run; stock and demand may have changed since.",
+                  "fa": "ارقام مربوط به آخرین اجرا است؛ موجودی و تقاضا ممکن است از آن زمان تغییر کرده باشند."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-attribution",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-attribution",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Work-order demand without a warehouse (never assigned by inference)",
+                  "fa": "تقاضای دستور کار بدون انبار (هرگز با حدس نسبت داده نمی‌شود)"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "attribution",
+          "component": "data-grid",
+          "options": {
+            "id": "attribution",
+            "url": "/d/replenishment-notes-attribution",
+            "idField": "text",
+            "columns": [
+              {
+                "key": "text",
+                "header": {
+                  "en": "Note",
+                  "fa": "یادداشت"
+                },
+                "width": 700
+              }
+            ],
+            "pageSize": 5,
+            "height": 200
+          }
+        },
+        {
+          "id": "h-notrec",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-notrec",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Not recommended in the last run",
+                  "fa": "توصیه‌نشده در آخرین اجرا"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "not-recommended",
+          "component": "data-grid",
+          "options": {
+            "id": "not-recommended",
+            "url": "/d/replenishment-notes-other",
+            "idField": "text",
+            "columns": [
+              {
+                "key": "text",
+                "header": {
+                  "en": "Note",
+                  "fa": "یادداشت"
+                },
+                "width": 700
+              }
+            ],
+            "pageSize": 5,
+            "height": 200
+          }
+        },
+        {
+          "id": "recommendations",
+          "component": "data-grid",
+          "options": {
+            "id": "recommendations",
+            "url": "/d/replenishment-list?f.q={{params.q|url}}&f.status={{params.status|url}}&f.definitiveOnly={{params.definitiveOnly|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 320
+              },
+              {
+                "key": "warehouse",
+                "header": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                },
+                "width": 110
+              },
+              {
+                "key": "usable",
+                "header": {
+                  "en": "Usable",
+                  "fa": "قابل استفاده"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "unreservedDemand",
+                "header": {
+                  "en": "Unreserved demand",
+                  "fa": "تقاضای رزروشده‌نشده"
+                },
+                "width": 150,
+                "type": "number"
+              },
+              {
+                "key": "shortage",
+                "header": {
+                  "en": "Shortage",
+                  "fa": "کمبود"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "definitive",
+                "header": {
+                  "en": "Definitive",
+                  "fa": "قطعی"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "lastEvaluated",
+                "header": {
+                  "en": "Evaluated",
+                  "fa": "بررسی"
+                },
+                "width": 160,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 140,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "details",
+                    "label": {
+                      "en": "Details",
+                      "fa": "جزئیات"
+                    },
+                    "url": "/p/replenishment-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "ReplenishmentRecommendation.View"
+  }
+}

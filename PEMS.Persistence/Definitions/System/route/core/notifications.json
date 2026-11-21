@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "notifications",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Notifications (old address)",
+    "fa": "اعلان‌ها (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Notifications (old address)",
+    "fa": "اعلان‌ها (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Notification",
+    "target": "/p/notifications",
+    "permanent": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "contracts-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contracts (index) (old address)",
+    "fa": "Contracts (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Contracts (index) (old address)",
+    "fa": "Contracts (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Contract/Index",
+    "target": "/p/contracts",
+    "permanent": false
+  }
+}

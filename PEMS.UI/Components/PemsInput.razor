@@ -1,0 +1,6 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("input", Category = "forms", Icon = "bi-input-cursor-text")]
+@FrameMarkup.Element("input", Options.Kind.Equals("bare", StringComparison.OrdinalIgnoreCase) ? (Options.Css ?? "").Trim() : ControlState.Css(new ControlOptions { Kind = Options.Kind.Equals("check", StringComparison.OrdinalIgnoreCase) ? ControlKind.Check : ControlKind.Text, Size = Options.Scale?.ToLowerInvariant() switch { "small" => Size.Small, "large" => Size.Large, _ => Size.Medium }, CssClass = Options.Css }), Options.PageClass, Options.Attributes, null)
+@code {
+    [Parameter, EditorRequired] public InputOptions Options { get; set; } = default!;
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "chat-history-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Chat history",
+    "fa": "تاریخچه گفتگو"
+  },
+  "description": {
+    "en": "Chat history",
+    "fa": "تاریخچه گفتگو"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ChatAssistant",
+      "action": "History",
+      "args": {
+        "userName": "context:userName"
+      }
+    }
+  }
+}

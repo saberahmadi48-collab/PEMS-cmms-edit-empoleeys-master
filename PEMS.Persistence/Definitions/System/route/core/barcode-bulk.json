@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "barcode-bulk",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode bulk (old address)",
+    "fa": "Barcode bulk (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Barcode bulk (old address)",
+    "fa": "Barcode bulk (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Barcode/BulkGenerate",
+    "target": "/p/barcode-bulk",
+    "permanent": false
+  }
+}

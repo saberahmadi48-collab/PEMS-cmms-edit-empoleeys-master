@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mmd-toggle-standard-reference-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleStandardReferenceActive",
+    "fa": "وضعیت Standard Reference به‌روزرسانی شد."
+  },
+  "description": {
+    "en": "ToggleStandardReferenceActive",
+    "fa": "وضعیت Standard Reference به‌روزرسانی شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "ToggleStandardReferenceActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "وضعیت Standard Reference به‌روزرسانی شد.",
+      "fa": "وضعیت Standard Reference به‌روزرسانی شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

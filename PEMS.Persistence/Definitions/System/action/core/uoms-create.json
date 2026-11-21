@@ -1,0 +1,50 @@
+{
+  "kind": "action",
+  "key": "uoms-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create unit of measure",
+    "fa": "ایجاد واحد اندازه‌گیری"
+  },
+  "description": {
+    "en": "Create unit of measure",
+    "fa": "ایجاد واحد اندازه‌گیری"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "MaterialUOM",
+      "map": {
+        "code": "Code",
+        "name": "Name",
+        "description": "Description"
+      },
+      "required": [
+        "Code",
+        "Name"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "Code"
+          ],
+          "message": {
+            "en": "This code already exists.",
+            "fa": "این کد از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Unit of measure created.",
+      "fa": "واحد اندازه‌گیری ایجاد شد."
+    },
+    "redirect": "/p/uoms"
+  }
+}

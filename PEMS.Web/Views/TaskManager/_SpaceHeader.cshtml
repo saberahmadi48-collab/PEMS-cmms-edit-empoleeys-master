@@ -1,0 +1,30 @@
+@model PEMS.Application.DTOs.WorkSpaceViewDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var mode = (string)ViewBag.ViewMode;
+}
+<section class="vs-panel mb-3">
+    <nav aria-label="breadcrumb" class="small mb-1">
+        <pems-link asp-action="Index">@Localizer["Tm_Title"]</pems-link> / <span class="tm-key">@Model.Space.Key</span>
+    </nav>
+    <pems-flex wrap="true" justify="between" align="center" gap="2">
+        <pems-heading level="2" class="h5 mb-0">@TaskManagerUi.Name(Model.Space.Name, Model.Space.NameFa)
+            @if (Model.Space.IsLead) { <pems-badge tone="none" css="bg-primary-subtle text-primary-emphasis ms-1">@Localizer["Tm_Role_Lead"]</pems-badge> }
+        </pems-heading>
+        <pems-flex wrap="true" gap="2" align="center">
+            <div class="btn-group btn-group-sm" role="group" aria-label="@Localizer["Tm_View"]">
+                <pems-button as="a" tone="none" css="@(mode == "backlog" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Space" asp-route-key="@Model.Space.Key" asp-route-view="backlog" aria-current="@(mode == "backlog" ? "page" : null)"><pems-icon name="bi-list-ol" aria-hidden="true" /> @Localizer["Tm_Backlog"]</pems-button>
+                <pems-button as="a" tone="none" css="@(mode == "board" ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Space" asp-route-key="@Model.Space.Key" asp-route-view="board" aria-current="@(mode == "board" ? "page" : null)"><pems-icon name="bi-kanban" aria-hidden="true" /> @Localizer["Tm_Board"]</pems-button>
+            </div>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AllWork" asp-route-WorkSpaceId="@Model.Space.Id" asp-route-StatusCategory="NotDone"><pems-icon name="bi-funnel" aria-hidden="true" /> @Localizer["Tm_AllWork"]</pems-button>
+            @if (Model.CanCreate)
+            {
+                <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#tmCreateModal"><pems-icon name="bi-plus-lg" aria-hidden="true" /> @Localizer["Tm_Create"]</pems-button>
+            }
+        </pems-flex>
+    </pems-flex>
+    @if (!string.IsNullOrWhiteSpace(Model.Space.Description)) { <pems-text class="small text-muted mb-0 mt-2">@Model.Space.Description</pems-text> }
+</section>

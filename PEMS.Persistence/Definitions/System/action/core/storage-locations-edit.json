@@ -1,0 +1,45 @@
+{
+  "kind": "action",
+  "key": "storage-locations-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit storage location",
+    "fa": "ویرایش محل نگهداری"
+  },
+  "description": {
+    "en": "Edit storage location",
+    "fa": "ویرایش محل نگهداری"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.update",
+    "parameters": {
+      "entity": "StorageLocation",
+      "map": {
+        "name": "Name",
+        "parentLocationId": "ParentLocationId"
+      },
+      "required": [
+        "Name"
+      ],
+      "unique": [
+        {
+          "fields": [
+            "WarehouseId",
+            "Code"
+          ],
+          "message": {
+            "en": "A location with this code already exists in this warehouse.",
+            "fa": "محل نگهداری با همین کد در این انبار از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Storage location saved.",
+      "fa": "محل نگهداری ذخیره شد."
+    },
+    "redirect": "/p/storage-locations"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "employee-certifications",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employee certifications",
+    "fa": "گواهینامه‌های کارمند"
+  },
+  "description": {
+    "en": "Employee certifications",
+    "fa": "گواهینامه‌های کارمند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Employee",
+      "action": "Certifications",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

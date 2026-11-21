@@ -1,0 +1,110 @@
+{
+  "kind": "form",
+  "key": "mr-add-quotation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a quotation (MRQ)",
+    "fa": "افزودن استعلام (MRQ)"
+  },
+  "description": {
+    "en": "Add a quotation (MRQ)",
+    "fa": "افزودن استعلام (MRQ)"
+  },
+  "payload": {
+    "id": "mr-add-quotation",
+    "title": {
+      "en": "Add a quotation (MRQ)",
+      "fa": "افزودن استعلام (MRQ)"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "mr-add-quotation",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "mrId",
+        "label": {
+          "en": "MR id",
+          "fa": "شناسه‌ی MR"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "mrqNumber",
+        "label": {
+          "en": "MRQ number",
+          "fa": "شماره MRQ"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "vendorName",
+        "label": {
+          "en": "Vendor",
+          "fa": "فروشنده"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "inquiryDate",
+        "label": {
+          "en": "Inquiry date",
+          "fa": "تاریخ استعلام"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "quotedAmount",
+        "label": {
+          "en": "Amount",
+          "fa": "مبلغ"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "currency",
+        "label": {
+          "en": "Currency",
+          "fa": "ارز"
+        },
+        "kind": "text",
+        "maxLength": 10
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

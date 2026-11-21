@@ -1,0 +1,202 @@
+{
+  "kind": "form",
+  "key": "designer-edit-form-field",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a form field",
+    "fa": "ویرایش فیلد فرم"
+  },
+  "description": {
+    "en": "Set the kind, label, conditions, limits and options of one field; a value that is left empty is not changed, a - removes the setting",
+    "fa": "Set the kind, label, conditions, limits and options of one field; a value that is left empty is not changed, a - removes the setting"
+  },
+  "payload": {
+    "id": "designer-edit-form-field",
+    "title": {
+      "en": "Edit a form field",
+      "fa": "ویرایش فیلد فرم"
+    },
+    "submitLabel": {
+      "en": "Apply to the draft",
+      "fa": "اعمال بر پیش‌نویس"
+    },
+    "actionKey": "designer-edit-form-field",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ref",
+        "label": {
+          "en": "Definition",
+          "fa": "تعریف"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Definition is required.",
+            "fa": "تعریف الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "appKey:kind:key, for example core:form:department-create",
+          "fa": "appKey:kind:key, for example core:form:department-create"
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Field name",
+          "fa": "نام فیلد"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Field name is required.",
+            "fa": "نام فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "kind",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "maxLength": 40,
+        "optionsFrom": "designer-field-kinds",
+        "placeholder": {
+          "en": "(unchanged)",
+          "fa": "(بدون تغییر)"
+        }
+      },
+      {
+        "name": "titleEn",
+        "label": {
+          "en": "Label (English)",
+          "fa": "برچسب (انگلیسی)"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "titleFa",
+        "label": {
+          "en": "Label (Persian)",
+          "fa": "برچسب (فارسی)"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "required",
+        "label": {
+          "en": "Required (true or false)",
+          "fa": "الزامی (true یا false)"
+        },
+        "kind": "text",
+        "maxLength": 5
+      },
+      {
+        "name": "visible",
+        "label": {
+          "en": "Visible when (expression)",
+          "fa": "نمایش در صورت (عبارت)"
+        },
+        "kind": "text",
+        "maxLength": 500,
+        "placeholder": {
+          "en": "values.type == 'x'",
+          "fa": "values.type == 'x'"
+        }
+      },
+      {
+        "name": "requiredWhen",
+        "label": {
+          "en": "Required when (expression)",
+          "fa": "الزامی در صورت (عبارت)"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "readOnlyWhen",
+        "label": {
+          "en": "Read-only when (expression)",
+          "fa": "فقط‌خواندنی در صورت (عبارت)"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "minLength",
+        "label": {
+          "en": "Minimum length",
+          "fa": "حداقل طول"
+        },
+        "kind": "text",
+        "maxLength": 5
+      },
+      {
+        "name": "maxLength",
+        "label": {
+          "en": "Maximum length",
+          "fa": "حداکثر طول"
+        },
+        "kind": "text",
+        "maxLength": 5
+      },
+      {
+        "name": "pattern",
+        "label": {
+          "en": "Pattern (regular expression)",
+          "fa": "الگو"
+        },
+        "kind": "text",
+        "maxLength": 300
+      },
+      {
+        "name": "span",
+        "label": {
+          "en": "Columns spanned (1 or 2)",
+          "fa": "تعداد ستون"
+        },
+        "kind": "text",
+        "maxLength": 1
+      },
+      {
+        "name": "optionsFrom",
+        "label": {
+          "en": "Options from the data source",
+          "fa": "گزینه‌ها از منبع داده"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "helpEn",
+        "label": {
+          "en": "Help (English)",
+          "fa": "راهنما (انگلیسی)"
+        },
+        "kind": "text",
+        "maxLength": 300
+      },
+      {
+        "name": "helpFa",
+        "label": {
+          "en": "Help (Persian)",
+          "fa": "راهنما (فارسی)"
+        },
+        "kind": "text",
+        "maxLength": 300
+      }
+    ]
+  }
+}

@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
+using PEMS.Web.Resources;
 
 namespace PEMS.Web.Controllers;
 
@@ -13,12 +15,17 @@ public class MDBController : Controller
 {
     private readonly IManufacturerDataBookService _service;
     private readonly PEMSDbContext _context;
+    private readonly IStringLocalizer<SharedResource>? _localizer;
 
-    public MDBController(IManufacturerDataBookService service, PEMSDbContext context)
+    public MDBController(IManufacturerDataBookService service, PEMSDbContext context, IStringLocalizer<SharedResource>? localizer = null)
     {
         _service = service;
         _context = context;
+        _localizer = localizer;
     }
+
+    // SCRUM-540: messages follow the page language
+    private string T(string key) => _localizer?[key].Value ?? key;
 
     // طبق «PEMS — Global Grid Hardening» P1: قبلاً کل جدول فعال MDB (با ۴ Include) بدون
     // Skip/Take بارگذاری می‌شد. فیلترهای Project/Vendor موجود دست‌نخورده ماندند؛ فقط صفحه‌بندی
@@ -76,7 +83,7 @@ public class MDBController : Controller
     {
         if (equipmentId == 0 || vendorId == 0 || projectId == 0)
         {
-            ModelState.AddModelError(string.Empty, "Equipment, Vendor and Project are required.");
+            ModelState.AddModelError(string.Empty, T("Equipment, Vendor and Project are required."));
             await LoadCreateViewBagsAsync();
             ViewData["Title"] = "New MDB";
             ViewData["Section"] = "Engineering Management";
@@ -85,7 +92,7 @@ public class MDBController : Controller
 
         var id = await _service.CreateAsync(equipmentId, vendorId, poId, projectId, plannedFinalIssueDate);
 
-        TempData["Message"] = "MDB created successfully";
+        TempData["Message"] = T("MDB created successfully");
         return RedirectToAction(nameof(Details), new { id });
     }
 

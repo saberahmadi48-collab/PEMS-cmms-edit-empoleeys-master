@@ -1,0 +1,108 @@
+{
+  "kind": "page",
+  "key": "storage-locations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Storage locations",
+    "fa": "محل‌های نگهداری"
+  },
+  "description": {
+    "en": "Storage locations list (page definition)",
+    "fa": "فهرست محل‌های نگهداری (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "storage-locations",
+    "template": "entity-list",
+    "args": {
+      "id": "storage-locations",
+      "url": "/d/storage-locations-grid",
+      "idField": "storageLocationId",
+      "viewsKey": "storage-locations",
+      "columns": [
+        {
+          "key": "code",
+          "header": {
+            "en": "Code",
+            "fa": "کد"
+          },
+          "width": 140
+        },
+        {
+          "key": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 240
+        },
+        {
+          "key": "warehouse",
+          "header": {
+            "en": "Warehouse",
+            "fa": "انبار"
+          },
+          "width": 180
+        },
+        {
+          "key": "parent",
+          "header": {
+            "en": "Parent location",
+            "fa": "محل والد"
+          },
+          "width": 180
+        },
+        {
+          "key": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/storage-locations-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "toggle",
+              "label": {
+                "en": "Activate / deactivate",
+                "fa": "فعال / غیرفعال"
+              },
+              "url": "/a/storage-locations-toggle",
+              "method": "post",
+              "confirm": {
+                "en": "Change the status?",
+                "fa": "وضعیت تغییر کند؟"
+              }
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/storage-locations-create",
+      "newLabel": {
+        "en": "New storage location",
+        "fa": "محل نگهداری جدید"
+      }
+    }
+  }
+}

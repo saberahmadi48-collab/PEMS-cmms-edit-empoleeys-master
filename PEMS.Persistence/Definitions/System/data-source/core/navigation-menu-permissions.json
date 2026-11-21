@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "navigation-menu-permissions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Menu permissions",
+    "fa": "Menu permissions"
+  },
+  "description": {
+    "en": "Menu permissions",
+    "fa": "Menu permissions"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "NavigationMenu",
+      "action": "PermissionOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

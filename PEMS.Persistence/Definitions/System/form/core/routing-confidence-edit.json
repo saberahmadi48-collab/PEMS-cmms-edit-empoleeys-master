@@ -1,0 +1,64 @@
+{
+  "kind": "form",
+  "key": "routing-confidence-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit confidence thresholds",
+    "fa": "ویرایش آستانه‌های اطمینان"
+  },
+  "description": {
+    "en": "Edit confidence thresholds",
+    "fa": "ویرایش آستانه‌های اطمینان"
+  },
+  "payload": {
+    "id": "routing-confidence-edit",
+    "title": {
+      "en": "Edit confidence thresholds",
+      "fa": "ویرایش آستانه‌های اطمینان"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "routing-confidence-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "highThreshold",
+        "label": {
+          "en": "High threshold",
+          "fa": "آستانه‌ی بالا"
+        },
+        "kind": "number",
+        "min": 0,
+        "max": 1,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "High threshold is required.",
+            "fa": "آستانه‌ی بالا الزامی است."
+          }
+        }
+      },
+      {
+        "name": "mediumThreshold",
+        "label": {
+          "en": "Medium threshold",
+          "fa": "آستانه‌ی متوسط"
+        },
+        "kind": "number",
+        "min": 0,
+        "max": 1,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Medium threshold is required.",
+            "fa": "آستانه‌ی متوسط الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

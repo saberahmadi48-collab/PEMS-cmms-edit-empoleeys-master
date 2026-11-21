@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "permission-matrix-modules",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permission matrix modules",
+    "fa": "ماژول‌های ماتریس مجوز"
+  },
+  "description": {
+    "en": "The rows of the permission matrix",
+    "fa": "ردیف‌های ماتریس مجوز"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PermissionMatrix",
+      "action": "Modules",
+      "value": "module",
+      "label": "module"
+    }
+  }
+}

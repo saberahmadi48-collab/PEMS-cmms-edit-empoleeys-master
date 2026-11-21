@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-check-manufacturer",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup: CheckManufacturer",
+    "fa": "جستجوی کاتالوگ قطعه: CheckManufacturer"
+  },
+  "description": {
+    "en": "Part Catalogue lookup: CheckManufacturer",
+    "fa": "جستجوی کاتالوگ قطعه: CheckManufacturer"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueLookup",
+      "action": "CheckManufacturer",
+      "args": {
+        "userRoles": "context:roles",
+        "name": "param:name"
+      },
+      "disposition": "inline"
+    }
+  }
+}

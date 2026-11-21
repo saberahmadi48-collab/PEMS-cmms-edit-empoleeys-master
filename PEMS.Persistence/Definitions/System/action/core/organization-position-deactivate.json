@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "organization-position-deactivate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Deactivate a position",
+    "fa": "غیرفعال‌سازی سمت"
+  },
+  "description": {
+    "en": "Deactivate a position",
+    "fa": "غیرفعال‌سازی سمت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Organization",
+      "action": "SetPositionActive",
+      "args": {
+        "positionId": "field:id",
+        "isActive": "literal:false"
+      }
+    },
+    "success": {
+      "en": "Position deactivated.",
+      "fa": "سمت غیرفعال شد."
+    },
+    "redirect": "/p/organization-positions"
+  }
+}

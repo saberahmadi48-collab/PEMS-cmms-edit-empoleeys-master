@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "irn-osd",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "OS&D report",
+    "fa": "OS&D report"
+  },
+  "description": {
+    "en": "OS&D report",
+    "fa": "OS&D report"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Irn",
+      "action": "Osd",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

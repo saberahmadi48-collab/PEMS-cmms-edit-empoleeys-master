@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-manufacturers",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup Manufacturers (old address)",
+    "fa": "Part Catalogue lookup Manufacturers (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue lookup Manufacturers (old address)",
+    "fa": "Part Catalogue lookup Manufacturers (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueLookup/Manufacturers",
+    "target": "/x/pc-manufacturers",
+    "permanent": false
+  }
+}

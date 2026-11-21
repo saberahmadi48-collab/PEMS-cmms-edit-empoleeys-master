@@ -1,0 +1,155 @@
+{
+  "kind": "form",
+  "key": "users-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New user",
+    "fa": "کاربر جدید"
+  },
+  "description": {
+    "en": "New user",
+    "fa": "کاربر جدید"
+  },
+  "payload": {
+    "id": "users-create",
+    "title": {
+      "en": "New user",
+      "fa": "کاربر جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "users-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "userName",
+        "label": {
+          "en": "User name",
+          "fa": "نام کاربری"
+        },
+        "kind": "text",
+        "maxLength": 256,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "User name is required.",
+            "fa": "نام کاربری الزامی است."
+          }
+        }
+      },
+      {
+        "name": "fullName",
+        "label": {
+          "en": "Full name",
+          "fa": "نام کامل"
+        },
+        "kind": "text",
+        "maxLength": 200,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Full name is required.",
+            "fa": "نام کامل الزامی است."
+          }
+        }
+      },
+      {
+        "name": "email",
+        "label": {
+          "en": "Email",
+          "fa": "ایمیل"
+        },
+        "kind": "text",
+        "maxLength": 256,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Email is required.",
+            "fa": "ایمیل الزامی است."
+          }
+        }
+      },
+      {
+        "name": "password",
+        "label": {
+          "en": "Password",
+          "fa": "گذرواژه"
+        },
+        "kind": "password",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Password is required for a new user.",
+            "fa": "گذرواژه برای کاربر جدید الزامی است."
+          }
+        }
+      },
+      {
+        "name": "isActive",
+        "label": {
+          "en": "Active",
+          "fa": "فعال"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "roles",
+        "label": {
+          "en": "Roles",
+          "fa": "نقش‌ها"
+        },
+        "kind": "checkboxMatrix",
+        "optionsFrom": "users-roles",
+        "columns": [
+          {
+            "value": "Member",
+            "label": {
+              "en": "Member",
+              "fa": "عضو"
+            }
+          }
+        ]
+      },
+      {
+        "name": "existingEmployeeId",
+        "label": {
+          "en": "Existing employee",
+          "fa": "کارمند موجود"
+        },
+        "kind": "select",
+        "optionsFrom": "organization-employees"
+      },
+      {
+        "name": "departmentId",
+        "label": {
+          "en": "Department (to create an employee when none is chosen)",
+          "fa": "دپارتمان (برای ساخت کارمند در صورت انتخاب نشدن کارمند)"
+        },
+        "kind": "select",
+        "optionsFrom": "organization-departments"
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline (to create an employee)",
+          "fa": "دیسیپلین (برای ساخت کارمند)"
+        },
+        "kind": "select",
+        "optionsFrom": "skills-discipline-id-options"
+      },
+      {
+        "name": "positionId",
+        "label": {
+          "en": "Position (to create an employee)",
+          "fa": "سمت (برای ساخت کارمند)"
+        },
+        "kind": "select",
+        "optionsFrom": "organization-positions-options"
+      }
+    ]
+  }
+}

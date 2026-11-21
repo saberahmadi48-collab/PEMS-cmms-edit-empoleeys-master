@@ -1,0 +1,105 @@
+{
+  "kind": "form",
+  "key": "packager-feed-preview",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor panel: preview a feed package",
+    "fa": "پنل فروشنده: پیش‌نمایش بسته تغذیه داده"
+  },
+  "description": {
+    "en": "Vendor: build a feed package",
+    "fa": "فروشنده: ساخت بسته داده"
+  },
+  "payload": {
+    "id": "packager-feed-preview",
+    "title": {
+      "en": "Preview what the feed package would contain (nothing is signed)",
+      "fa": "پیش‌نمایش محتوای بسته (چیزی امضا نمی‌شود)"
+    },
+    "submitLabel": {
+      "en": "Preview",
+      "fa": "پیش‌نمایش"
+    },
+    "actionKey": "packager-feed-preview",
+    "permission": "Definitions.Create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "toVersion",
+        "label": {
+          "en": "Product version",
+          "fa": "نسخه محصول"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Product version is required.",
+            "fa": "نسخه محصول الزامی است."
+          }
+        },
+        "maxLength": 30
+      },
+      {
+        "name": "entity",
+        "label": {
+          "en": "Entity",
+          "fa": "موجودیت"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Entity is required.",
+            "fa": "موجودیت الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "mode",
+        "label": {
+          "en": "Mode (append, overwrite or merge)",
+          "fa": "حالت (append، overwrite یا merge)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Mode (append, overwrite or merge) is required.",
+            "fa": "حالت (append، overwrite یا merge) الزامی است."
+          }
+        },
+        "maxLength": 20
+      },
+      {
+        "name": "keyFields",
+        "label": {
+          "en": "Key fields (comma separated; default Code, else Name)",
+          "fa": "فیلدهای کلید (با ویرگول؛ پیش‌فرض Code سپس Name)"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "rows",
+        "label": {
+          "en": "Rows (a JSON array of objects, or CSV with the field names in the first line)",
+          "fa": "ردیف‌ها (آرایه JSON از اشیا، یا CSV با نام فیلدها در خط اول)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Rows (JSON array of objects) is required.",
+            "fa": "ردیف‌ها (آرایه JSON) الزامی است."
+          }
+        },
+        "maxLength": 2000000,
+        "span": 2
+      }
+    ]
+  }
+}

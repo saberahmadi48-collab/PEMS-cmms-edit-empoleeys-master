@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "workflow-binding-deactivate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Deactivate a binding",
+    "fa": "غیرفعال‌سازی اتصال"
+  },
+  "description": {
+    "en": "Deactivate a binding",
+    "fa": "غیرفعال‌سازی اتصال"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "DeactivateBinding",
+      "args": {
+        "bindingId": "field:id",
+        "confirmed": "literal:true"
+      }
+    },
+    "success": {
+      "en": "Binding deactivated.",
+      "fa": "اتصال غیرفعال شد."
+    },
+    "redirect": "/p/workflow-management"
+  }
+}

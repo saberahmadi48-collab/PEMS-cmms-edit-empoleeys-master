@@ -1,0 +1,39 @@
+{
+  "kind": "form",
+  "key": "organization-import-template",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Organization import template",
+    "fa": "قالب ایمپورت ساختار سازمانی"
+  },
+  "description": {
+    "en": "Organization import template",
+    "fa": "قالب ایمپورت ساختار سازمانی"
+  },
+  "payload": {
+    "id": "organization-import-template",
+    "title": {
+      "en": "Organization import template",
+      "fa": "قالب ایمپورت ساختار سازمانی"
+    },
+    "submitLabel": {
+      "en": "Download",
+      "fa": "دریافت"
+    },
+    "actionKey": "organization-import-template",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "note",
+        "label": {
+          "en": "Download the empty template with the reference sheets (departments, employees, positions).",
+          "fa": "قالب خالی همراه با برگه‌های مرجع (دپارتمان‌ها، کارمندان، سمت‌ها) را دریافت کنید."
+        },
+        "kind": "text",
+        "readOnly": true
+      }
+    ]
+  }
+}

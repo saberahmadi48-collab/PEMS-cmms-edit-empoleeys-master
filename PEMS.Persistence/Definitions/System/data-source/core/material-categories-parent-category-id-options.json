@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "material-categories-parent-category-id-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Parent category options",
+    "fa": "گزینه‌های دسته‌ی والد"
+  },
+  "description": {
+    "en": "Choices for parent category",
+    "fa": "گزینه‌ها برای دسته‌ی والد"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "entity-options",
+    "parameters": {
+      "entity": "MaterialCategory",
+      "value": "MaterialCategoryId",
+      "label": "Name",
+      "active": "IsActive"
+    }
+  }
+}

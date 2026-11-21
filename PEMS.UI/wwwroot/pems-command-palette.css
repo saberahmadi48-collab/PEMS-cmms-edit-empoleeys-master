@@ -1,0 +1,140 @@
+/* PEMS command palette (SCRUM-64). Colours only from the --pems-* tokens, so Light, Dark and Turquoise follow the theme;
+   logical properties (inline-start/end) so RTL needs no extra rules. Markup is built by pems-command-palette.js. */
+
+.pems-cp-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1080; /* above Bootstrap modals (1055), below toasts (1090) */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 12vh 16px 16px;
+    background: rgba(12, 21, 36, 0.45);
+}
+
+.pems-cp-backdrop[hidden] { display: none; }
+
+html.pems-cp-open { overflow: hidden; }
+
+.pems-cp {
+    width: min(640px, 100%);
+    max-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--pems-surface, #fff);
+    color: var(--pems-text, #1b2733);
+    border: 1px solid var(--pems-surface-border, #edf0f4);
+    border-radius: 12px;
+    box-shadow: 0 18px 48px var(--pems-shadow, rgba(20, 32, 51, 0.25));
+    overflow: hidden;
+}
+
+.pems-cp-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-block-end: 1px solid var(--pems-surface-border, #edf0f4);
+}
+
+.pems-cp-search-icon { color: var(--pems-text-muted, #5c6f85); font-size: 1.05rem; }
+
+.pems-cp-input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: inherit;
+    font-size: 1rem;
+    padding: 4px 0;
+}
+
+.pems-cp-input::placeholder { color: var(--pems-text-muted, #5c6f85); opacity: 1; }
+
+.pems-cp-kbd,
+.pems-cp-keys kbd {
+    font-family: inherit;
+    font-size: 0.72rem;
+    color: var(--pems-text-muted, #5c6f85);
+    background: var(--pems-bg, #f3f5f8);
+    border: 1px solid var(--pems-surface-border, #edf0f4);
+    border-radius: 4px;
+    padding: 1px 6px;
+}
+
+.pems-cp-list {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 6px;
+}
+
+.pems-cp-group + .pems-cp-group { margin-block-start: 4px; }
+
+.pems-cp-group-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--pems-text-muted, #5c6f85);
+    padding: 8px 10px 4px;
+}
+
+.pems-cp-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    color: inherit;
+    text-decoration: none;
+    border-inline-start: 3px solid transparent;
+}
+
+.pems-cp-option:hover { color: inherit; }
+
+.pems-cp-option.active {
+    background: var(--pems-row-hover, rgba(31, 78, 120, 0.06));
+    border-inline-start-color: var(--pems-accent, #d98c2b);
+    outline: 2px solid var(--pems-focus, #2563eb);
+    outline-offset: -2px;
+}
+
+.pems-cp-icon { color: var(--pems-text-muted, #5c6f85); font-size: 1rem; flex: 0 0 auto; }
+
+.pems-cp-text { display: flex; flex-direction: column; min-width: 0; }
+
+.pems-cp-label,
+.pems-cp-sub {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pems-cp-sub { font-size: 0.78rem; color: var(--pems-text-muted, #5c6f85); }
+
+.pems-cp-all .pems-cp-label { color: var(--pems-focus, #2563eb); }
+
+.pems-cp-foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 14px;
+    font-size: 0.75rem;
+    color: var(--pems-text-muted, #5c6f85);
+    border-block-start: 1px solid var(--pems-surface-border, #edf0f4);
+}
+
+.pems-cp-status { text-align: end; }
+
+@media (max-width: 575.98px) {
+    .pems-cp-backdrop { padding: 8px; align-items: stretch; }
+    .pems-cp { max-height: none; height: 100%; }
+    .pems-cp-keys { display: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .pems-cp { animation: pems-cp-in 0.12s ease-out; }
+    @keyframes pems-cp-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "users-roles",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Roles",
+    "fa": "نقش‌ها"
+  },
+  "description": {
+    "en": "Roles",
+    "fa": "نقش‌ها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Users",
+      "action": "RoleOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

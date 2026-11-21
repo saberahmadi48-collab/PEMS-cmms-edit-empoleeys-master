@@ -1,0 +1,93 @@
+{
+  "kind": "form",
+  "key": "contract-request-revision",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Request a revision",
+    "fa": "درخواست بازنگری"
+  },
+  "description": {
+    "en": "Request a revision",
+    "fa": "درخواست بازنگری"
+  },
+  "payload": {
+    "id": "contract-request-revision",
+    "title": {
+      "en": "Request a revision",
+      "fa": "درخواست بازنگری"
+    },
+    "submitLabel": {
+      "en": "Request",
+      "fa": "درخواست"
+    },
+    "actionKey": "contract-request-revision",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "contractId",
+        "label": {
+          "en": "Contract id",
+          "fa": "شناسه‌ی قرارداد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "changeType",
+        "label": {
+          "en": "Change type",
+          "fa": "نوع تغییر"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "newValue",
+        "label": {
+          "en": "New value",
+          "fa": "مبلغ جدید"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 2000
+      },
+      {
+        "name": "changeDescription",
+        "label": {
+          "en": "Change description",
+          "fa": "شرح تغییر"
+        },
+        "kind": "text",
+        "maxLength": 4000
+      }
+    ]
+  }
+}

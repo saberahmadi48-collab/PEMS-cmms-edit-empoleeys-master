@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("related-list", Category = "list", Icon = "bi-list-ul")]
+<section @attributes="Options.Attributes" class="@ListMarkup.Css("lp-rel", Options.CssClass)" id="@(string.IsNullOrEmpty(Options.Id) ? null : Options.Id)" aria-labelledby="@Options.HeadingId"><div class="lp-rel-head"><h3 id="@Options.HeadingId">@if (!string.IsNullOrEmpty(Options.Icon)){<i aria-hidden="true" class="@("bi " + Options.Icon)"></i>@(" ")}@Options.Title</h3>@if (Options.Count.HasValue){<span class="lp-total">@Options.Count.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)</span>}</div>@ChildContent@if (Options.Empty && !string.IsNullOrEmpty(Options.EmptyText)){<p class="lp-rel-empty">@Options.EmptyText</p>}</section>
+@code {
+    [Parameter, EditorRequired] public RelatedListOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

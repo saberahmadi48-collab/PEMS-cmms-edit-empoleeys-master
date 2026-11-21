@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-suppliers",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup Suppliers (old address)",
+    "fa": "Part Catalogue lookup Suppliers (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue lookup Suppliers (old address)",
+    "fa": "Part Catalogue lookup Suppliers (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueLookup/Suppliers",
+    "target": "/x/pc-suppliers",
+    "permanent": false
+  }
+}

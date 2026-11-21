@@ -18,160 +18,135 @@
 
     string StatusBadge(string status) => status switch
     {
-        "READY" => "text-bg-success",
-        "PARTIAL" => "text-bg-warning",
-        "INSUFFICIENT_DATA" => "text-bg-warning",
-        "NOT_READY" => "text-bg-secondary",
-        _ => "text-bg-light border"
+        "READY" => "success",
+        "PARTIAL" => "warning",
+        "INSUFFICIENT_DATA" => "warning",
+        "NOT_READY" => "neutral",
+        _ => "light"
     };
 
     var totalEquipmentWithFailures = Model.Count;
 }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <div>
-        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Fleet Reliability</a>
-        <a asp-action="Intelligence" class="btn btn-outline-secondary btn-sm">@Localizer["Maintenance Intelligence"]</a>
-        <a asp-action="PredictiveMaintenance" class="btn btn-outline-secondary btn-sm">@Localizer["Predictive"]</a>
-        <a asp-action="ConditionMonitoring" class="btn btn-outline-secondary btn-sm">@Localizer["Condition Monitoring"]</a>
-        <a asp-action="CBMDashboard" class="btn btn-outline-secondary btn-sm">@Localizer["CBM Dashboard"]</a>
-        <a asp-action="AiInsights" class="btn btn-outline-secondary btn-sm">@Localizer["AI Insights"]</a>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">Fleet Reliability</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Intelligence">@Localizer["Maintenance Intelligence"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="PredictiveMaintenance">@Localizer["Predictive"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ConditionMonitoring">@Localizer["Condition Monitoring"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="CBMDashboard">@Localizer["CBM Dashboard"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="AiInsights">@Localizer["AI Insights"]</pems-button>
     </div>
-</div>
-<p class="text-muted small">
+</pems-flex>
+<pems-text class="text-muted small">
     طبق «PEMS Phase 9» بند ۲۰/۳۱: هیچ درصد/KPI جعلی این‌جا نمایش داده نمی‌شود - هرجا داده کافی
     نیست، N/A یا وضعیت صریح (NOT_READY/INSUFFICIENT_DATA) نشان داده می‌شود.
-</p>
+</pems-text>
 
 @* ===================== Executive Reliability ===================== *@
-<h6 class="mt-4">Executive Reliability</h6>
-<div class="row g-3 mb-3">
-    <div class="col-md-2">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@totalEquipmentWithFailures</div>
+<pems-heading level="6" class="mt-4">Executive Reliability</pems-heading>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="2">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@totalEquipmentWithFailures</pems-metric>
             <div class="text-muted small">@Localizer["Equipment with Failure History"]</div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@(pmCompliance.CompliancePercent.HasValue ? $"{pmCompliance.CompliancePercent.Value:N1}%" : "N/A")</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="2">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@(pmCompliance.CompliancePercent.HasValue ? $"{pmCompliance.CompliancePercent.Value:N1}%" : "N/A")</pems-metric>
             <div class="text-muted small">@Localizer["PM Compliance"]</div>
-            <span class="badge @StatusBadge(pmCompliance.DataStatus)">@pmCompliance.DataStatus</span>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@(breakdown.Items.FirstOrDefault(x => x.TypeName == "Corrective")?.Percent is { } cp ? $"{cp:N1}%" : "N/A")</div>
+            <pems-badge tone="@StatusBadge(pmCompliance.DataStatus)">@pmCompliance.DataStatus</pems-badge>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="2">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@(breakdown.Items.FirstOrDefault(x => x.TypeName == "Corrective")?.Percent is { } cp ? $"{cp:N1}%" : "N/A")</pems-metric>
             <div class="text-muted small">Corrective Ratio</div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@(breakdown.EmergencyWorkRatioPercent.HasValue ? $"{breakdown.EmergencyWorkRatioPercent.Value:N1}%" : "N/A")</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="2">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@(breakdown.EmergencyWorkRatioPercent.HasValue ? $"{breakdown.EmergencyWorkRatioPercent.Value:N1}%" : "N/A")</pems-metric>
             <div class="text-muted small">Emergency Ratio</div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@repeatFailures.Count</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="2">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@repeatFailures.Count</pems-metric>
             <div class="text-muted small">@Localizer["Repeat Failure Groups"]</div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@badActors.Count</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="2">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@badActors.Count</pems-metric>
             <div class="text-muted small">Bad Actors (top list)</div>
-        </div>
-    </div>
-</div>
+        </pems-content-card>
+    </pems-col>
+</pems-row>
 
 @* ===================== Criticality ===================== *@
-<h6 class="mt-4">@Localizer["Criticality"]</h6>
-<div class="content-card mb-3">
-    <div class="table-scroll-area" style="overflow-x:auto;">
-    <table class="table table-enterprise table-sm mb-0">
-        <thead><tr><th>@Localizer["Class"]</th><th class="text-end">@Localizer["Equipment"]</th><th class="text-end">@Localizer["Failures"]</th><th class="text-end">@Localizer["Repeat"]</th><th class="text-end">@Localizer["PM Compliance"]</th><th class="text-end">@Localizer["Strategy Coverage"]</th><th class="text-end">RCM Class Coverage</th></tr></thead>
-        <tbody>
-            @foreach (var row in criticalityMatrix)
-            {
-                var m2 = criticalityMaintenanceMatrix.FirstOrDefault(x => x.CriticalityClass == row.CriticalityClass);
-                <tr>
-                    <td class="fw-bold">@row.CriticalityClass</td>
-                    <td class="text-end">@row.EquipmentCount</td>
-                    <td class="text-end">@row.FailureCount</td>
-                    <td class="text-end">@row.RepeatFailureGroupCount</td>
-                    <td class="text-end">@(row.PmCompliancePercent.HasValue ? $"{row.PmCompliancePercent.Value:N1}%" : "N/A")</td>
-                    <td class="text-end">@(m2 != null ? $"{m2.StrategyCoveragePercent:N0}%" : "N/A")</td>
-                    <td class="text-end">@(m2?.RcmClassCoveragePercent.HasValue == true ? $"{m2.RcmClassCoveragePercent.Value:N0}%" : "N/A")</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<pems-heading level="6" class="mt-4">@Localizer["Criticality"]</pems-heading>
+<pems-content-card css="mb-3">
+    <div class="table-scroll-area pems-s-0ddf068b">
+    @{
+        var rows_23 = criticalityMatrix;
+        var cell_23_0 = DataCell.Template(rows_23, @<text>@{ var row = item; var m2 = criticalityMaintenanceMatrix.FirstOrDefault(x => x.CriticalityClass == row.CriticalityClass); }@row.CriticalityClass</text>);
+        var cell_23_1 = DataCell.Template(rows_23, @<text>@{ var row = item; var m2 = criticalityMaintenanceMatrix.FirstOrDefault(x => x.CriticalityClass == row.CriticalityClass); }@row.EquipmentCount</text>);
+        var cell_23_2 = DataCell.Template(rows_23, @<text>@{ var row = item; var m2 = criticalityMaintenanceMatrix.FirstOrDefault(x => x.CriticalityClass == row.CriticalityClass); }@row.FailureCount</text>);
+        var cell_23_3 = DataCell.Template(rows_23, @<text>@{ var row = item; var m2 = criticalityMaintenanceMatrix.FirstOrDefault(x => x.CriticalityClass == row.CriticalityClass); }@row.RepeatFailureGroupCount</text>);
+        var cell_23_4 = DataCell.Template(rows_23, @<text>@{ var row = item; var m2 = criticalityMaintenanceMatrix.FirstOrDefault(x => x.CriticalityClass == row.CriticalityClass); }@(row.PmCompliancePercent.HasValue ? $"{row.PmCompliancePercent.Value:N1}%" : "N/A")</text>);
+        var cell_23_5 = DataCell.Template(rows_23, @<text>@{ var row = item; var m2 = criticalityMaintenanceMatrix.FirstOrDefault(x => x.CriticalityClass == row.CriticalityClass); }@(m2 != null ? $"{m2.StrategyCoveragePercent:N0}%" : "N/A")</text>);
+        var cell_23_6 = DataCell.Template(rows_23, @<text>@{ var row = item; var m2 = criticalityMaintenanceMatrix.FirstOrDefault(x => x.CriticalityClass == row.CriticalityClass); }@(m2?.RcmClassCoveragePercent.HasValue == true ? $"{m2.RcmClassCoveragePercent.Value:N0}%" : "N/A")</text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_23, c_ => c_.Add(((Localizer["Class"])?.ToString() ?? ""), row => (object?)cell_23_0(row), css: "fw-bold").Add(((Localizer["Equipment"])?.ToString() ?? ""), row => (object?)cell_23_1(row), css: "text-end", headerCss: "text-end").Add(((Localizer["Failures"])?.ToString() ?? ""), row => (object?)cell_23_2(row), css: "text-end", headerCss: "text-end").Add(((Localizer["Repeat"])?.ToString() ?? ""), row => (object?)cell_23_3(row), css: "text-end", headerCss: "text-end").Add(((Localizer["PM Compliance"])?.ToString() ?? ""), row => (object?)cell_23_4(row), css: "text-end", headerCss: "text-end").Add(((Localizer["Strategy Coverage"])?.ToString() ?? ""), row => (object?)cell_23_5(row), css: "text-end", headerCss: "text-end").Add("RCM Class Coverage", row => (object?)cell_23_6(row), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
     </div>
-    <a asp-action="Intelligence" class="small">See full Criticality × Failure × Maintenance matrix with findings →</a>
-</div>
+    <pems-link asp-action="Intelligence" class="small">See full Criticality × Failure × Maintenance matrix with findings →</pems-link>
+</pems-content-card>
 
 @* ===================== Maintenance / Failure ===================== *@
-<div class="row g-3 mb-3">
-    <div class="col-md-6">
-        <div class="content-card h-100">
-            <h6 class="mb-2">Top Failure Modes (Pareto)</h6>
-            <table class="table table-enterprise table-sm mb-0">
-                <tbody>
-                    @foreach (var p in pareto)
-                    {
-                        <tr><td>@p.Key</td><td class="text-end">@p.Count</td><td class="text-end small text-muted">@p.CumulativePercent.ToString("N0")%</td></tr>
-                    }
-                </tbody>
-            </table>
-            @if (!pareto.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="content-card h-100">
-            <h6 class="mb-2">@Localizer["Bad Actors"]</h6>
-            <table class="table table-enterprise table-sm mb-0">
-                <tbody>
-                    @foreach (var b in badActors)
-                    {
-                        <tr>
-                            <td><a asp-action="EquipmentProfile" asp-route-id="@b.EquipmentId">@b.TagNumber</a></td>
-                            <td class="text-end">@b.FailureCount failures</td>
-                            <td class="text-end small text-muted">@b.TotalDowntimeHours.ToString("N0")h</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            @if (!badActors.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</p> }
-        </div>
-    </div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="6">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-2">Top Failure Modes (Pareto)</pems-heading>
+            <pems-data-table data="@(DataRows.Of(pareto, c_ => c_.Add("", p => (object?)(p.Key)).Add("", p => (object?)(p.Count), css: "text-end").Add("", p => (object?)(DataCell.Group((p.CumulativePercent.ToString("N0")), "%")), css: "text-end small text-muted")))" header="false" dense="true" css="mb-0" />
+            @if (!pareto.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</pems-text> }
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="6">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-2">@Localizer["Bad Actors"]</pems-heading>
+            <pems-data-table data="@(DataRows.Of(badActors, c_ => c_.Add("", b => (object?)(DataCell.Link(Url.Action("EquipmentProfile", null, new { id = b.EquipmentId }), b.TagNumber))).Add("", b => (object?)(DataCell.Group(b.FailureCount, " failures")), css: "text-end").Add("", b => (object?)(DataCell.Group((b.TotalDowntimeHours.ToString("N0")), "h")), css: "text-end small text-muted")))" header="false" dense="true" css="mb-0" />
+            @if (!badActors.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["داده‌ای موجود نیست."]</pems-text> }
+        </pems-content-card>
+    </pems-col>
+</pems-row>
 
 @* ===================== RCM/FMEA + Predictive/Condition ===================== *@
-<div class="row g-3">
-    <div class="col-md-4">
-        <div class="content-card h-100">
-            <h6 class="mb-2">Reliability Data Quality</h6>
+<pems-row gap="3">
+    <pems-col md="4">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-2">Reliability Data Quality</pems-heading>
             <div class="small">Equipment Reliability Coverage: @dataQuality.EquipmentReliabilityCoveragePercent.ToString("N1")%</div>
             <div class="small">Failure Taxonomy Coverage: @dataQuality.FailureTaxonomyCoveragePercent.ToString("N1")%</div>
             <div class="small">Repair Data Coverage: @dataQuality.RepairDataCoveragePercent.ToString("N1")%</div>
             <div class="small">Maintenance Strategy Coverage: @dataQuality.MaintenanceStrategyCoveragePercent.ToString("N1")%</div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="content-card h-100">
-            <h6 class="mb-2">Predictive Maintenance</h6>
-            <div>Engine: <span class="badge @StatusBadge(predictive.EngineStatus)">@predictive.EngineStatus</span></div>
-            <div>Production Model: <span class="badge @StatusBadge(predictive.ProductionModelStatus)">@predictive.ProductionModelStatus</span></div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="4">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-2">Predictive Maintenance</pems-heading>
+            <div>Engine: <pems-badge tone="@StatusBadge(predictive.EngineStatus)">@predictive.EngineStatus</pems-badge></div>
+            <div>Production Model: <pems-badge tone="@StatusBadge(predictive.ProductionModelStatus)">@predictive.ProductionModelStatus</pems-badge></div>
             <div class="small text-muted mt-1">@predictive.Reason</div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="content-card h-100">
-            <h6 class="mb-2">@Localizer["Condition Monitoring"]</h6>
-            <div>Foundation: <span class="badge @StatusBadge(conditionMonitoring.FoundationStatus)">@conditionMonitoring.FoundationStatus</span></div>
-            <div>Live Telemetry: <span class="badge @StatusBadge(conditionMonitoring.LiveTelemetryStatus)">@conditionMonitoring.LiveTelemetryStatus</span></div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="4">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-2">@Localizer["Condition Monitoring"]</pems-heading>
+            <div>Foundation: <pems-badge tone="@StatusBadge(conditionMonitoring.FoundationStatus)">@conditionMonitoring.FoundationStatus</pems-badge></div>
+            <div>Live Telemetry: <pems-badge tone="@StatusBadge(conditionMonitoring.LiveTelemetryStatus)">@conditionMonitoring.LiveTelemetryStatus</pems-badge></div>
             <div class="small text-muted mt-1">@conditionMonitoring.MonitoringPointCount points, @conditionMonitoring.ReadingCount readings</div>
-        </div>
-    </div>
-</div>
+        </pems-content-card>
+    </pems-col>
+</pems-row>

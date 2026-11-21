@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "tender-send-invitations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Send the invitations",
+    "fa": "ارسال دعوت‌نامه‌ها"
+  },
+  "description": {
+    "en": "Send the invitations",
+    "fa": "ارسال دعوت‌نامه‌ها"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TenderPage",
+      "action": "SendInvitations",
+      "args": {
+        "userName": "context:userName",
+        "tenderId": "field:tenderId",
+        "vendorId": "field:vendorIds"
+      }
+    },
+    "success": {
+      "en": "The invitations were queued.",
+      "fa": "دعوت‌نامه‌ها در صف ارسال قرار گرفتند."
+    },
+    "redirect": "/Tender/Details/{tenderId}"
+  }
+}

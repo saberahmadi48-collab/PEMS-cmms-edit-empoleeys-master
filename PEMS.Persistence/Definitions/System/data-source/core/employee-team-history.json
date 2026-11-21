@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "employee-team-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employee team history",
+    "fa": "تاریخچه تیم کارمند"
+  },
+  "description": {
+    "en": "Employee team history",
+    "fa": "تاریخچه تیم کارمند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Employee",
+      "action": "TeamHistory",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

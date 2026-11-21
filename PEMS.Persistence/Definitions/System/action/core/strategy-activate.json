@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "strategy-activate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Activate the strategy",
+    "fa": "فعال‌سازی استراتژی"
+  },
+  "description": {
+    "en": "Activate the strategy",
+    "fa": "فعال‌سازی استراتژی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceStrategy",
+      "action": "Activate",
+      "args": {
+        "id": "field:id",
+        "moveAssignments": "field:moveAssignments"
+      }
+    },
+    "success": {
+      "en": "The strategy was activated.",
+      "fa": "استراتژی فعال شد."
+    },
+    "redirect": "/MaintenanceStrategy/Details/{id}"
+  }
+}

@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-table", Category = "list", Icon = "bi-table")]
+<div @attributes="Options.Attributes" class="@ListMarkup.Css("table-responsive pems-grid-scroll table-scroll-area lp-scroll", Options.CssClass)"><table class="table table-enterprise pems-grid-table pems-compact-rows mb-0 lp-table" data-grid-key="@(string.IsNullOrEmpty(Options.GridKey) ? null : Options.GridKey)">@ChildContent</table>@if (Options.Empty){<div class="lp-empty"><i aria-hidden="true" class="bi bi-inbox"></i><strong>@(Options.EmptyText ?? "")</strong>@if (Options.Filtered){<span>@Options.NoResultsHint</span><a class="btn btn-sm btn-outline-secondary mt-2" href="@(Options.ClearHref ?? "")">@Options.ClearAllText</a>}</div>}</div>
+@code {
+    [Parameter, EditorRequired] public ListTableOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

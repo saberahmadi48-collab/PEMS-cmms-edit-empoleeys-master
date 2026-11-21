@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "contract-revisions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contract: Revisions",
+    "fa": "قرارداد: Revisions"
+  },
+  "description": {
+    "en": "Contract: Revisions",
+    "fa": "قرارداد: Revisions"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ContractPage",
+      "action": "Revisions",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

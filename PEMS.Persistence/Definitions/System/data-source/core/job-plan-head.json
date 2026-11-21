@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "job-plan-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Job plan: Job plan",
+    "fa": "طرح کار: Job plan"
+  },
+  "description": {
+    "en": "Job plan: Job plan",
+    "fa": "طرح کار: Job plan"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "JobPlanPage",
+      "action": "Head",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

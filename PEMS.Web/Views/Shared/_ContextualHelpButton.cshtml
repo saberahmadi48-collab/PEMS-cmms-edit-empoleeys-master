@@ -9,8 +9,8 @@
    offcanvas داخل .pems-topbar (z-index:1030) یک Stacking Context می‌گیرد و در RTL زیر نوار کناری (1035) می‌ماند. *@
 @if (!string.IsNullOrEmpty(helpKey))
 {
-    <button type="button" class="btn btn-sm btn-outline-secondary pems-contextual-help-btn" data-bs-toggle="offcanvas" data-bs-target="#pemsHelpDrawer"
+    <pems-button tone="neutral" size="small" outline="true" css="pems-contextual-help-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#pemsHelpDrawer"
             data-help-key="@helpKey" title="@L("Help for this page", "راهنمای این صفحه")">
-        <i class="bi bi-question-circle"></i> @L("Help", "راهنما")
-    </button>
+        <pems-icon name="bi-question-circle" /> @L("Help", "راهنما")
+    </pems-button>
 }

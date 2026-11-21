@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "designer-remove-row",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a part",
+    "fa": "حذف بخش"
+  },
+  "description": {
+    "en": "Remove a part",
+    "fa": "حذف بخش"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The part was removed from the draft.",
+      "fa": "بخش از پیش‌نویس حذف شد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "RemoveRow",
+      "args": {
+        "rowId": "field:id",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

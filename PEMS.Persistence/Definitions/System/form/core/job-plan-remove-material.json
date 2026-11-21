@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "job-plan-remove-material",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a required material",
+    "fa": "حذف ماده‌ی لازم"
+  },
+  "description": {
+    "en": "Remove a required material",
+    "fa": "حذف ماده‌ی لازم"
+  },
+  "payload": {
+    "id": "job-plan-remove-material",
+    "title": {
+      "en": "Remove a required material",
+      "fa": "حذف ماده‌ی لازم"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "job-plan-remove-material",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "jobPlanRequiredMaterialId",
+        "label": {
+          "en": "Line id",
+          "fa": "شناسه‌ی ردیف"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "jobPlanId",
+        "label": {
+          "en": "Job plan id",
+          "fa": "شناسه‌ی طرح کار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

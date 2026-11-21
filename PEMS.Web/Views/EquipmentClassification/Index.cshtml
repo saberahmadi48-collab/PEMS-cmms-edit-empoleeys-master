@@ -4,162 +4,123 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 @{
-    string BarWidth(int count, int max) => max == 0 ? "0%" : $"{Math.Round(count * 100.0 / max, 1)}%";
 }
 
-<div class="content-card mb-3">
-    <div class="row g-3 text-center">
-        <div class="col-md-2">
-            <div class="fs-3 fw-bold">@Model.TotalActiveEquipment.ToString("N0")</div>
-            <div class="text-muted small">@Localizer["Total Active Equipment"]</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-3 fw-bold text-success">@Model.ClassifiedCount.ToString("N0")</div>
-            <div class="text-muted small">Classified</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-3 fw-bold text-secondary">@Model.UnclassifiedCount.ToString("N0")</div>
-            <div class="text-muted small">Unclassified</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-3 fw-bold">@Model.CoveragePercent.ToString("0.0")%</div>
-            <div class="text-muted small">Coverage</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-3 fw-bold text-warning">@Model.PendingReviewCount.ToString("N0")</div>
-            <div class="text-muted small">@Localizer["Pending Review"]</div>
-        </div>
-        <div class="col-md-2">
-            <a asp-action="ReviewQueue" class="btn btn-pems-solid btn-sm mt-2">
-                <i class="bi bi-list-check"></i> Review Queue
-            </a>
-            <a asp-action="Coverage" class="btn btn-outline-secondary btn-sm mt-2">
-                <i class="bi bi-grid-3x3-gap"></i> Coverage Matrix
-            </a>
-        </div>
-    </div>
-</div>
+<pems-content-card css="mb-3">
+    <pems-row gap="3">
+        <pems-col md="2">
+            <pems-kpi-tile compact label="@Localizer["Total Active Equipment"]">@Model.TotalActiveEquipment.ToString("N0")</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="2">
+            <pems-kpi-tile compact tone="success" label="Classified">@Model.ClassifiedCount.ToString("N0")</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="2">
+            <pems-kpi-tile compact label="Unclassified">@Model.UnclassifiedCount.ToString("N0")</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="2">
+            <pems-kpi-tile compact label="Coverage">@Model.CoveragePercent.ToString("0.0")%</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="2">
+            <pems-kpi-tile compact tone="warning" label="@Localizer["Pending Review"]">@Model.PendingReviewCount.ToString("N0")</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="2">
+            <pems-button tone="primary" size="small" css="mt-2" as="a" asp-action="ReviewQueue">
+                <pems-icon name="bi-list-check" /> Review Queue
+            </pems-button>
+            <pems-button tone="neutral" size="small" outline="true" css="mt-2" as="a" asp-action="Coverage">
+                <pems-icon name="bi-grid-3x3-gap" /> Coverage Matrix
+            </pems-button>
+        </pems-col>
+    </pems-row>
+</pems-content-card>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-6">
-        <div class="content-card h-100">
-            <h6 class="mb-3">Classified — by Confidence</h6>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="6">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-3">Classified — by Confidence</pems-heading>
             @foreach (var item in Model.ByConfidence)
             {
-                <div class="d-flex justify-content-between small mb-1">
+                <pems-flex justify="between" css="small mb-1">
                     <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
-                </div>
-                <div class="progress mb-2" style="height:6px;">
-                    <div class="progress-bar" style="width:@BarWidth(item.Count, Model.ClassifiedCount)"></div>
-                </div>
+                </pems-flex>
+                <pems-progress value="@item.Count" max="@Model.ClassifiedCount" height="6px" css="mb-2"></pems-progress>
             }
-            @if (!Model.ByConfidence.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="content-card h-100">
-            <h6 class="mb-3">Classified — by Source</h6>
+            @if (!Model.ByConfidence.Any()) { <pems-text class="text-muted small">@Localizer["داده‌ای موجود نیست."]</pems-text> }
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="6">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-3">Classified — by Source</pems-heading>
             @foreach (var item in Model.BySource)
             {
-                <div class="d-flex justify-content-between small mb-1">
+                <pems-flex justify="between" css="small mb-1">
                     <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
-                </div>
-                <div class="progress mb-2" style="height:6px;">
-                    <div class="progress-bar bg-info" style="width:@BarWidth(item.Count, Model.ClassifiedCount)"></div>
-                </div>
+                </pems-flex>
+                <pems-progress value="@item.Count" max="@Model.ClassifiedCount" tone="info" height="6px" css="mb-2"></pems-progress>
             }
-            @if (!Model.BySource.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
-        </div>
-    </div>
-</div>
+            @if (!Model.BySource.Any()) { <pems-text class="text-muted small">@Localizer["داده‌ای موجود نیست."]</pems-text> }
+        </pems-content-card>
+    </pems-col>
+</pems-row>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-6">
-        <div class="content-card h-100">
-            <h6 class="mb-3">Pending Suggestions — by Confidence</h6>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="6">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-3">Pending Suggestions — by Confidence</pems-heading>
             @foreach (var item in Model.PendingSuggestionsByConfidence)
             {
-                <div class="d-flex justify-content-between small mb-1">
+                <pems-flex justify="between" css="small mb-1">
                     <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
-                </div>
+                </pems-flex>
             }
-            @if (!Model.PendingSuggestionsByConfidence.Any()) { <p class="text-muted small">@Localizer["هیچ پیشنهادی در انتظار بازبینی نیست."]</p> }
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="content-card h-100">
-            <h6 class="mb-3">Unclassified — by Discipline</h6>
+            @if (!Model.PendingSuggestionsByConfidence.Any()) { <pems-text class="text-muted small">@Localizer["هیچ پیشنهادی در انتظار بازبینی نیست."]</pems-text> }
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="6">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-3">Unclassified — by Discipline</pems-heading>
             @foreach (var item in Model.UnclassifiedByDiscipline)
             {
-                <div class="d-flex justify-content-between small mb-1">
+                <pems-flex justify="between" css="small mb-1">
                     <span>@item.Key</span><span>@item.Count.ToString("N0")</span>
-                </div>
+                </pems-flex>
             }
-            @if (!Model.UnclassifiedByDiscipline.Any()) { <p class="text-muted small">@Localizer["داده‌ای موجود نیست."]</p> }
-        </div>
-    </div>
-</div>
+            @if (!Model.UnclassifiedByDiscipline.Any()) { <pems-text class="text-muted small">@Localizer["داده‌ای موجود نیست."]</pems-text> }
+        </pems-content-card>
+    </pems-col>
+</pems-row>
 
-<div class="content-card mb-3">
-    <h6 class="mb-3">Classified — by Equipment Class (Top 20)</h6>
-    <div class="table-responsive">
-        <table class="table table-enterprise table-sm">
-            <thead><tr><th>@Localizer["Equipment Class"]</th><th>@Localizer["Count"]</th></tr></thead>
-            <tbody>
-                @foreach (var item in Model.ByEquipmentClass)
-                {
-                    <tr><td>@item.Key</td><td>@item.Count.ToString("N0")</td></tr>
-                }
-            </tbody>
-        </table>
-        @if (!Model.ByEquipmentClass.Any()) { <p class="text-muted small text-center py-3">@Localizer["داده‌ای موجود نیست."]</p> }
-    </div>
-</div>
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3">Classified — by Equipment Class (Top 20)</pems-heading>
+    <pems-table-scroll>
+        <pems-data-table data="@(DataRows.Of(Model.ByEquipmentClass, c_ => c_.Add(((Localizer["Equipment Class"])?.ToString() ?? ""), item => (object?)(item.Key)).Add(((Localizer["Count"])?.ToString() ?? ""), item => (object?)(item.Count.ToString("N0")))))" dense="true" />
+        @if (!Model.ByEquipmentClass.Any()) { <pems-text class="text-muted small text-center py-3">@Localizer["داده‌ای موجود نیست."]</pems-text> }
+    </pems-table-scroll>
+</pems-content-card>
 
-<div class="row g-3">
-    <div class="col-md-4">
-        <div class="content-card h-100">
-            <h6 class="mb-3">Top Unclassified — EquipmentType</h6>
-            <div class="table-responsive" style="max-height:400px;">
-                <table class="table table-enterprise table-sm">
-                    <tbody>
-                        @foreach (var item in Model.TopUnclassifiedEquipmentTypes)
-                        {
-                            <tr><td class="small">@item.Key</td><td class="text-end">@item.Count.ToString("N0")</td></tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="content-card h-100">
-            <h6 class="mb-3">Top Unclassified — Name</h6>
-            <div class="table-responsive" style="max-height:400px;">
-                <table class="table table-enterprise table-sm">
-                    <tbody>
-                        @foreach (var item in Model.TopUnclassifiedEquipmentNames)
-                        {
-                            <tr><td class="small">@item.Key</td><td class="text-end">@item.Count.ToString("N0")</td></tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="content-card h-100">
-            <h6 class="mb-3">Top Unclassified — Tag Pattern</h6>
-            <div class="table-responsive" style="max-height:400px;">
-                <table class="table table-enterprise table-sm">
-                    <tbody>
-                        @foreach (var item in Model.TopUnclassifiedTagPatterns)
-                        {
-                            <tr><td class="small"><code>@item.Key</code></td><td class="text-end">@item.Count.ToString("N0")</td></tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+<pems-row gap="3">
+    <pems-col md="4">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-3">Top Unclassified — EquipmentType</pems-heading>
+            <pems-table-scroll css="pems-s-f0787633">
+                <pems-data-table data="@(DataRows.Of(Model.TopUnclassifiedEquipmentTypes, c_ => c_.Add("", item => (object?)(item.Key), css: "small").Add("", item => (object?)((item.Count.ToString("N0"))), css: "text-end")))" header="false" dense="true" />
+            </pems-table-scroll>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="4">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-3">Top Unclassified — Name</pems-heading>
+            <pems-table-scroll css="pems-s-f0787633">
+                <pems-data-table data="@(DataRows.Of(Model.TopUnclassifiedEquipmentNames, c_ => c_.Add("", item => (object?)(item.Key), css: "small").Add("", item => (object?)((item.Count.ToString("N0"))), css: "text-end")))" header="false" dense="true" />
+            </pems-table-scroll>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="4">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-3">Top Unclassified — Tag Pattern</pems-heading>
+            <pems-table-scroll css="pems-s-f0787633">
+                <pems-data-table data="@(DataRows.Of(Model.TopUnclassifiedTagPatterns, c_ => c_.Add("", item => (object?)(DataCell.Code(item.Key)), css: "small").Add("", item => (object?)((item.Count.ToString("N0"))), css: "text-end")))" header="false" dense="true" />
+            </pems-table-scroll>
+        </pems-content-card>
+    </pems-col>
+</pems-row>

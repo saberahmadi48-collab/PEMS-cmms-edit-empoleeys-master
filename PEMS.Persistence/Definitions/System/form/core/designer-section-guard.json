@@ -1,0 +1,114 @@
+{
+  "kind": "form",
+  "key": "designer-section-guard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Section guard",
+    "fa": "محافظ بخش"
+  },
+  "description": {
+    "en": "Section guard",
+    "fa": "محافظ بخش"
+  },
+  "payload": {
+    "id": "designer-section-guard",
+    "title": {
+      "en": "Section guard",
+      "fa": "محافظ بخش"
+    },
+    "submitLabel": {
+      "en": "Set the guard",
+      "fa": "تنظیم محافظ"
+    },
+    "actionKey": "designer-section-guard",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ref",
+        "label": {
+          "en": "Definition",
+          "fa": "تعریف"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Definition is required.",
+            "fa": "تعریف الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "appKey:kind:key, for example core:form:department-create",
+          "fa": "appKey:kind:key, for example core:form:department-create"
+        }
+      },
+      {
+        "name": "section",
+        "label": {
+          "en": "Section",
+          "fa": "بخش"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Section is required.",
+            "fa": "بخش الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "action",
+        "label": {
+          "en": "Action",
+          "fa": "کنش"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Action is required.",
+            "fa": "کنش الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "workOrderId",
+        "label": {
+          "en": "Source of the work order id",
+          "fa": "منبع شناسه دستور کار"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "placeholder": {
+          "en": "field:workOrderId",
+          "fa": "field:workOrderId"
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Source of the reason",
+          "fa": "منبع دلیل"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "recordRef",
+        "label": {
+          "en": "Source of the record reference",
+          "fa": "منبع ارجاع رکورد"
+        },
+        "kind": "text",
+        "maxLength": 100
+      }
+    ]
+  }
+}

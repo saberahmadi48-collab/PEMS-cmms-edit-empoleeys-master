@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "replenishment-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "History of a recommendation",
+    "fa": "تاریخچه‌ی یک توصیه"
+  },
+  "description": {
+    "en": "History of a recommendation",
+    "fa": "تاریخچه‌ی یک توصیه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Replenishment",
+      "action": "History",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "id": "param:id"
+      }
+    }
+  }
+}

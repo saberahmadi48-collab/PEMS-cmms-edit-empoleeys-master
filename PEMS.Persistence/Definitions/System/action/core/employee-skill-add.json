@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "employee-skill-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a skill",
+    "fa": "افزودن مهارت"
+  },
+  "description": {
+    "en": "Add a skill",
+    "fa": "افزودن مهارت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Employee",
+      "action": "AddSkill",
+      "args": {
+        "employeeId": "field:employeeId",
+        "skillId": "field:skillId",
+        "proficiencyLevel": "field:proficiencyLevel",
+        "certifiedDate": "field:certifiedDate"
+      }
+    },
+    "success": {
+      "en": "Skill added.",
+      "fa": "مهارت افزوده شد."
+    },
+    "redirect": "/p/employee-details?id={employeeId}"
+  }
+}

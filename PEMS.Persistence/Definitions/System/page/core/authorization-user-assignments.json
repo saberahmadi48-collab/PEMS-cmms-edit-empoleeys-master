@@ -1,0 +1,85 @@
+{
+  "kind": "page",
+  "key": "authorization-user-assignments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Role assignments of a user",
+    "fa": "تخصیص‌های نقشی یک کاربر"
+  },
+  "description": {
+    "en": "Role assignments of a user (page definition)",
+    "fa": "تخصیص‌های نقشی یک کاربر (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "authorization-user-assignments",
+    "template": "entity-list",
+    "args": {
+      "id": "authorization-user-assignments",
+      "url": "/d/authorization-user-assignments-grid",
+      "idField": "roleName",
+      "columns": [
+        {
+          "key": "userId",
+          "header": {
+            "en": "User id (type it in the filter)",
+            "fa": "شناسه‌ی کاربر (در فیلتر بنویسید)"
+          },
+          "width": 220,
+          "type": "number"
+        },
+        {
+          "key": "roleName",
+          "header": {
+            "en": "Role",
+            "fa": "نقش"
+          },
+          "width": 200
+        },
+        {
+          "key": "scopeType",
+          "header": {
+            "en": "Scope",
+            "fa": "دامنه"
+          },
+          "width": 120
+        },
+        {
+          "key": "scopeValue",
+          "header": {
+            "en": "Scope value",
+            "fa": "مقدار دامنه"
+          },
+          "width": 160
+        },
+        {
+          "key": "assignmentType",
+          "header": {
+            "en": "Type",
+            "fa": "نوع"
+          },
+          "width": 200
+        },
+        {
+          "key": "effectiveFrom",
+          "header": {
+            "en": "From",
+            "fa": "از"
+          },
+          "width": 150,
+          "type": "datetime"
+        },
+        {
+          "key": "effectiveTo",
+          "header": {
+            "en": "To",
+            "fa": "تا"
+          },
+          "width": 150,
+          "type": "datetime"
+        }
+      ]
+    }
+  }
+}

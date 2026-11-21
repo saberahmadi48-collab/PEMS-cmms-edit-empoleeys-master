@@ -1,0 +1,109 @@
+{
+  "kind": "form",
+  "key": "dashboard-widget",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change a dashboard widget",
+    "fa": "تغییر ابزارک داشبورد"
+  },
+  "description": {
+    "en": "Show or hide a widget and set its order and size",
+    "fa": "نمایش یا پنهان کردن ابزارک و تعیین ترتیب و اندازه"
+  },
+  "payload": {
+    "id": "dashboard-widget",
+    "title": {
+      "en": "Dashboard widget",
+      "fa": "ابزارک داشبورد"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "dashboard-widget-save",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "key",
+        "label": {
+          "en": "Widget",
+          "fa": "ابزارک"
+        },
+        "kind": "select",
+        "required": true,
+        "span": 2,
+        "optionsFrom": "dashboard-widget-options",
+        "messages": {
+          "required": {
+            "en": "Widget is required.",
+            "fa": "ابزارک الزامی است."
+          }
+        }
+      },
+      {
+        "name": "visible",
+        "label": {
+          "en": "Show",
+          "fa": "نمایش"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "true",
+            "label": {
+              "en": "Show",
+              "fa": "نمایش"
+            }
+          },
+          {
+            "value": "false",
+            "label": {
+              "en": "Hide",
+              "fa": "پنهان"
+            }
+          }
+        ]
+      },
+      {
+        "name": "displayOrder",
+        "label": {
+          "en": "Order",
+          "fa": "ترتیب"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "size",
+        "label": {
+          "en": "Size",
+          "fa": "اندازه"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Small",
+            "label": {
+              "en": "Small",
+              "fa": "کوچک"
+            }
+          },
+          {
+            "value": "Medium",
+            "label": {
+              "en": "Medium",
+              "fa": "متوسط"
+            }
+          },
+          {
+            "value": "Large",
+            "label": {
+              "en": "Large",
+              "fa": "بزرگ"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

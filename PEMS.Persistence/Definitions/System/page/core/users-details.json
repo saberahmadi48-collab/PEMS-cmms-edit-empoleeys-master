@@ -1,0 +1,421 @@
+{
+  "kind": "page",
+  "key": "users-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "User access",
+    "fa": "دسترسی کاربر"
+  },
+  "description": {
+    "en": "One user with access and authorization views (page definition)",
+    "fa": "یک کاربر با نماهای دسترسی و مجوزدهی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "users-details",
+    "regions": {
+      "header": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the list",
+              "fa": "بازگشت به فهرست"
+            },
+            "tone": "neutral",
+            "href": "/p/users"
+          }
+        },
+        {
+          "id": "edit",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Edit",
+              "fa": "ویرایش"
+            },
+            "tone": "primary",
+            "href": "/f/users-edit/{{params.id}}"
+          }
+        }
+      ],
+      "content": [
+        {
+          "id": "user",
+          "component": "record-view",
+          "options": {
+            "id": "user",
+            "fields": [
+              {
+                "key": "userName",
+                "label": {
+                  "en": "User name",
+                  "fa": "نام کاربری"
+                }
+              },
+              {
+                "key": "fullName",
+                "label": {
+                  "en": "Full name",
+                  "fa": "نام کامل"
+                }
+              },
+              {
+                "key": "email",
+                "label": {
+                  "en": "Email",
+                  "fa": "ایمیل"
+                }
+              },
+              {
+                "key": "isActive",
+                "label": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "lockedOut",
+                "label": {
+                  "en": "Locked out",
+                  "fa": "قفل‌شده"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "lastLoginDate",
+                "label": {
+                  "en": "Last sign-in",
+                  "fa": "آخرین ورود"
+                },
+                "type": "datetime"
+              },
+              {
+                "key": "roles",
+                "label": {
+                  "en": "Roles",
+                  "fa": "نقش‌ها"
+                },
+                "wide": true
+              },
+              {
+                "key": "department",
+                "label": {
+                  "en": "Department",
+                  "fa": "دپارتمان"
+                }
+              },
+              {
+                "key": "discipline",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "position",
+                "label": {
+                  "en": "Position",
+                  "fa": "سمت"
+                }
+              },
+              {
+                "key": "hasLinkedEmployee",
+                "label": {
+                  "en": "Linked employee",
+                  "fa": "کارمند مرتبط"
+                },
+                "type": "bool"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/users-summary",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "effective-permissions",
+          "component": "data-grid",
+          "options": {
+            "id": "effective-permissions",
+            "url": "/d/authorization-effective-user-grid?f.userId=eq:{{params.id|url}}",
+            "idField": "resourceName",
+            "columns": [
+              {
+                "key": "resourceName",
+                "header": {
+                  "en": "Resource",
+                  "fa": "منبع"
+                },
+                "width": 200
+              },
+              {
+                "key": "actionName",
+                "header": {
+                  "en": "Action",
+                  "fa": "کنش"
+                },
+                "width": 160
+              },
+              {
+                "key": "allowed",
+                "header": {
+                  "en": "Allowed",
+                  "fa": "مجاز"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isDestructive",
+                "header": {
+                  "en": "Destructive",
+                  "fa": "مخرب"
+                },
+                "width": 110,
+                "type": "bool"
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 360
+              }
+            ]
+          }
+        },
+        {
+          "id": "assignments",
+          "component": "data-grid",
+          "options": {
+            "id": "assignments",
+            "url": "/d/authorization-user-assignments-grid?f.userId=eq:{{params.id|url}}",
+            "idField": "roleName",
+            "columns": [
+              {
+                "key": "roleName",
+                "header": {
+                  "en": "Role",
+                  "fa": "نقش"
+                },
+                "width": 200
+              },
+              {
+                "key": "scopeType",
+                "header": {
+                  "en": "Scope",
+                  "fa": "دامنه"
+                },
+                "width": 120
+              },
+              {
+                "key": "scopeValue",
+                "header": {
+                  "en": "Scope value",
+                  "fa": "مقدار دامنه"
+                },
+                "width": 160
+              },
+              {
+                "key": "assignmentType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 200
+              },
+              {
+                "key": "effectiveFrom",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 150,
+                "type": "datetime"
+              },
+              {
+                "key": "effectiveTo",
+                "header": {
+                  "en": "To",
+                  "fa": "تا"
+                },
+                "width": 150,
+                "type": "datetime"
+              }
+            ]
+          }
+        },
+        {
+          "id": "navigation",
+          "component": "data-grid",
+          "options": {
+            "id": "navigation",
+            "url": "/d/navigation-visibility-user-rows?f.userId=eq:{{params.id|url}}",
+            "idField": "node",
+            "columns": [
+              {
+                "key": "node",
+                "header": {
+                  "en": "Node",
+                  "fa": "گره"
+                },
+                "width": 280
+              },
+              {
+                "key": "defaultVisible",
+                "header": {
+                  "en": "Default",
+                  "fa": "پیش‌فرض"
+                },
+                "width": 110,
+                "type": "bool",
+                "filterable": false
+              },
+              {
+                "key": "override",
+                "header": {
+                  "en": "Override",
+                  "fa": "استثنا"
+                },
+                "width": 140,
+                "filterable": false
+              },
+              {
+                "key": "effectiveVisible",
+                "header": {
+                  "en": "Effective",
+                  "fa": "مؤثر"
+                },
+                "width": 110,
+                "type": "bool",
+                "filterable": false
+              },
+              {
+                "key": "source",
+                "header": {
+                  "en": "Source",
+                  "fa": "منبع"
+                },
+                "width": 300,
+                "filterable": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "sod",
+          "component": "data-grid",
+          "options": {
+            "id": "sod",
+            "url": "/d/users-sod-rows?f.id=eq:{{params.id|url}}",
+            "idField": "permissionA",
+            "columns": [
+              {
+                "key": "permissionA",
+                "header": {
+                  "en": "Permission A",
+                  "fa": "مجوز الف"
+                },
+                "width": 260
+              },
+              {
+                "key": "permissionB",
+                "header": {
+                  "en": "Permission B",
+                  "fa": "مجوز ب"
+                },
+                "width": 260
+              },
+              {
+                "key": "policy",
+                "header": {
+                  "en": "Policy",
+                  "fa": "سیاست"
+                },
+                "width": 260
+              },
+              {
+                "key": "userHoldsBoth",
+                "header": {
+                  "en": "User holds both",
+                  "fa": "کاربر هر دو را دارد"
+                },
+                "width": 140,
+                "type": "bool"
+              }
+            ]
+          }
+        },
+        {
+          "id": "audit",
+          "component": "data-grid",
+          "options": {
+            "id": "audit",
+            "url": "/d/users-audit-rows?f.userId=eq:{{params.id|url}}",
+            "idField": "timestamp",
+            "columns": [
+              {
+                "key": "timestamp",
+                "header": {
+                  "en": "Time",
+                  "fa": "زمان"
+                },
+                "width": 170,
+                "type": "datetime"
+              },
+              {
+                "key": "resourceName",
+                "header": {
+                  "en": "Resource",
+                  "fa": "منبع"
+                },
+                "width": 180
+              },
+              {
+                "key": "actionName",
+                "header": {
+                  "en": "Action",
+                  "fa": "عملیات"
+                },
+                "width": 140
+              },
+              {
+                "key": "resourceId",
+                "header": {
+                  "en": "Resource id",
+                  "fa": "شناسه منبع"
+                },
+                "width": 120
+              },
+              {
+                "key": "decision",
+                "header": {
+                  "en": "Decision",
+                  "fa": "تصمیم"
+                },
+                "width": 110
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 200
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

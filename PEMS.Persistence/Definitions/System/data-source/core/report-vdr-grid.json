@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "report-vdr-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "VDR report rows",
+    "fa": "ردیف‌های گزارش VDR"
+  },
+  "description": {
+    "en": "VDR report rows",
+    "fa": "ردیف‌های گزارش VDR"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Vdr",
+      "args": {
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      }
+    }
+  }
+}

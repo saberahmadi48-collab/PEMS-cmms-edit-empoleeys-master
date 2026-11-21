@@ -1,0 +1,44 @@
+{
+  "kind": "action",
+  "key": "moc-raise",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Raise a MOC",
+    "fa": "ثبت MOC"
+  },
+  "description": {
+    "en": "Raise a MOC",
+    "fa": "ثبت MOC"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MOC",
+      "action": "Raise",
+      "args": {
+        "title": "field:title",
+        "description": "field:description",
+        "reason": "field:reason",
+        "changeType": "field:changeType",
+        "riskLevel": "field:riskLevel",
+        "projectId": "field:projectId",
+        "disciplineId": "field:disciplineId",
+        "relatedDocumentId": "field:relatedDocumentId",
+        "relatedEquipmentId": "field:relatedEquipmentId",
+        "temporaryExpiryDate": "field:temporaryExpiryDate",
+        "trainingRequired": "field:trainingRequired",
+        "raisedByEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "The MOC was raised.",
+      "fa": "MOC ثبت شد."
+    },
+    "redirect": "/p/mocs"
+  }
+}

@@ -1,107 +1,128 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.WorkOrderListDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    var equipments = (IEnumerable<dynamic>)ViewBag.Equipments;
+    var status = (string?)ViewBag.SelectedStatus;
+    var equipmentId = (int?)ViewBag.SelectedEquipmentId;
+    var equipmentLabel = (string?)ViewBag.SelectedEquipmentLabel;
+    var assignedToMe = (bool)ViewBag.AssignedToMe;
+    bool? mine = assignedToMe ? true : null;
+    var statuses = new[] { "Open", "Assigned", "InProgress", "Completed", "Closed" };
+    var filterCount = (string.IsNullOrEmpty(status) ? 0 : 1) + (equipmentId.HasValue ? 1 : 0) + (assignedToMe ? 1 : 0);
+
+    var qsParts = new List<string>();
+    if (!string.IsNullOrEmpty(status)) qsParts.Add($"status={Uri.EscapeDataString(status)}");
+    if (equipmentId.HasValue) qsParts.Add($"equipmentId={equipmentId}");
+    if (assignedToMe) qsParts.Add("assignedToMe=true");
+
+    // display text of a stored value; no key => the raw value
+    string StatusText(string? s) => VdrUi.Loc(Localizer, "Wo_St_", s);
+    string StatusTone(string? s) => s is "Closed" or "Completed" ? "vs-pill--success" : s == "InProgress" ? "vs-pill--warning" : "vs-pill--info";
+    string PriorityTone(string? p) => p == "Critical" ? "vs-pill--danger" : p == "High" ? "vs-pill--warning" : "vs-pill--neutral";
 }
 
-@* Re-composed: KPI cards -> a chip strip (the status chips are real filters), filters + one search + primary action on ONE toolbar row. *@
-<div class="vs-chips">
-    <a class="vs-chip text-decoration-none @(((int)ViewBag.OpenCount) > 0 ? "vs-chip--danger" : "")" asp-action="Index" asp-route-status="Open"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> @Localizer["Wo_Open"] <strong>@ViewBag.OpenCount</strong></a>
-    <a class="vs-chip text-decoration-none" asp-action="Index" asp-route-status="InProgress"><i class="bi bi-tools" aria-hidden="true"></i> @Localizer["Wo_InProgress"] <strong>@ViewBag.InProgressCount</strong></a>
-    <a class="vs-chip text-decoration-none" asp-action="Index" asp-route-status="Completed"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Wo_Completed"] <strong>@ViewBag.CompletedCount</strong></a>
-    <span class="vs-chip @(((int)ViewBag.CriticalOpenCount) > 0 ? "vs-chip--danger" : "")"><i class="bi bi-lightning" aria-hidden="true"></i> @Localizer["Wo_CriticalOpen"] <strong>@ViewBag.CriticalOpenCount</strong></span>
-</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-<form method="get" class="vs-toolbar" role="search">
-    <div class="pems-search-bar">
-        <i class="bi bi-search pems-search-icon" aria-hidden="true"></i>
-        <input type="text" class="form-control" id="woEquipmentFilterSearch" placeholder="@Localizer["Wo_SearchEquipment"]" aria-label="@Localizer["Wo_SearchEquipment"]"
-               value="@ViewBag.SelectedEquipmentLabel" data-pems-search data-search-type="Equipment" autocomplete="off" />
-        <input type="hidden" name="equipmentId" id="woEquipmentFilterHidden" value="@ViewBag.SelectedEquipmentId" />
-    </div>
-    <select name="status" class="form-select form-select-sm" aria-label="@Localizer["Ed_Status"]">
-        <option value="">@Localizer["Eq_AllStatuses"]</option>
-        @foreach (var s in new[] { "Open", "Assigned", "InProgress", "Completed", "Closed" })
-        { <option value="@s" selected="@(s == (string)ViewBag.SelectedStatus)">@s</option> }
-    </select>
-    <div class="form-check form-switch mb-0">
-        <input class="form-check-input" type="checkbox" role="switch" name="assignedToMe" value="true" id="assignedToMeCheck"
-               checked="@(((bool)ViewBag.AssignedToMe) ? "checked" : null)" onchange="this.form.submit()" />
-        <label class="form-check-label small" for="assignedToMeCheck">@Localizer["Wo_AssignedToMe"]</label>
-    </div>
-    <button type="submit" class="vs-btn vs-btn--sm"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Eq_Apply"]</button>
-    <a asp-action="Index" class="vs-icon-btn" title="@Localizer["Reset"]" aria-label="@Localizer["Reset"]"><i class="bi bi-x-lg" aria-hidden="true"></i></a>
-    <span class="vs-toolbar__end">
-        <a asp-action="Create" class="vs-btn vs-btn--primary vs-btn--sm"><i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Wo_New"]</a>
-    </span>
-</form>
-<script>
-    document.getElementById('woEquipmentFilterSearch').addEventListener('pems:search-select', function (e) {
-        if (e.detail) document.getElementById('woEquipmentFilterHidden').value = e.detail.id;
-    });
-</script>
+@* SCRUM-337 W2: built from the PEMS.UI list-page component; the page keeps its filters (equipment, status, assigned to me),
+   its status counts (they stay links that filter the list) and its columns. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
 
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('WorkOrder')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["ResetColumns"]
-        </button>
-    </div>
-    <div class="table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="WorkOrder">
-            <thead>
-                <tr>
-                    <th data-col-key="woNo" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Wo_ColNo"]</th>
-                    <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Wo_ColEquipment"]</th>
-                    <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Type"]</th>
-                    <th data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_Priority"]</th>
-                    <th data-col-key="assignedTo" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Wo_ColAssigned"]</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Status"]</th>
-                    <th data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Created"]</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var w in Model.Items)
+        <pems-list-toolbar heading="@Localizer["Wo_Title"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-filters form-id="woFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <div>
+                        <label class="lp-lbl" for="woEquipmentFilterSearch">@Localizer["Wo_ColEquipment"]</label>
+                        <pems-input scale="small" type="text" id="woEquipmentFilterSearch" placeholder="@Localizer["Wo_SearchEquipment"]" value="@equipmentLabel" data-pems-search data-search-type="Equipment" autocomplete="off" />
+                        <input type="hidden" name="equipmentId" id="woEquipmentFilterHidden" value="@equipmentId" />
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="woFilterStatus">@Localizer["Ed_Status"]</label>
+                        <pems-select scale="small" id="woFilterStatus" name="status">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var s in statuses)
+                            { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
+                        </pems-select>
+                    </div>
+                    <pems-check-row switch css="mb-0">
+                        <pems-input type="checkbox" role="switch" name="assignedToMe" value="true" id="assignedToMeCheck" checked="@assignedToMe" kind="check" />
+                        <label class="form-check-label small" for="assignedToMeCheck">@Localizer["Wo_AssignedToMe"]</label>
+                    </pems-check-row>
+                </pems-list-filters>
+                <pems-list-kpi-toggle target="woKpis" storage-key="pems.wo.kpis" />
+                <pems-list-reset-columns grid-key="WorkOrder" />
+                <pems-list-new href="@Url.Action("Create")" text="@Localizer["Wo_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-kpis id="woKpis">
+            <pems-link class="vs-chip text-decoration-none @(((int)ViewBag.OpenCount) > 0 ? "vs-chip--danger" : "")" asp-action="Index" asp-route-status="Open"><pems-icon name="bi-exclamation-circle" aria-hidden="true" /> @Localizer["Wo_Open"] <strong>@ViewBag.OpenCount</strong></pems-link>
+            <pems-link class="vs-chip text-decoration-none" asp-action="Index" asp-route-status="InProgress"><pems-icon name="bi-tools" aria-hidden="true" /> @Localizer["Wo_InProgress"] <strong>@ViewBag.InProgressCount</strong></pems-link>
+            <pems-link class="vs-chip text-decoration-none" asp-action="Index" asp-route-status="Completed"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["Wo_Completed"] <strong>@ViewBag.CompletedCount</strong></pems-link>
+            <span class="vs-chip @(((int)ViewBag.CriticalOpenCount) > 0 ? "vs-chip--danger" : "")"><pems-icon name="bi-lightning" aria-hidden="true" /> @Localizer["Wo_CriticalOpen"] <strong>@ViewBag.CriticalOpenCount</strong></span>
+        </pems-list-kpis>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (equipmentId.HasValue)
+            { <pems-list-chip label="@Localizer["Wo_ColEquipment"]" value="@equipmentLabel" remove-href="@Url.Action("Index", new { status, assignedToMe = mine })" /> }
+            @if (!string.IsNullOrEmpty(status))
+            { <pems-list-chip label="@Localizer["Ed_Status"]" value="@StatusText(status)" remove-href="@Url.Action("Index", new { equipmentId, assignedToMe = mine })" /> }
+            @if (assignedToMe)
+            { <pems-list-chip label="@Localizer["Wo_AssignedToMe"]" remove-href="@Url.Action("Index", new { status, equipmentId })" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="WorkOrder" empty="@(!Model.Items.Any())" empty-text="@Localizer["Wo_Empty"]"
+                             filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="woNo" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Wo_ColNo"]</pems-table-header>
+                        <pems-table-header class="pems-w-150" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Wo_ColEquipment"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Type"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="priority" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_Priority"]</pems-table-header>
+                        <pems-table-header data-col-key="assignedTo" data-resizable="true" data-min-width="120" data-max-width="260" class="vs-hide-md pems-w-180">@Localizer["Wo_ColAssigned"]</pems-table-header>
+                        <pems-table-header class="pems-w-130" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Created"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var w in Model.Items)
+                    {
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@w.WorkOrderId" class="lp-subject" title="@w.WorkOrderNumber">@w.WorkOrderNumber</pems-link></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@w.EquipmentTagNumber</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill vs-pill--neutral">@w.WorkOrderType</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @PriorityTone(w.Priority)">@VdrUi.Loc(Localizer, "Pri_", w.Priority)</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@(w.AssignedTeamName ?? w.AssignedEmployeeName ?? w.AssignedTo ?? "-")</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(w.Status)">@StatusText(w.Status)</span></pems-table-cell>
+                            <pems-table-cell class="small text-muted"><span class="vs-num">@PemsDates.Date(w.CreatedDate)</span></pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
                 {
-                    <tr>
-                        <td class="vs-num"><a asp-action="Details" asp-route-id="@w.WorkOrderId">@w.WorkOrderNumber</a></td>
-                        <td class="small">@w.EquipmentTagNumber</td>
-                        <td><span class="badge bg-secondary">@w.WorkOrderType</span></td>
-                        <td><span class="badge @(w.Priority == "Critical" ? "bg-danger" : w.Priority == "High" ? "bg-warning text-dark" : "bg-info text-dark")">@w.Priority</span></td>
-                        <td class="small">@(w.AssignedTeamName ?? w.AssignedEmployeeName ?? w.AssignedTo ?? "-")</td>
-                        <td><span class="badge @(w.Status == "Closed" || w.Status == "Completed" ? "bg-success" : w.Status == "InProgress" ? "bg-warning text-dark" : "bg-secondary")">@w.Status</span></td>
-                        <td class="small text-muted">@w.CreatedDate.ToString("yyyy-MM-dd")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["No work orders yet."]</p> }
-
-    @{
-        var qsParts = new List<string>();
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) qsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
-        if (ViewBag.SelectedEquipmentId != null) qsParts.Add($"equipmentId={ViewBag.SelectedEquipmentId}");
-        if ((bool)ViewBag.AssignedToMe) qsParts.Add("assignedToMe=true");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "WorkOrder",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "WorkOrder",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.Join("&", qsParts)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('WorkOrder');
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+    <script src="~/js/views/workorder-index.js" asp-append-version="true"></script>
 }

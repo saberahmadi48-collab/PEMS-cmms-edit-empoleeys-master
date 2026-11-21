@@ -1,0 +1,512 @@
+{
+  "kind": "page",
+  "key": "pc-requests",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue Requests",
+    "fa": "درخواست‌های کاتالوگ قطعه"
+  },
+  "description": {
+    "en": "Requests to add or change a part number, with the counts and the three views (page definition)",
+    "fa": "درخواست‌های افزودن یا تغییر شماره‌ی قطعه، با شمارش‌ها و سه نما (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "pc-requests",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "pc-request-filters",
+            "resetUrl": "/p/pc-requests",
+            "fields": [
+              {
+                "name": "view",
+                "label": {
+                  "en": "View",
+                  "fa": "نما"
+                },
+                "kind": "select",
+                "value": "{{params.view}}",
+                "options": [
+                  {
+                    "value": "all",
+                    "label": {
+                      "en": "all",
+                      "fa": "همه"
+                    }
+                  },
+                  {
+                    "value": "mine",
+                    "label": {
+                      "en": "mine",
+                      "fa": "درخواست‌های من"
+                    }
+                  },
+                  {
+                    "value": "awaiting",
+                    "label": {
+                      "en": "awaiting",
+                      "fa": "در انتظار من"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Draft",
+                    "label": {
+                      "en": "Draft",
+                      "fa": "پیش‌نویس"
+                    }
+                  },
+                  {
+                    "value": "InApproval",
+                    "label": {
+                      "en": "InApproval",
+                      "fa": "در جریان تأیید"
+                    }
+                  },
+                  {
+                    "value": "Returned",
+                    "label": {
+                      "en": "Returned",
+                      "fa": "بازگشتی"
+                    }
+                  },
+                  {
+                    "value": "OrgResolution",
+                    "label": {
+                      "en": "OrgResolution",
+                      "fa": "نیازمند اصلاح ساختار"
+                    }
+                  },
+                  {
+                    "value": "Completed",
+                    "label": {
+                      "en": "Completed",
+                      "fa": "تکمیل‌شده"
+                    }
+                  },
+                  {
+                    "value": "Cancelled",
+                    "label": {
+                      "en": "Cancelled",
+                      "fa": "لغوشده"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "requestType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "kind": "select",
+                "value": "{{params.requestType}}",
+                "options": [
+                  {
+                    "value": "Add",
+                    "label": {
+                      "en": "Add",
+                      "fa": "افزودن"
+                    }
+                  },
+                  {
+                    "value": "Change",
+                    "label": {
+                      "en": "Change",
+                      "fa": "تغییر"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "sectionId",
+                "label": {
+                  "en": "Section",
+                  "fa": "بخش"
+                },
+                "kind": "select",
+                "value": "{{params.sectionId}}",
+                "options": []
+              },
+              {
+                "name": "search",
+                "label": {
+                  "en": "Search",
+                  "fa": "جستجو"
+                },
+                "kind": "text",
+                "value": "{{params.search}}"
+              },
+              {
+                "name": "urgent",
+                "label": {
+                  "en": "Urgent only (true)",
+                  "fa": "فقط فوری (true)"
+                },
+                "kind": "text",
+                "value": "{{params.urgent}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "sectionId",
+                "source": "/d/pc-request-sections",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/pc-request-new?requestType=Add",
+                "text": {
+                  "en": "New request: add a part",
+                  "fa": "درخواست جدید: افزودن قطعه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pc-request-new?requestType=Change",
+                "text": {
+                  "en": "New request: change a part",
+                  "fa": "درخواست جدید: تغییر قطعه"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "k-total",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "All",
+              "fa": "همه"
+            },
+            "icon": "bi-collection"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-request-summary",
+              "first": true,
+              "map": {
+                "value": "total"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-draft",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Draft",
+              "fa": "پیش‌نویس"
+            },
+            "icon": "bi-pencil"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-request-summary",
+              "first": true,
+              "map": {
+                "value": "draft"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-appr",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "In approval",
+              "fa": "در جریان تأیید"
+            },
+            "icon": "bi-hourglass-split",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-request-summary",
+              "first": true,
+              "map": {
+                "value": "inApproval"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-ret",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Returned",
+              "fa": "بازگشتی"
+            },
+            "icon": "bi-arrow-return-left"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-request-summary",
+              "first": true,
+              "map": {
+                "value": "returned"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-done",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Completed",
+              "fa": "تکمیل‌شده"
+            },
+            "icon": "bi-check-circle",
+            "tone": "success"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-request-summary",
+              "first": true,
+              "map": {
+                "value": "completed"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-canc",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Cancelled",
+              "fa": "لغوشده"
+            },
+            "icon": "bi-x-circle"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-request-summary",
+              "first": true,
+              "map": {
+                "value": "cancelled"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-urg",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Urgent",
+              "fa": "فوری"
+            },
+            "icon": "bi-exclamation-triangle",
+            "tone": "danger"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-request-summary",
+              "first": true,
+              "map": {
+                "value": "urgent"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-me",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Waiting for me",
+              "fa": "در انتظار من"
+            },
+            "icon": "bi-person-check",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-request-summary",
+              "first": true,
+              "map": {
+                "value": "awaitingMe"
+              }
+            }
+          }
+        },
+        {
+          "id": "requests",
+          "component": "data-grid",
+          "options": {
+            "id": "requests",
+            "url": "/d/pc-requests?f.search={{params.search|url}}&f.status={{params.status|url}}&f.requestType={{params.requestType|url}}&f.sectionId={{params.sectionId|url}}&f.view={{params.view|url}}&f.urgent={{params.urgent|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "requestNumber",
+                "header": {
+                  "en": "Request",
+                  "fa": "درخواست"
+                },
+                "width": 140
+              },
+              {
+                "key": "requestType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 90
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 130
+              },
+              {
+                "key": "urgent",
+                "header": {
+                  "en": "Urgent",
+                  "fa": "فوری"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "currentStep",
+                "header": {
+                  "en": "Step",
+                  "fa": "گام"
+                },
+                "width": 140
+              },
+              {
+                "key": "section",
+                "header": {
+                  "en": "Section",
+                  "fa": "بخش"
+                },
+                "width": 110
+              },
+              {
+                "key": "technicalClassCode",
+                "header": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "width": 110
+              },
+              {
+                "key": "technicalClassDescription",
+                "header": {
+                  "en": "Technical class",
+                  "fa": "کلاس فنی"
+                },
+                "width": 240
+              },
+              {
+                "key": "requester",
+                "header": {
+                  "en": "Requester",
+                  "fa": "درخواست‌دهنده"
+                },
+                "width": 180
+              },
+              {
+                "key": "assignedPartNumber",
+                "header": {
+                  "en": "Part number",
+                  "fa": "شماره‌ی قطعه"
+                },
+                "width": 130
+              },
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "submittedDate",
+                "header": {
+                  "en": "Submitted",
+                  "fa": "ارسال"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 200,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/pc-request-details?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit (draft)",
+                      "fa": "ویرایش (پیش‌نویس)"
+                    },
+                    "url": "/Warehouse/PartCatalogueRequest/Edit/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    }
+  }
+}

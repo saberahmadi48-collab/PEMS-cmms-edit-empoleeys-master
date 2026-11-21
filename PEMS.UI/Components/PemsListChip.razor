@@ -1,0 +1,6 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-chip", Category = "list", Icon = "bi-tag")]
+<li class="pems-filter-chip"><span>@(string.IsNullOrEmpty(Options.Value) ? Options.Label : Options.Label + ": " + Options.Value)</span><a aria-label="@(Options.RemoveText + ": " + Options.Label)" href="@Options.RemoveHref" title="@Options.RemoveText"><i aria-hidden="true" class="bi bi-x"></i></a></li>
+@code {
+    [Parameter, EditorRequired] public ListChipOptions Options { get; set; } = default!;
+}

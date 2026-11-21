@@ -1,0 +1,61 @@
+{
+  "kind": "action",
+  "key": "maintenance-groups-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create maintenance group",
+    "fa": "ایجاد گروه تعمیراتی"
+  },
+  "description": {
+    "en": "Create maintenance group",
+    "fa": "ایجاد گروه تعمیراتی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "MaintenanceGroup",
+      "map": {
+        "code": "Code",
+        "name": "Name",
+        "disciplineId": "DisciplineId",
+        "description": "Description"
+      },
+      "required": [
+        "Code",
+        "Name",
+        "DisciplineId"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "Name"
+          ],
+          "message": {
+            "en": "A maintenance group with this name already exists.",
+            "fa": "گروه تعمیراتی با همین نام از قبل وجود دارد."
+          }
+        },
+        {
+          "fields": [
+            "Code"
+          ],
+          "message": {
+            "en": "A maintenance group with this code already exists.",
+            "fa": "گروه تعمیراتی با همین کد از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Maintenance group created.",
+      "fa": "گروه تعمیراتی ایجاد شد."
+    },
+    "redirect": "/p/maintenance-groups"
+  }
+}

@@ -14,16 +14,20 @@ public static class WorkflowTaskLinks
         return businessObjectType switch
         {
             "Permit" => $"/Permit/Details/{id}",
-            "MOC" => $"/MOC/Details/{id}",
-            "TechnicalQuery" => $"/TechnicalQuery/Details/{id}",
+            "MOC" => $"/p/moc-details?id={id}",
+            "TechnicalQuery" => $"/p/technical-query-details?id={id}",
             "VDRItem" => $"/VDR/Details/{id}",
             "Document" => $"/EngineeringDocuments/Details/{id}",
-            "PartCatalogueRequest" => $"/Warehouse/PartCatalogueRequest/Details/{id}",
+            "PartCatalogueRequest" => $"/p/pc-request-details?id={id}",
             "NonConformanceReport" => $"/QC/NcrDetails/{id}",
-            "Contract" => $"/Contract/Details/{id}",
+            "Contract" => $"/p/contract-details?id={id}",
             "IrnReceiptDisposition" => $"/Warehouse/IrnReceipt/Details/{id}",
+            "IrnHold" => $"/Warehouse/IrnReceipt/Details/{id}",   // SCRUM-473: id = IRN
             "WorkOrder" or "WorkOrderLifecycle" or "WorkOrderMultiDisciplineReview" => $"/WorkOrder/Details/{id}",
             "WorkRequest" => $"/WorkRequest/Details/{id}",
+            "WorkOrderMaterialIntake" => $"/p/warehouse-intake?id={id}",   // SCRUM-472: id = work order
+            "ProcurementDemand" => $"/p/pre-procurement-details?id={id}",                      // SCRUM-471
+            "PurchaseOrder" => $"/p/purchase-order-details?id={id}",                          // SCRUM-470
             _ => null
         };
     }

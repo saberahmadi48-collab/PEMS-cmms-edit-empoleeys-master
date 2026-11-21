@@ -1,0 +1,273 @@
+{
+  "kind": "page",
+  "key": "permits",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permits to Work",
+    "fa": "مجوزهای کار"
+  },
+  "description": {
+    "en": "Permits with a status filter, or only those waiting for my approval (page definition)",
+    "fa": "مجوزها با فیلتر وضعیت، یا فقط منتظر تأیید من (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "permits",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "permit-filters",
+            "resetUrl": "/p/permits",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Draft",
+                    "label": {
+                      "en": "Draft",
+                      "fa": "پیش‌نویس"
+                    }
+                  },
+                  {
+                    "value": "Submitted",
+                    "label": {
+                      "en": "Submitted",
+                      "fa": "ارسال‌شده"
+                    }
+                  },
+                  {
+                    "value": "UnderReview",
+                    "label": {
+                      "en": "UnderReview",
+                      "fa": "در بررسی"
+                    }
+                  },
+                  {
+                    "value": "Approved",
+                    "label": {
+                      "en": "Approved",
+                      "fa": "تأییدشده"
+                    }
+                  },
+                  {
+                    "value": "Issued",
+                    "label": {
+                      "en": "Issued",
+                      "fa": "صادرشده"
+                    }
+                  },
+                  {
+                    "value": "Active",
+                    "label": {
+                      "en": "Active",
+                      "fa": "فعال"
+                    }
+                  },
+                  {
+                    "value": "Suspended",
+                    "label": {
+                      "en": "Suspended",
+                      "fa": "معلق"
+                    }
+                  },
+                  {
+                    "value": "Closed",
+                    "label": {
+                      "en": "Closed",
+                      "fa": "بسته"
+                    }
+                  },
+                  {
+                    "value": "Rejected",
+                    "label": {
+                      "en": "Rejected",
+                      "fa": "ردشده"
+                    }
+                  },
+                  {
+                    "value": "Cancelled",
+                    "label": {
+                      "en": "Cancelled",
+                      "fa": "لغوشده"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "pendingMyApproval",
+                "label": {
+                  "en": "Waiting for my approval (true)",
+                  "fa": "منتظر تأیید من (true)"
+                },
+                "kind": "text",
+                "value": "{{params.pendingMyApproval}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/permit-create",
+                "text": {
+                  "en": "New permit",
+                  "fa": "مجوز جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/permits?pendingMyApproval=true",
+                "text": {
+                  "en": "Waiting for my approval",
+                  "fa": "منتظر تأیید من"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "permits",
+          "component": "data-grid",
+          "options": {
+            "id": "permits",
+            "url": "/d/permit-list?f.status={{params.status|url}}&f.pendingMyApproval={{params.pendingMyApproval|url}}",
+            "idField": "permitId",
+            "columns": [
+              {
+                "key": "permitNumber",
+                "header": {
+                  "en": "Permit",
+                  "fa": "مجوز"
+                },
+                "width": 140
+              },
+              {
+                "key": "permitType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 130
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 280
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "equipment",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 130
+              },
+              {
+                "key": "workOrder",
+                "header": {
+                  "en": "Work order",
+                  "fa": "دستورکار"
+                },
+                "width": 130
+              },
+              {
+                "key": "issuer",
+                "header": {
+                  "en": "Issuer",
+                  "fa": "صادرکننده"
+                },
+                "width": 150
+              },
+              {
+                "key": "receiver",
+                "header": {
+                  "en": "Receiver",
+                  "fa": "دریافت‌کننده"
+                },
+                "width": 150
+              },
+              {
+                "key": "validFrom",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "validTo",
+                "header": {
+                  "en": "To",
+                  "fa": "تا"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/Permit/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "Permit.View"
+  }
+}

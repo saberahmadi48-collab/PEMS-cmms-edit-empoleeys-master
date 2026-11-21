@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "barcode-disable",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Disable a barcode",
+    "fa": "غیرفعال کردن بارکد"
+  },
+  "description": {
+    "en": "Disable a barcode",
+    "fa": "غیرفعال کردن بارکد"
+  },
+  "payload": {
+    "id": "barcode-disable",
+    "title": {
+      "en": "Disable a barcode",
+      "fa": "غیرفعال کردن بارکد"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "barcode-disable",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Barcode id",
+          "fa": "شناسه‌ی بارکد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "ai-insights-delay",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delay analysis summary",
+    "fa": "خلاصه‌ی تحلیل تاخیر"
+  },
+  "description": {
+    "en": "Delay analysis summary",
+    "fa": "خلاصه‌ی تحلیل تاخیر"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "AiInsights",
+      "action": "DelaySummary"
+    }
+  }
+}

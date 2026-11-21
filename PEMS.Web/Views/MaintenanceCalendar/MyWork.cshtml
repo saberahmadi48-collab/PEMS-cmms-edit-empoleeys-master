@@ -14,40 +14,40 @@
     };
 }
 
-<div class="content-card mb-3">
-    <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between mb-3">
-        <div class="d-flex gap-2 align-items-center">
-            <a class="btn btn-sm btn-outline-secondary" asp-action="MyWork" asp-route-date="@DateTime.Today.ToString("yyyy-MM-dd")">@Localizer["Today"]</a>
-            <a class="btn btn-sm btn-outline-secondary" asp-action="MyWork" asp-route-date="@day.AddDays(-1).ToString("yyyy-MM-dd")"><i class="bi bi-chevron-left"></i></a>
-            <a class="btn btn-sm btn-outline-secondary" asp-action="MyWork" asp-route-date="@day.AddDays(1).ToString("yyyy-MM-dd")"><i class="bi bi-chevron-right"></i></a>
-        </div>
-        <h6 class="mb-0">@Localizer["My Work"] &mdash; @day.ToString("dddd, MMM d")</h6>
-    </div>
+<pems-content-card css="mb-3">
+    <pems-flex wrap="true" gap="2" align="center" justify="between" css="mb-3">
+        <pems-flex gap="2" align="center">
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@PemsDates.Date(DateTime.Today)">@Localizer["Today"]</pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@PemsDates.Date(day.AddDays(-1))"><pems-icon name="bi-chevron-left" /></pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="MyWork" asp-route-date="@PemsDates.Date(day.AddDays(1))"><pems-icon name="bi-chevron-right" /></pems-button>
+        </pems-flex>
+        <pems-heading level="6" class="mb-0">@Localizer["My Work"] &mdash; @day.ToString("dddd, MMM d")</pems-heading>
+    </pems-flex>
 
     @if (!Model.Any())
     {
-        <p class="text-muted text-center py-4">@Localizer["No work scheduled for you on this day."]</p>
+        <pems-text class="text-muted text-center py-4">@Localizer["No work scheduled for you on this day."]</pems-text>
     }
     <div class="pems-cal-day-timeline">
         @foreach (var it in Model.OrderBy(x => x.PlannedStart))
         {
-            <a class="pems-cal-day-card @TypeBadgeClass(it.WorkOrderType) @(it.HasEmployeeConflict ? "pems-cal-conflict" : "")"
+            <pems-link class="pems-cal-day-card @TypeBadgeClass(it.WorkOrderType) @(it.HasEmployeeConflict ? "pems-cal-conflict" : "")"
                href="@Url.Action("Details", "WorkOrder", new { id = it.WorkOrderId })">
-                <div class="pems-cal-day-time" dir="ltr">@it.PlannedStart.ToString("HH:mm") &ndash; @it.PlannedFinish.ToString("HH:mm")</div>
+                <div class="pems-cal-day-time" dir="ltr">@PemsDates.Time(it.PlannedStart) &ndash; @PemsDates.Time(it.PlannedFinish)</div>
                 <div class="pems-cal-day-body">
                     <div class="fw-bold">@it.WorkOrderNumber &middot; @it.EquipmentTagNumber</div>
                     <div class="small">@it.EquipmentDescription</div>
                     <div class="small">
-                        <span class="badge @TypeBadgeClass(it.WorkOrderType)">@it.WorkOrderType</span>
-                        <span class="badge bg-secondary">@it.Status</span>
-                        @if (it.HasEmployeeConflict) { <span class="badge bg-danger"><i class="bi bi-exclamation-triangle"></i> @Localizer["Conflict"]</span> }
+                        <pems-badge tone="none" css="@TypeBadgeClass(it.WorkOrderType)">@it.WorkOrderType</pems-badge>
+                        <pems-badge tone="neutral">@it.Status</pems-badge>
+                        @if (it.HasEmployeeConflict) { <pems-badge tone="danger"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Conflict"]</pems-badge> }
                     </div>
                     <div class="small text-muted">@it.AssignedTeamName</div>
                 </div>
-            </a>
+            </pems-link>
         }
     </div>
-</div>
+</pems-content-card>
 
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-maintenance-calendar.css" asp-append-version="true" />

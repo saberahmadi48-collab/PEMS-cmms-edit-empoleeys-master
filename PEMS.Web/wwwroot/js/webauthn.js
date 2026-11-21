@@ -128,7 +128,7 @@ async function pemsSubmitWithStepUp(button, extraFieldName, extraFieldValue) {
     const result = await pemsPerformStepUp();
 
     if (!result.success) {
-        if (typeof showLiveToast === "function") { showLiveToast(result.error, true); } else { alert(result.error); }
+        if (typeof showLiveToast === "function") { showLiveToast(result.error, true); } else { console.error(result.error); }
         button.disabled = false;
         button.textContent = originalText;
         return;

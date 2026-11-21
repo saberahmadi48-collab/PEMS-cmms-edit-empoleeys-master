@@ -1,0 +1,85 @@
+{
+  "kind": "form",
+  "key": "team-position-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign an employee to a position",
+    "fa": "تخصیص کارمند به سمت"
+  },
+  "description": {
+    "en": "Assign an employee to a position",
+    "fa": "تخصیص کارمند به سمت"
+  },
+  "payload": {
+    "id": "team-position-assign",
+    "title": {
+      "en": "Assign an employee to a position",
+      "fa": "تخصیص کارمند به سمت"
+    },
+    "submitLabel": {
+      "en": "Assign",
+      "fa": "تخصیص"
+    },
+    "actionKey": "team-position-assign",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "positionId",
+        "label": {
+          "en": "Position id",
+          "fa": "شناسه سمت"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Position id is required.",
+            "fa": "شناسه سمت الزامی است."
+          }
+        }
+      },
+      {
+        "name": "returnTeamId",
+        "label": {
+          "en": "Team id",
+          "fa": "شناسه تیم"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Team id is required.",
+            "fa": "شناسه تیم الزامی است."
+          }
+        }
+      },
+      {
+        "name": "employeeId",
+        "label": {
+          "en": "Employee",
+          "fa": "کارمند"
+        },
+        "kind": "select",
+        "optionsFrom": "team-employees",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Employee is required.",
+            "fa": "کارمند الزامی است."
+          }
+        }
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت"
+        },
+        "kind": "text",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

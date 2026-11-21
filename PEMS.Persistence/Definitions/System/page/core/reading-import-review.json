@@ -1,0 +1,339 @@
+{
+  "kind": "page",
+  "key": "reading-import-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Review: Condition Reading Import",
+    "fa": "بررسی: ورود قرائت‌های وضعیت"
+  },
+  "description": {
+    "en": "One staged batch with its rows and the commit and discard commands (page definition)",
+    "fa": "یک دسته با ردیف‌ها و دستورهای تأیید و دور ریختن (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reading-import-review",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "reading-import-filters",
+            "resetUrl": "/p/reading-import-review?batchId={{params.batchId}}",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Row status",
+                  "fa": "وضعیت ردیف"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "New",
+                    "label": {
+                      "en": "New",
+                      "fa": "جدید"
+                    }
+                  },
+                  {
+                    "value": "Duplicate",
+                    "label": {
+                      "en": "Duplicate",
+                      "fa": "تکراری"
+                    }
+                  },
+                  {
+                    "value": "UnresolvedPoint",
+                    "label": {
+                      "en": "UnresolvedPoint",
+                      "fa": "نقطه‌ی نامشخص"
+                    }
+                  },
+                  {
+                    "value": "ConflictPoint",
+                    "label": {
+                      "en": "ConflictPoint",
+                      "fa": "نقطه‌ی متعارض"
+                    }
+                  },
+                  {
+                    "value": "ValidationError",
+                    "label": {
+                      "en": "ValidationError",
+                      "fa": "خطای اعتبارسنجی"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/reading-import-commit?batchId={{params.batchId}}",
+                "text": {
+                  "en": "Commit the batch",
+                  "fa": "تأیید دسته"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/reading-import-discard?batchId={{params.batchId}}",
+                "text": {
+                  "en": "Discard the batch",
+                  "fa": "دور ریختن دسته"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reading-import",
+                "text": {
+                  "en": "Back to the batches",
+                  "fa": "بازگشت به دسته‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "batch",
+          "component": "data-grid",
+          "options": {
+            "id": "batch",
+            "url": "/d/reading-import-batch?f.batchId={{params.batchId}}",
+            "idField": "batchId",
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 260
+              },
+              {
+                "key": "importDate",
+                "header": {
+                  "en": "Imported",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "importedBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "totalRows",
+                "header": {
+                  "en": "Rows",
+                  "fa": "ردیف"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "newCount",
+                "header": {
+                  "en": "New",
+                  "fa": "جدید"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "duplicateCount",
+                "header": {
+                  "en": "Duplicate",
+                  "fa": "تکراری"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "unresolvedCount",
+                "header": {
+                  "en": "Unresolved",
+                  "fa": "نامشخص"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "conflictCount",
+                "header": {
+                  "en": "Conflict",
+                  "fa": "متعارض"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "validationErrorCount",
+                "header": {
+                  "en": "Errors",
+                  "fa": "خطا"
+                },
+                "width": 80,
+                "type": "number"
+              }
+            ],
+            "pageSize": 5,
+            "height": 160
+          }
+        },
+        {
+          "id": "rows",
+          "component": "data-grid",
+          "options": {
+            "id": "rows",
+            "url": "/d/reading-import-rows?f.batchId={{params.batchId}}&f.status={{params.status|url}}",
+            "idField": "rowId",
+            "columns": [
+              {
+                "key": "rowNumber",
+                "header": {
+                  "en": "Row",
+                  "fa": "ردیف"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "equipmentTag",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 140
+              },
+              {
+                "key": "pointTag",
+                "header": {
+                  "en": "Point",
+                  "fa": "نقطه"
+                },
+                "width": 140
+              },
+              {
+                "key": "variableType",
+                "header": {
+                  "en": "Variable",
+                  "fa": "متغیر"
+                },
+                "width": 120
+              },
+              {
+                "key": "readingDate",
+                "header": {
+                  "en": "Reading date",
+                  "fa": "تاریخ قرائت"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "value",
+                "header": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "source",
+                "header": {
+                  "en": "Source",
+                  "fa": "منبع"
+                },
+                "width": 120
+              },
+              {
+                "key": "includeInCommit",
+                "header": {
+                  "en": "Included",
+                  "fa": "شامل"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 130
+              },
+              {
+                "key": "validationStatus",
+                "header": {
+                  "en": "Validation",
+                  "fa": "اعتبارسنجی"
+                },
+                "width": 110
+              },
+              {
+                "key": "validationMessage",
+                "header": {
+                  "en": "Message",
+                  "fa": "پیام"
+                },
+                "width": 280
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Include / exclude",
+                      "fa": "شمول / حذف"
+                    },
+                    "url": "/f/reading-import-toggle-row?rowId={id}&batchId={{params.batchId}}&include={raw.includeInCommit}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 50,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "ConditionReadingImport.View"
+  }
+}

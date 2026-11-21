@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "replenishment-run",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Run the replenishment calculation",
+    "fa": "اجرای محاسبه‌ی تأمین"
+  },
+  "description": {
+    "en": "Run the replenishment calculation",
+    "fa": "اجرای محاسبه‌ی تأمین"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Replenishment",
+      "action": "Run",
+      "args": {
+        "requestKey": "field:requestKey"
+      },
+      "guard": {
+        "resource": "ReplenishmentRecommendation",
+        "action": "Create",
+        "resourceId": "literal:run",
+        "mode": "strict"
+      }
+    },
+    "success": {
+      "en": "The calculation finished.",
+      "fa": "محاسبه کامل شد."
+    },
+    "redirect": "/p/replenishment"
+  }
+}

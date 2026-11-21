@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "history-import-batch",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance History Import batch",
+    "fa": "دسته‌ی ورود سوابق نگهداری"
+  },
+  "description": {
+    "en": "Maintenance History Import batch",
+    "fa": "دسته‌ی ورود سوابق نگهداری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceHistoryImport",
+      "action": "Batch",
+      "args": {
+        "batchId": "param:batchId"
+      }
+    }
+  }
+}

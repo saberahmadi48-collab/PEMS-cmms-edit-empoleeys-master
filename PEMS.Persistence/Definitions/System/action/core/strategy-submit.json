@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "strategy-submit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit the strategy for review",
+    "fa": "ارسال استراتژی برای بازبینی"
+  },
+  "description": {
+    "en": "Submit the strategy for review",
+    "fa": "ارسال استراتژی برای بازبینی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceStrategy",
+      "action": "Submit",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "The strategy was submitted for review.",
+      "fa": "استراتژی برای بازبینی ارسال شد."
+    },
+    "redirect": "/MaintenanceStrategy/Details/{id}"
+  }
+}

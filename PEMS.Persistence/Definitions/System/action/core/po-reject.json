@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "po-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the order",
+    "fa": "رد سفارش"
+  },
+  "description": {
+    "en": "Reject the order",
+    "fa": "رد سفارش"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "Reject",
+      "args": {
+        "poId": "field:id",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The order was rejected.",
+      "fa": "سفارش رد شد."
+    },
+    "redirect": "/p/purchase-order-details?id={id}"
+  }
+}

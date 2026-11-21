@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    The licence vendor tool (plan row #106). It is NOT part of PEMS.slnx's customer deliverables: nothing in
+    PEMS.Web references it, and the package scan (PEMS.Tests/Licensing/PackageScanTests) fails if that changes.
+    Build-time flag: the PEMS_VENDOR_TOOL constant below. Run-time flag: VendorTool__Mode=true.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <DefineConstants>$(DefineConstants);PEMS_VENDOR_TOOL</DefineConstants>
+    <RootNamespace>PemsVendorTool</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- SQLite ledger (public domain engine, MIT wrapper); works fully offline. Recorded in plan row L_OSS. -->
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.12" />
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\PEMS.Licensing\PEMS.Licensing.csproj" />
+    <ProjectReference Include="..\..\PEMS.Shared\PEMS.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

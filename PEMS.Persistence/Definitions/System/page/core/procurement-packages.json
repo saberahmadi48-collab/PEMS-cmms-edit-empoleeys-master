@@ -1,0 +1,175 @@
+{
+  "kind": "page",
+  "key": "procurement-packages",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement Packages",
+    "fa": "بسته‌های تدارکات"
+  },
+  "description": {
+    "en": "MR, MRQ, vendor inquiries, clarifications and approvals in one package (page definition)",
+    "fa": "MR، MRQ، استعلام فروشنده، شفاف‌سازی و تأییدها در یک بسته (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "procurement-packages",
+    "regions": {
+      "content": [
+        {
+          "id": "go",
+          "component": "content-blocks",
+          "options": {
+            "id": "go",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/procurement-package-create",
+                "text": {
+                  "en": "New procurement package",
+                  "fa": "بسته‌ی تدارکات جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/material-requisitions",
+                "text": {
+                  "en": "All MRs",
+                  "fa": "همه‌ی MRها"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/mr-quotations",
+                "text": {
+                  "en": "All MRQs",
+                  "fa": "همه‌ی MRQها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "packages",
+          "component": "data-grid",
+          "options": {
+            "id": "packages",
+            "url": "/d/procurement-packages-grid",
+            "idField": "procurementPackageId",
+            "columns": [
+              {
+                "key": "packageNumber",
+                "header": {
+                  "en": "Package",
+                  "fa": "بسته"
+                },
+                "width": 150
+              },
+              {
+                "key": "project",
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "width": 180
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 140
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 280
+              },
+              {
+                "key": "stage",
+                "header": {
+                  "en": "Stage",
+                  "fa": "مرحله"
+                },
+                "width": 120
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "mrs",
+                "header": {
+                  "en": "MRs",
+                  "fa": "MR"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "mrqs",
+                "header": {
+                  "en": "MRQs",
+                  "fa": "MRQ"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "openCommunications",
+                "header": {
+                  "en": "Open clarifications",
+                  "fa": "شفاف‌سازی باز"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "details",
+                    "label": {
+                      "en": "Details",
+                      "fa": "جزئیات"
+                    },
+                    "url": "/p/procurement-package-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "ProcurementPackage.View"
+  }
+}

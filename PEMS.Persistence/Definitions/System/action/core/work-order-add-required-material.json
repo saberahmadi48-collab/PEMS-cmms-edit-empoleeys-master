@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "work-order-add-required-material",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add required material",
+    "fa": "افزودن متریال موردنیاز"
+  },
+  "description": {
+    "en": "Add required material",
+    "fa": "افزودن متریال موردنیاز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderMaterial",
+      "action": "Add",
+      "sectionGuard": {
+        "section": "RequiredMaterials",
+        "action": "Add",
+        "workOrderId": "field:workOrderId",
+        "recordRef": "field:materialItemId",
+        "audit": "MaterialItemId={materialItemId}; RequiredQuantity={requiredQuantity}"
+      },
+      "args": {
+        "workOrderId": "field:workOrderId",
+        "materialItemId": "field:materialItemId",
+        "requiredQuantity": "field:requiredQuantity"
+      }
+    },
+    "success": {
+      "en": "The required material was added.",
+      "fa": "متریال موردنیاز اضافه شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

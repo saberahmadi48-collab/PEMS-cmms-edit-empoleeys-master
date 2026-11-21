@@ -12,6 +12,8 @@ public class TechnicalQuerySearchProvider : ISearchableEntityProvider
 
     public string EntityType => "TechnicalQuery";
     public string DisplayName => "TQ / TSR / RFI";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser();
 
     public TechnicalQuerySearchProvider(PEMSDbContext context)
     {

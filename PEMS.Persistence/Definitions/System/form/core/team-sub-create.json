@@ -1,0 +1,139 @@
+{
+  "kind": "form",
+  "key": "team-sub-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a sub-team or shift",
+    "fa": "ساخت زیرتیم یا شیفت"
+  },
+  "description": {
+    "en": "Create a sub-team or shift",
+    "fa": "ساخت زیرتیم یا شیفت"
+  },
+  "payload": {
+    "id": "team-sub-create",
+    "title": {
+      "en": "Create a sub-team or shift",
+      "fa": "ساخت زیرتیم یا شیفت"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ساخت"
+    },
+    "actionKey": "team-sub-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "parentTeamId",
+        "label": {
+          "en": "Parent team id",
+          "fa": "شناسه تیم والد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Parent team id is required.",
+            "fa": "شناسه تیم والد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "maintenanceGroupId",
+        "label": {
+          "en": "Maintenance group",
+          "fa": "گروه نگهداری"
+        },
+        "kind": "select",
+        "optionsFrom": "team-groups",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Maintenance group is required.",
+            "fa": "گروه نگهداری الزامی است."
+          }
+        }
+      },
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Code is required.",
+            "fa": "کد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        },
+        "maxLength": 150
+      },
+      {
+        "name": "nodeKind",
+        "label": {
+          "en": "Kind",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "Team",
+            "label": {
+              "en": "Team",
+              "fa": "تیم"
+            }
+          },
+          {
+            "value": "Shift",
+            "label": {
+              "en": "Shift",
+              "fa": "شیفت"
+            }
+          },
+          {
+            "value": "Unit",
+            "label": {
+              "en": "Unit",
+              "fa": "واحد"
+            }
+          }
+        ],
+        "messages": {
+          "required": {
+            "en": "Kind is required.",
+            "fa": "نوع الزامی است."
+          }
+        }
+      },
+      {
+        "name": "supervisorEmployeeId",
+        "label": {
+          "en": "Supervisor",
+          "fa": "سرپرست"
+        },
+        "kind": "select",
+        "optionsFrom": "team-employees"
+      }
+    ]
+  }
+}

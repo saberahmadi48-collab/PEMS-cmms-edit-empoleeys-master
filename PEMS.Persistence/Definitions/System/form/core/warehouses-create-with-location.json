@@ -1,0 +1,105 @@
+{
+  "kind": "form",
+  "key": "warehouses-create-with-location",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create warehouse with its first location",
+    "fa": "ایجاد انبار با نخستین محل نگهداری"
+  },
+  "description": {
+    "en": "A new warehouse and its first storage location in one step",
+    "fa": "انبار جدید و نخستین محل نگهداری آن در یک مرحله"
+  },
+  "payload": {
+    "id": "warehouses-create-with-location",
+    "title": {
+      "en": "New warehouse with a location",
+      "fa": "انبار جدید با محل نگهداری"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "warehouses-create-with-location",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "owner": "platform",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "maxLength": 30,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Code is required.",
+            "fa": "کد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      },
+      {
+        "name": "locationCode",
+        "label": {
+          "en": "Location code",
+          "fa": "کد محل نگهداری"
+        },
+        "kind": "text",
+        "maxLength": 30,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Location code is required.",
+            "fa": "کد محل نگهداری الزامی است."
+          }
+        }
+      },
+      {
+        "name": "locationName",
+        "label": {
+          "en": "Location name",
+          "fa": "نام محل نگهداری"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Location name is required.",
+            "fa": "نام محل نگهداری الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

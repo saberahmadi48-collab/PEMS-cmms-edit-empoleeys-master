@@ -1,0 +1,87 @@
+{
+  "kind": "page",
+  "key": "numbering-preview",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Numbering preview",
+    "fa": "پیش‌نمایش شماره‌گذاری"
+  },
+  "description": {
+    "en": "Numbering preview (page definition)",
+    "fa": "پیش‌نمایش شماره‌گذاری (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "numbering-preview",
+    "template": "entity-list",
+    "args": {
+      "id": "numbering-preview",
+      "url": "/d/numbering-preview-rows",
+      "idField": "documentType",
+      "columns": [
+        {
+          "key": "documentType",
+          "header": {
+            "en": "Document type (type it)",
+            "fa": "نوع سند"
+          },
+          "width": 200
+        },
+        {
+          "key": "pattern",
+          "header": {
+            "en": "Pattern (type it)",
+            "fa": "الگو"
+          },
+          "width": 260
+        },
+        {
+          "key": "padWidth",
+          "header": {
+            "en": "Pad width (type it)",
+            "fa": "ارقام"
+          },
+          "width": 150,
+          "type": "number"
+        },
+        {
+          "key": "calendar",
+          "header": {
+            "en": "Calendar (Jalali or Gregorian)",
+            "fa": "تقویم"
+          },
+          "width": 220
+        },
+        {
+          "key": "resetPeriod",
+          "header": {
+            "en": "Reset (Never or Yearly)",
+            "fa": "بازنشانی"
+          },
+          "width": 200
+        },
+        {
+          "key": "number",
+          "header": {
+            "en": "Sample number",
+            "fa": "شماره‌ی نمونه"
+          },
+          "width": 220,
+          "filterable": false,
+          "sortable": false
+        },
+        {
+          "key": "error",
+          "header": {
+            "en": "Error",
+            "fa": "خطا"
+          },
+          "width": 260,
+          "filterable": false,
+          "sortable": false
+        }
+      ]
+    }
+  }
+}

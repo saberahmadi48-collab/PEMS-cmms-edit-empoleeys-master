@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "store-requisition-close-short",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close with a shortage",
+    "fa": "بستن با کسری"
+  },
+  "description": {
+    "en": "Close with a shortage",
+    "fa": "بستن با کسری"
+  },
+  "payload": {
+    "id": "store-requisition-close-short",
+    "title": {
+      "en": "Close with a shortage",
+      "fa": "بستن با کسری"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "store-requisition-close-short",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Requisition id",
+          "fa": "شناسه‌ی درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

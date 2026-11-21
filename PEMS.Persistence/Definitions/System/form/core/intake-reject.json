@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "intake-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject an intake file",
+    "fa": "رد فایل دریافتی"
+  },
+  "description": {
+    "en": "Reject an intake file",
+    "fa": "رد فایل دریافتی"
+  },
+  "payload": {
+    "id": "intake-reject",
+    "title": {
+      "en": "Reject an intake file",
+      "fa": "رد فایل دریافتی"
+    },
+    "submitLabel": {
+      "en": "Reject",
+      "fa": "رد"
+    },
+    "actionKey": "intake-reject",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "attachmentId",
+        "label": {
+          "en": "File id",
+          "fa": "شناسه‌ی فایل"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

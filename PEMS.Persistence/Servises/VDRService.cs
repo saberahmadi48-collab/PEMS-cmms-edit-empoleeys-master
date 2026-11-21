@@ -48,50 +48,18 @@ public class VDRService : IVDRService
     // Scalar هستند که EF Core می‌تواند کامل سمت سرور Translate کند (نه بارگذاری کامل
     // Submissions و پردازش در حافظه مثل MapToDto).
     public async Task<PagedResult<VDRListItemDto>> GetPagedAsync(
-        int? projectId, int? vendorId, string? workflowStatus, int page, int pageSize)
+        int? projectId, int? vendorId, string? workflowStatus, int page, int pageSize, string? search = null)
     {
-        var query = _context.VDRItems
-            .AsNoTracking()
-            .Where(x => x.IsActive)
-            .AsQueryable();
-
-        if (projectId.HasValue) query = query.Where(x => x.ProjectId == projectId.Value);
-        if (vendorId.HasValue) query = query.Where(x => x.VendorId == vendorId.Value);
-        if (!string.IsNullOrWhiteSpace(workflowStatus)) query = query.Where(x => x.WorkflowStatus == workflowStatus);
+        var query = FilteredList(projectId, vendorId, workflowStatus, search);
 
         var totalCount = await query.CountAsync();
 
         var normalizedPage = page < 1 ? 1 : page;
         var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
 
-        // طبق بند ۵ سند فاز ۲: ترتیب پایدار و قطعی - CreatedDate به‌تنهایی برای ردیف‌های
-        // Import شده‌ی دسته‌ای (که می‌توانند دقیقاً هم‌زمان ایجاد شوند) کافی نیست
-        var items = await query
-            .OrderByDescending(x => x.CreatedDate)
-            .ThenByDescending(x => x.DocumentId)
-            .Skip((normalizedPage - 1) * normalizedPageSize)
-            .Take(normalizedPageSize)
-            .Select(x => new VDRListItemDto
-            {
-                VDRItemId = x.DocumentId,
-                DocumentNumber = x.DocumentNumber,
-                DocumentDescription = x.DocumentDescription,
-                DocumentTypeCode = x.DocumentTypeCode,
-                VendorName = x.Vendor != null ? x.Vendor.Name : "",
-                WorkflowStatus = x.WorkflowStatus,
-                LatestRevisionNo = x.Submissions
-                    .OrderByDescending(s => s.RevisionNo)
-                    .Select(s => (int?)s.RevisionNo)
-                    .FirstOrDefault(),
-                LatestReviewCategory = x.Submissions
-                    .OrderByDescending(s => s.RevisionNo)
-                    .Select(s => s.ReviewCategory)
-                    .FirstOrDefault(),
-                IsOverdue = x.WorkflowStatus != "Closed"
-                    && x.PlannedFirstIssueDate != null
-                    && !x.Submissions.Any()
-                    && x.PlannedFirstIssueDate < DateTime.Now
-            })
+        var items = await ProjectListRows(Ordered(query)
+                .Skip((normalizedPage - 1) * normalizedPageSize)
+                .Take(normalizedPageSize))
             .ToListAsync();
 
         return new PagedResult<VDRListItemDto>
@@ -102,6 +70,67 @@ public class VDRService : IVDRService
             TotalCount = totalCount
         };
     }
+
+    public async Task<(List<VDRListItemDto> Items, int Total)> GetAllMatchingAsync(
+        int? projectId, int? vendorId, string? workflowStatus, string? search, int maxRows)
+    {
+        var query = FilteredList(projectId, vendorId, workflowStatus, search);
+        var total = await query.CountAsync();
+        var items = await ProjectListRows(Ordered(query).Take(Math.Max(0, maxRows))).ToListAsync();
+        return (items, total);
+    }
+
+    // فیلترهای مشترک فهرست و خروجی Excel (SCRUM-409): پروژه، فروشنده، وضعیت و جستجوی متنی در شماره، شرح و نام فروشنده
+    private IQueryable<VDRItem> FilteredList(int? projectId, int? vendorId, string? workflowStatus, string? search)
+    {
+        var query = _context.VDRItems
+            .AsNoTracking()
+            .Where(x => x.IsActive)
+            .AsQueryable();
+
+        if (projectId.HasValue) query = query.Where(x => x.ProjectId == projectId.Value);
+        if (vendorId.HasValue) query = query.Where(x => x.VendorId == vendorId.Value);
+        if (!string.IsNullOrWhiteSpace(workflowStatus)) query = query.Where(x => x.WorkflowStatus == workflowStatus);
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var term = search.Trim();
+            query = query.Where(x => x.DocumentNumber.Contains(term)
+                || (x.DocumentDescription != null && x.DocumentDescription.Contains(term))
+                || (x.Vendor != null && x.Vendor.Name.Contains(term)));
+        }
+        return query;
+    }
+
+    // طبق بند ۵ سند فاز ۲: ترتیب پایدار و قطعی - CreatedDate به‌تنهایی برای ردیف‌های
+    // Import شده‌ی دسته‌ای (که می‌توانند دقیقاً هم‌زمان ایجاد شوند) کافی نیست
+    private static IQueryable<VDRItem> Ordered(IQueryable<VDRItem> query) =>
+        query.OrderByDescending(x => x.CreatedDate).ThenByDescending(x => x.DocumentId);
+
+    private static IQueryable<VDRListItemDto> ProjectListRows(IQueryable<VDRItem> query) =>
+        query.Select(x => new VDRListItemDto
+        {
+            VDRItemId = x.DocumentId,
+            DocumentNumber = x.DocumentNumber,
+            DocumentDescription = x.DocumentDescription,
+            DocumentTypeCode = x.DocumentTypeCode,
+            VendorName = x.Vendor != null ? x.Vendor.Name : "",
+            ProjectName = x.Project != null ? x.Project.ProjectName : "",
+            DisciplineName = x.Discipline != null ? x.Discipline.Name : x.DisciplineCodeRaw,
+            WorkflowStatus = x.WorkflowStatus,
+            LatestRevisionNo = x.Submissions
+                .OrderByDescending(s => s.RevisionNo)
+                .Select(s => (int?)s.RevisionNo)
+                .FirstOrDefault(),
+            LatestReviewCategory = x.Submissions
+                .OrderByDescending(s => s.RevisionNo)
+                .Select(s => s.ReviewCategory)
+                .FirstOrDefault(),
+            IsOverdue = x.WorkflowStatus != "Closed"
+                && x.PlannedFirstIssueDate != null
+                && !x.Submissions.Any()
+                && x.PlannedFirstIssueDate < DateTime.Now
+        });
+
 
     public async Task<VDRItemDto?> GetByIdAsync(int id)
     {
@@ -118,8 +147,96 @@ public class VDRService : IVDRService
                 .ThenInclude(x => x.ReplySheetAttachment)
             .FirstOrDefaultAsync(x => x.DocumentId == id);
 
-        return item == null ? null : MapToDto(item);
+        if (item == null) return null;
+        var dto = MapToDto(item);
+        if (item.IsOnHold)
+        {
+            // SCRUM-559: the open hold shown in the banner
+            var hold = await _context.DocumentHolds.AsNoTracking().Where(h => h.DocumentId == id && h.ReleaseDate == null)
+                .OrderByDescending(h => h.HoldDate).Select(h => new { h.Reason, h.HoldDate }).FirstOrDefaultAsync();
+            dto.HoldReason = hold?.Reason;
+            dto.HoldDate = hold?.HoldDate;
+        }
+        return dto;
     }
+
+    // ================================================================== SCRUM-559: More actions menu
+
+    private const string VdrBusinessObjectType = "VDRItem";   // same as VdrWorkflowService
+
+    public async Task<VdrActionResult> UpdateDetailsAsync(int vdrItemId, VdrItemEditInput input, string? userName)
+    {
+        var item = await _context.VDRItems.FirstOrDefaultAsync(x => x.DocumentId == vdrItemId);
+        if (item == null) return VdrActionResult.Fail("Vdr_Err_NotFound");
+        if (!item.IsActive) return VdrActionResult.Fail("Vdr_Err_Inactive");
+        if (input.DocumentClass is <= 0) return VdrActionResult.Fail("Vdr_Err_Class");
+        int? equipmentId = null;
+        var tag = Clean(input.EquipmentTag, 200);
+        if (tag != null)
+        {
+            var upperTag = tag.ToUpperInvariant();
+            equipmentId = await _context.Equipments.AsNoTracking().Where(e => e.TagNumber.ToUpper() == upperTag)
+                .OrderBy(e => e.ProjectId == item.ProjectId ? 0 : 1).ThenBy(e => e.EquipmentId).Select(e => (int?)e.EquipmentId).FirstOrDefaultAsync();
+            if (equipmentId == null) return VdrActionResult.Fail("Vdr_Err_Equipment");
+        }
+
+        var changes = new List<string>();
+        void Set<T>(string name, T current, T value, Action<T> apply)
+        {
+            if (EqualityComparer<T>.Default.Equals(current, value)) return;
+            changes.Add($"{name}: {Show(current)} -> {Show(value)}");
+            apply(value);
+        }
+        Set("Description", item.DocumentDescription, Clean(input.DocumentDescription, 1000), v => item.DocumentDescription = v);
+        Set("Class", item.DocumentClass, input.DocumentClass, v => { item.DocumentClass = v; item.DocumentClassRaw = v?.ToString(); });
+        Set("PlannedFirstIssue", item.PlannedFirstIssueDate?.Date, input.PlannedFirstIssueDate?.Date, v => item.PlannedFirstIssueDate = v);
+        Set("Equipment", item.EquipmentId, equipmentId, v => item.EquipmentId = v);
+        Set("Discipline", item.DisciplineCodeRaw, Clean(input.DisciplineCodeRaw, 50)?.ToUpperInvariant(), v => item.DisciplineCodeRaw = v);
+        Set("VendorFormatNo", item.VendorFormatDocumentNumber, Clean(input.VendorFormatDocumentNumber, 200), v => item.VendorFormatDocumentNumber = v);
+        if (changes.Count == 0) return VdrActionResult.Ok();
+
+        item.ModifiedDate = DateTime.Now;
+        Audit(vdrItemId, "Update", string.Join("\n", changes), userName);
+        await _context.SaveChangesAsync();
+        return VdrActionResult.Ok();
+    }
+
+    public async Task<VdrActionResult> DeactivateAsync(int vdrItemId, string? reason, string? userName)
+    {
+        if (string.IsNullOrWhiteSpace(reason)) return VdrActionResult.Fail("Vdr_Err_ReasonRequired");
+        var item = await _context.VDRItems.FirstOrDefaultAsync(x => x.DocumentId == vdrItemId);
+        if (item == null) return VdrActionResult.Fail("Vdr_Err_NotFound");
+        if (!item.IsActive) return VdrActionResult.Fail("Vdr_Err_Inactive");
+        if (await _context.WorkflowInstances.AnyAsync(w => w.BusinessObjectType == VdrBusinessObjectType && w.BusinessObjectId == vdrItemId && w.Status == "Running"))
+            return VdrActionResult.Fail("Vdr_Err_ReviewRunning");
+
+        item.IsActive = false;
+        item.ModifiedDate = DateTime.Now;
+        Audit(vdrItemId, "Deactivate", "Reason: " + Clean(reason, 1000), userName);
+        await _context.SaveChangesAsync();
+        return VdrActionResult.Ok();
+    }
+
+    private void Audit(int vdrItemId, string action, string summary, string? userName) =>
+        _context.AuditLogs.Add(new AuditLog
+        {
+            EntityName = nameof(VDRItem), EntityKeyValue = vdrItemId.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            Action = action, ChangedFieldsSummary = summary, UserName = userName, Timestamp = DateTime.Now
+        });
+
+    private static string? Clean(string? s, int max)
+    {
+        if (string.IsNullOrWhiteSpace(s)) return null;
+        s = s.Trim();
+        return s.Length <= max ? s : s[..max];
+    }
+
+    private static string Show<T>(T value) => value switch
+    {
+        null => "-",
+        DateTime d => d.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
+        _ => value.ToString() ?? "-"
+    };
 
     public async Task<int> CreateManualAsync(VDRItemDto dto)
     {
@@ -305,6 +422,8 @@ public class VDRService : IVDRService
             LatestReviewCategory = latest?.ReviewCategory,
             LatestVendorActualIssuedDate = latest?.VendorActualIssuedDate,
             IsOverdue = IsOverdue(item),
+            IsActive = item.IsActive,
+            IsOnHold = item.IsOnHold,
 
             Submissions = orderedSubmissions.Select(s => new VDRSubmissionDto
             {

@@ -7,31 +7,33 @@
     string? preselectedLabel = ViewBag.PreselectedEquipmentLabel;
 }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Index" class="small">← Assessment Queue</a>
-</div>
+@await Html.PartialAsync("_PageHeader")
 
-@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+<pems-flex justify="end" align="center" css="mb-2">
+    <pems-link asp-action="Index" class="small">← Assessment Queue</pems-link>
+</pems-flex>
 
-<div class="content-card" style="max-width:600px;">
-    <form asp-action="Create" method="post">
-        <div class="mb-3">
-            <label class="form-label small">@Localizer["Equipment"]</label>
+@if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
+
+<pems-content-card css="pems-s-cd90f7a7">
+    <pems-form asp-action="Create" method="post">
+        <pems-form-group css="mb-3">
+            <pems-label css="small">@Localizer["Equipment"]</pems-label>
             @if (preselectedEquipmentId.HasValue)
             {
                 <input type="hidden" name="equipmentId" value="@preselectedEquipmentId" />
-                <input class="form-control form-control-sm" value="@preselectedLabel" disabled />
+                <pems-input scale="small" value="@preselectedLabel" disabled />
             }
             else
             {
-                <input type="number" name="equipmentId" class="form-control form-control-sm" required placeholder="@Localizer["Equipment ID"]" />
-                <div class="form-text">از صفحه‌ی جزئیات تجهیز یا Activation Backlog وارد شوید تا از قبل انتخاب شود.</div>
+                <pems-input scale="small" type="number" name="equipmentId" required placeholder="@Localizer["Equipment ID"]" />
+                <pems-help-text>از صفحه‌ی جزئیات تجهیز یا Activation Backlog وارد شوید تا از قبل انتخاب شود.</pems-help-text>
             }
-        </div>
-        <div class="mb-3">
-            <label class="form-label small">Rationale (optional)</label>
-            <textarea name="rationale" class="form-control form-control-sm" rows="2"></textarea>
-        </div>
-        <button type="submit" class="btn btn-pems-solid btn-sm">Create Draft</button>
-    </form>
-</div>
+        </pems-form-group>
+        <pems-form-group css="mb-3">
+            <pems-label css="small">Rationale (optional)</pems-label>
+            <pems-textarea scale="small" name="rationale" rows="2"></pems-textarea>
+        </pems-form-group>
+        <pems-button tone="primary" size="small" type="submit">Create Draft</pems-button>
+    </pems-form>
+</pems-content-card>

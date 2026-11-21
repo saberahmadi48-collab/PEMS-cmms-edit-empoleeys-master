@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "meeting-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Schedule a meeting",
+    "fa": "برگزاری جلسه"
+  },
+  "description": {
+    "en": "Schedule a meeting",
+    "fa": "برگزاری جلسه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Meeting",
+      "action": "Create",
+      "args": {
+        "title": "field:title",
+        "meetingDate": "field:meetingDate",
+        "location": "field:location",
+        "organizerName": "field:organizerName",
+        "projectId": "field:projectId",
+        "agenda": "field:agenda"
+      }
+    },
+    "success": {
+      "en": "Meeting scheduled.",
+      "fa": "جلسه برنامه‌ریزی شد."
+    },
+    "redirect": "/p/meetings"
+  }
+}

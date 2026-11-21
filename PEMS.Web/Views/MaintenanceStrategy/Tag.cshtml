@@ -1,0 +1,35 @@
+@model PEMS.Application.DTOs.TagMaintenanceViewDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Helpers
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+
+<pems-flex justify="between" align="center" css="mb-3">
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-tag" /> @Localizer["Rcm_TagMaintenance"] — @Model.Equipment.Tag</pems-heading>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index" asp-route-equipmentId="@Model.Equipment.EquipmentId">@Localizer["Rcm_Back"]</pems-button>
+</pems-flex>
+
+@await Html.PartialAsync("_EquipmentIdentity", Model.Equipment)
+
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_AssignedStrategies"]</pems-heading>
+    <pems-data-table data="@(DataRows.Of(Model.Assignments, c_ => c_.Add(((Localizer["Rcm_Strategy"])?.ToString() ?? ""), a => (object?)(DataCell.Link(Url.Action("Details", null, new { id = a.MaintenanceStrategyId }), "#", a.MaintenanceStrategyId))).Add(((Localizer["Rcm_Version"])?.ToString() ?? ""), a => (object?)(DataCell.Group("v", a.StrategyVersion))).Add(((Localizer["Rcm_Override"])?.ToString() ?? ""), a => (object?)((Localizer.Label("OverrideStatus", a.OverrideStatus))), css: "small").Add(((Localizer["Rcm_Plans"])?.ToString() ?? ""), a => (object?)(a.PlanCount)).Add("", a => (object?)(DataCell.ButtonLink(Url.Action("Create", "MaintenancePlan", new { assignmentId = a.AssignmentId }), "primary", "small", true, "py-0", DataCell.Icon("bi-calendar-plus"))), css: "text-end")))" dense="true" />
+    @if (!Model.Assignments.Any()) { <pems-text class="text-muted small text-center py-2">@Localizer["Rcm_NoAssignments"]</pems-text> }
+</pems-content-card>
+
+<pems-row>
+    <pems-col md="6">
+        <pems-content-card css="mb-3">
+            <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_Plans"]</pems-heading>
+            <pems-data-table data="@(DataRows.Of(Model.Plans, c_ => c_.Add("", p => (object?)(p.PlanNumber)).Add("", p => (object?)(p.Title), css: "small").Add("", p => (object?)(DataCell.Group("v", p.StrategyVersion)), css: "small").Add("", p => (object?)((PemsDates.Date(p.NextDueDate))), css: "small")))" header="false" dense="true" />
+            @if (!Model.Plans.Any()) { <pems-text class="text-muted small text-center">@Localizer["Rcm_NoPlans"]</pems-text> }
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="6">
+        <pems-content-card css="mb-3">
+            <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_OpenWorkOrders"]</pems-heading>
+            <pems-data-table data="@(DataRows.Of(Model.OpenWorkOrders, c_ => c_.Add("", w => (object?)(DataCell.Link(Url.Action("Details", "WorkOrder", new { id = w.WorkOrderId }), w.WorkOrderNumber))).Add("", w => (object?)(w.Status), css: "small").Add("", w => (object?)(w.Priority), css: "small")))" header="false" dense="true" />
+            @if (!Model.OpenWorkOrders.Any()) { <pems-text class="text-muted small text-center">@Localizer["Rcm_NoOpenWorkOrders"]</pems-text> }
+        </pems-content-card>
+    </pems-col>
+</pems-row>

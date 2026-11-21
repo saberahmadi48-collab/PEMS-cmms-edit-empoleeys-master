@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "pc-admin-remove-commodity-responsible",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a commodity responsible",
+    "fa": "حذف مسئول گروه کالا"
+  },
+  "description": {
+    "en": "Remove a commodity responsible",
+    "fa": "حذف مسئول گروه کالا"
+  },
+  "payload": {
+    "id": "pc-admin-remove-commodity-responsible",
+    "title": {
+      "en": "Remove a commodity responsible",
+      "fa": "حذف مسئول گروه کالا"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-admin-remove-commodity-responsible",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "شناسه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

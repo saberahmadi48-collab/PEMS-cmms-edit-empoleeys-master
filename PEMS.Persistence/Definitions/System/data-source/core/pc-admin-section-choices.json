@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "pc-admin-section-choices",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Sections",
+    "fa": "بخش‌ها"
+  },
+  "description": {
+    "en": "Sections",
+    "fa": "بخش‌ها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "SectionChoices",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId"
+      }
+    }
+  }
+}

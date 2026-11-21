@@ -1,0 +1,50 @@
+{
+  "key": "metric",
+  "component": "PEMS.UI.Components.PemsMetric",
+  "category": "display",
+  "icon": "bi-123",
+  "nameKey": "component.metric",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "MetricOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "css": "text-success"
+  }
+}

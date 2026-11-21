@@ -31,4 +31,40 @@ public class StageDiagramItem
 public class StageDiagramViewModel
 {
     public List<StageDiagramItem> Stages { get; set; } = new();
+
+    /// <summary>The stages as the <c>pems-stage-diagram</c> component takes them (SCRUM-486): the page's states, unchanged.</summary>
+    public IReadOnlyList<PEMS.UI.Components.StageStep> Steps => Stages.Select(s => new PEMS.UI.Components.StageStep(s.Label, s.IconCssClass, s.State switch
+    {
+        StageItemState.Done => PEMS.UI.Components.StageState.Done,
+        StageItemState.Current => PEMS.UI.Components.StageState.Current,
+        StageItemState.Rejected => PEMS.UI.Components.StageState.Rejected,
+        _ => PEMS.UI.Components.StageState.Pending
+    }, s.RoleLabel)).ToList();
+}
+
+/// <summary>The work-order cycle for the stage diagram (variant wo): the stages and their texts of the former _WorkOrderStagesDiagram partial; a pending multi-discipline review adds its own stage.</summary>
+public static class WorkOrderStages
+{
+    public static IReadOnlyList<PEMS.UI.Components.StageStep> Build(string? status, bool hasPendingReview)
+    {
+        status ??= "Open";
+        var order = hasPendingReview
+            ? new[] { "Open", "Assigned", "InProgress", "DisciplineReview", "Completed", "Closed" }
+            : new[] { "Open", "Assigned", "InProgress", "Completed", "Closed" };
+        var labels = new Dictionary<string, string>
+        {
+            ["Open"] = "ثبت شده", ["Assigned"] = "تخصیص‌یافته", ["InProgress"] = "در حال انجام",
+            ["DisciplineReview"] = "بازبینی چند-دیسیپلینه", ["Completed"] = "تکمیل‌شده", ["Closed"] = "بسته‌شده"
+        };
+        var icons = new Dictionary<string, string>
+        {
+            ["Open"] = "bi-plus-circle", ["Assigned"] = "bi-person-check", ["InProgress"] = "bi-tools",
+            ["DisciplineReview"] = "bi-people", ["Completed"] = "bi-check2-circle", ["Closed"] = "bi-archive"
+        };
+        var current = Array.IndexOf(order, status);
+        if (current < 0) current = 0;
+        if (hasPendingReview && status == "InProgress") current = Array.IndexOf(order, "DisciplineReview");
+        return order.Select((key, i) => new PEMS.UI.Components.StageStep(labels[key], icons[key],
+            i < current ? PEMS.UI.Components.StageState.Done : i == current ? PEMS.UI.Components.StageState.Current : PEMS.UI.Components.StageState.Pending)).ToList();
+    }
 }

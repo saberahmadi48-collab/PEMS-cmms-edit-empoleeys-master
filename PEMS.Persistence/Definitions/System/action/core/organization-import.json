@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "organization-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Validate the organization file",
+    "fa": "اعتبارسنجی فایل ساختار سازمانی"
+  },
+  "description": {
+    "en": "Validate the organization file",
+    "fa": "اعتبارسنجی فایل ساختار سازمانی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "OrganizationImport",
+      "action": "Validate",
+      "args": {
+        "file": "file:file",
+        "userName": "context:userName"
+      },
+      "upload": {
+        "profile": "spreadsheet",
+        "maxFileMb": 5
+      }
+    },
+    "redirect": "/f/organization-import-confirm"
+  }
+}

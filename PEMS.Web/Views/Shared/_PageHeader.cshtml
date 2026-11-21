@@ -1,8 +1,10 @@
 @* Global PEMS page header (single source): one compact row = page title + optional muted module label.
    Rules (docs/design/WORKSPACE_DESIGN_SYSTEM.md): no raw URL / controller-action route / "Dashboard / Section / Title"
    breadcrumb chain, no duplicated title. The sidebar is the module navigation. Pages that need a parent link
-   provide a local action link in their own header. Pages with their own header set ViewData["HidePageTitle"]=true. *@
+   provide a local action link in their own header. Pages with their own header set ViewData["HidePageTitle"]=true.
+   The markup lives in PEMS.UI (_PemsPageHeader.cshtml); this file only localizes the texts and honours HidePageTitle. *@
 @using Microsoft.Extensions.Localization
+@using PEMS.UI.Abstractions
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 @{
@@ -11,12 +13,8 @@
     string Loc(string? s) { if (string.IsNullOrWhiteSpace(s)) return s ?? ""; var l = Localizer[s]; return l.ResourceNotFound ? s : l.Value; }
     var title = Loc(ViewData["Title"]?.ToString());
     var moduleLabel = Loc(ViewData["Section"] as string);
-    var showSection = !string.IsNullOrWhiteSpace(moduleLabel) && !string.Equals(moduleLabel, title, StringComparison.OrdinalIgnoreCase);
 }
-@if (!string.IsNullOrWhiteSpace(title) && ViewData["HidePageTitle"] is not true)
+@if (ViewData["HidePageTitle"] is not true)
 {
-    <div class="pems-page-head">
-        <h1 class="pems-page-title">@title</h1>
-        @if (showSection) { <span class="pems-page-section">@moduleLabel</span> }
-    </div>
+    @await Html.PartialAsync("_PemsPageHeader", new PageHeaderModel { Title = TranslatableText.Literal(title), Section = TranslatableText.Literal(moduleLabel) })
 }

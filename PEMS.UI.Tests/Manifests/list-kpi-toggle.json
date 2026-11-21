@@ -1,0 +1,40 @@
+{
+  "key": "list-kpi-toggle",
+  "component": "PEMS.UI.Components.PemsListKpiToggle",
+  "category": "list",
+  "icon": "bi-bar-chart-line",
+  "nameKey": "component.list-kpi-toggle",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "target": {
+        "type": "string"
+      },
+      "storageKey": {
+        "type": "string"
+      },
+      "open": {
+        "type": "boolean"
+      },
+      "label": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "ListKpiToggleOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "target": "kpis",
+    "storageKey": "k",
+    "label": "KPIs"
+  }
+}

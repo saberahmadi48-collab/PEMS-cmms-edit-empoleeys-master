@@ -4,14 +4,7 @@
    (Flexbox row) به‌صورت خودکار با dir="rtl" جهتش برمی‌گردد.
    ========================================================================= */
 
-[dir="rtl"] .pems-sidebar .nav-link {
-    border-right: none;
-    border-left: 3px solid transparent;
-}
-
-[dir="rtl"] .pems-sidebar .nav-link.active {
-    border-left-color: var(--pems-accent);
-}
+/* SCRUM-541: the sidebar marker uses border-inline-start in site.css, so it needs no RTL override here. */
 
 [dir="rtl"] .pems-sidebar .nav-subitem {
     padding-right: 20px;

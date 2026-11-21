@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "executive-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Executive Dashboard (old address)",
+    "fa": "داشبورد مدیریتی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Executive Dashboard (old address)",
+    "fa": "داشبورد مدیریتی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ExecutiveDashboard",
+    "target": "/p/executive-dashboard",
+    "permanent": false
+  }
+}

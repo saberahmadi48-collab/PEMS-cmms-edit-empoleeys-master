@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "ai-search-disciplines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Disciplines",
+    "fa": "دیسیپلین‌ها"
+  },
+  "description": {
+    "en": "Disciplines",
+    "fa": "دیسیپلین‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "AiSearch",
+      "action": "Disciplines"
+    }
+  }
+}

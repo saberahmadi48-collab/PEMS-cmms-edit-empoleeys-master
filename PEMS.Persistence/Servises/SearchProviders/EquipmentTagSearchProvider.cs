@@ -16,6 +16,8 @@ public class EquipmentTagSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "EquipmentTag";
     public string DisplayName => "تگ‌های مهندسی";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser();
 
     public EquipmentTagSearchProvider(PEMSDbContext context)
     {

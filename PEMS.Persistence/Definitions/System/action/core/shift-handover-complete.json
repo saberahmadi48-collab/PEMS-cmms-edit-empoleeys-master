@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "shift-handover-complete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Complete the handover",
+    "fa": "نهایی‌سازی تحویل"
+  },
+  "description": {
+    "en": "Complete the handover",
+    "fa": "نهایی‌سازی تحویل"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ShiftHandover",
+      "action": "Complete",
+      "args": {
+        "id": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The handover is complete.",
+      "fa": "تحویل شیفت نهایی شد."
+    },
+    "redirect": "/ShiftHandover/Details/{id}"
+  }
+}

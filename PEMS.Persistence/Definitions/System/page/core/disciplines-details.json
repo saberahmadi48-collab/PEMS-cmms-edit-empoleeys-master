@@ -1,0 +1,95 @@
+{
+  "kind": "page",
+  "key": "disciplines-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Disciplines details",
+    "fa": "جزئیات دیسیپلین‌ها"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "disciplines-record",
+      "url": "/d/disciplines-grid",
+      "idField": "disciplineId",
+      "fields": [
+        {
+          "key": "code",
+          "label": {
+            "en": "Code",
+            "fa": "کد"
+          }
+        },
+        {
+          "key": "name",
+          "label": {
+            "en": "Name",
+            "fa": "نام"
+          }
+        },
+        {
+          "key": "description",
+          "label": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "wide": true
+        },
+        {
+          "key": "importAliases",
+          "label": {
+            "en": "Import aliases",
+            "fa": "نام‌های مستعار ایمپورت"
+          }
+        },
+        {
+          "key": "transmittalCode",
+          "label": {
+            "en": "Transmittal code",
+            "fa": "کد ترانسمیتال"
+          }
+        },
+        {
+          "key": "employeeCount",
+          "label": {
+            "en": "Employees",
+            "fa": "کارکنان"
+          },
+          "type": "number"
+        },
+        {
+          "key": "documentCount",
+          "label": {
+            "en": "Documents",
+            "fa": "اسناد"
+          },
+          "type": "number"
+        },
+        {
+          "key": "isActive",
+          "label": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "type": "bool"
+        }
+      ],
+      "backUrl": "/p/disciplines",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/disciplines-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

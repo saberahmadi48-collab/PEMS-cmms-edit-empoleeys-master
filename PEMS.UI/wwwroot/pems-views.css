@@ -1,0 +1,117 @@
+/* PEMS.UI view types (SCRUM-55): cards, kanban, calendar, timeline. Theme tokens only, logical properties only (one sheet for right-to-left and left-to-right). */
+.pems-view__toolbar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; justify-content: space-between; margin-block-end: .5rem; }
+.pems-view__toolbar[hidden] { display: none; }
+.pems-view__nav, .pems-view__systems { display: flex; gap: .35rem; }
+.pems-view__title { flex: 1; text-align: center; }
+.pems-view__body { overflow: auto; }
+.pems-view__status:empty { display: none; }
+
+.pems-view__cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: .75rem; }
+.pems-view__card { display: flex; flex-direction: column; gap: .35rem; padding: .6rem .75rem; color: var(--pems-text); text-decoration: none; background: var(--pems-surface); border: 1px solid var(--pems-surface-border); border-radius: .5rem; }
+.pems-view__card:hover { border-color: var(--pems-primary); }
+.pems-view__card:focus-visible { outline: 2px solid var(--pems-primary); outline-offset: 2px; }
+.pems-view__image { inline-size: 100%; max-block-size: 9rem; object-fit: cover; border-radius: .35rem; }
+.pems-view__card-body { display: flex; flex-direction: column; gap: .25rem; align-items: flex-start; }
+.pems-view__card-title { font-weight: 600; }
+.pems-view__card.is-dragging { opacity: .5; }
+
+.pems-view__board { display: flex; gap: .75rem; align-items: flex-start; padding-block-end: .5rem; }
+.pems-view__col { flex: 0 0 17rem; min-block-size: 8rem; display: flex; flex-direction: column; gap: .5rem; padding: .5rem; background: var(--pems-hover, rgba(127, 127, 127, .08)); border: 1px solid var(--pems-surface-border); border-radius: .5rem; border-block-start-width: 3px; }
+.pems-view__col.is-primary { border-block-start-color: var(--pems-primary); }
+.pems-view__col.is-success { border-block-start-color: var(--bs-success, var(--pems-primary)); }
+.pems-view__col.is-warning { border-block-start-color: var(--bs-warning, var(--pems-primary)); }
+.pems-view__col.is-danger { border-block-start-color: var(--bs-danger, var(--pems-primary)); }
+.pems-view__col.is-over { outline: 2px dashed var(--pems-primary); outline-offset: -4px; }
+.pems-view__col-head { display: flex; align-items: center; justify-content: space-between; font-weight: 600; }
+.pems-view__col-list { display: flex; flex-direction: column; gap: .5rem; min-block-size: 3rem; }
+
+.pems-view__cal { border: 1px solid var(--pems-surface-border); border-radius: .5rem; background: var(--pems-surface); color: var(--pems-text); }
+.pems-view__cal-week, .pems-view__cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.pems-view__cal-wd { padding: .35rem .5rem; font-weight: 600; text-align: center; border-block-end: 1px solid var(--pems-surface-border); }
+.pems-view__cal-day { min-block-size: 6rem; padding: .25rem; border-inline-end: 1px solid var(--pems-surface-border); border-block-end: 1px solid var(--pems-surface-border); overflow: hidden; }
+.pems-view__cal-day:nth-child(7n) { border-inline-end: 0; }
+.pems-view__cal-day.is-other { background: var(--pems-hover, rgba(127, 127, 127, .08)); color: var(--pems-text-muted); }
+.pems-view__cal-day.is-today .pems-view__cal-num { background: var(--pems-primary); color: var(--pems-surface); border-radius: 999px; padding-inline: .45rem; }
+.pems-view__cal-num { display: inline-block; font-size: .8rem; margin-block-end: .15rem; }
+.pems-view__cal-items { display: flex; flex-direction: column; gap: .15rem; }
+.pems-view__chip { display: block; padding: .05rem .35rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .8rem; color: var(--pems-text); text-decoration: none; background: var(--pems-hover, rgba(127, 127, 127, .15)); border-inline-start: 3px solid var(--pems-primary); border-radius: .25rem; }
+.pems-view__chip:hover { background: var(--pems-primary); color: var(--pems-surface); }
+.pems-view__more-items { padding: 0 .35rem; font-size: .75rem; color: var(--pems-text-muted); background: transparent; border: 0; text-align: start; }
+
+.pems-view__timeline { display: flex; flex-direction: column; gap: 1rem; padding-inline-start: 1rem; border-inline-start: 2px solid var(--pems-surface-border); }
+.pems-view__tl-date { margin: 0 0 .35rem; font-size: .95rem; font-weight: 600; }
+.pems-view__tl-list { display: flex; flex-direction: column; gap: .5rem; }
+.pems-view__more { margin-block-start: .75rem; text-align: center; }
+
+/* SCRUM-58: the workflow history timeline. */
+.pems-wfh { list-style: none; margin: 0; padding-inline: 1rem 0; border-inline-start: 2px solid var(--pems-surface-border); display: flex; flex-direction: column; gap: .85rem; }
+.pems-wfh--empty { border: 0; padding: 1rem; text-align: center; }
+.pems-wfh__item { position: relative; padding-inline-start: .25rem; }
+.pems-wfh__item::before { content: ""; position: absolute; inset-inline-start: calc(-1rem - 6px); inset-block-start: .35rem; inline-size: 10px; block-size: 10px; border-radius: 50%; background: var(--pems-text-muted); }
+.pems-wfh__item--success::before { background: var(--bs-success, var(--pems-primary)); }
+.pems-wfh__item--danger::before { background: var(--bs-danger, var(--pems-primary)); }
+.pems-wfh__item--warning::before { background: var(--bs-warning, var(--pems-primary)); }
+.pems-wfh__item--info::before { background: var(--pems-primary); }
+.pems-wfh__head { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: space-between; }
+.pems-wfh__when, .pems-wfh__actor, .pems-wfh__detail { font-size: .85rem; color: var(--pems-text-muted); }
+.pems-wfh__comment { margin: .25rem 0 0; padding-inline-start: .6rem; border-inline-start: 3px solid var(--pems-surface-border); }
+
+/* SCRUM-58: the workflow action bar. */
+.pems-wfa { display: flex; flex-direction: column; gap: .5rem; }
+.pems-wfa--none { padding: .5rem; }
+.pems-wfa__label { display: flex; flex-direction: column; gap: .25rem; font-weight: 600; }
+.pems-wfa__buttons { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+/* SCRUM-580: the uploader. Without scripting only the file input shows; the script hides it behind the drop box and keeps it as the posting control. */
+.pems-upload.is-enhanced > input[type="file"] { position: absolute; inline-size: 1px; block-size: 1px; opacity: 0; overflow: hidden; }
+.pems-upload.is-enhanced { position: relative; }
+.pems-upload__zone { padding: .6rem .75rem; text-align: center; color: var(--pems-text-muted); border: 2px dashed var(--pems-surface-border); border-radius: .5rem; background: var(--pems-surface); }
+.pems-upload__zone.is-over { border-color: var(--pems-primary); background: var(--pems-hover, rgba(127, 127, 127, .08)); }
+.pems-upload.has-error .pems-upload__zone { border-color: var(--bs-danger, var(--pems-primary)); }
+.pems-upload__list { list-style: none; margin: .35rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .25rem; }
+.pems-upload__file { display: flex; align-items: center; gap: .5rem; }
+.pems-upload__name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pems-upload__message:empty { display: none; }
+
+/* SCRUM-578: the form engine: a grid of one or two columns, a cell that can span both, errors of the form as a whole. */
+.pems-form__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; }
+.pems-form__cell--span { grid-column: 1 / -1; }
+.pems-form__cell[hidden] { display: none; }
+.pems-form__errors { margin-block-end: .75rem; padding: .5rem .75rem; color: var(--bs-danger, var(--pems-text)); border: 1px solid var(--bs-danger, var(--pems-surface-border)); border-radius: .35rem; }
+@media (max-width: 40rem) { .pems-form__grid { grid-template-columns: 1fr; } }
+
+/* SCRUM-339: the comments thread and the audit trail. */
+.pems-thread, .pems-thread__replies { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .75rem; }
+.pems-thread--empty, .pems-audit--empty { padding: 1rem; text-align: center; }
+.pems-thread__item { padding: .6rem .75rem; background: var(--pems-surface); border: 1px solid var(--pems-surface-border); border-radius: .5rem; }
+.pems-thread__item--reply { margin-block-start: .5rem; background: var(--pems-hover, rgba(127, 127, 127, .06)); }
+.pems-thread__replies { margin-block-start: .5rem; padding-inline-start: 1rem; border-inline-start: 2px solid var(--pems-surface-border); }
+.pems-thread__head { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.pems-thread__when { font-size: .85rem; color: var(--pems-text-muted); }
+.pems-thread__status { padding: .05rem .5rem; font-size: .8rem; border: 1px solid var(--pems-surface-border); border-radius: 999px; }
+.pems-thread__status--success { border-color: var(--bs-success, var(--pems-primary)); }
+.pems-thread__status--danger { border-color: var(--bs-danger, var(--pems-primary)); }
+.pems-thread__status--warning { border-color: var(--bs-warning, var(--pems-primary)); }
+.pems-thread__text { margin-block-start: .25rem; white-space: pre-wrap; }
+.pems-thread__action { display: inline-block; margin-block-start: .25rem; font-size: .85rem; }
+.pems-audit__old { color: var(--pems-text-muted); }
+.pems-audit__new { font-weight: 600; }
+
+/* SCRUM-55: the gantt view: a label column and a track per row; a bar is placed with two custom properties (percent from the start, percent of the span). */
+.pems-view__gantt { border: 1px solid var(--pems-surface-border); border-radius: .5rem; background: var(--pems-surface); color: var(--pems-text); }
+.pems-view__g-head, .pems-view__g-row { display: grid; grid-template-columns: 12rem minmax(0, 1fr); align-items: center; border-block-end: 1px solid var(--pems-surface-border); }
+.pems-view__g-row:last-child { border-block-end: 0; }
+.pems-view__g-label { padding: .35rem .6rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--pems-text); text-decoration: none; }
+.pems-view__g-scale, .pems-view__g-track { position: relative; block-size: 2rem; }
+.pems-view__g-tick { position: absolute; inset-inline-start: calc(var(--from, 0) * 1%); padding-inline-start: .25rem; font-size: .75rem; color: var(--pems-text-muted); border-inline-start: 1px solid var(--pems-surface-border); block-size: 100%; line-height: 2rem; }
+.pems-view__bar { position: absolute; inset-block: .4rem; inset-inline-start: calc(var(--from, 0) * 1%); inline-size: max(calc(var(--span, 1) * 1%), .5rem); background: var(--pems-primary); border-radius: .25rem; opacity: .85; }
+.pems-view__bar:hover, .pems-view__bar:focus-visible { opacity: 1; outline: 2px solid var(--pems-primary); outline-offset: 1px; }
+
+/* SCRUM-55: the tree view: nested lists, indented by the reading direction. */
+.pems-view__tree, .pems-view__children { list-style: none; margin: 0; padding: 0; }
+.pems-view__children { padding-inline-start: 1.25rem; border-inline-start: 1px solid var(--pems-surface-border); margin-inline-start: .6rem; }
+.pems-view__node-row { display: flex; align-items: center; gap: .5rem; padding: .2rem .25rem; border-radius: .25rem; }
+.pems-view__node-row:hover { background: var(--pems-hover, rgba(127, 127, 127, .08)); }
+.pems-view__toggle { min-inline-size: 4.5rem; padding: .05rem .4rem; font-size: .8rem; color: var(--pems-text-muted); background: transparent; border: 1px solid var(--pems-surface-border); border-radius: .25rem; }
+.pems-view__node-title { color: var(--pems-text); text-decoration: none; }
+.pems-view__node-title:hover { color: var(--pems-primary); }

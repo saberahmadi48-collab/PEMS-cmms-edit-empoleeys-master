@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "team-position-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a position",
+    "fa": "ساخت سمت"
+  },
+  "description": {
+    "en": "Create a position",
+    "fa": "ساخت سمت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "CreatePosition",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "teamId": "field:teamId",
+        "title": "field:title",
+        "description": "field:description",
+        "sortOrder": "field:sortOrder"
+      }
+    },
+    "success": {
+      "en": "Position created.",
+      "fa": "سمت ساخته شد."
+    },
+    "redirect": "/p/team-details?teamId={teamId}"
+  }
+}

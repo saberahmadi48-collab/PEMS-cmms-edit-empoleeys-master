@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "work-request-failure-modes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Failure modes (ISO 14224)",
+    "fa": "حالت‌های خرابی (ISO 14224)"
+  },
+  "description": {
+    "en": "Failure modes (ISO 14224)",
+    "fa": "حالت‌های خرابی (ISO 14224)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "WorkRequestPage",
+      "action": "FailureModeChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

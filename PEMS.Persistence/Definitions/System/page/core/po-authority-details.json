@@ -1,0 +1,89 @@
+{
+  "kind": "page",
+  "key": "po-authority-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "PO authority levels details",
+    "fa": "جزئیات سطوح اختیار سفارش خرید"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "po-authority-record",
+      "url": "/d/po-authority-grid",
+      "idField": "purchaseOrderAuthorityRuleId",
+      "fields": [
+        {
+          "key": "level",
+          "label": {
+            "en": "Level",
+            "fa": "سطح"
+          },
+          "type": "number"
+        },
+        {
+          "key": "currency",
+          "label": {
+            "en": "Currency",
+            "fa": "ارز"
+          }
+        },
+        {
+          "key": "minAmount",
+          "label": {
+            "en": "From",
+            "fa": "از مبلغ"
+          },
+          "type": "number"
+        },
+        {
+          "key": "maxAmount",
+          "label": {
+            "en": "To",
+            "fa": "تا مبلغ"
+          },
+          "type": "number"
+        },
+        {
+          "key": "approverRole",
+          "label": {
+            "en": "Approver role",
+            "fa": "نقش تأییدکننده"
+          }
+        },
+        {
+          "key": "description",
+          "label": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "wide": true
+        },
+        {
+          "key": "isActive",
+          "label": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "type": "bool"
+        }
+      ],
+      "backUrl": "/p/po-authority",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/po-authority-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

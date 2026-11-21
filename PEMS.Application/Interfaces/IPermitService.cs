@@ -37,6 +37,8 @@ public interface IPermitService
         int? equipmentId, int? functionalLocationId, int? workOrderId, int? permitReceiverEmployeeId,
         string priority, DateTime? validFrom, DateTime? validTo);
 
+    /// <summary>The floor of this operation is "Permit.View"; the definition of each action adds the permission of its step (Permit.Cancel, Permit.Revoke, Permit.Suspend).</summary>
+    [PEMS.Application.Common.PemsOperation("Permit", "AdvanceStatus", "Permit.View")]
     Task<(bool Success, string? Error)> AdvanceStatusAsync(
         int permitId, string nextStatus, string? reason, int? changedByEmployeeId);
 
@@ -46,12 +48,14 @@ public interface IPermitService
     // را کنترل می‌کنند - بقیه‌ی گذارها (Submit/Issue/Suspend/...) دست‌نخورده باقی می‌مانند.
     // ==============================================================================
 
+    [PEMS.Application.Common.PemsOperation("Permit", "SubmitForApproval", "Permit.Submit")]
     Task<(bool Success, string? Error)> SubmitForApprovalAsync(int permitId, int? actorEmployeeId);
 
     Task<(bool Success, string? Error)> RespondApprovalAsync(
         int permitId, string decision, string? comment, int? actorEmployeeId, IReadOnlyList<string> actorRoles,
         string? ipAddress, string? userAgent);
 
+    [PEMS.Application.Common.PemsOperation("Permit", "ReturnForRework", "Permit.Reject")]
     Task<(bool Success, string? Error)> ReturnForReworkAsync(
         int permitId, string? comment, int? actorEmployeeId, IReadOnlyList<string> actorRoles,
         string? ipAddress, string? userAgent);

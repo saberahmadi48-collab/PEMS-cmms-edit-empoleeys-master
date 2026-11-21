@@ -1,0 +1,97 @@
+{
+  "kind": "page",
+  "key": "chat-assistant",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering Chat Assistant",
+    "fa": "دستیار گفتگوی مهندسی"
+  },
+  "description": {
+    "en": "Ask about the real data of the system (page definition)",
+    "fa": "پرسش درباره داده‌های واقعی سیستم (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "chat-assistant",
+    "regions": {
+      "content": [
+        {
+          "id": "intro",
+          "component": "content-blocks",
+          "options": {
+            "id": "intro",
+            "blocks": [
+              {
+                "type": "text",
+                "css": "text-muted small",
+                "text": {
+                  "en": "Answers from the real data of the system (documents, statuses, projects, MRs ...). Example: how many documents are waiting for approval?",
+                  "fa": "بر اساس داده‌ی واقعی سیستم (مدارک، وضعیت‌ها، پروژه‌ها، MR ها و ...) پاسخ می‌دهد. مثال: چند مدرک در انتظار تایید داریم؟"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/chat-ask",
+                "text": {
+                  "en": "Ask a question",
+                  "fa": "پرسیدن"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "clear",
+          "component": "action-button",
+          "options": {
+            "action": "chat-clear",
+            "label": {
+              "en": "Clear",
+              "fa": "پاک کردن"
+            },
+            "tone": "neutral",
+            "icon": "bi-trash"
+          }
+        },
+        {
+          "id": "history",
+          "component": "data-grid",
+          "options": {
+            "id": "chat-history",
+            "url": "/d/chat-history-grid",
+            "idField": "createdDate",
+            "columns": [
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Time",
+                  "fa": "زمان"
+                },
+                "width": 150
+              },
+              {
+                "key": "role",
+                "header": {
+                  "en": "Who",
+                  "fa": "گوینده"
+                },
+                "width": 100
+              },
+              {
+                "key": "content",
+                "header": {
+                  "en": "Message",
+                  "fa": "پیام"
+                },
+                "width": 760
+              }
+            ],
+            "pageSize": 50,
+            "height": 520
+          }
+        }
+      ]
+    }
+  }
+}

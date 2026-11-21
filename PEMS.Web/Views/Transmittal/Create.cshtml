@@ -6,178 +6,130 @@
     var documents = (IEnumerable<dynamic>)ViewBag.Documents;
 }
 
-<div class="vs-page">
+<pems-page-shell kind="workspace">
 
 
-<div class="content-card" style="max-width:900px;">
-    <div asp-validation-summary="All" class="alert alert-danger py-2 px-3 small" style="@(ViewData.ModelState.IsValid ? "display:none;" : "")"></div>
+<pems-content-card css="pems-s-1d34c094">
+    <pems-validation-summary css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-validation-summary>
 
-    <form asp-action="Create" method="post">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">Transmittal No</label>
-                <input name="transmittalNo" class="form-control" placeholder="e.g. TR-2026-001" required />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Project"]</label>
-                <select name="projectId" class="form-select" required>
+    <pems-form asp-action="Create" method="post">
+        <pems-row gap="3">
+            <pems-col md="6">
+                <pems-label>@Localizer["Transmittal code"]</pems-label>
+                <pems-input name="transmittalNo" placeholder="@Localizer["Transmittal_FinalCodeExample"]" data-required-message="@Localizer["The {0} field is required.", Localizer["Transmittal code"].Value]" required />
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Project"]</pems-label>
+                <pems-select name="projectId" required>
                     @foreach (var p in projects)
                     {
                         <option value="@p.ProjectId">@p.ProjectName</option>
                     }
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["From"]</label>
-                <input name="from" class="form-control" placeholder="e.g. Engineering Department" required />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">To <span class="text-muted small">(free-text summary - optional if recipients added below)</span></label>
-                <input name="to" class="form-control" placeholder="e.g. Contractor XYZ" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Purpose"]</label>
-                <select name="purpose" class="form-select">
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["From"]</pems-label>
+                <pems-input name="from" placeholder="@Localizer["Transmittal_FromExample"]" data-required-message="@Localizer["The {0} field is required.", Localizer["From"].Value]" required />
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["To"] <span class="text-muted small">@Localizer["Transmittal_ToHint"]</span></pems-label>
+                <pems-input name="to" placeholder="@Localizer["Transmittal_ToExample"]" />
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Purpose"]</pems-label>
+                <pems-select name="purpose">
                     <option value="IFA">@Localizer["IFA - Issued for Approval"]</option>
                     <option value="IFR">@Localizer["IFR - Issue for Review and Comments"]</option>
-                    <option value="IFI">IFI - Issue for Information</option>
+                    <option value="IFI">@Localizer["IFI - Issue for Information"]</option>
                     <option value="FI">@Localizer["FI - Final Issue (without comments)"]</option>
                     <option value="For Approval">@Localizer["For Approval (legacy)"]</option>
                     <option value="For Construction">@Localizer["For Construction (legacy)"]</option>
                     <option value="For Information" selected>@Localizer["For Information (legacy)"]</option>
-                    <option value="For Review">For Review (legacy)</option>
-                </select>
-            </div>
-            <div class="col-md-6 d-flex align-items-end">
-                <div class="form-check">
-                    <input type="checkbox" name="responseRequired" value="true" class="form-check-input" id="responseRequired" />
-                    <label class="form-check-label" for="responseRequired">Response Required</label>
+                    <option value="For Review">@Localizer["For Review (legacy)"]</option>
+                </pems-select>
+            </pems-col>
+            <pems-col md="6" css="d-flex align-items-end">
+                <pems-check-row>
+                    <pems-input kind="check" type="checkbox" name="responseRequired" value="true" id="responseRequired" />
+                    <label class="form-check-label" for="responseRequired">@Localizer["Response Required"]</label>
                     <input type="hidden" name="responseRequired" value="false" />
-                </div>
-            </div>
-            <div class="col-12">
-                <label class="form-label">@Localizer["Description"]</label>
-                <textarea name="description" class="form-control" rows="2"></textarea>
-            </div>
+                </pems-check-row>
+            </pems-col>
+            <pems-col span="12">
+                <pems-label>@Localizer["Description"]</pems-label>
+                <pems-textarea name="description" rows="2"></pems-textarea>
+            </pems-col>
 
-            <div class="col-12">
-                <label class="form-label d-block">Recipients <span class="text-muted small">(structured - required)</span></label>
+            <pems-col span="12">
+                <pems-label css="d-block">@Localizer["Recipients"] <span class="text-muted small">@Localizer["Transmittal_RecipientsHint"]</span></pems-label>
                 <div id="recipientRows"></div>
-                <button type="button" id="addRecipientBtn" class="btn btn-sm btn-outline-secondary mt-1"><i class="bi bi-plus-lg"></i> Add Recipient</button>
-            </div>
+                <pems-button tone="neutral" size="small" outline="true" css="mt-1" type="button" id="addRecipientBtn"><pems-icon name="bi-plus-lg" /> @Localizer["Transmittal_AddRecipient"]</pems-button>
+            </pems-col>
 
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <label class="form-label d-block mb-0">Documents to include</label>
-                    <span class="small text-muted" id="docPickerCounter"></span>
-                </div>
-                <p class="text-muted small mb-1">
-                    Only showing documents from the selected project. Documents on Hold cannot be transmitted. Type to search by number or title.
-                </p>
-                <input type="text" id="docPickerSearch" class="form-control form-control-sm mb-2" placeholder="Search by document number or title..." />
-                <div class="border rounded p-2" id="docPickerList" style="max-height:320px; overflow-y:auto;">
+            <pems-col span="12">
+                <pems-flex justify="between" align="center" wrap="true" gap="2">
+                    <pems-label css="d-block mb-0">@Localizer["Transmittal_DocumentsToInclude"]</pems-label>
+                    <span class="small text-muted" id="docPickerCounter" data-format="@Localizer["Transmittal_DocumentCounter"]"></span>
+                </pems-flex>
+                <pems-text class="text-muted small mb-1">
+                    @Localizer["Transmittal_DocumentPickerHint"]
+                </pems-text>
+                <pems-input scale="small" css="mb-2" type="text" id="docPickerSearch" placeholder="@Localizer["Transmittal_DocumentSearch"]" />
+                <div class="border rounded p-2 pems-scroll-320" id="docPickerList">
                     @foreach (var d in documents)
                     {
-                        <div class="form-check doc-picker-row" data-project-id="@d.ProjectId" data-search="@($"{d.DocumentNo} {d.Title}".ToLower())">
-                            <input class="form-check-input doc-picker-checkbox" type="checkbox" name="documentIds" value="@d.DocumentId" id="doc_@d.DocumentId" disabled="@((bool)d.IsOnHold)" />
+                        <pems-check-row css="doc-picker-row" data-project-id="@d.ProjectId" data-search="@($"{d.DocumentNo} {d.Title}".ToLower())">
+                            <pems-input type="checkbox" name="documentIds" value="@d.DocumentId" id="doc_@d.DocumentId" disabled="@((bool)d.IsOnHold)" kind="check" css="doc-picker-checkbox" />
                             <label class="form-check-label" for="doc_@d.DocumentId">
                                 @d.DocumentNo - @d.Title
-                                <span class="text-muted small">(Rev @d.RevisionNo &middot; @d.DisciplineName &middot; @d.Status)</span>
+                                <span class="text-muted small">(@Localizer["Rev"] @d.RevisionNo &middot; @(d.DisciplineName == "Unassigned" ? Localizer["Unassigned"].Value : (string)d.DisciplineName) &middot; @Localizer[(string)d.Status])</span>
                                 @if ((bool)d.IsOnHold)
                                 {
-                                    <span class="badge bg-warning text-dark">@Localizer["On Hold"]</span>
+                                    <pems-badge tone="warning">@Localizer["On Hold"]</pems-badge>
                                 }
                             </label>
-                        </div>
+                        </pems-check-row>
                     }
                 </div>
                 @if (!documents.Any())
                 {
-                    <p class="text-muted small mb-0">No documents available.</p>
+                    <pems-text class="text-muted small mb-0">@Localizer["Transmittal_NoDocuments"]</pems-text>
                 }
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
 
-        <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">Create Transmittal</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
-        </div>
-    </form>
-</div>
+        <pems-action-bar css="mt-4">
+            <pems-button tone="primary" type="submit">@Localizer["Create Transmittal"]</pems-button>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>
 
 <template id="recipientRowTemplate">
-    <div class="row g-2 mb-2 recipient-row align-items-center">
-        <div class="col-md-3"><input name="recipientName" class="form-control form-control-sm" placeholder="@Localizer["Name"]" /></div>
-        <div class="col-md-3">
-            <select name="recipientType" class="form-select form-select-sm">
-                <option value="External">External</option>
+    <pems-row gap="2" css="mb-2 recipient-row align-items-center">
+        <pems-col md="3"><pems-input scale="small" name="recipientName" placeholder="@Localizer["Name"]" /></pems-col>
+        <pems-col md="3">
+            <pems-select scale="small" name="recipientType">
+                <option value="External">@Localizer["External"]</option>
                 <option value="Internal">@Localizer["Internal"]</option>
                 <option value="Vendor">@Localizer["Vendor"]</option>
                 <option value="Client">@Localizer["Client"]</option>
-            </select>
-        </div>
-        <div class="col-md-3"><input name="recipientOrganization" class="form-control form-control-sm" placeholder="@Localizer["Organization"]" /></div>
-        <div class="col-md-2 form-check">
-            <input type="checkbox" class="form-check-input" name="recipientResponseRequired" value="true" />
-            <label class="form-check-label small">Response req.</label>
-        </div>
-        <div class="col-md-1"><button type="button" class="btn btn-sm btn-outline-danger remove-recipient-btn"><i class="bi bi-x-lg"></i></button></div>
-    </div>
+            </pems-select>
+        </pems-col>
+        <pems-col md="3"><pems-input scale="small" name="recipientOrganization" placeholder="@Localizer["Organization"]" /></pems-col>
+        <pems-col md="2" css="form-check">
+            <pems-input kind="check" type="checkbox" name="recipientResponseRequired" value="true" />
+            <label class="form-check-label small">@Localizer["Response Required"]</label>
+        </pems-col>
+        <pems-col md="1"><pems-button tone="danger" size="small" outline="true" css="remove-recipient-btn" type="button"><pems-icon name="bi-x-lg" /></pems-button></pems-col>
+    </pems-row>
 </template>
 
 @section Scripts {
-    <script>
-        (function () {
-            var projectSelect = document.querySelector('select[name="projectId"]');
-            var searchBox = document.getElementById('docPickerSearch');
-            var rows = document.querySelectorAll('.doc-picker-row');
-            var counter = document.getElementById('docPickerCounter');
-            var recipientRows = document.getElementById('recipientRows');
-            var template = document.getElementById('recipientRowTemplate');
-            var addBtn = document.getElementById('addRecipientBtn');
-
-            function addRecipientRow() {
-                var clone = template.content.cloneNode(true);
-                clone.querySelector('.remove-recipient-btn').addEventListener('click', function (e) {
-                    e.target.closest('.recipient-row').remove();
-                });
-                recipientRows.appendChild(clone);
-            }
-
-            addBtn.addEventListener('click', addRecipientRow);
-            addRecipientRow();
-
-            function applyFilter() {
-                var projectId = projectSelect.value;
-                var term = searchBox.value.trim().toLowerCase();
-                var visibleCount = 0, selectedCount = 0;
-
-                rows.forEach(function (row) {
-                    var matchesProject = !projectId || row.getAttribute('data-project-id') === projectId;
-                    var matchesSearch = !term || row.getAttribute('data-search').indexOf(term) !== -1;
-                    var show = matchesProject && matchesSearch;
-
-                    row.style.display = show ? '' : 'none';
-                    if (show) visibleCount++;
-
-                    if (row.querySelector('.doc-picker-checkbox').checked) selectedCount++;
-                });
-
-                counter.textContent = visibleCount + ' shown, ' + selectedCount + ' selected';
-            }
-
-            projectSelect.addEventListener('change', applyFilter);
-            searchBox.addEventListener('input', applyFilter);
-            rows.forEach(function (row) {
-                row.querySelector('.doc-picker-checkbox').addEventListener('change', applyFilter);
-            });
-
-            applyFilter();
-        })();
-    </script>
+    <script src="~/js/views/transmittal-create.js" asp-append-version="true"></script>
 }
 
-</div>
+</pems-page-shell>
 
 @{ ViewData["Title"] = Localizer["Vs_NewTransmittal"].Value; }
 @section Styles {

@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "team-position-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign an employee to a position",
+    "fa": "تخصیص کارمند به سمت"
+  },
+  "description": {
+    "en": "Assign an employee to a position",
+    "fa": "تخصیص کارمند به سمت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "AssignEmployee",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "positionId": "field:positionId",
+        "employeeId": "field:employeeId",
+        "notes": "field:notes"
+      }
+    },
+    "success": {
+      "en": "Employee assigned.",
+      "fa": "کارمند تخصیص یافت."
+    },
+    "redirect": "/p/team-details?teamId={returnTeamId}"
+  }
+}

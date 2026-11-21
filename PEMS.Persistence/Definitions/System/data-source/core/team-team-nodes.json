@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "team-team-nodes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Team nodes",
+    "fa": "گره‌های تیم"
+  },
+  "description": {
+    "en": "Team nodes",
+    "fa": "گره‌های تیم"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Team",
+      "action": "TeamNodes",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

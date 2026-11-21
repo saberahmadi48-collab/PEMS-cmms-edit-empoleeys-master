@@ -2,82 +2,82 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-@{ ViewData["Title"] = "Edit Instrument - " + Model.Equipment?.TagNumber; }
+@{ ViewData["Title"] = Localizer["Edit Instrument"].Value + " - " + Model.Equipment?.TagNumber; }
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center">
+<pems-content-card css="mb-3">
+    <pems-flex justify="between" align="center">
         <div>
-            <h5 class="mb-0">@Model.Equipment?.TagNumber <span class="text-muted small">(@Model.Equipment?.Manufacturer / @Model.Equipment?.Model)</span></h5>
-            <span class="text-muted small">Tag, manufacturer, model and description are edited on the Equipment record - <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">open Equipment</a>.</span>
+            <pems-heading level="5" class="mb-0">@Model.Equipment?.TagNumber <span class="text-muted small">(@Model.Equipment?.Manufacturer / @Model.Equipment?.Model)</span></pems-heading>
+            <span class="text-muted small">Tag, manufacturer, model and description are edited on the Equipment record - <pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">open Equipment</pems-link>.</span>
         </div>
-        <a asp-action="Passport" asp-route-id="@Model.InstrumentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-card-text"></i> @Localizer["Passport"]</a>
-    </div>
-</div>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Passport" asp-route-id="@Model.InstrumentId"><pems-icon name="bi-card-text" /> @Localizer["Passport"]</pems-button>
+    </pems-flex>
+</pems-content-card>
 
-<div class="content-card">
-    <form asp-action="Edit" method="post">
+<pems-content-card>
+    <pems-form asp-action="Edit" method="post">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
 
-        <h6 class="mb-2">General</h6>
-        <div class="row g-3 mb-3">
-            <div class="col-md-3"><label class="form-label">@Localizer["Instrument Type"]</label><input name="InstrumentType" value="@Model.InstrumentType" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Loop Number"]</label><input name="LoopNumber" value="@Model.LoopNumber" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["System"]</label><input name="System" value="@Model.System" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Signal Class"]</label><input name="SignalClass" value="@Model.SignalClass" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Current Status"]</label>
-                <select name="CurrentStatus" class="form-select">
+        <pems-heading level="6" class="mb-2">General</pems-heading>
+        <pems-row gap="3" css="mb-3">
+            <pems-col md="3"><pems-label>@Localizer["Instrument Type"]</pems-label><pems-input name="InstrumentType" value="@Model.InstrumentType" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Loop Number"]</pems-label><pems-input name="LoopNumber" value="@Model.LoopNumber" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["System"]</pems-label><pems-input name="System" value="@Model.System" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Signal Class"]</pems-label><pems-input name="SignalClass" value="@Model.SignalClass" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Current Status"]</pems-label>
+                <pems-select name="CurrentStatus">
                     @foreach (var s in new[] { "InService", "OutOfService", "UnderCalibration", "UnderMaintenance", "Decommissioned" })
                     {
                         <option value="@s" selected="@(s == Model.CurrentStatus)">@s</option>
                     }
-                </select>
-            </div>
-        </div>
+                </pems-select>
+            </pems-col>
+        </pems-row>
 
-        <h6 class="mb-2">Process / Signal</h6>
-        <div class="row g-3 mb-3">
-            <div class="col-md-3"><label class="form-label">@Localizer["Process Variable"]</label><input name="ProcessVariable" value="@Model.ProcessVariable" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Accuracy"]</label><input name="Accuracy" value="@Model.Accuracy" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Range Min"]</label><input name="RangeMin" type="number" step="0.01" value="@Model.RangeMin" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Range Max"]</label><input name="RangeMax" type="number" step="0.01" value="@Model.RangeMax" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Unit"]</label><input name="Unit" value="@Model.Unit" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Output Signal"]</label><input name="OutputSignal" value="@Model.OutputSignal" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Power Supply"]</label><input name="PowerSupply" value="@Model.PowerSupply" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Communication"]</label><input name="Communication" value="@Model.Communication" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["IP Rating"]</label><input name="IPRating" value="@Model.IPRating" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">Process Connection</label><input name="ProcessConnection" value="@Model.ProcessConnection" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">Electrical Connection</label><input name="ElectricalConnection" value="@Model.ElectricalConnection" class="form-control" /></div>
-        </div>
+        <pems-heading level="6" class="mb-2">Process / Signal</pems-heading>
+        <pems-row gap="3" css="mb-3">
+            <pems-col md="3"><pems-label>@Localizer["Process Variable"]</pems-label><pems-input name="ProcessVariable" value="@Model.ProcessVariable" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Accuracy"]</pems-label><pems-input name="Accuracy" value="@Model.Accuracy" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Range Min"]</pems-label><pems-input name="RangeMin" type="number" step="0.01" value="@Model.RangeMin" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Range Max"]</pems-label><pems-input name="RangeMax" type="number" step="0.01" value="@Model.RangeMax" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Unit"]</pems-label><pems-input name="Unit" value="@Model.Unit" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Output Signal"]</pems-label><pems-input name="OutputSignal" value="@Model.OutputSignal" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Power Supply"]</pems-label><pems-input name="PowerSupply" value="@Model.PowerSupply" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Communication"]</pems-label><pems-input name="Communication" value="@Model.Communication" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["IP Rating"]</pems-label><pems-input name="IPRating" value="@Model.IPRating" /></pems-col>
+            <pems-col md="3"><pems-label>Process Connection</pems-label><pems-input name="ProcessConnection" value="@Model.ProcessConnection" /></pems-col>
+            <pems-col md="3"><pems-label>Electrical Connection</pems-label><pems-input name="ElectricalConnection" value="@Model.ElectricalConnection" /></pems-col>
+        </pems-row>
 
-        <h6 class="mb-2">Hazardous Area / Safety</h6>
-        <div class="row g-3 mb-3">
-            <div class="col-md-3"><label class="form-label">@Localizer["Hazardous Area"]</label><input name="HazardousArea" value="@Model.HazardousArea" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Ex Protection"]</label><input name="ExProtection" value="@Model.ExProtection" class="form-control" /></div>
-            <div class="col-md-2"><label class="form-label">@Localizer["Zone"]</label><input name="Zone" value="@Model.Zone" class="form-control" /></div>
-            <div class="col-md-2"><label class="form-label">@Localizer["Gas Group"]</label><input name="GasGroup" value="@Model.GasGroup" class="form-control" /></div>
-            <div class="col-md-2"><label class="form-label">@Localizer["Temp Class"]</label><input name="TempClass" value="@Model.TempClass" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Fail Action"]</label><input name="FailAction" value="@Model.FailAction" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">Alarm Setpoint</label><input name="AlarmSetpoint" type="number" step="0.01" value="@Model.AlarmSetpoint" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">Trip Setpoint</label><input name="TripSetpoint" type="number" step="0.01" value="@Model.TripSetpoint" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["SIL"]</label><input name="SIL" value="@Model.SIL" class="form-control" /></div>
-        </div>
+        <pems-heading level="6" class="mb-2">Hazardous Area / Safety</pems-heading>
+        <pems-row gap="3" css="mb-3">
+            <pems-col md="3"><pems-label>@Localizer["Hazardous Area"]</pems-label><pems-input name="HazardousArea" value="@Model.HazardousArea" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Ex Protection"]</pems-label><pems-input name="ExProtection" value="@Model.ExProtection" /></pems-col>
+            <pems-col md="2"><pems-label>@Localizer["Zone"]</pems-label><pems-input name="Zone" value="@Model.Zone" /></pems-col>
+            <pems-col md="2"><pems-label>@Localizer["Gas Group"]</pems-label><pems-input name="GasGroup" value="@Model.GasGroup" /></pems-col>
+            <pems-col md="2"><pems-label>@Localizer["Temp Class"]</pems-label><pems-input name="TempClass" value="@Model.TempClass" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Fail Action"]</pems-label><pems-input name="FailAction" value="@Model.FailAction" /></pems-col>
+            <pems-col md="3"><pems-label>Alarm Setpoint</pems-label><pems-input name="AlarmSetpoint" type="number" step="0.01" value="@Model.AlarmSetpoint" /></pems-col>
+            <pems-col md="3"><pems-label>Trip Setpoint</pems-label><pems-input name="TripSetpoint" type="number" step="0.01" value="@Model.TripSetpoint" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["SIL"]</pems-label><pems-input name="SIL" value="@Model.SIL" /></pems-col>
+        </pems-row>
 
-        <h6 class="mb-2">Wiring / Location</h6>
-        <div class="row g-3 mb-3">
-            <div class="col-md-3"><label class="form-label">@Localizer["Junction Box"]</label><input name="JunctionBox" value="@Model.JunctionBox" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Marshalling Cabinet"]</label><input name="MarshallingCabinet" value="@Model.MarshallingCabinet" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">Cable Number</label><input name="CableNumber" value="@Model.CableNumber" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Barrier / Relay"]</label><input name="BarrierRelay" value="@Model.BarrierRelay" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["I/O Card / Channel"]</label><input name="IOCardChannel" value="@Model.IOCardChannel" class="form-control" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["System Cabinet"]</label><input name="SystemCabinet" value="@Model.SystemCabinet" class="form-control" /></div>
-        </div>
+        <pems-heading level="6" class="mb-2">Wiring / Location</pems-heading>
+        <pems-row gap="3" css="mb-3">
+            <pems-col md="3"><pems-label>@Localizer["Junction Box"]</pems-label><pems-input name="JunctionBox" value="@Model.JunctionBox" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Marshalling Cabinet"]</pems-label><pems-input name="MarshallingCabinet" value="@Model.MarshallingCabinet" /></pems-col>
+            <pems-col md="3"><pems-label>Cable Number</pems-label><pems-input name="CableNumber" value="@Model.CableNumber" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["Barrier / Relay"]</pems-label><pems-input name="BarrierRelay" value="@Model.BarrierRelay" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["I/O Card / Channel"]</pems-label><pems-input name="IOCardChannel" value="@Model.IOCardChannel" /></pems-col>
+            <pems-col md="3"><pems-label>@Localizer["System Cabinet"]</pems-label><pems-input name="SystemCabinet" value="@Model.SystemCabinet" /></pems-col>
+        </pems-row>
 
-        <h6 class="mb-2">Calibration</h6>
-        <div class="row g-3 mb-3">
-            <div class="col-md-4"><label class="form-label">@Localizer["Calibration Interval (days)"]</label><input name="CalibrationInterval" type="number" value="@Model.CalibrationInterval" class="form-control" /></div>
-        </div>
+        <pems-heading level="6" class="mb-2">Calibration</pems-heading>
+        <pems-row gap="3" css="mb-3">
+            <pems-col md="4"><pems-label>@Localizer["Calibration Interval (days)"]</pems-label><pems-input name="CalibrationInterval" type="number" value="@Model.CalibrationInterval" /></pems-col>
+        </pems-row>
 
-        <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-        <a asp-action="Passport" asp-route-id="@Model.InstrumentId" class="btn btn-outline-secondary">Cancel</a>
-    </form>
-</div>
+        <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+        <pems-button tone="neutral" outline="true" as="a" asp-action="Passport" asp-route-id="@Model.InstrumentId">Cancel</pems-button>
+    </pems-form>
+</pems-content-card>

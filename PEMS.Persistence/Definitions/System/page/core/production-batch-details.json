@@ -1,0 +1,174 @@
+{
+  "kind": "page",
+  "key": "production-batch-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production batch",
+    "fa": "بچ تولید"
+  },
+  "description": {
+    "en": "One batch and its quality commands (page definition)",
+    "fa": "یک بچ و دستورهای کیفیت (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "production-batch-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "production-batch-record",
+            "fields": [
+              {
+                "key": "batchNumber",
+                "label": {
+                  "en": "Batch",
+                  "fa": "بچ"
+                }
+              },
+              {
+                "key": "orderNumber",
+                "label": {
+                  "en": "Order",
+                  "fa": "سفارش"
+                }
+              },
+              {
+                "key": "runNumber",
+                "label": {
+                  "en": "Run",
+                  "fa": "اجرا"
+                }
+              },
+              {
+                "key": "material",
+                "label": {
+                  "en": "Material",
+                  "fa": "ماده"
+                }
+              },
+              {
+                "key": "quantity",
+                "label": {
+                  "en": "Quantity",
+                  "fa": "مقدار"
+                }
+              },
+              {
+                "key": "uom",
+                "label": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                }
+              },
+              {
+                "key": "producedDate",
+                "label": {
+                  "en": "Produced",
+                  "fa": "تولید"
+                },
+                "type": "date"
+              },
+              {
+                "key": "qualityStatus",
+                "label": {
+                  "en": "Quality status",
+                  "fa": "وضعیت کیفیت"
+                }
+              },
+              {
+                "key": "qualityStatusReason",
+                "label": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                }
+              },
+              {
+                "key": "qualityStatusChangedBy",
+                "label": {
+                  "en": "Changed by",
+                  "fa": "تغییر توسط"
+                }
+              },
+              {
+                "key": "qualityStatusChangedDate",
+                "label": {
+                  "en": "Changed",
+                  "fa": "تاریخ تغییر"
+                },
+                "type": "date"
+              },
+              {
+                "key": "notes",
+                "label": {
+                  "en": "Notes",
+                  "fa": "یادداشت"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/production-batch-head",
+              "idField": "productionBatchId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/production-batch-submit-qc?id={{params.id}}",
+                "text": {
+                  "en": "Submit for QC",
+                  "fa": "ارسال برای QC"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-batch-release?id={{params.id}}",
+                "text": {
+                  "en": "Release",
+                  "fa": "Release"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-batch-block?id={{params.id}}",
+                "text": {
+                  "en": "Block",
+                  "fa": "توقف"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-batch-unblock?id={{params.id}}",
+                "text": {
+                  "en": "Unblock",
+                  "fa": "رفع توقف"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-batch-reject?id={{params.id}}",
+                "text": {
+                  "en": "Reject",
+                  "fa": "رد"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Production.View"
+  }
+}

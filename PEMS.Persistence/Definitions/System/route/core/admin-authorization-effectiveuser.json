@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-authorization-effectiveuser",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Authorization (old address)",
+    "fa": "مجوزدهی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Authorization (old address)",
+    "fa": "مجوزدهی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/Authorization/EffectiveUser/{*rest}",
+    "target": "/p/authorization-effective-user",
+    "permanent": false
+  }
+}

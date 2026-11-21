@@ -1,0 +1,165 @@
+{
+  "kind": "page",
+  "key": "designer-page",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Page designer: regions (open it with ?ref=appKey:kind:key)",
+    "fa": "طراح صفحه: نواحی"
+  },
+  "description": {
+    "en": "Page designer: regions (open it with ?ref=appKey:kind:key)",
+    "fa": "طراح صفحه: نواحی"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "designer-page",
+    "permission": "Definitions.View",
+    "template": "entity-list",
+    "args": {
+      "id": "designer-page",
+      "url": "/d/definition-payload-grid?f.ref=eq:{{params.ref|url}}&f.pointer=eq:/regions",
+      "idField": "rowId",
+      "newUrl": "/f/designer-page-instance",
+      "newLabel": {
+        "en": "Add a component",
+        "fa": "افزودن مؤلفه"
+      },
+      "columns": [
+        {
+          "key": "index",
+          "header": {
+            "en": "#",
+            "fa": "#"
+          },
+          "width": 70
+        },
+        {
+          "key": "summary",
+          "header": {
+            "en": "Part",
+            "fa": "بخش"
+          },
+          "width": 260
+        },
+        {
+          "key": "json",
+          "header": {
+            "en": "Value",
+            "fa": "مقدار"
+          },
+          "width": 480
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 300,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "up",
+              "label": {
+                "en": "Up",
+                "fa": "بالا"
+              },
+              "url": "/a/designer-move-up",
+              "method": "post"
+            },
+            {
+              "key": "down",
+              "label": {
+                "en": "Down",
+                "fa": "پایین"
+              },
+              "url": "/a/designer-move-down",
+              "method": "post"
+            },
+            {
+              "key": "remove",
+              "label": {
+                "en": "Remove",
+                "fa": "حذف"
+              },
+              "url": "/a/designer-remove-row",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Remove this part from the draft?",
+                "fa": "این بخش از پیش‌نویس حذف شود؟"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "regions": {
+      "toolbar": [
+        {
+          "id": "opt",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Set an option",
+              "fa": "تنظیم گزینه"
+            },
+            "tone": "neutral",
+            "href": "/f/designer-instance-option?ref={{params.ref|url}}"
+          }
+        },
+        {
+          "id": "mv",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Move a component",
+              "fa": "جابه‌جایی مؤلفه"
+            },
+            "tone": "neutral",
+            "href": "/f/designer-move-instance?ref={{params.ref|url}}"
+          }
+        },
+        {
+          "id": "pv-fa",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Preview the draft (fa, RTL)",
+              "fa": "پیش‌نمایش پیش‌نویس (فارسی)"
+            },
+            "tone": "primary",
+            "href": "/preview/definition?ref={{params.ref|url}}&culture=fa&dir=rtl&theme=light"
+          }
+        },
+        {
+          "id": "pv-en",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Preview the draft (en, LTR)",
+              "fa": "پیش‌نمایش پیش‌نویس (انگلیسی)"
+            },
+            "tone": "primary",
+            "href": "/preview/definition?ref={{params.ref|url}}&culture=en&dir=ltr&theme=light"
+          }
+        },
+        {
+          "id": "hist",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "History, diff and undo by version",
+              "fa": "تاریخچه و بازگشت"
+            },
+            "tone": "neutral",
+            "href": "/p/definition-history?ref={{params.ref|url}}"
+          }
+        }
+      ]
+    }
+  }
+}

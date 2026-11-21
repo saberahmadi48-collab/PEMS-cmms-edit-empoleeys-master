@@ -1,0 +1,83 @@
+{
+  "kind": "form",
+  "key": "material-categories-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit material category",
+    "fa": "ویرایش دسته‌بندی مواد"
+  },
+  "description": {
+    "en": "Edit material category",
+    "fa": "ویرایش دسته‌بندی مواد"
+  },
+  "payload": {
+    "id": "material-categories-edit",
+    "title": {
+      "en": "Edit material category",
+      "fa": "ویرایش دسته‌بندی مواد"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "material-categories-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "owner": "platform",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "maxLength": 30,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Code is required.",
+            "fa": "کد الزامی است."
+          }
+        },
+        "readOnly": true
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "parentCategoryId",
+        "label": {
+          "en": "Parent category",
+          "fa": "دسته‌ی والد"
+        },
+        "kind": "select",
+        "optionsFrom": "material-categories-parent-category-id-options"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

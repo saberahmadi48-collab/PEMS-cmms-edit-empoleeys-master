@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "team-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Team details (old address)",
+    "fa": "جزئیات تیم (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Team details (old address)",
+    "fa": "جزئیات تیم (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Team/TeamDetails",
+    "target": "/p/team-details",
+    "permanent": false
+  }
+}

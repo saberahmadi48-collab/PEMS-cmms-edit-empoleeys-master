@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "definition-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create definition",
+    "fa": "ایجاد تعریف"
+  },
+  "description": {
+    "en": "Create definition",
+    "fa": "ایجاد تعریف"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The definition was created as a draft-free first version; publish it to use it.",
+      "fa": "تعریف ایجاد شد؛ برای استفاده منتشرش کنید."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Definition",
+      "action": "Create",
+      "args": {
+        "kind": "field:kind",
+        "key": "field:key",
+        "appKey": "field:appKey",
+        "titleEn": "field:titleEn",
+        "titleFa": "field:titleFa",
+        "payloadJson": "field:payload",
+        "changeSummary": "field:changeSummary",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

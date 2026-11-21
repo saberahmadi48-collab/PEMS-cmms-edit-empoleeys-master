@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mr-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material requisitions",
+    "fa": "درخواست‌های مواد (MR)"
+  },
+  "description": {
+    "en": "Material requisitions",
+    "fa": "درخواست‌های مواد (MR)"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaterialRequisition",
+      "action": "List"
+    }
+  }
+}

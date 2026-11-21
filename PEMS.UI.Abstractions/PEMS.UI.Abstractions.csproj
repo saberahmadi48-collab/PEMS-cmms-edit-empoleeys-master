@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- The technology-neutral component contract (COMPONENT_LIBRARY_PLAN section 4.1). No Razor, MVC or ASP.NET references on
+       purpose: static pages and the dynamic BPMS engine both produce these types, whatever renders them. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>

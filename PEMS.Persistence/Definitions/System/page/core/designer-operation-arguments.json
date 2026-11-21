@@ -1,0 +1,96 @@
+{
+  "kind": "page",
+  "key": "designer-operation-arguments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Arguments of an operation",
+    "fa": "آرگومان‌های یک عملیات"
+  },
+  "description": {
+    "en": "Choose an operation and see one row per argument with the source to use in the action",
+    "fa": "یک عملیات را انتخاب کنید"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "designer-operation-arguments",
+    "permission": "Definitions.View",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "operation-arguments-filters",
+            "resetUrl": "/p/designer-operation-arguments",
+            "fields": [
+              {
+                "name": "ref",
+                "label": {
+                  "en": "Operation (Model.Action)",
+                  "fa": "عملیات (مدل.کنش)"
+                },
+                "kind": "text",
+                "value": "{{params.ref}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "args-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "args-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Arguments: copy the JSON into the args of the action",
+                  "fa": "آرگومان‌ها: JSON را در args کنش بگذارید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "args",
+          "component": "data-grid",
+          "options": {
+            "id": "operation-arguments",
+            "url": "/d/operation-arguments-grid?f.ref=eq:{{params.ref|url}}",
+            "idField": "argument",
+            "pageSize": 50,
+            "height": 300,
+            "columns": [
+              {
+                "key": "argument",
+                "header": {
+                  "en": "Argument",
+                  "fa": "آرگومان"
+                },
+                "width": 200
+              },
+              {
+                "key": "source",
+                "header": {
+                  "en": "Source to use",
+                  "fa": "منبع پیشنهادی"
+                },
+                "width": 240
+              },
+              {
+                "key": "json",
+                "header": {
+                  "en": "Whole arguments object",
+                  "fa": "کل آرگومان‌ها"
+                },
+                "width": 520
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

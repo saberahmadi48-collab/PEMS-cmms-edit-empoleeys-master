@@ -1,0 +1,20 @@
+{
+  "kind": "data-source",
+  "key": "definition-usages-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Where a definition is used",
+    "fa": "محل استفاده از تعریف"
+  },
+  "description": {
+    "en": "Where a definition is used",
+    "fa": "محل استفاده از تعریف"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "definition-usages",
+    "permission": "Definitions.View",
+    "parameters": {}
+  }
+}

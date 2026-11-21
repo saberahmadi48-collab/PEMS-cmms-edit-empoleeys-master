@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("table-scroll", Category = "display", Icon = "bi-arrows-expand-vertical")]
+@FrameMarkup.Element("div", string.IsNullOrWhiteSpace(Options.Css) ? "table-responsive" : "table-responsive " + Options.Css.Trim(), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public TableScrollOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

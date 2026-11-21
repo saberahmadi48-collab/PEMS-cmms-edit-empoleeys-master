@@ -1,0 +1,200 @@
+@model PEMS.Web.ViewModels.StrategyFormViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Domain.Common
+@using PEMS.Web.Helpers
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var i = Model.Input;
+    var isEdit = Model.MaintenanceStrategyId.HasValue;
+    string Sel(string? current, string value) => string.Equals(current, value, StringComparison.Ordinal) ? "selected" : "";
+}
+
+<pems-flex justify="between" align="center" css="mb-3">
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-diagram-3" />
+        @(isEdit ? Localizer["Rcm_EditStrategy"] : Localizer["Rcm_NewStrategy"])
+        @if (isEdit) { <pems-badge tone="@RcmDisplay.StatusBadge(Model.Status)" css="ms-2">@Localizer.Label("Status", Model.Status) · v@(Model.VersionNumber)</pems-badge> }
+    </pems-heading>
+    <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="@(isEdit ? "Details" : "Index")" asp-route-id="@Model.MaintenanceStrategyId">@Localizer["Rcm_Back"]</pems-button>
+</pems-flex>
+
+@await Html.PartialAsync("_RcmErrors", Model.Errors)
+
+@if (Model.WillCreateNewVersion)
+{
+    <pems-alert tone="info" css="small"><pems-icon name="bi-info-circle" /> @Localizer["Rcm_NewVersionNotice"]</pems-alert>
+}
+<pems-text class="text-muted small">@Localizer["Rcm_FormHint"]</pems-text>
+
+<pems-form method="post" asp-action="@(isEdit ? "Edit" : "Create")" asp-route-id="@Model.MaintenanceStrategyId" id="strategyForm"><pems-content-card>
+    @if (i.RowVersion != null)
+    {
+        <input type="hidden" name="RowVersion" value="@Convert.ToBase64String(i.RowVersion)" />
+    }
+
+    @if (Model.StartedFromEquipment != null)
+    {
+        <div class="small text-muted mb-1">@Localizer["Rcm_StartedFromTag"]</div>
+        @await Html.PartialAsync("_EquipmentIdentity", Model.StartedFromEquipment)
+    }
+
+    <pems-row gap="3">
+        <pems-col md="6">
+            <pems-label>@Localizer["Rcm_EquipmentClass"] <span class="text-danger">*</span></pems-label>
+            <pems-select name="EquipmentClassId" id="classSelect" required>
+                <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+                @foreach (var c in Model.Classes) { <option value="@c.Id" selected="@(i.EquipmentClassId == c.Id)">@c.Text (@c.Code)</option> }
+            </pems-select>
+            <span class="text-danger small" data-valmsg-for="EquipmentClassId">@Html.ValidationMessage("EquipmentClassId")</span>
+        </pems-col>
+        <pems-col md="6">
+            <pems-label>@Localizer["Rcm_Title"]</pems-label>
+            <pems-input name="Title" value="@i.Title" maxlength="200" />
+        </pems-col>
+
+        <pems-col md="6">
+            <pems-label>@Localizer["Rcm_FailureMode"] <span class="text-danger">*</span></pems-label>
+            <pems-input scale="small" css="mb-1" type="text" id="modeSearch" placeholder="@Localizer["Rcm_SearchFailureMode"]" autocomplete="off" />
+            <pems-select name="FailureModeId" id="modeSelect" size="5" required data-selected="@(i.FailureModeId?.ToString() ?? "")" data-url="@Url.Action("FailureModes")">
+                @if (i.FailureModeId.HasValue)
+                {
+                    <option value="@i.FailureModeId" selected>@(Model.SelectedFailureModeLabel ?? i.FailureModeId.ToString())</option>
+                }
+            </pems-select>
+            <pems-help-text>@Localizer["Rcm_FailureModeHint"]</pems-help-text>
+            <span class="text-danger small">@Html.ValidationMessage("FailureModeId")</span>
+        </pems-col>
+        <pems-col md="6">
+            <pems-label>@Localizer["Rcm_FailureCause"]</pems-label>
+            <pems-select name="FailureCauseId" id="causeSelect" data-selected="@(i.FailureCauseId?.ToString() ?? "")">
+                <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+            </pems-select>
+            <pems-label css="mt-2">@Localizer["Rcm_FunctionalFailure"]</pems-label>
+            <pems-input name="FunctionalFailure" value="@i.FunctionalFailure" maxlength="500" />
+            <pems-label css="mt-2">@Localizer["Rcm_FailureEffect"]</pems-label>
+            <pems-input name="FailureEffect" value="@i.FailureEffect" maxlength="500" />
+        </pems-col>
+
+        <pems-col md="4">
+            <pems-label>@Localizer["Rcm_Consequence"] <span class="text-danger">*</span></pems-label>
+            <pems-select name="ConsequenceCategory" id="consequenceSelect" required>
+                @foreach (var c in RcmCodes.Consequence.All) { <option value="@c" selected="@(i.ConsequenceCategory == c || (i.ConsequenceCategory == null && c == "Operational"))">@Localizer.Label("Consequence", c)</option> }
+            </pems-select>
+            <pems-check-row css="mt-2">
+                <pems-input type="checkbox" name="IsHiddenFailure" value="true" id="hiddenChk" checked="@i.IsHiddenFailure" kind="check" />
+                <label class="form-check-label small" for="hiddenChk">@Localizer["Rcm_HiddenFailure"]</label>
+                <input type="hidden" name="IsHiddenFailure" value="false" />
+            </pems-check-row>
+        </pems-col>
+        <pems-col md="4">
+            <pems-label>@Localizer["Rcm_StrategyType"] <span class="text-danger">*</span></pems-label>
+            <pems-select name="StrategyType" id="typeSelect" required>
+                @foreach (var t in RcmCodes.StrategyType.All) { <option value="@t" selected="@(i.StrategyType == t)">@Localizer.Label("StrategyType", t)</option> }
+            </pems-select>
+            <pems-help-text css="text-warning" id="rtfWarning" hidden>@Localizer["Rcm_RtfWarning"]</pems-help-text>
+            <span class="text-danger small">@Html.ValidationMessage("strategyType")</span>
+        </pems-col>
+        <pems-col md="4">
+            <pems-label>@Localizer["Rcm_Source"]</pems-label>
+            <pems-select name="Source">
+                <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+                @foreach (var s in RcmCodes.Source.All) { <option value="@s" selected="@(i.Source == s)">@Localizer.Label("Source", s)</option> }
+            </pems-select>
+        </pems-col>
+
+        <pems-col md="3">
+            <pems-label>@Localizer["Rcm_TaskType"]</pems-label>
+            <pems-select name="TaskType">
+                <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+                @foreach (var t in RcmCodes.TaskType.All) { <option value="@t" selected="@(i.TaskType == t)">@Localizer.Label("TaskType", t)</option> }
+            </pems-select>
+        </pems-col>
+        <pems-col md="3">
+            <pems-label>@Localizer["Rcm_OwnerDiscipline"]</pems-label>
+            <pems-select name="OwnerDisciplineId">
+                <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+                @foreach (var d in Model.Disciplines) { <option value="@d.Id" selected="@(i.OwnerDisciplineId == d.Id)">@d.Text</option> }
+            </pems-select>
+        </pems-col>
+        <pems-col md="3">
+            <pems-label>@Localizer["Rcm_Frequency"]</pems-label>
+            <pems-select name="Frequency">
+                <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
+                @foreach (var f in RcmCodes.Frequency.All) { <option value="@f" selected="@(i.Frequency == f)">@Localizer.Label("Frequency", f)</option> }
+            </pems-select>
+            <span class="text-danger small">@Html.ValidationMessage("frequency")</span>
+        </pems-col>
+        <pems-col md="3">
+            <pems-label>@Localizer["Rcm_DefaultIntervalDays"]</pems-label>
+            <pems-input name="DefaultIntervalDays" type="number" min="1" value="@i.DefaultIntervalDays" />
+        </pems-col>
+
+        <pems-col md="4">
+            <pems-label>@Localizer["Rcm_RecommendedTrigger"]</pems-label>
+            <pems-select name="RecommendedTriggerType">
+                @foreach (var t in RcmCodes.Trigger.All) { <option value="@t" selected="@(i.RecommendedTriggerType == t)">@Localizer.Label("Trigger", t)</option> }
+            </pems-select>
+        </pems-col>
+        <pems-col md="4">
+            <pems-label>@Localizer["Rcm_RequiredSkills"]</pems-label>
+            <pems-input name="RequiredSkills" value="@i.RequiredSkills" maxlength="500" />
+        </pems-col>
+        <pems-col md="2">
+            <pems-label>@Localizer["Rcm_EstimatedHours"]</pems-label>
+            <pems-input name="EstimatedDurationHours" type="number" step="0.25" min="0" value="@i.EstimatedDurationHours" />
+        </pems-col>
+        <pems-col md="2">
+            <pems-label>@Localizer["Rcm_ReviewDate"]</pems-label>
+            <pems-date name="ReviewDate" value="@PemsDates.Date(i.ReviewDate)" />
+        </pems-col>
+
+        <pems-col span="12" id="cbmSection">
+            <div class="border rounded p-3">
+                <div class="fw-bold small mb-2"><pems-icon name="bi-activity" /> @Localizer["Rcm_CbmSection"]</div>
+                <pems-row gap="3">
+                    <pems-col md="4">
+                        <pems-label>@Localizer["Rcm_CbmParameter"]</pems-label>
+                        <pems-input name="CbmParameter" value="@i.CbmParameter" maxlength="100" />
+                        <span class="text-danger small">@Html.ValidationMessage("cbmParameter")</span>
+                    </pems-col>
+                    <pems-col md="2"><pems-label>@Localizer["Rcm_Unit"]</pems-label><pems-input name="ThresholdUnit" value="@i.ThresholdUnit" maxlength="30" /></pems-col>
+                    <pems-col md="2"><pems-label>@Localizer["Rcm_AlarmThreshold"]</pems-label><pems-input name="AlarmThreshold" type="number" step="any" value="@i.AlarmThreshold" /></pems-col>
+                    <pems-col md="2"><pems-label>@Localizer["Rcm_TripThreshold"]</pems-label><pems-input name="TripThreshold" type="number" step="any" value="@i.TripThreshold" /></pems-col>
+                    <pems-col md="2"></pems-col>
+                    <pems-col md="3"><pems-label>@Localizer["Rcm_PfInterval"]</pems-label><pems-input name="PfIntervalDays" type="number" min="1" value="@i.PfIntervalDays" /></pems-col>
+                    <pems-col md="3">
+                        <pems-label>@Localizer["Rcm_InspectionInterval"]</pems-label>
+                        <pems-input name="InspectionIntervalDays" type="number" min="1" value="@i.InspectionIntervalDays" />
+                        <span class="text-danger small">@Html.ValidationMessage("inspectionIntervalDays")</span>
+                    </pems-col>
+                    <pems-col md="6" css="small text-muted align-self-end">@Localizer["Rcm_PfHint"]</pems-col>
+                </pems-row>
+            </div>
+        </pems-col>
+
+        <pems-col md="3">
+            <pems-label>@Localizer["Rcm_StartDate"]</pems-label>
+            <pems-date name="StartDate" value="@PemsDates.Date(i.StartDate)" />
+            <span class="text-danger small">@Html.ValidationMessage("startDate")</span>
+        </pems-col>
+        <pems-col span="12">
+            <pems-label>@Localizer["Rcm_Justification"] <span class="text-danger">*</span></pems-label>
+            <pems-textarea name="Justification" rows="3" minlength="20" required placeholder="@Localizer["Rcm_JustificationPlaceholder"]">@i.Justification</pems-textarea>
+            <pems-help-text>@Localizer["Rcm_JustificationHint"]</pems-help-text>
+            <span class="text-danger small">@Html.ValidationMessage("justification")</span>
+        </pems-col>
+        <pems-col span="12">
+            <pems-label>@Localizer["Rcm_Description"]</pems-label>
+            <pems-textarea name="Description" rows="2">@i.Description</pems-textarea>
+        </pems-col>
+    </pems-row>
+
+    <pems-flex gap="2" css="mt-4">
+        <pems-button tone="primary" type="submit">@(Model.WillCreateNewVersion ? Localizer["Rcm_SaveNewVersion"] : Localizer["Save"])</pems-button>
+        <pems-button as="a" tone="neutral" outline="true" asp-action="@(isEdit ? "Details" : "Index")" asp-route-id="@Model.MaintenanceStrategyId">@Localizer["Cancel"]</pems-button>
+    </pems-flex>
+</pems-content-card></pems-form>
+
+@section Scripts {
+    <script src="~/js/views/maintenancestrategy-edit.js" asp-append-version="true"></script>
+}

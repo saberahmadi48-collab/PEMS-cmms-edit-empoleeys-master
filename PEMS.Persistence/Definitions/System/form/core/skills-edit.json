@@ -1,0 +1,65 @@
+{
+  "kind": "form",
+  "key": "skills-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit skill",
+    "fa": "ویرایش مهارت"
+  },
+  "description": {
+    "en": "Edit skill",
+    "fa": "ویرایش مهارت"
+  },
+  "payload": {
+    "id": "skills-edit",
+    "title": {
+      "en": "Edit skill",
+      "fa": "ویرایش مهارت"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "skills-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "optionsFrom": "skills-discipline-id-options"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

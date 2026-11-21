@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "production-shifts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Shifts",
+    "fa": "Shifts"
+  },
+  "description": {
+    "en": "Shifts",
+    "fa": "Shifts"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Production",
+      "action": "ShiftChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

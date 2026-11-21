@@ -1,0 +1,83 @@
+{
+  "key": "info-item",
+  "component": "PEMS.UI.Components.PemsInfoItem",
+  "category": "display",
+  "icon": "bi-list-columns",
+  "nameKey": "component.info-item",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "label": {
+        "type": "string"
+      },
+      "wide": {
+        "type": "boolean"
+      },
+      "num": {
+        "type": "boolean"
+      },
+      "mono": {
+        "type": "boolean"
+      },
+      "ltr": {
+        "type": "boolean"
+      },
+      "tone": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "emptyText": {
+        "type": "string"
+      },
+      "valueId": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "valueClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "label"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "empty",
+      "type": "Boolean",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "InfoItemOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "label": "Vendor code"
+  }
+}

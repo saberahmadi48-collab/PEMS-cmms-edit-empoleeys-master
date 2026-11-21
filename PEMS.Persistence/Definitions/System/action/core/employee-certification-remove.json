@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "employee-certification-remove",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a certification",
+    "fa": "حذف گواهینامه"
+  },
+  "description": {
+    "en": "Remove a certification",
+    "fa": "حذف گواهینامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Employee",
+      "action": "RemoveCertification",
+      "args": {
+        "employeeCertificationId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Certification removed.",
+      "fa": "گواهینامه حذف شد."
+    }
+  }
+}

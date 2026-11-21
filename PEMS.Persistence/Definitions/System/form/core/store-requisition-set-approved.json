@@ -1,0 +1,74 @@
+{
+  "kind": "form",
+  "key": "store-requisition-set-approved",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set the approved quantity of a line",
+    "fa": "تعیین مقدار تأییدشده‌ی یک قلم"
+  },
+  "description": {
+    "en": "Set the approved quantity of a line",
+    "fa": "تعیین مقدار تأییدشده‌ی یک قلم"
+  },
+  "payload": {
+    "id": "store-requisition-set-approved",
+    "title": {
+      "en": "Set the approved quantity of a line",
+      "fa": "تعیین مقدار تأییدشده‌ی یک قلم"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "store-requisition-set-approved",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Requisition id",
+          "fa": "شناسه‌ی درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "lineId",
+        "label": {
+          "en": "Line id",
+          "fa": "شناسه‌ی قلم"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "approved",
+        "label": {
+          "en": "Approved quantity",
+          "fa": "مقدار تأییدشده"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

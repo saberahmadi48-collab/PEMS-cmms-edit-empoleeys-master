@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "po-requisitions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Requisitions that may feed an order",
+    "fa": "MRهای قابل تبدیل به سفارش"
+  },
+  "description": {
+    "en": "Requisitions that may feed an order",
+    "fa": "MRهای قابل تبدیل به سفارش"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "Requisitions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "key": "loading-state",
+  "component": "PEMS.UI.Components.PemsLoadingState",
+  "category": "feedback",
+  "icon": "bi-hourglass",
+  "nameKey": "component.loading-state",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "lines": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      }
+    },
+    "required": [
+      "title"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "LoadingStateOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "title": {
+      "en": "Loading",
+      "fa": "در حال بارگذاری"
+    },
+    "lines": 2
+  }
+}

@@ -24,246 +24,228 @@
 
     string StatusBadge(string status) => status switch
     {
-        "READY" => "text-bg-success",
-        "PARTIAL" => "text-bg-warning",
-        "NOT_READY" => "text-bg-secondary",
-        _ => "text-bg-light border"
+        "READY" => "success",
+        "PARTIAL" => "warning",
+        "NOT_READY" => "neutral",
+        _ => "light"
     };
 }
 
-<div class="d-flex justify-content-end align-items-center gap-2 mb-2">
-    <a asp-controller="Finding" asp-action="Index" asp-route-equipmentId="@equipmentId" class="btn btn-outline-danger btn-sm"><i class="bi bi-flag"></i> @Localizer["Findings"]</a>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["← Reliability"]</a>
-</div>
-<p class="text-muted small">
+<pems-flex justify="end" align="center" gap="2" css="mb-2">
+    <pems-button tone="danger" size="small" outline="true" as="a" href="/p/findings?equipmentId=@equipmentId"><pems-icon name="bi-flag" /> @Localizer["Findings"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["← Reliability"]</pems-button>
+</pems-flex>
+<pems-text class="text-muted small">
     طبق «PEMS Phase 9» بند ۱۵: زیرساخت نرم‌افزاری همیشه آماده است - آنچه به داده‌ی واقعی نیاز
     دارد فقط تله‌متری زنده است. هیچ قرائتی هرگز شبیه‌سازی/جعل نمی‌شود.
-</p>
+</pems-text>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3">
-        <div class="content-card h-100 text-center">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3">
+        <pems-content-card css="h-100 text-center">
             <div class="text-muted small">Foundation</div>
-            <span class="badge @StatusBadge(foundation.FoundationStatus)">@foundation.FoundationStatus</span>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card h-100 text-center">
+            <pems-badge tone="@StatusBadge(foundation.FoundationStatus)">@foundation.FoundationStatus</pems-badge>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="3">
+        <pems-content-card css="h-100 text-center">
             <div class="text-muted small">Live Telemetry</div>
-            <span class="badge @StatusBadge(foundation.LiveTelemetryStatus)">@foundation.LiveTelemetryStatus</span>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@foundation.MonitoringPointCount</div>
+            <pems-badge tone="@StatusBadge(foundation.LiveTelemetryStatus)">@foundation.LiveTelemetryStatus</pems-badge>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="3">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@foundation.MonitoringPointCount</pems-metric>
             <div class="text-muted small">Monitoring Points (Fleet)</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@foundation.ReadingCount</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="3">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@foundation.ReadingCount</pems-metric>
             <div class="text-muted small">Readings Recorded (Fleet)</div>
-        </div>
-    </div>
-</div>
+        </pems-content-card>
+    </pems-col>
+</pems-row>
 
-<div class="content-card mb-3">
-    <form method="get" class="row g-2 align-items-end">
-        <div class="col-auto">
-            <label class="form-label small mb-0">@Localizer["Equipment ID"]</label>
-            <input type="number" name="equipmentId" value="@equipmentId" class="form-control form-control-sm" style="width:140px" />
-        </div>
-        <div class="col-auto"><button type="submit" class="btn btn-sm btn-pems-solid">Load Points</button></div>
-    </form>
-</div>
+<pems-content-card css="mb-3">
+    <pems-form method="get"><pems-row gap="2" css="align-items-end">
+        <pems-col span="auto">
+            <pems-label css="small mb-0">@Localizer["Equipment ID"]</pems-label>
+            <pems-input class="pems-w-140" scale="small" type="number" name="equipmentId" value="@equipmentId" />
+        </pems-col>
+        <pems-col span="auto"><pems-button tone="primary" size="small" type="submit">Load Points</pems-button></pems-col>
+    </pems-row></pems-form>
+</pems-content-card>
 
 @if (equipmentId.HasValue)
 {
-    <div class="content-card mb-3">
-        <h6 class="mb-2">Monitoring Points — Equipment #@equipmentId</h6>
-        <table class="table table-enterprise table-sm mb-0">
-            <thead><tr><th>@Localizer["Variable"]</th><th>@Localizer["Tag"]</th><th>@Localizer["Unit"]</th><th class="text-end">@Localizer["Alarm Range"]</th><th class="text-end">@Localizer["Readings"]</th><th>@Localizer["Last Reading"]</th><th>@Localizer["Evaluation"]</th><th>@Localizer["CBM Strategy"]</th></tr></thead>
-            <tbody>
-                @foreach (var p in Model)
-                {
-                    <tr class="@(p.LastReadingIsAlarm ? "table-danger" : "")">
-                        <td>@p.VariableType</td>
-                        <td>@p.Tag</td>
-                        <td>@p.Unit</td>
-                        <td class="text-end small">@p.AlarmThresholdLow – @p.AlarmThresholdHigh</td>
-                        <td class="text-end">
+    <pems-content-card css="mb-3">
+        <pems-heading level="6" class="mb-2">Monitoring Points — Equipment #@equipmentId</pems-heading>
+        @{
+            var rows_73 = Model;
+            var cell_73_4 = DataCell.Template(rows_73, @<text>@{ var p = item; }
                             @p.ReadingCount
                             @if (p.ReadingCount > 0)
                             {
-                                <a asp-action="Trend" asp-route-pointId="@p.ConditionMonitoringPointId" class="btn btn-sm btn-outline-secondary ms-1" title="@Localizer["Trend"]"><i class="bi bi-graph-up"></i></a>
+                                <pems-button tone="neutral" size="small" outline="true" css="ms-1" as="a" asp-action="Trend" asp-route-pointId="@p.ConditionMonitoringPointId" title="@Localizer["Trend"]"><pems-icon name="bi-graph-up" /></pems-button>
                             }
-                        </td>
-                        <td class="small">@(p.LastReadingDate.HasValue ? $"{p.LastValue} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : "No readings yet")</td>
-                        <td>
+                        </text>);
+            var cell_73_6 = DataCell.Template(rows_73, @<text>@{ var p = item; }
                             @if (p.EvaluationProfileId.HasValue)
                             {
-                                <span class="badge @EvalBadge(p.LastReadingEvaluationStatus)">@p.LastReadingEvaluationStatus</span>
+                                <pems-badge tone="@EvalBadge(p.LastReadingEvaluationStatus)">@p.LastReadingEvaluationStatus</pems-badge>
                                 <div class="small text-muted">@p.EvaluationProfileCode</div>
                                 @if (p.LastReadingId.HasValue && (p.LastReadingEvaluationStatus == "Warning" || p.LastReadingEvaluationStatus == "Alarm" || p.LastReadingEvaluationStatus == "Critical"))
                                 {
-                                    <button type="button" class="btn btn-sm btn-outline-danger mt-1" data-bs-toggle="modal" data-bs-target="#raiseFindingModal" data-reading-id="@p.LastReadingId" data-point-label="@p.VariableType — @p.Tag">
-                                        <i class="bi bi-flag"></i> @Localizer["Raise Finding"]
-                                    </button>
+                                    <pems-button tone="danger" size="small" outline="true" css="mt-1" type="button" data-bs-toggle="modal" data-bs-target="#raiseFindingModal" data-reading-id="@p.LastReadingId" data-point-label="@p.VariableType — @p.Tag">
+                                        <pems-icon name="bi-flag" /> @Localizer["Raise Finding"]
+                                    </pems-button>
                                 }
                             }
                             else
                             {
-                                <form method="post" asp-action="AssignEvaluationProfile" class="d-flex gap-1">
+                                <pems-form method="post" asp-action="AssignEvaluationProfile"><pems-flex gap="1">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                                     <input type="hidden" name="pointId" value="@p.ConditionMonitoringPointId" />
-                                    <select name="evaluationProfileId" class="form-select form-select-sm" style="max-width:160px;">
+                                    <pems-select class="pems-maxw-160" scale="small" name="evaluationProfileId">
                                         <option value="">@Localizer["-- profile --"]</option>
                                         @foreach (var ep in evaluationProfiles)
                                         {
                                             <option value="@ep.EvaluationProfileId">@ep.Code (@ep.VariableType)</option>
                                         }
-                                    </select>
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="@Localizer["Assign evaluation profile"]"><i class="bi bi-link-45deg"></i></button>
-                                </form>
+                                    </pems-select>
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit" title="@Localizer["Assign evaluation profile"]"><pems-icon name="bi-link-45deg" /></pems-button>
+                                </pems-flex></pems-form>
                             }
                             @if (p.LastReadingId.HasValue && p.LastReadingEvaluationStatus != "RequiresEngineeringReview")
                             {
-                                <form method="post" asp-action="MarkRequiresEngineeringReview" class="d-inline">
+                                <pems-form method="post" asp-action="MarkRequiresEngineeringReview" class="d-inline">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                                     <input type="hidden" name="readingId" value="@p.LastReadingId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-info mt-1" title="@Localizer["Mark for Engineering Review"]">
-                                        <i class="bi bi-person-check"></i>
-                                    </button>
-                                </form>
+                                    <pems-button tone="info" size="small" outline="true" css="mt-1" type="submit" title="@Localizer["Mark for Engineering Review"]">
+                                        <pems-icon name="bi-person-check" />
+                                    </pems-button>
+                                </pems-form>
                             }
-                        </td>
-                        <td>
+                        </text>);
+            var cell_73_7 = DataCell.Template(rows_73, @<text>@{ var p = item; }
                             @if (pointsWithCbmStrategy.Contains(p.ConditionMonitoringPointId))
                             {
-                                <span class="badge text-bg-success">@Localizer["Linked"]</span>
+                                <pems-badge tone="success">@Localizer["Linked"]</pems-badge>
                             }
                             else
                             {
-                                <form method="post" asp-action="CreateCbmStrategy" class="d-inline">
+                                <pems-form method="post" asp-action="CreateCbmStrategy" class="d-inline">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                                     <input type="hidden" name="conditionMonitoringPointId" value="@p.ConditionMonitoringPointId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-primary" title="@Localizer["ساخت استراتژی CBM برای این نقطه‌ی پایش"]">
-                                        <i class="bi bi-plus-lg"></i> @Localizer["CBM"]
-                                    </button>
-                                </form>
+                                    <pems-button tone="primary" size="small" outline="true" type="submit" title="@Localizer["ساخت استراتژی CBM برای این نقطه‌ی پایش"]">
+                                        <pems-icon name="bi-plus-lg" /> @Localizer["CBM"]
+                                    </pems-button>
+                                </pems-form>
                             }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        @if (!Model.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هیچ نقطه‌ی پایشی برای این تجهیز تعریف نشده."]</p> }
-    </div>
+                        </text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_73, c_ => c_.Add(((Localizer["Variable"])?.ToString() ?? ""), p => (object?)(p.VariableType)).Add(((Localizer["Tag"])?.ToString() ?? ""), p => (object?)(p.Tag)).Add(((Localizer["Unit"])?.ToString() ?? ""), p => (object?)(p.Unit)).Add(((Localizer["Alarm Range"])?.ToString() ?? ""), p => (object?)(DataCell.Group(p.AlarmThresholdLow, " – ", p.AlarmThresholdHigh)), css: "text-end small", headerCss: "text-end").Add(((Localizer["Readings"])?.ToString() ?? ""), p => (object?)cell_73_4(p), css: "text-end", headerCss: "text-end").Add(((Localizer["Last Reading"])?.ToString() ?? ""), p => (object?)((p.LastReadingDate.HasValue ? $"{p.LastValue} @ {p.LastReadingDate.Value:yyyy-MM-dd}" : "No readings yet")), css: "small").Add(((Localizer["Evaluation"])?.ToString() ?? ""), p => (object?)cell_73_6(p)).Add(((Localizer["CBM Strategy"])?.ToString() ?? ""), p => (object?)cell_73_7(p)), rowClass: p => (p.LastReadingIsAlarm ? "table-danger" : "")))" dense="true" css="mb-0" />
+        @if (!Model.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["هیچ نقطه‌ی پایشی برای این تجهیز تعریف نشده."]</pems-text> }
+    </pems-content-card>
 
-    <div class="row g-3">
-        <div class="col-md-6">
-            <div class="content-card">
-                <h6 class="mb-2">Add Monitoring Point</h6>
-                <form method="post" asp-action="CreateConditionMonitoringPoint">
+    <pems-row gap="3">
+        <pems-col md="6">
+            <pems-content-card>
+                <pems-heading level="6" class="mb-2">Add Monitoring Point</pems-heading>
+                <pems-form method="post" asp-action="CreateConditionMonitoringPoint">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="equipmentId" value="@equipmentId" />
-                    <div class="mb-2">
-                        <label class="form-label small">Variable Type</label>
-                        <select name="variableType" class="form-select form-select-sm">
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small">Variable Type</pems-label>
+                        <pems-select scale="small" name="variableType">
                             @foreach (var vt in variableTypes) { <option value="@vt">@vt</option> }
-                        </select>
-                    </div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Tag"]</label><input name="tag" class="form-control form-control-sm" required /></div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Unit"]</label><input name="unit" class="form-control form-control-sm" /></div>
-                    <div class="row g-2 mb-2">
-                        <div class="col"><label class="form-label small">Alarm Low</label><input type="number" step="0.01" name="alarmLow" class="form-control form-control-sm" /></div>
-                        <div class="col"><label class="form-label small">Alarm High</label><input type="number" step="0.01" name="alarmHigh" class="form-control form-control-sm" /></div>
-                    </div>
-                    <button type="submit" class="btn btn-sm btn-pems-solid">Create Point</button>
-                </form>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="content-card">
-                <h6 class="mb-2">Record Reading (Manual)</h6>
-                <form method="post" asp-action="RecordConditionReading">
+                        </pems-select>
+                    </pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Tag"]</pems-label><pems-input scale="small" name="tag" required /></pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" name="unit" /></pems-form-group>
+                    <pems-row gap="2" css="mb-2">
+                        <pems-col span=""><pems-label css="small">Alarm Low</pems-label><pems-input scale="small" type="number" step="0.01" name="alarmLow" /></pems-col>
+                        <pems-col span=""><pems-label css="small">Alarm High</pems-label><pems-input scale="small" type="number" step="0.01" name="alarmHigh" /></pems-col>
+                    </pems-row>
+                    <pems-button tone="primary" size="small" type="submit">Create Point</pems-button>
+                </pems-form>
+            </pems-content-card>
+        </pems-col>
+        <pems-col md="6">
+            <pems-content-card>
+                <pems-heading level="6" class="mb-2">Record Reading (Manual)</pems-heading>
+                <pems-form method="post" asp-action="RecordConditionReading">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="equipmentId" value="@equipmentId" />
-                    <div class="mb-2">
-                        <label class="form-label small">Point</label>
-                        <select name="pointId" class="form-select form-select-sm">
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small">Point</pems-label>
+                        <pems-select scale="small" name="pointId">
                             @foreach (var p in Model) { <option value="@p.ConditionMonitoringPointId">@p.VariableType — @p.Tag</option> }
-                        </select>
-                    </div>
-                    <div class="row g-2 mb-2">
-                        <div class="col"><label class="form-label small">@Localizer["Date"]</label><input type="datetime-local" name="readingDate" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" /></div>
-                        <div class="col"><label class="form-label small">@Localizer["Value"]</label><input type="number" step="0.01" name="value" class="form-control form-control-sm" required /></div>
-                    </div>
-                    <div class="mb-2"><label class="form-label small">@Localizer["Source"]</label><input name="source" value="Manual" class="form-control form-control-sm" /></div>
+                        </pems-select>
+                    </pems-form-group>
+                    <pems-row gap="2" css="mb-2">
+                        <pems-col span=""><pems-label css="small">@Localizer["Date"]</pems-label><pems-date time="true" name="readingDate" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" scale="small" /></pems-col>
+                        <pems-col span=""><pems-label css="small">@Localizer["Value"]</pems-label><pems-input scale="small" type="number" step="0.01" name="value" required /></pems-col>
+                    </pems-row>
+                    <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Source"]</pems-label><pems-input scale="small" name="source" value="Manual" /></pems-form-group>
                     @{ var equipmentInstruments = (IEnumerable<dynamic>)ViewBag.EquipmentInstruments; }
                     @if (equipmentInstruments.Any())
                     {
-                        <div class="mb-2">
-                            <label class="form-label small">@Localizer["Instrument (اختیاری)"]</label>
-                            <select name="instrumentId" class="form-select form-select-sm">
+                        <pems-form-group css="mb-2">
+                            <pems-label css="small">@Localizer["Instrument (اختیاری)"]</pems-label>
+                            <pems-select scale="small" name="instrumentId">
                                 <option value="">@Localizer["-- ندارد --"]</option>
                                 @foreach (var inst in equipmentInstruments) { <option value="@inst.InstrumentId">@inst.TagNumber — @inst.InstrumentType</option> }
-                            </select>
-                        </div>
+                            </pems-select>
+                        </pems-form-group>
                     }
-                    <button type="submit" class="btn btn-sm btn-pems-solid">Record Reading</button>
-                </form>
-            </div>
-        </div>
-    </div>
+                    <pems-button tone="primary" size="small" type="submit">Record Reading</pems-button>
+                </pems-form>
+            </pems-content-card>
+        </pems-col>
+    </pems-row>
 }
 
-<div class="modal fade" id="raiseFindingModal" tabindex="-1">
-    <div class="modal-dialog modal-lg"><div class="modal-content">
-        <form asp-controller="Finding" asp-action="CreateFromReading" method="post">
+<pems-modal size="large" id="raiseFindingModal" tabindex="-1">
+        <pems-form action="/a/finding-create-from-reading" method="post">
+            <input type="hidden" name="equipmentId" value="@equipmentId" />
             <input type="hidden" name="conditionReadingId" id="raiseFindingReadingId" />
-            <div class="modal-header"><h6 class="modal-title">@Localizer["Raise Finding"] — <span id="raiseFindingPointLabel"></span></h6></div>
-            <div class="modal-body">
-                <div class="mb-2">
-                    <label class="form-label small">@Localizer["Description"]</label>
-                    <textarea name="description" class="form-control" rows="2" required></textarea>
-                </div>
-                <div class="mb-2">
-                    <label class="form-label small">@Localizer["Recommended Action (اختیاری)"]</label>
-                    <textarea name="recommendedAction" class="form-control" rows="2"></textarea>
-                </div>
-                <div class="row g-2">
-                    <div class="col-md-6">
-                        <label class="form-label small">@Localizer["Failure Mode (ISO 14224، اختیاری)"]</label>
-                        <select name="failureModeId" class="form-select form-select-sm">
+            <pems-modal-header>@Localizer["Raise Finding"] — <span id="raiseFindingPointLabel"></span></pems-modal-header>
+            <pems-modal-body>
+                <pems-form-group css="mb-2">
+                    <pems-label css="small">@Localizer["Description"]</pems-label>
+                    <pems-textarea name="description" rows="2" required></pems-textarea>
+                </pems-form-group>
+                <pems-form-group css="mb-2">
+                    <pems-label css="small">@Localizer["Recommended Action (اختیاری)"]</pems-label>
+                    <pems-textarea name="recommendedAction" rows="2"></pems-textarea>
+                </pems-form-group>
+                <pems-row gap="2">
+                    <pems-col md="6">
+                        <pems-label css="small">@Localizer["Failure Mode (ISO 14224، اختیاری)"]</pems-label>
+                        <pems-select scale="small" name="failureModeId">
                             <option value="">@Localizer["-- ندارد --"]</option>
                             @foreach (var fm in failureModes) { <option value="@fm.FailureModeId">@fm.Name</option> }
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label small">@Localizer["Failure Cause (اختیاری)"]</label>
-                        <select name="failureCauseId" class="form-select form-select-sm">
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="6">
+                        <pems-label css="small">@Localizer["Failure Cause (اختیاری)"]</pems-label>
+                        <pems-select scale="small" name="failureCauseId">
                             <option value="">@Localizer["-- ندارد --"]</option>
                             @foreach (var fc in failureCauses) { <option value="@fc.FailureCauseId">@fc.Name</option> }
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-danger btn-sm">@Localizer["Raise Finding"]</button>
-            </div>
-        </form>
-    </div></div>
-</div>
+                        </pems-select>
+                    </pems-col>
+                </pems-row>
+            </pems-modal-body>
+            <pems-modal-footer>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="danger" size="small" type="submit">@Localizer["Raise Finding"]</pems-button>
+            </pems-modal-footer>
+        </pems-form>
+    </pems-modal>
 
-<script>
-    document.getElementById('raiseFindingModal')?.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget;
-        document.getElementById('raiseFindingReadingId').value = button.getAttribute('data-reading-id');
-        document.getElementById('raiseFindingPointLabel').textContent = button.getAttribute('data-point-label');
-    });
-</script>
+<script src="~/js/views/reliability-conditionmonitoring.js" asp-append-version="true"></script>

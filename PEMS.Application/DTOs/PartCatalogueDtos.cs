@@ -308,6 +308,9 @@ public sealed class PcExistingPartHit
     public string? ManufacturerPartNumber { get; set; }
     public string? SupplierPartNumber { get; set; }
 
+    /// <summary>SCRUM-428: کد واحد سنجش قطعه (MaterialUOM.Code) برای پر کردن واحد ردیف MR.</summary>
+    public string? Unit { get; set; }
+
     /// <summary>فیلدی که مطابقت داده شد: PartNumber | ManufacturerPartNumber | SupplierPartNumber | OldManufacturerPartNumber | Description.</summary>
     public string MatchedOn { get; set; } = string.Empty;
 

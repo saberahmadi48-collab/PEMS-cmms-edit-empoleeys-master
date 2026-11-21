@@ -1,0 +1,15 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("menu", Category = "navigation", Icon = "bi-three-dots-vertical")]
+@inject IPemsLocale Locale
+<details class="pems-menu" data-pems-menu>
+    <summary class="pems-menu__trigger pems-btn pems-btn--neutral pems-btn--medium">@Locale.Text(Options.Label)</summary>
+    <ul class="pems-menu__list">
+        @foreach (var item in Options.Items)
+        {
+            <li><a class="pems-menu__item" href="@item.Href">@Locale.Text(item.Label)</a></li>
+        }
+    </ul>
+</details>
+@code {
+    [Parameter, EditorRequired] public MenuOptions Options { get; set; } = default!;
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-technical-class",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup TechnicalClass (old address)",
+    "fa": "Part Catalogue lookup TechnicalClass (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue lookup TechnicalClass (old address)",
+    "fa": "Part Catalogue lookup TechnicalClass (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueLookup/TechnicalClass",
+    "target": "/x/pc-technical-class",
+    "permanent": false
+  }
+}

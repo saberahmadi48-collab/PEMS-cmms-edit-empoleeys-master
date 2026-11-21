@@ -1,0 +1,48 @@
+{
+  "kind": "form",
+  "key": "migrator-run",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Migrator center: run a package",
+    "fa": "مرکز مهاجرت: اجرای بسته"
+  },
+  "description": {
+    "en": "Run a signed package on this installation",
+    "fa": "اجرای بسته امضاشده روی این نصب"
+  },
+  "payload": {
+    "id": "migrator-run",
+    "title": {
+      "en": "Run a package (inspect it first; the run changes the database)",
+      "fa": "اجرای بسته (نخست بررسی کنید؛ اجرا پایگاه داده را تغییر می‌دهد)"
+    },
+    "submitLabel": {
+      "en": "Run",
+      "fa": "اجرا"
+    },
+    "actionKey": "migrator-run",
+    "permission": "Definitions.Create",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "file",
+        "label": {
+          "en": "Package (.zip)",
+          "fa": "بسته (‎.zip)"
+        },
+        "kind": "file",
+        "required": true
+      },
+      {
+        "name": "confirm",
+        "label": {
+          "en": "I confirm that this run changes the database (a backup is taken first when it is configured)",
+          "fa": "تأیید می‌کنم که این اجرا پایگاه داده را تغییر می‌دهد"
+        },
+        "kind": "switch"
+      }
+    ]
+  }
+}

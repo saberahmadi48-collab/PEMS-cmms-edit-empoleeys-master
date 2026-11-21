@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "barcode-disable",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Disable a barcode",
+    "fa": "غیرفعال کردن بارکد"
+  },
+  "description": {
+    "en": "Disable a barcode",
+    "fa": "غیرفعال کردن بارکد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Barcode",
+      "action": "Disable",
+      "args": {
+        "id": "field:id",
+        "reason": "field:reason",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The barcode was disabled.",
+      "fa": "بارکد غیرفعال شد."
+    },
+    "redirect": "/p/barcodes"
+  }
+}

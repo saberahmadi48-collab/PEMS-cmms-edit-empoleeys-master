@@ -1,0 +1,251 @@
+{
+  "kind": "page",
+  "key": "shift-handover-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Shift handover",
+    "fa": "تحویل شیفت"
+  },
+  "description": {
+    "en": "One handover with its carried items, history and the prepare, acknowledge and complete commands (page definition)",
+    "fa": "یک تحویل با اقلام، تاریخچه و دستورهای آماده‌سازی، تأیید و نهایی‌سازی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "shift-handover-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "shift-handover-record",
+            "fields": [
+              {
+                "key": "shiftLabel",
+                "label": {
+                  "en": "Shift",
+                  "fa": "شیفت"
+                }
+              },
+              {
+                "key": "handoverDate",
+                "label": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "type": "date"
+              },
+              {
+                "key": "outgoing",
+                "label": {
+                  "en": "Outgoing",
+                  "fa": "تحویل‌دهنده"
+                }
+              },
+              {
+                "key": "incoming",
+                "label": {
+                  "en": "Incoming",
+                  "fa": "تحویل‌گیرنده"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "notes",
+                "label": {
+                  "en": "Notes",
+                  "fa": "یادداشت"
+                }
+              },
+              {
+                "key": "preparedDate",
+                "label": {
+                  "en": "Prepared",
+                  "fa": "آماده"
+                },
+                "type": "date"
+              },
+              {
+                "key": "acknowledgedDate",
+                "label": {
+                  "en": "Acknowledged",
+                  "fa": "تأیید"
+                },
+                "type": "date"
+              },
+              {
+                "key": "completedDate",
+                "label": {
+                  "en": "Completed",
+                  "fa": "نهایی"
+                },
+                "type": "date"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/shift-handover-head",
+              "idField": "shiftHandoverId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/shift-handover-prepare?id={{params.id}}",
+                "text": {
+                  "en": "Prepare",
+                  "fa": "آماده‌سازی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/shift-handover-acknowledge?id={{params.id}}",
+                "text": {
+                  "en": "Acknowledge",
+                  "fa": "تأیید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/shift-handover-complete?id={{params.id}}",
+                "text": {
+                  "en": "Complete",
+                  "fa": "نهایی‌سازی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/shift-handovers",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "items",
+          "component": "def:related-table",
+          "options": {
+            "id": "items",
+            "title": {
+              "en": "Carried items",
+              "fa": "اقلام منتقل‌شده"
+            },
+            "url": "/d/shift-handover-items?f.id={{params.id|url}}",
+            "idField": "description",
+            "columns": [
+              {
+                "key": "itemType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "referenceType",
+                "header": {
+                  "en": "Reference",
+                  "fa": "مرجع"
+                },
+                "width": 120
+              },
+              {
+                "key": "referenceId",
+                "header": {
+                  "en": "Id",
+                  "fa": "شناسه"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 400
+              }
+            ]
+          }
+        },
+        {
+          "id": "history",
+          "component": "def:related-table",
+          "options": {
+            "id": "history",
+            "title": {
+              "en": "Status history",
+              "fa": "تاریخچه‌ی وضعیت"
+            },
+            "url": "/d/shift-handover-history?f.id={{params.id|url}}",
+            "idField": "changedDate",
+            "columns": [
+              {
+                "key": "changedDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "fromStatus",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 110
+              },
+              {
+                "key": "toStatus",
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                },
+                "width": 110
+              },
+              {
+                "key": "changedBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 260
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "ShiftHandover.View"
+  }
+}

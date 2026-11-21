@@ -1,0 +1,107 @@
+{
+  "kind": "page",
+  "key": "organization-readiness",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Organization readiness",
+    "fa": "آمادگی ساختار سازمانی"
+  },
+  "description": {
+    "en": "Organization readiness (page definition)",
+    "fa": "آمادگی ساختار سازمانی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "organization-readiness",
+    "template": "entity-list",
+    "args": {
+      "id": "organization-readiness",
+      "url": "/d/organization-readiness-rows",
+      "idField": "id",
+      "columns": [
+        {
+          "key": "activePositions",
+          "header": {
+            "en": "Active positions",
+            "fa": "سمت‌های فعال"
+          },
+          "width": 140,
+          "type": "number"
+        },
+        {
+          "key": "positionsWithParent",
+          "header": {
+            "en": "With a parent",
+            "fa": "دارای مافوق"
+          },
+          "width": 130,
+          "type": "number"
+        },
+        {
+          "key": "rootPositions",
+          "header": {
+            "en": "Roots",
+            "fa": "ریشه"
+          },
+          "width": 90,
+          "type": "number"
+        },
+        {
+          "key": "vacantPositions",
+          "header": {
+            "en": "Vacant",
+            "fa": "بدون دارنده"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "activePositionsWithoutDepartment",
+          "header": {
+            "en": "No department",
+            "fa": "بدون دپارتمان"
+          },
+          "width": 130,
+          "type": "number"
+        },
+        {
+          "key": "activeEmployees",
+          "header": {
+            "en": "Active employees",
+            "fa": "کارمندان فعال"
+          },
+          "width": 140,
+          "type": "number"
+        },
+        {
+          "key": "activeEmployeesWithPrimaryPosition",
+          "header": {
+            "en": "With a primary position",
+            "fa": "دارای سمت اصلی"
+          },
+          "width": 170,
+          "type": "number"
+        },
+        {
+          "key": "activeEmployeesWithoutPersonnelCode",
+          "header": {
+            "en": "No personnel code",
+            "fa": "بدون کد پرسنلی"
+          },
+          "width": 150,
+          "type": "number"
+        },
+        {
+          "key": "activeUsersWithoutPrimaryPosition",
+          "header": {
+            "en": "Users without a position",
+            "fa": "کاربران بدون سمت"
+          },
+          "width": 170,
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-toolbar", Category = "list", Icon = "bi-layout-text-window-reverse")]
+<div @attributes="Options.Attributes" class="@ListMarkup.Css("lp-toolbar", Options.CssClass)" data-lp-toolbar=""><div class="lp-tabs lp-head"><h2 title="@(string.IsNullOrEmpty(Options.HeadingTitle) ? null : Options.HeadingTitle)">@Options.Heading</h2>@if (Options.Total.HasValue){<span aria-label="@(Options.TotalLabel + ": " + Options.Total.Value.ToString(System.Globalization.CultureInfo.InvariantCulture))" class="lp-total">@Options.Total.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)</span>}</div>@ChildContent</div>
+@code {
+    [Parameter, EditorRequired] public ListToolbarOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

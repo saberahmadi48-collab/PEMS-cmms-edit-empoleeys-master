@@ -1,0 +1,87 @@
+{
+  "kind": "form",
+  "key": "designer-form-layout",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Form layout",
+    "fa": "چیدمان فرم"
+  },
+  "description": {
+    "en": "Form layout",
+    "fa": "چیدمان فرم"
+  },
+  "payload": {
+    "id": "designer-form-layout",
+    "title": {
+      "en": "Form layout",
+      "fa": "چیدمان فرم"
+    },
+    "submitLabel": {
+      "en": "Apply to the draft",
+      "fa": "اعمال بر پیش‌نویس"
+    },
+    "actionKey": "designer-form-layout",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ref",
+        "label": {
+          "en": "Definition",
+          "fa": "تعریف"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Definition is required.",
+            "fa": "تعریف الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "appKey:kind:key, for example core:form:department-create",
+          "fa": "appKey:kind:key, for example core:form:department-create"
+        }
+      },
+      {
+        "name": "columns",
+        "label": {
+          "en": "Columns (1 or 2)",
+          "fa": "ستون‌ها (۱ یا ۲)"
+        },
+        "kind": "text",
+        "maxLength": 1
+      },
+      {
+        "name": "warnOnLeave",
+        "label": {
+          "en": "Warn when leaving with changes (true or false)",
+          "fa": "هشدار هنگام ترک (true یا false)"
+        },
+        "kind": "text",
+        "maxLength": 5
+      },
+      {
+        "name": "submitEn",
+        "label": {
+          "en": "Submit button (English)",
+          "fa": "دکمه ثبت (انگلیسی)"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "submitFa",
+        "label": {
+          "en": "Submit button (Persian)",
+          "fa": "دکمه ثبت (فارسی)"
+        },
+        "kind": "text",
+        "maxLength": 100
+      }
+    ]
+  }
+}

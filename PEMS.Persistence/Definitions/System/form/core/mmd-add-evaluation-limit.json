@@ -1,0 +1,93 @@
+{
+  "kind": "form",
+  "key": "mmd-add-evaluation-limit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AddEvaluationLimit",
+    "fa": "AddEvaluationLimit"
+  },
+  "description": {
+    "en": "AddEvaluationLimit",
+    "fa": "AddEvaluationLimit"
+  },
+  "payload": {
+    "id": "mmd-add-evaluation-limit",
+    "title": {
+      "en": "AddEvaluationLimit",
+      "fa": "AddEvaluationLimit"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-add-evaluation-limit",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "evaluationProfileId",
+        "label": {
+          "en": "Evaluation profile id",
+          "fa": "evaluationProfileId"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "mmd-profiles-choices"
+      },
+      {
+        "name": "status",
+        "label": {
+          "en": "Status",
+          "fa": "status"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "lowValue",
+        "label": {
+          "en": "Low value",
+          "fa": "lowValue"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "highValue",
+        "label": {
+          "en": "High value",
+          "fa": "highValue"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "lowInclusive",
+        "label": {
+          "en": "Low inclusive",
+          "fa": "lowInclusive"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "highInclusive",
+        "label": {
+          "en": "High inclusive",
+          "fa": "highInclusive"
+        },
+        "kind": "checkbox"
+      }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "key": "list-new",
+  "component": "PEMS.UI.Components.PemsListNew",
+  "category": "list",
+  "icon": "bi-plus-lg",
+  "nameKey": "component.list-new",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "href": {
+        "type": "string"
+      },
+      "modal": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "text": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "ListNewOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "href": "/docs/new",
+    "text": "New"
+  }
+}

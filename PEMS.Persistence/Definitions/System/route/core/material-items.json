@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "material-items",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material master (old address)",
+    "fa": "Material master (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Material master (old address)",
+    "fa": "Material master (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/MaterialItem/{*rest}",
+    "target": "/p/material-items",
+    "permanent": false
+  }
+}

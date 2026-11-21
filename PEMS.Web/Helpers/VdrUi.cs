@@ -48,6 +48,8 @@ public static class VdrUi
     {
         if (string.IsNullOrEmpty(value)) return "";
         var s = localizer[prefix + value];
-        return s.ResourceNotFound ? value : s.Value;
+        if (!s.ResourceNotFound) return s.Value;
+        var shared = localizer[value];
+        return shared.ResourceNotFound ? value : shared.Value;
     }
 }

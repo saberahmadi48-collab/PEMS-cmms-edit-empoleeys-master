@@ -1,0 +1,34 @@
+{
+  "kind": "page",
+  "key": "database-update-pending",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Pending migrations",
+    "fa": "مهاجرت‌های در انتظار"
+  },
+  "description": {
+    "en": "Pending migrations (page definition)",
+    "fa": "مهاجرت‌های در انتظار (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "database-update-pending",
+    "template": "entity-list",
+    "args": {
+      "id": "database-update-pending",
+      "url": "/d/database-update-pending",
+      "idField": "value",
+      "columns": [
+        {
+          "key": "value",
+          "header": {
+            "en": "Migration",
+            "fa": "مهاجرت"
+          },
+          "width": 600
+        }
+      ]
+    }
+  }
+}

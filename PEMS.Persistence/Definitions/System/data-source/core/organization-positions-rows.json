@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "organization-positions-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Positions",
+    "fa": "Positions"
+  },
+  "description": {
+    "en": "Positions rows",
+    "fa": "Positions rows"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Organization",
+      "action": "PositionRows"
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "kind": "data-source",
+  "key": "storage-routing-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Storage routing rows",
+    "fa": "ردیف‌های مسیریابی ذخیره‌سازی"
+  },
+  "description": {
+    "en": "The rows of the storage routing grid",
+    "fa": "ردیف‌های جدول مسیریابی ذخیره‌سازی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "StorageRoute",
+      "fields": [
+        "Module",
+        "DocumentType",
+        "RelativeRootPath",
+        "IsEnabled",
+        "IsDefault",
+        "Priority",
+        "StorageProviderId"
+      ],
+      "search": [
+        "Module",
+        "DocumentType"
+      ],
+      "sort": [
+        "Module",
+        "Priority"
+      ],
+      "lookups": [
+        {
+          "name": "provider",
+          "entity": "StorageProvider",
+          "foreignKey": "StorageProviderId",
+          "label": "Name"
+        }
+      ]
+    }
+  }
+}

@@ -15,49 +15,17 @@ namespace PEMS.Tests.Authorization;
 public class HelpAdminAuthorizationTests
 {
     [Fact]
-    public void AdminHelpController_RequiresSystemAdminOrEngineeringManagerRole()
+    public void AdminHelp_OperationsRequireSystemAdminOrEngineeringManager_AndCoverArticlesVisualsAndStandards()
     {
-        var controllerType = typeof(PEMS.Web.Areas.Admin.Controllers.HelpController);
-
-        var authorizeAttr = controllerType.GetCustomAttributes(typeof(AuthorizeAttribute), inherit: true)
-            .Cast<AuthorizeAttribute>()
-            .FirstOrDefault();
-
-        Assert.NotNull(authorizeAttr);
-        Assert.NotNull(authorizeAttr!.Roles);
-        Assert.Contains(SystemRoles.SystemAdmin, authorizeAttr.Roles!.Split(','));
-        Assert.Contains(SystemRoles.EngineeringManager, authorizeAttr.Roles!.Split(','));
-    }
-
-    [Fact]
-    public void AdminHelpController_VisualManagementActions_ExistOnSameRoleProtectedController()
-    {
-        // طبق «PEMS Help System — Phase 3» بخش ۱۳: مدیریت محتوای بصری (VisualCreate/VisualEdit/
-        // VisualSetPublished/VisualDelete) نباید یک کنترلر یا Attribute مجوز جداگانه داشته باشد -
-        // چون همین [Authorize] در سطح کلاس (تایید‌شده در تست بالا) روی همه‌ی Action های این
-        // کنترلر - از جمله این چهار مورد - به‌صورت خودکار اعمال می‌شود.
-        var controllerType = typeof(PEMS.Web.Areas.Admin.Controllers.HelpController);
-        var actionNames = new[] { "VisualCreate", "VisualEdit", "VisualSetPublished", "VisualDelete" };
-
-        foreach (var name in actionNames)
+        // SCRUM-634: the Admin Help is operations of the page service, every one for the two roles the controller allowed
+        var operations = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        var names = new[] { "AdminArticles", "ArticleOf", "SaveArticle", "ArticleSetPublished", "DeleteArticle", "Visuals", "SaveVisual", "VisualSetPublished", "DeleteVisual", "StandardMatrix", "SaveStandard", "StandardSetPublished", "DeleteStandard", "History" };
+        foreach (var name in names)
         {
-            var hasAction = controllerType.GetMethods().Any(m => m.Name == name);
-            Assert.True(hasAction, $"Expected action '{name}' on Admin HelpController");
-        }
-    }
-
-    [Fact]
-    public void AdminHelpController_StandardReferenceManagementActions_ExistOnSameRoleProtectedController()
-    {
-        // طبق «PEMS Help Phase 4 — Increment 3A» بخش ۱۴: مدیریت Standard Reference هم دقیقاً
-        // همان الگوی Visual را تکرار می‌کند - بدون کنترلر/Attribute مجوز جداگانه
-        var controllerType = typeof(PEMS.Web.Areas.Admin.Controllers.HelpController);
-        var actionNames = new[] { "StandardMatrix", "StandardCreate", "StandardEdit", "StandardSetPublished", "StandardDelete" };
-
-        foreach (var name in actionNames)
-        {
-            var hasAction = controllerType.GetMethods().Any(m => m.Name == name);
-            Assert.True(hasAction, $"Expected action '{name}' on Admin HelpController");
+            var op = operations.Get("Help", name);
+            Assert.NotNull(op);
+            Assert.Contains(SystemRoles.SystemAdmin, op!.Roles);
+            Assert.Contains(SystemRoles.EngineeringManager, op.Roles);
         }
     }
 

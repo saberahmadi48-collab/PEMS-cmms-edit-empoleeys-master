@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "team-position-update",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a position",
+    "fa": "ویرایش سمت"
+  },
+  "description": {
+    "en": "Edit a position",
+    "fa": "ویرایش سمت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "UpdatePosition",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "positionId": "field:positionId",
+        "title": "field:title",
+        "description": "field:description",
+        "sortOrder": "field:sortOrder"
+      }
+    },
+    "success": {
+      "en": "Position updated.",
+      "fa": "سمت به‌روز شد."
+    },
+    "redirect": "/p/team-details?teamId={returnTeamId}"
+  }
+}

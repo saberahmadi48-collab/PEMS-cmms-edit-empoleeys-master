@@ -1,0 +1,234 @@
+{
+  "kind": "page",
+  "key": "intake-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Review an intake file",
+    "fa": "بررسی فایل دریافتی"
+  },
+  "description": {
+    "en": "What the AI suggests for one file; confirm or correct it and route it, or reject it (page definition)",
+    "fa": "پیشنهاد هوش مصنوعی برای یک فایل؛ تأیید یا اصلاح و مسیریابی، یا رد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "intake-review",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "intake-record",
+            "fields": [
+              {
+                "key": "fileName",
+                "label": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "wide": true
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "aiStatus",
+                "label": {
+                  "en": "AI status",
+                  "fa": "وضعیت هوش مصنوعی"
+                }
+              },
+              {
+                "key": "aiError",
+                "label": {
+                  "en": "AI error",
+                  "fa": "خطای هوش مصنوعی"
+                },
+                "wide": true
+              },
+              {
+                "key": "stage",
+                "label": {
+                  "en": "Stage",
+                  "fa": "مرحله"
+                }
+              },
+              {
+                "key": "routedModule",
+                "label": {
+                  "en": "Routed to",
+                  "fa": "مسیریابی به"
+                }
+              },
+              {
+                "key": "confidence",
+                "label": {
+                  "en": "Confidence",
+                  "fa": "اطمینان"
+                }
+              },
+              {
+                "key": "confidenceLevel",
+                "label": {
+                  "en": "Confidence level",
+                  "fa": "سطح اطمینان"
+                }
+              },
+              {
+                "key": "suggestedModule",
+                "label": {
+                  "en": "Suggested module",
+                  "fa": "ماژول پیشنهادی"
+                }
+              },
+              {
+                "key": "category",
+                "label": {
+                  "en": "Predicted category",
+                  "fa": "دسته‌ی پیش‌بینی‌شده"
+                }
+              },
+              {
+                "key": "documentType",
+                "label": {
+                  "en": "Predicted document type",
+                  "fa": "نوع مدرک پیش‌بینی‌شده"
+                }
+              },
+              {
+                "key": "discipline",
+                "label": {
+                  "en": "Predicted discipline",
+                  "fa": "دیسیپلین پیش‌بینی‌شده"
+                }
+              },
+              {
+                "key": "projectHint",
+                "label": {
+                  "en": "Project hint",
+                  "fa": "اشاره‌ی پروژه"
+                }
+              },
+              {
+                "key": "area",
+                "label": {
+                  "en": "Area",
+                  "fa": "منطقه"
+                }
+              },
+              {
+                "key": "unit",
+                "label": {
+                  "en": "Unit",
+                  "fa": "یونیت"
+                }
+              },
+              {
+                "key": "system",
+                "label": {
+                  "en": "System",
+                  "fa": "سیستم"
+                }
+              },
+              {
+                "key": "subsystem",
+                "label": {
+                  "en": "Subsystem",
+                  "fa": "زیرسیستم"
+                }
+              },
+              {
+                "key": "equipmentTag",
+                "label": {
+                  "en": "Equipment tag",
+                  "fa": "تگ تجهیز"
+                }
+              },
+              {
+                "key": "revision",
+                "label": {
+                  "en": "Revision",
+                  "fa": "بازنگری"
+                }
+              },
+              {
+                "key": "issuePurpose",
+                "label": {
+                  "en": "Issue purpose",
+                  "fa": "هدف صدور"
+                }
+              },
+              {
+                "key": "vendor",
+                "label": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                }
+              },
+              {
+                "key": "mrNumber",
+                "label": {
+                  "en": "MR number",
+                  "fa": "شماره MR"
+                }
+              },
+              {
+                "key": "reviewStatus",
+                "label": {
+                  "en": "Review status",
+                  "fa": "وضعیت بررسی"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/intake-detail",
+              "idField": "attachmentId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/intake-route?attachmentId={{params.id}}",
+                "text": {
+                  "en": "Confirm or correct, then route",
+                  "fa": "تأیید یا اصلاح و مسیریابی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/intake-reject?attachmentId={{params.id}}",
+                "text": {
+                  "en": "Reject this file",
+                  "fa": "رد این فایل"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/intake",
+                "text": {
+                  "en": "Back to the queue",
+                  "fa": "بازگشت به صف"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

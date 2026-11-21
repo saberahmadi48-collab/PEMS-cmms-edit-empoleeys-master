@@ -1,0 +1,357 @@
+view,area,pattern,wave,target,lines,inputs,form_control,asp_for,tables,modals,offcanvas,tabs,badges,inline_style_attrs,style_blocks,inline_scripts,uses_vs,has_page_header,has_empty_state,has_loading,cdn_refs,row_forms,pdfjs
+Areas/Admin/Views/AuditLog/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,77,2,2,0,1,0,0,0,0,6,0,1,0,1,0,0,0,0,0
+Areas/Admin/Views/Authorization/EffectiveRole.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,83,1,1,0,2,0,0,1,0,1,0,0,0,1,0,0,0,0,0
+Areas/Admin/Views/Authorization/EffectiveUser.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,96,1,1,0,2,0,0,1,0,1,0,0,0,1,0,0,0,0,0
+Areas/Admin/Views/Authorization/Simulate.cshtml,Admin,form,"W1 Admin, account, shell",PageShell + FormSection + Field components + ActionBar,90,5,5,4,0,0,0,0,0,2,0,1,0,1,0,0,0,0,0
+Areas/Admin/Views/AuthorizationAudit/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,71,6,6,0,1,0,0,0,1,2,0,0,0,1,0,0,0,0,0
+Areas/Admin/Views/ContractApprovalAuthority/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,88,15,12,0,1,0,0,0,1,4,0,0,0,1,0,0,0,1,0
+Areas/Admin/Views/DatabaseUpdate/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,102,2,0,0,1,0,0,0,3,1,0,0,0,1,0,0,0,0,0
+Areas/Admin/Views/Help/_HelpArticleForm.cshtml,Admin,partial,"W1 Admin, account, shell",review: absorb into a component or keep,127,16,15,16,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0
+Areas/Admin/Views/Help/Create.cshtml,Admin,form-small,"W1 Admin, account, shell",Field components + ActionBar,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Areas/Admin/Views/Help/Edit.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,70,1,0,0,1,0,0,0,2,0,0,0,0,0,0,0,0,1,0
+Areas/Admin/Views/Help/History.cshtml,Admin,table-only,"W1 Admin, account, shell",DataTable + EmptyState,34,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Areas/Admin/Views/Help/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,62,3,2,0,1,0,0,0,2,0,0,0,0,0,0,0,0,1,0
+Areas/Admin/Views/Help/StandardCreate.cshtml,Admin,detail,"W1 Admin, account, shell",PageShell + InfoGrid + Tabs + StatusBadge,182,24,22,24,0,0,0,3,0,1,0,1,0,0,0,0,0,0,0
+Areas/Admin/Views/Help/StandardMatrix.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,63,1,0,0,1,0,0,0,4,0,0,0,0,0,0,0,0,1,0
+Areas/Admin/Views/Help/VisualCreate.cshtml,Admin,form,"W1 Admin, account, shell",PageShell + FormSection + Field components + ActionBar,134,15,13,15,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0
+Areas/Admin/Views/License/Index.cshtml,Admin,form,"W1 Admin, account, shell",PageShell + FormSection + Field components + ActionBar,83,5,5,0,0,0,0,0,2,0,0,0,0,1,0,0,0,0,0
+Areas/Admin/Views/NavigationMenu/Create.cshtml,Admin,form,"W1 Admin, account, shell",PageShell + FormSection + Field components + ActionBar,81,8,8,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Areas/Admin/Views/NavigationMenu/Edit.cshtml,Admin,form,"W1 Admin, account, shell",PageShell + FormSection + Field components + ActionBar,101,9,5,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0
+Areas/Admin/Views/NavigationMenu/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,109,5,0,0,1,0,0,0,5,2,0,0,0,1,0,0,0,1,0
+Areas/Admin/Views/NavigationVisibility/EffectiveUser.cshtml,Admin,detail,"W1 Admin, account, shell",PageShell + InfoGrid + Tabs + StatusBadge,125,1,1,0,0,0,0,1,1,1,1,0,0,1,0,0,0,0,0
+Areas/Admin/Views/NavigationVisibility/Index.cshtml,Admin,detail,"W1 Admin, account, shell",PageShell + InfoGrid + Tabs + StatusBadge,227,30,0,0,0,0,0,1,3,3,1,0,0,1,0,0,0,0,0
+Areas/Admin/Views/Numbering/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,81,8,4,0,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0
+Areas/Admin/Views/Organization/Chart.cshtml,Admin,other,"W1 Admin, account, shell",PageShell,46,1,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0
+Areas/Admin/Views/Organization/Diagnostics.cshtml,Admin,table-only,"W1 Admin, account, shell",DataTable + EmptyState,110,0,0,0,3,0,0,0,5,0,0,0,1,1,0,0,0,0,0
+Areas/Admin/Views/Organization/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,144,15,7,0,1,0,0,3,5,8,0,0,1,1,0,0,0,1,0
+Areas/Admin/Views/Organization/Positions.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,99,14,10,0,1,0,0,0,1,2,0,0,1,1,0,0,0,1,0
+Areas/Admin/Views/OrganizationImport/Index.cshtml,Admin,form-small,"W1 Admin, account, shell",Field components + ActionBar,27,1,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0
+Areas/Admin/Views/OrganizationImport/Result.cshtml,Admin,form-small,"W1 Admin, account, shell",Field components + ActionBar,56,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0
+Areas/Admin/Views/PermissionMatrix/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,173,9,3,0,1,0,0,0,2,0,0,1,0,1,0,0,0,2,0
+Areas/Admin/Views/ProjectIntelligence/Index.cshtml,Admin,dashboard,"W1 Admin, account, shell",PageShell + KpiTile + Chart + DataTable,169,1,1,0,1,0,0,0,1,5,0,1,0,1,0,1,0,0,0
+Areas/Admin/Views/Roles/Create.cshtml,Admin,form,"W1 Admin, account, shell",PageShell + FormSection + Field components + ActionBar,38,3,3,3,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0
+Areas/Admin/Views/Roles/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,78,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0
+Areas/Admin/Views/RoutingRules/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,28,6,4,0,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0
+Areas/Admin/Views/SecurityEvents/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,99,2,2,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+Areas/Admin/Views/SoDPolicy/Create.cshtml,Admin,form,"W1 Admin, account, shell",PageShell + FormSection + Field components + ActionBar,48,3,3,3,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0
+Areas/Admin/Views/SoDPolicy/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,40,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0
+Areas/Admin/Views/StorageProviders/_Form.cshtml,Admin,partial,"W1 Admin, account, shell",review: absorb into a component or keep,88,15,9,21,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0
+Areas/Admin/Views/StorageProviders/Create.cshtml,Admin,form-small,"W1 Admin, account, shell",Field components + ActionBar,10,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+Areas/Admin/Views/StorageProviders/Edit.cshtml,Admin,form-small,"W1 Admin, account, shell",Field components + ActionBar,10,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+Areas/Admin/Views/StorageProviders/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,89,1,0,0,1,0,0,0,4,1,0,0,0,1,0,0,0,1,0
+Areas/Admin/Views/StorageRouting/_Form.cshtml,Admin,partial,"W1 Admin, account, shell",review: absorb into a component or keep,44,7,5,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Areas/Admin/Views/StorageRouting/Create.cshtml,Admin,form-small,"W1 Admin, account, shell",Field components + ActionBar,10,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+Areas/Admin/Views/StorageRouting/Edit.cshtml,Admin,form-small,"W1 Admin, account, shell",Field components + ActionBar,10,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+Areas/Admin/Views/StorageRouting/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,48,0,0,0,1,0,0,0,2,0,0,0,0,1,0,0,0,1,0
+Areas/Admin/Views/Users/_EffectivePermissionRow.cshtml,Admin,partial,"W1 Admin, account, shell",review: absorb into a component or keep,41,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+Areas/Admin/Views/Users/_RoleSelect.cshtml,Admin,partial,"W1 Admin, account, shell",review: absorb into a component or keep,36,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Areas/Admin/Views/Users/Create.cshtml,Admin,form,"W1 Admin, account, shell",PageShell + FormSection + Field components + ActionBar,123,9,8,6,0,0,0,0,0,2,0,1,0,0,0,0,0,0,0
+Areas/Admin/Views/Users/Details.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,486,6,4,0,5,0,0,13,11,1,1,1,1,0,0,1,0,2,0
+Areas/Admin/Views/Users/Edit.cshtml,Admin,form,"W1 Admin, account, shell",PageShell + FormSection + Field components + ActionBar,124,10,8,7,0,0,0,0,0,2,0,1,0,0,0,0,0,0,0
+Areas/Admin/Views/Users/Index.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,99,1,1,0,1,0,0,0,1,1,0,1,0,1,0,0,0,1,0
+Areas/Admin/Views/Users/ResetAdmin.cshtml,Admin,form-small,"W1 Admin, account, shell",Field components + ActionBar,31,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+Areas/Admin/Views/Users/ResetAdminResult.cshtml,Admin,other,"W1 Admin, account, shell",PageShell,36,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+Areas/Admin/Views/WorkflowManagement/BindingImpact.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,24,5,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Areas/Admin/Views/WorkflowManagement/Bindings.cshtml,Admin,table-only,"W1 Admin, account, shell",DataTable + EmptyState,30,0,0,0,1,0,0,0,2,0,0,0,0,0,0,0,0,0,0
+Areas/Admin/Views/WorkflowManagement/Denied.cshtml,Admin,other,"W1 Admin, account, shell",PageShell,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Areas/Admin/Views/WorkflowManagement/Designer.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,281,43,19,0,2,0,0,0,2,6,1,0,0,0,0,0,0,0,0
+Areas/Admin/Views/WorkflowManagement/Details.cshtml,Admin,list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,143,10,4,0,3,0,0,0,5,1,0,0,0,0,0,0,0,1,0
+Areas/Admin/Views/WorkflowManagement/Index.cshtml,Admin,table-only,"W1 Admin, account, shell",DataTable + EmptyState,50,0,0,0,1,0,0,0,5,0,0,0,0,0,0,0,0,0,0
+Areas/Warehouse/Views/Inventory/Index.cshtml,Warehouse,table-only,"W4 Procurement, inventory, warehouse",DataTable + EmptyState,69,0,0,0,2,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Areas/Warehouse/Views/InventoryMasterData/Index.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,215,17,13,0,3,4,0,4,4,0,0,0,0,0,0,0,0,3,0
+Areas/Warehouse/Views/InventoryTransaction/Index.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,90,4,4,0,1,0,0,0,1,5,0,1,0,0,0,0,0,0,0
+Areas/Warehouse/Views/IrnReceipt/Details.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,214,15,6,0,4,0,0,0,1,0,0,0,0,0,0,0,0,1,0
+Areas/Warehouse/Views/IrnReceipt/Index.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,138,5,5,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,0
+Areas/Warehouse/Views/MaterialItem/Details.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,296,28,18,0,3,4,0,5,3,0,0,1,0,0,0,0,0,0,0
+Areas/Warehouse/Views/MaterialItem/Index.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,162,20,16,0,1,1,0,0,1,3,0,0,0,0,0,0,0,0,0
+Areas/Warehouse/Views/MrsImport/Index.cshtml,Warehouse,list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,53,2,2,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Areas/Warehouse/Views/MrsImport/Review.cshtml,Warehouse,dashboard,"W3 Engineering documents, VDR, letters",PageShell + KpiTile + Chart + DataTable,294,10,1,0,2,0,0,0,1,5,0,1,0,0,0,0,0,2,0
+Areas/Warehouse/Views/PartCatalogueAdmin/_ResolutionPreview.cshtml,Warehouse,partial,"W4 Procurement, inventory, warehouse",review: absorb into a component or keep,39,0,0,0,0,0,0,0,6,0,0,0,1,0,0,0,0,0,0
+Areas/Warehouse/Views/PartCatalogueAdmin/Index.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,334,31,14,0,5,0,0,0,13,0,0,0,1,0,0,0,0,3,0
+Areas/Warehouse/Views/PartCatalogueRequest/Details.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,289,11,3,0,2,0,0,0,25,0,0,0,1,0,0,0,0,0,0
+Areas/Warehouse/Views/PartCatalogueRequest/Edit.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,536,61,41,0,3,2,0,0,11,2,0,0,1,0,0,0,0,4,0
+Areas/Warehouse/Views/PartCatalogueRequest/Index.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,216,12,7,0,1,0,4,0,11,0,0,0,1,0,0,0,0,0,0
+Areas/Warehouse/Views/Replenishment/Details.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,150,6,2,0,2,0,0,0,2,2,0,0,0,0,0,0,0,0,0
+Areas/Warehouse/Views/Replenishment/Index.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,128,4,2,0,1,0,0,0,2,2,0,0,0,0,0,0,0,0,0
+Areas/Warehouse/Views/StoreRequisition/Details.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,135,12,4,0,2,0,0,0,1,2,0,0,0,0,0,0,0,1,0
+Areas/Warehouse/Views/StoreRequisition/Index.cshtml,Warehouse,list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,121,3,3,0,1,1,0,0,1,1,0,1,0,0,0,0,0,0,0
+Views/Account/AccessDenied.cshtml,(root),other,"W1 Admin, account, shell",PageShell,21,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/Account/ChangePassword.cshtml,(root),form,"W1 Admin, account, shell",PageShell + FormSection + Field components + ActionBar,45,3,3,6,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/Account/ForgotPassword.cshtml,(root),form-small,"W1 Admin, account, shell",Field components + ActionBar,41,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Account/Login.cshtml,(root),form,"W1 Admin, account, shell",PageShell + FormSection + Field components + ActionBar,67,4,2,7,0,0,0,0,0,2,0,1,0,0,0,0,0,0,0
+Views/Account/ManagePasskeys.cshtml,(root),list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,69,1,1,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0
+Views/AccountRecovery/Done.cshtml,(root),other,"W5 Operations, production, organization, other",PageShell,23,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/AccountRecovery/Index.cshtml,(root),form,"W5 Operations, production, organization, other",PageShell + FormSection + Field components + ActionBar,49,4,4,8,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/AIExtraction/Index.cshtml,(root),table-only,"W3 Engineering documents, VDR, letters",DataTable + EmptyState,55,0,0,0,1,0,0,0,4,2,0,0,0,0,0,0,0,0,0
+Views/AIExtraction/Review.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,113,10,1,0,2,0,0,0,2,3,0,0,0,0,0,0,0,2,0
+Views/AIInsights/Index.cshtml,(root),table-only,"W3 Engineering documents, VDR, letters",DataTable + EmptyState,140,0,0,0,4,0,0,0,3,0,0,0,0,0,0,0,0,0,0
+Views/AISearch/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,79,4,4,0,1,0,0,0,0,3,0,0,0,0,0,0,0,0,0
+Views/Asset/Details.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,206,8,7,0,5,1,0,0,1,2,0,0,0,0,0,0,0,0,0
+Views/Asset/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,189,10,10,0,1,1,0,0,1,9,0,1,1,0,0,0,0,0,0
+Views/Barcode/BulkGenerate.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,89,5,4,0,1,0,0,0,1,2,0,0,0,0,0,0,0,1,0
+Views/Barcode/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,62,1,1,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0
+Views/Barcode/ResolveError.cshtml,(root),other,W2 CMMS / maintenance / reliability,PageShell,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Barcode/Verify.cshtml,(root),other,W2 CMMS / maintenance / reliability,PageShell,37,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+Views/BreakGlass/Index.cshtml,(root),form-small,"W5 Operations, production, organization, other",Field components + ActionBar,54,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/BreakGlass/Result.cshtml,(root),other,"W5 Operations, production, organization, other",PageShell,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/ChatAssistant/Index.cshtml,(root),form-small,"W3 Engineering documents, VDR, letters",Field components + ActionBar,96,1,1,0,0,0,0,0,0,3,0,1,0,0,0,0,0,0,0
+Views/CmmsOperations/Backlog.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,117,3,2,0,1,0,0,0,2,1,0,0,0,0,0,0,0,0,0
+Views/CmmsOperations/Dashboard.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,133,0,0,0,4,0,0,0,2,0,0,0,0,0,0,0,0,0,0
+Views/CmmsReadiness/ClassDetail.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,91,0,0,0,1,0,0,0,7,1,0,0,0,0,0,0,0,0,0
+Views/CmmsReadiness/Index.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,116,0,0,0,2,0,0,0,3,1,0,0,0,0,0,0,0,0,0
+Views/ComingSoon/Index.cshtml,(root),other,"W5 Operations, production, organization, other",PageShell,27,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/ConditionReadingImport/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,60,1,1,0,1,0,0,0,5,1,0,0,0,0,0,0,0,0,0
+Views/ConditionReadingImport/Review.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,156,7,0,0,1,0,0,0,2,3,0,0,0,0,0,0,0,1,0
+Views/Contract/Create.cshtml,(root),form,"W4 Procurement, inventory, warehouse",PageShell + FormSection + Field components + ActionBar,40,8,6,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/Contract/Details.cshtml,(root),list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,328,27,12,0,3,0,0,0,7,1,0,0,0,0,1,0,0,2,0
+Views/Contract/Index.cshtml,(root),list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,103,7,6,0,1,1,0,0,1,9,0,1,0,0,0,0,0,0,0
+Views/Crew/Index.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,110,7,5,0,0,1,0,0,3,0,0,0,0,0,0,0,0,0,0
+Views/CriticalityAssessment/Create.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,40,4,3,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0
+Views/CriticalityAssessment/Dashboard.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,73,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/CriticalityAssessment/Details.cshtml,(root),dashboard,W2 CMMS / maintenance / reliability,PageShell + KpiTile + Chart + DataTable,231,13,8,0,3,2,0,4,2,2,0,0,0,0,0,0,0,0,0
+Views/CriticalityAssessment/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,98,2,2,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0
+Views/DashboardSettings/Index.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,51,5,2,0,1,0,0,0,0,3,0,0,0,0,0,0,0,1,0
+Views/DCC/Index.cshtml,(root),table-only,"W5 Operations, production, organization, other",DataTable + EmptyState,124,0,0,0,1,0,0,0,3,0,0,0,0,0,0,0,0,0,0
+Views/DCC/RegisterIncoming.cshtml,(root),form,"W5 Operations, production, organization, other",PageShell + FormSection + Field components + ActionBar,349,24,20,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0
+Views/Department/Index.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,93,8,6,0,1,2,0,0,2,1,0,0,0,0,0,0,0,1,0
+Views/Discipline/Details.cshtml,(root),dashboard,"W5 Operations, production, organization, other",PageShell + KpiTile + Chart + DataTable,154,10,7,0,5,0,0,0,4,4,0,0,0,0,0,0,0,1,0
+Views/Discipline/Index.cshtml,(root),table-only,"W5 Operations, production, organization, other",DataTable + EmptyState,45,0,0,0,1,0,0,0,7,1,0,0,0,0,0,0,0,0,0
+Views/Discipline/Manage.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,64,15,12,0,1,0,0,0,2,2,0,0,0,0,0,0,0,1,0
+Views/DocumentRegister/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,278,11,4,0,1,1,0,0,3,15,0,2,0,0,0,0,0,2,0
+Views/DocumentRevisions/Create.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,49,6,5,6,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/DocumentRevisions/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,99,1,1,0,1,0,0,0,2,10,0,1,0,0,0,0,0,0,0
+Views/DocumentUpload/Index.cshtml,(root),form-small,"W3 Engineering documents, VDR, letters",Field components + ActionBar,39,2,2,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/DocumentWorkflow/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,133,4,0,0,2,0,0,0,1,9,0,1,0,0,0,0,0,1,0
+Views/Employee/_PositionSelect.cshtml,(root),partial,"W5 Operations, production, organization, other",review: absorb into a component or keep,28,3,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Employee/Details.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,605,41,29,0,2,5,0,0,6,8,0,0,0,0,0,0,0,0,0
+Views/Employee/Index.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,266,34,30,0,1,2,0,0,2,13,0,1,0,0,0,0,0,1,0
+Views/EngineeringDashboard/Index.cshtml,(root),dashboard,"W3 Engineering documents, VDR, letters",PageShell + KpiTile + Chart + DataTable,325,3,3,0,4,0,0,0,10,8,0,0,0,0,0,0,0,0,0
+Views/EngineeringDocumentIntelligence/Index.cshtml,(root),dashboard,"W3 Engineering documents, VDR, letters",PageShell + KpiTile + Chart + DataTable,65,0,0,0,1,0,0,0,4,1,0,0,0,0,0,0,0,0,0
+Views/EngineeringDocumentIntelligence/Review.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,195,23,3,0,2,0,0,0,6,3,0,0,0,0,0,0,0,2,0
+Views/EngineeringDocuments/Create.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,124,12,11,11,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0
+Views/EngineeringDocuments/Details.cshtml,(root),dashboard,"W3 Engineering documents, VDR, letters",PageShell + KpiTile + Chart + DataTable,1541,64,34,0,8,11,0,12,47,13,0,3,1,0,0,0,0,2,2
+Views/EngineeringDocuments/Edit.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,148,15,14,15,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0
+Views/EngineeringDocuments/Index.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,193,7,3,0,0,0,0,0,5,9,0,0,1,0,0,0,0,1,0
+Views/EngineeringDocuments/UploadAttachment.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,71,4,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Equipment/Create.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,39,9,9,9,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/Equipment/Details.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,924,21,15,0,8,2,0,13,66,5,0,1,1,0,0,0,0,1,0
+Views/Equipment/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,165,14,14,0,1,1,0,0,4,11,0,2,1,0,0,0,0,0,0
+Views/EquipmentClassification/Coverage.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,82,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/EquipmentClassification/Index.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,166,0,0,0,4,0,0,0,0,7,0,0,0,0,0,0,0,0,0
+Views/EquipmentClassification/ReviewQueue.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,91,6,0,0,1,0,0,0,2,0,0,0,0,0,0,0,0,1,0
+Views/EquipmentCriticality/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,141,8,7,0,1,1,0,0,1,0,0,1,0,0,0,0,0,0,0
+Views/EquipmentFunctionalLocationAssignment/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,65,1,1,0,1,0,0,0,5,1,0,0,0,0,0,0,0,0,0
+Views/EquipmentFunctionalLocationAssignment/Review.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,174,12,0,0,1,0,0,0,2,3,0,0,0,0,0,0,0,1,0
+Views/EquipmentImport/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,84,4,4,0,1,0,0,0,3,1,0,0,0,0,0,0,0,0,0
+Views/EquipmentImport/Review.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,96,5,0,0,1,0,0,0,2,3,0,0,0,0,0,0,0,1,0
+Views/EquipmentImport/ScanResult.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,81,3,1,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0
+Views/ExecutiveDashboard/Index.cshtml,(root),other,"W5 Operations, production, organization, other",PageShell,29,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0
+Views/FailureModeCatalog/Edit.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,49,9,6,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/FailureModeCatalog/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,66,4,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+Views/Finding/Index.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,95,4,2,0,1,0,0,0,4,2,0,0,0,1,0,0,0,1,0
+Views/FunctionalLocation/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,172,14,13,0,1,2,0,0,0,0,0,1,0,0,0,0,0,0,0
+Views/FunctionalLocationImport/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,58,1,1,0,1,0,0,0,5,1,0,0,0,0,0,0,0,0,0
+Views/FunctionalLocationImport/Review.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,93,5,0,0,1,0,0,0,3,3,0,0,0,0,0,0,0,1,0
+Views/GlobalSearch/Index.cshtml,(root),form-small,"W1 Admin, account, shell",Field components + ActionBar,58,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Views/Help/Article.cshtml,(root),form-small,"W1 Admin, account, shell",Field components + ActionBar,108,1,1,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0
+Views/Help/Index.cshtml,(root),form-small,"W1 Admin, account, shell",Field components + ActionBar,90,1,1,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0
+Views/Help/Search.cshtml,(root),form-small,"W1 Admin, account, shell",Field components + ActionBar,45,1,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0
+Views/Home/Index.cshtml,(root),dashboard,"W1 Admin, account, shell",PageShell + KpiTile + Chart + DataTable,248,0,0,0,1,0,0,0,0,7,0,0,0,0,1,0,0,0,0
+Views/Home/Privacy.cshtml,(root),other,"W1 Admin, account, shell",PageShell,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Home/StatusPage.cshtml,(root),other,"W1 Admin, account, shell",PageShell,30,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/ImportCenter/Index.cshtml,(root),form-small,"W3 Engineering documents, VDR, letters",Field components + ActionBar,74,1,1,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0
+Views/Inspection/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,106,1,0,0,1,0,0,0,5,0,0,1,0,0,0,0,0,1,0
+Views/Instrument/Edit.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,84,33,32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Instrument/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,205,14,14,0,1,1,0,0,1,12,0,1,0,0,0,0,0,0,0
+Views/Instrument/Passport.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,299,32,25,0,3,0,0,0,2,1,0,0,0,0,0,0,0,1,0
+Views/Intake/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,109,0,0,0,1,0,0,0,2,2,0,1,0,0,0,0,0,0,0
+Views/Intake/Review.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,112,16,14,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Views/JobPlan/Details.cshtml,(root),dashboard,W2 CMMS / maintenance / reliability,PageShell + KpiTile + Chart + DataTable,187,26,14,0,2,1,0,0,3,3,0,0,0,0,0,0,0,2,0
+Views/JobPlan/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,124,7,5,0,1,1,0,0,2,0,0,1,0,0,0,0,0,0,0
+Views/KnowledgeBase/Index.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,42,1,1,0,1,0,0,0,2,1,0,0,0,0,0,0,0,0,0
+Views/Kpi/Executive.cshtml,(root),dashboard,W2 CMMS / maintenance / reliability,PageShell + KpiTile + Chart + DataTable,175,7,4,0,3,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+Views/Kpi/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,160,2,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Letter/Create.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,179,18,14,0,0,0,0,0,0,2,0,2,1,0,0,0,0,0,0
+Views/Letter/Dashboard.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,147,0,0,0,5,0,0,0,0,2,0,0,1,0,0,0,0,0,0
+Views/Letter/Details.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,803,49,20,0,2,3,0,0,16,6,1,4,0,0,0,0,0,2,0
+Views/Letter/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,945,34,12,0,1,4,4,0,9,18,0,2,0,0,0,0,0,2,0
+Views/Letter/MyReferrals.cshtml,(root),table-only,"W3 Engineering documents, VDR, letters",DataTable + EmptyState,28,0,0,0,1,0,0,0,2,1,0,0,0,0,0,0,0,0,0
+Views/Letter/Reply.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,101,6,4,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0
+Views/LetterCartable/Report.cshtml,(root),dashboard,"W3 Engineering documents, VDR, letters",PageShell + KpiTile + Chart + DataTable,117,2,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/LetterCompose/_LetterPrint.cshtml,(root),partial,"W3 Engineering documents, VDR, letters",review: absorb into a component or keep,53,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/LetterCompose/Compose.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,399,24,16,0,0,1,0,0,2,0,0,1,1,0,0,0,0,0,0
+Views/LetterCompose/History.cshtml,(root),table-only,"W3 Engineering documents, VDR, letters",DataTable + EmptyState,78,0,0,0,2,0,0,0,1,0,0,0,1,0,0,0,0,0,0
+Views/LetterTemplate/Edit.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,88,7,6,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/LetterTemplate/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,63,2,0,0,1,0,0,0,2,0,0,0,0,0,0,0,0,1,0
+Views/LetterTemplate/Preview.cshtml,(root),other,"W3 Engineering documents, VDR, letters",PageShell,25,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0
+Views/MaintenanceCalendar/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,263,7,5,0,1,0,0,0,11,1,0,0,0,0,0,0,0,0,0
+Views/MaintenanceCalendar/MyWork.cshtml,(root),detail,W2 CMMS / maintenance / reliability,PageShell + InfoGrid + Tabs + StatusBadge,55,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0
+Views/MaintenanceHistoryImport/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,65,1,1,0,1,0,0,0,5,1,0,0,0,0,0,0,0,0,0
+Views/MaintenanceHistoryImport/Review.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,156,7,0,0,1,0,0,0,2,3,0,0,0,0,0,0,0,1,0
+Views/MaintenanceMasterData/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,1026,68,51,0,13,12,0,14,25,1,0,1,0,0,0,0,0,13,0
+Views/MaintenancePlan/Create.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,133,12,9,0,0,0,0,0,2,3,0,1,0,0,0,0,0,0,0
+Views/MaintenancePlan/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,111,4,1,0,1,0,0,0,5,10,0,1,0,0,0,0,0,1,0
+Views/MaintenanceStrategy/BulkCreate.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,277,14,10,0,1,0,0,0,4,2,0,0,0,0,0,0,0,1,0
+Views/MaintenanceStrategy/Coverage.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,77,0,0,0,3,0,0,0,1,1,0,0,0,0,0,0,0,0,0
+Views/MaintenanceStrategy/Details.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,266,14,6,0,4,1,0,0,9,3,0,1,0,0,0,0,0,1,0
+Views/MaintenanceStrategy/Edit.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,266,30,27,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0
+Views/MaintenanceStrategy/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,170,6,5,0,1,0,0,0,4,10,0,2,0,0,0,0,0,0,0
+Views/MaintenanceStrategy/Tag.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,64,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/MaterialRequisition/Create.cshtml,(root),form,"W4 Procurement, inventory, warehouse",PageShell + FormSection + Field components + ActionBar,91,10,10,0,0,0,0,0,2,1,0,0,1,0,0,0,0,0,0
+Views/MaterialRequisition/Details.cshtml,(root),list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,155,13,9,0,3,0,0,0,7,6,0,0,1,0,0,0,0,1,0
+Views/MaterialRequisition/Index.cshtml,(root),list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,72,0,0,0,1,0,0,0,2,0,0,1,0,0,0,0,0,0,0
+Views/MaterialRequisition/Quotations.cshtml,(root),list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,70,0,0,0,1,0,0,0,4,0,0,1,0,0,0,0,0,0,0
+Views/MDB/Create.cshtml,(root),form,"W5 Operations, production, organization, other",PageShell + FormSection + Field components + ActionBar,65,5,5,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0
+Views/MDB/Details.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,119,13,4,0,1,0,0,0,2,1,0,0,0,0,0,0,0,1,0
+Views/MDB/Index.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,112,2,2,0,1,0,0,0,2,10,0,1,0,0,0,0,0,0,0
+Views/MDRImport/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,96,2,2,0,1,0,0,0,5,2,0,0,0,0,0,0,0,0,0
+Views/MDRImport/Review.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,103,5,0,0,1,0,0,0,2,3,0,0,0,0,0,0,0,1,0
+Views/MechanicalEquipment/Edit.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,60,10,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/MechanicalEquipment/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,164,8,8,0,1,1,0,0,1,8,0,1,0,0,0,0,0,0,0
+Views/MechanicalEquipment/Passport.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,163,19,17,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Meeting/Create.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,30,6,6,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/Meeting/Details.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,118,13,7,0,2,0,0,0,2,3,0,0,0,0,0,0,0,1,0
+Views/Meeting/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,100,6,6,0,1,1,0,0,3,10,0,1,0,0,0,0,0,0,0
+Views/MOC/Details.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,201,13,5,0,0,1,0,0,5,1,0,0,0,0,0,0,0,0,0
+Views/MOC/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,123,3,3,0,1,0,0,0,2,6,0,1,0,0,0,0,0,0,0
+Views/MOC/Raise.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,74,13,10,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0
+Views/MyProfile/Index.cshtml,(root),dashboard,"W5 Operations, production, organization, other",PageShell + KpiTile + Chart + DataTable,142,2,1,0,0,0,0,0,0,6,0,1,0,0,0,0,0,0,0
+Views/MyWork/Index.cshtml,(root),list,"W1 Admin, account, shell",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,111,0,0,0,1,0,0,0,6,0,0,0,1,0,0,0,0,0,0
+Views/Notification/_NotificationDropdown.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,38,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0
+Views/Notification/Index.cshtml,(root),form-small,"W1 Admin, account, shell",Field components + ActionBar,55,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/OCRProcessing/Index.cshtml,(root),dashboard,"W3 Engineering documents, VDR, letters",PageShell + KpiTile + Chart + DataTable,136,1,1,0,1,0,0,0,1,4,0,1,0,0,0,0,0,1,0
+Views/Performance/Index.cshtml,(root),other,"W5 Operations, production, organization, other",PageShell,81,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Permit/Create.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,75,12,10,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/Permit/Details.cshtml,(root),dashboard,W2 CMMS / maintenance / reliability,PageShell + KpiTile + Chart + DataTable,794,54,22,0,7,0,0,0,22,11,0,0,0,0,0,0,0,3,0
+Views/Permit/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,154,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0,0
+Views/ProcurementPackage/Create.cshtml,(root),form,"W4 Procurement, inventory, warehouse",PageShell + FormSection + Field components + ActionBar,35,4,4,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/ProcurementPackage/Details.cshtml,(root),list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,236,19,9,0,4,0,0,0,9,5,0,0,0,0,0,0,0,1,0
+Views/ProcurementPackage/Index.cshtml,(root),list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,126,4,4,0,1,1,0,0,6,11,0,1,0,0,0,0,0,0,0
+Views/Production/Dashboard.cshtml,(root),dashboard,"W5 Operations, production, organization, other",PageShell + KpiTile + Chart + DataTable,108,0,0,0,3,0,0,0,3,3,0,0,0,0,0,0,0,0,0
+Views/ProductionOrder/Create.cshtml,(root),form,"W5 Operations, production, organization, other",PageShell + FormSection + Field components + ActionBar,95,9,9,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0
+Views/ProductionOrder/Details.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,109,2,2,0,1,2,0,0,2,2,0,0,0,0,0,0,0,0,0
+Views/ProductionOrder/Index.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,61,2,2,0,1,0,0,0,1,3,0,0,0,0,0,0,0,0,0
+Views/ProductionRun/BatchDetails.cshtml,(root),form-small,"W5 Operations, production, organization, other",Field components + ActionBar,63,2,2,0,0,2,0,0,1,2,0,0,0,0,0,0,0,0,0
+Views/ProductionRun/Create.cshtml,(root),form,"W5 Operations, production, organization, other",PageShell + FormSection + Field components + ActionBar,48,5,4,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/ProductionRun/Details.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,296,23,16,0,4,4,0,0,2,4,0,0,0,0,0,0,0,2,0
+Views/Projects/Create.cshtml,(root),form,"W5 Operations, production, organization, other",PageShell + FormSection + Field components + ActionBar,52,7,7,7,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0
+Views/Projects/Edit.cshtml,(root),form,"W5 Operations, production, organization, other",PageShell + FormSection + Field components + ActionBar,68,13,10,13,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0
+Views/Projects/Index.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,120,8,8,0,1,1,0,0,2,2,0,1,0,0,0,0,0,1,0
+Views/PurchaseOrder/Create.cshtml,(root),form,"W4 Procurement, inventory, warehouse",PageShell + FormSection + Field components + ActionBar,42,5,5,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/PurchaseOrder/Details.cshtml,(root),form-small,"W4 Procurement, inventory, warehouse",Field components + ActionBar,23,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Views/PurchaseOrder/Index.cshtml,(root),table-only,"W4 Procurement, inventory, warehouse",DataTable + EmptyState,40,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Views/QC/Index.cshtml,(root),detail,"W5 Operations, production, organization, other",PageShell + InfoGrid + Tabs + StatusBadge,70,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0
+Views/QC/ItpCreate.cshtml,(root),form,"W5 Operations, production, organization, other",PageShell + FormSection + Field components + ActionBar,70,10,9,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/QC/ItpDetails.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,163,15,9,0,1,1,0,0,3,0,0,0,0,0,0,0,0,1,0
+Views/QC/ItpIndex.cshtml,(root),table-only,"W5 Operations, production, organization, other",DataTable + EmptyState,30,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Views/QC/Kpi.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,97,0,0,0,1,0,0,0,1,4,0,0,0,0,0,0,0,0,0
+Views/QC/NcrCreate.cshtml,(root),form,"W5 Operations, production, organization, other",PageShell + FormSection + Field components + ActionBar,52,7,6,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/QC/NcrDetails.cshtml,(root),form,"W5 Operations, production, organization, other",PageShell + FormSection + Field components + ActionBar,106,11,5,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0
+Views/QC/NcrIndex.cshtml,(root),table-only,"W5 Operations, production, organization, other",DataTable + EmptyState,30,0,0,0,1,0,0,0,2,0,0,0,0,0,0,0,0,0,0
+Views/QuickSetup/Index.cshtml,(root),detail,"W1 Admin, account, shell",PageShell + InfoGrid + Tabs + StatusBadge,106,0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0,0,0
+Views/RcmFmea/ClassDetail.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,445,49,25,0,3,3,0,4,6,0,0,0,0,0,0,0,0,1,0
+Views/RcmFmea/Index.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,87,0,0,0,1,0,0,0,2,0,0,0,0,0,0,0,0,0,0
+Views/RecoveryCodes/Codes.cshtml,(root),other,"W5 Operations, production, organization, other",PageShell,28,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/RecoveryCodes/Index.cshtml,(root),form-small,"W5 Operations, production, organization, other",Field components + ActionBar,28,1,1,2,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/Relationship/BulkSuggestions.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,56,2,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0
+Views/Relationship/GapReport.cshtml,(root),table-only,"W3 Engineering documents, VDR, letters",DataTable + EmptyState,75,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Relationship/Index.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,205,8,1,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0
+Views/Reliability/AiInsights.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,96,6,2,0,1,0,0,0,2,2,0,0,0,0,0,0,0,1,0
+Views/Reliability/CBMDashboard.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,118,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0
+Views/Reliability/ClassDetail.cshtml,(root),other,W2 CMMS / maintenance / reliability,PageShell,43,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Reliability/ClassIntelligence.cshtml,(root),detail,W2 CMMS / maintenance / reliability,PageShell + InfoGrid + Tabs + StatusBadge,89,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0
+Views/Reliability/ConditionMonitoring.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,270,25,16,0,1,1,0,0,4,2,0,1,0,0,0,0,0,1,0
+Views/Reliability/Dashboard.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,178,0,0,0,3,0,0,0,5,1,0,0,0,0,0,0,0,0,0
+Views/Reliability/DataQuality.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,82,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Views/Reliability/Details.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,70,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Views/Reliability/EquipmentProfile.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,114,0,0,0,1,0,0,0,8,0,0,0,0,0,0,0,0,0,0
+Views/Reliability/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,205,2,2,0,6,0,0,6,1,0,0,0,0,0,0,0,0,0,0
+Views/Reliability/Intelligence.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,284,2,2,0,5,0,0,7,5,0,0,0,0,0,1,0,0,0,0
+Views/Reliability/PredictiveMaintenance.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,61,0,0,0,1,0,0,0,3,0,0,0,0,0,0,0,0,0,0
+Views/Reliability/Ram.cshtml,(root),form-small,W2 CMMS / maintenance / reliability,Field components + ActionBar,98,2,2,0,0,0,0,0,5,2,0,0,0,0,0,0,0,0,0
+Views/Reliability/RcmFeedback.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,109,5,1,0,1,0,0,0,2,0,0,0,0,0,0,0,0,1,0
+Views/Reliability/Simulate.cshtml,(root),detail,W2 CMMS / maintenance / reliability,PageShell + InfoGrid + Tabs + StatusBadge,55,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Views/Reliability/Trend.cshtml,(root),dashboard,W2 CMMS / maintenance / reliability,PageShell + KpiTile + Chart + DataTable,115,4,3,0,1,0,0,0,2,0,0,1,0,0,0,0,0,0,0
+Views/Report/Cmms.cshtml,(root),dashboard,W2 CMMS / maintenance / reliability,PageShell + KpiTile + Chart + DataTable,98,4,4,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+Views/Report/Engineering.cshtml,(root),dashboard,"W3 Engineering documents, VDR, letters",PageShell + KpiTile + Chart + DataTable,96,4,4,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+Views/Report/Index.cshtml,(root),dashboard,"W5 Operations, production, organization, other",PageShell + KpiTile + Chart + DataTable,114,4,4,0,1,0,0,0,1,1,0,0,0,0,1,0,0,0,0
+Views/Report/Operations.cshtml,(root),dashboard,"W5 Operations, production, organization, other",PageShell + KpiTile + Chart + DataTable,85,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Report/Procurement.cshtml,(root),dashboard,"W4 Procurement, inventory, warehouse",PageShell + KpiTile + Chart + DataTable,152,4,4,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0
+Views/Report/Vdr.cshtml,(root),dashboard,"W3 Engineering documents, VDR, letters",PageShell + KpiTile + Chart + DataTable,95,4,4,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+Views/Settings/Index.cshtml,(root),detail,"W1 Admin, account, shell",PageShell + InfoGrid + Tabs + StatusBadge,125,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_AuthLayout.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,56,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_BarcodePanel.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,71,9,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0
+Views/Shared/_BkChart.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,25,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_BkChartScripts.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_BkChartStyles.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_ContextualHelpButton.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_ContextualHelpDrawer.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,72,0,0,0,0,0,4,0,0,0,0,1,0,0,0,0,0,0,0
+Views/Shared/_DonutChart.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_DynamicSidebarMenu.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,96,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0
+Views/Shared/_EquipmentIdentity.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,35,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_HelpNodeTree.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,21,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+Views/Shared/_HelpNodeTreeItem.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_HelpStandardBadges.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,52,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_HelpVisual.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,98,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0
+Views/Shared/_Layout.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,300,1,1,0,0,0,0,0,2,3,0,3,0,0,0,1,0,0,0
+Views/Shared/_LayoutEmbed.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,63,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0
+Views/Shared/_PageHeader.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_Pagination.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_PemsResourceHeader.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,43,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_PemsStageDiagram.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,85,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+Views/Shared/_RcmErrors.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_RichTextEditorScripts.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,153,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0
+Views/Shared/_SidebarMenu.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,882,0,0,0,0,0,0,0,2,0,0,1,0,0,0,0,0,0,0
+Views/Shared/_ValidationScriptsPartial.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Shared/_WorkOrderStagesDiagram.cshtml,(root),partial,"W1 Admin, account, shell",review: absorb into a component or keep,84,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+Views/Shared/Components/DocumentNumberField/Default.cshtml,(root),other,"W1 Admin, account, shell",PageShell,29,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/Shared/Error.cshtml,(root),other,"W1 Admin, account, shell",PageShell,19,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/ShiftHandover/Create.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,51,5,5,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+Views/ShiftHandover/Details.cshtml,(root),dashboard,W2 CMMS / maintenance / reliability,PageShell + KpiTile + Chart + DataTable,113,3,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0
+Views/ShiftHandover/Index.cshtml,(root),table-only,W2 CMMS / maintenance / reliability,DataTable + EmptyState,60,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Views/SparePart/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,164,24,21,0,1,2,0,0,1,7,0,1,0,0,0,0,0,1,0
+Views/StrategyImport/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,77,6,2,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/TableExtraction/Analyze.cshtml,(root),dashboard,"W3 Engineering documents, VDR, letters",PageShell + KpiTile + Chart + DataTable,133,1,0,0,1,0,0,0,0,2,0,0,0,0,0,0,0,0,0
+Views/TableExtraction/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,92,3,1,0,1,0,0,0,1,3,0,1,0,0,0,0,0,1,0
+Views/TableExtraction/Review.cshtml,(root),dashboard,"W3 Engineering documents, VDR, letters",PageShell + KpiTile + Chart + DataTable,205,12,2,0,1,0,0,0,1,6,0,1,0,0,0,0,0,2,0
+Views/Tag/Index.cshtml,(root),list,"W5 Operations, production, organization, other",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,45,4,2,0,1,0,0,0,1,1,0,0,0,0,0,0,0,1,0
+Views/Task/Details.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,337,45,15,0,1,0,0,0,8,0,0,0,1,0,0,0,0,0,0
+Views/Task/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,169,8,6,0,1,0,0,0,3,2,0,1,0,0,0,0,0,1,0
+Views/TaskManager/_BulkBar.cshtml,(root),partial,"W3 Engineering documents, VDR, letters",review: absorb into a component or keep,46,5,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/TaskManager/_CreateModal.cshtml,(root),partial,"W3 Engineering documents, VDR, letters",review: absorb into a component or keep,93,12,9,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+Views/TaskManager/_ItemRow.cshtml,(root),partial,"W3 Engineering documents, VDR, letters",review: absorb into a component or keep,58,10,1,0,0,0,0,0,3,0,0,0,0,0,0,0,0,1,0
+Views/TaskManager/_ItemTable.cshtml,(root),partial,"W3 Engineering documents, VDR, letters",review: absorb into a component or keep,42,1,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,0
+Views/TaskManager/_SpaceHeader.cshtml,(root),partial,"W3 Engineering documents, VDR, letters",review: absorb into a component or keep,31,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0
+Views/TaskManager/Admin.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,76,6,5,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0
+Views/TaskManager/AdminSpace.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,196,40,17,0,3,0,0,0,1,0,0,0,1,0,0,0,0,3,0
+Views/TaskManager/AllWork.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,117,9,6,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0
+Views/TaskManager/Backlog.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,111,17,9,0,0,0,0,0,2,0,0,0,1,0,0,0,0,0,0
+Views/TaskManager/Board.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,86,4,1,0,0,0,0,0,2,0,0,0,1,0,0,0,0,0,0
+Views/TaskManager/Index.cshtml,(root),detail,"W3 Engineering documents, VDR, letters",PageShell + InfoGrid + Tabs + StatusBadge,66,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0
+Views/Team/Index.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,137,9,7,0,0,1,0,0,2,0,0,1,0,0,0,0,0,0,0
+Views/Team/OrganizationChart.cshtml,(root),other,W2 CMMS / maintenance / reliability,PageShell,139,2,2,0,0,0,0,0,0,2,0,0,0,0,0,1,0,0,0
+Views/Team/TeamDetails.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,501,34,17,0,2,6,0,0,8,0,0,0,0,0,0,0,0,1,0
+Views/TechnicalQuery/Details.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,127,7,3,0,0,1,0,0,4,0,0,0,0,0,0,0,0,0,0
+Views/TechnicalQuery/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,129,3,3,0,1,0,0,0,4,7,0,1,0,0,0,0,0,0,0
+Views/TechnicalQuery/Raise.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,63,11,9,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/Tender/Create.cshtml,(root),form,"W4 Procurement, inventory, warehouse",PageShell + FormSection + Field components + ActionBar,30,9,7,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/Tender/Details.cshtml,(root),list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,311,37,16,0,2,0,0,0,11,6,0,0,1,0,0,0,0,1,0
+Views/Tender/Index.cshtml,(root),table-only,"W4 Procurement, inventory, warehouse",DataTable + EmptyState,35,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+Views/Transmittal/Create.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,186,14,10,0,0,0,0,0,1,3,0,1,1,0,0,0,0,0,0
+Views/Transmittal/Details.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,209,5,4,0,2,0,0,0,5,3,0,0,1,1,0,0,0,1,0
+Views/Transmittal/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,101,0,0,0,1,0,0,0,5,10,0,1,1,1,0,0,0,0,0
+Views/VDR/Create.cshtml,(root),form,"W3 Engineering documents, VDR, letters",PageShell + FormSection + Field components + ActionBar,60,14,14,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0
+Views/VDR/Details.cshtml,(root),dashboard,"W3 Engineering documents, VDR, letters",PageShell + KpiTile + Chart + DataTable,902,61,35,0,4,4,0,6,19,5,0,2,1,0,0,0,0,2,2
+Views/VDR/Index.cshtml,(root),dashboard,"W3 Engineering documents, VDR, letters",PageShell + KpiTile + Chart + DataTable,186,7,3,0,0,0,0,0,4,10,0,0,1,0,0,0,0,0,0
+Views/VDRImport/Index.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,75,2,2,0,1,0,0,0,5,2,0,0,1,0,0,0,0,0,0
+Views/VDRImport/Review.cshtml,(root),list,"W3 Engineering documents, VDR, letters",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,100,5,0,0,1,0,0,0,3,2,0,0,1,0,0,0,0,1,0
+Views/Vendor/Create.cshtml,(root),form,"W4 Procurement, inventory, warehouse",PageShell + FormSection + Field components + ActionBar,30,6,6,6,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0
+Views/Vendor/Details.cshtml,(root),form-small,"W4 Procurement, inventory, warehouse",Field components + ActionBar,43,0,0,0,0,0,0,0,4,1,0,0,1,1,0,0,0,0,0
+Views/Vendor/Edit.cshtml,(root),form,"W4 Procurement, inventory, warehouse",PageShell + FormSection + Field components + ActionBar,39,12,6,12,0,0,0,0,0,2,0,0,1,0,0,0,0,0,0
+Views/Vendor/Index.cshtml,(root),list,"W4 Procurement, inventory, warehouse",PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,117,5,5,0,1,1,0,0,5,8,0,1,1,1,0,0,0,0,0
+Views/WorkOrder/Create.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,43,5,4,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/WorkOrder/Details.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,1032,84,57,0,5,3,0,0,10,17,0,1,0,0,0,0,0,3,0
+Views/WorkOrder/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,108,4,2,0,1,0,0,0,3,1,0,2,1,0,0,0,0,0,0
+Views/WorkRequest/Create.cshtml,(root),form,W2 CMMS / maintenance / reliability,PageShell + FormSection + Field components + ActionBar,84,15,12,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+Views/WorkRequest/Details.cshtml,(root),dashboard,W2 CMMS / maintenance / reliability,PageShell + KpiTile + Chart + DataTable,298,16,7,0,2,0,0,0,6,8,0,0,0,0,0,0,0,0,0
+Views/WorkRequest/Index.cshtml,(root),list,W2 CMMS / maintenance / reliability,PageShell + FilterBar + DataTable + Pagination + EmptyState + StatusBadge,96,0,0,0,1,0,0,0,10,0,0,1,1,0,0,0,0,0,0

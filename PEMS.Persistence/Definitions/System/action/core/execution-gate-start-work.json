@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "execution-gate-start-work",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Start work",
+    "fa": "آغاز کار"
+  },
+  "description": {
+    "en": "Start work",
+    "fa": "آغاز کار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ExecutionGate",
+      "action": "StartWork",
+      "args": {
+        "userRoles": "context:roles",
+        "userId": "context:userId",
+        "employeeId": "context:employeeId",
+        "permitId": "field:permitId"
+      }
+    },
+    "success": {
+      "en": "Work started: the permit is now Active.",
+      "fa": "کار آغاز شد - Permit به Active منتقل شد."
+    },
+    "redirect": "/Permit/Details/{permitId}",
+    "permission": "ExecutionGate.StartWork",
+    "stepUp": {
+      "resource": "ExecutionGate",
+      "action": "StartWork"
+    }
+  }
+}

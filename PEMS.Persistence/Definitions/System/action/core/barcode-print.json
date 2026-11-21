@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "barcode-print",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Print the label",
+    "fa": "چاپ برچسب"
+  },
+  "description": {
+    "en": "Print the label",
+    "fa": "چاپ برچسب"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Barcode",
+      "action": "Print",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "The print was recorded.",
+      "fa": "چاپ ثبت شد."
+    }
+  }
+}

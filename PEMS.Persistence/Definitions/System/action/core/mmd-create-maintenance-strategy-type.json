@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "mmd-create-maintenance-strategy-type",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateMaintenanceStrategyType",
+    "fa": "Maintenance Strategy Type ساخته شد."
+  },
+  "description": {
+    "en": "CreateMaintenanceStrategyType",
+    "fa": "Maintenance Strategy Type ساخته شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "CreateMaintenanceStrategyType",
+      "args": {
+        "code": "field:code",
+        "name": "field:name",
+        "nameFa": "field:nameFa",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "Maintenance Strategy Type ساخته شد.",
+      "fa": "Maintenance Strategy Type ساخته شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

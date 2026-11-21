@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-admin-settings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin: Settings",
+    "fa": "مدیریت کاتالوگ قطعه: Settings"
+  },
+  "description": {
+    "en": "Part Catalogue admin: Settings",
+    "fa": "مدیریت کاتالوگ قطعه: Settings"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "Settings",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId"
+      }
+    }
+  }
+}

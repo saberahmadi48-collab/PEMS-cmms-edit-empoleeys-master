@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "organization-positions-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Positions",
+    "fa": "Positions"
+  },
+  "description": {
+    "en": "Positions",
+    "fa": "Positions"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Organization",
+      "action": "PositionOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

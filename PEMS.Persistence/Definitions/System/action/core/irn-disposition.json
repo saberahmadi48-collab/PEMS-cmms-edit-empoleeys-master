@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "irn-disposition",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the disposition",
+    "fa": "ثبت Disposition"
+  },
+  "description": {
+    "en": "Record the disposition",
+    "fa": "ثبت Disposition"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Irn",
+      "action": "Disposition",
+      "args": {
+        "id": "field:id",
+        "mode": "field:mode",
+        "notes": "field:notes",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Disposition recorded - awaiting QA approval.",
+      "fa": "Disposition ثبت شد - در انتظار تأیید QA."
+    },
+    "redirect": "/p/irn-details?id={id}"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "inventory-low-stock",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Low stock lines",
+    "fa": "اقلام کم‌موجودی"
+  },
+  "description": {
+    "en": "Low stock lines",
+    "fa": "اقلام کم‌موجودی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Inventory",
+      "action": "LowStock"
+    }
+  }
+}

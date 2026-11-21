@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "notification-mark-read",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark notification read",
+    "fa": "خوانده شدن اعلان"
+  },
+  "description": {
+    "en": "Mark notification read",
+    "fa": "خوانده شدن اعلان"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Notification",
+      "action": "MarkRead",
+      "args": {
+        "userName": "context:userName",
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Marked as read.",
+      "fa": "به‌عنوان خوانده‌شده علامت خورد."
+    },
+    "redirect": "/p/notifications"
+  }
+}

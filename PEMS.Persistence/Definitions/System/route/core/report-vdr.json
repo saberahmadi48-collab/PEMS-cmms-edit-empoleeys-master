@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "report-vdr",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "VDR report (old address)",
+    "fa": "گزارش VDR (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "VDR report (old address)",
+    "fa": "گزارش VDR (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Report/Vdr",
+    "target": "/p/report-vdr",
+    "permanent": false
+  }
+}

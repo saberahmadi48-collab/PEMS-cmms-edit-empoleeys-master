@@ -43,6 +43,21 @@ public class FunctionalLocationController : Controller
         return View(items);
     }
 
+    // SCRUM-513: the nodes of the tree picker (pems-tree-select). GET /FunctionalLocation/TreeNodes?parentId=&q=&page=1 -> { items: [{ value, text, sub, hasChildren }], hasMore }.
+    // The picker is used by forms of other modules (equipment, work request), so the rule is the View right of the locations, like the list.
+    [HttpGet]
+    public async Task<IActionResult> TreeNodes(int? parentId, string? q, int page = 1)
+    {
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "FunctionalLocation", "View"))
+            return Forbid();
+        var result = await _service.GetTreeNodesAsync(parentId, q, page, 20);
+        return Json(new
+        {
+            items = result.Items.Select(i => new { value = i.Id.ToString(), text = i.Label, sub = i.Sub, hasChildren = i.HasChildren }),
+            hasMore = result.HasMore
+        });
+    }
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(

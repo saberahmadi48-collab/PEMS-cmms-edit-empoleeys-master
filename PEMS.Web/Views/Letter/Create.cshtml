@@ -5,6 +5,15 @@
     var letterType = (string)ViewBag.LetterType;
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
     var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
+    var prefill = ViewBag.Prefill as PEMS.Application.DTOs.LetterTemplateDto;
+    var templates = (ViewBag.Templates as List<PEMS.Application.DTOs.LetterTemplateDto>) ?? new List<PEMS.Application.DTOs.LetterTemplateDto>();
+    int? selectedTemplateId = ViewBag.SelectedTemplateId;
+    string prefillDate = PemsDates.Date(((DateTime?)ViewBag.PrefillDate ?? DateTime.Now));
+    bool respRequired = ViewBag.PrefillResponseRequired == true;
+    string respDue = PemsDates.Date(((DateTime?)ViewBag.PrefillResponseDue)) ?? "";
+    string? respError = ViewBag.ResponseError;
+    string curPriority = prefill?.Priority ?? "Normal";
+    string curConf = prefill?.ConfidentialityLevel ?? "Internal";
     var saveLabel = letterType switch
     {
         "Outgoing" => Localizer["Lt_SaveDraft"].Value,
@@ -16,102 +25,131 @@
 @* طبق «PEMS Correspondence Workspace» بند ۲۳: تجربه‌ی Compose سبک Gmail - فیلدهای اصلی
    (گیرنده/فرستنده، موضوع، متن) مستقیم دیده می‌شوند؛ متادیتای ثانویه (اولویت، محرمانگی، پروژه،
    دیسیپلین، شماره‌ی دستی، مدرک/MR مرتبط) پشت «More Details» جمع می‌شود - نه یک فرم بزرگ یک‌جا *@
-<div class="content-card" style="max-width:800px;">
-    <h2 class="vs-section__title">@Localizer[letterType == "Incoming" ? "Lt_NewIncoming" : letterType == "Outgoing" ? "Lt_NewOutgoing" : "Lt_NewInternal"]</h2>
-    <form asp-action="Create" method="post">
+<pems-content-card css="pems-s-3f7efa5f">
+    <pems-heading level="2" class="vs-section__title">@Localizer[letterType == "Incoming" ? "Lt_NewIncoming" : letterType == "Outgoing" ? "Lt_NewOutgoing" : "Lt_NewInternal"]</pems-heading>
+    @if (templates.Any())
+    {
+        @* قالب فقط فرم را پیش‌پر می‌کند (GET)، پس باید پیش از تایپ انتخاب شود *@
+        <pems-form class="mb-3" method="get" asp-action="Create"><pems-flex wrap="true" align="end" gap="2">
+            <input type="hidden" name="letterType" value="@letterType" />
+            <div>
+                <pems-label css="small mb-1" for="letterTemplate">@Localizer["LtT_UseTemplate"]</pems-label>
+                <pems-select scale="small" name="templateId" id="letterTemplate">
+                    <option value="">@Localizer["Ed_None"]</option>
+                    @foreach (var tpl in templates)
+                    {
+                        <option value="@tpl.LetterTemplateId" selected="@(selectedTemplateId == tpl.LetterTemplateId)">@tpl.Name</option>
+                    }
+                </pems-select>
+            </div>
+            <pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-file-earmark-text" aria-hidden="true" /> @Localizer["LtT_Apply"]</pems-button>
+        </pems-flex></pems-form>
+    }
+
+    <pems-form asp-action="Create" method="post">
         <input type="hidden" name="letterType" value="@letterType" />
 
-        <div class="row g-3">
-            <div class="col-md-6"><label class="form-label" for="letterDate">@Localizer["Lt_Date"]</label><input name="letterDate" id="letterDate" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" required /></div>
+        <pems-row gap="3">
+            <pems-col md="6"><pems-label for="letterDate">@Localizer["Lt_Date"]</pems-label><pems-date name="letterDate" id="letterDate" value="@prefillDate" required /></pems-col>
 
             @if (letterType == "Incoming")
             {
-                <div class="col-md-6"><label class="form-label" for="letterSender">@Localizer["Lt_From"]</label><input name="sender" id="letterSender" class="form-control" placeholder="@Localizer["Lt_ExtSender"]" required /></div>
+                <pems-col md="6"><pems-label for="letterSender">@Localizer["Lt_From"]</pems-label><pems-input name="sender" id="letterSender" placeholder="@Localizer["Lt_ExtSender"]" value="@((string?)ViewBag.PrefillSender)" required /></pems-col>
             }
             else
             {
-                <div class="col-md-6"><label class="form-label" for="letterReceiver">@Localizer["Lt_To"]</label><input name="receiver" id="letterReceiver" class="form-control" placeholder="@Localizer["Lt_Recipient"]" required /></div>
+                <pems-col md="6"><pems-label for="letterReceiver">@Localizer["Lt_To"]</pems-label><pems-input name="receiver" id="letterReceiver" placeholder="@Localizer["Lt_Recipient"]" value="@((string?)ViewBag.PrefillReceiver)" required /></pems-col>
             }
 
-            <div class="col-12"><label class="form-label" for="letterSubject">@Localizer["Lt_Subject"]</label><input name="subject" id="letterSubject" class="form-control" required /></div>
-            <div class="col-12"><label class="form-label" for="letterBodyEditor" id="letterBodyLabel">@Localizer["Lt_Body"]</label><textarea name="body" id="letterBodyEditor" class="form-control" rows="8"></textarea></div>
-        </div>
+            <pems-col span="12"><pems-label for="letterSubject">@Localizer["Lt_Subject"]</pems-label><pems-input name="subject" id="letterSubject" value="@prefill?.Subject" required /></pems-col>
+            <pems-col span="12"><pems-label for="letterBodyEditor" id="letterBodyLabel">@Localizer["Lt_Body"]</pems-label><pems-textarea name="body" id="letterBodyEditor" rows="8">@prefill?.Body</pems-textarea></pems-col>
 
-        <button type="button" class="btn btn-sm btn-outline-secondary mt-3" data-bs-toggle="collapse" data-bs-target="#moreDetails" aria-expanded="false" aria-controls="moreDetails">
-            <i class="bi bi-three-dots" aria-hidden="true"></i> @Localizer["Lt_MoreDetails"]
-        </button>
+            @* پاسخ‌خواهی: «پاسخ‌داده‌شده» و «معوق» از نامه‌ی پاسخ صادرشده و تاریخ محاسبه می‌شوند، نه با تیک دستی *@
+            <pems-col span="12">
+                <pems-check-row>
+                    <pems-input type="checkbox" name="responseRequired" value="true" id="responseRequired" checked="@respRequired" kind="check" />
+                    <label class="form-check-label" for="responseRequired">@Localizer["Lt_ResponseRequired"]</label>
+                </pems-check-row>
+                <div class="mt-2 pems-maxw-260" id="responseDueWrap">
+                    <pems-label css="small" for="responseDueDate">@Localizer["Lt_ResponseDueDate"]</pems-label>
+                    <pems-date name="responseDueDate" id="responseDueDate" value="@respDue" aria-describedby="responseDueError" aria-invalid="@(respError != null ? "true" : "false")" />
+                    <div id="responseDueError" class="text-danger small mt-1" role="alert" @(respError == null ? "hidden" : "")>
+                        <pems-icon name="bi-exclamation-circle" aria-hidden="true" /> @respError
+                    </div>
+                </div>
+            </pems-col>
+        </pems-row>
+
+        <pems-button tone="neutral" size="small" outline="true" css="mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#moreDetails" aria-expanded="false" aria-controls="moreDetails">
+            <pems-icon name="bi-three-dots" aria-hidden="true" /> @Localizer["Lt_MoreDetails"]
+        </pems-button>
 
         <div class="collapse mt-3" id="moreDetails">
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label" for="letterNumber">@Localizer["Lt_Number"]</label>
-                    <input name="letterNumber" id="letterNumber" class="form-control vs-num" placeholder="@Localizer["Lt_NumberHint"]" disabled="disabled" />
+            <pems-row gap="3">
+                <pems-col md="4">
+                    <pems-label for="letterNumber">@Localizer["Lt_Number"]</pems-label>
+                    <pems-input css="vs-num" name="letterNumber" id="letterNumber" placeholder="@Localizer["Lt_NumberHint"]" disabled />
                     @if ((bool)(ViewBag.CanManualNumber ?? false))
                     {
-                        <div class="form-check mt-1">
-                            <input class="form-check-input" type="checkbox" name="useManualNumber" value="true" id="useManualNumberCheck" />
+                        <pems-check-row css="mt-1">
+                            <pems-input kind="check" type="checkbox" name="useManualNumber" value="true" id="useManualNumberCheck" />
                             <label class="form-check-label small" for="useManualNumberCheck">@Localizer["Lt_EnterManually"]</label>
-                        </div>
+                        </pems-check-row>
                     }
-                    <script>
-                        var manualNumCheck = document.getElementById('useManualNumberCheck');
-                        var letterNoInput = document.querySelector('[name="letterNumber"]');
-                        if (manualNumCheck) {
-                            manualNumCheck.addEventListener('change', function () { letterNoInput.disabled = !this.checked; });
-                        }
-                    </script>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label" for="letterPriority">@Localizer["Lt_Priority"]</label>
-                    <select name="priority" id="letterPriority" class="form-select">
-                        <option value="Normal">@Localizer["Lt_P_Normal"]</option><option value="Low">@Localizer["Lt_P_Low"]</option><option value="High">@Localizer["Lt_P_High"]</option><option value="Urgent">@Localizer["Lt_P_Urgent"]</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label" for="letterConf">@Localizer["Lt_Confidentiality"]</label>
-                    <select name="confidentialityLevel" id="letterConf" class="form-select">
-                        <option value="Internal">@Localizer["Lt_C_Internal"]</option><option value="Public">@Localizer["Lt_C_Public"]</option><option value="Confidential">@Localizer["Lt_C_Confidential"]</option>
-                        <option value="Restricted">@Localizer["Lt_C_Restricted"]</option><option value="HighlyConfidential">@Localizer["Lt_C_HighlyConfidential"]</option>
-                    </select>
-                </div>
+                    <script src="~/js/views/letter-create-1.js" asp-append-version="true"></script>
+                </pems-col>
+                <pems-col md="4">
+                    <pems-label for="letterPriority">@Localizer["Lt_Priority"]</pems-label>
+                    <pems-select name="priority" id="letterPriority">
+                        @foreach (var pr in new[] { "Normal", "Low", "High", "Urgent" }) { <option value="@pr" selected="@(curPriority == pr)">@Localizer["Lt_P_" + pr]</option> }
+                    </pems-select>
+                </pems-col>
+                <pems-col md="4">
+                    <pems-label for="letterConf">@Localizer["Lt_Confidentiality"]</pems-label>
+                    <pems-select name="confidentialityLevel" id="letterConf">
+                        @foreach (var cf in new[] { "Internal", "Public", "Confidential", "Restricted", "HighlyConfidential" }) { <option value="@cf" selected="@(curConf == cf)">@Localizer["Lt_C_" + cf]</option> }
+                    </pems-select>
+                </pems-col>
 
-                <div class="col-md-6">
-                    <label class="form-label" for="letterProject">@Localizer["Lt_Project"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
-                    <select name="projectId" id="letterProject" class="form-select">
+                <pems-col md="6">
+                    <pems-label for="letterProject">@Localizer["Lt_Project"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></pems-label>
+                    <pems-select name="projectId" id="letterProject">
                         <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="letterDiscipline">@Localizer["Lt_Discipline"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
-                    <select name="disciplineId" id="letterDiscipline" class="form-select">
+                    </pems-select>
+                </pems-col>
+                <pems-col md="6">
+                    <pems-label for="letterDiscipline">@Localizer["Lt_Discipline"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></pems-label>
+                    <pems-select name="disciplineId" id="letterDiscipline">
                         <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                    </select>
-                </div>
+                    </pems-select>
+                </pems-col>
 
-                <div class="col-md-6">
-                    <label class="form-label" for="letterRelDoc">@Localizer["Lt_RelDoc"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
-                    <select name="relatedDocumentId" id="letterRelDoc" class="form-select">
+                <pems-col md="6">
+                    <pems-label for="letterRelDoc">@Localizer["Lt_RelDoc"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></pems-label>
+                    <pems-select name="relatedDocumentId" id="letterRelDoc">
                         <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var d in (IEnumerable<dynamic>)ViewBag.RelatedDocuments) { <option value="@d.DocumentId">@d.DocumentNo - @d.Title</option> }
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="letterRelMr">@Localizer["Lt_RelMr"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
-                    <select name="relatedMRId" id="letterRelMr" class="form-select">
+                    </pems-select>
+                </pems-col>
+                <pems-col md="6">
+                    <pems-label for="letterRelMr">@Localizer["Lt_RelMr"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></pems-label>
+                    <pems-select name="relatedMRId" id="letterRelMr">
                         <option value="">@Localizer["Ed_None"]</option>
                         @foreach (var m in (IEnumerable<dynamic>)ViewBag.RelatedMRs) { <option value="@m.MRId">@m.MRNumber</option> }
-                    </select>
-                </div>
-            </div>
+                    </pems-select>
+                </pems-col>
+            </pems-row>
         </div>
 
-        <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">@saveLabel</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
-        </div>
-    </form>
-</div>
+        <pems-action-bar css="mt-4">
+            <pems-button tone="primary" type="submit">@saveLabel</pems-button>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>
+
+<script src="~/js/views/letter-create-2.js" asp-append-version="true"></script>
 
 @await Html.PartialAsync("_RichTextEditorScripts", "letterBodyEditor")

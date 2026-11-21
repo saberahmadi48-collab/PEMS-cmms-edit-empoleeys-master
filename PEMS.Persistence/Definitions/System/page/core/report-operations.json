@@ -1,0 +1,153 @@
+{
+  "kind": "page",
+  "key": "report-operations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Operations report",
+    "fa": "گزارش عملیات"
+  },
+  "description": {
+    "en": "Production output, quality and losses for a period (page definition)",
+    "fa": "تولید، کیفیت و ضایعات یک دوره (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "report-operations",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "report-operations-filters",
+            "resetUrl": "/p/report-operations",
+            "fields": [
+              {
+                "name": "periodType",
+                "label": {
+                  "en": "Period",
+                  "fa": "دوره"
+                },
+                "kind": "select",
+                "value": "{{params.periodType}}",
+                "options": [
+                  {
+                    "value": "Day",
+                    "label": {
+                      "en": "Day",
+                      "fa": "Day"
+                    }
+                  },
+                  {
+                    "value": "Month",
+                    "label": {
+                      "en": "Month",
+                      "fa": "Month"
+                    }
+                  },
+                  {
+                    "value": "CustomRange",
+                    "label": {
+                      "en": "CustomRange",
+                      "fa": "CustomRange"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "anchorOrFrom",
+                "label": {
+                  "en": "Day or from",
+                  "fa": "روز یا از تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.anchorOrFrom}}"
+              },
+              {
+                "name": "toDate",
+                "label": {
+                  "en": "To",
+                  "fa": "تا تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.toDate}}"
+              },
+              {
+                "name": "productionWorkCenterId",
+                "label": {
+                  "en": "Work center",
+                  "fa": "مرکز کاری"
+                },
+                "kind": "select",
+                "value": "{{params.productionWorkCenterId}}"
+              },
+              {
+                "name": "materialItemId",
+                "label": {
+                  "en": "Material item",
+                  "fa": "قلم مواد"
+                },
+                "kind": "select",
+                "value": "{{params.materialItemId}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "productionWorkCenterId",
+                "source": "/d/report-work-centers",
+                "valueField": "value",
+                "labelField": "label"
+              },
+              {
+                "field": "materialItemId",
+                "source": "/d/report-material-items",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "report-operations-rows",
+          "component": "data-grid",
+          "options": {
+            "id": "report-operations-rows",
+            "url": "/d/report-operations-grid?f.periodType={{params.periodType|url}}&f.anchorOrFrom={{params.anchorOrFrom|url}}&f.toDate={{params.toDate|url}}&f.productionWorkCenterId={{params.productionWorkCenterId|url}}&f.materialItemId={{params.materialItemId|url}}",
+            "idField": "name",
+            "columns": [
+              {
+                "key": "section",
+                "header": {
+                  "en": "Section",
+                  "fa": "بخش"
+                },
+                "width": 260
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 320
+              },
+              {
+                "key": "value",
+                "header": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                },
+                "width": 220
+              }
+            ],
+            "pageSize": 50,
+            "height": 360
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,20 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("tree-item", Category = "navigation", Icon = "bi-node-plus")]
+<li @attributes="Options.Attributes" class="@ListMarkup.Css("pems-tree__item", Options.CssClass)" role="treeitem" data-key="@(string.IsNullOrEmpty(Options.Key) ? null : Options.Key)" data-current="@(Options.Current ? "" : null)" aria-expanded="@(Options.HasChildren ? (Options.Expanded ? "true" : "false") : null)"><div class="pems-tree__row">@if (Options.HasChildren){<button aria-expanded="@(Options.Expanded ? "true" : "false")" aria-label="@Options.ToggleName" class="pems-tree__toggle" title="@Options.ToggleName" type="button"><i aria-hidden="true" class="bi bi-chevron-right"></i></button>}else{<span aria-hidden="true" class="pems-tree__spacer"></span>}@if (string.IsNullOrEmpty(Options.Href)){<span aria-current="@(Options.Current ? "page" : null)" class="@Link("pems-tree__text")">@Name@Count</span>}else{<a aria-current="@(Options.Current ? "page" : null)" class="@Link("pems-tree__link")" href="@Options.Href">@Name@Count</a>}</div>@if (Options.HasChildren){<ul class="pems-tree__group" hidden="@(Options.Expanded ? null : "hidden")" role="group">@ChildContent</ul>}</li>
+@code {
+    [Parameter, EditorRequired] public TreeItemOptions Options { get; set; } = default!;
+    /// <summary>The nested items.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>The page's own markup for the label (a colour dot, an icon, a badge); null shows the label text.</summary>
+    [Parameter] public RenderFragment? LabelContent { get; set; }
+    private string Link(string own) => string.IsNullOrEmpty(Options.LinkClass) ? own : own + " " + Options.LinkClass;
+    private RenderFragment Name => b => { if (LabelContent is not null) b.AddContent(0, LabelContent); else b.AddContent(1, Options.Label); };
+    private RenderFragment Count => b =>
+    {
+        if (string.IsNullOrEmpty(Options.CountText)) return;
+        b.OpenElement(0, "span");
+        b.AddAttribute(1, "class", "pems-tree__count");
+        b.AddContent(2, Options.CountText);
+        b.CloseElement();
+    };
+}

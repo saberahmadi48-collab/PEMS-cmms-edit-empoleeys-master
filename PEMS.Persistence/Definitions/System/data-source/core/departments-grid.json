@@ -1,0 +1,45 @@
+{
+  "kind": "data-source",
+  "key": "departments-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Departments rows",
+    "fa": "ردیف‌های دپارتمان‌ها"
+  },
+  "description": {
+    "en": "The rows of the departments grid",
+    "fa": "ردیف‌های جدول دپارتمان‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "Department",
+      "fields": [
+        "Code",
+        "Name",
+        "Description",
+        "IsActive"
+      ],
+      "search": [
+        "Code",
+        "Name",
+        "Description"
+      ],
+      "sort": [
+        "Name"
+      ],
+      "counts": [
+        {
+          "name": "employees",
+          "entity": "Employee",
+          "foreignKey": "DepartmentId",
+          "where": {
+            "IsActive": true
+          }
+        }
+      ]
+    }
+  }
+}

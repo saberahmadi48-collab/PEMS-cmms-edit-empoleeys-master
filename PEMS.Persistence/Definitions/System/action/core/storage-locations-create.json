@@ -1,0 +1,53 @@
+{
+  "kind": "action",
+  "key": "storage-locations-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create storage location",
+    "fa": "ایجاد محل نگهداری"
+  },
+  "description": {
+    "en": "Create storage location",
+    "fa": "ایجاد محل نگهداری"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "StorageLocation",
+      "map": {
+        "code": "Code",
+        "name": "Name",
+        "warehouseId": "WarehouseId",
+        "parentLocationId": "ParentLocationId"
+      },
+      "required": [
+        "Code",
+        "Name",
+        "WarehouseId"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "WarehouseId",
+            "Code"
+          ],
+          "message": {
+            "en": "A location with this code already exists in this warehouse.",
+            "fa": "محل نگهداری با همین کد در این انبار از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Storage location created.",
+      "fa": "محل نگهداری ایجاد شد."
+    },
+    "redirect": "/p/storage-locations"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "data-source",
+  "key": "pc-requests",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue requests",
+    "fa": "درخواست‌های کاتالوگ قطعه"
+  },
+  "description": {
+    "en": "Part Catalogue requests",
+    "fa": "درخواست‌های کاتالوگ قطعه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "List",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "search": "param:search",
+        "status": "param:status",
+        "requestType": "param:requestType",
+        "sectionId": "param:sectionId",
+        "view": "param:view",
+        "urgent": "param:urgent"
+      }
+    }
+  }
+}

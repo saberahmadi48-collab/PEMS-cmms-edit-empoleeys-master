@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("table-frame", Category = "display", Icon = "bi-table")]
+@FrameMarkup.Element("table", PEMS.UI.TagHelpers.FrameState.Table(string.Equals(Options.Kind, "enterprise", StringComparison.OrdinalIgnoreCase), string.Equals(Options.Scale, "small", StringComparison.OrdinalIgnoreCase), Options.Css, string.Equals(Options.Kind, "plain", StringComparison.OrdinalIgnoreCase)), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public TableFrameOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

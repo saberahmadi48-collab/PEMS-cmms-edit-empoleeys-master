@@ -1,0 +1,174 @@
+{
+  "key": "uploader",
+  "component": "PEMS.UI.Components.PemsUploader",
+  "category": "forms",
+  "icon": "bi-cloud-arrow-up",
+  "nameKey": "component.uploader",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "accept": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "multiple": {
+        "type": "boolean"
+      },
+      "required": {
+        "type": "boolean"
+      },
+      "scale": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "maxMb": {
+        "type": [
+          "string",
+          "integer",
+          "null"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "texts": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "drop": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "choose": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "tooBig": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "wrongType": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "remove": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        },
+        "required": [
+          "drop",
+          "choose",
+          "tooBig",
+          "wrongType",
+          "remove"
+        ],
+        "additionalProperties": false
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "name"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "UploaderOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "name": "file",
+    "id": "importFile",
+    "accept": ".xlsx,.xlsm",
+    "multiple": false,
+    "required": true,
+    "scale": "small",
+    "maxMb": 25
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "kind": "form",
+  "key": "uoms-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit unit of measure",
+    "fa": "ویرایش واحد اندازه‌گیری"
+  },
+  "description": {
+    "en": "Edit unit of measure",
+    "fa": "ویرایش واحد اندازه‌گیری"
+  },
+  "payload": {
+    "id": "uoms-edit",
+    "title": {
+      "en": "Edit unit of measure",
+      "fa": "ویرایش واحد اندازه‌گیری"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "uoms-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "owner": "platform",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "maxLength": 30,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Code is required.",
+            "fa": "کد الزامی است."
+          }
+        },
+        "readOnly": true
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

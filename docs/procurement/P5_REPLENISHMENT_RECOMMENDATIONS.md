@@ -78,7 +78,7 @@ Work Order requirements have no warehouse (P0). They are never compared with any
 
 ## 7. Migration and data status
 * `PEMS.Persistence/Migrations/20261011082322_ReplenishmentRecommendations` — four `CreateTable`s, indexes, one CHECK; `Down` drops the four tables. Snapshot change is purely additive. `has-pending-model-changes`: none.
-* Script for the owner: `docs/procurement/ReplenishmentRecommendations.migration.sql`.
+* Script for the owner: `legacy-trash/manual-sql/docs/procurement/ReplenishmentRecommendations.migration.sql`.
 * Tested on disposable databases only: Up → Down → Up (`ReplenishmentMigrationTests`), a full-application HTTP smoke (19/19 checks) against a disposable database with all migrations, then dropped.
 * `PEMSDB` and `PEMSDB_PcatClone`: **not migrated** (re-checked at the end of the task: last migration `20261008075704_OrganizationAssignmentEmployeeIndex`, no P4/P5 objects).
 * Order of application when authorised: P4 duplicate diagnostic → P4 migration → P5 migration (P5 does not require the P4 index, but its results are only trustworthy on clean stock rows).

@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "barcode-label-pdf",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode label (PDF)",
+    "fa": "برچسب بارکد (PDF)"
+  },
+  "description": {
+    "en": "Barcode label (PDF)",
+    "fa": "برچسب بارکد (PDF)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Barcode",
+      "action": "LabelPdf",
+      "args": {
+        "id": "param:id"
+      },
+      "disposition": "attachment"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+# Deploys the staging subdomain on every push or merge to the `staging` branch (and on manual run).
+# The build, tests, publish and upload are in deploy-site.yml. Secrets: STAGING_* (docs/deployment/DEPLOYMENT_README.md).
+
+name: PEMS Staging Deploy
+
+on:
+  push:
+    branches: [staging]
+    paths-ignore: ['docs/**', 'plan/**', 'legacy-trash/**', '*.md']      # documentation-only pushes do not redeploy
+  workflow_dispatch:
+    inputs:
+      force_tests:
+        description: 'Run the test gate even if this exact source tree already passed it'
+        type: boolean
+        default: false
+      rollback_ref:
+        description: 'Roll back: commit, tag or branch of the previous good build to deploy instead of the branch head'
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/deploy-site.yml
+    with:
+      target: staging
+      prefix: STAGING
+      force_gate: ${{ github.event.inputs.force_tests == 'true' }}
+      ref: ${{ github.event.inputs.rollback_ref }}
+    secrets: inherit

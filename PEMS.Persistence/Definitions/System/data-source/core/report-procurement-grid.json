@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "report-procurement-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement report rows",
+    "fa": "ردیف‌های گزارش تدارکات"
+  },
+  "description": {
+    "en": "Procurement report rows",
+    "fa": "ردیف‌های گزارش تدارکات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Procurement",
+      "args": {
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      }
+    }
+  }
+}

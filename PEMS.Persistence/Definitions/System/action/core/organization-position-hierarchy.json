@@ -1,0 +1,41 @@
+{
+  "kind": "action",
+  "key": "organization-position-hierarchy",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save the hierarchy",
+    "fa": "ذخیره‌ی سلسله‌مراتب"
+  },
+  "description": {
+    "en": "Save the hierarchy",
+    "fa": "ذخیره‌ی سلسله‌مراتب"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Organization",
+      "action": "SetPositionHierarchy",
+      "args": {
+        "positionId": "field:id",
+        "positionCode": "field:positionCode",
+        "parentPositionId": "field:parentPositionId"
+      },
+      "load": {
+        "operation": {
+          "model": "Organization",
+          "action": "HierarchyOf",
+          "args": {
+            "positionId": "param:id"
+          }
+        }
+      }
+    },
+    "success": {
+      "en": "Hierarchy saved.",
+      "fa": "سلسله‌مراتب ذخیره شد."
+    },
+    "redirect": "/p/organization-positions"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-report",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue reports (old address)",
+    "fa": "Part Catalogue reports (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue reports (old address)",
+    "fa": "Part Catalogue reports (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueReport",
+    "target": "/p/pc-report",
+    "permanent": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "contracts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contracts (old address)",
+    "fa": "Contracts (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Contracts (old address)",
+    "fa": "Contracts (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Contract",
+    "target": "/p/contracts",
+    "permanent": false
+  }
+}

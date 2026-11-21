@@ -1,0 +1,51 @@
+{
+  "kind": "action",
+  "key": "projects-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit project",
+    "fa": "ویرایش پروژه"
+  },
+  "description": {
+    "en": "Edit project",
+    "fa": "ویرایش پروژه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.update",
+    "parameters": {
+      "entity": "Project",
+      "map": {
+        "projectCode": "ProjectCode",
+        "projectName": "ProjectName",
+        "clientName": "ClientName",
+        "location": "Location",
+        "startDate": "StartDate",
+        "endDate": "EndDate",
+        "status": "Status"
+      },
+      "required": [
+        "ProjectCode",
+        "ProjectName",
+        "Status"
+      ],
+      "unique": [
+        {
+          "fields": [
+            "ProjectCode"
+          ],
+          "message": {
+            "en": "A project with this code already exists.",
+            "fa": "پروژه‌ای با این کد از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Project saved.",
+      "fa": "پروژه ذخیره شد."
+    },
+    "redirect": "/p/projects"
+  }
+}

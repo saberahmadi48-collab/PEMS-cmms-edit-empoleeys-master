@@ -1,0 +1,8 @@
+<Project>
+  <!-- Deployments upload only the files that changed (FTP sync state). By default the SDK appends the git commit hash to every
+       assembly's informational version, which changes the bytes of ALL PEMS assemblies on every commit even when their source did
+       not change, so each deploy would re-upload them all. Leaving the revision out keeps unchanged assemblies byte-identical. -->
+  <PropertyGroup>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  </PropertyGroup>
+</Project>

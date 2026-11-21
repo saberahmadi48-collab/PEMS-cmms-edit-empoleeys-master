@@ -8,6 +8,7 @@ namespace PEMS.Application.Interfaces;
 /// </summary>
 public interface IDisciplineWorkspaceService
 {
+    [PEMS.Application.Common.PemsOperation("DisciplineWorkspace", "Workspaces", "DisciplineWorkspace.View")]   // SCRUM-682 (the list of workspaces; Summary is the one-row totals of the workspace page)
     Task<List<DisciplineSummaryDto>> GetSummaryListAsync();
 
     Task<DisciplineWorkspaceDto?> GetWorkspaceAsync(int disciplineId, int? projectId = null);

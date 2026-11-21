@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "pc-admin-add-approver",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add an approver to a step",
+    "fa": "افزودن تأییدکننده به گام"
+  },
+  "description": {
+    "en": "Add an approver to a step",
+    "fa": "افزودن تأییدکننده به گام"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "AddApprover",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "stepKey": "field:stepKey",
+        "approverEmployeeId": "field:approverEmployeeId"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/p/pc-admin"
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "kind": "form",
+  "key": "team-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a team",
+    "fa": "ساخت تیم"
+  },
+  "description": {
+    "en": "Create a team",
+    "fa": "ساخت تیم"
+  },
+  "payload": {
+    "id": "team-create",
+    "title": {
+      "en": "Create a team",
+      "fa": "ساخت تیم"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ساخت"
+    },
+    "actionKey": "team-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Code is required.",
+            "fa": "کد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        },
+        "maxLength": 150
+      },
+      {
+        "name": "maintenanceGroupId",
+        "label": {
+          "en": "Maintenance group",
+          "fa": "گروه نگهداری"
+        },
+        "kind": "select",
+        "optionsFrom": "team-groups",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Maintenance group is required.",
+            "fa": "گروه نگهداری الزامی است."
+          }
+        }
+      },
+      {
+        "name": "shift",
+        "label": {
+          "en": "Shift",
+          "fa": "شیفت"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "supervisorEmployeeId",
+        "label": {
+          "en": "Supervisor",
+          "fa": "سرپرست"
+        },
+        "kind": "select",
+        "optionsFrom": "team-employees",
+        "span": 2
+      }
+    ]
+  }
+}

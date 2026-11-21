@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "irn-dispositions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "IRN dispositions",
+    "fa": "IRN dispositions"
+  },
+  "description": {
+    "en": "IRN dispositions",
+    "fa": "IRN dispositions"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Irn",
+      "action": "Dispositions",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -1,0 +1,112 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("content-blocks", Category = "content", Icon = "bi-card-text")]
+@inject IPemsLocale Locale
+@* SCRUM-666..757: static text pages as a definition. Each block is escaped text (heading, text, alert, list, code, link, divider); no markup comes from a definition. Link targets are paths of this site only. *@
+@if (Options.Blocks.Count == 0)
+{
+    <p class="pems-state pems-state--empty" role="status" id="@Options.Id">@Locale.Text(Options.Empty)</p>
+}
+else
+{
+    <div class="@Join("pems-content-blocks", Options.Css, Options.PageClass)" id="@Options.Id" @attributes="Options.Attributes">
+        @foreach (var block in Options.Blocks)
+        {
+            @switch (block.Type)
+            {
+                case "heading":
+                    <text>@HeadingTag(block)</text>
+                    break;
+                case "text":
+                    <p class="@Join("mb-3", block.Css)">@Locale.Text(block.Text)</p>
+                    break;
+                case "alert":
+                    <div class="@Join("alert", "alert-" + Tone(block.Tone), "mb-3", block.Css)" role="@(block.Tone is "danger" or "warning" ? "alert" : "status")">
+                        @if (block.Title is not null)
+                        {
+                            <strong>@Locale.Text(block.Title)</strong>
+                            <span> </span>
+                        }
+                        @Locale.Text(block.Text)
+                    </div>
+                    break;
+                case "list":
+                    @if (block.Ordered)
+                    {
+                        <ol class="@Join("mb-3", block.Css)">@foreach (var item in block.Items) { <li>@Locale.Text(item)</li> }</ol>
+                    }
+                    else
+                    {
+                        <ul class="@Join("mb-3", block.Css)">@foreach (var item in block.Items) { <li>@Locale.Text(item)</li> }</ul>
+                    }
+                    break;
+                case "code":
+                    <pre class="@Join("pems-content-blocks__code", "mb-3", block.Css)"><code>@Locale.Text(block.Text)</code></pre>
+                    break;
+                case "link":
+                    @if (SafeHref(block.Href) is { } href)
+                    {
+                        <p class="mb-3"><a class="@Join("link-primary", block.Css)" href="@href">@Locale.Text(block.Text)</a></p>
+                    }
+                    break;
+                case "cards":
+                    <div class="@Join("row", "g-3", "mb-3", block.Css)">
+                        @foreach (var card in block.Cards)
+                        {
+                            <div class="@ColumnClass(block.Columns)">
+                                <div class="border rounded p-3 h-100">
+                                    @if (SafeIcon(card.Icon) is { } icon)
+                                    {
+                                        <i class="@Join("bi", icon, "fs-4", "text-muted")" aria-hidden="true"></i>
+                                    }
+                                    <h6 class="mt-2 mb-1">@Locale.Text(card.Title)</h6>
+                                    @if (card.Text is not null)
+                                    {
+                                        <p class="text-muted small">@Locale.Text(card.Text)</p>
+                                    }
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        @foreach (var link in card.Links)
+                                        {
+                                            @if (SafeHref(link.Href) is { } cardHref)
+                                            {
+                                                <a class="btn btn-sm btn-outline-primary" href="@cardHref">@Locale.Text(link.Label)</a>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    break;
+                case "divider":
+                    <hr class="@Join("my-3", block.Css)" />
+                    break;
+            }
+        }
+    </div>
+}
+@code {
+    [Parameter, EditorRequired] public ContentBlocksOptions Options { get; set; } = default!;
+
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+
+    private static string Tone(string? tone) => tone is "success" or "warning" or "danger" ? tone : "info";
+
+    /// <summary>A link goes to a path of this site only: it starts with one "/" and has no scheme, no second "/" and no backslash.</summary>
+    internal static string? SafeHref(string? href)
+        => !string.IsNullOrWhiteSpace(href) && href.StartsWith('/') && !href.StartsWith("//", StringComparison.Ordinal) && !href.Contains('\\') ? href : null;
+
+    /// <summary>A Bootstrap icon name only (bi-...): anything else draws no icon.</summary>
+    internal static string? SafeIcon(string? icon)
+        => !string.IsNullOrWhiteSpace(icon) && System.Text.RegularExpressions.Regex.IsMatch(icon, "^bi-[a-z0-9-]{1,40}$") ? icon : null;
+
+    private static string ColumnClass(int columns) => columns switch { 1 => "col-12", 2 => "col-md-6", 4 => "col-md-3 col-sm-6", 6 => "col-md-2 col-sm-4", _ => "col-md-4" };
+
+    private RenderFragment HeadingTag(ContentBlock block) => b =>
+    {
+        var level = Math.Clamp(block.Level, 1, 6);
+        b.OpenElement(0, "h" + level);
+        b.AddAttribute(1, "class", Join("h" + Math.Min(level + 1, 6), "mb-3", block.Css));
+        b.AddContent(2, Locale.Text(block.Text));
+        b.CloseElement();
+    };
+}

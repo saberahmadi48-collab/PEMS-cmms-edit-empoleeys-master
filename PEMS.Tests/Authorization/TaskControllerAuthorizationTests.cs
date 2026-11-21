@@ -17,6 +17,23 @@ namespace PEMS.Tests.Authorization;
 /// </summary>
 public class TaskControllerAuthorizationTests
 {
+    private sealed class KeyLocalizer : Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>
+    {
+        public Microsoft.Extensions.Localization.LocalizedString this[string name] => new(name, name);
+        public Microsoft.Extensions.Localization.LocalizedString this[string name, params object[] arguments] => new(name, name);
+        public IEnumerable<Microsoft.Extensions.Localization.LocalizedString> GetAllStrings(bool includeParentCultures) => [];
+    }
+
+    /// <summary>SCRUM-755: the create and status commands are operations; the permission floor is the operation catalog's, the object-level rules are the task manager's.</summary>
+    private static async Task<(PEMS.Web.Services.TaskItemOperations Ops, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateOps(string dbName, string? role = SystemRoles.EngineeringManager)
+    {
+        var (controller, ctx) = await CreateController(dbName, role);
+        var accessControl = new AccessControlService(ctx);
+        var manager = new PEMS.Persistence.Services.TaskManager.TaskManagerService(ctx, new PermissionService(ctx, accessControl), new FakeNumberingService());
+        var user = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>(), UserId = 1 };
+        return (new PEMS.Web.Services.TaskItemOperations(manager, user, new KeyLocalizer()), ctx);
+    }
+
     private static async Task<(TaskController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(
         string dbName, string? role = SystemRoles.EngineeringManager)
     {
@@ -40,7 +57,8 @@ public class TaskControllerAuthorizationTests
         };
 
         var taskService = new TaskService(ctx, null!);
-        var controller = new TaskController(taskService, ctx, currentUser, permissionService).WithTempData();
+        var manager = new PEMS.Persistence.Services.TaskManager.TaskManagerService(ctx, permissionService, new FakeNumberingService());
+        var controller = new TaskController(taskService, manager, currentUser, permissionService).WithTempData();
         return (controller, ctx);
     }
 
@@ -66,51 +84,65 @@ public class TaskControllerAuthorizationTests
     }
 
     [Fact]
-    public async Task Create_WithoutCreatePermission_ReturnsForbid()
+    public async Task Create_Operation_CreatesTask()
     {
-        var (controller, _) = await CreateController(nameof(Create_WithoutCreatePermission_ReturnsForbid), role: null);
+        var (ops, ctx) = await CreateOps(nameof(Create_Operation_CreatesTask));
 
-        var result = await controller.Create("Test task", null, null, null, "Normal");
+        var result = await ops.CreateAsync("Test task", null, null, null, "Normal");
 
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Create_WithCreatePermission_CreatesTask()
-    {
-        var (controller, ctx) = await CreateController(nameof(Create_WithCreatePermission_CreatesTask));
-
-        var result = await controller.Create("Test task", null, null, null, "Normal");
-
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.Single(ctx.TaskItems);
     }
 
     [Fact]
-    public async Task UpdateStatus_WithoutEditPermission_ReturnsForbid()
+    public async Task UpdateStatus_Operation_UpdatesStatus()
     {
-        var (controller, ctx) = await CreateController(nameof(UpdateStatus_WithoutEditPermission_ReturnsForbid), role: null);
-        var task = new PEMS.Domain.Entities.TaskItem { TaskItemId = 1, Title = "T", Status = "Open", CreatedDate = DateTime.Now };
-        ctx.TaskItems.Add(task);
+        var (ops, ctx) = await CreateOps(nameof(UpdateStatus_Operation_UpdatesStatus));
+        // the role permission is not enough: the user must be involved in the task (here the assigner)
+        ctx.TaskItems.Add(new PEMS.Domain.Entities.TaskItem { TaskItemId = 1, Title = "T", Status = "Open", CreatedDate = DateTime.Now, AssignedByApplicationUserId = 1 });
         await ctx.SaveChangesAsync();
 
-        var result = await controller.UpdateStatus(task.TaskItemId, "Completed", null, "action");
+        var result = await ops.UpdateStatusAsync(1, "Completed");
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.True(result.Success);
+        Assert.Equal("Completed", ctx.TaskItems.Single().Status);
+    }
+
+    [Fact]
+    public async Task UpdateStatus_Operation_ButNotInvolved_Fails_AndKeepsStatus()
+    {
+        var (ops, ctx) = await CreateOps(nameof(UpdateStatus_Operation_ButNotInvolved_Fails_AndKeepsStatus));
+        // any user with Task.Edit used to change any id (IDOR)
+        ctx.TaskItems.Add(new PEMS.Domain.Entities.TaskItem { TaskItemId = 1, Title = "T", Status = "Open", CreatedDate = DateTime.Now, AssignedByApplicationUserId = 42 });
+        await ctx.SaveChangesAsync();
+
+        Exception? error = null;
+        (bool Success, string? Error) result = default;
+        try { result = await ops.UpdateStatusAsync(1, "Completed"); } catch (UnauthorizedAccessException ex) { error = ex; }
+
+        Assert.True(error != null || !result.Success);
         Assert.Equal("Open", ctx.TaskItems.Single().Status);
     }
 
     [Fact]
-    public async Task UpdateStatus_WithEditPermission_UpdatesStatus()
+    public async Task UpdateStatus_Operation_WithInvalidTransition_KeepsStatus()
     {
-        var (controller, ctx) = await CreateController(nameof(UpdateStatus_WithEditPermission_UpdatesStatus));
-        var task = new PEMS.Domain.Entities.TaskItem { TaskItemId = 1, Title = "T", Status = "Open", CreatedDate = DateTime.Now };
-        ctx.TaskItems.Add(task);
+        var (ops, ctx) = await CreateOps(nameof(UpdateStatus_Operation_WithInvalidTransition_KeepsStatus));
+        ctx.TaskItems.Add(new PEMS.Domain.Entities.TaskItem { TaskItemId = 1, Title = "T", Status = "Completed", CreatedDate = DateTime.Now, AssignedByApplicationUserId = 1 });
         await ctx.SaveChangesAsync();
 
-        var result = await controller.UpdateStatus(task.TaskItemId, "Completed", null, "action");
-
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.False((await ops.UpdateStatusAsync(1, "Whatever")).Success);
+        Assert.False((await ops.UpdateStatusAsync(1, "InProgress")).Success);
         Assert.Equal("Completed", ctx.TaskItems.Single().Status);
+    }
+
+    [Fact]
+    public async Task Details_ForATaskTheUserIsNotInvolvedIn_ReturnsNotFound()
+    {
+        var (controller, ctx) = await CreateController(nameof(Details_ForATaskTheUserIsNotInvolvedIn_ReturnsNotFound));
+        ctx.TaskItems.Add(new PEMS.Domain.Entities.TaskItem { TaskItemId = 1, Title = "T", Status = "Open", CreatedDate = DateTime.Now, AssignedByApplicationUserId = 42 });
+        await ctx.SaveChangesAsync();
+
+        Assert.IsType<NotFoundResult>(await controller.Details(1));
     }
 }

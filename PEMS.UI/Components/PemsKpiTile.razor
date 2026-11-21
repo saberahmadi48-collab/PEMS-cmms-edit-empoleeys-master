@@ -1,0 +1,61 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("kpi-tile", Category = "display", Icon = "bi-speedometer2")]
+@inject IPemsLocale Locale
+@if (!string.IsNullOrEmpty(Options.Href))
+{
+    <a class="@Css" href="@Options.Href" title="@(string.IsNullOrEmpty(HintText) ? null : HintText)" @attributes="Options.Attributes">@Body</a>
+}
+else
+{
+    <div class="@Css" title="@(string.IsNullOrEmpty(HintText) ? null : HintText)" @attributes="Options.Attributes">@Body</div>
+}
+@code {
+    [Parameter, EditorRequired] public KpiTileOptions Options { get; set; } = default!;
+    /// <summary>The value markup (a count, a decimal, "42 &lt;small&gt;%&lt;/small&gt;").</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>True when the page wrote no value: a dash shows.</summary>
+    [Parameter, PEMS.UI.Rendering.PemsHostSet] public bool Empty { get; set; }
+    private string Css
+    {
+        get
+        {
+            var css = string.IsNullOrEmpty(Options.Href) ? "kpi-card" : "kpi-card kpi-link text-decoration-none";
+            if (Options.Compact) css += " kpi-card--compact";
+            return string.IsNullOrWhiteSpace(Options.CssClass) ? css : css + " " + Options.CssClass.Trim();
+        }
+    }
+    private string LabelText => Locale.Text(Options.Label);
+    private string SubText => Options.Sub is null ? "" : Locale.Text(Options.Sub);
+    private string HintText => Options.Hint is null ? "" : Locale.Text(Options.Hint);
+    private string ValueCss => Options.Tone is "danger" or "success" or "warning" ? "kpi-value text-" + Options.Tone : "kpi-value";
+    private RenderFragment Body => b =>
+    {
+        if (!string.IsNullOrEmpty(Options.Icon))
+        {
+            b.OpenElement(0, "div");
+            b.AddAttribute(1, "class", "kpi-icon " + Options.IconClass);
+            b.OpenElement(2, "i");
+            b.AddAttribute(3, "aria-hidden", "true");
+            b.AddAttribute(4, "class", "bi " + Options.Icon);
+            b.CloseElement();
+            b.CloseElement();
+        }
+        b.OpenElement(5, "div");
+        b.OpenElement(6, "div");
+        b.AddAttribute(7, "class", ValueCss);
+        if (Empty || ChildContent is null) b.AddContent(8, string.IsNullOrEmpty(Options.Value) ? "-" : Options.Value); else b.AddContent(9, ChildContent);
+        b.CloseElement();
+        b.OpenElement(10, "div");
+        b.AddAttribute(11, "class", "kpi-label");
+        b.AddContent(12, LabelText);
+        b.CloseElement();
+        if (!string.IsNullOrEmpty(SubText))
+        {
+            b.OpenElement(13, "div");
+            b.AddAttribute(14, "class", "kpi-sub");
+            b.AddContent(15, SubText);
+            b.CloseElement();
+        }
+        b.CloseElement();
+    };
+}

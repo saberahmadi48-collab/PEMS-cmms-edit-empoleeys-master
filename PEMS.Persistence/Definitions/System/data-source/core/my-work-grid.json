@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "my-work-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My work rows",
+    "fa": "ردیف‌های کارهای من"
+  },
+  "description": {
+    "en": "The approvals waiting for the user",
+    "fa": "تأییدهای منتظر اقدام کاربر"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MyWork",
+      "action": "Approvals",
+      "args": {
+        "employeeId": "context:employeeId",
+        "roles": "context:roles",
+        "culture": "context:culture"
+      }
+    }
+  }
+}

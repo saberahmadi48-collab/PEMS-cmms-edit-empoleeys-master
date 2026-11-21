@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "eng-dash-disciplines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering dashboard disciplines",
+    "fa": "دیسیپلین‌های داشبورد مهندسی"
+  },
+  "description": {
+    "en": "Engineering dashboard disciplines",
+    "fa": "دیسیپلین‌های داشبورد مهندسی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EngineeringDashboard",
+      "action": "Disciplines",
+      "args": {}
+    }
+  }
+}

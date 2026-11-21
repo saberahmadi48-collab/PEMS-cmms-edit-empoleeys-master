@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "designer-create-action",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create an action",
+    "fa": "ایجاد کنش"
+  },
+  "description": {
+    "en": "Create an action",
+    "fa": "ایجاد کنش"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The action was created; publish it from the workbench.",
+      "fa": "کنش ایجاد شد؛ از میز کار منتشرش کنید."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "CreateAction",
+      "args": {
+        "key": "field:key",
+        "appKey": "field:appKey",
+        "model": "field:model",
+        "action": "field:action",
+        "argsJson": "field:args",
+        "successEn": "field:successEn",
+        "successFa": "field:successFa",
+        "redirect": "field:redirect",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

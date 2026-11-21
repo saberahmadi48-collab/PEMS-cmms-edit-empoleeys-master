@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "moc-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject MOC",
+    "fa": "Reject MOC"
+  },
+  "description": {
+    "en": "Reject MOC",
+    "fa": "Reject MOC"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MOC",
+      "action": "Reject",
+      "args": {
+        "mocId": "field:mocId",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "Rejected.",
+      "fa": "رد شد."
+    },
+    "redirect": "/MOC/Details/{mocId}"
+  }
+}

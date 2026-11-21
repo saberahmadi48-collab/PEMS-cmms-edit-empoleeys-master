@@ -3,9 +3,16 @@
   <Project Path="PEMS.Application/PEMS.Application.csproj" Id="488a1300-926f-4b0a-99b9-0a4d54341844" />
   <Project Path="PEMS.Domain/PEMS.Domain.csproj" Id="994a61d5-85e1-4966-b095-f8b653f1cd2f" />
   <Project Path="PEMS.Infrastructure/PEMS.Infrastructure.csproj" Id="9038f559-d02d-49f6-9d39-841ae6f51480" />
+  <Project Path="PEMS.Licensing/PEMS.Licensing.csproj" />
+  <Project Path="PEMS.Migrations/PEMS.Migrations.csproj" Id="3b1c6d52-7f0e-4a4e-9a55-2d5b0c8e41aa" />
   <Project Path="PEMS.Persistence/PEMS.Persistence.csproj" Id="d30e134f-b9d4-404d-902a-e9996bab7fdb" />
   <Project Path="PEMS.Shared/PEMS.Shared.csproj" Id="ebe8cf24-2d71-405d-900d-a2a65bddd63c" />
   <Project Path="PEMS.Tests/PEMS.Tests.csproj" Id="fef5fe88-9380-421a-9849-b295bdf65a67" />
+  <Project Path="PEMS.UI.Abstractions/PEMS.UI.Abstractions.csproj" />
+  <Project Path="PEMS.UI.Tests.ExtensionPack/PEMS.UI.Tests.ExtensionPack.csproj" />
+  <Project Path="PEMS.UI.Tests/PEMS.UI.Tests.csproj" />
+  <Project Path="PEMS.UI/PEMS.UI.csproj" />
   <Project Path="PEMS.Web/PEMS.Web.csproj" Id="1e7261f8-3410-4c1e-9ed4-43046fb4d550" />
   <Project Path="PEMS.WorkflowPlatform/PEMS.WorkflowPlatform.csproj" />
+  <Project Path="tools/PemsVendorTool/PemsVendorTool.csproj" />
 </Solution>

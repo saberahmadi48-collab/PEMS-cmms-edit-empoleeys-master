@@ -1,0 +1,54 @@
+{
+  "key": "help-text",
+  "component": "PEMS.UI.Components.PemsHelpText",
+  "category": "forms",
+  "icon": "bi-info-circle",
+  "nameKey": "component.help-text",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "as": {
+        "type": "string"
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "HelpTextOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "as": "div",
+    "css": "mt-1"
+  }
+}

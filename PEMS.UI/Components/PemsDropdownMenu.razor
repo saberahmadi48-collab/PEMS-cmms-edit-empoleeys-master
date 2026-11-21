@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("dropdown-menu", Category = "navigation", Icon = "bi-menu-button")]
+@FrameMarkup.Element(Options.As, PEMS.UI.TagHelpers.FrameState.DropdownMenu(Options.End, Options.Css), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public DropdownMenuOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

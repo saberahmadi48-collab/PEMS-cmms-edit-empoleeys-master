@@ -12,6 +12,8 @@ public class DisciplineSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "Discipline";
     public string DisplayName => "دیسیپلین‌ها";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.Permission("DisciplineWorkspace");
 
     public DisciplineSearchProvider(PEMSDbContext context)
     {
@@ -41,7 +43,7 @@ public class DisciplineSearchProvider : ISearchableEntityProvider
                 Label = x.Discipline.Name,
                 HighlightedLabel = SearchScoring.Highlight(x.Discipline.Name, query),
                 SubLabel = x.Discipline.Code,
-                Url = $"/Discipline/Details/{x.Discipline.DisciplineId}",
+                Url = $"/p/disciplines-details?id={x.Discipline.DisciplineId}",   // SCRUM-682: the Discipline controller is a definition page now
                 Score = x.Score
             }).ToList();
 

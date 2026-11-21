@@ -1,0 +1,53 @@
+{
+  "kind": "action",
+  "key": "definition-grant-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Grant a role",
+    "fa": "مجوز برای نقش"
+  },
+  "description": {
+    "en": "Creates a grant",
+    "fa": "ایجاد مجوز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "permission": "Definitions.Approve",
+    "parameters": {
+      "entity": "DefinitionGrant",
+      "map": {
+        "kind": "Kind",
+        "definitionKey": "DefinitionKey",
+        "roleName": "RoleName",
+        "effect": "Effect",
+        "reason": "Reason"
+      },
+      "required": [
+        "Kind",
+        "DefinitionKey",
+        "RoleName",
+        "Effect"
+      ],
+      "unique": [
+        {
+          "fields": [
+            "Kind",
+            "DefinitionKey",
+            "RoleName"
+          ],
+          "message": {
+            "en": "This role already has a grant for this definition.",
+            "fa": "این نقش برای این تعریف مجوز دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "The grant was saved.",
+      "fa": "مجوز ذخیره شد."
+    },
+    "redirect": "/p/definition-grants"
+  }
+}

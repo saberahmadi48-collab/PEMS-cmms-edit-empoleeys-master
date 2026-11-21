@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "designer-move-down",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move down",
+    "fa": "انتقال به پایین"
+  },
+  "description": {
+    "en": "Move down",
+    "fa": "انتقال به پایین"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The part moved down in the draft.",
+      "fa": "بخش در پیش‌نویس پایین رفت."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "MoveRow",
+      "args": {
+        "rowId": "field:id",
+        "direction": "literal:down",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

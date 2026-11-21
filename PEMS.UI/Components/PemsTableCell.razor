@@ -1,0 +1,6 @@
+@namespace PEMS.UI.Components
+<td class="pems-align-@Alignment.ToString().ToLowerInvariant()">@Text</td>
+@code {
+    [Parameter] public string? Text { get; set; }
+    [Parameter] public ColumnAlignment Alignment { get; set; }
+}

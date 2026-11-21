@@ -3,112 +3,112 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
-        <p class="text-muted mb-0">
+<pems-content-card css="mb-3">
+    <pems-flex justify="between" align="start" wrap="true" gap="2">
+        <pems-text class="text-muted mb-0">
             از یک شماره تگ تجهیز (مثل P-101 یا 80-P-6005)، شماره مدرک، یا نام Vendor شروع کنید تا کل زنجیره‌ی
             روابط مهندسی مرتبط (مدارک، P&amp;ID، Vendor، قرارداد، PO، MR/MRQ، نگهداری و تعمیرات) نمایش داده شود.
-        </p>
-        <div class="d-flex gap-2">
-            <a asp-action="BulkSuggestions" class="btn btn-outline-warning btn-sm text-nowrap">
-                <i class="bi bi-check2-all"></i> @Localizer["تایید دسته‌جمعی اتصال‌ها"]
-            </a>
-            <a asp-action="GapReport" class="btn btn-outline-secondary btn-sm text-nowrap">
-                <i class="bi bi-clipboard-x"></i> @Localizer["گزارش تجهیزات ناقص"]
-            </a>
-        </div>
-    </div>
-    <form asp-action="Search" method="get" class="d-flex gap-2 mt-2">
-        <input type="text" name="q" value="@ViewBag.Query" class="form-control" placeholder="e.g. P-101, or a vendor name, or a document number" />
-        <button class="btn btn-pems-solid"><i class="bi bi-diagram-3"></i> @Localizer["Explore"]</button>
-    </form>
-</div>
+        </pems-text>
+        <pems-flex gap="2">
+            <pems-button tone="warning" size="small" outline="true" css="text-nowrap" as="a" asp-action="BulkSuggestions">
+                <pems-icon name="bi-check2-all" /> @Localizer["تایید دسته‌جمعی اتصال‌ها"]
+            </pems-button>
+            <pems-button tone="neutral" size="small" outline="true" css="text-nowrap" as="a" asp-action="GapReport">
+                <pems-icon name="bi-clipboard-x" /> @Localizer["گزارش تجهیزات ناقص"]
+            </pems-button>
+        </pems-flex>
+    </pems-flex>
+    <pems-form class="mt-2" asp-action="Search" method="get"><pems-flex gap="2">
+        <pems-input type="text" name="q" value="@ViewBag.Query" placeholder="e.g. P-101, or a vendor name, or a document number" />
+        <pems-button tone="primary"><pems-icon name="bi-diagram-3" /> @Localizer["Explore"]</pems-button>
+    </pems-flex></pems-form>
+</pems-content-card>
 
 @if (TempData["Error"] != null)
 {
-    <div class="content-card mb-3 border-danger">
-        <p class="text-danger mb-2"><i class="bi bi-exclamation-triangle"></i> @TempData["Error"]</p>
+    <pems-content-card css="mb-3 border-danger">
+        <pems-text class="text-danger mb-2"><pems-icon name="bi-exclamation-triangle" /> @TempData["Error"]</pems-text>
         @if (TempData["ConflictEquipmentId"] != null)
         {
-            <form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
+            <pems-form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
                 <input type="hidden" name="equipmentId" value="@TempData["ConflictEquipmentId"]" />
                 <input type="hidden" name="targetType" value="@TempData["ConflictTargetType"]" />
                 <input type="hidden" name="targetId" value="@TempData["ConflictTargetId"]" />
                 <input type="hidden" name="force" value="true" />
-                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('مطمئنی؟ رابطه‌ی قبلی جایگزین می‌شه.')">
-                    <i class="bi bi-exclamation-octagon"></i> بله، جایگزین کن (Force)
-                </button>
-            </form>
+                <pems-button tone="danger" size="small" type="submit" data-pems-confirm="مطمئنی؟ رابطه‌ی قبلی جایگزین می‌شه.">
+                    <pems-icon name="bi-exclamation-octagon" /> بله، جایگزین کن (Force)
+                </pems-button>
+            </pems-form>
         }
-    </div>
+    </pems-content-card>
 }
 
 @if (Model == null)
 {
     @if (!string.IsNullOrEmpty((string?)ViewBag.Query))
     {
-        <div class="content-card"><p class="text-muted text-center py-4">No equipment, document, or vendor matched "@ViewBag.Query".</p></div>
+        <pems-content-card><pems-text class="text-muted text-center py-4">No equipment, document, or vendor matched "@ViewBag.Query".</pems-text></pems-content-card>
     }
 }
 else
 {
-    <div class="content-card mb-3">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <h5 class="mb-0"><i class="bi bi-bullseye"></i> @Model.RootType: @Model.RootLabel</h5>
-            <div class="d-flex align-items-center gap-2">
+    <pems-content-card css="mb-3">
+        <pems-flex justify="between" align="center" wrap="true" gap="2">
+            <pems-heading level="5" class="mb-0"><pems-icon name="bi-bullseye" /> @Model.RootType: @Model.RootLabel</pems-heading>
+            <pems-flex align="center" gap="2">
                 @if (!string.IsNullOrWhiteSpace(Model.RootArea))
                 {
-                    <span class="badge bg-secondary"><i class="bi bi-geo-alt"></i> @Model.RootArea</span>
+                    <pems-badge tone="neutral"><pems-icon name="bi-geo-alt" /> @Model.RootArea</pems-badge>
                 }
                 @if (Model.RootType == "Equipment")
                 {
-                    <span class="badge @(Model.RootIsActive ? "bg-success" : "bg-secondary")">@(Model.RootIsActive ? "Active" : "Inactive")</span>
+                    <pems-badge tone="@(Model.RootIsActive ? "success" : "neutral")">@(Model.RootIsActive ? "Active" : "Inactive")</pems-badge>
                 }
-            </div>
-        </div>
+            </pems-flex>
+        </pems-flex>
 
         @if (Model.PIDDocument != null)
         {
             <div class="mt-2">
                 <span class="text-muted small">P&amp;ID:</span>
-                <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.NodeId" class="fw-bold">
-                    @Model.PIDDocument.Label <i class="bi bi-box-arrow-up-right small"></i>
-                </a>
+                <pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.PIDDocument.NodeId" class="fw-bold">
+                    @Model.PIDDocument.Label <pems-icon name="bi-box-arrow-up-right" css="small" />
+                </pems-link>
                 <span class="text-muted small">@Model.PIDDocument.SubLabel</span>
             </div>
         }
-    </div>
+    </pems-content-card>
 
     @if (Model.RootType == "Equipment" && Model.SuggestedLinks.Any())
     {
-        <div class="content-card mb-3 border-warning">
-            <h6 class="mb-3"><i class="bi bi-lightbulb"></i> پیشنهادهای اتصال (تاییدنشده)</h6>
-            <p class="text-muted small">
+        <pems-content-card css="mb-3 border-warning">
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-lightbulb" /> پیشنهادهای اتصال (تاییدنشده)</pems-heading>
+            <pems-text class="text-muted small">
                 این‌ها از روی شماره‌ی MRQ/PO خام ثبت‌شده روی تجهیز، با داده‌ی <strong>@Localizer["موجود"]</strong>
                 (نه ساخته‌شده) منطبق شده‌اند. تا تایید نکنی، هیچ رابطه‌ی رسمی برقرار نمی‌شه.
-            </p>
-            <ul class="list-unstyled mb-0">
+            </pems-text>
+            <pems-bullet-list class="list-unstyled mb-0">
                 @foreach (var suggestion in Model.SuggestedLinks)
                 {
-                    <li class="d-flex justify-content-between align-items-center border-bottom py-2">
+                    <pems-flex as="li" justify="between" align="center" css="border-bottom py-2">
                         <span>
-                            <span class="badge bg-warning text-dark"><i class="bi bi-robot"></i> @Localizer["پیشنهاد"]</span>
+                            <pems-badge tone="warning"><pems-icon name="bi-robot" /> @Localizer["پیشنهاد"]</pems-badge>
                             @suggestion.Label
                             <span class="text-muted small">@suggestion.SubLabel</span>
                         </span>
-                        <form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
+                        <pems-form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
                             <input type="hidden" name="equipmentId" value="@Model.RootId" />
                             <input type="hidden" name="targetType" value="@suggestion.NodeType" />
                             <input type="hidden" name="targetId" value="@suggestion.NodeId" />
-                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> تایید اتصال</button>
-                        </form>
-                    </li>
+                            <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> تایید اتصال</pems-button>
+                        </pems-form>
+                    </pems-flex>
                 }
-            </ul>
-        </div>
+            </pems-bullet-list>
+        </pems-content-card>
     }
 
-    <div class="row g-3">
+    <pems-row gap="3">
         @{
             var sections = new (string Title, string Icon, List<PEMS.Application.DTOs.RelationshipNodeDto> Items, string? Controller, string? Action)[]
             {
@@ -135,19 +135,19 @@ else
 
         @foreach (var s in sections)
         {
-            <div class="col-md-6">
-                <div class="content-card h-100">
-                    <h6 class="mb-3"><i class="bi @s.Icon"></i> @s.Title <span class="badge bg-secondary">@s.Items.Count</span></h6>
+            <pems-col md="6">
+                <pems-content-card css="h-100">
+                    <pems-heading level="6" class="mb-3"><pems-icon css="@s.Icon" /> @s.Title <pems-badge tone="neutral">@s.Items.Count</pems-badge></pems-heading>
                     @if (s.Items.Any())
                     {
-                        <ul class="list-unstyled mb-0">
+                        <pems-bullet-list class="list-unstyled mb-0">
                             @foreach (var item in s.Items)
                             {
-                                <li class="mb-1 d-flex justify-content-between align-items-start border-bottom pb-1">
+                                <pems-flex as="li" justify="between" align="start" css="mb-1 border-bottom pb-1">
                                     <span>
                                         @if (s.Controller != null)
                                         {
-                                            <a asp-controller="@s.Controller" asp-action="@s.Action" asp-route-id="@item.NodeId">@item.Label</a>
+                                            <pems-link asp-controller="@s.Controller" asp-action="@s.Action" asp-route-id="@item.NodeId">@item.Label</pems-link>
                                         }
                                         else
                                         {
@@ -156,49 +156,49 @@ else
 
                                         @if (item.Priority == "High" || item.Priority == "Urgent")
                                         {
-                                            <span class="badge bg-danger ms-1">@item.Priority</span>
+                                            <pems-badge tone="danger" css="ms-1">@item.Priority</pems-badge>
                                         }
                                         else if (!string.IsNullOrWhiteSpace(item.Priority))
                                         {
-                                            <span class="badge bg-light text-dark ms-1">@item.Priority</span>
+                                            <pems-badge tone="none" css="bg-light text-dark ms-1">@item.Priority</pems-badge>
                                         }
 
                                         @if (item.DelayDays.HasValue && item.DelayDays > 0)
                                         {
-                                            <span class="badge bg-danger ms-1" title="@Localizer["روزهای تاخیر"]"><i class="bi bi-clock-history"></i> @item.DelayDays روز تاخیر</span>
+                                            <pems-badge tone="danger" css="ms-1" title="@Localizer["روزهای تاخیر"]"><pems-icon name="bi-clock-history" /> @item.DelayDays روز تاخیر</pems-badge>
                                         }
                                         else if (item.PlannedOrDueDate.HasValue)
                                         {
-                                            <span class="text-muted small ms-1">(@item.PlannedOrDueDate.Value.ToString("yyyy-MM-dd"))</span>
+                                            <span class="text-muted small ms-1">(@PemsDates.Date(item.PlannedOrDueDate.Value))</span>
                                         }
                                     </span>
                                     <span class="text-end">
                                         <span class="text-muted small d-block">@item.SubLabel</span>
-                                        <span class="d-flex justify-content-end gap-1">
+                                        <pems-flex as="span" justify="end" gap="1">
                                             @if (!item.IsConfirmed)
                                             {
-                                                <span class="badge bg-warning text-dark" title="فقط طبق تطبیق متنی - رابطه‌ی رسمی/تاییدشده نیست">
-                                                    <i class="bi bi-question-circle"></i> احتمالی
-                                                </span>
+                                                <pems-badge tone="warning" title="فقط طبق تطبیق متنی - رابطه‌ی رسمی/تاییدشده نیست">
+                                                    <pems-icon name="bi-question-circle" /> احتمالی
+                                                </pems-badge>
                                             }
                                             @if (item.IsAIProposed)
                                             {
-                                                <span class="badge bg-info text-dark" title="AI-detected, not from a direct database link">
-                                                    <i class="bi bi-robot"></i> AI
-                                                </span>
+                                                <pems-badge tone="info" title="AI-detected, not from a direct database link">
+                                                    <pems-icon name="bi-robot" /> AI
+                                                </pems-badge>
                                             }
-                                        </span>
+                                        </pems-flex>
                                     </span>
-                                </li>
+                                </pems-flex>
                             }
-                        </ul>
+                        </pems-bullet-list>
                     }
                     else
                     {
-                        <p class="text-muted small mb-0">@Localizer["None found."]</p>
+                        <pems-text class="text-muted small mb-0">@Localizer["None found."]</pems-text>
                     }
-                </div>
-            </div>
+                </pems-content-card>
+            </pems-col>
         }
-    </div>
+    </pems-row>
 }

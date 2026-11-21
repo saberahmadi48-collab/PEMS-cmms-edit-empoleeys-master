@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "production-order-plan",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Plan production order",
+    "fa": "برنامه‌ریزی سفارش تولید"
+  },
+  "description": {
+    "en": "Plan production order",
+    "fa": "برنامه‌ریزی سفارش تولید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionOrder",
+      "action": "Plan",
+      "args": {
+        "productionOrderId": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The order was planned.",
+      "fa": "سفارش برنامه‌ریزی شد."
+    },
+    "redirect": "/ProductionOrder/Details/{id}"
+  }
+}

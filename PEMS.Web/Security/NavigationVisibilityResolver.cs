@@ -64,7 +64,8 @@ public class NavigationVisibilityResolver
                 computeDefault = remaining => Task.FromResult(ModuleDefaultByMenuAccess(moduleKey, remaining));
             }
 
-            if (await IsVisibleAsync(roleNames, overrideRows, moduleKey, null, computeDefault))
+            if (await IsVisibleAsync(roleNames, overrideRows, moduleKey, null, computeDefault)
+                || ExplicitItemShowOpensModule(roleNames, overrideRows, moduleKey))
             {
                 visibleModules.Add(moduleKey);
             }
@@ -92,6 +93,25 @@ public class NavigationVisibilityResolver
         }
 
         return new NavigationVisibilitySnapshot(visibleModules, visibleCmmsItems);
+    }
+
+    /// <summary>
+    /// اصلاح باگ «Override آیتم ثبت می‌شود ولی کاربر چیزی در سایدبار نمی‌بیند»: آیتم‌های سطح-دوم فقط وقتی محاسبه
+    /// می‌شوند که ماژول نمایان باشد، و دروازه‌ی پیش‌فرض ماژول فهرست ثابت MenuAccess است. پس برای نقشی خارج از
+    /// آن فهرست (مثلاً MNT.*) یک Override صریح «نمایان» روی آیتم هیچ‌وقت رندر نمی‌شد. اکنون Override صریح
+    /// «نمایان» روی یک آیتم، ماژول والد را هم باز می‌کند - مگر اینکه همان نقش ماژول را صریحاً مخفی کرده باشد
+    /// (Hide صریح ماژول همچنان حاکم است). فقط Override صریح مدیر ماژول را باز می‌کند؛ مجوز (Permission) به‌تنهایی نه،
+    /// تا پیش‌فرض نقش‌های سیستمی تغییر نکند و چیزی بدون تصمیم صریح مدیر جدید نمایان نشود.
+    /// </summary>
+    internal static bool ExplicitItemShowOpensModule(
+        IReadOnlyList<string> roleNames, List<NavigationVisibilityOverrideDto> overrideRows, string moduleKey)
+    {
+        var rolesHidingModule = overrideRows
+            .Where(o => o.ModuleKey == moduleKey && o.ItemKey == null && !o.IsVisible)
+            .Select(o => o.RoleName).ToHashSet();
+
+        return overrideRows.Any(o => o.ModuleKey == moduleKey && o.ItemKey != null && o.IsVisible
+                                     && roleNames.Contains(o.RoleName) && !rolesHidingModule.Contains(o.RoleName));
     }
 
     private static async Task<bool> IsVisibleAsync(
@@ -146,7 +166,9 @@ public class NavigationVisibilityResolver
             }
 
             var ov = overrideRows.FirstOrDefault(o => o.ModuleKey == moduleKey && o.ItemKey == null);
-            var effective = ov?.IsVisible ?? defaultVisible;
+            var openedByItem = ov == null && !defaultVisible && ExplicitItemShowOpensModule(new[] { roleName }, overrideRows, moduleKey);
+            var effective = ov?.IsVisible ?? (defaultVisible || openedByItem);
+            if (openedByItem) source = "Opened by an explicit item-level override";
             moduleVisible[moduleKey] = effective;
 
             result.Add(new NavigationVisibilityRowDescription

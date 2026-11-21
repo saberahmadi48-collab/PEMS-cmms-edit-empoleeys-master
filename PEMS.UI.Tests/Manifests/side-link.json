@@ -1,0 +1,74 @@
+{
+  "key": "side-link",
+  "component": "PEMS.UI.Components.PemsSideLink",
+  "category": "navigation",
+  "icon": "bi-layout-sidebar",
+  "nameKey": "component.side-link",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "look": {
+        "type": "string"
+      },
+      "active": {
+        "type": "boolean"
+      },
+      "icon": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "count": {
+        "type": [
+          "string",
+          "integer",
+          "null"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "hot": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "SideLinkOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "look": "cartable",
+    "active": true,
+    "icon": "bi-inbox",
+    "count": 3,
+    "hot": "ct-count--alert"
+  }
+}

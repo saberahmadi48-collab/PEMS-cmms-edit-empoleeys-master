@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "crew-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Crews",
+    "fa": "گروه‌های کاری"
+  },
+  "description": {
+    "en": "Crews",
+    "fa": "گروه‌های کاری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CrewAdmin",
+      "action": "Crews"
+    }
+  }
+}

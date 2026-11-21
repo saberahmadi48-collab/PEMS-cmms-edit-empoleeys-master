@@ -1,0 +1,110 @@
+{
+  "kind": "data-source",
+  "key": "designer-field-kinds",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Field kinds",
+    "fa": "نوع‌های فیلد"
+  },
+  "description": {
+    "en": "The kinds of a form field the designer offers",
+    "fa": "نوع‌های فیلد فرم"
+  },
+  "payload": {
+    "kind": "static",
+    "items": [
+      {
+        "value": "text",
+        "label": {
+          "en": "text",
+          "fa": "text"
+        }
+      },
+      {
+        "value": "textArea",
+        "label": {
+          "en": "textArea",
+          "fa": "textArea"
+        }
+      },
+      {
+        "value": "number",
+        "label": {
+          "en": "number",
+          "fa": "number"
+        }
+      },
+      {
+        "value": "date",
+        "label": {
+          "en": "date",
+          "fa": "date"
+        }
+      },
+      {
+        "value": "select",
+        "label": {
+          "en": "select",
+          "fa": "select"
+        }
+      },
+      {
+        "value": "checkbox",
+        "label": {
+          "en": "checkbox",
+          "fa": "checkbox"
+        }
+      },
+      {
+        "value": "switch",
+        "label": {
+          "en": "switch",
+          "fa": "switch"
+        }
+      },
+      {
+        "value": "file",
+        "label": {
+          "en": "file",
+          "fa": "file"
+        }
+      },
+      {
+        "value": "richText",
+        "label": {
+          "en": "richText",
+          "fa": "richText"
+        }
+      },
+      {
+        "value": "password",
+        "label": {
+          "en": "password",
+          "fa": "password"
+        }
+      },
+      {
+        "value": "money",
+        "label": {
+          "en": "money",
+          "fa": "money"
+        }
+      },
+      {
+        "value": "time",
+        "label": {
+          "en": "time",
+          "fa": "time"
+        }
+      },
+      {
+        "value": "radio",
+        "label": {
+          "en": "radio",
+          "fa": "radio"
+        }
+      }
+    ]
+  }
+}

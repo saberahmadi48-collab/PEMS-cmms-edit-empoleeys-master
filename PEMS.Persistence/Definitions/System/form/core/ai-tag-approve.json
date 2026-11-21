@@ -1,0 +1,76 @@
+{
+  "kind": "form",
+  "key": "ai-tag-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve an extracted tag",
+    "fa": "تأیید تگ استخراج‌شده"
+  },
+  "description": {
+    "en": "Link an AI extracted tag to an equipment and approve it",
+    "fa": "وصل کردن تگ استخراج‌شده به تجهیز و تأیید آن"
+  },
+  "payload": {
+    "id": "ai-tag-approve",
+    "title": {
+      "en": "Approve tag",
+      "fa": "تأیید تگ"
+    },
+    "submitLabel": {
+      "en": "Approve",
+      "fa": "تأیید"
+    },
+    "actionKey": "ai-tag-approve",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "extractedTagId",
+        "label": {
+          "en": "Extracted tag id",
+          "fa": "شناسه تگ استخراج‌شده"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "The tag is required.",
+            "fa": "تگ الزامی است."
+          }
+        }
+      },
+      {
+        "name": "attachmentId",
+        "label": {
+          "en": "File id",
+          "fa": "شناسه فایل"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "The file is required.",
+            "fa": "فایل الزامی است."
+          }
+        }
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment",
+          "fa": "تجهیز"
+        },
+        "kind": "select",
+        "required": true,
+        "span": 2,
+        "optionsFrom": "ai-extraction-equipment-options",
+        "messages": {
+          "required": {
+            "en": "Choose the equipment.",
+            "fa": "تجهیز را انتخاب کنید."
+          }
+        }
+      }
+    ]
+  }
+}

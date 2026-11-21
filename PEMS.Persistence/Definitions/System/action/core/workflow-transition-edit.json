@@ -1,0 +1,50 @@
+{
+  "kind": "action",
+  "key": "workflow-transition-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a transition",
+    "fa": "ذخیره‌ی گذار"
+  },
+  "description": {
+    "en": "Save a transition",
+    "fa": "ذخیره‌ی گذار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "SaveTransitionOf",
+      "args": {
+        "id": "field:id",
+        "transition": {
+          "FromStageId": "field:fromStageId",
+          "ToStageId": "field:toStageId",
+          "ActionType": "field:actionType",
+          "Label": "field:label",
+          "LabelFa": "field:labelFa",
+          "RequiredPermission": "field:requiredPermission",
+          "ConditionExpression": "field:conditionExpression",
+          "Priority": "field:priority",
+          "ForbidInitiator": "field:forbidInitiator"
+        }
+      },
+      "load": {
+        "operation": {
+          "model": "WorkflowManagement",
+          "action": "TransitionOf",
+          "args": {
+            "id": "param:id"
+          }
+        }
+      }
+    },
+    "success": {
+      "en": "Transition saved.",
+      "fa": "گذار ذخیره شد."
+    },
+    "redirect": "/p/workflow-management"
+  }
+}

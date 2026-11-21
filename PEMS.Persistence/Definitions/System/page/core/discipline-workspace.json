@@ -1,0 +1,621 @@
+{
+  "kind": "page",
+  "key": "discipline-workspace",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline workspace",
+    "fa": "فضای کاری دیسیپلین"
+  },
+  "description": {
+    "en": "One discipline: tasks, documents, equipment, VDR and MR/MRQ (page definition)",
+    "fa": "یک دیسیپلین: وظایف، مدارک، تجهیزات، VDR و MR/MRQ (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "discipline-workspace",
+    "permission": "DisciplineWorkspace.View",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "dw-filters",
+            "resetUrl": "/p/discipline-workspaces",
+            "fields": [
+              {
+                "name": "id",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "kind": "select",
+                "value": "{{params.id}}",
+                "options": []
+              },
+              {
+                "name": "projectId",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "kind": "select",
+                "value": "{{params.projectId}}",
+                "options": []
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "id",
+                "source": "/d/dw-disciplines",
+                "valueField": "value",
+                "labelField": "label"
+              },
+              {
+                "field": "projectId",
+                "source": "/d/dw-projects",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "t-title",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Workspace",
+              "fa": "فضای کاری"
+            },
+            "icon": "bi-diagram-3"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/dw-summary?f.id={{params.id|url}}&f.projectId={{params.projectId|url}}",
+              "first": true,
+              "map": {
+                "value": "title"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-documents",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Documents",
+              "fa": "مدارک"
+            },
+            "icon": "bi-file-earmark-text"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/dw-summary?f.id={{params.id|url}}&f.projectId={{params.projectId|url}}",
+              "first": true,
+              "map": {
+                "value": "documents"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-pending",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Pending",
+              "fa": "در انتظار"
+            },
+            "icon": "bi-hourglass-split",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/dw-summary?f.id={{params.id|url}}&f.projectId={{params.projectId|url}}",
+              "first": true,
+              "map": {
+                "value": "pending"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-equipment",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Equipment",
+              "fa": "تجهیزات"
+            },
+            "icon": "bi-gear",
+            "tone": "success"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/dw-summary?f.id={{params.id|url}}&f.projectId={{params.projectId|url}}",
+              "first": true,
+              "map": {
+                "value": "equipment"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-vdr",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "VDR items",
+              "fa": "اقلام VDR"
+            },
+            "icon": "bi-journal-check"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/dw-summary?f.id={{params.id|url}}&f.projectId={{params.projectId|url}}",
+              "first": true,
+              "map": {
+                "value": "vdrItems"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-open-tasks",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Open tasks",
+              "fa": "وظایف باز"
+            },
+            "icon": "bi-list-task"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/dw-summary?f.id={{params.id|url}}&f.projectId={{params.projectId|url}}",
+              "first": true,
+              "map": {
+                "value": "openTasks"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-overdue",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Overdue tasks",
+              "fa": "وظایف معوق"
+            },
+            "icon": "bi-exclamation-triangle",
+            "tone": "danger"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/dw-summary?f.id={{params.id|url}}&f.projectId={{params.projectId|url}}",
+              "first": true,
+              "map": {
+                "value": "overdueTasks"
+              }
+            }
+          }
+        },
+        {
+          "id": "h-tasks",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-tasks",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Tasks / Activities / Deliverables",
+                  "fa": "وظایف / فعالیت‌ها / خروجی‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "add-task",
+          "component": "content-blocks",
+          "options": {
+            "id": "add-task",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/discipline-task?disciplineId={{params.id|url}}",
+                "text": {
+                  "en": "Add a task",
+                  "fa": "افزودن وظیفه"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "tasks",
+          "component": "data-grid",
+          "options": {
+            "id": "tasks",
+            "idField": "taskId",
+            "columns": [
+              {
+                "key": "type",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 260
+              },
+              {
+                "key": "project",
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "width": 160
+              },
+              {
+                "key": "responsible",
+                "header": {
+                  "en": "Responsible",
+                  "fa": "مسئول"
+                },
+                "width": 160
+              },
+              {
+                "key": "due",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "overdue",
+                "header": {
+                  "en": "Overdue",
+                  "fa": "معوق"
+                },
+                "width": 100
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "type": "actions",
+                "width": 280,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز"
+                    },
+                    "url": "/a/discipline-task-open",
+                    "method": "post"
+                  },
+                  {
+                    "key": "progress",
+                    "label": {
+                      "en": "In progress",
+                      "fa": "در جریان"
+                    },
+                    "url": "/a/discipline-task-in-progress",
+                    "method": "post"
+                  },
+                  {
+                    "key": "done",
+                    "label": {
+                      "en": "Completed",
+                      "fa": "تکمیل"
+                    },
+                    "url": "/a/discipline-task-completed",
+                    "method": "post"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 320,
+            "url": "/d/dw-tasks?f.id={{params.id|url}}&f.projectId={{params.projectId|url}}"
+          }
+        },
+        {
+          "id": "h-docs",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-docs",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Documents",
+                  "fa": "مدارک"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "documents",
+          "component": "data-grid",
+          "options": {
+            "id": "documents",
+            "idField": "documentId",
+            "columns": [
+              {
+                "key": "documentNo",
+                "header": {
+                  "en": "Doc No",
+                  "fa": "شماره مدرک"
+                },
+                "width": 180
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 320
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 140
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/EngineeringDocuments/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 320,
+            "url": "/d/dw-documents?f.id={{params.id|url}}&f.projectId={{params.projectId|url}}"
+          }
+        },
+        {
+          "id": "h-equipment",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-equipment",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Equipment",
+                  "fa": "تجهیزات"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "equipment",
+          "component": "data-grid",
+          "options": {
+            "id": "equipment",
+            "idField": "equipmentId",
+            "columns": [
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 180
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 320
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/Equipment/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 320,
+            "url": "/d/dw-equipment?f.id={{params.id|url}}&f.projectId={{params.projectId|url}}"
+          }
+        },
+        {
+          "id": "h-vdr",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-vdr",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "VDR items",
+                  "fa": "اقلام VDR"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "vdr",
+          "component": "data-grid",
+          "options": {
+            "id": "vdr",
+            "idField": "vdrItemId",
+            "columns": [
+              {
+                "key": "documentNumber",
+                "header": {
+                  "en": "Doc No",
+                  "fa": "شماره مدرک"
+                },
+                "width": 200
+              },
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 240
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 140
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/VDR/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 320,
+            "url": "/d/dw-vdr-items?f.id={{params.id|url}}&f.projectId={{params.projectId|url}}"
+          }
+        },
+        {
+          "id": "h-mr",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-mr",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "MR / MRQ",
+                  "fa": "MR / MRQ"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "mrs",
+          "component": "data-grid",
+          "options": {
+            "id": "mrs",
+            "idField": "mrNumber",
+            "columns": [
+              {
+                "key": "mrNumber",
+                "header": {
+                  "en": "MR No",
+                  "fa": "شماره MR"
+                },
+                "width": 200
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 140
+              }
+            ],
+            "pageSize": 10,
+            "height": 320,
+            "url": "/d/dw-mrs?f.id={{params.id|url}}&f.projectId={{params.projectId|url}}"
+          }
+        }
+      ]
+    }
+  }
+}

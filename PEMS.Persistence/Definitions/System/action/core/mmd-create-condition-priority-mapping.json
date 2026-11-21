@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "mmd-create-condition-priority-mapping",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateConditionPriorityMapping",
+    "fa": "نگاشت Condition→Priority ساخته شد."
+  },
+  "description": {
+    "en": "CreateConditionPriorityMapping",
+    "fa": "نگاشت Condition→Priority ساخته شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "CreateConditionPriorityMapping",
+      "args": {
+        "condition": "field:condition",
+        "priority": "field:priority"
+      }
+    },
+    "success": {
+      "en": "نگاشت Condition→Priority ساخته شد.",
+      "fa": "نگاشت Condition→Priority ساخته شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

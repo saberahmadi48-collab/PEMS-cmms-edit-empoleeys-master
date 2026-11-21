@@ -1,0 +1,35 @@
+{
+  "kind": "data-source",
+  "key": "routing-rules-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI routing rules rows",
+    "fa": "ردیف‌های قواعد مسیریابی هوش مصنوعی"
+  },
+  "description": {
+    "en": "The rows of the ai routing rules grid",
+    "fa": "ردیف‌های جدول قواعد مسیریابی هوش مصنوعی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "RoutingRule",
+      "fields": [
+        "DocumentCategory",
+        "TargetModule",
+        "AllowAutoRouting",
+        "Description"
+      ],
+      "search": [
+        "DocumentCategory",
+        "TargetModule",
+        "Description"
+      ],
+      "sort": [
+        "DocumentCategory"
+      ]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "action",
+  "key": "work-order-set-supply-code",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set the supply code of a material",
+    "fa": "کد تأمین متریال"
+  },
+  "description": {
+    "en": "Set the supply code of a material",
+    "fa": "کد تأمین متریال"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderWarehouse",
+      "action": "SetSupplyCode",
+      "args": {
+        "actorEmployeeId": "context:employeeId",
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "workOrderMaterialId": "field:workOrderMaterialId",
+        "workOrderId": "field:workOrderId",
+        "supplyCode": "field:supplyCode"
+      },
+      "sectionGuard": {
+        "section": "RequiredMaterials",
+        "action": "Edit",
+        "workOrderId": "field:workOrderId",
+        "recordRef": "field:workOrderMaterialId"
+      }
+    },
+    "success": {
+      "en": "The supply code was saved.",
+      "fa": "کد تأمین ذخیره شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

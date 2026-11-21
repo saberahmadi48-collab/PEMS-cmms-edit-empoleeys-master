@@ -25,6 +25,8 @@ public class EngineeringDocumentSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "EngineeringDocument";
     public string DisplayName => "مدارک مهندسی (MDR)";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser(rowScope: "own discipline unless EngineeringDocuments/ViewAllDisciplines");
 
     public EngineeringDocumentSearchProvider(PEMSDbContext context, IKnowledgeBaseService knowledgeBaseService,
         IAccessControlService accessControlService, ICurrentUserContext currentUser)

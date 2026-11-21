@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "dw-project-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Workspace choices: Projects",
+    "fa": "گزینه‌های فضای کاری: Projects"
+  },
+  "description": {
+    "en": "Workspace choices: Projects",
+    "fa": "گزینه‌های فضای کاری: Projects"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "DisciplineWorkspace",
+      "action": "Projects",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "pc-admin-add-section-group",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a commodity group to a section",
+    "fa": "افزودن گروه کالا به بخش"
+  },
+  "description": {
+    "en": "Add a commodity group to a section",
+    "fa": "افزودن گروه کالا به بخش"
+  },
+  "payload": {
+    "id": "pc-admin-add-section-group",
+    "title": {
+      "en": "Add a commodity group to a section",
+      "fa": "افزودن گروه کالا به بخش"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-admin-add-section-group",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "sectionId",
+        "label": {
+          "en": "Section",
+          "fa": "بخش"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "commodityGroupId",
+        "label": {
+          "en": "Commodity group id",
+          "fa": "شناسه‌ی گروه کالا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

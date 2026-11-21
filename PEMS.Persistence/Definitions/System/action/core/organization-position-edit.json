@@ -1,0 +1,43 @@
+{
+  "kind": "action",
+  "key": "organization-position-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a position",
+    "fa": "ویرایش سمت"
+  },
+  "description": {
+    "en": "Edit a position",
+    "fa": "ویرایش سمت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Organization",
+      "action": "UpdatePosition",
+      "args": {
+        "positionId": "field:id",
+        "title": "field:title",
+        "positionCode": "field:positionCode",
+        "departmentId": "field:departmentId",
+        "description": "field:description"
+      },
+      "load": {
+        "operation": {
+          "model": "Organization",
+          "action": "PositionOf",
+          "args": {
+            "positionId": "param:id"
+          }
+        }
+      }
+    },
+    "success": {
+      "en": "Position updated.",
+      "fa": "سمت به‌روز شد."
+    },
+    "redirect": "/p/organization-positions"
+  }
+}

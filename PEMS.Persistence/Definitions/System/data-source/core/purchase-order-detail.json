@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "purchase-order-detail",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Purchase order",
+    "fa": "Purchase order"
+  },
+  "description": {
+    "en": "Purchase order",
+    "fa": "Purchase order"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "Detail",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

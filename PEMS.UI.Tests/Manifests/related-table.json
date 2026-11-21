@@ -1,0 +1,47 @@
+{
+  "key": "related-table",
+  "component": "PEMS.UI.Components.PemsRelatedTable",
+  "category": "list",
+  "icon": "bi-table",
+  "nameKey": "component.related-table",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "dataAttributes": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "additionalProperties": {
+          "type": "string"
+        }
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "RelatedTableOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "tasks"
+  }
+}

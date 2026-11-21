@@ -1,0 +1,20 @@
+{
+  "kind": "data-source",
+  "key": "operation-arguments-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Arguments of an operation",
+    "fa": "آرگومان‌های یک عملیات"
+  },
+  "description": {
+    "en": "One row per argument of an operation with the source the designer suggests",
+    "fa": "هر آرگومان با منبع پیشنهادی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation-arguments",
+    "permission": "Definitions.View",
+    "parameters": {}
+  }
+}

@@ -1,0 +1,699 @@
+{
+  "kind": "page",
+  "key": "pc-request-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part catalogue request",
+    "fa": "درخواست کاتالوگ قطعه"
+  },
+  "description": {
+    "en": "One request: the part information, the route, the history, the notes, the equipment and the attachments, with the workflow commands (page definition)",
+    "fa": "یک درخواست: اطلاعات قطعه، مسیر، تاریخچه، یادداشت‌ها، تجهیزات و پیوست‌ها، با دستورهای گردش کار (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "pc-request-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "pc-request-record",
+            "fields": [
+              {
+                "key": "requestNumber",
+                "label": {
+                  "en": "Request",
+                  "fa": "درخواست"
+                }
+              },
+              {
+                "key": "requestType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "requester",
+                "label": {
+                  "en": "Requester",
+                  "fa": "درخواست‌دهنده"
+                }
+              },
+              {
+                "key": "assignedPartNumber",
+                "label": {
+                  "en": "Part number",
+                  "fa": "شماره‌ی قطعه"
+                }
+              },
+              {
+                "key": "activeStep",
+                "label": {
+                  "en": "Current step",
+                  "fa": "گام جاری"
+                }
+              },
+              {
+                "key": "section",
+                "label": {
+                  "en": "Section",
+                  "fa": "بخش"
+                }
+              },
+              {
+                "key": "technicalClass",
+                "label": {
+                  "en": "Technical class",
+                  "fa": "کلاس فنی"
+                }
+              },
+              {
+                "key": "technicalClassDefinition",
+                "label": {
+                  "en": "Definition (draft only)",
+                  "fa": "تعریف (فقط پیش‌نویس)"
+                }
+              },
+              {
+                "key": "freeFormatText",
+                "label": {
+                  "en": "FREE FORMAT TEXT",
+                  "fa": "FREE FORMAT TEXT"
+                }
+              },
+              {
+                "key": "assetType",
+                "label": {
+                  "en": "Asset type",
+                  "fa": "نوع دارایی"
+                }
+              },
+              {
+                "key": "commodityGroup1",
+                "label": {
+                  "en": "Commodity group 1",
+                  "fa": "گروه کالا ۱"
+                }
+              },
+              {
+                "key": "commodityGroup2",
+                "label": {
+                  "en": "Commodity group 2",
+                  "fa": "گروه کالا ۲"
+                }
+              },
+              {
+                "key": "productFamily",
+                "label": {
+                  "en": "Product family",
+                  "fa": "خانواده‌ی محصول"
+                }
+              },
+              {
+                "key": "unit",
+                "label": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                }
+              },
+              {
+                "key": "manufacturer",
+                "label": {
+                  "en": "Manufacturer",
+                  "fa": "سازنده"
+                }
+              },
+              {
+                "key": "manufacturerPartNumber",
+                "label": {
+                  "en": "Manufacturer part no",
+                  "fa": "شماره قطعه‌ی سازنده"
+                }
+              },
+              {
+                "key": "supplier",
+                "label": {
+                  "en": "Supplier",
+                  "fa": "تأمین‌کننده"
+                }
+              },
+              {
+                "key": "supplierPartNumber",
+                "label": {
+                  "en": "Supplier part no",
+                  "fa": "شماره قطعه‌ی تأمین‌کننده"
+                }
+              },
+              {
+                "key": "price",
+                "label": {
+                  "en": "Price",
+                  "fa": "قیمت"
+                }
+              },
+              {
+                "key": "typeDesignation",
+                "label": {
+                  "en": "Type designation",
+                  "fa": "نوع تعیین"
+                }
+              },
+              {
+                "key": "isCritical",
+                "label": {
+                  "en": "Critical",
+                  "fa": "بحرانی"
+                }
+              },
+              {
+                "key": "isCapital",
+                "label": {
+                  "en": "Capital",
+                  "fa": "سرمایه‌ای"
+                }
+              },
+              {
+                "key": "sparePartSerialNo",
+                "label": {
+                  "en": "Spare part serial",
+                  "fa": "سریال قطعه"
+                }
+              },
+              {
+                "key": "equipmentSerialNo",
+                "label": {
+                  "en": "Equipment serial",
+                  "fa": "سریال تجهیز"
+                }
+              },
+              {
+                "key": "manufacturerDrawingNo",
+                "label": {
+                  "en": "Manufacturer drawing",
+                  "fa": "نقشه‌ی سازنده"
+                }
+              },
+              {
+                "key": "documentNo",
+                "label": {
+                  "en": "Document no",
+                  "fa": "شماره سند"
+                }
+              },
+              {
+                "key": "existingPartNumber",
+                "label": {
+                  "en": "Existing part number (change)",
+                  "fa": "شماره‌ی قطعه‌ی موجود (تغییر)"
+                }
+              },
+              {
+                "key": "planningMethod",
+                "label": {
+                  "en": "Planning method",
+                  "fa": "روش برنامه‌ریزی"
+                }
+              },
+              {
+                "key": "minimumStock",
+                "label": {
+                  "en": "Minimum stock",
+                  "fa": "حداقل موجودی"
+                }
+              },
+              {
+                "key": "maxConsumptionRate",
+                "label": {
+                  "en": "Max consumption rate",
+                  "fa": "حداکثر نرخ مصرف"
+                }
+              },
+              {
+                "key": "firstPurchaseQuantity",
+                "label": {
+                  "en": "First purchase quantity",
+                  "fa": "مقدار خرید اول"
+                }
+              },
+              {
+                "key": "issuedQty",
+                "label": {
+                  "en": "Issued quantity",
+                  "fa": "مقدار صادره"
+                }
+              },
+              {
+                "key": "stockGrade",
+                "label": {
+                  "en": "Stock grade",
+                  "fa": "درجه‌ی موجودی"
+                }
+              },
+              {
+                "key": "wantedReceiptDate",
+                "label": {
+                  "en": "Wanted receipt date",
+                  "fa": "تاریخ دریافت مورد نیاز"
+                },
+                "type": "date"
+              },
+              {
+                "key": "storageVolume",
+                "label": {
+                  "en": "Storage volume",
+                  "fa": "حجم انبار"
+                }
+              },
+              {
+                "key": "createdDate",
+                "label": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "type": "date"
+              },
+              {
+                "key": "submittedDate",
+                "label": {
+                  "en": "Submitted",
+                  "fa": "ارسال"
+                },
+                "type": "date"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-request-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/pc-request-execute?id={{params.id}}",
+                "text": {
+                  "en": "Approve, return or cancel",
+                  "fa": "تأیید، بازگشت یا لغو"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pc-request-retry-routing?id={{params.id}}",
+                "text": {
+                  "en": "Retry the routing (organization blocked)",
+                  "fa": "تلاش مجدد مسیریابی (ساختار سازمانی)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pc-request-add-note?id={{params.id}}",
+                "text": {
+                  "en": "Add a note",
+                  "fa": "افزودن یادداشت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/Warehouse/PartCatalogueRequest/Edit/{{params.id}}",
+                "text": {
+                  "en": "Edit the draft",
+                  "fa": "ویرایش پیش‌نویس"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/x/pc-request-xlsx?id={{params.id}}",
+                "text": {
+                  "en": "Form (Excel)",
+                  "fa": "فرم (Excel)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/x/pc-request-pdf?id={{params.id}}",
+                "text": {
+                  "en": "Form (PDF)",
+                  "fa": "فرم (PDF)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/pc-requests",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "attributes",
+          "component": "def:related-table",
+          "options": {
+            "id": "attributes",
+            "title": {
+              "en": "Attributes",
+              "fa": "ویژگی‌ها"
+            },
+            "url": "/d/pc-request-attributes?f.id={{params.id|url}}",
+            "idField": "name",
+            "columns": [
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 240
+              },
+              {
+                "key": "value",
+                "header": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                },
+                "width": 360
+              }
+            ]
+          }
+        },
+        {
+          "id": "steps",
+          "component": "def:related-table",
+          "options": {
+            "id": "steps",
+            "title": {
+              "en": "Route",
+              "fa": "مسیر"
+            },
+            "url": "/d/pc-request-steps?f.id={{params.id|url}}",
+            "idField": "stepKey",
+            "columns": [
+              {
+                "key": "order",
+                "header": {
+                  "en": "Order",
+                  "fa": "ترتیب"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "stepKey",
+                "header": {
+                  "en": "Step",
+                  "fa": "گام"
+                },
+                "width": 160
+              },
+              {
+                "key": "kind",
+                "header": {
+                  "en": "Kind",
+                  "fa": "نوع"
+                },
+                "width": 110
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "skipReason",
+                "header": {
+                  "en": "Skip reason",
+                  "fa": "دلیل رد شدن"
+                },
+                "width": 200
+              },
+              {
+                "key": "assignedTo",
+                "header": {
+                  "en": "Assigned to",
+                  "fa": "مسئول"
+                },
+                "width": 200
+              },
+              {
+                "key": "decidedDate",
+                "header": {
+                  "en": "Decided",
+                  "fa": "تصمیم"
+                },
+                "width": 150,
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "equipment",
+          "component": "def:related-table",
+          "options": {
+            "id": "equipment",
+            "title": {
+              "en": "Equipment",
+              "fa": "تجهیزات"
+            },
+            "url": "/d/pc-request-equipment?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "text",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 320
+              },
+              {
+                "key": "installedQuantity",
+                "header": {
+                  "en": "Installed quantity",
+                  "fa": "تعداد نصب"
+                },
+                "width": 130,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "attachments",
+          "component": "def:related-table",
+          "options": {
+            "id": "attachments",
+            "title": {
+              "en": "Attachments",
+              "fa": "پیوست‌ها"
+            },
+            "url": "/d/pc-request-attachments?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 300
+              },
+              {
+                "key": "kind",
+                "header": {
+                  "en": "Kind",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "fileSize",
+                "header": {
+                  "en": "Size",
+                  "fa": "اندازه"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "uploadedBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "uploadedDate",
+                "header": {
+                  "en": "Uploaded",
+                  "fa": "بارگذاری"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 140,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "download",
+                    "label": {
+                      "en": "Download",
+                      "fa": "دریافت"
+                    },
+                    "url": "/x/pc-request-attachment?id={{params.id}}&attachmentId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "approvals",
+          "component": "def:related-table",
+          "options": {
+            "id": "approvals",
+            "title": {
+              "en": "History",
+              "fa": "تاریخچه"
+            },
+            "url": "/d/pc-request-approvals?f.id={{params.id|url}}",
+            "idField": "actionDate",
+            "columns": [
+              {
+                "key": "actionDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 150,
+                "type": "date"
+              },
+              {
+                "key": "stepKey",
+                "header": {
+                  "en": "Step",
+                  "fa": "گام"
+                },
+                "width": 140
+              },
+              {
+                "key": "action",
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                },
+                "width": 120
+              },
+              {
+                "key": "actor",
+                "header": {
+                  "en": "Person",
+                  "fa": "فرد"
+                },
+                "width": 180
+              },
+              {
+                "key": "comment",
+                "header": {
+                  "en": "Comment",
+                  "fa": "توضیح"
+                },
+                "width": 300
+              },
+              {
+                "key": "toStatus",
+                "header": {
+                  "en": "To status",
+                  "fa": "وضعیت جدید"
+                },
+                "width": 120
+              }
+            ]
+          }
+        },
+        {
+          "id": "notes",
+          "component": "def:related-table",
+          "options": {
+            "id": "notes",
+            "title": {
+              "en": "Notes",
+              "fa": "یادداشت‌ها"
+            },
+            "url": "/d/pc-request-notes?f.id={{params.id|url}}",
+            "idField": "createdDate",
+            "columns": [
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 150,
+                "type": "date"
+              },
+              {
+                "key": "author",
+                "header": {
+                  "en": "Person",
+                  "fa": "فرد"
+                },
+                "width": 180
+              },
+              {
+                "key": "stepKey",
+                "header": {
+                  "en": "Step",
+                  "fa": "گام"
+                },
+                "width": 140
+              },
+              {
+                "key": "text",
+                "header": {
+                  "en": "Text",
+                  "fa": "متن"
+                },
+                "width": 420
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "form",
+  "key": "meeting-mark-attended",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark attendance",
+    "fa": "ثبت حضور"
+  },
+  "description": {
+    "en": "Mark attendance",
+    "fa": "ثبت حضور"
+  },
+  "payload": {
+    "id": "meeting-mark-attended",
+    "title": {
+      "en": "Mark attendance",
+      "fa": "ثبت حضور"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "meeting-mark-attended",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "meetingAttendeeId",
+        "label": {
+          "en": "Attendee id",
+          "fa": "شناسه‌ی حاضر"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "meetingId",
+        "label": {
+          "en": "Meeting id",
+          "fa": "شناسه‌ی جلسه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "attended",
+        "label": {
+          "en": "Attended",
+          "fa": "حاضر"
+        },
+        "kind": "checkbox"
+      }
+    ]
+  }
+}

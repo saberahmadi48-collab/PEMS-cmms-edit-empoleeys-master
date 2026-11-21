@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "settings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Settings (old address)",
+    "fa": "تنظیمات (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Settings (old address)",
+    "fa": "تنظیمات (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Settings/{*rest}",
+    "target": "/p/settings",
+    "permanent": false
+  }
+}

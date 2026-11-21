@@ -29,12 +29,16 @@ public static class ReplenishmentHistoryActions
     public const string Closed = "Closed";
     public const string NotDefinitive = "NotDefinitive";
     public const string DefinitiveAgain = "DefinitiveAgain";
+    /// <summary>SCRUM-471: sent to the pre-procurement queue (status Converted).</summary>
+    public const string SentToProcurement = "SentToProcurement";
 }
 
 public static class ReplenishmentCloseReasons
 {
     public const string ShortageResolved = "ShortageResolved";
     public const string NoRemainingDemand = "NoRemainingDemand";
+    /// <summary>SCRUM-471: the shortage is already in procurement (live demands / MRs), so nothing is left to recommend.</summary>
+    public const string CoveredByProcurement = "CoveredByProcurement";
 }
 
 /// <summary>

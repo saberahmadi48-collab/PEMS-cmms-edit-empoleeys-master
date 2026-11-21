@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "job-plans",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Job plans (old address)",
+    "fa": "Job plans (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Job plans (old address)",
+    "fa": "Job plans (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "JobPlan",
+    "target": "/p/job-plans",
+    "permanent": false
+  }
+}

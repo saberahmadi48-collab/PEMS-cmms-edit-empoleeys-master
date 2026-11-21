@@ -1,0 +1,348 @@
+{
+  "kind": "page",
+  "key": "job-plan-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Job plan",
+    "fa": "طرح کار"
+  },
+  "description": {
+    "en": "One job plan with its tasks, required skills and materials and their commands (page definition)",
+    "fa": "یک طرح کار با مراحل، مهارت‌ها و مواد لازم و دستورهای آنها (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "job-plan-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "job-plan-record",
+            "fields": [
+              {
+                "key": "jobPlanNumber",
+                "label": {
+                  "en": "Number",
+                  "fa": "شماره"
+                }
+              },
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
+              },
+              {
+                "key": "scope",
+                "label": {
+                  "en": "Scope",
+                  "fa": "محدوده"
+                },
+                "wide": true
+              },
+              {
+                "key": "estimatedDurationHours",
+                "label": {
+                  "en": "Estimated hours",
+                  "fa": "ساعت تخمینی"
+                }
+              },
+              {
+                "key": "safetyRequirements",
+                "label": {
+                  "en": "Safety requirements",
+                  "fa": "الزامات ایمنی"
+                },
+                "wide": true
+              },
+              {
+                "key": "equipmentClass",
+                "label": {
+                  "en": "Equipment class",
+                  "fa": "کلاس تجهیز"
+                }
+              },
+              {
+                "key": "permitRequired",
+                "label": {
+                  "en": "Permit required",
+                  "fa": "نیازمند مجوز"
+                }
+              },
+              {
+                "key": "lotoRequired",
+                "label": {
+                  "en": "LOTO required",
+                  "fa": "نیازمند LOTO"
+                }
+              },
+              {
+                "key": "isActive",
+                "label": {
+                  "en": "Active",
+                  "fa": "فعال"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/job-plan-head",
+              "idField": "jobPlanId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/job-plan-edit?jobPlanId={{params.id}}",
+                "text": {
+                  "en": "Edit",
+                  "fa": "ویرایش"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/job-plan-add-task?jobPlanId={{params.id}}",
+                "text": {
+                  "en": "Add a task",
+                  "fa": "افزودن مرحله"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/job-plan-add-skill?jobPlanId={{params.id}}",
+                "text": {
+                  "en": "Add a required skill",
+                  "fa": "افزودن مهارت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/job-plan-add-material?jobPlanId={{params.id}}",
+                "text": {
+                  "en": "Add a required material",
+                  "fa": "افزودن ماده"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/job-plans",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "tasks",
+          "component": "def:related-table",
+          "options": {
+            "id": "tasks",
+            "title": {
+              "en": "Tasks",
+              "fa": "مراحل"
+            },
+            "url": "/d/job-plan-tasks?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "taskNumber",
+                "header": {
+                  "en": "No",
+                  "fa": "شماره"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 260
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 300
+              },
+              {
+                "key": "estimatedDurationMinutes",
+                "header": {
+                  "en": "Minutes",
+                  "fa": "دقیقه"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/f/job-plan-remove-task?maintenanceTaskId={id}&jobPlanId={{params.id}}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "skills",
+          "component": "def:related-table",
+          "options": {
+            "id": "skills",
+            "title": {
+              "en": "Required skills",
+              "fa": "مهارت‌های لازم"
+            },
+            "url": "/d/job-plan-skills?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "skill",
+                "header": {
+                  "en": "Skill",
+                  "fa": "مهارت"
+                },
+                "width": 220
+              },
+              {
+                "key": "minimumProficiency",
+                "header": {
+                  "en": "Minimum proficiency",
+                  "fa": "حداقل تسلط"
+                },
+                "width": 160
+              },
+              {
+                "key": "plannedHours",
+                "header": {
+                  "en": "Planned hours",
+                  "fa": "ساعت"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/f/job-plan-remove-skill?jobPlanRequiredSkillId={id}&jobPlanId={{params.id}}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "materials",
+          "component": "def:related-table",
+          "options": {
+            "id": "materials",
+            "title": {
+              "en": "Required materials",
+              "fa": "مواد لازم"
+            },
+            "url": "/d/job-plan-materials?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "materialCode",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 140
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 300
+              },
+              {
+                "key": "requiredQuantity",
+                "header": {
+                  "en": "Quantity",
+                  "fa": "مقدار"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/f/job-plan-remove-material?jobPlanRequiredMaterialId={id}&jobPlanId={{params.id}}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "JobPlan.View"
+  }
+}

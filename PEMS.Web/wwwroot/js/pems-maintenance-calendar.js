@@ -14,16 +14,8 @@
 
     function showError(message) {
         var container = document.querySelector('.content-card');
-        if (!container) { window.alert(message); return; }
-        var banner = document.createElement('div');
-        banner.className = 'alert alert-danger alert-dismissible fade show mb-3';
-        banner.setAttribute('role', 'alert');
-        banner.textContent = message;
-        var closeBtn = document.createElement('button');
-        closeBtn.type = 'button';
-        closeBtn.className = 'btn-close';
-        closeBtn.setAttribute('data-bs-dismiss', 'alert');
-        banner.appendChild(closeBtn);
+        if (!container) { if (window.PemsErrors) window.PemsErrors.show(message); return; }   // SCRUM-549: never a browser pop-up
+        var banner = window.PemsTemplate.fill(window.PemsTemplate.clone('mc-error'), { text: message });
         container.parentElement.insertBefore(banner, container);
     }
 

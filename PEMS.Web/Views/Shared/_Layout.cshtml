@@ -7,6 +7,7 @@
 @inject IStringLocalizer<SharedResource> Localizer
 @inject INotificationService NotificationService
 @inject ICurrentUserService CurrentUser
+@inject PEMS.Web.Navigation.IDynamicSidebarAvailability DynamicSidebar
 @{
     var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
     string LocalizedPageTitle(string? s) { if (string.IsNullOrWhiteSpace(s)) return s ?? ""; var l = Localizer[s]; return l.ResourceNotFound ? s : l.Value; }
@@ -21,7 +22,7 @@
         : 0;
 }
 <!DOCTYPE html>
-<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" dir="@(isRtl ? "rtl" : "ltr")" data-theme="@currentTheme">
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" dir="@(isRtl ? "rtl" : "ltr")" data-theme="@currentTheme" data-bs-theme="@(currentTheme is "turquoise" or "dark" ? "dark" : null)">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -43,8 +44,14 @@
     }
 
     <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/tokens.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-ui.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-errors.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/jalalidatepicker/jalalidatepicker.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-date.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-global-search.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-stage-diagram.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-data-grid.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
@@ -52,6 +59,8 @@
        بعد از همه‌ی فایل‌های دیگر بارگذاری می‌شود تا بتواند override های محدود و هدفمند خودش
        را (فقط روی Turquoise + کلاس‌های Loading/Skeleton سراسری) اعمال کند. *@
     <link rel="stylesheet" href="~/css/pems-glass.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-themes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-inline-styles.css" asp-append-version="true" />
 
     @if (isRtl)
     {
@@ -65,32 +74,49 @@
     }
 
     <link rel="stylesheet" href="~/PEMS.Web.styles.css" asp-append-version="true" />
+    @* SCRUM-57: searchable selects on every page (Tom Select, vendored) *@
+    <link rel="stylesheet" href="~/lib/tom-select/tom-select.bootstrap5.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-select.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-grid.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-views.css" asp-append-version="true" />
+    @* SCRUM-64: command palette (Ctrl+K) *@
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-command-palette.css" asp-append-version="true" />
+    @* SCRUM-59: the one rich-text editor (Quill, vendored, loaded by pems-rte.js only on pages with a rich-text field) *@
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-rte.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body class="@(isAdminArea ? "admin-area" : "")" data-user-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value">
+<body class="@(isAdminArea ? "admin-area" : "")" data-user-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value"
+      data-pems-date-invalid="@Localizer["Date_Invalid"]" data-pems-error-generic="@Localizer["Err_Generic"]" data-pems-error-offline="@Localizer["Err_Offline"]" data-pems-error-timeout="@Localizer["Err_Timeout"]" data-pems-error-signin="@Localizer["Err_SignIn"]" data-pems-error-forbidden="@Localizer["Err_Forbidden"]" data-pems-error-notfound="@Localizer["Err_NotFound"]" data-pems-error-conflict="@Localizer["Err_Conflict"]" data-pems-error-invalid="@Localizer["Err_Invalid"]" data-pems-error-toomany="@Localizer["Err_TooMany"]" data-pems-error-unavailable="@Localizer["Err_Unavailable"]" data-pems-error-server="@Localizer["Err_Server"]" data-pems-error-reference="@Localizer["Err_Reference"]" data-pems-error-copy="@Localizer["Err_Copy"]" data-pems-error-copied="@Localizer["Err_Copied"]" data-pems-error-close="@Localizer["Err_Close"]"
+      data-pems-confirm-title="@Localizer["Confirm_Title"]" data-pems-confirm-ok="@Localizer["Confirm_Ok"]" data-pems-confirm-cancel="@Localizer["Confirm_Cancel"]"
+      data-pems-select-no-results="@Localizer["Sel_NoResults"]" data-pems-select-loading="@Localizer["Sel_Loading"]" data-pems-select-placeholder="@Localizer["Sel_Placeholder"]" data-pems-skeleton-label="@Localizer["Loading"]"
+      data-pems-rte-texts="@PEMS.Web.Helpers.RichTextEditorTexts.Json(Localizer)" data-pems-rte-lib="@Url.Content("~/lib/quill/")">
+    <pems-link class="pems-skip-link" href="#pemsMainContent">@Localizer["Shell_SkipToContent"]</pems-link>
     <header class="pems-topbar">
-        <div class="d-flex align-items-center gap-2">
-            <button class="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="@Localizer["Shell_ToggleMenu"]">
-                <i class="bi bi-list"></i>
-            </button>
-            <a class="brand text-decoration-none" asp-controller="Home" asp-action="Index" asp-area="">
-                <span class="brand-icon"><i class="bi bi-diagram-3-fill"></i></span>
+        <pems-flex align="center" gap="2">
+            <pems-button plain="true" css="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" aria-label="@Localizer["Shell_ToggleMenu"]">
+                <pems-icon name="bi-list" />
+            </pems-button>
+            <pems-link class="brand text-decoration-none" asp-controller="Home" asp-action="Index" asp-area="">
+                <span class="brand-icon"><pems-icon name="bi-diagram-3-fill" /></span>
                 <span class="d-none d-sm-inline">@Localizer["PEMS"]</span>
-            </a>
-        </div>
+            </pems-link>
+        </pems-flex>
 
         <div class="pems-search d-none d-md-block">
-            <form class="d-flex" role="search" asp-controller="GlobalSearch" asp-action="Index" asp-area="" method="get">
-                <input type="search" name="q" class="form-control" placeholder="@Localizer["Search"]" />
-            </form>
+            <pems-form role="search" action="/p/global-search" method="get"><pems-flex>
+                <pems-input type="search" name="q" placeholder="@Localizer["Palette_OpenHint"]" aria-label="@Localizer["Palette_OpenHint"]" aria-keyshortcuts="Control+K" data-pems-command-palette-trigger />
+            </pems-flex></pems-form>
         </div>
+        <pems-button tone="none" css="btn-link text-secondary d-md-none px-2" type="button" data-pems-command-palette-open title="@Localizer["Palette_OpenHint"]" aria-label="@Localizer["Palette_OpenHint"]" aria-keyshortcuts="Control+K">
+            <pems-icon name="bi-search" aria-hidden="true" />
+        </pems-button>
 
-        <div class="d-flex align-items-center gap-3">
+        <pems-flex align="center" gap="3">
             <div class="dropdown">
-                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Shell_ChangeTheme"]">
-                    <i class="bi bi-palette-fill fs-5"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
+                <pems-link href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Shell_ChangeTheme"]">
+                    <pems-icon name="bi-palette-fill" css="fs-5" />
+                </pems-link>
+                <pems-dropdown-menu end="true">
                     @* طبق «PEMS Global Three-Theme Design System»: محصول دقیقاً سه تم قابل‌انتخاب دارد -
                        ocean/warm/midnight از این منو حذف شدند (نه از CSS - همان‌جا دست‌نخورده مانده تا
                        چیزی نشکند)؛ turquoise (فیروزه‌ای ایرانی) امضای بصری اختصاصی PEMS است. *@
@@ -99,187 +125,169 @@
                         ("turquoise", "bi-gem", Localizer["Theme_Turquoise"].Value)
                     })
                     {
-                        <li>
-                            <a class="dropdown-item theme-switch @(currentTheme == themeValue ? "active" : "")"
+                        <pems-bullet>
+                            <pems-link class="dropdown-item theme-switch @(currentTheme == themeValue ? "active" : "")"
                                href="@Url.Action("SetTheme", "Theme", new { area = "", theme = themeValue, returnUrl = currentUrl })">
-                                <i class="bi @icon me-2"></i> @label
-                            </a>
-                        </li>
+                                <pems-icon css="@icon me-2" /> @label
+                            </pems-link>
+                        </pems-bullet>
                     }
-                </ul>
+                </pems-dropdown-menu>
             </div>
 
             <div class="dropdown">
-                <a href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Shell_Language"]">
-                    <i class="bi bi-translate fs-5"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                        <a class="dropdown-item @(!isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "en", returnUrl = currentUrl })">English</a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item @(isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "fa", returnUrl = currentUrl })">فارسی</a>
-                    </li>
-                </ul>
+                <pems-link href="#" class="text-secondary dropdown-toggle" data-bs-toggle="dropdown" title="@Localizer["Shell_Language"]">
+                    <pems-icon name="bi-translate" css="fs-5" />
+                </pems-link>
+                <pems-dropdown-menu end="true">
+                    <pems-bullet>
+                        <pems-link class="dropdown-item @(!isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "en", returnUrl = currentUrl })">English</pems-link>
+                    </pems-bullet>
+                    <pems-bullet>
+                        <pems-link class="dropdown-item @(isRtl ? "active" : "") culture-switch" href="@Url.Action("SetCulture", "Culture", new { area = "", culture = "fa", returnUrl = currentUrl })">فارسی</pems-link>
+                    </pems-bullet>
+                </pems-dropdown-menu>
             </div>
 
             @await Html.PartialAsync("_ContextualHelpButton")
 
-            <a asp-controller="Help" asp-action="Index" asp-area="" class="text-secondary" title="@(isRtl ? "مرکز راهنما" : "Help Center")">
-                <i class="bi bi-question-circle fs-5"></i>
-            </a>
+            <pems-link href="/p/help" class="text-secondary" title="@(isRtl ? "مرکز راهنما" : "Help Center")">
+                <pems-icon name="bi-question-circle" css="fs-5" />
+            </pems-link>
 
             <div class="dropdown">
-                <a href="#" class="text-secondary position-relative dropdown-toggle" data-bs-toggle="dropdown" id="notifBell" title="@Localizer["Notifications"]" onclick="loadNotifDropdown()">
-                    <i class="bi bi-bell fs-5"></i>
-                    <span id="notifBadge" class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle @(unreadCount > 0 ? "" : "d-none")">@(unreadCount > 0 ? unreadCount.ToString() : "")</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end p-0" style="min-width:320px;max-height:400px;overflow-y:auto;" id="notifDropdownBody">
+                <pems-link href="#" class="text-secondary position-relative dropdown-toggle" data-bs-toggle="dropdown" id="notifBell" title="@Localizer["Notifications"]" data-pems-click="call" data-pems-fn="loadNotifDropdown" data-pems-arg="none">
+                    <pems-icon name="bi-bell" css="fs-5" />
+                    <pems-badge tone="danger" css="rounded-pill position-absolute top-0 start-100 translate-middle @(unreadCount > 0 ? "" : "d-none")" id="notifBadge">@(unreadCount > 0 ? unreadCount.ToString() : "")</pems-badge>
+                </pems-link>
+                <pems-dropdown-menu class="pems-notif-menu" as="div" end="true" css="p-0" id="notifDropdownBody">
                     <span class="dropdown-item small text-muted">@Localizer["Loading"]</span>
-                </div>
+                </pems-dropdown-menu>
             </div>
 
             <div class="dropdown pems-user-menu">
-                <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <pems-button plain="true" css="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="pems-user-avatar">@(string.IsNullOrEmpty(User.Identity?.Name) ? "?" : User.Identity!.Name!.Substring(0, 1).ToUpper())</span>
                     <span class="d-none d-md-flex flex-column text-start">
                         <span class="fw-semibold">@(User.FindFirst("FullName")?.Value ?? User.Identity?.Name)</span>
-                        <span class="text-muted" style="font-size:11px;">@(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value)</span>
+                        <span class="text-muted pems-s-11a50812">@(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value)</span>
                     </span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><h6 class="dropdown-header">@User.Identity?.Name</h6></li>
-                    <li><a class="dropdown-item" asp-controller="MyProfile" asp-action="Index" asp-area=""><i class="bi bi-person-badge"></i> @Localizer["Shell_MyProfile"]</a></li>
-                    <li><a class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys" asp-area=""><i class="bi bi-key"></i> @Localizer["Shell_Passkeys"]</a></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
-                        <form asp-controller="Account" asp-action="Logout" asp-area="" method="post">
-                            <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> @Localizer["Logout"]</button>
-                        </form>
-                    </li>
-                </ul>
+                </pems-button>
+                <pems-dropdown-menu end="true">
+                    <pems-bullet><pems-heading level="6" class="dropdown-header">@User.Identity?.Name</pems-heading></pems-bullet>
+                    <pems-bullet><pems-link class="dropdown-item" href="/p/my-profile"><pems-icon name="bi-person-badge" /> @Localizer["Shell_MyProfile"]</pems-link></pems-bullet>
+                    <pems-bullet><pems-link class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys" asp-area=""><pems-icon name="bi-key" /> @Localizer["Shell_Passkeys"]</pems-link></pems-bullet>
+                    @if (User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
+                    {
+                        <pems-bullet><pems-link class="dropdown-item" asp-controller="RecoveryCodes" asp-action="Index" asp-area=""><pems-icon name="bi-shield-lock" /> @Localizer["Recovery codes"]</pems-link></pems-bullet>
+                    }
+                    <pems-bullet><pems-divider class="dropdown-divider" /></pems-bullet>
+                    <pems-bullet>
+                        <pems-form asp-controller="Account" asp-action="Logout" asp-area="" method="post">
+                            <pems-button plain="true" type="submit" css="dropdown-item"><pems-icon name="bi-box-arrow-right" /> @Localizer["Logout"]</pems-button>
+                        </pems-form>
+                    </pems-bullet>
+                </pems-dropdown-menu>
             </div>
-        </div>
+        </pems-flex>
     </header>
 
     @* پنل راهنما باید بیرون از <header> باشد (Stacking Context هدر z-index:1030 است؛ در RTL پنل زیر نوار کناری می‌رفت) *@
     @await Html.PartialAsync("_ContextualHelpDrawer")
 
     <div class="pems-shell">
-        <partial name="_SidebarMenu" />
-        <main class="pems-content">
-            @* هدر عمومی صفحه: فقط یک ردیف فشرده (عنوان + برچسب ماژول) - بدون مسیر/URL و بدون Breadcrumb تکراری.
-               صفحاتی که هدر اختصاصی دارند ViewData["HidePageTitle"]=true می‌گذارند. *@
+        @* سایدبار داده‌محور پشت پرچم Features:DynamicSidebar:Enabled (پیش‌فرض: سایدبار قدیمی) *@
+        <partial name="@(DynamicSidebar.IsEnabled ? "_DynamicSidebarMenu" : "_SidebarMenu")" />
+        <main class="pems-content" id="pemsMainContent" tabindex="-1">
+            @* هدر عمومی صفحه (عنوان + برچسب ماژول) حذف شده است: عنوان صفحه در تب مرورگر و منوی کناری می‌آید و صفحه‌ها فضای بیشتری برای کار دارند. *@
             @if (isAdminArea)
             {
                 <div class="admin-ui-surface">
-                    <partial name="_PageHeader" />
                     @RenderBody()
                 </div>
             }
             else
             {
-                <partial name="_PageHeader" />
                 @RenderBody()
             }
         </main>
     </div>
 
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1080;">
+    <div class="toast-container position-fixed bottom-0 end-0 p-3 pems-s-fe1fc042" aria-live="polite" aria-atomic="false">
         @if (TempData["Message"] != null)
         {
-            <div class="toast align-items-center text-bg-success border-0 show" role="alert" data-bs-delay="5000" data-bs-autohide="true">
-                <div class="d-flex">
-                    <div class="toast-body"><i class="bi bi-check-circle-fill me-1"></i> @TempData["Message"]</div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>
-            </div>
+            <pems-toast tone="success" role="alert" data-bs-delay="5000" data-bs-autohide="true">
+                <pems-flex>
+                    <div class="toast-body"><pems-icon name="bi-check-circle-fill" css="me-1" /> @Localizer[TempData["Message"]?.ToString() ?? ""]</div>
+                    <pems-button plain="true" type="button" css="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></pems-button>
+                </pems-flex>
+            </pems-toast>
         }
         @if (TempData["Error"] != null)
         {
-            <div class="toast align-items-center text-bg-danger border-0 show" role="alert" data-bs-delay="7000" data-bs-autohide="true">
-                <div class="d-flex">
-                    <div class="toast-body"><i class="bi bi-exclamation-triangle-fill me-1"></i> @TempData["Error"]</div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>
-            </div>
+            <pems-toast tone="danger" role="alert" data-bs-delay="7000" data-bs-autohide="true">
+                <pems-flex>
+                    <div class="toast-body"><pems-icon name="bi-exclamation-triangle-fill" css="me-1" /> @Localizer[TempData["Error"]?.ToString() ?? ""]</div>
+                    <pems-button plain="true" type="button" css="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></pems-button>
+                </pems-flex>
+            </pems-toast>
         }
         <div id="liveToastArea"></div>
     </div>
 
     <partial name="_PemsLoadingOverlay" />
 
+    @* SCRUM-536: the script templates come before every script; pems-errors, sidebar search and the palette clone them as they load *@
+    <pems-script-templates set="global-search"></pems-script-templates>
+    <pems-script-templates set="layout"></pems-script-templates>
+    <pems-script-templates set="shell"></pems-script-templates>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/_content/PEMS.UI/pems-overlay.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-modal-fill.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-confirm.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-errors.js" asp-append-version="true"></script>
+    <script src="~/lib/jalalidatepicker/jalalidatepicker.min.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-date.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-skeleton.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-tree.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-form.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-expr.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-form-rules.js" asp-append-version="true"></script>
+    <script src="~/lib/tom-select/tom-select.complete.min.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-select.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-tree-select.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-rte.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/pems-template.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-grid.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-views.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-mask.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-matrix.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-definition-client.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-upload.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-signature.js" asp-append-version="true"></script>
     <script src="~/js/pems-global-search.js" asp-append-version="true"></script>
     <script src="~/js/pems-data-grid.js" asp-append-version="true"></script>
     <script src="~/js/pems-ui.js" asp-append-version="true"></script>
+    <script src="~/js/pems-actions.js" asp-append-version="true"></script>
+    <script src="~/js/pems-sidebar-search.js" asp-append-version="true"
+            data-placeholder="@Localizer["Shell_SidebarSearch"]" data-results="@Localizer["Shell_SidebarSearchResults"]" data-empty="@Localizer["Shell_SidebarSearchEmpty"]"></script>
+    <script src="~/_content/PEMS.UI/pems-command-palette.js" asp-append-version="true"
+            data-search-url="@Url.Action("Palette", "SearchApi", new { area = "" })" data-actions-url="@Url.Action("PaletteActions", "SearchApi", new { area = "" })"
+            data-all-url="/p/global-search" data-title="@Localizer["Palette_Title"]"
+            data-placeholder="@Localizer["Palette_Placeholder"]" data-menus="@Localizer["Palette_Menus"]" data-actions="@Localizer["Palette_Actions"]"
+            data-empty="@Localizer["Palette_Empty"]" data-loading="@Localizer["Palette_Loading"]" data-error="@Localizer["Palette_Error"]"
+            data-keys="@Localizer["Palette_Keys"]" data-min-chars="@Localizer["Palette_MinChars"]" data-show-all="@Localizer["Palette_ShowAll"]"
+            data-count="@Localizer["Palette_Count"]"></script>
     <script src="~/js/pems-loading.js" asp-append-version="true"></script>
     <script src="~/js/admin.js" asp-append-version="true"></script>
     <script src="~/lib/signalr/signalr-8.0.7.min.js"></script>
     <script src="~/js/notifications-hub.js" asp-append-version="true"></script>
 
-    <script>
-        async function loadNotifDropdown() {
-            const res = await fetch('/Notification/Dropdown', { cache: 'no-store' });
-            document.getElementById('notifDropdownBody').innerHTML = await res.text();
-        }
+    <script src="~/js/views/shared-layout-1.js" asp-append-version="true"></script>
 
-        function showLiveToast(message, isError) {
-            const area = document.getElementById('liveToastArea');
-            const el = document.createElement('div');
-            el.className = 'toast align-items-center border-0 ' + (isError ? 'text-bg-danger' : 'text-bg-primary');
-            el.setAttribute('role', 'alert');
-            // message شامل متن کاربر (مثلاً عنوان وظیفه) است - فقط textContent، نه innerHTML (جلوگیری از XSS)
-            el.innerHTML = '<div class="d-flex"><div class="toast-body"><i class="bi bi-bell-fill me-1"></i> <span class="toast-msg"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div>';
-            el.querySelector('.toast-msg').textContent = message;
-            area.appendChild(el);
-            new bootstrap.Toast(el, { delay: 6000 }).show();
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.toast').forEach(function (el) {
-                new bootstrap.Toast(el).show();
-            });
-
-            const toggleBtn = document.getElementById('sidebarToggleBtn');
-            const sidebar = document.querySelector('.pems-sidebar');
-            if (toggleBtn && sidebar) {
-                toggleBtn.addEventListener('click', function () {
-                    if (window.innerWidth >= 992) {
-                        sidebar.classList.toggle('pems-collapsed');
-                        // طبق «PEMS — Hover-Expandable Sidebar Navigation»: وقتی نوار کاملاً
-                        // پنهان می‌شود (نه فقط جمع به حالت Icon Rail)، محتوا دیگر فضایی برای
-                        // آن رزرو نمی‌کند - این کلاس روی body برای همین تصمیم در CSS استفاده می‌شود.
-                        document.body.classList.toggle('pems-sidebar-fully-hidden', sidebar.classList.contains('pems-collapsed'));
-                    } else {
-                        sidebar.classList.toggle('pems-opened');
-                    }
-                });
-            }
-
-            window.addEventListener('pageshow', function (event) {
-                if (event.persisted) window.location.reload();
-            });
-
-            document.querySelectorAll('.culture-switch, .theme-switch').forEach(function (link) {
-                link.addEventListener('click', function () {
-                    document.documentElement.setAttribute('data-culture-switching', 'true');
-                    document.body.style.visibility = 'hidden';
-                });
-            });
-        });
-    </script>
-
-    <script>
-        // طبق سند PEMS-SEC-PERMIT-AUTH-001 بند ۱۴: پایه‌ی PWA برای دسترسی موبایل قابل‌نصب.
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
-                navigator.serviceWorker.register('/service-worker.js').catch(function () { /* غیرحیاتی */ });
-            });
-        }
-    </script>
+    <script src="~/js/views/shared-layout-2.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

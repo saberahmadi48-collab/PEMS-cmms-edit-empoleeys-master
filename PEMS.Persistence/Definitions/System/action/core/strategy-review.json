@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "strategy-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve or reject the strategy",
+    "fa": "تأیید یا رد استراتژی"
+  },
+  "description": {
+    "en": "Approve or reject the strategy",
+    "fa": "تأیید یا رد استراتژی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceStrategy",
+      "action": "Review",
+      "args": {
+        "id": "field:id",
+        "approve": "field:approve",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "The review was recorded.",
+      "fa": "نتیجه‌ی بازبینی ثبت شد."
+    },
+    "redirect": "/MaintenanceStrategy/Details/{id}"
+  }
+}

@@ -12,6 +12,8 @@ public class EmployeeSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "Employee";
     public string DisplayName => "کارمندان";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.Roles(PEMS.Persistence.Identity.SystemRoles.SystemAdmin, PEMS.Persistence.Identity.SystemRoles.EngineeringManager).LookupOnly();
 
     public EmployeeSearchProvider(PEMSDbContext context)
     {

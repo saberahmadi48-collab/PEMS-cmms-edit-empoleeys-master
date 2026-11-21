@@ -1,0 +1,111 @@
+{
+  "kind": "form",
+  "key": "job-plan-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit the job plan (retype every field: the saved values are not preloaded)",
+    "fa": "ویرایش طرح کار (همه‌ی فیلدها را دوباره وارد کنید)"
+  },
+  "description": {
+    "en": "Edit the job plan (retype every field: the saved values are not preloaded)",
+    "fa": "ویرایش طرح کار (همه‌ی فیلدها را دوباره وارد کنید)"
+  },
+  "payload": {
+    "id": "job-plan-edit",
+    "title": {
+      "en": "Edit the job plan (retype every field: the saved values are not preloaded)",
+      "fa": "ویرایش طرح کار (همه‌ی فیلدها را دوباره وارد کنید)"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "job-plan-edit",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "jobPlanId",
+        "label": {
+          "en": "Job plan id",
+          "fa": "شناسه‌ی طرح کار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "scope",
+        "label": {
+          "en": "Scope",
+          "fa": "محدوده"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      },
+      {
+        "name": "estimatedDurationHours",
+        "label": {
+          "en": "Estimated hours",
+          "fa": "ساعت تخمینی"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "safetyRequirements",
+        "label": {
+          "en": "Safety requirements",
+          "fa": "الزامات ایمنی"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      },
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class",
+          "fa": "کلاس تجهیز"
+        },
+        "kind": "select",
+        "optionsFrom": "job-plan-equipment-classes"
+      },
+      {
+        "name": "permitRequired",
+        "label": {
+          "en": "Permit required",
+          "fa": "نیازمند مجوز کار"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "lotoRequired",
+        "label": {
+          "en": "LOTO required",
+          "fa": "نیازمند LOTO"
+        },
+        "kind": "checkbox"
+      }
+    ]
+  }
+}

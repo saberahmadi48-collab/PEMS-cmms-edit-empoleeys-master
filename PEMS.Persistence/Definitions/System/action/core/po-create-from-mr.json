@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "po-create-from-mr",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a purchase order from an MR",
+    "fa": "ساخت سفارش خرید از MR"
+  },
+  "description": {
+    "en": "Create a purchase order from an MR",
+    "fa": "ساخت سفارش خرید از MR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "CreateFromRequisition",
+      "args": {
+        "mrId": "field:mrId",
+        "vendorId": "field:vendorId",
+        "currency": "field:currency",
+        "poNumber": "field:poNumber",
+        "userId": "context:userId",
+        "ip": "context:ip"
+      }
+    },
+    "success": {
+      "en": "The purchase order was created.",
+      "fa": "سفارش خرید ساخته شد."
+    },
+    "redirect": "/p/purchase-orders"
+  }
+}

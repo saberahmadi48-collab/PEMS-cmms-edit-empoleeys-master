@@ -32,7 +32,7 @@ dotnet ef database update --project PEMS.Persistence --startup-project PEMS.Web
 
 ```
 Username: admin
-Password: Admin@12345
+Password: <the value of Seed__Admin__Password in env/<name>.secrets.env - there is no built-in default>
 ```
 
 **⚠️ حتماً بلافاصله بعد از اولین ورود این رمز را از صفحه‌ی Users تغییر دهید.**

@@ -1,0 +1,74 @@
+{
+  "kind": "form",
+  "key": "organization-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign a holder",
+    "fa": "تعیین دارنده"
+  },
+  "description": {
+    "en": "Assign a holder",
+    "fa": "تعیین دارنده"
+  },
+  "payload": {
+    "id": "organization-assign",
+    "title": {
+      "en": "Assign a holder",
+      "fa": "تعیین دارنده"
+    },
+    "submitLabel": {
+      "en": "Assign",
+      "fa": "تعیین"
+    },
+    "actionKey": "organization-assign",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "employeeId",
+        "label": {
+          "en": "Employee",
+          "fa": "کارمند"
+        },
+        "kind": "select",
+        "required": true,
+        "optionsFrom": "organization-employees"
+      },
+      {
+        "name": "isPrimary",
+        "label": {
+          "en": "Primary position",
+          "fa": "سمت اصلی"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "startDate",
+        "label": {
+          "en": "Start date",
+          "fa": "تاریخ شروع"
+        },
+        "kind": "date",
+        "required": true
+      },
+      {
+        "name": "endDate",
+        "label": {
+          "en": "End date",
+          "fa": "تاریخ پایان"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "توضیحات"
+        },
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

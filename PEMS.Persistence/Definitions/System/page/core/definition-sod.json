@@ -1,0 +1,75 @@
+{
+  "kind": "page",
+  "key": "definition-sod",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Who may design and publish",
+    "fa": "چه کسی طراحی و منتشر می‌کند"
+  },
+  "description": {
+    "en": "The roles that hold the Definitions permissions and whether one person can both design and publish",
+    "fa": "نقش‌های دارای مجوز تعریف‌ها"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "definition-sod",
+    "permission": "Definitions.View",
+    "template": "entity-list",
+    "args": {
+      "id": "definition-sod",
+      "url": "/d/definition-sod-grid",
+      "idField": "role",
+      "columns": [
+        {
+          "key": "role",
+          "header": {
+            "en": "Role",
+            "fa": "نقش"
+          },
+          "width": 220
+        },
+        {
+          "key": "view",
+          "header": {
+            "en": "View",
+            "fa": "مشاهده"
+          },
+          "width": 90
+        },
+        {
+          "key": "create",
+          "header": {
+            "en": "Create",
+            "fa": "ایجاد"
+          },
+          "width": 90
+        },
+        {
+          "key": "edit",
+          "header": {
+            "en": "Edit",
+            "fa": "ویرایش"
+          },
+          "width": 90
+        },
+        {
+          "key": "approve",
+          "header": {
+            "en": "Approve (publish)",
+            "fa": "تأیید (انتشار)"
+          },
+          "width": 140
+        },
+        {
+          "key": "separation",
+          "header": {
+            "en": "Separation of duties",
+            "fa": "تفکیک وظایف"
+          },
+          "width": 280
+        }
+      ]
+    }
+  }
+}

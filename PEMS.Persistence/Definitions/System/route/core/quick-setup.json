@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "quick-setup",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Quick Setup (old address)",
+    "fa": "راه‌اندازی سریع (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Quick Setup (old address)",
+    "fa": "راه‌اندازی سریع (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "QuickSetup/{*rest}",
+    "target": "/p/quick-setup",
+    "permanent": false
+  }
+}

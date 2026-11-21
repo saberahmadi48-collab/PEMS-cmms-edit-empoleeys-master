@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "replenishment-last-run",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Last replenishment run",
+    "fa": "آخرین اجرای محاسبه"
+  },
+  "description": {
+    "en": "Last replenishment run",
+    "fa": "آخرین اجرای محاسبه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Replenishment",
+      "action": "LastRun",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName"
+      }
+    }
+  }
+}

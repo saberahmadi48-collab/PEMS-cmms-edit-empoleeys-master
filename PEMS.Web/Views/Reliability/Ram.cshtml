@@ -9,89 +9,89 @@
 
     string StatusBadge(string status) => status switch
     {
-        "READY" => "text-bg-success",
-        "PARTIAL" => "text-bg-warning",
-        "INSUFFICIENT_DATA" => "text-bg-warning",
-        "NOT_READY" => "text-bg-secondary",
-        _ => "text-bg-light border"
+        "READY" => "success",
+        "PARTIAL" => "warning",
+        "INSUFFICIENT_DATA" => "warning",
+        "NOT_READY" => "neutral",
+        _ => "light"
     };
 }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Details" asp-route-id="@equipmentId" class="btn btn-outline-secondary btn-sm">← Reliability Detail</a>
-</div>
-<p class="text-muted small">
+<pems-flex justify="end" align="center" css="mb-2">
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@equipmentId">← Reliability Detail</pems-button>
+</pems-flex>
+<pems-text class="text-muted small">
     طبق «PEMS Phase 9» بند ۱۲/۱۳: MTBF/MTTR/Availability از IReliabilityService موجود
     بازخوانی می‌شوند (دوباره محاسبه نمی‌شوند). پارامترهای Weibull با Median Rank Regression
     از فاصله‌های واقعی بین خرابی برازش می‌شوند - @weibull.MethodologyVersion
-</p>
+</pems-text>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-4">
-        <div class="content-card h-100">
-            <h6>@Localizer["Reliability"]</h6>
-            <span class="badge @StatusBadge(Model.ReliabilityDataStatus)">@Model.ReliabilityDataStatus</span>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="4">
+        <pems-content-card css="h-100">
+            <pems-heading level="6">@Localizer["Reliability"]</pems-heading>
+            <pems-badge tone="@StatusBadge(Model.ReliabilityDataStatus)">@Model.ReliabilityDataStatus</pems-badge>
             <div class="small mt-2">MTBF: @(Model.MTBFHours.HasValue ? $"{Model.MTBFHours.Value:N1} h" : "N/A")</div>
             <div class="small">Failure Rate (λ): @(Model.FailureRateLambdaPerHour.HasValue ? Model.FailureRateLambdaPerHour.Value.ToString("E3") + "/h" : "N/A")</div>
             <div class="small">Sample Size: @Model.FailureSampleSize</div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="content-card h-100">
-            <h6>Maintainability</h6>
-            <span class="badge @StatusBadge(Model.MaintainabilityDataStatus)">@Model.MaintainabilityDataStatus</span>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="4">
+        <pems-content-card css="h-100">
+            <pems-heading level="6">Maintainability</pems-heading>
+            <pems-badge tone="@StatusBadge(Model.MaintainabilityDataStatus)">@Model.MaintainabilityDataStatus</pems-badge>
             <div class="small mt-2">MTTR: @(Model.MTTRHours.HasValue ? $"{Model.MTTRHours.Value:N1} h" : "N/A")</div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="content-card h-100">
-            <h6>@Localizer["Availability"]</h6>
-            <div class="small">Inherent: <span class="badge @StatusBadge(Model.InherentAvailabilityDataStatus)">@Model.InherentAvailabilityDataStatus</span> @(Model.InherentAvailabilityPercent.HasValue ? $"{Model.InherentAvailabilityPercent.Value:N2}%" : "")</div>
-            <div class="small mt-2">Operational: <span class="badge @StatusBadge(Model.OperationalAvailabilityDataStatus)">@Model.OperationalAvailabilityDataStatus</span> @(Model.OperationalAvailabilityPercent.HasValue ? $"{Model.OperationalAvailabilityPercent.Value:N2}%" : "")</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="4">
+        <pems-content-card css="h-100">
+            <pems-heading level="6">@Localizer["Availability"]</pems-heading>
+            <div class="small">Inherent: <pems-badge tone="@StatusBadge(Model.InherentAvailabilityDataStatus)">@Model.InherentAvailabilityDataStatus</pems-badge> @(Model.InherentAvailabilityPercent.HasValue ? $"{Model.InherentAvailabilityPercent.Value:N2}%" : "")</div>
+            <div class="small mt-2">Operational: <pems-badge tone="@StatusBadge(Model.OperationalAvailabilityDataStatus)">@Model.OperationalAvailabilityDataStatus</pems-badge> @(Model.OperationalAvailabilityPercent.HasValue ? $"{Model.OperationalAvailabilityPercent.Value:N2}%" : "")</div>
             @if (Model.CalendarWindowHoursConsidered.HasValue)
             {
                 <div class="small text-muted">Window: @Model.CalendarWindowHoursConsidered.Value.ToString("N0")h, Downtime: @Model.TotalDowntimeHoursConsidered?.ToString("N1")h</div>
             }
-        </div>
-    </div>
-</div>
+        </pems-content-card>
+    </pems-col>
+</pems-row>
 
-<div class="content-card mb-3">
-    <h6 class="mb-2">Weibull Analysis (2-parameter)</h6>
-    <span class="badge @StatusBadge(weibull.DataStatus)">@weibull.DataStatus</span>
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-2">Weibull Analysis (2-parameter)</pems-heading>
+    <pems-badge tone="@StatusBadge(weibull.DataStatus)">@weibull.DataStatus</pems-badge>
     <span class="small text-muted ms-2">Sample: @weibull.SampleSize intervals (minimum required: @weibull.RequiredMinimumSample failure records)</span>
     @if (weibull.Reason != null) { <div class="small text-muted mt-1">@weibull.Reason</div> }
 
     @if (weibull.Beta.HasValue)
     {
-        <div class="row g-2 mt-2 small">
-            <div class="col-md-3"><strong>β (shape)</strong><div>@weibull.Beta.Value.ToString("N3")</div></div>
-            <div class="col-md-3"><strong>η (scale, hours)</strong><div>@weibull.Eta?.ToString("N1")</div></div>
-            <div class="col-md-3"><strong>R²</strong><div>@weibull.RSquared?.ToString("N3")</div></div>
-            <div class="col-md-3"><strong>Interpretation</strong><div>@weibull.BetaInterpretation</div></div>
-        </div>
+        <pems-row gap="2" css="mt-2 small">
+            <pems-col md="3"><strong>β (shape)</strong><div>@weibull.Beta.Value.ToString("N3")</div></pems-col>
+            <pems-col md="3"><strong>η (scale, hours)</strong><div>@weibull.Eta?.ToString("N1")</div></pems-col>
+            <pems-col md="3"><strong>R²</strong><div>@weibull.RSquared?.ToString("N3")</div></pems-col>
+            <pems-col md="3"><strong>Interpretation</strong><div>@weibull.BetaInterpretation</div></pems-col>
+        </pems-row>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card">
-    <h6 class="mb-2">Monte Carlo / RAM Simulation</h6>
-    <p class="text-muted small mb-2">
+<pems-content-card>
+    <pems-heading level="6" class="mb-2">Monte Carlo / RAM Simulation</pems-heading>
+    <pems-text class="text-muted small mb-2">
         فقط وقتی Weibull و MTTR هر دو واقعاً آماده باشند اجرا می‌شود - Provenance همیشه SIMULATED است.
-    </p>
-    <form method="post" asp-action="Simulate" asp-route-id="@equipmentId">
+    </pems-text>
+    <pems-form method="post" asp-action="Simulate" asp-route-id="@equipmentId">
         @Html.AntiForgeryToken()
-        <div class="row g-2 align-items-end">
-            <div class="col-auto">
-                <label class="form-label small mb-0">Iterations</label>
-                <input type="number" name="iterations" value="1000" class="form-control form-control-sm" style="width:120px" />
-            </div>
-            <div class="col-auto">
-                <label class="form-label small mb-0">Horizon (hours)</label>
-                <input type="number" name="horizonHours" value="8760" class="form-control form-control-sm" style="width:140px" />
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-sm btn-pems-solid">Run Simulation</button>
-            </div>
-        </div>
-    </form>
-</div>
+        <pems-row gap="2" css="align-items-end">
+            <pems-col span="auto">
+                <pems-label css="small mb-0">Iterations</pems-label>
+                <pems-input class="pems-w-120" scale="small" type="number" name="iterations" value="1000" />
+            </pems-col>
+            <pems-col span="auto">
+                <pems-label css="small mb-0">Horizon (hours)</pems-label>
+                <pems-input class="pems-w-140" scale="small" type="number" name="horizonHours" value="8760" />
+            </pems-col>
+            <pems-col span="auto">
+                <pems-button tone="primary" size="small" type="submit">Run Simulation</pems-button>
+            </pems-col>
+        </pems-row>
+    </pems-form>
+</pems-content-card>

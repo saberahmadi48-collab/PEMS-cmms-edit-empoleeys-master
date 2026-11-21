@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "maintenance-plan-deactivate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Deactivate a plan",
+    "fa": "غیرفعال‌سازی برنامه"
+  },
+  "description": {
+    "en": "Deactivate a plan",
+    "fa": "غیرفعال‌سازی برنامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenancePlanPage",
+      "action": "Deactivate",
+      "args": {
+        "planId": "field:planId"
+      }
+    },
+    "success": {
+      "en": "The plan was deactivated.",
+      "fa": "Plan غیرفعال شد."
+    },
+    "redirect": "/p/maintenance-plans"
+  }
+}

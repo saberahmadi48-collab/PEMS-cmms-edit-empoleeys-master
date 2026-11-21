@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "maintenance-plans-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance plans (index) (old address)",
+    "fa": "Maintenance plans (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Maintenance plans (index) (old address)",
+    "fa": "Maintenance plans (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenancePlan/Index",
+    "target": "/p/maintenance-plans",
+    "permanent": false
+  }
+}

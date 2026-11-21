@@ -1,0 +1,32 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("side-link", Category = "navigation", Icon = "bi-layout-sidebar")]
+@{
+    var attrs = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+    if (Options.Attributes is not null) foreach (var (k, v) in Options.Attributes) attrs[k] = v;
+    if (Options.Active) attrs["aria-current"] = "page";
+    var cartable = Options.Look != "pems";
+    var css = cartable
+        ? (Options.Active ? "ct-folder active" : "ct-folder")
+        : (Options.Active ? "pems-sidenav__item pems-sidenav__item--active" : "pems-sidenav__item");
+    RenderFragment body = b =>
+    {
+        if (!string.IsNullOrWhiteSpace(Options.Icon)) b.AddContent(0, (RenderFragment)(i => { i.OpenComponent<PemsIcon>(0); i.AddAttribute(1, nameof(PemsIcon.Options), new IconOptions { Css = Options.Icon, Attributes = new Dictionary<string, object> { ["aria-hidden"] = "true" } }); i.CloseComponent(); }));
+        b.OpenElement(1, "span");
+        if (cartable) b.AddAttribute(2, "class", "ct-label");
+        b.AddContent(3, ChildContent);
+        b.CloseElement();
+        if (Options.Count is > 0)
+        {
+            b.OpenElement(4, "span");
+            var countCss = cartable ? "ct-count" : "pems-sidenav__count";
+            b.AddAttribute(5, "class", Options.Hot is null ? countCss : countCss + " " + Options.Hot.Trim());
+            b.AddContent(6, Options.Count.Value);
+            b.CloseElement();
+        }
+    };
+}
+@FrameMarkup.Element("a", css, Options.PageClass, attrs, body)
+@code {
+    [Parameter, EditorRequired] public SideLinkOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

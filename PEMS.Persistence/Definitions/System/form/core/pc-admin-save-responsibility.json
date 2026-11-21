@@ -1,0 +1,137 @@
+{
+  "kind": "form",
+  "key": "pc-admin-save-responsibility",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a responsibility",
+    "fa": "ذخیره‌ی مسئولیت"
+  },
+  "description": {
+    "en": "Save a responsibility",
+    "fa": "ذخیره‌ی مسئولیت"
+  },
+  "payload": {
+    "id": "pc-admin-save-responsibility",
+    "title": {
+      "en": "Save a responsibility",
+      "fa": "ذخیره‌ی مسئولیت"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-admin-save-responsibility",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id (0 for new)",
+          "fa": "شناسه (۰ برای جدید)"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "kind",
+        "label": {
+          "en": "Kind",
+          "fa": "نوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "requiredAction",
+        "label": {
+          "en": "Required action",
+          "fa": "اقدام لازم"
+        },
+        "kind": "text",
+        "maxLength": 50
+      },
+      {
+        "name": "roleName",
+        "label": {
+          "en": "Role",
+          "fa": "نقش"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "scopeType",
+        "label": {
+          "en": "Scope type",
+          "fa": "نوع محدوده"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "scopeValue",
+        "label": {
+          "en": "Scope value",
+          "fa": "مقدار محدوده"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "managerLevel",
+        "label": {
+          "en": "Manager level",
+          "fa": "سطح مدیر"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "selectionStrategy",
+        "label": {
+          "en": "Selection strategy",
+          "fa": "روش انتخاب"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "isActive",
+        "label": {
+          "en": "Active",
+          "fa": "فعال"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "positionIds",
+        "label": {
+          "en": "Position ids (comma separated, first = highest priority)",
+          "fa": "شناسه‌ی پست‌ها (با کاما؛ اولی بالاترین اولویت)"
+        },
+        "kind": "text",
+        "maxLength": 200
+      }
+    ]
+  }
+}

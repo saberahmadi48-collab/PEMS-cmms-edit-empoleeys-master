@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "production-batch-release",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Release the batch",
+    "fa": "Release بچ"
+  },
+  "description": {
+    "en": "Release the batch",
+    "fa": "Release بچ"
+  },
+  "payload": {
+    "id": "production-batch-release",
+    "title": {
+      "en": "Release the batch",
+      "fa": "Release بچ"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-batch-release",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه‌ی بچ"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

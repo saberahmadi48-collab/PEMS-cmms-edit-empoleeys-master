@@ -1,0 +1,111 @@
+{
+  "kind": "form",
+  "key": "permission-matrix-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit permissions of a role",
+    "fa": "ویرایش مجوزهای یک نقش"
+  },
+  "description": {
+    "en": "The permission matrix of one role",
+    "fa": "ماتریس مجوز یک نقش"
+  },
+  "payload": {
+    "id": "permission-matrix-edit",
+    "title": {
+      "en": "Permissions of the role",
+      "fa": "مجوزهای نقش"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "permission-matrix-edit",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "cells",
+        "label": {
+          "en": "Modules and actions",
+          "fa": "ماژول‌ها و کنش‌ها"
+        },
+        "kind": "checkboxMatrix",
+        "optionsFrom": "permission-matrix-modules",
+        "columns": [
+          {
+            "value": "View",
+            "label": {
+              "en": "View",
+              "fa": "مشاهده"
+            }
+          },
+          {
+            "value": "Create",
+            "label": {
+              "en": "Create",
+              "fa": "ایجاد"
+            }
+          },
+          {
+            "value": "Edit",
+            "label": {
+              "en": "Edit",
+              "fa": "ویرایش"
+            }
+          },
+          {
+            "value": "Delete",
+            "label": {
+              "en": "Delete",
+              "fa": "حذف"
+            }
+          },
+          {
+            "value": "Approve",
+            "label": {
+              "en": "Approve",
+              "fa": "تأیید"
+            }
+          },
+          {
+            "value": "ManualNumber",
+            "label": {
+              "en": "Manual number",
+              "fa": "شماره‌ی دستی"
+            }
+          },
+          {
+            "value": "Freeze",
+            "label": {
+              "en": "Freeze",
+              "fa": "فریز"
+            }
+          },
+          {
+            "value": "Unfreeze",
+            "label": {
+              "en": "Unfreeze",
+              "fa": "رفع فریز"
+            }
+          },
+          {
+            "value": "Hold",
+            "label": {
+              "en": "Hold",
+              "fa": "نگه‌داشت"
+            }
+          },
+          {
+            "value": "ReleaseHold",
+            "label": {
+              "en": "Release hold",
+              "fa": "رفع نگه‌داشت"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

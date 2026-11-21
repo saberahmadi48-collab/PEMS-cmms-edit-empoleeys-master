@@ -7,89 +7,65 @@
 }
 
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center">
+<pems-content-card css="mb-3">
+    <pems-flex justify="between" align="center">
         <div>
             <strong>Discipline not showing after import?</strong>
-            <p class="text-muted small mb-0">
+            <pems-text class="text-muted small mb-0">
                 Older imports may have failed to match discipline codes (e.g. "ME" vs "MECH"). This
                 re-checks previously imported documents with the improved matching and fills in the
                 discipline where it can now be recognized - no need to re-import anything.
-            </p>
+            </pems-text>
         </div>
-        <form asp-action="RematchDisciplines" method="post">
-            <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-repeat"></i> Fix Discipline Matching</button>
-        </form>
-    </div>
-</div>
+        <pems-form asp-action="RematchDisciplines" method="post">
+            <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-arrow-repeat" /> Fix Discipline Matching</pems-button>
+        </pems-form>
+    </pems-flex>
+</pems-content-card>
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center">
+<pems-content-card css="mb-3">
+    <pems-flex justify="between" align="center">
         <div>
             <strong>Dashboard counts not matching the register?</strong>
-            <p class="text-muted small mb-0">
+            <pems-text class="text-muted small mb-0">
                 Older imports could set a status like "Under Review" or "Revise &amp; Resubmit" that the
                 dashboard and workflow don't recognize. This corrects those to the real workflow statuses
                 (Submitted / Rejected) so counts line up everywhere.
-            </p>
+            </pems-text>
         </div>
-        <form asp-action="FixLegacyStatuses" method="post">
-            <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-speedometer2"></i> Fix Status Values</button>
-        </form>
-    </div>
-</div>
+        <pems-form asp-action="FixLegacyStatuses" method="post">
+            <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-speedometer2" /> Fix Status Values</pems-button>
+        </pems-form>
+    </pems-flex>
+</pems-content-card>
 
-<div class="content-card mb-3" style="max-width:700px;">
-    <p class="text-muted">
+<pems-content-card css="mb-3 pems-s-bcaa1805">
+    <pems-text class="text-muted">
         فایل اکسل MDR (Master/Engineering Document Register) سازمان را آپلود کنید. سیستم همه‌ی
         شیت‌های داده‌ای (رجیستر اصلی، Freezed Docs، Not Issued Docs) را می‌خواند و شیت‌های خلاصه/گزارش
         را نادیده می‌گیرد. هیچ داده‌ای تا تایید شما در صفحه‌ی بعد وارد جداول اصلی نمی‌شود.
-    </p>
-    <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
-        <div class="col-md-5">
-            <label class="form-label small">@Localizer["Project"]</label>
-            <select name="projectId" class="form-select" required>
+    </pems-text>
+    <pems-form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
+        <pems-col md="5">
+            <pems-label css="small">@Localizer["Project"]</pems-label>
+            <pems-select name="projectId" required>
                 @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-            </select>
-        </div>
-        <div class="col-md-5">
-            <label class="form-label small">MDR Excel File</label>
-            <input type="file" name="file" class="form-control" accept=".xlsx" required />
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-cloud-upload"></i> @Localizer["Upload"]</button>
-        </div>
-    </form>
-</div>
+            </pems-select>
+        </pems-col>
+        <pems-col md="5">
+            <pems-label css="small">MDR Excel File</pems-label>
+            <pems-uploader name="file" accept=".xlsx" required />
+        </pems-col>
+        <pems-col md="2">
+            <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-cloud-upload" /> @Localizer["Upload"]</pems-button>
+        </pems-col>
+    </pems-row></pems-form>
+</pems-content-card>
 
-<div class="content-card">
-    <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead><tr><th>@Localizer["File"]</th><th>@Localizer["Project"]</th><th>@Localizer["Date"]</th><th>@Localizer["Total"]</th><th>@Localizer["Valid"]</th><th>@Localizer["Warning"]</th><th>Error</th><th>@Localizer["Duplicate"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-        <tbody>
-            @foreach (var b in Model)
-            {
-                <tr>
-                    <td>@b.FileName</td>
-                    <td>@b.ProjectName</td>
-                    <td>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@b.RowsTotal</td>
-                    <td><span class="badge bg-success">@b.RowsValid</span></td>
-                    <td><span class="badge bg-warning text-dark">@b.RowsWarning</span></td>
-                    <td><span class="badge bg-danger">@b.RowsError</span></td>
-                    <td><span class="badge bg-secondary">@b.RowsDuplicate</span></td>
-                    <td><span class="badge @(b.Status == "Committed" ? "bg-success" : "bg-secondary")">@b.Status</span></td>
-                    <td>
-                        @if (b.Status == "Staged")
-                        {
-                            <a asp-action="Review" asp-route-batchId="@b.MDRImportBatchId" class="btn btn-sm btn-outline-primary">Review</a>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4">No MDR imports yet.</p> }
-</div>
+<pems-content-card>
+    <pems-heading level="6" class="mb-3">@Localizer["Recent Import Batches"]</pems-heading>
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
+    <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["File"])?.ToString() ?? ""), b => (object?)(b.FileName)).Add(((Localizer["Project"])?.ToString() ?? ""), b => (object?)(b.ProjectName)).Add(((Localizer["Date"])?.ToString() ?? ""), b => (object?)((PemsDates.DateTime(b.ImportDate)))).Add(((Localizer["Total"])?.ToString() ?? ""), b => (object?)(b.RowsTotal)).Add(((Localizer["Valid"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("success", b.RowsValid))).Add(((Localizer["Warning"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("warning", b.RowsWarning))).Add("Error", b => (object?)(DataCell.Badge("danger", b.RowsError))).Add(((Localizer["Duplicate"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("neutral", b.RowsDuplicate))).Add(((Localizer["Status"])?.ToString() ?? ""), b => (object?)(DataCell.Badge(b.Status == "Committed" ? "success" : "neutral", b.Status))).Add("", b => (object?)((b.Status == "Staged" ? (object?)DataCell.ButtonLink(Url.Action("Review", null, new { batchId = b.MDRImportBatchId }), "primary", "small", true, null, "Review") : null)))))" />
+    </pems-table-scroll>
+    @if (!Model.Any()) { <pems-text class="text-muted text-center py-4">No MDR imports yet.</pems-text> }
+</pems-content-card>

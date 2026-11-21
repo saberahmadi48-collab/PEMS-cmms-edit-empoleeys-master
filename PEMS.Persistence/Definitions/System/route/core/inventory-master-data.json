@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "inventory-master-data",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Inventory master data (old address)",
+    "fa": "Inventory master data (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Inventory master data (old address)",
+    "fa": "Inventory master data (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/InventoryMasterData/{*rest}",
+    "target": "/p/inventory-master-data",
+    "permanent": false
+  }
+}

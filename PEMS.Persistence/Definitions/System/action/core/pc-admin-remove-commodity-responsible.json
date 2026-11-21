@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "pc-admin-remove-commodity-responsible",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a commodity responsible",
+    "fa": "حذف مسئول گروه کالا"
+  },
+  "description": {
+    "en": "Remove a commodity responsible",
+    "fa": "حذف مسئول گروه کالا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "RemoveCommodityResponsible",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/p/pc-admin"
+  }
+}

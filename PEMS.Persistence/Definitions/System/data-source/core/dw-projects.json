@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "dw-projects",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline workspace projects",
+    "fa": "پروژه‌های فضای کاری دیسیپلین"
+  },
+  "description": {
+    "en": "Discipline workspace projects",
+    "fa": "پروژه‌های فضای کاری دیسیپلین"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DisciplineWorkspace",
+      "action": "Projects",
+      "args": {}
+    }
+  }
+}

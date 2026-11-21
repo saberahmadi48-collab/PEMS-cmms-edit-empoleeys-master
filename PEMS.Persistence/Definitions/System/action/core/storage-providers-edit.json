@@ -1,0 +1,67 @@
+{
+  "kind": "action",
+  "key": "storage-providers-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit storage provider",
+    "fa": "ویرایش ارائه‌دهنده‌ی ذخیره‌سازی"
+  },
+  "description": {
+    "en": "Edit storage provider",
+    "fa": "ویرایش ارائه‌دهنده‌ی ذخیره‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StorageProvider",
+      "action": "Update",
+      "args": {
+        "id": "field:id",
+        "request": {
+          "Name": "field:name",
+          "Code": "field:code",
+          "ProviderType": "field:providerType",
+          "Host": "field:host",
+          "Port": "field:port",
+          "Username": "field:username",
+          "Password": "field:password",
+          "RootPath": "field:rootPath",
+          "BaseUrl": "field:baseUrl",
+          "UseSsl": "field:useSsl",
+          "UsePassiveMode": "field:usePassiveMode",
+          "AllowRead": "field:allowRead",
+          "AllowWrite": "field:allowWrite",
+          "AllowDelete": "field:allowDelete",
+          "IsEnabled": "field:isEnabled"
+        },
+        "modifiedBy": "context:userName"
+      },
+      "load": {
+        "entity": "StorageProvider",
+        "map": {
+          "name": "Name",
+          "code": "Code",
+          "providerType": "ProviderType",
+          "host": "Host",
+          "port": "Port",
+          "username": "Username",
+          "rootPath": "RootPath",
+          "baseUrl": "BaseUrl",
+          "useSsl": "UseSsl",
+          "usePassiveMode": "UsePassiveMode",
+          "allowRead": "AllowRead",
+          "allowWrite": "AllowWrite",
+          "allowDelete": "AllowDelete",
+          "isEnabled": "IsEnabled"
+        }
+      }
+    },
+    "success": {
+      "en": "Storage provider saved.",
+      "fa": "ارائه‌دهنده‌ی ذخیره‌سازی ذخیره شد."
+    },
+    "redirect": "/p/storage-providers"
+  }
+}

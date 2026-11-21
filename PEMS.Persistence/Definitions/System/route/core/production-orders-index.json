@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "production-orders-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production orders (index) (old address)",
+    "fa": "Production orders (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Production orders (index) (old address)",
+    "fa": "Production orders (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ProductionOrder/Index",
+    "target": "/p/production-orders",
+    "permanent": false
+  }
+}

@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("toast", Category = "feedback", Icon = "bi-chat-square-text")]
+@FrameMarkup.Element("div", PEMS.UI.TagHelpers.FrameState.Toast(Options.Tone, Options.Css), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public ToastOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

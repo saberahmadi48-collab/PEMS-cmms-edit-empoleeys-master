@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "employee-certification-choices-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Certifications",
+    "fa": "گواهینامه‌ها"
+  },
+  "description": {
+    "en": "Certifications",
+    "fa": "گواهینامه‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Employee",
+      "action": "CertificationChoices",
+      "args": {}
+    }
+  }
+}

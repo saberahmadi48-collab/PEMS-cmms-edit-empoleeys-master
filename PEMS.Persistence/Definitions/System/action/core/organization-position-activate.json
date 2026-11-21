@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "organization-position-activate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Activate a position",
+    "fa": "فعال‌سازی سمت"
+  },
+  "description": {
+    "en": "Activate a position",
+    "fa": "فعال‌سازی سمت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Organization",
+      "action": "SetPositionActive",
+      "args": {
+        "positionId": "field:id",
+        "isActive": "literal:true"
+      }
+    },
+    "success": {
+      "en": "Position reactivated.",
+      "fa": "سمت دوباره فعال شد."
+    },
+    "redirect": "/p/organization-positions"
+  }
+}

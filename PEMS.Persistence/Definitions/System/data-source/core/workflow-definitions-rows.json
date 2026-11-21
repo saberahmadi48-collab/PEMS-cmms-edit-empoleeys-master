@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "workflow-definitions-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Workflow definitions",
+    "fa": "Workflow definitions"
+  },
+  "description": {
+    "en": "Workflow definitions rows",
+    "fa": "Workflow definitions rows"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "Definitions"
+    }
+  }
+}

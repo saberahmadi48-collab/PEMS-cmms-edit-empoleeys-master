@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mmd-standards",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Standard references",
+    "fa": "استانداردهای مرجع"
+  },
+  "description": {
+    "en": "Standard references",
+    "fa": "استانداردهای مرجع"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "Standards"
+    }
+  }
+}

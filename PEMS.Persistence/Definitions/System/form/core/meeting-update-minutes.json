@@ -1,0 +1,98 @@
+{
+  "kind": "form",
+  "key": "meeting-update-minutes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Meeting minutes and status",
+    "fa": "صورتجلسه و وضعیت"
+  },
+  "description": {
+    "en": "Meeting minutes and status",
+    "fa": "صورتجلسه و وضعیت"
+  },
+  "payload": {
+    "id": "meeting-update-minutes",
+    "title": {
+      "en": "Meeting minutes and status",
+      "fa": "صورتجلسه و وضعیت"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "meeting-update-minutes",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "meetingId",
+        "label": {
+          "en": "Meeting id",
+          "fa": "شناسه‌ی جلسه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "status",
+        "label": {
+          "en": "Status",
+          "fa": "وضعیت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Scheduled",
+            "label": {
+              "en": "Scheduled",
+              "fa": "برنامه‌ریزی‌شده"
+            }
+          },
+          {
+            "value": "Completed",
+            "label": {
+              "en": "Completed",
+              "fa": "انجام‌شده"
+            }
+          },
+          {
+            "value": "Cancelled",
+            "label": {
+              "en": "Cancelled",
+              "fa": "لغوشده"
+            }
+          }
+        ]
+      },
+      {
+        "name": "minutesNotes",
+        "label": {
+          "en": "Minutes (replaces the saved text)",
+          "fa": "صورتجلسه (جایگزین متن ذخیره‌شده)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 8000
+      }
+    ]
+  }
+}

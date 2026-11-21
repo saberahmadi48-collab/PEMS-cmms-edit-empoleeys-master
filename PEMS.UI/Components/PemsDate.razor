@@ -1,0 +1,6 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("date", Category = "forms", Icon = "bi-calendar-date")]
+<input @attributes="Options.Attributes" />@if (Options.Hidden is not null){<input data-pems-date-iso="" disabled="@(Options.Hidden.Disabled ? "disabled" : null)" form="@Options.Hidden.Form" id="@Options.Hidden.Id" name="@(string.IsNullOrEmpty(Options.Hidden.Name) ? null : Options.Hidden.Name)" type="hidden" value="@Options.Hidden.Value" />}
+@code {
+    [Parameter, EditorRequired] public DateOptions Options { get; set; } = default!;
+}

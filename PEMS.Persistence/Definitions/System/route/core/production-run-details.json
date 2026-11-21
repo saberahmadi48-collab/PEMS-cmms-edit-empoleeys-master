@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "production-run-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production run details (old address)",
+    "fa": "Production run details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Production run details (old address)",
+    "fa": "Production run details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ProductionRun/Details/{id}",
+    "target": "/p/production-run-details?id={id}",
+    "permanent": false
+  }
+}

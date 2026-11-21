@@ -1,0 +1,50 @@
+{
+  "key": "modal-body",
+  "component": "PEMS.UI.Components.PemsModalBody",
+  "category": "overlays",
+  "icon": "bi-card-text",
+  "nameKey": "component.modal-body",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ModalBodyOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "css": "pb-0"
+  }
+}

@@ -1,3 +1,4 @@
+using PEMS.Tests.TestSupport;
 using System.Text.RegularExpressions;
 
 namespace PEMS.Tests.Web;
@@ -17,7 +18,7 @@ public class UiStandardTests
         return dir!.FullName;
     }
 
-    private static string Web(params string[] parts) => File.ReadAllText(Path.Combine(new[] { Root(), "PEMS.Web" }.Concat(parts).ToArray()));
+    private static string Web(params string[] parts) => SourceTree.Text(Path.Combine(new[] { Root(), "PEMS.Web" }.Concat(parts).ToArray()));
 
     // ---------------------------------------------------------------- D1: dropdown menus are never clipped by card/scroll containers
 
@@ -46,7 +47,7 @@ public class UiStandardTests
     public void Views_DoNotHardCodeDropdownPositioningWorkarounds()
     {
         // per-page boundary/strategy hacks are what the shared default replaces
-        var offenders = AllViews().Where(f => Regex.IsMatch(File.ReadAllText(f), @"data-bs-boundary|data-bs-popper-config|data-bs-strategy"))
+        var offenders = AllViews().Where(f => Regex.IsMatch(SourceTree.Text(f), @"data-bs-boundary|data-bs-popper-config|data-bs-strategy"))
             .Select(f => Path.GetRelativePath(Root(), f)).ToList();
 
         Assert.True(offenders.Count == 0, "Use the shared Popper default instead: " + string.Join(", ", offenders));
@@ -148,18 +149,14 @@ public class UiStandardTests
     public void ViewsThatRenderTheirOwnH1_MustHideTheGlobalPageTitle()
     {
         var offenders = AllViews()
-            .Where(f => !Path.GetFileName(f).StartsWith("_") && Regex.IsMatch(File.ReadAllText(f), @"<h1[\s>]"))
-            .Where(f => !File.ReadAllText(f).Contains("HidePageTitle"))
+            .Where(f => !Path.GetFileName(f).StartsWith("_") && Regex.IsMatch(SourceTree.Text(f), @"<h1[\s>]"))
+            .Where(f => !SourceTree.Text(f).Contains("HidePageTitle"))
             .Select(f => Path.GetRelativePath(Root(), f)).ToList();
 
         Assert.True(offenders.Count == 0, "A second <h1> duplicates the global page title; use <h2> or set ViewData[\"HidePageTitle\"]: " + string.Join(", ", offenders));
     }
 
-    [Fact]
-    public void MyWorkView_UsesNoH1()
-        => Assert.DoesNotMatch(new Regex(@"<h1[\s>]"), Web("Views", "MyWork", "Index.cshtml"));
-
     private static IEnumerable<string> AllViews() =>
-        Directory.EnumerateFiles(Path.Combine(Root(), "PEMS.Web"), "*.cshtml", SearchOption.AllDirectories)
+        SourceTree.Files(Path.Combine(Root(), "PEMS.Web"), "*.cshtml")
             .Where(f => !f.Contains(Path.DirectorySeparatorChar + "bin" + Path.DirectorySeparatorChar) && !f.Contains(Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar));
 }

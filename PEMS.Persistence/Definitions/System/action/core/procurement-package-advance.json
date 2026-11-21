@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "procurement-package-advance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move the package to a stage",
+    "fa": "رفتن بسته به مرحله"
+  },
+  "description": {
+    "en": "Move the package to a stage",
+    "fa": "رفتن بسته به مرحله"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProcurementPackage",
+      "action": "AdvanceStage",
+      "args": {
+        "packageId": "field:packageId",
+        "newStage": "field:newStage"
+      }
+    },
+    "success": {
+      "en": "The stage was changed.",
+      "fa": "مرحله تغییر کرد."
+    },
+    "redirect": "/p/procurement-package-details?id={packageId}"
+  }
+}

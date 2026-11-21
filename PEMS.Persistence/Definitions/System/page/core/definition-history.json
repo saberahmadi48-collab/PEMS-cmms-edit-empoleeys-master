@@ -1,0 +1,258 @@
+{
+  "kind": "page",
+  "key": "definition-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Definition history",
+    "fa": "تاریخچه تعریف"
+  },
+  "description": {
+    "en": "Versions of one definition with who and when, what publishing an older version again would do, the difference between two versions and the export of a version",
+    "fa": "نسخه‌های یک تعریف، نتیجه انتشار دوباره نسخه قدیمی، تفاوت دو نسخه و خروجی نسخه"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "definition-history",
+    "permission": "Definitions.View",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "definition-history-filters",
+            "resetUrl": "/p/definition-history",
+            "fields": [
+              {
+                "name": "ref",
+                "label": {
+                  "en": "Definition (app:kind:key)",
+                  "fa": "تعریف (برنامه:نوع:کلید)"
+                },
+                "kind": "text",
+                "value": "{{params.ref}}"
+              },
+              {
+                "name": "from",
+                "label": {
+                  "en": "Compare from version",
+                  "fa": "مقایسه از نسخه"
+                },
+                "kind": "text",
+                "value": "{{params.from}}"
+              },
+              {
+                "name": "to",
+                "label": {
+                  "en": "to version",
+                  "fa": "تا نسخه"
+                },
+                "kind": "text",
+                "value": "{{params.to}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "versions-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "versions-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Versions",
+                  "fa": "نسخه‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "versions",
+          "component": "data-grid",
+          "options": {
+            "id": "definition-versions",
+            "url": "/d/definition-versions-grid?f.ref=eq:{{params.ref|url}}",
+            "idField": "versionRef",
+            "pageSize": 50,
+            "height": 360,
+            "columns": [
+              {
+                "key": "number",
+                "header": {
+                  "en": "Version",
+                  "fa": "نسخه"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "hash",
+                "header": {
+                  "en": "Hash",
+                  "fa": "چکیده"
+                },
+                "width": 120
+              },
+              {
+                "key": "summary",
+                "header": {
+                  "en": "Change",
+                  "fa": "تغییر"
+                },
+                "width": 240
+              },
+              {
+                "key": "createdAt",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "publishedBy",
+                "header": {
+                  "en": "Published by",
+                  "fa": "منتشرکننده"
+                },
+                "width": 140
+              },
+              {
+                "key": "publishedAt",
+                "header": {
+                  "en": "Published",
+                  "fa": "انتشار"
+                },
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "verdict",
+                "header": {
+                  "en": "Publish again?",
+                  "fa": "انتشار دوباره؟"
+                },
+                "width": 130
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Why",
+                  "fa": "دلیل"
+                },
+                "width": 360
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "preview",
+                    "label": {
+                      "en": "Preview",
+                      "fa": "پیش‌نمایش"
+                    },
+                    "url": "{raw.previewUrl}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "export",
+                    "label": {
+                      "en": "Export",
+                      "fa": "خروجی"
+                    },
+                    "url": "/a/definition-export",
+                    "method": "post"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "diff-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "diff-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Difference between the two versions (fill both in the filters above)",
+                  "fa": "تفاوت دو نسخه (هر دو را در فیلترهای بالا بنویسید)"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "diff",
+          "component": "data-grid",
+          "options": {
+            "id": "definition-diff",
+            "url": "/d/definition-diff-grid?f.ref=eq:{{params.ref|url}}&f.from=eq:{{params.from|url}}&f.to=eq:{{params.to|url}}",
+            "idField": "pointer",
+            "pageSize": 50,
+            "height": 360,
+            "columns": [
+              {
+                "key": "pointer",
+                "header": {
+                  "en": "Where (JSON pointer)",
+                  "fa": "کجا"
+                },
+                "width": 300
+              },
+              {
+                "key": "change",
+                "header": {
+                  "en": "Change",
+                  "fa": "تغییر"
+                },
+                "width": 100
+              },
+              {
+                "key": "from",
+                "header": {
+                  "en": "Before",
+                  "fa": "قبل"
+                },
+                "width": 320
+              },
+              {
+                "key": "to",
+                "header": {
+                  "en": "After",
+                  "fa": "بعد"
+                },
+                "width": 320
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

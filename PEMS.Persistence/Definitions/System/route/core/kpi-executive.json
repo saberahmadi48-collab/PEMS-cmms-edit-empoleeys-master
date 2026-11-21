@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "kpi-executive",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Executive KPI dashboard (old address)",
+    "fa": "داشبورد مدیریتی KPI (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Executive KPI dashboard (old address)",
+    "fa": "داشبورد مدیریتی KPI (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Kpi/Executive",
+    "target": "/p/kpi-executive",
+    "permanent": false
+  }
+}

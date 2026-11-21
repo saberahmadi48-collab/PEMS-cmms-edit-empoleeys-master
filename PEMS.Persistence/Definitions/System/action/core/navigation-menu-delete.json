@@ -1,0 +1,26 @@
+{
+  "kind": "action",
+  "key": "navigation-menu-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete a custom link",
+    "fa": "حذف پیوند سفارشی"
+  },
+  "description": {
+    "en": "Delete a custom link",
+    "fa": "حذف پیوند سفارشی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "NavigationMenu",
+      "action": "Delete",
+      "args": {
+        "key": "field:id"
+      }
+    },
+    "redirect": "/p/navigation-menu"
+  }
+}

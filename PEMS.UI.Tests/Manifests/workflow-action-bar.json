@@ -1,0 +1,202 @@
+{
+  "key": "workflow-action-bar",
+  "component": "PEMS.UI.Components.PemsWorkflowActionBar",
+  "category": "actions",
+  "icon": "bi-signpost-split",
+  "nameKey": "component.workflow-action-bar",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string"
+      },
+      "antiforgery": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "token"
+        ],
+        "additionalProperties": false
+      },
+      "fields": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "actions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "actionType": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "tone": {
+              "type": "string"
+            },
+            "allowed": {
+              "type": "boolean"
+            },
+            "deniedReason": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "confirm": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "target": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "requireComment": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "actionType",
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "commentLabel": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "commentHint": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "none": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "action",
+      "commentLabel",
+      "none"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "WorkflowActionBarOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "action": "/Permit/WorkflowAction",
+    "antiforgery": {
+      "name": "__RequestVerificationToken",
+      "token": "t"
+    },
+    "fields": {
+      "id": "12"
+    },
+    "actions": [
+      {
+        "actionType": "Approve",
+        "label": "Approve",
+        "tone": "success"
+      },
+      {
+        "actionType": "Reject",
+        "label": "Reject",
+        "tone": "danger",
+        "confirm": "Reject this item?",
+        "requireComment": true,
+        "target": "Review"
+      },
+      {
+        "actionType": "Return",
+        "label": "Return",
+        "tone": "warning",
+        "allowed": false,
+        "deniedReason": "Not your stage"
+      }
+    ],
+    "commentLabel": {
+      "en": "Comment",
+      "fa": "توضیح"
+    },
+    "none": {
+      "en": "No action available",
+      "fa": "اقدامی در دسترس نیست"
+    }
+  }
+}

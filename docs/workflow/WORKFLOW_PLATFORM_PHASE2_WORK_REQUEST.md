@@ -90,7 +90,7 @@ Migration `20260919234615_WorkflowPlatformPhase2StageBusinessMapping` (additive)
 
 1. Deactivate the binding (`IWorkflowBindingService.DeactivateAsync`); new Submit will fail with a clear message — so also revert the code (git) if the old flow is required: revert the Phase 2 commit(s); legacy `AdvanceStatusAsync` handles Draft→Submitted again when no binding resolves.
 2. Existing instances/history are untouched and remain valid data.
-3. Schema: `dotnet ef database update WorkflowPlatformPhase1Hardening --project PEMS.Persistence --startup-project PEMS.Web` (drops only the four new nullable columns).
+3. Schema: `dotnet ef database update WorkflowPlatformPhase1Hardening --project PEMS.Migrations --startup-project PEMS.Web` (drops only the four new nullable columns).
 
 ## 16. Recommended next candidate
 

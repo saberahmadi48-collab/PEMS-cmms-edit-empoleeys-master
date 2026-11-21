@@ -4,29 +4,33 @@
 @{
     var thread = (List<PEMS.Application.DTOs.ThreadMessageDto>)ViewBag.Thread;
     var parentLetterId = (int)ViewBag.ParentLetterId;
+    var prefill = ViewBag.Prefill as PEMS.Application.DTOs.LetterTemplateDto;
+    var templates = (ViewBag.Templates as List<PEMS.Application.DTOs.LetterTemplateDto>) ?? new List<PEMS.Application.DTOs.LetterTemplateDto>();
+    int? selectedTemplateId = ViewBag.SelectedTemplateId;
+    var parent = ViewBag.ParentLetter as PEMS.Application.DTOs.LetterDto;
 }
 
 @* طراحی الهام‌گرفته از نمونه‌ی کارتابل مرجع: پیام‌های قبلی به‌صورت زنجیره‌ای/Thread بالای
    فرم پاسخ نمایش داده می‌شوند - دقیقاً همان "مشاهده پیام‌های قبلی". *@
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center mb-2" style="cursor:pointer;" onclick="document.getElementById('threadBody').classList.toggle('d-none')">
-        <h6 class="mb-0"><i class="bi bi-clock-history"></i> مشاهده پیام‌های قبلی (@thread.Count)</h6>
-        <i class="bi bi-chevron-down"></i>
-    </div>
+<pems-content-card css="mb-3">
+    <pems-flex justify="between" align="center" css="mb-2 pems-s-3b6a3a65" data-pems-click="toggle-class" data-pems-target="#threadBody" data-pems-cls="d-none">
+        <pems-heading level="6" class="mb-0"><pems-icon name="bi-clock-history" /> مشاهده پیام‌های قبلی (@thread.Count)</pems-heading>
+        <pems-icon name="bi-chevron-down" />
+    </pems-flex>
     <div id="threadBody">
         @foreach (var msg in thread)
         {
-            <div class="d-flex gap-3 border-bottom py-3">
+            <pems-flex gap="3" css="border-bottom py-3">
                 <div class="flex-shrink-0">
-                    <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-secondary text-white" style="width:40px;height:40px;">
-                        <i class="bi bi-person-fill"></i>
-                    </span>
+                    <pems-flex as="span" inline="true" align="center" justify="center" css="rounded-circle bg-secondary text-white pems-s-660e4429">
+                        <pems-icon name="bi-person-fill" />
+                    </pems-flex>
                 </div>
                 <div class="flex-grow-1">
                     <div class="fw-semibold">@msg.Subject</div>
                     <div class="small text-muted">
-                        @msg.SenderOrRegisteredByName &middot; @msg.LetterDate.ToString("yyyy-MM-dd HH:mm") &middot; @msg.LetterNumber
+                        @msg.SenderOrRegisteredByName &middot; @PemsDates.DateTime(msg.LetterDate) &middot; @msg.LetterNumber
                     </div>
                     @if (!string.IsNullOrEmpty(msg.RecipientsSummary))
                     {
@@ -34,35 +38,63 @@
                     }
                     <div class="mt-2">@Html.Raw(msg.Body)</div>
                 </div>
-            </div>
+            </pems-flex>
         }
     </div>
-</div>
+</pems-content-card>
 
-<div class="content-card">
-    <form asp-action="Reply" method="post">
+<pems-content-card>
+    @if (parent != null && parent.ResponseRequired && parent.ResponseDueDate.HasValue)
+    {
+        @* پاسخ‌خواهی نامه‌ی مادر: وضعیت هم متن و آیکون دارد، نه فقط رنگ *@
+        <pems-alert tone="@(parent.ResponseOverdue ? "danger" : "info")" css="py-2" role="status">
+            <pems-icon css="@(parent.ResponseOverdue ? "bi-exclamation-triangle" : "bi-reply")" aria-hidden="true" />
+            @Localizer["Lt_ReplyParentDue"] <strong>@PemsDates.Date(parent.ResponseDueDate.Value)</strong>
+            @if (parent.ResponseOverdue) { <span>(@Localizer["Lt_Overdue"])</span> }
+        </pems-alert>
+    }
+
+    @if (templates.Any())
+    {
+        <pems-form class="mb-3" method="get" asp-action="Reply"><pems-flex wrap="true" align="end" gap="2">
+            <input type="hidden" name="id" value="@parentLetterId" />
+            <div>
+                <pems-label css="small mb-1" for="replyTemplate">@Localizer["LtT_UseTemplate"]</pems-label>
+                <pems-select scale="small" name="templateId" id="replyTemplate">
+                    <option value="">@Localizer["Ed_None"]</option>
+                    @foreach (var tpl in templates)
+                    {
+                        <option value="@tpl.LetterTemplateId" selected="@(selectedTemplateId == tpl.LetterTemplateId)">@tpl.Name</option>
+                    }
+                </pems-select>
+            </div>
+            <pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-file-earmark-text" aria-hidden="true" /> @Localizer["LtT_Apply"]</pems-button>
+        </pems-flex></pems-form>
+    }
+
+    <pems-form asp-action="Reply" method="post">
         <input type="hidden" name="parentLetterId" value="@parentLetterId" />
 
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">To</label>
-                <input name="receiver" class="form-control" value="@ViewBag.DefaultReceiver" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Subject"]</label>
-                <input name="subject" class="form-control" value="@ViewBag.DefaultSubject" required />
-            </div>
-            <div class="col-12">
-                <label class="form-label">Body</label>
-                <textarea name="body" id="replyBodyEditor" class="form-control" rows="6"></textarea>
-            </div>
-        </div>
+        <pems-row gap="3">
+            <pems-col md="6">
+                <pems-label>To</pems-label>
+                <pems-input name="receiver" value="@ViewBag.DefaultReceiver" />
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Subject"]</pems-label>
+                <pems-input name="subject" value="@ViewBag.DefaultSubject" required />
+            </pems-col>
+            <pems-col span="12">
+                <pems-label>Body</pems-label>
+                <pems-textarea name="body" id="replyBodyEditor" rows="6">@prefill?.Body</pems-textarea>
+            </pems-col>
+        </pems-row>
 
-        <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid"><i class="bi bi-reply-fill"></i> Send Reply</button>
-            <a asp-action="Details" asp-route-id="@parentLetterId" class="btn btn-outline-secondary">Cancel</a>
-        </div>
-    </form>
-</div>
+        <pems-action-bar css="mt-4">
+            <pems-button tone="primary" type="submit"><pems-icon name="bi-reply-fill" /> Send Reply</pems-button>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Details" asp-route-id="@parentLetterId">Cancel</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>
 
 @await Html.PartialAsync("_RichTextEditorScripts", "replyBodyEditor")

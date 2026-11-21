@@ -1,0 +1,41 @@
+{
+  "kind": "action",
+  "key": "intake-route",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Route an intake file",
+    "fa": "مسیریابی فایل دریافتی"
+  },
+  "description": {
+    "en": "Route an intake file",
+    "fa": "مسیریابی فایل دریافتی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Intake",
+      "action": "Route",
+      "args": {
+        "attachmentId": "field:attachmentId",
+        "targetModule": "field:targetModule",
+        "category": "field:category",
+        "documentType": "field:documentType",
+        "disciplineCode": "field:disciplineCode",
+        "projectId": "field:projectId",
+        "area": "field:area",
+        "revisionNo": "field:revisionNo",
+        "issuePurpose": "field:issuePurpose",
+        "vendorName": "field:vendorName",
+        "mrNumber": "field:mrNumber",
+        "userId": "context:userId"
+      }
+    },
+    "success": {
+      "en": "The file was routed.",
+      "fa": "فایل مسیریابی شد."
+    },
+    "redirect": "/p/intake"
+  }
+}

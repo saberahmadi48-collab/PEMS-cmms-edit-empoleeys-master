@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "task-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New personal task",
+    "fa": "وظیفه‌ی شخصی جدید"
+  },
+  "description": {
+    "en": "New personal task",
+    "fa": "وظیفه‌ی شخصی جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskItem",
+      "action": "Create",
+      "args": {
+        "title": "field:title",
+        "description": "field:description",
+        "assignedToEmployeeId": "field:assignedToEmployeeId",
+        "dueDate": "field:dueDate",
+        "priority": "field:priority"
+      }
+    },
+    "success": {
+      "en": "The task was created.",
+      "fa": "وظیفه ساخته شد."
+    },
+    "redirect": "/Task/Index"
+  }
+}

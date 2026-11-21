@@ -1,0 +1,27 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("modal-header", Category = "overlays", Icon = "bi-card-heading")]
+@FrameMarkup.Element("div", string.IsNullOrWhiteSpace(Options.Css) ? "modal-header" : "modal-header " + Options.Css.Trim(), Options.PageClass, Options.Attributes, Inner)
+@code {
+    [Parameter, EditorRequired] public ModalHeaderOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string TitleClass => string.IsNullOrWhiteSpace(Options.TitleCss) ? "modal-title" : "modal-title " + Options.TitleCss.Trim();
+    private string CloseClass => string.IsNullOrWhiteSpace(Options.CloseCss) ? "btn-close" : "btn-close " + Options.CloseCss.Trim();
+    private RenderFragment Inner => b =>
+    {
+        var tag = "h" + Math.Clamp(Options.Level, 1, 6);
+        b.OpenElement(0, tag);
+        b.AddAttribute(1, "class", TitleClass);
+        if (!string.IsNullOrWhiteSpace(Options.TitleId)) b.AddAttribute(2, "id", Options.TitleId);
+        if (ChildContent is not null) b.AddContent(3, ChildContent);
+        b.CloseElement();
+        if (Options.Close)
+        {
+            b.OpenElement(4, "button");
+            b.AddAttribute(5, "type", "button");
+            b.AddAttribute(6, "class", CloseClass);
+            b.AddAttribute(7, "data-bs-dismiss", "modal");
+            if (!string.IsNullOrWhiteSpace(Options.CloseLabel)) b.AddAttribute(8, "aria-label", Options.CloseLabel);
+            b.CloseElement();
+        }
+    };
+}

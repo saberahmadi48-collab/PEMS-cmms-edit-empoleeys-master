@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "mmd-toggle-p-m-template-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "TogglePMTemplateActive",
+    "fa": "TogglePMTemplateActive"
+  },
+  "description": {
+    "en": "TogglePMTemplateActive",
+    "fa": "TogglePMTemplateActive"
+  },
+  "payload": {
+    "id": "mmd-toggle-p-m-template-active",
+    "title": {
+      "en": "TogglePMTemplateActive",
+      "fa": "TogglePMTemplateActive"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-toggle-p-m-template-active",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "id"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "kind": "data-source",
+  "key": "roles-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Roles rows",
+    "fa": "ردیف‌های نقش‌ها"
+  },
+  "description": {
+    "en": "The rows of the roles grid",
+    "fa": "ردیف‌های جدول نقش‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "ApplicationRole",
+      "fields": [
+        "Name",
+        "DisplayName",
+        "Description",
+        "Category",
+        "Domain",
+        "IsSystemRole",
+        "SortOrder"
+      ],
+      "search": [
+        "Name",
+        "DisplayName",
+        "Description"
+      ],
+      "sort": [
+        "SortOrder",
+        "Name"
+      ],
+      "counts": [
+        {
+          "name": "users",
+          "entity": "IdentityUserRole",
+          "foreignKey": "RoleId"
+        },
+        {
+          "name": "permissions",
+          "entity": "RolePermissionGrant",
+          "foreignKey": "RoleId",
+          "where": {
+            "IsActive": true
+          }
+        }
+      ]
+    }
+  }
+}

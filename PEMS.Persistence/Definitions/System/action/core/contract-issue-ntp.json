@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "contract-issue-ntp",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Issue the NTP",
+    "fa": "صدور NTP"
+  },
+  "description": {
+    "en": "Issue the NTP",
+    "fa": "صدور NTP"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ContractPage",
+      "action": "IssueNtp",
+      "args": {
+        "employeeId": "context:employeeId",
+        "contractId": "field:contractId",
+        "reference": "field:reference",
+        "effectiveStartDate": "field:effectiveStartDate"
+      }
+    },
+    "success": {
+      "en": "The NTP was issued.",
+      "fa": "NTP صادر شد."
+    },
+    "redirect": "/Contract/Details/{contractId}"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "kind": "page",
+  "key": "maintenance-groups-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance groups details",
+    "fa": "جزئیات گروه‌های تعمیراتی"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "maintenance-groups-record",
+      "url": "/d/maintenance-groups-grid",
+      "idField": "maintenanceGroupId",
+      "fields": [
+        {
+          "key": "code",
+          "label": {
+            "en": "Code",
+            "fa": "کد"
+          }
+        },
+        {
+          "key": "name",
+          "label": {
+            "en": "Name",
+            "fa": "نام"
+          }
+        },
+        {
+          "key": "discipline",
+          "label": {
+            "en": "Discipline",
+            "fa": "دیسیپلین"
+          }
+        },
+        {
+          "key": "description",
+          "label": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "wide": true
+        },
+        {
+          "key": "isActive",
+          "label": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "type": "bool"
+        }
+      ],
+      "backUrl": "/p/maintenance-groups",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/maintenance-groups-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

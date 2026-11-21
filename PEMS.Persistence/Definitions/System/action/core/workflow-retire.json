@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "workflow-retire",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Retire a version",
+    "fa": "بازنشستگی نسخه"
+  },
+  "description": {
+    "en": "Retire a version",
+    "fa": "بازنشستگی نسخه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "Retire",
+      "args": {
+        "versionId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Version retired.",
+      "fa": "نسخه بازنشسته شد."
+    },
+    "redirect": "/p/workflow-management"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "kind": "form",
+  "key": "navigation-visibility-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Navigation overrides of a role",
+    "fa": "استثناهای ناوبری یک نقش"
+  },
+  "description": {
+    "en": "Show or hide navigation nodes for one role",
+    "fa": "نمایش یا پنهان‌سازی گره‌های ناوبری برای یک نقش"
+  },
+  "payload": {
+    "id": "navigation-visibility-edit",
+    "title": {
+      "en": "Navigation overrides of the role",
+      "fa": "استثناهای ناوبری نقش"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "navigation-visibility-edit",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "cells",
+        "label": {
+          "en": "Nodes: Show forces visible, Hide forces hidden, none keeps the default",
+          "fa": "گره‌ها: نمایش اجباری، پنهان اجباری، بدون انتخاب = پیش‌فرض"
+        },
+        "kind": "checkboxMatrix",
+        "optionsFrom": "navigation-visibility-nodes",
+        "columns": [
+          {
+            "value": "Show",
+            "label": {
+              "en": "Show",
+              "fa": "نمایش"
+            }
+          },
+          {
+            "value": "Hide",
+            "label": {
+              "en": "Hide",
+              "fa": "پنهان"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

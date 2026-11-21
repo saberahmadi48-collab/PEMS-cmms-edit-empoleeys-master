@@ -1,0 +1,68 @@
+{
+  "kind": "form",
+  "key": "work-request-convert",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Convert to a work order",
+    "fa": "تبدیل به دستورکار"
+  },
+  "description": {
+    "en": "Convert to a work order",
+    "fa": "تبدیل به دستورکار"
+  },
+  "payload": {
+    "id": "work-request-convert",
+    "title": {
+      "en": "Convert to a work order",
+      "fa": "تبدیل به دستورکار"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "work-request-convert",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Request id",
+          "fa": "شناسه‌ی درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "workOrderType",
+        "label": {
+          "en": "Work order type",
+          "fa": "نوع دستورکار"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment id",
+          "fa": "شناسه‌ی تجهیز"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

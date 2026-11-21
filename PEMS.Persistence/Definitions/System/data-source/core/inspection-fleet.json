@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "inspection-fleet",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Inspections",
+    "fa": "بازرسی‌ها"
+  },
+  "description": {
+    "en": "Inspections",
+    "fa": "بازرسی‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Inspection",
+      "action": "Fleet"
+    }
+  }
+}

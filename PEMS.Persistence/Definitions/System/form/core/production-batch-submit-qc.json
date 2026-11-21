@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "production-batch-submit-qc",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit the batch for QC",
+    "fa": "ارسال بچ برای کنترل کیفیت"
+  },
+  "description": {
+    "en": "Submit the batch for QC",
+    "fa": "ارسال بچ برای کنترل کیفیت"
+  },
+  "payload": {
+    "id": "production-batch-submit-qc",
+    "title": {
+      "en": "Submit the batch for QC",
+      "fa": "ارسال بچ برای کنترل کیفیت"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-batch-submit-qc",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه‌ی بچ"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

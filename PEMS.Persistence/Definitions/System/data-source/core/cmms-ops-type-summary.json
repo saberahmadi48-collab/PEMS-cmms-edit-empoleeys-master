@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "cmms-ops-type-summary",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance type summary",
+    "fa": "خلاصه‌ی نوع تعمیرات"
+  },
+  "description": {
+    "en": "Maintenance type summary",
+    "fa": "خلاصه‌ی نوع تعمیرات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CmmsOperations",
+      "action": "TypeSummary"
+    }
+  }
+}

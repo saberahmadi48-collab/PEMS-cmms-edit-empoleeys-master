@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "irn-disposition-lines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the disposition of chosen lines",
+    "fa": "ثبت Disposition اقلام انتخابی"
+  },
+  "description": {
+    "en": "Record the disposition of chosen lines",
+    "fa": "ثبت Disposition اقلام انتخابی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Irn",
+      "action": "DispositionLines",
+      "args": {
+        "id": "field:id",
+        "lines": "field:lines",
+        "notes": "field:notes",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Disposition recorded - awaiting QA approval.",
+      "fa": "Disposition ثبت شد - در انتظار تأیید QA."
+    },
+    "redirect": "/p/irn-details?id={id}"
+  }
+}

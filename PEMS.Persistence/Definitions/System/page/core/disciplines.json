@@ -1,0 +1,149 @@
+{
+  "kind": "page",
+  "key": "disciplines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Disciplines",
+    "fa": "دیسیپلین‌ها"
+  },
+  "description": {
+    "en": "Disciplines list (page definition)",
+    "fa": "فهرست دیسیپلین‌ها (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "disciplines",
+    "template": "entity-list",
+    "args": {
+      "id": "disciplines",
+      "url": "/d/disciplines-grid",
+      "idField": "disciplineId",
+      "viewsKey": "disciplines",
+      "columns": [
+        {
+          "key": "code",
+          "header": {
+            "en": "Code",
+            "fa": "کد"
+          },
+          "width": 120
+        },
+        {
+          "key": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 240
+        },
+        {
+          "key": "description",
+          "header": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "width": 280
+        },
+        {
+          "key": "importAliases",
+          "header": {
+            "en": "Import aliases",
+            "fa": "نام‌های مستعار ایمپورت"
+          },
+          "width": 220
+        },
+        {
+          "key": "transmittalCode",
+          "header": {
+            "en": "Transmittal code",
+            "fa": "کد ترانسمیتال"
+          },
+          "width": 120
+        },
+        {
+          "key": "employeeCount",
+          "header": {
+            "en": "Employees",
+            "fa": "کارکنان"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "documentCount",
+          "header": {
+            "en": "Documents",
+            "fa": "اسناد"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/disciplines-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "activate",
+              "label": {
+                "en": "Activate",
+                "fa": "فعال‌سازی"
+              },
+              "url": "/a/disciplines-activate",
+              "method": "post",
+              "confirm": {
+                "en": "Activate this discipline?",
+                "fa": "این دیسیپلین فعال شود؟"
+              },
+              "showWhen": "row.isActive == false"
+            },
+            {
+              "key": "deactivate",
+              "label": {
+                "en": "Deactivate",
+                "fa": "غیرفعال‌سازی"
+              },
+              "url": "/a/disciplines-deactivate",
+              "method": "post",
+              "confirm": {
+                "en": "Deactivate this discipline?",
+                "fa": "این دیسیپلین غیرفعال شود؟"
+              },
+              "showWhen": "row.isActive"
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/disciplines-create",
+      "newLabel": {
+        "en": "New discipline",
+        "fa": "دیسیپلین جدید"
+      }
+    }
+  }
+}

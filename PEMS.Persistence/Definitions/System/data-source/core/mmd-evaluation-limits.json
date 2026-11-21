@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mmd-evaluation-limits",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Evaluation limits",
+    "fa": "حدود ارزیابی"
+  },
+  "description": {
+    "en": "Evaluation limits",
+    "fa": "حدود ارزیابی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "EvaluationLimits"
+    }
+  }
+}

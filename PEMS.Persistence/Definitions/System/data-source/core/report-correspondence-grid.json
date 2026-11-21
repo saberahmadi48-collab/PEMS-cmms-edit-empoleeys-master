@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "report-correspondence-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondence report rows",
+    "fa": "ردیف‌های گزارش مکاتبات"
+  },
+  "description": {
+    "en": "Correspondence report rows",
+    "fa": "ردیف‌های گزارش مکاتبات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Correspondence",
+      "args": {
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      }
+    }
+  }
+}

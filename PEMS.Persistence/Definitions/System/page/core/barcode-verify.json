@@ -1,0 +1,132 @@
+{
+  "kind": "page",
+  "key": "barcode-verify",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Verify a barcode",
+    "fa": "تطبیق بارکد"
+  },
+  "description": {
+    "en": "Check a code against the record the label should be on (page definition)",
+    "fa": "کد را با رکوردی که برچسب باید روی آن باشد تطبیق دهید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "barcode-verify",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "verify-filters",
+            "resetUrl": "/p/barcode-verify",
+            "fields": [
+              {
+                "name": "code",
+                "label": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "kind": "text",
+                "value": "{{params.code}}"
+              },
+              {
+                "name": "expectedTargetType",
+                "label": {
+                  "en": "Expected target type",
+                  "fa": "نوع هدف مورد انتظار"
+                },
+                "kind": "text",
+                "value": "{{params.expectedTargetType}}"
+              },
+              {
+                "name": "expectedTargetId",
+                "label": {
+                  "en": "Expected target id",
+                  "fa": "شناسه‌ی هدف مورد انتظار"
+                },
+                "kind": "text",
+                "value": "{{params.expectedTargetId}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "resolution",
+          "component": "data-grid",
+          "options": {
+            "id": "resolution",
+            "url": "/d/barcode-resolution?f.code={{params.code|url}}&f.expectedTargetType={{params.expectedTargetType|url}}&f.expectedTargetId={{params.expectedTargetId|url}}",
+            "idField": "targetType",
+            "columns": [
+              {
+                "key": "success",
+                "header": {
+                  "en": "Resolved",
+                  "fa": "شناسایی"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "mismatch",
+                "header": {
+                  "en": "Mismatch",
+                  "fa": "عدم تطابق"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "errorMessage",
+                "header": {
+                  "en": "Problem",
+                  "fa": "مشکل"
+                },
+                "width": 240
+              },
+              {
+                "key": "targetType",
+                "header": {
+                  "en": "Target",
+                  "fa": "هدف"
+                },
+                "width": 130
+              },
+              {
+                "key": "targetId",
+                "header": {
+                  "en": "Id",
+                  "fa": "شناسه"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "label",
+                "header": {
+                  "en": "Record",
+                  "fa": "رکورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              }
+            ],
+            "pageSize": 5,
+            "height": 200
+          }
+        }
+      ]
+    },
+    "permission": "Barcode.View"
+  }
+}

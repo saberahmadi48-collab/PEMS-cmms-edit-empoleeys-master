@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "production-run-complete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Complete the run",
+    "fa": "تکمیل اجرا"
+  },
+  "description": {
+    "en": "Complete the run",
+    "fa": "تکمیل اجرا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "Complete",
+      "args": {
+        "productionRunId": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The run was completed.",
+      "fa": "اجرا تکمیل شد."
+    },
+    "redirect": "/ProductionRun/Details/{id}"
+  }
+}

@@ -1,0 +1,227 @@
+{
+  "key": "audit-trail",
+  "component": "PEMS.UI.Components.PemsAuditTrail",
+  "category": "data",
+  "icon": "bi-journal-text",
+  "nameKey": "component.audit-trail",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "entries": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "field": {
+              "type": "string"
+            },
+            "old": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "new": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "actor": {
+              "type": "string"
+            },
+            "when": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "field",
+            "actor"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "empty": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "texts": {
+        "type": "object",
+        "properties": {
+          "when": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "actor": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "field": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "change": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "emptyValue": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        },
+        "required": [
+          "when",
+          "actor",
+          "field",
+          "change",
+          "emptyValue"
+        ],
+        "additionalProperties": false
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "empty",
+      "texts"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "AuditTrailOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "audit",
+    "entries": [
+      {
+        "field": "Status",
+        "old": "Draft",
+        "new": "Approved",
+        "actor": "A. Rezaei",
+        "when": "2026-11-10T09:30:00Z"
+      },
+      {
+        "field": "Owner",
+        "new": "M. Karimi",
+        "actor": "S. Hosseini",
+        "when": "2026-11-09T14:00:00Z"
+      }
+    ],
+    "empty": {
+      "en": "No changes yet",
+      "fa": "هنوز تغییری نیست"
+    },
+    "texts": {
+      "when": {
+        "en": "When",
+        "fa": "زمان"
+      },
+      "actor": {
+        "en": "Who",
+        "fa": "چه کسی"
+      },
+      "field": {
+        "en": "Field",
+        "fa": "فیلد"
+      },
+      "change": {
+        "en": "Change",
+        "fa": "تغییر"
+      },
+      "emptyValue": {
+        "en": "(empty)",
+        "fa": "(خالی)"
+      }
+    }
+  }
+}

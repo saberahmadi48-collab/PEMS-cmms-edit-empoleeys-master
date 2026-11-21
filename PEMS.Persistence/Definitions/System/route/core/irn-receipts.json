@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "irn-receipts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Incoming receipts (old address)",
+    "fa": "Incoming receipts (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Incoming receipts (old address)",
+    "fa": "Incoming receipts (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/IrnReceipt",
+    "target": "/p/irn-receipts",
+    "permanent": false
+  }
+}

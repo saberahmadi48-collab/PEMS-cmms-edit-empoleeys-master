@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pre-procurement",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement queue (old address)",
+    "fa": "Procurement queue (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Procurement queue (old address)",
+    "fa": "Procurement queue (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "PreProcurement",
+    "target": "/p/pre-procurement",
+    "permanent": false
+  }
+}

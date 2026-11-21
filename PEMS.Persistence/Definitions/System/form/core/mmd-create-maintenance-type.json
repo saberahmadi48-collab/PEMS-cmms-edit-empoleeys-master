@@ -1,0 +1,79 @@
+{
+  "kind": "form",
+  "key": "mmd-create-maintenance-type",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateMaintenanceType",
+    "fa": "CreateMaintenanceType"
+  },
+  "description": {
+    "en": "CreateMaintenanceType",
+    "fa": "CreateMaintenanceType"
+  },
+  "payload": {
+    "id": "mmd-create-maintenance-type",
+    "title": {
+      "en": "CreateMaintenanceType",
+      "fa": "CreateMaintenanceType"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-create-maintenance-type",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "code"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "name"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "nameFa",
+        "label": {
+          "en": "Name fa",
+          "fa": "nameFa"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "description"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

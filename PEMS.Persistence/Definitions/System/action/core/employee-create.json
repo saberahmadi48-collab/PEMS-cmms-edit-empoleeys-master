@@ -1,0 +1,46 @@
+{
+  "kind": "action",
+  "key": "employee-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add an employee",
+    "fa": "افزودن کارمند"
+  },
+  "description": {
+    "en": "Add an employee",
+    "fa": "افزودن کارمند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Employee",
+      "action": "Create",
+      "args": {
+        "userRoles": "context:roles",
+        "firstName": "field:firstName",
+        "lastName": "field:lastName",
+        "departmentId": "field:departmentId",
+        "disciplineId": "field:disciplineId",
+        "personnelCode": "field:personnelCode",
+        "email": "field:email",
+        "phone": "field:phone",
+        "personnelType": "field:personnelType",
+        "vendorId": "field:vendorId",
+        "hireDate": "field:hireDate",
+        "location": "field:location",
+        "shift": "field:shift",
+        "homeAddress": "field:homeAddress",
+        "positionId": "field:positionId",
+        "createUser": "field:createUser",
+        "userName": "field:userName"
+      }
+    },
+    "success": {
+      "en": "Employee added.",
+      "fa": "کارمند افزوده شد."
+    },
+    "redirect": "/p/employees"
+  }
+}

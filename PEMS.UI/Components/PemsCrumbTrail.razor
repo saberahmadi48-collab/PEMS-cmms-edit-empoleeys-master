@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("crumb-trail", Category = "navigation", Icon = "bi-chevron-double-right")]
+@FrameMarkup.Element("ol", PEMS.UI.TagHelpers.FrameState.Breadcrumb(Options.Css), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public CrumbTrailOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

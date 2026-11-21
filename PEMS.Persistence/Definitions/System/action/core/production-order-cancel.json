@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "production-order-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel production order",
+    "fa": "لغو سفارش تولید"
+  },
+  "description": {
+    "en": "Cancel production order",
+    "fa": "لغو سفارش تولید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionOrder",
+      "action": "Cancel",
+      "args": {
+        "productionOrderId": "field:id",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The order was cancelled.",
+      "fa": "سفارش لغو شد."
+    },
+    "redirect": "/ProductionOrder/Details/{id}"
+  }
+}

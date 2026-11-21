@@ -1,0 +1,81 @@
+{
+  "kind": "page",
+  "key": "navigation-visibility-user",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Navigation seen by a user",
+    "fa": "ناوبری قابل مشاهده برای یک کاربر"
+  },
+  "description": {
+    "en": "Type the user id in the filter (page definition)",
+    "fa": "شناسه‌ی کاربر را در فیلتر بنویسید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "navigation-visibility-user",
+    "template": "entity-list",
+    "args": {
+      "id": "navigation-visibility-user",
+      "url": "/d/navigation-visibility-user-rows",
+      "idField": "node",
+      "columns": [
+        {
+          "key": "userId",
+          "header": {
+            "en": "User id (type it)",
+            "fa": "شناسه‌ی کاربر"
+          },
+          "width": 200,
+          "type": "number"
+        },
+        {
+          "key": "node",
+          "header": {
+            "en": "Node",
+            "fa": "گره"
+          },
+          "width": 280
+        },
+        {
+          "key": "defaultVisible",
+          "header": {
+            "en": "Default",
+            "fa": "پیش‌فرض"
+          },
+          "width": 110,
+          "type": "bool",
+          "filterable": false
+        },
+        {
+          "key": "override",
+          "header": {
+            "en": "Override",
+            "fa": "استثنا"
+          },
+          "width": 140,
+          "filterable": false
+        },
+        {
+          "key": "effectiveVisible",
+          "header": {
+            "en": "Effective",
+            "fa": "مؤثر"
+          },
+          "width": 110,
+          "type": "bool",
+          "filterable": false
+        },
+        {
+          "key": "source",
+          "header": {
+            "en": "Source",
+            "fa": "منبع"
+          },
+          "width": 300,
+          "filterable": false
+        }
+      ]
+    }
+  }
+}

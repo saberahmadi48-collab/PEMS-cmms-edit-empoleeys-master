@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "production-order-close",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close production order",
+    "fa": "بستن سفارش تولید"
+  },
+  "description": {
+    "en": "Close production order",
+    "fa": "بستن سفارش تولید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionOrder",
+      "action": "Close",
+      "guard": {
+        "resource": "Production",
+        "action": "Approve",
+        "resourceId": "field:id",
+        "mode": "sod"
+      },
+      "args": {
+        "productionOrderId": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The order was closed.",
+      "fa": "سفارش بسته شد."
+    },
+    "redirect": "/ProductionOrder/Details/{id}"
+  }
+}

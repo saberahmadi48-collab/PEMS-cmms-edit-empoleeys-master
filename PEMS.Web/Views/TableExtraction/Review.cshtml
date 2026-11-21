@@ -10,195 +10,144 @@
     int Count(string status) => counts.TryGetValue(status, out var c) ? c : 0;
 }
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+<pems-content-card css="mb-3">
+    <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
-            <h5 class="mb-0">@Model.SourceFileName</h5>
-            <span class="text-muted small">Batch #@Model.TableExtractionBatchId - @Model.ExtractionMethod - @Model.TotalRows rows - @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm")</span>
+            <pems-heading level="5" class="mb-0">@Model.SourceFileName</pems-heading>
+            <span class="text-muted small">Batch #@Model.TableExtractionBatchId - @Model.ExtractionMethod - @Model.TotalRows rows - @PemsDates.DateTime(Model.CreatedDate)</span>
         </div>
-        <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back</a>
-    </div>
-</div>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-arrow-left" /> Back</pems-button>
+    </pems-flex>
+</pems-content-card>
 
 @if (TempData["Message"] != null)
 {
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
+    <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert>
 }
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+    <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
 }
 
-<div class="content-card mb-3">
-    <div class="admin-kpi-grid">
-        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Unmatched"]</div><div class="admin-kpi-value">@Count("Unmatched")</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">Matched - no Instrument yet</div><div class="admin-kpi-value">@Count("MatchedNoInstrument")</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">Matched - has Instrument</div><div class="admin-kpi-value">@Count("MatchedHasInstrument")</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Confirmed"]</div><div class="admin-kpi-value">@Count("Confirmed")</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Rejected"]</div><div class="admin-kpi-value">@Count("Rejected")</div></div>
-    </div>
-</div>
+<pems-content-card css="mb-3">
+    <pems-stat-grid>
+        <pems-stat label="@Localizer["Unmatched"]">@Count("Unmatched")</pems-stat>
+        <pems-stat label="@Localizer["Matched - no Instrument yet"]">@Count("MatchedNoInstrument")</pems-stat>
+        <pems-stat label="@Localizer["Matched - has Instrument"]">@Count("MatchedHasInstrument")</pems-stat>
+        <pems-stat label="@Localizer["Confirmed"]">@Count("Confirmed")</pems-stat>
+        <pems-stat label="@Localizer["Rejected"]">@Count("Rejected")</pems-stat>
+    </pems-stat-grid>
+</pems-content-card>
 
-<form id="bulkConfirmForm" asp-action="BulkConfirm" method="post">
+<pems-form id="bulkConfirmForm" asp-action="BulkConfirm" method="post">
     <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
-</form>
+</pems-form>
 
-<div class="content-card mb-3">
-    <div class="d-flex gap-2 flex-wrap align-items-center">
-        <div class="input-group admin-search" style="max-width:280px;">
-            <span class="input-group-text"><i class="bi bi-search"></i></span>
-            <input type="search" id="rowSearch" class="form-control" placeholder="Filter by tag..." autocomplete="off" />
+<pems-content-card css="mb-3">
+    <pems-flex gap="2" wrap="true" align="center">
+        <div class="input-group admin-search pems-s-2f3f7d77">
+            <span class="input-group-text"><pems-icon name="bi-search" /></span>
+            <pems-input type="search" id="rowSearch" placeholder="Filter by tag..." autocomplete="off" />
         </div>
         <div class="btn-group btn-group-sm" role="group">
-            <button type="button" class="btn btn-outline-secondary status-filter active" data-status="all">@Localizer["All"]</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Unmatched">@Localizer["Unmatched"]</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="MatchedNoInstrument">Needs Instrument</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="MatchedHasInstrument">Has Instrument</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Confirmed">@Localizer["Confirmed"]</button>
-            <button type="button" class="btn btn-outline-secondary status-filter" data-status="Rejected">@Localizer["Rejected"]</button>
+            <pems-button tone="neutral" outline="true" css="status-filter active" type="button" data-status="all">@Localizer["All"]</pems-button>
+            <pems-button tone="neutral" outline="true" css="status-filter" type="button" data-status="Unmatched">@Localizer["Unmatched"]</pems-button>
+            <pems-button tone="neutral" outline="true" css="status-filter" type="button" data-status="MatchedNoInstrument">Needs Instrument</pems-button>
+            <pems-button tone="neutral" outline="true" css="status-filter" type="button" data-status="MatchedHasInstrument">Has Instrument</pems-button>
+            <pems-button tone="neutral" outline="true" css="status-filter" type="button" data-status="Confirmed">@Localizer["Confirmed"]</pems-button>
+            <pems-button tone="neutral" outline="true" css="status-filter" type="button" data-status="Rejected">@Localizer["Rejected"]</pems-button>
         </div>
-        <button type="submit" form="bulkConfirmForm" id="bulkConfirmBtn" class="btn btn-sm btn-pems-solid ms-auto" disabled
-                onclick="return confirm('تعداد ' + document.getElementById('selectedCount').textContent + ' ردیف انتخاب‌شده به Instrument متصل شود؟');">
-            <i class="bi bi-link-45deg"></i> Confirm Selected (<span id="selectedCount">0</span>)
-        </button>
-    </div>
-</div>
+        <pems-button tone="primary" size="small" css="ms-auto" type="submit" form="bulkConfirmForm" id="bulkConfirmBtn" disabled
+                data-pems-confirm="تعداد {n} ردیف انتخاب‌شده به Instrument متصل شود؟" data-pems-confirm-count="#selectedCount">
+            <pems-icon name="bi-link-45deg" /> Confirm Selected (<span id="selectedCount">0</span>)
+        </pems-button>
+    </pems-flex>
+</pems-content-card>
 
-<div class="content-card">
-    <div class="table-responsive table-scroll-area" style="max-height:70vh; overflow-y:auto;">
-        <table class="table table-enterprise table-sm">
-            <thead>
-                <tr>
-                    <th style="width:30px;"><input type="checkbox" id="selectAllMatched" title="Select all matched rows" /></th>
-                    <th>@Localizer["Tag"]</th><th>@Localizer["Description"]</th><th>@Localizer["Junction Box"]</th><th>@Localizer["Cable No."]</th>
-                    <th>DCS Tag</th><th>@Localizer["Status"]</th><th style="min-width:280px;">@Localizer["Action"]</th>
-                </tr>
-            </thead>
-            <tbody>
+<pems-content-card>
+    <pems-table-scroll css="table-scroll-area pems-s-a7ef6ffc">
+        <pems-table kind="enterprise" scale="small">
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header class="pems-w-30"><pems-input kind="bare" type="checkbox" id="selectAllMatched" title="Select all matched rows" /></pems-table-header>
+                    <pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>@Localizer["Junction Box"]</pems-table-header><pems-table-header>@Localizer["Cable No."]</pems-table-header>
+                    <pems-table-header>DCS Tag</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header class="pems-s-e581e86b">@Localizer["Action"]</pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
                 @foreach (var row in rows)
                 {
                     var badgeClass = row.MatchStatus switch
                     {
-                        "Confirmed" => "bg-success",
-                        "Rejected" => "bg-secondary",
-                        "MatchedHasInstrument" => "bg-info text-dark",
-                        "MatchedNoInstrument" => "bg-primary",
-                        _ => "bg-warning text-dark"
+                        "Confirmed" => "success",
+                        "Rejected" => "neutral",
+                        "MatchedHasInstrument" => "info",
+                        "MatchedNoInstrument" => "primary",
+                        _ => "warning"
                     };
                     var isSelectable = row.MatchStatus is "MatchedNoInstrument" or "MatchedHasInstrument";
 
-                    <tr class="row-item" data-status="@row.MatchStatus" data-tag="@(row.TagNumber ?? "").ToLower()">
-                        <td>
+                    <pems-table-row class="row-item" data-status="@row.MatchStatus" data-tag="@(row.TagNumber ?? "").ToLower()">
+                        <pems-table-cell>
                             @if (isSelectable)
                             {
-                                <input type="checkbox" class="row-select" form="bulkConfirmForm" name="selectedRowIds" value="@row.TableExtractionRowId" />
+                                <pems-input kind="bare" type="checkbox" class="row-select" form="bulkConfirmForm" name="selectedRowIds" value="@row.TableExtractionRowId" />
                             }
-                        </td>
-                        <td class="fw-semibold">@(row.TagNumber ?? "-")</td>
-                        <td class="small" style="max-width:220px;">@(row.Description ?? "-")</td>
-                        <td class="small">@(row.JunctionBox ?? "-")</td>
-                        <td class="small">@(row.CableNo ?? "-")</td>
-                        <td class="small">@(row.DcsTagNo ?? "-")</td>
-                        <td><span class="badge @badgeClass">@row.MatchStatus</span></td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell class="fw-semibold">@(row.TagNumber ?? "-")</pems-table-cell>
+                        <pems-table-cell class="small pems-s-27af8985">@(row.Description ?? "-")</pems-table-cell>
+                        <pems-table-cell class="small">@(row.JunctionBox ?? "-")</pems-table-cell>
+                        <pems-table-cell class="small">@(row.CableNo ?? "-")</pems-table-cell>
+                        <pems-table-cell class="small">@(row.DcsTagNo ?? "-")</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="@badgeClass">@row.MatchStatus</pems-badge></pems-table-cell>
+                        <pems-table-cell>
                             @if (row.MatchStatus is "MatchedNoInstrument" or "MatchedHasInstrument")
                             {
-                                <div class="d-flex align-items-center gap-2">
+                                <pems-flex align="center" gap="2">
                                     <span class="small text-muted">→ @row.MatchedEquipment?.TagNumber</span>
-                                    <form asp-action="ConfirmRow" method="post" class="d-inline">
+                                    <pems-form asp-action="ConfirmRow" method="post" class="d-inline">
                                         <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
                                         <input type="hidden" name="equipmentId" value="@row.MatchedEquipmentId" />
                                         <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
-                                        <button type="submit" class="btn btn-xs btn-pems-solid btn-sm">Confirm</button>
-                                    </form>
-                                    <form asp-action="RejectRow" method="post" class="d-inline">
+                                        <pems-button tone="primary" size="small" css="btn-xs" type="submit">Confirm</pems-button>
+                                    </pems-form>
+                                    <pems-form asp-action="RejectRow" method="post" class="d-inline">
                                         <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
                                         <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary">@Localizer["Reject"]</button>
-                                    </form>
-                                </div>
+                                        <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
+                                    </pems-form>
+                                </pems-flex>
                             }
                             else if (row.MatchStatus == "Unmatched")
                             {
-                                <form asp-action="ConfirmRowManual" method="post" class="d-flex gap-2">
+                                <pems-form asp-action="ConfirmRowManual" method="post"><pems-flex gap="2">
                                     <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
                                     <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
-                                    <input type="text" name="equipmentTagNumber" class="form-control form-control-sm" placeholder="Equipment tag..." style="max-width:160px;" />
-                                    <button type="submit" class="btn btn-sm btn-pems-solid">Link</button>
-                                </form>
+                                    <pems-input class="pems-maxw-160" scale="small" type="text" name="equipmentTagNumber" placeholder="Equipment tag..." />
+                                    <pems-button tone="primary" size="small" type="submit">Link</pems-button>
+                                </pems-flex></pems-form>
                             }
                             else if (row.MatchStatus == "Confirmed")
                             {
-                                <span class="small text-success"><i class="bi bi-check-circle"></i> Instrument #@row.ResultInstrumentId</span>
+                                <span class="small text-success"><pems-icon name="bi-check-circle" /> Instrument #@row.ResultInstrumentId</span>
                             }
                             else
                             {
                                 <span class="small text-muted">-</span>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
-        </table>
+            </pems-table-body>
+        </pems-table>
 
         @if (!rows.Any())
         {
-            <p class="text-muted text-center py-4">@Localizer["No rows in this batch."]</p>
+            <pems-text class="text-muted text-center py-4">@Localizer["No rows in this batch."]</pems-text>
         }
-    </div>
-</div>
+    </pems-table-scroll>
+</pems-content-card>
 
 @section Scripts {
-<script>
-(function () {
-    var searchInput = document.getElementById('rowSearch');
-    var statusButtons = [].slice.call(document.querySelectorAll('.status-filter'));
-    var rows = [].slice.call(document.querySelectorAll('.row-item'));
-    var activeStatus = 'all';
-
-    function applyFilters() {
-        var q = (searchInput.value || '').trim().toLowerCase();
-        rows.forEach(function (r) {
-            var statusOk = activeStatus === 'all' || r.getAttribute('data-status') === activeStatus;
-            var tagOk = !q || r.getAttribute('data-tag').indexOf(q) !== -1;
-            r.style.display = (statusOk && tagOk) ? '' : 'none';
-        });
-    }
-
-    searchInput.addEventListener('input', applyFilters);
-    statusButtons.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            statusButtons.forEach(function (b) { b.classList.remove('active'); });
-            btn.classList.add('active');
-            activeStatus = btn.getAttribute('data-status');
-            applyFilters();
-        });
-    });
-})();
-
-(function () {
-    var selectAll = document.getElementById('selectAllMatched');
-    var checkboxes = [].slice.call(document.querySelectorAll('.row-select'));
-    var confirmBtn = document.getElementById('bulkConfirmBtn');
-    var countSpan = document.getElementById('selectedCount');
-
-    function updateCount() {
-        var checked = checkboxes.filter(function (c) { return c.checked; }).length;
-        countSpan.textContent = checked;
-        confirmBtn.disabled = checked === 0;
-    }
-
-    selectAll.addEventListener('change', function () {
-        // فقط ردیف‌های در حال حاضر قابل‌مشاهده (بعد از فیلتر) انتخاب/لغو می‌شوند
-        checkboxes.forEach(function (c) {
-            var row = c.closest('tr');
-            if (row.style.display !== 'none') c.checked = selectAll.checked;
-        });
-        updateCount();
-    });
-
-    checkboxes.forEach(function (c) { c.addEventListener('change', updateCount); });
-    updateCount();
-})();
-</script>
+<script src="~/js/views/tableextraction-review.js" asp-append-version="true"></script>
 }

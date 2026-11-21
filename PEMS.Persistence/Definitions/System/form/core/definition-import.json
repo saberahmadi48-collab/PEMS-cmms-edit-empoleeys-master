@@ -1,0 +1,39 @@
+{
+  "kind": "form",
+  "key": "definition-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import definitions",
+    "fa": "ورود تعریف‌ها"
+  },
+  "description": {
+    "en": "Upload a package exported from the workbench",
+    "fa": "بارگذاری بسته خروجی میزکار"
+  },
+  "payload": {
+    "id": "definition-import",
+    "title": {
+      "en": "Import definitions (a .json package from the workbench export)",
+      "fa": "ورود تعریف‌ها (بسته json خروجی میزکار)"
+    },
+    "submitLabel": {
+      "en": "Import as drafts",
+      "fa": "ورود به‌صورت پیش‌نویس"
+    },
+    "actionKey": "definition-import",
+    "permission": "Definitions.Create",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "package",
+        "label": {
+          "en": "Package file",
+          "fa": "فایل بسته"
+        },
+        "kind": "file",
+        "required": true
+      }
+    ]
+  }
+}

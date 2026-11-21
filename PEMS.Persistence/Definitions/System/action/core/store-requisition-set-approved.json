@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "store-requisition-set-approved",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set the approved quantity",
+    "fa": "تعیین مقدار تأییدشده"
+  },
+  "description": {
+    "en": "Set the approved quantity",
+    "fa": "تعیین مقدار تأییدشده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StoreRequisition",
+      "action": "SetApprovedQuantity",
+      "args": {
+        "id": "field:id",
+        "lineId": "field:lineId",
+        "approved": "field:approved"
+      }
+    },
+    "success": {
+      "en": "The approved quantity was saved.",
+      "fa": "مقدار تأییدشده ثبت شد."
+    },
+    "redirect": "/p/store-requisition-details?id={id}"
+  }
+}

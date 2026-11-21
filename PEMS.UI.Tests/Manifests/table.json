@@ -1,0 +1,196 @@
+{
+  "key": "table",
+  "component": "PEMS.UI.Components.PemsTable",
+  "category": "data",
+  "icon": "bi-table",
+  "nameKey": "component.table",
+  "optionsParameter": null,
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "emptyText": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "rows": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "view": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "header": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1,
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "alignment": {
+                  "enum": [
+                    "start",
+                    "center",
+                    "end"
+                  ]
+                },
+                "sortable": {
+                  "type": "boolean"
+                },
+                "kind": {
+                  "enum": [
+                    "auto",
+                    "text",
+                    "number",
+                    "date",
+                    "dateTime"
+                  ]
+                },
+                "trueText": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1,
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "falseText": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1,
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "key",
+                "header"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "emptyText": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "columns"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "view"
+    ]
+  },
+  "parameters": [
+    {
+      "name": "emptyText",
+      "type": "TranslatableText",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "rows",
+      "type": "IReadOnlyList`1",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "view",
+      "type": "ViewDescriptor",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "view": {
+      "id": "items",
+      "title": {
+        "en": "Items",
+        "fa": "موارد"
+      },
+      "columns": [
+        {
+          "key": "tag",
+          "header": {
+            "en": "Tag",
+            "fa": "تگ"
+          }
+        }
+      ]
+    },
+    "rows": []
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "moc-close",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close the MOC",
+    "fa": "بستن MOC"
+  },
+  "description": {
+    "en": "Close the MOC",
+    "fa": "بستن MOC"
+  },
+  "payload": {
+    "id": "moc-close",
+    "title": {
+      "en": "Close the MOC",
+      "fa": "بستن MOC"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "moc-close",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "mocId",
+        "label": {
+          "en": "MOC id",
+          "fa": "شناسه‌ی MOC"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

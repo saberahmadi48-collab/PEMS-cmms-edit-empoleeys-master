@@ -1,0 +1,94 @@
+{
+  "kind": "page",
+  "key": "audit-log",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Audit log",
+    "fa": "گزارش ممیزی"
+  },
+  "description": {
+    "en": "Audit log list (page definition)",
+    "fa": "فهرست گزارش ممیزی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "audit-log",
+    "template": "entity-list",
+    "args": {
+      "id": "audit-log",
+      "url": "/d/audit-log-grid",
+      "idField": "auditLogId",
+      "viewsKey": "audit-log",
+      "columns": [
+        {
+          "key": "auditLogId",
+          "header": {
+            "en": "Id",
+            "fa": "شناسه"
+          },
+          "width": 80,
+          "type": "number"
+        },
+        {
+          "key": "timestamp",
+          "header": {
+            "en": "When",
+            "fa": "زمان"
+          },
+          "width": 170,
+          "type": "datetime"
+        },
+        {
+          "key": "entityName",
+          "header": {
+            "en": "Entity",
+            "fa": "موجودیت"
+          },
+          "width": 170
+        },
+        {
+          "key": "entityKeyValue",
+          "header": {
+            "en": "Key",
+            "fa": "کلید"
+          },
+          "width": 120
+        },
+        {
+          "key": "action",
+          "header": {
+            "en": "Action",
+            "fa": "عملیات"
+          },
+          "width": 100
+        },
+        {
+          "key": "changedFieldsSummary",
+          "header": {
+            "en": "Changed fields",
+            "fa": "فیلدهای تغییریافته"
+          },
+          "width": 420
+        },
+        {
+          "key": "userName",
+          "header": {
+            "en": "User",
+            "fa": "کاربر"
+          },
+          "width": 150
+        },
+        {
+          "key": "isAIAssisted",
+          "header": {
+            "en": "AI assisted",
+            "fa": "با کمک هوش مصنوعی"
+          },
+          "width": 130,
+          "type": "bool"
+        }
+      ]
+    }
+  }
+}

@@ -3,53 +3,44 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<pems-flex justify="between" align="center" css="mb-3">
     <div>
-        <p class="text-muted small mb-0">
+        <pems-text class="text-muted small mb-0">
             فقط تطبیق‌های کامل (Exact Match روی شماره‌ی خام ثبت‌شده) این‌جا نشون داده می‌شن -
             همون سطح اطمینانی که برای P&amp;ID استفاده کردیم. با این حال چون تایید هرکدوم یک
             رابطه‌ی دائمی می‌سازه، هنوز یک تایید صریح (هرچند دسته‌جمعی) لازمه.
-        </p>
+        </pems-text>
     </div>
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["بازگشت به Explorer"]</a>
-</div>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["بازگشت به Explorer"]</pems-button>
+</pems-flex>
 
 @if (!Model.Any())
 {
-    <div class="content-card"><p class="text-muted text-center py-4 mb-0">@Localizer["هیچ پیشنهاد تاییدنشده‌ای یافت نشد."]</p></div>
+    <pems-content-card><pems-text class="text-muted text-center py-4 mb-0">@Localizer["هیچ پیشنهاد تاییدنشده‌ای یافت نشد."]</pems-text></pems-content-card>
 }
 else
 {
-    <form asp-action="BulkConfirm" method="post">
-        <div class="content-card mb-3 d-flex justify-content-between align-items-center">
+    <pems-form asp-action="BulkConfirm" method="post">
+        <pems-content-card css="mb-3 d-flex justify-content-between align-items-center">
             <div>
-                <input type="checkbox" id="selectAll" onclick="document.querySelectorAll('.item-check').forEach(c => c.checked = this.checked);" />
+                <pems-input kind="bare" type="checkbox" id="selectAll" data-pems-click="check-all" data-pems-target=".item-check" data-pems-check="self" />
                 <label for="selectAll" class="ms-1">انتخاب همه (@Model.Count مورد)</label>
             </div>
-            <button type="submit" class="btn btn-pems-solid btn-sm" onclick="return confirm('موارد انتخاب‌شده رسماً وصل می‌شن. مطمئنی؟')">
-                <i class="bi bi-check2-all"></i> تایید موارد انتخاب‌شده
-            </button>
-        </div>
+            <pems-button tone="primary" size="small" type="submit" data-pems-confirm="موارد انتخاب‌شده رسماً وصل می‌شن. مطمئنی؟">
+                <pems-icon name="bi-check2-all" /> تایید موارد انتخاب‌شده
+            </pems-button>
+        </pems-content-card>
 
-        <div class="content-card">
-            <table class="table table-enterprise mb-0">
-                <thead>
-                    <tr><th></th><th>@Localizer["Equipment Tag"]</th><th>@Localizer["نوع"]</th><th>@Localizer["مقصد"]</th><th>@Localizer["طبق شماره‌ی خام"]</th></tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}";
-                        <tr>
-                            <td><input type="checkbox" class="item-check" name="selectedItems" value="@value" /></td>
-                            <td><a asp-action="Equipment" asp-route-id="@item.EquipmentId">@item.EquipmentTagNumber</a></td>
-                            <td><span class="badge bg-secondary">@item.TargetType</span></td>
-                            <td>@item.TargetLabel</td>
-                            <td class="text-muted small">@item.MatchedOnRawValue</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </form>
+        <pems-content-card>
+            @{
+                var rows_22 = Model;
+                var cell_22_0 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }<pems-input kind="bare" type="checkbox" class="item-check" name="selectedItems" value="@value" /></text>);
+                var cell_22_1 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }<pems-link asp-action="Equipment" asp-route-id="@item.EquipmentId">@item.EquipmentTagNumber</pems-link></text>);
+                var cell_22_2 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }<pems-badge tone="neutral">@item.TargetType</pems-badge></text>);
+                var cell_22_3 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }@item.TargetLabel</text>);
+                var cell_22_4 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }@item.MatchedOnRawValue</text>);
+            }
+            <pems-data-table data="@(DataRows.Of(rows_22, c_ => c_.Add("", item => (object?)cell_22_0(item)).Add(((Localizer["Equipment Tag"])?.ToString() ?? ""), item => (object?)cell_22_1(item)).Add(((Localizer["نوع"])?.ToString() ?? ""), item => (object?)cell_22_2(item)).Add(((Localizer["مقصد"])?.ToString() ?? ""), item => (object?)cell_22_3(item)).Add(((Localizer["طبق شماره‌ی خام"])?.ToString() ?? ""), item => (object?)cell_22_4(item), css: "text-muted small")))" css="mb-0" />
+        </pems-content-card>
+    </pems-form>
 }

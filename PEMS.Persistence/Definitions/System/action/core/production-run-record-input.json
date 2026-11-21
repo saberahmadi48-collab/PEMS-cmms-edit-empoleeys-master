@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "production-run-record-input",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record an input",
+    "fa": "ثبت ورودی"
+  },
+  "description": {
+    "en": "Record an input",
+    "fa": "ثبت ورودی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "RecordInput",
+      "args": {
+        "productionRunId": "field:productionRunId",
+        "materialItemId": "field:materialItemId",
+        "quantity": "field:quantity",
+        "uomId": "field:uomId",
+        "sourceProductionBatchId": "field:sourceProductionBatchId",
+        "notes": "field:notes",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The input was recorded.",
+      "fa": "ورودی ثبت شد."
+    },
+    "redirect": "/ProductionRun/Details/{productionRunId}"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "discipline-workspaces-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline workspaces rows",
+    "fa": "ردیف‌های فضای کاری دیسیپلین‌ها"
+  },
+  "description": {
+    "en": "The summary of each discipline workspace",
+    "fa": "خلاصه‌ی فضای کاری هر دیسیپلین"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DisciplineWorkspace",
+      "action": "Workspaces"
+    }
+  }
+}

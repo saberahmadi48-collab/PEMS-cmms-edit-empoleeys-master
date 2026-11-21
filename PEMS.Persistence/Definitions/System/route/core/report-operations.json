@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "report-operations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Operations report (old address)",
+    "fa": "گزارش عملیات (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Operations report (old address)",
+    "fa": "گزارش عملیات (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Report/Operations",
+    "target": "/p/report-operations",
+    "permanent": false
+  }
+}

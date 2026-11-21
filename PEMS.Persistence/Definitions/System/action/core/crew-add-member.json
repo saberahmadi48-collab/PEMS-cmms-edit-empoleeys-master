@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "crew-add-member",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a crew member",
+    "fa": "افزودن عضو"
+  },
+  "description": {
+    "en": "Add a crew member",
+    "fa": "افزودن عضو"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "CrewAdmin",
+      "action": "AddMember",
+      "args": {
+        "userId": "context:userId",
+        "userName": "context:userName",
+        "employeeId": "context:employeeId",
+        "userRoles": "context:roles",
+        "ip": "context:ip",
+        "crewId": "field:crewId",
+        "employeeIdToAdd": "field:employeeIdToAdd",
+        "roleId": "field:roleId"
+      }
+    },
+    "success": {
+      "en": "The member was added.",
+      "fa": "عضو اضافه شد."
+    },
+    "redirect": "/p/crews"
+  }
+}

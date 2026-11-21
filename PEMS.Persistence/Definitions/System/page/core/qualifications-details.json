@@ -1,0 +1,65 @@
+{
+  "kind": "page",
+  "key": "qualifications-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Qualifications details",
+    "fa": "جزئیات صلاحیت‌ها"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "qualifications-record",
+      "url": "/d/qualifications-grid",
+      "idField": "qualificationId",
+      "fields": [
+        {
+          "key": "name",
+          "label": {
+            "en": "Name",
+            "fa": "نام"
+          }
+        },
+        {
+          "key": "discipline",
+          "label": {
+            "en": "Discipline",
+            "fa": "دیسیپلین"
+          }
+        },
+        {
+          "key": "description",
+          "label": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "wide": true
+        },
+        {
+          "key": "isActive",
+          "label": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "type": "bool"
+        }
+      ],
+      "backUrl": "/p/qualifications",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/qualifications-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

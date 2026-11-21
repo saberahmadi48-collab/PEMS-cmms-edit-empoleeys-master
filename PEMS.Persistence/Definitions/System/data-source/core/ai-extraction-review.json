@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "ai-extraction-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI extraction review header",
+    "fa": "سرتیتر بازبینی استخراج هوش مصنوعی"
+  },
+  "description": {
+    "en": "AI extraction review header",
+    "fa": "سرتیتر بازبینی استخراج هوش مصنوعی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "AiExtraction",
+      "action": "Review",
+      "args": {
+        "attachmentId": "param:id"
+      }
+    }
+  }
+}

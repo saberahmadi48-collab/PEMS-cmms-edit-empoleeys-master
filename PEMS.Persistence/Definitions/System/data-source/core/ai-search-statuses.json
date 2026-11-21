@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "ai-search-statuses",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Statuses",
+    "fa": "وضعیت‌ها"
+  },
+  "description": {
+    "en": "Statuses",
+    "fa": "وضعیت‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "AiSearch",
+      "action": "Statuses"
+    }
+  }
+}

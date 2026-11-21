@@ -1,0 +1,96 @@
+{
+  "kind": "form",
+  "key": "procurement-package-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New procurement package",
+    "fa": "بسته‌ی تدارکات جدید"
+  },
+  "description": {
+    "en": "New procurement package",
+    "fa": "بسته‌ی تدارکات جدید"
+  },
+  "payload": {
+    "id": "procurement-package-create",
+    "title": {
+      "en": "New procurement package",
+      "fa": "بسته‌ی تدارکات جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "procurement-package-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "packageNumber",
+        "label": {
+          "en": "Package number",
+          "fa": "شماره بسته"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "procurement-package-projects"
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "optionsFrom": "procurement-package-disciplines"
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 300
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "textArea",
+        "maxLength": 1000,
+        "span": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "data-source",
+  "key": "projects-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Projects rows",
+    "fa": "ردیف‌های پروژه‌ها"
+  },
+  "description": {
+    "en": "The rows of the projects grid",
+    "fa": "ردیف‌های جدول پروژه‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "Project",
+      "fields": [
+        "ProjectCode",
+        "ProjectName",
+        "ClientName",
+        "Location",
+        "StartDate",
+        "EndDate",
+        "Status",
+        "IsActive"
+      ],
+      "search": [
+        "ProjectCode",
+        "ProjectName",
+        "ClientName",
+        "Location"
+      ]
+    }
+  }
+}

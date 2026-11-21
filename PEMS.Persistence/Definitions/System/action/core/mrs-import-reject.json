@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "mrs-import-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject rows",
+    "fa": "رد ردیف‌ها"
+  },
+  "description": {
+    "en": "Reject rows",
+    "fa": "رد ردیف‌ها"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MrsImport",
+      "action": "Reject",
+      "args": {
+        "batchId": "field:batchId",
+        "rowIds": "field:rowIds",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The rows were rejected.",
+      "fa": "ردیف‌ها رد شدند."
+    },
+    "redirect": "/p/mrs-import-review?batchId={batchId}"
+  }
+}

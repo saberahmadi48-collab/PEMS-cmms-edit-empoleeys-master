@@ -1,97 +1,137 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.CriticalityAssessmentListDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var statusFilter = (string?)ViewBag.StatusFilter;
     var equipmentClassId = (int?)ViewBag.EquipmentClassId;
     var canEdit = (bool)ViewBag.CanEdit;
-    var equipmentClasses = (IEnumerable<dynamic>)ViewBag.EquipmentClasses;
+    var equipmentClasses = ((IEnumerable<dynamic>)ViewBag.EquipmentClasses).ToList();
+    var statuses = new[] { "DRAFT", "UNDER_REVIEW", "APPROVED", "SUPERSEDED" };
+    var filterCount = (string.IsNullOrEmpty(statusFilter) ? 0 : 1) + (equipmentClassId.HasValue ? 1 : 0);
 
-    string StatusBadge(string status) => status switch
+    var qsParts = new List<string>();
+    if (!string.IsNullOrEmpty(statusFilter)) qsParts.Add($"status={Uri.EscapeDataString(statusFilter)}");
+    if (equipmentClassId.HasValue) qsParts.Add($"equipmentClassId={equipmentClassId}");
+
+    string StatusText(string? s) => VdrUi.Loc(Localizer, "Ca_St_", s);
+    string StatusTone(string? s) => s switch
     {
-        "APPROVED" => "text-bg-success",
-        "UNDER_REVIEW" => "text-bg-warning",
-        "SUPERSEDED" => "text-bg-secondary",
-        _ => "text-bg-light border"
+        "APPROVED" => "vs-pill--success",
+        "UNDER_REVIEW" => "vs-pill--warning",
+        "SUPERSEDED" => "vs-pill--neutral",
+        _ => "vs-pill--info"
     };
+    string? ClassLabel(int? id)
+    {
+        if (!id.HasValue) return null;
+        var c = equipmentClasses.FirstOrDefault(x => (int)x.EquipmentClassId == id.Value);
+        return c == null ? id.ToString() : $"{c.Name} ({c.Code})";
+    }
 }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <div>
-        <a asp-action="Dashboard" class="btn btn-outline-secondary btn-sm">@Localizer["← Dashboard"]</a>
-        @if (canEdit)
-        {
-            <a asp-action="Create" class="btn btn-pems-solid btn-sm"><i class="bi bi-plus-lg"></i> New Assessment</a>
-        }
-    </div>
-</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-@if (TempData["Message"] != null) { <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div> }
-@if (TempData["Error"] != null) { <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div> }
+@* SCRUM-337 W2b: built from the PEMS.UI list-page component; the page keeps its status / equipment class filters,
+   columns and the New permission. The dashboard link is a toolbar tool. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-<div class="content-card mb-3">
-    <form method="get" class="row g-2 align-items-end">
-        <div class="col-md-3">
-            <label class="form-label small">@Localizer["Status"]</label>
-            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
-                <option value="" selected="@(string.IsNullOrEmpty(statusFilter))">All</option>
-                <option value="DRAFT" selected="@(statusFilter == "DRAFT")">Draft</option>
-                <option value="UNDER_REVIEW" selected="@(statusFilter == "UNDER_REVIEW")">Under Review</option>
-                <option value="APPROVED" selected="@(statusFilter == "APPROVED")">Approved</option>
-                <option value="SUPERSEDED" selected="@(statusFilter == "SUPERSEDED")">Superseded</option>
-            </select>
-        </div>
-        <div class="col-md-3">
-            <label class="form-label small">@Localizer["Equipment Class"]</label>
-            <select name="equipmentClassId" class="form-select form-select-sm" onchange="this.form.submit()">
-                <option value="">@Localizer["All"]</option>
-                @foreach (var ec in equipmentClasses)
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Ca_Title"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-filters form-id="caFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <div>
+                        <label class="lp-lbl" for="caFilterStatus">@Localizer["Ed_Status"]</label>
+                        <pems-select scale="small" id="caFilterStatus" name="status">
+                            <option value="">@Localizer["Eq_AllStatuses"]</option>
+                            @foreach (var s in statuses)
+                            { <option value="@s" selected="@(s == statusFilter)">@StatusText(s)</option> }
+                        </pems-select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="caFilterClass">@Localizer["Rcm_EquipmentClass"]</label>
+                        <pems-select scale="small" id="caFilterClass" name="equipmentClassId">
+                            <option value="">@Localizer["Rcm_AllClasses"]</option>
+                            @foreach (var ec in equipmentClasses)
+                            { <option value="@ec.EquipmentClassId" selected="@(equipmentClassId == (int)ec.EquipmentClassId)">@ec.Name (@ec.Code)</option> }
+                        </pems-select>
+                    </div>
+                </pems-list-filters>
+                <pems-link class="lp-icon-btn" asp-action="Dashboard" title="@Localizer["Ca_Dashboard"]" aria-label="@Localizer["Ca_Dashboard"]"><pems-icon name="bi-speedometer2" aria-hidden="true" /></pems-link>
+                <pems-list-reset-columns grid-key="CriticalityAssessmentQueue" />
+                @if (canEdit)
                 {
-                    <option value="@ec.EquipmentClassId" selected="@(equipmentClassId == (int)ec.EquipmentClassId)">@ec.Name (@ec.Code)</option>
+                    <pems-list-new href="@Url.Action("Create")" text="@Localizer["Ca_New"]" />
                 }
-            </select>
-        </div>
-    </form>
-</div>
+            </pems-list-tools>
+        </pems-list-toolbar>
 
-<div class="content-card">
-    <div class="table-scroll-area" style="overflow-x:auto;">
-    <table class="table table-enterprise table-sm mb-0">
-        <thead>
-            <tr>
-                <th>@Localizer["Equipment"]</th><th>@Localizer["Class"]</th><th>Framework</th><th>@Localizer["Status"]</th>
-                <th>@Localizer["Proposed"]</th><th>@Localizer["Prepared By"]</th><th>@Localizer["Approved By"]</th><th>@Localizer["Created"]</th><th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var a in Model.Items)
-            {
-                <tr>
-                    <td class="fw-bold small">@a.EquipmentTagNumber</td>
-                    <td class="small text-muted">@(a.EquipmentClassName ?? "-")</td>
-                    <td class="small text-muted">@a.FrameworkVersion</td>
-                    <td><span class="badge @StatusBadge(a.Status)">@a.Status</span></td>
-                    <td>@(a.ProposedCriticalityClass ?? "-")</td>
-                    <td class="small">@(a.PreparedBy ?? "-")</td>
-                    <td class="small">@(a.ApprovedBy ?? "-")</td>
-                    <td class="small">@a.CreatedDate.ToString("yyyy-MM-dd")</td>
-                    <td><a asp-action="Details" asp-route-id="@a.CriticalityAssessmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ ارزیابی‌ای با این فیلتر موجود نیست."]</p> }
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(statusFilter))
+            { <pems-list-chip label="@Localizer["Ed_Status"]" value="@StatusText(statusFilter)" remove-href="@Url.Action("Index", new { equipmentClassId })" /> }
+            @if (equipmentClassId.HasValue)
+            { <pems-list-chip label="@Localizer["Rcm_EquipmentClass"]" value="@ClassLabel(equipmentClassId)" remove-href="@Url.Action("Index", new { status = statusFilter })" /> }
+        </pems-list-chips>
 
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "CriticalityAssessmentQueue",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = ""
-    })
-</div>
+        <pems-list-grid>
+            <pems-list-table grid-key="CriticalityAssessmentQueue" empty="@(!Model.Items.Any())" empty-text="@Localizer["Ca_Empty"]"
+                             filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Equipment"]</pems-table-header>
+                        <pems-table-header class="pems-w-160" data-col-key="class" data-resizable="true" data-min-width="100" data-max-width="240">@Localizer["Rcm_EquipmentClass"]</pems-table-header>
+                        <pems-table-header data-col-key="framework" data-resizable="true" data-min-width="80" data-max-width="160" class="vs-hide-md pems-w-100">@Localizer["Ca_Framework"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="proposed" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Ca_Proposed"]</pems-table-header>
+                        <pems-table-header data-col-key="preparedBy" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ca_PreparedBy"]</pems-table-header>
+                        <pems-table-header data-col-key="approvedBy" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ca_ApprovedBy"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ca_Created"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var a in Model.Items)
+                    {
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@a.CriticalityAssessmentId" class="lp-subject"><span class="vs-num">@a.EquipmentTagNumber</span></pems-link></pems-table-cell>
+                            <pems-table-cell class="small">@(a.EquipmentClassName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md text-muted">@a.FrameworkVersion</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(a.Status)">@StatusText(a.Status)</span></pems-table-cell>
+                            <pems-table-cell>@(a.ProposedCriticalityClass ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@(a.PreparedBy ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@(a.ApprovedBy ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@PemsDates.Date(a.CreatedDate)</span></pems-table-cell>
+                            <pems-table-cell class="text-end">
+                                <pems-link asp-action="Details" asp-route-id="@a.CriticalityAssessmentId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><pems-icon name="bi-eye" aria-hidden="true" /></pems-link>
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "CriticalityAssessmentQueue",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.Join("&", qsParts)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

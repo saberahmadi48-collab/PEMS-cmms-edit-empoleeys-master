@@ -1,0 +1,58 @@
+{
+  "kind": "layout",
+  "key": "dashboard-page",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "fa": "صفحه داشبورد",
+    "en": "Dashboard page"
+  },
+  "description": {
+    "fa": "شاخص‌ها و نمودارها در یک شبکه",
+    "en": "Indicators and charts in a grid"
+  },
+  "payload": {
+    "root": {
+      "tag": "div",
+      "css": "vs-page",
+      "children": [
+        {
+          "region": "header"
+        },
+        {
+          "region": "messages"
+        },
+        {
+          "region": "kpis"
+        },
+        {
+          "tag": "div",
+          "css": "row g-3",
+          "children": [
+            {
+              "tag": "div",
+              "css": "col-lg-8",
+              "children": [
+                {
+                  "region": "main"
+                }
+              ]
+            },
+            {
+              "tag": "div",
+              "css": "col-lg-4",
+              "children": [
+                {
+                  "region": "side"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "region": "footer"
+        }
+      ]
+    }
+  }
+}

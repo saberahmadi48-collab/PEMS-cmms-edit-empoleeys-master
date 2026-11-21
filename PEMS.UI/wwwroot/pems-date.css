@@ -1,0 +1,18 @@
+/* PEMS.UI Jalali date picker (SCRUM-225): the vendored picker (lib/jalalidatepicker) is coloured only through variables on its <jdp-container> element; they follow the PEMS theme tokens,
+   so Light, Dark and Turquoise need no rule of their own. */
+jdp-container {
+    --jdp-color-0: var(--pems-surface);
+    --jdp-color-1: var(--pems-table-header-bg);
+    --jdp-color-2: var(--pems-surface-border);
+    --jdp-color-3: var(--pems-text-muted);
+    --jdp-color-4: var(--pems-text-muted);
+    --jdp-color-5: var(--pems-text);
+    --jdp-primary: var(--pems-primary);
+    --jdp-red: var(--pems-chart-danger-text);
+    font-family: inherit;
+    border: 1px solid var(--pems-surface-border);
+    border-radius: 8px;
+    box-shadow: 0 6px 20px var(--pems-shadow);
+}
+
+input[data-jdp] { direction: ltr; text-align: start; }

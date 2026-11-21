@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "numbering-vdr-vendor",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate the vendor-format number",
+    "fa": "تولید شماره‌ی فرمت Vendor"
+  },
+  "description": {
+    "en": "Generate the vendor-format number",
+    "fa": "تولید شماره‌ی فرمت Vendor"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Numbering",
+      "action": "GenerateVendorNumber",
+      "args": {
+        "vdrItemId": "field:id",
+        "jobNumber": "field:jobNumber",
+        "unitCode": "field:unitCode",
+        "typologyCode": "field:typologyCode"
+      }
+    },
+    "redirect": "/p/numbering-vdr"
+  }
+}

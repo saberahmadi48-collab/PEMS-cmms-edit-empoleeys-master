@@ -1,0 +1,44 @@
+{
+  "kind": "action",
+  "key": "gas-test-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record a gas test",
+    "fa": "ثبت تست گاز"
+  },
+  "description": {
+    "en": "Record a gas test",
+    "fa": "ثبت تست گاز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "GasTest",
+      "action": "Create",
+      "args": {
+        "employeeId": "context:employeeId",
+        "permitId": "field:permitId",
+        "location": "field:location",
+        "testedAt": "field:testedAt",
+        "instrumentTag": "field:instrumentTag",
+        "instrumentCalibrationDueDate": "field:instrumentCalibrationDueDate",
+        "equipmentId": "field:equipmentId",
+        "functionalLocationId": "field:functionalLocationId",
+        "o2": "field:o2",
+        "lel": "field:lel",
+        "h2s": "field:h2s",
+        "co": "field:co",
+        "otherValue": "field:otherValue",
+        "otherUnit": "field:otherUnit"
+      }
+    },
+    "success": {
+      "en": "The gas test was recorded.",
+      "fa": "تست گاز ثبت شد."
+    },
+    "redirect": "/Permit/Details/{permitId}",
+    "permission": "GasTest.Create"
+  }
+}

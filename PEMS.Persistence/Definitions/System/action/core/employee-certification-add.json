@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "employee-certification-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a certification",
+    "fa": "افزودن گواهینامه"
+  },
+  "description": {
+    "en": "Add a certification",
+    "fa": "افزودن گواهینامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Employee",
+      "action": "AddCertification",
+      "args": {
+        "employeeId": "field:employeeId",
+        "certificationId": "field:certificationId",
+        "issueDate": "field:issueDate",
+        "certificateNumber": "field:certificateNumber",
+        "issuer": "field:issuer",
+        "expiryDate": "field:expiryDate"
+      }
+    },
+    "success": {
+      "en": "Certification added.",
+      "fa": "گواهینامه افزوده شد."
+    },
+    "redirect": "/p/employee-details?id={employeeId}"
+  }
+}

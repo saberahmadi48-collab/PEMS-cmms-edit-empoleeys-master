@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "inventory-ledger",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Inventory transaction ledger",
+    "fa": "دفتر کل تراکنش‌های موجودی"
+  },
+  "description": {
+    "en": "Inventory transaction ledger",
+    "fa": "دفتر کل تراکنش‌های موجودی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Inventory",
+      "action": "Ledger",
+      "args": {
+        "warehouseId": "param:warehouseId",
+        "transactionType": "param:transactionType",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "report-cmms",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CMMS report (old address)",
+    "fa": "گزارش CMMS (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "CMMS report (old address)",
+    "fa": "گزارش CMMS (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Report/Cmms",
+    "target": "/p/report-cmms",
+    "permanent": false
+  }
+}

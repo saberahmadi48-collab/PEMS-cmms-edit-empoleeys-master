@@ -1,0 +1,333 @@
+{
+  "kind": "page",
+  "key": "production-order-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production order",
+    "fa": "سفارش تولید"
+  },
+  "description": {
+    "en": "One order with its runs and the lifecycle commands (page definition)",
+    "fa": "یک سفارش با اجراها و دستورهای چرخه‌ی عمر (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "production-order-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "production-order-record",
+            "fields": [
+              {
+                "key": "orderNumber",
+                "label": {
+                  "en": "Order",
+                  "fa": "سفارش"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "material",
+                "label": {
+                  "en": "Material",
+                  "fa": "ماده"
+                }
+              },
+              {
+                "key": "plannedQuantity",
+                "label": {
+                  "en": "Planned quantity",
+                  "fa": "مقدار برنامه"
+                }
+              },
+              {
+                "key": "uom",
+                "label": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                }
+              },
+              {
+                "key": "workCenter",
+                "label": {
+                  "en": "Work center",
+                  "fa": "مرکز کار"
+                }
+              },
+              {
+                "key": "equipment",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "responsible",
+                "label": {
+                  "en": "Responsible",
+                  "fa": "مسئول"
+                }
+              },
+              {
+                "key": "plannedStartDate",
+                "label": {
+                  "en": "Planned start",
+                  "fa": "شروع برنامه"
+                },
+                "type": "date"
+              },
+              {
+                "key": "plannedFinishDate",
+                "label": {
+                  "en": "Planned finish",
+                  "fa": "پایان برنامه"
+                },
+                "type": "date"
+              },
+              {
+                "key": "actualStartDate",
+                "label": {
+                  "en": "Actual start",
+                  "fa": "شروع واقعی"
+                },
+                "type": "date"
+              },
+              {
+                "key": "actualFinishDate",
+                "label": {
+                  "en": "Actual finish",
+                  "fa": "پایان واقعی"
+                },
+                "type": "date"
+              },
+              {
+                "key": "holdReason",
+                "label": {
+                  "en": "Hold reason",
+                  "fa": "دلیل تعلیق"
+                }
+              },
+              {
+                "key": "cancellationReason",
+                "label": {
+                  "en": "Cancellation reason",
+                  "fa": "دلیل لغو"
+                }
+              },
+              {
+                "key": "notes",
+                "label": {
+                  "en": "Notes",
+                  "fa": "یادداشت"
+                }
+              },
+              {
+                "key": "createdBy",
+                "label": {
+                  "en": "Created by",
+                  "fa": "ایجاد توسط"
+                }
+              },
+              {
+                "key": "createdDate",
+                "label": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "type": "date"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/production-order-head",
+              "idField": "productionOrderId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/production-order-plan?id={{params.id}}",
+                "text": {
+                  "en": "Plan",
+                  "fa": "برنامه‌ریزی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-order-release?id={{params.id}}",
+                "text": {
+                  "en": "Release",
+                  "fa": "Release"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-order-hold?id={{params.id}}",
+                "text": {
+                  "en": "Hold",
+                  "fa": "تعلیق"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-order-resume?id={{params.id}}",
+                "text": {
+                  "en": "Resume",
+                  "fa": "ازسرگیری"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-order-complete?id={{params.id}}",
+                "text": {
+                  "en": "Complete",
+                  "fa": "تکمیل"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-order-close?id={{params.id}}",
+                "text": {
+                  "en": "Close",
+                  "fa": "بستن"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-order-cancel?id={{params.id}}",
+                "text": {
+                  "en": "Cancel",
+                  "fa": "لغو"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-run-create?productionOrderId={{params.id}}",
+                "text": {
+                  "en": "New run",
+                  "fa": "اجرای جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/production-orders",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "runs",
+          "component": "def:related-table",
+          "options": {
+            "id": "runs",
+            "title": {
+              "en": "Runs",
+              "fa": "اجراها"
+            },
+            "url": "/d/production-order-runs?f.id={{params.id|url}}",
+            "idField": "productionRunId",
+            "columns": [
+              {
+                "key": "runNumber",
+                "header": {
+                  "en": "Run",
+                  "fa": "اجرا"
+                },
+                "width": 140
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "startDate",
+                "header": {
+                  "en": "Start",
+                  "fa": "شروع"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "endDate",
+                "header": {
+                  "en": "End",
+                  "fa": "پایان"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "totalOutputQuantity",
+                "header": {
+                  "en": "Output",
+                  "fa": "خروجی"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "totalLossQuantity",
+                "header": {
+                  "en": "Loss",
+                  "fa": "افت"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/production-run-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Production.View"
+  }
+}

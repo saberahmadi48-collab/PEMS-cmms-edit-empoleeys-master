@@ -1,0 +1,10 @@
+@page
+@inject Ledger Ledger
+@{ ViewData["Title"] = "Audit"; var rows = Ledger.AuditLog(); }
+<h1>Audit log</h1>
+<p>Hash chain: <strong class="@(Ledger.VerifyAuditChain() ? "pass" : "fail")">@(Ledger.VerifyAuditChain() ? "intact" : "BROKEN")</strong>.
+   Head: <code>@(Ledger.AuditHead() ?? "-")</code> (record it outside this computer from time to time so deleting the tail is detectable).</p>
+<table>
+    <thead><tr><th>#</th><th>UTC</th><th>Operator</th><th>Action</th><th>Subject</th><th>Entry hash</th></tr></thead>
+    <tbody>@foreach (var a in rows.OrderByDescending(a => a.Seq)) { <tr><td>@a.Seq</td><td>@a.Utc.ToString("u")</td><td>@a.Operator</td><td>@a.Action</td><td>@a.Subject</td><td><code>@a.EntryHash[..12]</code></td></tr> }</tbody>
+</table>

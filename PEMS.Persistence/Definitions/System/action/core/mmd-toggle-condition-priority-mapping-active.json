@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mmd-toggle-condition-priority-mapping-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleConditionPriorityMappingActive",
+    "fa": "وضعیت نگاشت Condition→Priority به‌روزرسانی شد."
+  },
+  "description": {
+    "en": "ToggleConditionPriorityMappingActive",
+    "fa": "وضعیت نگاشت Condition→Priority به‌روزرسانی شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "ToggleConditionPriorityMappingActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "وضعیت نگاشت Condition→Priority به‌روزرسانی شد.",
+      "fa": "وضعیت نگاشت Condition→Priority به‌روزرسانی شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

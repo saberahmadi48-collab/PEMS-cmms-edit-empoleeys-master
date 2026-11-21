@@ -14,6 +14,7 @@ public class PremiumGlassSystemTests
     private static string Root() => Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Here())!, "..", ".."));
     private static string Here([CallerFilePath] string p = "") => p;
     private static string Web(params string[] parts) => File.ReadAllText(Path.Combine(new[] { Root(), "PEMS.Web" }.Concat(parts).ToArray()));
+    private static string Ui(params string[] parts) => File.ReadAllText(Path.Combine(new[] { Root(), "PEMS.UI" }.Concat(parts).ToArray()));   // shared partials moved to PEMS.UI (SCRUM-29)
 
     [Fact]
     public void Layout_LoadsGlassLayer_AfterSiteCss_AndLoadingOverlayPartial()
@@ -27,17 +28,18 @@ public class PremiumGlassSystemTests
     }
 
     [Fact]
-    public void TurquoiseTheme_BackgroundIsNearBlack_NotBlueTinted()
+    public void TurquoiseTheme_BackgroundIsVeryDark_InkTealBase()
     {
-        var css = Web("wwwroot", "css", "site.css");
-        var start = css.IndexOf("[data-theme=\"turquoise\"] {", StringComparison.Ordinal);
+        var css = Ui("wwwroot", "tokens.css");   // the turquoise block moved to tokens.css (SCRUM-476)
+        // v3: انتخابگر :root[data-theme] (مشخصیت بالاتر از :root ی admin.css)؛ علت اصلی ظاهر خراب نسخه‌ی قبل
+        var start = css.IndexOf(":root[data-theme=\"turquoise\"] {", StringComparison.Ordinal);
         Assert.True(start >= 0, "turquoise token block must exist");
         var end = css.IndexOf("\n}", start, StringComparison.Ordinal);
         var block = css.Substring(start, end - start);
 
-        // طبق بند ۵ سند: سیاه/گرافیتی باید غالب باشد - --pems-bg باید نزدیک به سیاه واقعی
-        // باشد (کانال آبی نزدیک به کانال قرمز/سبز، نه یک آبی-تیره‌ی معمولی مثل نسخه‌ی قبلی #0e1520)
-        Assert.Contains("--pems-bg: #0a0d12;", block);
+        // پایه هنوز تیره‌ی غالب است (v3: جوهری-فیروزه‌ای، نه خاکستری خنثی - تا فیروزه یک رنگ «بومی» تم باشد)
+        Assert.Contains("--pems-bg: #061219;", block);
+        Assert.Contains("color-scheme: dark;", block);
         Assert.Contains("--pems-elev-0", block);
         Assert.Contains("--pems-elev-1", block);
         Assert.Contains("--pems-elev-2", block);
@@ -67,7 +69,7 @@ public class PremiumGlassSystemTests
         var activeRuleEnd = css.IndexOf('}', activeRuleStart);
         var rule = css.Substring(activeRuleStart, activeRuleEnd - activeRuleStart);
         Assert.DoesNotContain("background: var(--pems-turquoise)", rule);
-        Assert.Contains("border-left-color: var(--pems-turquoise)", rule);
+        Assert.Contains("border-inline-start-color: var(--pems-turquoise)", rule);   // SCRUM-541: logical start edge
     }
 
     [Fact]
@@ -115,7 +117,7 @@ public class PremiumGlassSystemTests
     [Fact]
     public void LoadingOverlayPartial_Exists_AndUsesPathLengthNormalizedTrace()
     {
-        var partial = Web("Views", "Shared", "_PemsLoadingOverlay.cshtml");
+        var partial = Ui("Views", "Shared", "_PemsLoadingOverlay.cshtml");
         Assert.Contains("pemsGlobalLoading", partial);
         Assert.Contains("pathLength=\"100\"", partial);
         Assert.Contains("hidden", partial);

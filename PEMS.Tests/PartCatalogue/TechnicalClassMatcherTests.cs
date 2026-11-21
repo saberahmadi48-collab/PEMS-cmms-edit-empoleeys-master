@@ -265,9 +265,8 @@ public class TechnicalClassMatcherTests
     public async Task ResolveEndpoint_RequiresPartCatalogueAction(bool allowed, bool expectForbid)
     {
         var db = PemsDbContextFactory.CreateInMemory("tc_ctl_" + Guid.NewGuid().ToString("N"));
-        var ctl = new PartCatalogueLookupController(new PartCatalogueLookupService(db), new Actions(allowed), new FakeCurrentUserContext());
-        ctl.ControllerContext = new ControllerContext { HttpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext() };
-        var result = await ctl.ResolveTechnicalClass("FLANGE,PIPE");
-        if (expectForbid) Assert.IsType<ForbidResult>(result); else Assert.IsType<JsonResult>(result);
+        var operations = new PEMS.Web.Services.PartCatalogueOperations(new PartCatalogueLookupService(db), null!, null!, new Actions(allowed), null!, db);
+        if (expectForbid) await Assert.ThrowsAsync<UnauthorizedAccessException>(() => operations.ResolveTechnicalClassAsync(new List<string> { "R" }, "FLANGE,PIPE"));
+        else Assert.NotNull(await operations.ResolveTechnicalClassAsync(new List<string> { "R" }, "FLANGE,PIPE"));
     }
 }

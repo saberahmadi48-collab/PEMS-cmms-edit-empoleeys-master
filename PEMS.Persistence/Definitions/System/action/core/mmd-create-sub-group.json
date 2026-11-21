@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "mmd-create-sub-group",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateSubGroup",
+    "fa": "زیرگروه تعمیراتی ساخته شد."
+  },
+  "description": {
+    "en": "CreateSubGroup",
+    "fa": "زیرگروه تعمیراتی ساخته شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "CreateSubGroup",
+      "args": {
+        "code": "field:code",
+        "name": "field:name",
+        "disciplineId": "field:disciplineId",
+        "parentMaintenanceGroupId": "field:parentMaintenanceGroupId",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "زیرگروه تعمیراتی ساخته شد.",
+      "fa": "زیرگروه تعمیراتی ساخته شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

@@ -1,0 +1,48 @@
+@model PEMS.Web.Models.Account.RecoveryCodeRedeemViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = "Administrator recovery";
+    Layout = "_AuthLayout";
+}
+
+<pems-heading level="2">@Localizer["Administrator recovery"]</pems-heading>
+<pems-text class="subtitle">@Localizer["Use one of your printed recovery codes to set a new password. Each code works only once."]</pems-text>
+
+<pems-validation-summary css="py-2 px-3 small" asp-validation-summary="ModelOnly" hidden="@(ViewData.ModelState.ErrorCount == 0)"></pems-validation-summary>
+
+<pems-form asp-controller="AccountRecovery" asp-action="Index" method="post" autocomplete="off">
+    <pems-form-group css="mb-3">
+        <pems-label asp-for="UserName">@Localizer["Username"]</pems-label>
+        <pems-input asp-for="UserName" autocomplete="username" autofocus />
+        <span asp-validation-for="UserName" class="text-danger small"></span>
+    </pems-form-group>
+    <pems-form-group css="mb-3">
+        <pems-label asp-for="Code">@Localizer["Recovery code"]</pems-label>
+        <pems-input asp-for="Code" dir="ltr" autocomplete="one-time-code" placeholder="XXXX-XXXX-XXXX-XXXX" spellcheck="false" />
+        <span asp-validation-for="Code" class="text-danger small"></span>
+    </pems-form-group>
+    <pems-form-group css="mb-3">
+        <pems-label asp-for="NewPassword">@Localizer["New password"]</pems-label>
+        <pems-input asp-for="NewPassword" autocomplete="new-password" />
+        <span asp-validation-for="NewPassword" class="text-danger small"></span>
+    </pems-form-group>
+    <pems-form-group css="mb-3">
+        <pems-label asp-for="ConfirmPassword">@Localizer["Confirm new password"]</pems-label>
+        <pems-input asp-for="ConfirmPassword" autocomplete="new-password" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+    </pems-form-group>
+
+    <pems-button tone="none" css="btn-pems" type="submit">@Localizer["Recover account"]</pems-button>
+</pems-form>
+
+<pems-text class="small text-muted mt-3">@Localizer["After recovery, all sessions of the account are signed out, every administrator is notified and MFA must be enrolled again."]</pems-text>
+
+<div class="auth-links">
+    <pems-link asp-controller="Account" asp-action="Login">&larr; @Localizer["Back to sign in"]</pems-link>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

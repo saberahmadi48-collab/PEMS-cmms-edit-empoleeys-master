@@ -1,0 +1,44 @@
+{
+  "kind": "action",
+  "key": "uoms-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit unit of measure",
+    "fa": "ویرایش واحد اندازه‌گیری"
+  },
+  "description": {
+    "en": "Edit unit of measure",
+    "fa": "ویرایش واحد اندازه‌گیری"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.update",
+    "parameters": {
+      "entity": "MaterialUOM",
+      "map": {
+        "name": "Name",
+        "description": "Description"
+      },
+      "required": [
+        "Name"
+      ],
+      "unique": [
+        {
+          "fields": [
+            "Code"
+          ],
+          "message": {
+            "en": "This code already exists.",
+            "fa": "این کد از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Unit of measure saved.",
+      "fa": "واحد اندازه‌گیری ذخیره شد."
+    },
+    "redirect": "/p/uoms"
+  }
+}

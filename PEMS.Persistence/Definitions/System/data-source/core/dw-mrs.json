@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "dw-mrs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline workspace MR/MRQ",
+    "fa": "MR/MRQ فضای کاری دیسیپلین"
+  },
+  "description": {
+    "en": "Discipline workspace MR/MRQ",
+    "fa": "MR/MRQ فضای کاری دیسیپلین"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DisciplineWorkspace",
+      "action": "Mrs",
+      "args": {
+        "id": "param:id",
+        "projectId": "param:projectId"
+      }
+    }
+  }
+}

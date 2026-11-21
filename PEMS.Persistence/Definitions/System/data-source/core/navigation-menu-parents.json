@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "navigation-menu-parents",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Menu parents",
+    "fa": "Menu parents"
+  },
+  "description": {
+    "en": "Menu parents",
+    "fa": "Menu parents"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "NavigationMenu",
+      "action": "ParentOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "culture": "context:culture"
+      }
+    }
+  }
+}

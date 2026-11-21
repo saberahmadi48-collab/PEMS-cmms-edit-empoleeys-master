@@ -5,57 +5,57 @@
 @{
     string StatusBadge(string status) => status switch
     {
-        "READY" => "text-bg-success",
-        "PARTIALLY_READY" => "text-bg-warning",
-        "INSUFFICIENT_DATA" => "text-bg-warning",
-        "NOT_APPLICABLE" => "text-bg-light border",
-        _ => "text-bg-light border"
+        "READY" => "success",
+        "PARTIALLY_READY" => "warning",
+        "INSUFFICIENT_DATA" => "warning",
+        "NOT_APPLICABLE" => "light",
+        _ => "light"
     };
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-diagram-3"></i> Class Intelligence — @Model.Name <code class="small">@Model.Code</code></h5>
-    <a asp-controller="CmmsReadiness" asp-action="ClassDetail" asp-route-id="@Model.EquipmentClassId" class="btn btn-outline-secondary btn-sm">CMMS Readiness</a>
-</div>
-<p class="text-muted small">
+<pems-flex justify="between" align="center" css="mb-3">
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-diagram-3" /> Class Intelligence — @Model.Name <code class="small">@Model.Code</code></pems-heading>
+    <pems-button tone="neutral" size="small" outline="true" as="a" href="/p/cmms-readiness-equipment">CMMS Readiness</pems-button>
+</pems-flex>
+<pems-text class="text-muted small">
     طبق «PEMS Phase 9» بند ۲۱: ترکیب IEquipmentClassCoverageService + IReliabilityAnalyticsService +
     IRcmFmeaReadinessService - هیچ محاسبه‌ی موازی جدیدی.
-</p>
+</pems-text>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@Model.EquipmentCount</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@Model.EquipmentCount</pems-metric>
             <div class="text-muted small">Equipment in Class</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@(Model.AverageMTBFHours.HasValue ? $"{Model.AverageMTBFHours.Value:N1}h" : "N/A")</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="3">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@(Model.AverageMTBFHours.HasValue ? $"{Model.AverageMTBFHours.Value:N1}h" : "N/A")</pems-metric>
             <div class="text-muted small">Average MTBF (n=@Model.MTBFSampleSize)</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@(Model.AverageAvailabilityPercent.HasValue ? $"{Model.AverageAvailabilityPercent.Value:N1}%" : "N/A")</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="3">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@(Model.AverageAvailabilityPercent.HasValue ? $"{Model.AverageAvailabilityPercent.Value:N1}%" : "N/A")</pems-metric>
             <div class="text-muted small">Average Availability</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@Model.FailureCount</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="3">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@Model.FailureCount</pems-metric>
             <div class="text-muted small">@Localizer["Total Failures"]</div>
-        </div>
-    </div>
-</div>
+        </pems-content-card>
+    </pems-col>
+</pems-row>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-6">
-        <div class="content-card h-100">
-            <h6 class="mb-2">FMEA / RCM Coverage</h6>
-            <div>FMEA: <span class="badge @StatusBadge(Model.FMEAReadiness)">@Model.FMEAReadiness</span> (@Model.ApprovedFMEACount approved)</div>
-            <div>RCM: <span class="badge @StatusBadge(Model.RCMReadiness)">@Model.RCMReadiness</span> (@Model.ApprovedRCMCount approved)</div>
-            <hr />
+<pems-row gap="3" css="mb-3">
+    <pems-col md="6">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-2">FMEA / RCM Coverage</pems-heading>
+            <div>FMEA: <pems-badge tone="@StatusBadge(Model.FMEAReadiness)">@Model.FMEAReadiness</pems-badge> (@Model.ApprovedFMEACount approved)</div>
+            <div>RCM: <pems-badge tone="@StatusBadge(Model.RCMReadiness)">@Model.RCMReadiness</pems-badge> (@Model.ApprovedRCMCount approved)</div>
+            <pems-divider />
             <div class="small">Definitional Coverage (direct+inherited counts):</div>
             <div class="small">Activities: @Model.TotalActivityCoverage | PM Templates: @Model.TotalPMTemplateCoverage | Failure Modes: @Model.TotalFailureModeCoverage</div>
             @if (Model.CoverageGapReasons.Any())
@@ -64,11 +64,11 @@
                     @foreach (var g in Model.CoverageGapReasons) { <div>• @g</div> }
                 </div>
             }
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="content-card h-100">
-            <h6 class="mb-2">Criticality Distribution &amp; Intelligence</h6>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="6">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-2">Criticality Distribution &amp; Intelligence</pems-heading>
             @if (Model.CriticalityDistribution.Any())
             {
                 @foreach (var kv in Model.CriticalityDistribution)
@@ -80,9 +80,9 @@
             {
                 <div class="small text-muted">No criticality data.</div>
             }
-            <hr />
+            <pems-divider />
             <div class="small">Repeat Failure Groups: @Model.RepeatFailureGroupCount</div>
             <div class="small">Bad Actors in Class: @Model.BadActorCount</div>
-        </div>
-    </div>
-</div>
+        </pems-content-card>
+    </pems-col>
+</pems-row>

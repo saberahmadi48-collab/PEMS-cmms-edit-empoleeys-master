@@ -1,0 +1,229 @@
+{
+  "kind": "page",
+  "key": "warehouse-intake",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Warehouse intake",
+    "fa": "دریافت انبار"
+  },
+  "description": {
+    "en": "The stock lines of one work order: source them from a warehouse (page definition)",
+    "fa": "اقلام انباری یک دستور کار: تأمین از انبار (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "warehouse-intake",
+    "regions": {
+      "content": [
+        {
+          "id": "t-wo",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Work order",
+              "fa": "دستور کار"
+            },
+            "icon": "bi-wrench"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/warehouse-intake-header?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "workOrderNumber"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-status",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Work order status",
+              "fa": "وضعیت دستور کار"
+            },
+            "icon": "bi-flag"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/warehouse-intake-header?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "workOrderStatus"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-state",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Intake state",
+              "fa": "وضعیت دریافت"
+            },
+            "icon": "bi-inboxes"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/warehouse-intake-header?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "state"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-open",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Open lines",
+              "fa": "اقلام باز"
+            },
+            "icon": "bi-list-check",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/warehouse-intake-header?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "openLines"
+              }
+            }
+          }
+        },
+        {
+          "id": "hint",
+          "component": "content-blocks",
+          "options": {
+            "id": "hint",
+            "blocks": [
+              {
+                "type": "text",
+                "text": {
+                  "en": "Pick the supplying warehouse yourself; nothing is pre-filled by inference. Each line raises a Draft store requisition and the warehouse task completes when nothing is left.",
+                  "fa": "انبار تأمین‌کننده را خودتان انتخاب کنید؛ چیزی خودکار پر نمی‌شود. هر قلم یک درخواست انبار پیش‌نویس می‌سازد و وقتی چیزی باقی نماند وظیفه‌ی انبار کامل می‌شود."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "go",
+          "component": "content-blocks",
+          "options": {
+            "id": "go",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/WorkOrder/Details/{{params.id}}",
+                "text": {
+                  "en": "Open the work order",
+                  "fa": "باز کردن دستور کار"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/warehouse-intake-source-all?workOrderId={{params.id}}",
+                "text": {
+                  "en": "Source every open line from one warehouse",
+                  "fa": "تأمین همه‌ی اقلام باز از یک انبار"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "lines",
+          "component": "data-grid",
+          "options": {
+            "id": "lines",
+            "url": "/d/warehouse-intake-lines?f.id={{params.id|url}}",
+            "idField": "workOrderMaterialId",
+            "columns": [
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 300
+              },
+              {
+                "key": "supply",
+                "header": {
+                  "en": "Supply",
+                  "fa": "نوع تأمین"
+                },
+                "width": 130
+              },
+              {
+                "key": "required",
+                "header": {
+                  "en": "Required",
+                  "fa": "مورد نیاز"
+                },
+                "width": 130
+              },
+              {
+                "key": "sourced",
+                "header": {
+                  "en": "Sourced",
+                  "fa": "تأمین‌شده"
+                },
+                "width": 110
+              },
+              {
+                "key": "unsourced",
+                "header": {
+                  "en": "Open",
+                  "fa": "باز"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "requisitions",
+                "header": {
+                  "en": "Store requisitions",
+                  "fa": "درخواست‌های انبار"
+                },
+                "width": 360
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 200,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "source",
+                    "label": {
+                      "en": "Source this line",
+                      "fa": "تأمین این قلم"
+                    },
+                    "url": "/f/warehouse-intake-source-line?workOrderId={{params.id}}&workOrderMaterialId={id}&quantity={raw.unsourced}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 480
+          }
+        }
+      ]
+    },
+    "permission": "StoreRequisition.View"
+  }
+}

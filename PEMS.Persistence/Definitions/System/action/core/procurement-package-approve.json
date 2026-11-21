@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "procurement-package-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record an approval decision",
+    "fa": "ثبت تصمیم تأیید"
+  },
+  "description": {
+    "en": "Record an approval decision",
+    "fa": "ثبت تصمیم تأیید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProcurementPackage",
+      "action": "AddApproval",
+      "args": {
+        "packageId": "field:packageId",
+        "approverName": "context:userName",
+        "decision": "field:decision",
+        "comment": "field:comment"
+      },
+      "guard": {
+        "resource": "ProcurementPackage",
+        "action": "Approve",
+        "resourceId": "field:packageId",
+        "mode": "strict"
+      }
+    },
+    "success": {
+      "en": "The decision was recorded.",
+      "fa": "تصمیم ثبت شد."
+    },
+    "redirect": "/p/procurement-package-details?id={packageId}"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "form",
+  "key": "instrument-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import instruments",
+    "fa": "ایمپورت ابزار دقیق"
+  },
+  "description": {
+    "en": "Import instruments",
+    "fa": "ایمپورت ابزار دقیق"
+  },
+  "payload": {
+    "id": "instrument-import",
+    "title": {
+      "en": "Import instruments (xlsx: tag, type, loop, system, ..., calibration interval)",
+      "fa": "ایمپورت ابزار دقیق (xlsx: تگ، نوع، حلقه، سیستم، ...، بازه کالیبراسیون)"
+    },
+    "submitLabel": {
+      "en": "Import",
+      "fa": "ایمپورت"
+    },
+    "actionKey": "instrument-import",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "file",
+        "label": {
+          "en": "Spreadsheet",
+          "fa": "صفحه‌گسترده"
+        },
+        "kind": "file",
+        "required": true
+      }
+    ]
+  }
+}

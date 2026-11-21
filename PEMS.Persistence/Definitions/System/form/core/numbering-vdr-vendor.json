@@ -1,0 +1,54 @@
+{
+  "kind": "form",
+  "key": "numbering-vdr-vendor",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor-format number of a VDR item",
+    "fa": "شماره‌ی فرمت Vendor مدرک VDR"
+  },
+  "description": {
+    "en": "Vendor-format number of a VDR item",
+    "fa": "شماره‌ی فرمت Vendor مدرک VDR"
+  },
+  "payload": {
+    "id": "numbering-vdr-vendor",
+    "title": {
+      "en": "Vendor-format number of a VDR item",
+      "fa": "شماره‌ی فرمت Vendor مدرک VDR"
+    },
+    "submitLabel": {
+      "en": "Generate",
+      "fa": "تولید شماره"
+    },
+    "actionKey": "numbering-vdr-vendor",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "jobNumber",
+        "label": {
+          "en": "Job number (e.g. 3863)",
+          "fa": "شماره‌ی کار"
+        },
+        "maxLength": 20
+      },
+      {
+        "name": "unitCode",
+        "label": {
+          "en": "Unit code (e.g. 85)",
+          "fa": "کد یونیت"
+        },
+        "maxLength": 20
+      },
+      {
+        "name": "typologyCode",
+        "label": {
+          "en": "Typology code",
+          "fa": "کد تایپولوژی"
+        },
+        "maxLength": 20
+      }
+    ]
+  }
+}

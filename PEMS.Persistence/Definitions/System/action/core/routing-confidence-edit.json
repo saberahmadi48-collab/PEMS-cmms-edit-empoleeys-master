@@ -1,0 +1,42 @@
+{
+  "kind": "action",
+  "key": "routing-confidence-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit confidence thresholds",
+    "fa": "ویرایش آستانه‌های اطمینان"
+  },
+  "description": {
+    "en": "Edit confidence thresholds",
+    "fa": "ویرایش آستانه‌های اطمینان"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RoutingRule",
+      "action": "SetConfidence",
+      "args": {
+        "highThreshold": "field:highThreshold",
+        "mediumThreshold": "field:mediumThreshold"
+      },
+      "load": {
+        "entity": "AIConfidenceSettings",
+        "map": {
+          "highThreshold": "HighThreshold",
+          "mediumThreshold": "MediumThreshold"
+        },
+        "defaults": {
+          "highThreshold": 0.85,
+          "mediumThreshold": 0.5
+        }
+      }
+    },
+    "success": {
+      "en": "Confidence thresholds saved.",
+      "fa": "آستانه‌های اطمینان ذخیره شد."
+    },
+    "redirect": "/p/routing-confidence"
+  }
+}

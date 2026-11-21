@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-admin-stages",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin: Workflow stages",
+    "fa": "مدیریت کاتالوگ قطعه: Workflow stages"
+  },
+  "description": {
+    "en": "Part Catalogue admin: Workflow stages",
+    "fa": "مدیریت کاتالوگ قطعه: Workflow stages"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "WorkflowStages",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId"
+      }
+    }
+  }
+}

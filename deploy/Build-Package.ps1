@@ -46,6 +46,15 @@ if (-not $SkipPublish) {
     if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed (exit $LASTEXITCODE)" }
 }
 
+# ---- 1b. non-secret environment settings -----------------------------------------------------------------------------
+# env/*.env ship (the server selects one with PEMS_ENV); env/*.secrets.env and the *.example templates never do.
+$envSource = Join-Path $repo 'env'
+if (Test-Path $envSource) {
+    $envStage = Join-Path $stage 'env'
+    New-Item -ItemType Directory -Force -Path $envStage | Out-Null
+    Get-ChildItem $envSource -Filter '*.env' -File | Where-Object { $_.Name -notlike '*.secrets.env' } | Copy-Item -Destination $envStage
+}
+
 # ---- 2. exclusions (runtime-requirement based) --------------------------------------------------------------------
 # Each rule = relative path/glob, reason. Anything not listed ships. Order does not matter.
 $Exclusions = @(

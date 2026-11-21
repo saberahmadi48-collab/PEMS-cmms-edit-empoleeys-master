@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "pc-request-new",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New request",
+    "fa": "درخواست جدید"
+  },
+  "description": {
+    "en": "New request",
+    "fa": "درخواست جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "NewDraft",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "requestType": "field:requestType"
+      }
+    },
+    "success": {
+      "en": "The draft was created; open it from the list to fill it in.",
+      "fa": "پیش‌نویس ساخته شد؛ برای تکمیل آن را از فهرست باز کنید."
+    },
+    "redirect": "/p/pc-requests"
+  }
+}

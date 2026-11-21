@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "dashboard-widget-save",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save dashboard widget",
+    "fa": "ذخیره ابزارک داشبورد"
+  },
+  "description": {
+    "en": "Save dashboard widget",
+    "fa": "ذخیره ابزارک داشبورد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DashboardSettings",
+      "action": "SaveWidget",
+      "args": {
+        "userName": "context:userName",
+        "key": "field:key",
+        "visible": "field:visible",
+        "displayOrder": "field:displayOrder",
+        "size": "field:size"
+      }
+    },
+    "success": {
+      "en": "Dashboard preferences saved.",
+      "fa": "تنظیمات داشبورد ذخیره شد."
+    },
+    "redirect": "/p/dashboard-settings"
+  }
+}

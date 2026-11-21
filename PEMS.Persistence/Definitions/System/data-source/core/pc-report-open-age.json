@@ -1,0 +1,34 @@
+{
+  "kind": "data-source",
+  "key": "pc-report-open-age",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue report: Open age",
+    "fa": "گزارش کاتالوگ قطعه: Open age"
+  },
+  "description": {
+    "en": "Part Catalogue report: Open age",
+    "fa": "گزارش کاتالوگ قطعه: Open age"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueReport",
+      "action": "OpenAge",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "period": "param:period",
+        "from": "param:from",
+        "to": "param:to",
+        "sectionId": "param:sectionId",
+        "requestType": "param:requestType",
+        "status": "param:status",
+        "employeeId": "param:employeeId",
+        "equipmentId": "param:equipmentId"
+      }
+    }
+  }
+}

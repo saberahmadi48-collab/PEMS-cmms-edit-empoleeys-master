@@ -13,26 +13,23 @@ namespace PEMS.Persistence.Services;
 /// <summary>
 /// Phase 4 - لایه‌ی مدیریتی روی Workflow Platform. هیچ موتور/مدل/جدول موازی ندارد: همه‌ی نوشتن‌ها از
 /// IWorkflowDefinitionService / IWorkflowBindingService / IWorkflowVersionValidator عبور می‌کنند. اختیار = SystemAdmin AND WorkflowManagement.*
-/// (سمت سرور). سیاست ویرایش: فقط تعریف‌های Work Request / Work Order Lifecycle / Work Order Multi-Discipline Review که Binding فعال دارند.
+/// (سمت سرور). سیاست ویرایش (SCRUM-103): هر تعریف فعال که Binding فعال دارد قابل‌ویرایش است؛ آنچه کد ماژول از تعریف لازم دارد
+/// با قرارداد ماژول (PemsWorkflowContracts) در اعتبارسنج نگه داشته می‌شود، پس ویرایش نمی‌تواند ماژول را بشکند.
 /// </summary>
 public class WorkflowAdministrationService : IWorkflowAdministrationService
 {
-    /// <summary>تعریف‌های قابل‌ویرایش در انتشار ۱ (تصمیم مالک): (Module, Category).</summary>
-    public static readonly (string Module, string Category)[] EditableDefinitions =
-    {
-        ("WorkRequest", "Standard"), ("WorkOrder", "Standard"), ("WorkOrder", "MultiDisciplineReview")
-    };
-
     private static readonly string[] StandardActions = { "Approve", "Reject", "Return", "Hold", "Cancel", "Skip" };
 
     private readonly PEMSDbContext _db;
     private readonly IAccessControlService _access;
     private readonly IWorkflowDefinitionService _defs;
     private readonly IWorkflowBindingService _bindings;
+    private readonly IWorkflowModuleContractRegistry? _contracts;
 
-    public WorkflowAdministrationService(PEMSDbContext db, IAccessControlService access, IWorkflowDefinitionService defs, IWorkflowBindingService bindings)
+    public WorkflowAdministrationService(PEMSDbContext db, IAccessControlService access, IWorkflowDefinitionService defs, IWorkflowBindingService bindings,
+        IWorkflowModuleContractRegistry? contracts = null)
     {
-        _db = db; _access = access; _defs = defs; _bindings = bindings;
+        _db = db; _access = access; _defs = defs; _bindings = bindings; _contracts = contracts;
     }
 
     private static string T(string fa, string en) => WorkOrderWorkflow.T(fa, en);
@@ -59,10 +56,23 @@ public class WorkflowAdministrationService : IWorkflowAdministrationService
     private (bool Editable, string Reason) EditablePolicy(WorkflowDefinition d, bool hasActiveBinding)
     {
         if (!d.IsActive) return (false, T("تعریف بایگانی شده است.", "The definition is archived."));
-        if (!EditableDefinitions.Any(x => x.Module == d.Module && x.Category == d.Category))
-            return (false, T("فقط مشاهده در انتشار ۱ (تعریف قدیمی/غیرمرجع).", "View only in Release 1 (legacy / non-reference definition)."));
         if (!hasActiveBinding) return (false, T("Binding فعال ندارد.", "No active binding."));
-        return (true, T("قابل‌ویرایش (تعریف مرجع دارای Binding).", "Editable (bound reference definition)."));
+        var contract = _contracts?.Find(d.Module, d.Category);
+        return contract == null
+            ? (true, T("قابل‌ویرایش.", "Editable."))
+            : (true, T($"قابل‌ویرایش؛ قرارداد ماژول «{d.Module}» حفظ می‌شود ({ContractSummary(contract)}).",
+                       $"Editable; the {d.Module} module contract is kept ({ContractSummary(contract)})."));
+    }
+
+    /// <summary>SCRUM-103: the parts of the definition the module code needs, shown so the administrator knows what is fixed.</summary>
+    public static string ContractSummary(WorkflowModuleContract c)
+    {
+        var parts = new List<string>();
+        if (c.RequiredActions.Count > 0) parts.Add("actions " + string.Join(", ", c.RequiredActions));
+        if (c.RequiredStages.Count > 0) parts.Add("stages " + string.Join(", ", c.RequiredStages.Select(s => s.StageType == null ? s.Name : $"{s.Name} ({s.StageType})")));
+        if (c.RequiredTransitions.Count > 0) parts.Add("transitions " + string.Join(", ", c.RequiredTransitions.Select(t => $"{t.FromStage ?? "start"} -{t.ActionType}-> {t.ToStage ?? "end"}")));
+        if (c.RequiresBusinessStatus) parts.Add("a BusinessStatus on every stage");
+        return string.Join("; ", parts);
     }
 
     private async Task<(WorkflowDefinition Def, bool Editable, string Reason)?> DefinitionPolicyAsync(int definitionId)
@@ -73,6 +83,11 @@ public class WorkflowAdministrationService : IWorkflowAdministrationService
         var (e, r) = EditablePolicy(d, bound);
         return (d, e, r);
     }
+
+    private static WorkflowAdminResult NotEditable((WorkflowDefinition Def, bool Editable, string Reason)? p)
+        => WorkflowAdminResult.Fail(p == null
+            ? T("تعریف یافت نشد.", "Definition not found.")
+            : T("این تعریف قابل‌ویرایش نیست: ", "This definition cannot be edited: ") + p.Value.Reason);
 
     private static byte[]? Token(string? s)
     {
@@ -127,7 +142,7 @@ public class WorkflowAdministrationService : IWorkflowAdministrationService
         var v = await _db.WorkflowVersions.AsNoTracking().FirstOrDefaultAsync(x => x.WorkflowVersionId == versionId);
         if (v == null) return (null, WorkflowAdminResult.Fail(T("نسخه یافت نشد.", "Version not found.")));
         var p = await DefinitionPolicyAsync(v.WorkflowDefinitionId);
-        if (p == null || !p.Value.Editable) return (null, WorkflowAdminResult.Fail(T("این تعریف در انتشار ۱ فقط‌مشاهده است.", "This definition is view-only in Release 1.")));
+        if (p == null || !p.Value.Editable) return (null, NotEditable(p));
         if (!WorkflowVersionStatus.IsEditable(v.Status)) return (null, WorkflowAdminResult.Fail(T($"نسخه‌ی {v.Status} تغییرناپذیر است؛ ابتدا Clone کنید.", $"A {v.Status} version is immutable; clone it first.")));
         return (v, null);
     }
@@ -313,7 +328,7 @@ public class WorkflowAdministrationService : IWorkflowAdministrationService
         var src = await _db.WorkflowVersions.AsNoTracking().FirstOrDefaultAsync(x => x.WorkflowVersionId == sourceVersionId);
         if (src == null) return WorkflowAdminResult.Fail(T("نسخه یافت نشد.", "Version not found."));
         var p = await DefinitionPolicyAsync(src.WorkflowDefinitionId);
-        if (p == null || !p.Value.Editable) return WorkflowAdminResult.Fail(T("این تعریف در انتشار ۱ فقط‌مشاهده است.", "This definition is view-only in Release 1."));
+        if (p == null || !p.Value.Editable) return NotEditable(p);
         if (src.Status == WorkflowVersionStatus.Discarded) return WorkflowAdminResult.Fail(T("Draft رهاشده قابل Clone نیست.", "A discarded draft cannot be cloned."));
         return await Run(null, async () =>
         {
@@ -326,7 +341,7 @@ public class WorkflowAdministrationService : IWorkflowAdministrationService
     {
         if (await Deny(actor, WorkflowManagementPermissions.Edit) is { } d) return d;
         var p = await DefinitionPolicyAsync(definitionId);
-        if (p == null || !p.Value.Editable) return WorkflowAdminResult.Fail(T("این تعریف در انتشار ۱ فقط‌مشاهده است.", "This definition is view-only in Release 1."));
+        if (p == null || !p.Value.Editable) return NotEditable(p);
         return await Run(null, async () => { await _defs.UpdateDefinitionAsync(definitionId, name, nameFa, description, Wa(actor)); return WorkflowAdminResult.Ok(definitionId); });
     }
 
@@ -433,7 +448,7 @@ public class WorkflowAdministrationService : IWorkflowAdministrationService
         var v = await _db.WorkflowVersions.AsNoTracking().FirstOrDefaultAsync(x => x.WorkflowVersionId == versionId);
         if (v == null) return WorkflowAdminResult.Fail(T("نسخه یافت نشد.", "Version not found."));
         var p = await DefinitionPolicyAsync(v.WorkflowDefinitionId);
-        if (p == null || !p.Value.Editable) return WorkflowAdminResult.Fail(T("این تعریف در انتشار ۱ فقط‌مشاهده است.", "This definition is view-only in Release 1."));
+        if (p == null || !p.Value.Editable) return NotEditable(p);
         return await Run(versionId, async () => { await _defs.RetireVersionAsync(versionId, Wa(actor)); return WorkflowAdminResult.Ok(versionId); });
     }
 
@@ -441,7 +456,7 @@ public class WorkflowAdministrationService : IWorkflowAdministrationService
     {
         if (await Deny(actor, WorkflowManagementPermissions.Retire) is { } d) return d;
         var p = await DefinitionPolicyAsync(definitionId);
-        if (p == null || !p.Value.Editable) return WorkflowAdminResult.Fail(T("این تعریف در انتشار ۱ فقط‌مشاهده است.", "This definition is view-only in Release 1."));
+        if (p == null || !p.Value.Editable) return NotEditable(p);
         return await Run(null, async () => { await _defs.ArchiveDefinitionAsync(definitionId, Wa(actor)); return WorkflowAdminResult.Ok(definitionId); });
     }
 
@@ -451,7 +466,7 @@ public class WorkflowAdministrationService : IWorkflowAdministrationService
         var b = await _db.WorkflowBindings.AsNoTracking().FirstOrDefaultAsync(x => x.WorkflowBindingId == bindingId);
         if (b == null) return WorkflowAdminResult.Fail(T("Binding یافت نشد.", "Binding not found."));
         var p = await DefinitionPolicyAsync(b.WorkflowDefinitionId);
-        if (p == null || !p.Value.Editable) return WorkflowAdminResult.Fail(T("Binding این تعریف در انتشار ۱ فقط‌مشاهده است.", "The binding of this definition is view-only in Release 1."));
+        if (p == null || !p.Value.Editable) return NotEditable(p);
         var target = await _db.WorkflowVersions.AsNoTracking().FirstOrDefaultAsync(x => x.WorkflowVersionId == targetVersionId);
         if (target == null || target.WorkflowDefinitionId != b.WorkflowDefinitionId || target.Status != WorkflowVersionStatus.Published)
             return WorkflowAdminResult.Fail(T("نسخه‌ی هدف باید نسخه‌ی Published همین تعریف باشد.", "The target must be a Published version of the same definition."));
@@ -465,7 +480,7 @@ public class WorkflowAdministrationService : IWorkflowAdministrationService
         var b = await _db.WorkflowBindings.AsNoTracking().FirstOrDefaultAsync(x => x.WorkflowBindingId == bindingId);
         if (b == null) return WorkflowAdminResult.Fail(T("Binding یافت نشد.", "Binding not found."));
         var p = await DefinitionPolicyAsync(b.WorkflowDefinitionId);
-        if (p == null || !p.Value.Editable) return WorkflowAdminResult.Fail(T("Binding این تعریف در انتشار ۱ فقط‌مشاهده است.", "The binding of this definition is view-only in Release 1."));
+        if (p == null || !p.Value.Editable) return NotEditable(p);
         if (!confirmed) return WorkflowAdminResult.Fail(T("تأیید صریح لازم است.", "Explicit confirmation is required."));
         return await Run(null, async () => { await _bindings.DeactivateAsync(bindingId, Wa(actor)); return WorkflowAdminResult.Ok(bindingId); });
     }

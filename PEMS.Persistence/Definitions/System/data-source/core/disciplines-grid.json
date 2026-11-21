@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "disciplines-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Disciplines rows",
+    "fa": "ردیف‌های دیسیپلین‌ها"
+  },
+  "description": {
+    "en": "The disciplines with their employee and document counts",
+    "fa": "دیسیپلین‌ها با تعداد کارکنان و اسناد"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DisciplineMaster",
+      "action": "List"
+    }
+  }
+}

@@ -12,6 +12,8 @@ public class VendorSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "Vendor";
     public string DisplayName => "وندورها";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.Permission("Vendors");
 
     public VendorSearchProvider(PEMSDbContext context)
     {

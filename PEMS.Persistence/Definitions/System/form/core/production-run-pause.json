@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "production-run-pause",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Pause the run",
+    "fa": "توقف موقت اجرا"
+  },
+  "description": {
+    "en": "Pause the run",
+    "fa": "توقف موقت اجرا"
+  },
+  "payload": {
+    "id": "production-run-pause",
+    "title": {
+      "en": "Pause the run",
+      "fa": "توقف موقت اجرا"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-run-pause",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Run id",
+          "fa": "شناسه‌ی اجرا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

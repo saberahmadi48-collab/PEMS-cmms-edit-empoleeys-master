@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-database-update",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Database update (old address)",
+    "fa": "به‌روزرسانی پایگاه داده (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Database update (old address)",
+    "fa": "به‌روزرسانی پایگاه داده (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/DatabaseUpdate/{*rest}",
+    "target": "/p/database-update",
+    "permanent": false
+  }
+}

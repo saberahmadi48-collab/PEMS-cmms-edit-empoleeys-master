@@ -1,0 +1,101 @@
+{
+  "kind": "form",
+  "key": "navigation-menu-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a custom link",
+    "fa": "افزودن پیوند سفارشی"
+  },
+  "description": {
+    "en": "Add a link to an existing internal page",
+    "fa": "افزودن پیوند به یک صفحه‌ی داخلی موجود"
+  },
+  "payload": {
+    "id": "navigation-menu-create",
+    "title": {
+      "en": "Add a custom link",
+      "fa": "افزودن پیوند سفارشی"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "navigation-menu-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "parentKey",
+        "label": {
+          "en": "Parent",
+          "fa": "والد"
+        },
+        "kind": "select",
+        "required": true,
+        "optionsFrom": "navigation-menu-parents"
+      },
+      {
+        "name": "titleEn",
+        "label": {
+          "en": "Title (English)",
+          "fa": "عنوان (انگلیسی)"
+        },
+        "required": true,
+        "maxLength": 200
+      },
+      {
+        "name": "titleFa",
+        "label": {
+          "en": "Title (Persian)",
+          "fa": "عنوان (فارسی)"
+        },
+        "required": true,
+        "maxLength": 200
+      },
+      {
+        "name": "icon",
+        "label": {
+          "en": "Icon",
+          "fa": "نماد"
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "area",
+        "label": {
+          "en": "Area (blank = none)",
+          "fa": "ناحیه (خالی = ندارد)"
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "controller",
+        "label": {
+          "en": "Controller",
+          "fa": "کنترلر"
+        },
+        "required": true,
+        "maxLength": 100
+      },
+      {
+        "name": "action",
+        "label": {
+          "en": "Action",
+          "fa": "کنش"
+        },
+        "required": true,
+        "maxLength": 100
+      },
+      {
+        "name": "requiredPermission",
+        "label": {
+          "en": "Required permission (blank = none)",
+          "fa": "مجوز لازم (خالی = بدون شرط)"
+        },
+        "kind": "select",
+        "optionsFrom": "navigation-menu-permissions"
+      }
+    ]
+  }
+}

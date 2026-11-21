@@ -61,6 +61,10 @@ public class StoreRequisitionLineConfiguration : IEntityTypeConfiguration<StoreR
         builder.HasOne(x => x.StoreRequisition).WithMany(x => x.Lines).HasForeignKey(x => x.StoreRequisitionId).OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(x => x.MaterialItem).WithMany().HasForeignKey(x => x.MaterialItemId).OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.Uom).WithMany().HasForeignKey(x => x.UomId).OnDelete(DeleteBehavior.Restrict);
+        // SCRUM-472: NoAction in the database (a cascade/set-null would give SQL Server two paths from WorkOrders);
+        // removing a work-order material line that a requisition already supplies is refused in WarehouseIntakeService.
+        builder.HasOne(x => x.WorkOrderMaterial).WithMany().HasForeignKey(x => x.WorkOrderMaterialId).OnDelete(DeleteBehavior.ClientSetNull);
+        builder.HasIndex(x => x.WorkOrderMaterialId);
     }
 }
 
@@ -89,6 +93,7 @@ public class WorkOrderMaterialConfiguration : IEntityTypeConfiguration<WorkOrder
         builder.HasKey(x => x.WorkOrderMaterialId);
 
         builder.Property(x => x.RequiredQuantity).HasColumnType("decimal(18,3)");
+        builder.Property(x => x.SupplyCode).HasMaxLength(20).IsRequired().HasDefaultValue(WorkOrderMaterialSupplyCodes.Stock);
 
         builder.HasOne(x => x.WorkOrder).WithMany().HasForeignKey(x => x.WorkOrderId).OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(x => x.MaterialItem).WithMany().HasForeignKey(x => x.MaterialItemId).OnDelete(DeleteBehavior.Restrict);

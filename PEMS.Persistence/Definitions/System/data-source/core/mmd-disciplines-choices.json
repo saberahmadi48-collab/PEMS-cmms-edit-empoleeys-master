@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "mmd-disciplines-choices",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Disciplines",
+    "fa": "Disciplines"
+  },
+  "description": {
+    "en": "Disciplines",
+    "fa": "Disciplines"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "DisciplinesChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

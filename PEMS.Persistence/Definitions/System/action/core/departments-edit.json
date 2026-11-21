@@ -1,0 +1,55 @@
+{
+  "kind": "action",
+  "key": "departments-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit department",
+    "fa": "ویرایش دپارتمان"
+  },
+  "description": {
+    "en": "Edit department",
+    "fa": "ویرایش دپارتمان"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.update",
+    "parameters": {
+      "entity": "Department",
+      "map": {
+        "code": "Code",
+        "name": "Name",
+        "description": "Description"
+      },
+      "required": [
+        "Name"
+      ],
+      "unique": [
+        {
+          "fields": [
+            "Name"
+          ],
+          "message": {
+            "en": "A department with this name already exists.",
+            "fa": "دپارتمانی با همین نام از قبل وجود دارد."
+          }
+        },
+        {
+          "fields": [
+            "Code"
+          ],
+          "message": {
+            "en": "A department with this code already exists.",
+            "fa": "دپارتمانی با همین کد از قبل وجود دارد."
+          },
+          "ignoreEmpty": true
+        }
+      ]
+    },
+    "success": {
+      "en": "Department saved.",
+      "fa": "دپارتمان ذخیره شد."
+    },
+    "redirect": "/p/departments"
+  }
+}

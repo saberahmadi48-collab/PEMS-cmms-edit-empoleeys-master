@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "inspections",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Inspections (old address)",
+    "fa": "Inspections (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Inspections (old address)",
+    "fa": "Inspections (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Inspection",
+    "target": "/p/inspections",
+    "permanent": false
+  }
+}

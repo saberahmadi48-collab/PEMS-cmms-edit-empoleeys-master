@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "ai-insights-delay-stage",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delay by status",
+    "fa": "تاخیر به تفکیک وضعیت"
+  },
+  "description": {
+    "en": "Delay by status",
+    "fa": "تاخیر به تفکیک وضعیت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "AiInsights",
+      "action": "DelayByStage"
+    }
+  }
+}

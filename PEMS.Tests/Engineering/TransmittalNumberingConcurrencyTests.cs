@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.DTOs;
+using PEMS.Application.Exceptions;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
@@ -52,7 +53,7 @@ public class TransmittalNumberingConcurrencyTests
 
                 return (Won: true, Id: (int?)id, Error: (string?)null);
             }
-            catch (InvalidOperationException ex)
+            catch (ConflictException ex) when (ex.Code == "transmittal-code-duplicate")
             {
                 // یا رد شده توسط چک برنامه‌ای (AnyAsync)، یا توسط ایندکس Unique دیتابیس
                 // (ترجمه‌شده توسط IsUniqueConstraintViolation) - هر دو یعنی "بازنده"

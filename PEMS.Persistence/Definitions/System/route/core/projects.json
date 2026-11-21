@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "projects",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Projects (old address)",
+    "fa": "پروژه‌ها (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Projects (old address)",
+    "fa": "پروژه‌ها (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Projects/{*rest}",
+    "target": "/p/projects",
+    "permanent": false
+  }
+}

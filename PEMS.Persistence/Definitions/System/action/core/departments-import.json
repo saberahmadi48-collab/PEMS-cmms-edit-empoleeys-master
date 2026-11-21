@@ -1,0 +1,50 @@
+{
+  "kind": "action",
+  "key": "departments-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import departments",
+    "fa": "ایمپورت دپارتمان‌ها"
+  },
+  "description": {
+    "en": "Import departments from a spreadsheet",
+    "fa": "ایمپورت دپارتمان‌ها از صفحه‌گسترده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.import",
+    "parameters": {
+      "entity": "Department",
+      "columns": [
+        "Code",
+        "Name",
+        "Description"
+      ],
+      "required": [
+        "Name"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "Name"
+          ],
+          "message": {
+            "en": "A department with this name already exists.",
+            "fa": "دپارتمانی با همین نام از قبل وجود دارد."
+          }
+        }
+      ],
+      "redirect": "/p/departments"
+    },
+    "success": {
+      "en": "Import finished.",
+      "fa": "ایمپورت تمام شد."
+    },
+    "redirect": "/p/departments"
+  }
+}

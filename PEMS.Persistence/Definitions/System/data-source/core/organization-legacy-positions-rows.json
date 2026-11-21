@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "organization-legacy-positions-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Legacy positions",
+    "fa": "Legacy positions"
+  },
+  "description": {
+    "en": "Legacy positions rows",
+    "fa": "Legacy positions rows"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Organization",
+      "action": "LegacyPositions"
+    }
+  }
+}

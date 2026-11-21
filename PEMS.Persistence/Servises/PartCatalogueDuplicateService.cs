@@ -29,9 +29,49 @@ public class PartCatalogueDuplicateService : IPartCatalogueDuplicateService
 
     private sealed record RequestRow(
         int Id, string PartNumber, string? ManufacturerName, string? Mpn, string? SupplierPn,
-        string? OldMpn, string? Description);
+        string? OldMpn, string? Description, string? Unit = null);
 
-    private sealed record MaterialRow(int Id, string Code, string? ManufacturerName, string? Mpn, string? Description);
+    private sealed record MaterialRow(int Id, string Code, string? ManufacturerName, string? Mpn, string? Description, string? Unit = null);
+
+    // ------------------------------------------------------------------ قطعه‌ی ثبت‌شده با شماره‌ی دقیق (SCRUM-428)
+
+    public async Task<PcExistingPartHit?> FindRegisteredPartAsync(string? partNumber)
+    {
+        var qn = PartCatalogueRules.NormalizePartNumber(partNumber?.Trim() ?? "");
+        if (qn.Length == 0) return null;
+
+        // شماره‌ی قطعه کوتاه و نرمال است؛ نامزدها با همان عبارت Replace سمت SQL محدود و در حافظه دقیق مقایسه می‌شوند
+        var request = (await ApprovedParts(null)
+                .Where(r => r.AssignedPartNumber!.Replace(" ", "").Replace("-", "").Replace("/", "").Replace(".", "").Replace("_", "").ToUpper() == qn)
+                .OrderByDescending(r => r.CompletedDate)
+                .Select(r => new RequestRow(
+                    r.PartCatalogueRequestId, r.AssignedPartNumber!,
+                    r.Manufacturer != null ? r.Manufacturer.Name : r.NewManufacturerName,
+                    r.ManufacturerPartNumber, r.SupplierPartNumber, r.OldManufacturerPartNumber,
+                    r.Attributes.Where(a => a.Name == PartCatalogueRequestAttribute.FreeFormatText).Select(a => a.Value).FirstOrDefault(),
+                    r.UnitOfMeasure != null ? r.UnitOfMeasure.Code : null))
+                .Take(5).ToListAsync())
+            .FirstOrDefault(r => PartCatalogueRules.NormalizePartNumber(r.PartNumber) == qn);
+        if (request != null)
+            return new PcExistingPartHit
+            {
+                Source = "CatalogueRequest", SourceId = request.Id, PartNumber = request.PartNumber, Description = request.Description?.Trim(),
+                ManufacturerName = request.ManufacturerName, ManufacturerPartNumber = request.Mpn, SupplierPartNumber = request.SupplierPn,
+                Unit = request.Unit, MatchedOn = "PartNumber", MatchKind = "Exact"
+            };
+
+        var material = (await _ctx.MaterialItems.AsNoTracking()
+                .Where(m => m.IsActive && m.MaterialCode.Replace(" ", "").Replace("-", "").Replace("/", "").Replace(".", "").Replace("_", "").ToUpper() == qn)
+                .Select(m => new MaterialRow(m.MaterialItemId, m.MaterialCode, m.Manufacturer, m.ManufacturerPartNumber, m.Description, m.Uom != null ? m.Uom.Code : null))
+                .Take(5).ToListAsync())
+            .FirstOrDefault(m => PartCatalogueRules.NormalizePartNumber(m.Code) == qn);
+        return material == null ? null : new PcExistingPartHit
+        {
+            Source = "MaterialItem", SourceId = material.Id, PartNumber = material.Code, Description = material.Description,
+            ManufacturerName = material.ManufacturerName, ManufacturerPartNumber = material.Mpn, Unit = material.Unit,
+            MatchedOn = "PartNumber", MatchKind = "Exact"
+        };
+    }
 
     // ------------------------------------------------------------------ جستجوی آزاد
 
@@ -60,7 +100,8 @@ public class PartCatalogueDuplicateService : IPartCatalogueDuplicateService
                 r.PartCatalogueRequestId, r.AssignedPartNumber!,
                 r.Manufacturer != null ? r.Manufacturer.Name : r.NewManufacturerName,
                 r.ManufacturerPartNumber, r.SupplierPartNumber, r.OldManufacturerPartNumber,
-                r.Attributes.Where(a => a.Name == PartCatalogueRequestAttribute.FreeFormatText).Select(a => a.Value).FirstOrDefault()))
+                r.Attributes.Where(a => a.Name == PartCatalogueRequestAttribute.FreeFormatText).Select(a => a.Value).FirstOrDefault(),
+                r.UnitOfMeasure != null ? r.UnitOfMeasure.Code : null))
             .ToListAsync();
 
         var materialRows = await _ctx.MaterialItems.AsNoTracking()
@@ -72,7 +113,7 @@ public class PartCatalogueDuplicateService : IPartCatalogueDuplicateService
                 || (m.LongDescription != null && m.LongDescription.ToUpper().Contains(qu))))
             .OrderBy(m => m.MaterialCode)
             .Take(fetch)
-            .Select(m => new MaterialRow(m.MaterialItemId, m.MaterialCode, m.Manufacturer, m.ManufacturerPartNumber, m.Description))
+            .Select(m => new MaterialRow(m.MaterialItemId, m.MaterialCode, m.Manufacturer, m.ManufacturerPartNumber, m.Description, m.Uom != null ? m.Uom.Code : null))
             .ToListAsync();
 
         var hits = new List<PcExistingPartHit>();
@@ -85,7 +126,7 @@ public class PartCatalogueDuplicateService : IPartCatalogueDuplicateService
             {
                 Source = "CatalogueRequest", SourceId = r.Id, PartNumber = r.PartNumber, Description = r.Description?.Trim(),
                 ManufacturerName = r.ManufacturerName, ManufacturerPartNumber = r.Mpn, SupplierPartNumber = r.SupplierPn,
-                MatchedOn = on, MatchKind = kind
+                Unit = r.Unit, MatchedOn = on, MatchKind = kind
             });
         }
 
@@ -99,7 +140,7 @@ public class PartCatalogueDuplicateService : IPartCatalogueDuplicateService
             hits.Add(new PcExistingPartHit
             {
                 Source = "MaterialItem", SourceId = m.Id, PartNumber = m.Code, Description = m.Description,
-                ManufacturerName = m.ManufacturerName, ManufacturerPartNumber = m.Mpn, MatchedOn = on, MatchKind = kind
+                ManufacturerName = m.ManufacturerName, ManufacturerPartNumber = m.Mpn, Unit = m.Unit, MatchedOn = on, MatchKind = kind
             });
         }
 
@@ -157,14 +198,15 @@ public class PartCatalogueDuplicateService : IPartCatalogueDuplicateService
                 r.PartCatalogueRequestId, r.AssignedPartNumber!,
                 r.Manufacturer != null ? r.Manufacturer.Name : r.NewManufacturerName,
                 r.ManufacturerPartNumber, r.SupplierPartNumber, r.OldManufacturerPartNumber,
-                r.Attributes.Where(a => a.Name == PartCatalogueRequestAttribute.FreeFormatText).Select(a => a.Value).FirstOrDefault()))
+                r.Attributes.Where(a => a.Name == PartCatalogueRequestAttribute.FreeFormatText).Select(a => a.Value).FirstOrDefault(),
+                r.UnitOfMeasure != null ? r.UnitOfMeasure.Code : null))
             .ToListAsync();
 
         var materialRows = mpn == null ? new List<MaterialRow>() : await _ctx.MaterialItems.AsNoTracking()
             .Where(m => m.IsActive && m.ManufacturerPartNumber != null
                 && m.ManufacturerPartNumber.Replace(" ", "").Replace("-", "").Replace("/", "").Replace(".", "").Replace("_", "").ToUpper() == mpn)
             .Take(100)
-            .Select(m => new MaterialRow(m.MaterialItemId, m.MaterialCode, m.Manufacturer, m.ManufacturerPartNumber, m.Description))
+            .Select(m => new MaterialRow(m.MaterialItemId, m.MaterialCode, m.Manufacturer, m.ManufacturerPartNumber, m.Description, m.Uom != null ? m.Uom.Code : null))
             .ToListAsync();
 
         string MpnKind(string? hitMfr)

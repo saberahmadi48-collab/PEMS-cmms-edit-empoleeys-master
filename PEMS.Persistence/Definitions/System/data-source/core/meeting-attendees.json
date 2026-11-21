@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "meeting-attendees",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Meeting: Attendees",
+    "fa": "جلسه: Attendees"
+  },
+  "description": {
+    "en": "Meeting: Attendees",
+    "fa": "جلسه: Attendees"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Meeting",
+      "action": "Attendees",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

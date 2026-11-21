@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "notifications-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Notification inbox rows",
+    "fa": "ردیف‌های صندوق اعلان‌ها"
+  },
+  "description": {
+    "en": "Notification inbox rows",
+    "fa": "ردیف‌های صندوق اعلان‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Notification",
+      "action": "Inbox",
+      "args": {
+        "userName": "context:userName",
+        "filter": "param:filter"
+      }
+    }
+  }
+}

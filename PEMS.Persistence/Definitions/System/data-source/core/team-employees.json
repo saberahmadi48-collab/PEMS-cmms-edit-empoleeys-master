@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "team-employees",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employees",
+    "fa": "کارکنان"
+  },
+  "description": {
+    "en": "Employees",
+    "fa": "کارکنان"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Team",
+      "action": "Employees",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

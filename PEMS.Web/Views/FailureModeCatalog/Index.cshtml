@@ -1,0 +1,98 @@
+@model List<PEMS.Application.DTOs.FailureModeOptionDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Helpers
+@using PEMS.Web.Resources
+@using PEMS.Web.ViewModels
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var classes = (List<LookupItem>)ViewBag.Classes;
+    var classId = (int?)ViewBag.ClassId;
+    var q = (string?)ViewBag.Query;
+    var canEdit = (bool)ViewBag.CanEdit;
+    var filterCount = classId.HasValue ? 1 : 0;
+    var selectedClass = classes.FirstOrDefault(c => c.Id == classId);
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+@* SCRUM-337 W2b: built from the PEMS.UI list-page component; the page keeps its class filter, search, columns and the
+   edit / deactivate actions for catalogue editors. The list is capped by the service (200 rows), so it has no pager. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Rcm_FailureModeCatalog"]" heading-title="@Localizer["Rcm_CatalogHint"]" total="@Model.Count">
+            <pems-list-search id="fmcSearchForm" action="@Url.Action("Index")" input-id="fmcQuickSearch" name="q" value="@q"
+                              placeholder="@Localizer["Rcm_Search"]">
+                @if (classId.HasValue) { <input type="hidden" name="classId" value="@classId" /> }
+            </pems-list-search>
+
+            <pems-list-tools search-for="fmcSearchForm">
+                <pems-list-filters form-id="fmcFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index", new { q })">
+                    <input type="hidden" name="q" value="@q" />
+                    <div>
+                        <label class="lp-lbl" for="fmcFilterClass">@Localizer["Rcm_EquipmentClass"]</label>
+                        <pems-select scale="small" id="fmcFilterClass" name="classId">
+                            <option value="">@Localizer["Rcm_All"]</option>
+                            @foreach (var c in classes) { <option value="@c.Id" selected="@(classId == c.Id)">@c.Text (@c.Code)</option> }
+                        </pems-select>
+                    </div>
+                </pems-list-filters>
+                <pems-link class="lp-icon-btn" asp-controller="MaintenanceStrategy" asp-action="Index" title="@Localizer["Rcm_Strategies"]" aria-label="@Localizer["Rcm_Strategies"]"><pems-icon name="bi-diagram-3" aria-hidden="true" /></pems-link>
+                @if (canEdit)
+                {
+                    <pems-list-new href="@Url.Action("Edit")" text="@Localizer["Rcm_NewFailureMode"]" />
+                }
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(q))
+            { <pems-list-chip label="@Localizer["Search"]" value="@q" remove-href="@Url.Action("Index", new { classId })" /> }
+            @if (classId.HasValue)
+            { <pems-list-chip label="@Localizer["Rcm_EquipmentClass"]" value="@(selectedClass?.Text ?? classId.ToString())" remove-href="@Url.Action("Index", new { q })" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table empty="@(!Model.Any())" empty-text="@Localizer["Rcm_NoFailureModes"]"
+                             filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-120">@Localizer["Rcm_Code"]</pems-table-header>
+                        <pems-table-header>@Localizer["Rcm_FailureMode"]</pems-table-header>
+                        <pems-table-header class="pems-w-180">@Localizer["Rcm_EquipmentClass"]</pems-table-header>
+                        <pems-table-header class="vs-hide-md">@Localizer["Rcm_FailureCauses"]</pems-table-header>
+                        <pems-table-header class="pems-w-90"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var m in Model)
+                    {
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><span class="vs-num">@m.Code</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-title-cell lp-subject" title="@RcmDisplay.Name(m.Name, m.NameFa)">@RcmDisplay.Name(m.Name, m.NameFa)</span></pems-table-cell>
+                            <pems-table-cell class="small">@(m.EquipmentClassName ?? Localizer["Rcm_AllClasses"].Value)</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@string.Join("، ", m.Causes.Select(c => RcmDisplay.Name(c.Name, c.NameFa)))</pems-table-cell>
+                            <pems-table-cell class="text-end text-nowrap">
+                                @if (canEdit)
+                                {
+                                    <pems-link asp-action="Edit" asp-route-id="@m.FailureModeId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></pems-link>
+                                    <pems-form asp-action="Toggle" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@m.FailureModeId" /><input type="hidden" name="active" value="false" />
+                                        <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["Rcm_Deactivate"]" aria-label="@Localizer["Rcm_Deactivate"]"><pems-icon name="bi-slash-circle" aria-hidden="true" /></pems-button>
+                                    </pems-form>
+                                }
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

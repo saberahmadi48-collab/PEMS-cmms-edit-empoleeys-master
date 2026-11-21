@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "employees",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employees (old address)",
+    "fa": "کارکنان (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Employees (old address)",
+    "fa": "کارکنان (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Employee",
+    "target": "/p/employees",
+    "permanent": false
+  }
+}

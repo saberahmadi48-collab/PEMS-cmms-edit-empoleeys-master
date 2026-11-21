@@ -97,7 +97,7 @@ public static class MaintenanceGroupSeeder
         {
             if (existingCodes.Contains(code)) continue;
 
-            var discipline = disciplines.FirstOrDefault(x => x.Code == disciplineCode);
+            var discipline = DisciplineSeeder.Resolve(disciplines, disciplineCode);
             if (discipline == null) continue;
 
             db.MaintenanceGroups.Add(new MaintenanceGroup

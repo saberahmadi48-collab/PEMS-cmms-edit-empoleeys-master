@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "job-plan-tasks",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Job plan: Tasks",
+    "fa": "طرح کار: Tasks"
+  },
+  "description": {
+    "en": "Job plan: Tasks",
+    "fa": "طرح کار: Tasks"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "JobPlanPage",
+      "action": "Tasks",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

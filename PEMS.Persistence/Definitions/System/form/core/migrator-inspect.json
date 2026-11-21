@@ -1,0 +1,40 @@
+{
+  "kind": "form",
+  "key": "migrator-inspect",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Migrator center: inspect a package",
+    "fa": "مرکز مهاجرت: بررسی بسته"
+  },
+  "description": {
+    "en": "Migrator center: inspect a package",
+    "fa": "مرکز مهاجرت: بررسی بسته"
+  },
+  "payload": {
+    "id": "migrator-inspect",
+    "title": {
+      "en": "Migrator center: inspect a package",
+      "fa": "مرکز مهاجرت: بررسی بسته"
+    },
+    "submitLabel": {
+      "en": "Inspect",
+      "fa": "بررسی"
+    },
+    "actionKey": "migrator-inspect",
+    "permission": "Definitions.Create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "file",
+        "label": {
+          "en": "Package (.zip)",
+          "fa": "بسته (‎.zip)"
+        },
+        "kind": "file",
+        "required": true
+      }
+    ]
+  }
+}

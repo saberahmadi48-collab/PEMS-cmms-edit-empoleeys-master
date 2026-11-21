@@ -1,0 +1,141 @@
+{
+  "kind": "form",
+  "key": "vendor-qualification",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set the qualification",
+    "fa": "ثبت صلاحیت"
+  },
+  "description": {
+    "en": "Set the qualification",
+    "fa": "ثبت صلاحیت"
+  },
+  "payload": {
+    "id": "vendor-qualification",
+    "title": {
+      "en": "Set the qualification",
+      "fa": "ثبت صلاحیت"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "vendor-qualification",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Vendor id",
+          "fa": "شناسه‌ی فروشنده"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "newStatus",
+        "label": {
+          "en": "New status",
+          "fa": "وضعیت جدید"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "NotQualified",
+            "label": {
+              "en": "NotQualified",
+              "fa": "فاقد صلاحیت"
+            }
+          },
+          {
+            "value": "Pending",
+            "label": {
+              "en": "Pending",
+              "fa": "در انتظار"
+            }
+          },
+          {
+            "value": "Qualified",
+            "label": {
+              "en": "Qualified",
+              "fa": "واجد صلاحیت"
+            }
+          },
+          {
+            "value": "Suspended",
+            "label": {
+              "en": "Suspended",
+              "fa": "معلق"
+            }
+          },
+          {
+            "value": "Expired",
+            "label": {
+              "en": "Expired",
+              "fa": "منقضی"
+            }
+          }
+        ]
+      },
+      {
+        "name": "category",
+        "label": {
+          "en": "Category",
+          "fa": "دسته"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "effectiveDate",
+        "label": {
+          "en": "Effective from",
+          "fa": "شروع اعتبار"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "expiryDate",
+        "label": {
+          "en": "Expires",
+          "fa": "انقضا"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "evidenceReference",
+        "label": {
+          "en": "Evidence reference",
+          "fa": "مرجع مدرک"
+        },
+        "kind": "text",
+        "maxLength": 300,
+        "span": 2
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "kind": "page",
+  "key": "ai-extraction",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI Extraction",
+    "fa": "استخراج هوش مصنوعی"
+  },
+  "description": {
+    "en": "Files analysed by AI: review the extracted tags and specifications (page definition)",
+    "fa": "فایل‌های تحلیل‌شده: بازبینی تگ‌ها و مشخصات استخراج‌شده (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "ai-extraction",
+    "permission": "AIExtraction.View",
+    "regions": {
+      "content": [
+        {
+          "id": "files",
+          "component": "data-grid",
+          "options": {
+            "id": "ai-files",
+            "url": "/d/ai-extraction-files",
+            "idField": "attachmentId",
+            "pageSize": 25,
+            "height": 560,
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 240
+              },
+              {
+                "key": "documentNo",
+                "header": {
+                  "en": "Document",
+                  "fa": "مدرک"
+                },
+                "width": 160
+              },
+              {
+                "key": "summary",
+                "header": {
+                  "en": "Summary",
+                  "fa": "خلاصه"
+                },
+                "width": 360
+              },
+              {
+                "key": "confidence",
+                "header": {
+                  "en": "Confidence",
+                  "fa": "اطمینان"
+                },
+                "width": 110
+              },
+              {
+                "key": "pendingTags",
+                "header": {
+                  "en": "Pending tags",
+                  "fa": "تگ‌های منتظر"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "pendingSpecs",
+                "header": {
+                  "en": "Pending specs",
+                  "fa": "مشخصه‌های منتظر"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "review",
+                    "label": {
+                      "en": "Review",
+                      "fa": "بازبینی"
+                    },
+                    "url": "/p/ai-extraction-review?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

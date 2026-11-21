@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "production-order-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New production order (old address)",
+    "fa": "New production order (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New production order (old address)",
+    "fa": "New production order (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ProductionOrder/Create",
+    "target": "/f/production-order-create",
+    "permanent": false
+  }
+}

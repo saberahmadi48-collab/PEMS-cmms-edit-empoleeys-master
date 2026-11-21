@@ -1,0 +1,60 @@
+{
+  "kind": "page",
+  "key": "organization-legacy-positions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Legacy position conflicts",
+    "fa": "تعارض سمت‌های قدیمی"
+  },
+  "description": {
+    "en": "Legacy position conflicts (page definition)",
+    "fa": "تعارض سمت‌های قدیمی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "organization-legacy-positions",
+    "template": "entity-list",
+    "args": {
+      "id": "organization-legacy-positions",
+      "url": "/d/organization-legacy-positions-rows",
+      "idField": "employeeId",
+      "columns": [
+        {
+          "key": "employeeName",
+          "header": {
+            "en": "Employee",
+            "fa": "کارمند"
+          },
+          "width": 240
+        },
+        {
+          "key": "legacyPositionId",
+          "header": {
+            "en": "Legacy position",
+            "fa": "سمت قدیمی"
+          },
+          "width": 140,
+          "type": "number"
+        },
+        {
+          "key": "primaryPositionId",
+          "header": {
+            "en": "Primary position",
+            "fa": "سمت اصلی"
+          },
+          "width": 140,
+          "type": "number"
+        },
+        {
+          "key": "status",
+          "header": {
+            "en": "Status",
+            "fa": "وضعیت"
+          },
+          "width": 160
+        }
+      ]
+    }
+  }
+}

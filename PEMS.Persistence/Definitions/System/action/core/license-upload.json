@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "license-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Apply a licence file",
+    "fa": "اعمال فایل مجوز"
+  },
+  "description": {
+    "en": "Verifies and activates the uploaded licence",
+    "fa": "مجوز بارگذاری‌شده را تأیید و فعال می‌کند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Licence",
+      "action": "Apply",
+      "args": {
+        "file": "file:file"
+      },
+      "upload": {
+        "profile": "licenceFile",
+        "maxFileMb": 1
+      }
+    },
+    "redirect": "/p/license"
+  }
+}

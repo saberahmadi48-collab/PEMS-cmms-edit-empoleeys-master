@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "contract-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject contract",
+    "fa": "رد قرارداد"
+  },
+  "description": {
+    "en": "Reject contract",
+    "fa": "رد قرارداد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Contract",
+      "action": "Reject",
+      "args": {
+        "contractId": "field:contractId",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "The contract was rejected and returned to Draft.",
+      "fa": "قرارداد رد شد و به Draft بازگشت."
+    },
+    "redirect": "/Contract/Details/{contractId}"
+  }
+}

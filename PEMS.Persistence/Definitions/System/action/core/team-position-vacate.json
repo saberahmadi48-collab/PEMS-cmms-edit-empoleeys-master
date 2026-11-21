@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "team-position-vacate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Make a position vacant",
+    "fa": "خالی کردن سمت"
+  },
+  "description": {
+    "en": "Make a position vacant",
+    "fa": "خالی کردن سمت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "RemoveAssignment",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "positionId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Position is vacant.",
+      "fa": "سمت خالی شد."
+    }
+  }
+}

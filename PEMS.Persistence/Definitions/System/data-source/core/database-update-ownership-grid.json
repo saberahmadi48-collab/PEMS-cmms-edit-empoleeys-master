@@ -1,0 +1,20 @@
+{
+  "kind": "data-source",
+  "key": "database-update-ownership-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Update preflight: form ownership conflicts",
+    "fa": "پیش‌بررسی به‌روزرسانی: تعارض مالکیت فیلدهای فرم"
+  },
+  "description": {
+    "en": "The forms and fields the next product update would collide with (empty: it can be applied)",
+    "fa": "فرم‌ها و فیلدهایی که به‌روزرسانی بعدی با آنها تعارض دارد (خالی: قابل اعمال است)"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "ownership-preflight",
+    "permission": "Definitions.View",
+    "parameters": {}
+  }
+}

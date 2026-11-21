@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "chat-clear",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Clear the chat",
+    "fa": "پاک کردن گفتگو"
+  },
+  "description": {
+    "en": "Clear the chat",
+    "fa": "پاک کردن گفتگو"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ChatAssistant",
+      "action": "Clear",
+      "args": {
+        "userName": "context:userName"
+      }
+    },
+    "success": {
+      "en": "The chat was cleared.",
+      "fa": "گفتگو پاک شد."
+    },
+    "redirect": "/p/chat-assistant"
+  }
+}

@@ -1,0 +1,59 @@
+@model List<PEMS.Application.DTOs.WorkSpaceDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var departments = (List<(int Id, string Name)>)ViewBag.Departments;
+}
+@section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
+
+<section class="vs-panel mb-3">
+    <nav aria-label="breadcrumb" class="small mb-1"><pems-link asp-action="Index">@Localizer["Tm_Title"]</pems-link></nav>
+    <pems-heading level="2" class="h5 mb-1"><pems-icon name="bi-gear" aria-hidden="true" /> @Localizer["Tm_Admin_Title"]</pems-heading>
+    <pems-text class="small text-muted mb-0">@Localizer["Tm_Admin_Hint"]</pems-text>
+</section>
+
+<section class="vs-panel mb-3">
+    <pems-heading level="3" class="h6">@Localizer["Tm_Spaces"]</pems-heading>
+    @if (!Model.Any()) { <div class="vs-empty py-2 small">@Localizer["Tm_NoSpaces"]</div> }
+    else
+    {
+        <pems-table-scroll>
+            <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Tm_Field_Key"])?.ToString() ?? ""), s => (object?)(s.Key), css: "tm-key").Add(((Localizer["Tm_Field_Name"])?.ToString() ?? ""), s => (object?)((TaskManagerUi.Name(s.Name, s.NameFa)))).Add(((Localizer["Tm_Field_Department"])?.ToString() ?? ""), s => (object?)((s.OwnerDepartmentName ?? "—")), css: "small").Add(((Localizer["Tm_Members"])?.ToString() ?? ""), s => (object?)(s.MemberCount)).Add(((Localizer["Tm_OpenItems"])?.ToString() ?? ""), s => (object?)(s.OpenItemCount)).Add(((Localizer["Tm_Field_Active"])?.ToString() ?? ""), s => (object?)((s.IsActive ? Localizer["Tm_Yes"] : Localizer["Tm_No"]))).Add("", s => (object?)(DataCell.ButtonLink(Url.Action("AdminSpace", null, new { id = s.Id }), "neutral", "small", true, null, Localizer["Tm_Configure"]))), rowClass: s => (s.IsActive ? "" : "text-muted")))" dense="true" css="vs-dense mb-0" />
+        </pems-table-scroll>
+    }
+</section>
+
+<section class="vs-panel" aria-labelledby="newSpaceTitle">
+    <pems-heading level="3" class="h6" id="newSpaceTitle">@Localizer["Tm_Admin_CreateSpace"]</pems-heading>
+    <pems-form asp-action="SaveSpace" method="post"><pems-row gap="2">
+        <input type="hidden" name="IsActive" value="true" />
+        <pems-col md="2">
+            <pems-label css="small" for="ns-key">@Localizer["Tm_Field_Key"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
+            <pems-input scale="small" css="text-uppercase" id="ns-key" name="Key" required pattern="[A-Za-z][A-Za-z0-9]{1,9}" maxlength="10" aria-describedby="ns-key-help" />
+            <pems-help-text id="ns-key-help">@Localizer["Tm_KeyHelp"]</pems-help-text>
+        </pems-col>
+        <pems-col md="3">
+            <pems-label css="small" for="ns-name">@Localizer["Tm_Field_Name"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
+            <pems-input scale="small" id="ns-name" name="Name" required maxlength="150" />
+        </pems-col>
+        <pems-col md="3">
+            <pems-label css="small" for="ns-namefa">@Localizer["Tm_Field_NameFa"]</pems-label>
+            <pems-input scale="small" id="ns-namefa" name="NameFa" maxlength="150" dir="rtl" />
+        </pems-col>
+        <pems-col md="4">
+            <pems-label css="small" for="ns-dept">@Localizer["Tm_Field_Department"]</pems-label>
+            <pems-select scale="small" id="ns-dept" name="OwnerDepartmentId" aria-describedby="ns-dept-help">
+                <option value="">@Localizer["Tm_NoDepartment"]</option>
+                @foreach (var d in departments) { <option value="@d.Id">@d.Name</option> }
+            </pems-select>
+            <pems-help-text id="ns-dept-help">@Localizer["Tm_DepartmentHelp"]</pems-help-text>
+        </pems-col>
+        <pems-col md="10">
+            <pems-label css="small" for="ns-desc">@Localizer["Tm_Field_Description"]</pems-label>
+            <pems-input scale="small" id="ns-desc" name="Description" maxlength="1000" />
+        </pems-col>
+        <pems-col md="2" css="d-flex align-items-end"><pems-button tone="primary" size="small" css="w-100">@Localizer["Tm_Create"]</pems-button></pems-col>
+    </pems-row></pems-form>
+</section>

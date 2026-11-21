@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("tab-content", Category = "navigation", Icon = "bi-window-stack")]
+@FrameMarkup.Element("div", string.IsNullOrWhiteSpace(Options.Css) ? "tab-content" : "tab-content " + Options.Css.Trim(), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public TabContentOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

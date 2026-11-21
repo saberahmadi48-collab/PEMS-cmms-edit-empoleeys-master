@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-admin-group2-maps",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin: Group 2 maps",
+    "fa": "مدیریت کاتالوگ قطعه: Group 2 maps"
+  },
+  "description": {
+    "en": "Part Catalogue admin: Group 2 maps",
+    "fa": "مدیریت کاتالوگ قطعه: Group 2 maps"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "Group2Maps",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId"
+      }
+    }
+  }
+}

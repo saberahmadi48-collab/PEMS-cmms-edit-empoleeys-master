@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "technical-queries",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "TQ / TSR / RFI (old address)",
+    "fa": "TQ / TSR / RFI (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "TQ / TSR / RFI (old address)",
+    "fa": "TQ / TSR / RFI (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "TechnicalQuery",
+    "target": "/p/technical-queries",
+    "permanent": false
+  }
+}

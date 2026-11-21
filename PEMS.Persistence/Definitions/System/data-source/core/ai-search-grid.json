@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "ai-search-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI search rows",
+    "fa": "ردیف‌های جستجوی هوشمند"
+  },
+  "description": {
+    "en": "AI search rows",
+    "fa": "ردیف‌های جستجوی هوشمند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "AiSearch",
+      "action": "Search",
+      "args": {
+        "direction": "param:search",
+        "discipline": "param:discipline",
+        "documentType": "param:documentType",
+        "status": "param:status"
+      }
+    }
+  }
+}

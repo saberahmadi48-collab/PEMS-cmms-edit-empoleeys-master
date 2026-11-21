@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "pre-procurement-draft-requisitions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Draft requisitions",
+    "fa": "MRهای پیش‌نویس"
+  },
+  "description": {
+    "en": "Draft requisitions",
+    "fa": "MRهای پیش‌نویس"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PreProcurement",
+      "action": "DraftRequisitions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

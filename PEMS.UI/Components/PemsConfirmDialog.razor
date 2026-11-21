@@ -1,0 +1,67 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("confirm-dialog", Category = "overlays", Icon = "bi-question-circle")]
+@inject IPemsLocale Locale
+@{
+    var tone = Options.Tone.ToString().ToLowerInvariant();
+    var reasonId = Options.Id + "-reason";
+}
+@if (Options.Skin == ComponentSkin.Bootstrap)
+{
+    <div id="@Options.Id" class="modal fade" tabindex="-1" aria-labelledby="@(Options.Id)-title" aria-describedby="@(Options.Id)-message" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <form method="post" action="@Options.Action" class="modal-content">
+                @if (Options.RequestToken is not null)
+                {
+                    <input type="hidden" name="@Options.RequestTokenName" value="@Options.RequestToken" />
+                }
+                <input type="hidden" name="key" data-pems-row-key-target />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="@(Options.Id)-title">@Locale.Text(Options.Title)</h5>
+                </div>
+                <div class="modal-body">
+                    <p id="@(Options.Id)-message">@Locale.Text(Options.Message)</p>
+                    @if (Options.ReasonLabel is not null)
+                    {
+                        <label class="form-label" for="@reasonId">@Locale.Text(Options.ReasonLabel) <span class="text-danger" aria-hidden="true">*</span></label>
+                        <textarea id="@reasonId" name="@Options.ReasonName" class="form-control" rows="3" required="required"></textarea>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Locale.Text(Options.CancelLabel)</button>
+                    <button type="submit" class="@ConfirmClass(tone)">@Locale.Text(Options.ConfirmLabel)</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <dialog id="@Options.Id" class="pems-modal pems-modal--small" aria-labelledby="@(Options.Id)-title" aria-describedby="@(Options.Id)-message" data-pems-dialog>
+        <form method="post" action="@Options.Action" class="pems-modal__panel">
+            @if (Options.RequestToken is not null)
+            {
+                <input type="hidden" name="@Options.RequestTokenName" value="@Options.RequestToken" />
+            }
+            <input type="hidden" name="key" data-pems-row-key-target />
+            <header class="pems-modal__header">
+                <h2 class="pems-modal__title" id="@(Options.Id)-title">@Locale.Text(Options.Title)</h2>
+            </header>
+            <div class="pems-modal__body">
+                <p id="@(Options.Id)-message">@Locale.Text(Options.Message)</p>
+                @if (Options.ReasonLabel is not null)
+                {
+                    <label class="pems-field__label" for="@reasonId">@Locale.Text(Options.ReasonLabel) <span class="pems-field__required" aria-hidden="true">*</span></label>
+                    <textarea id="@reasonId" name="@Options.ReasonName" class="pems-input" rows="3" required="required"></textarea>
+                }
+            </div>
+            <footer class="pems-modal__footer">
+                <button type="button" class="pems-btn pems-btn--neutral pems-btn--medium" data-pems-close>@Locale.Text(Options.CancelLabel)</button>
+                <button type="submit" class="pems-btn pems-btn--@tone pems-btn--medium">@Locale.Text(Options.ConfirmLabel)</button>
+            </footer>
+        </form>
+    </dialog>
+}
+@code {
+    [Parameter, EditorRequired] public ConfirmDialogOptions Options { get; set; } = default!;
+    private static string ConfirmClass(string tone) => "btn btn-" + (tone == "neutral" ? "secondary" : tone);
+}

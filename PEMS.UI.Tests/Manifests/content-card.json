@@ -1,0 +1,53 @@
+{
+  "key": "content-card",
+  "component": "PEMS.UI.Components.PemsContentCard",
+  "category": "layout",
+  "icon": "bi-card-heading",
+  "nameKey": "component.content-card",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "as": {
+        "type": "string"
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ContentCardOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "css": "mb-3"
+  }
+}

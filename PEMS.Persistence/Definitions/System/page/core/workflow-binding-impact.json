@@ -1,0 +1,91 @@
+{
+  "kind": "page",
+  "key": "workflow-binding-impact",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Binding change impact",
+    "fa": "اثر تغییر اتصال"
+  },
+  "description": {
+    "en": "Binding change impact (page definition)",
+    "fa": "اثر تغییر اتصال (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "workflow-binding-impact",
+    "template": "entity-list",
+    "args": {
+      "id": "workflow-binding-impact",
+      "url": "/d/workflow-binding-impact-rows",
+      "idField": "bindingId",
+      "columns": [
+        {
+          "key": "bindingId",
+          "header": {
+            "en": "Binding id (type it)",
+            "fa": "شناسه‌ی اتصال"
+          },
+          "width": 180,
+          "sortable": false,
+          "filterable": false,
+          "type": "number"
+        },
+        {
+          "key": "targetVersionId",
+          "header": {
+            "en": "Target version id (type it)",
+            "fa": "نسخه‌ی مقصد"
+          },
+          "width": 200,
+          "sortable": false,
+          "filterable": false,
+          "type": "number"
+        },
+        {
+          "key": "definition",
+          "header": {
+            "en": "Workflow",
+            "fa": "گردش‌کار"
+          },
+          "width": 240,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "currentVersion",
+          "header": {
+            "en": "Current version",
+            "fa": "نسخه‌ی فعلی"
+          },
+          "width": 130,
+          "sortable": false,
+          "filterable": false,
+          "type": "number"
+        },
+        {
+          "key": "targetVersion",
+          "header": {
+            "en": "Target version",
+            "fa": "نسخه‌ی مقصد"
+          },
+          "width": 130,
+          "sortable": false,
+          "filterable": false,
+          "type": "number"
+        },
+        {
+          "key": "runningInstances",
+          "header": {
+            "en": "Running instances",
+            "fa": "نمونه‌های در حال اجرا"
+          },
+          "width": 170,
+          "sortable": false,
+          "filterable": false,
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

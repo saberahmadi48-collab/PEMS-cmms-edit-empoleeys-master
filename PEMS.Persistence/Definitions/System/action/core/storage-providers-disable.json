@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "storage-providers-disable",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Disable",
+    "fa": "غیرفعال‌سازی"
+  },
+  "description": {
+    "en": "Disable",
+    "fa": "غیرفعال‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StorageProvider",
+      "action": "SetEnabled",
+      "args": {
+        "id": "field:id",
+        "enabled": "literal:false",
+        "modifiedBy": "context:userName"
+      }
+    },
+    "success": {
+      "en": "Provider disabled.",
+      "fa": "ارائه‌دهنده غیرفعال شد."
+    },
+    "redirect": "/p/storage-providers"
+  }
+}

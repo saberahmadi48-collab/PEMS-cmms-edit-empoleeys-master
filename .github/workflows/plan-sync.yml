@@ -1,0 +1,78 @@
+# Nightly plan <-> tracker sync (backlog #336, SCRUM-350). The other workflows are manual only; this one also runs on a schedule.
+#
+# Repository secrets (Settings -> Secrets and variables -> Actions), never files in git:
+#   JIRA_BASE_URL      e.g. https://atapems.atlassian.net
+#   JIRA_PROJECT_KEY   SCRUM
+#   JIRA_USER_EMAIL    the Jira account the API token belongs to
+#   JIRA_API_TOKEN     API token of that account (SCRUM-24)
+# Without them the job stops with a notice and changes nothing.
+#
+# What it does: lists the differences (reconcile), writes tracker statuses into the plan rows and opens a pull request when any row changed
+# (Jira owns status), then fails when the tracker has an issue without a Plan ID, a duplicate title, or a row/issue without its partner.
+# The repository has no branch protection (SCRUM-556): a person reviews and merges the pull request like any other.
+
+name: Plan sync (nightly)
+
+on:
+  schedule:
+    - cron: '30 22 * * *'   # 22:30 UTC, about 02:00 Tehran
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  plan-sync:
+    runs-on: ubuntu-latest
+    env:
+      JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+      JIRA_PROJECT_KEY: ${{ secrets.JIRA_PROJECT_KEY }}
+      JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+      JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the secrets exist
+        id: secrets
+        run: |
+          if [ -z "$JIRA_BASE_URL" ] || [ -z "$JIRA_PROJECT_KEY" ] || [ -z "$JIRA_USER_EMAIL" ] || [ -z "$JIRA_API_TOKEN" ]; then
+            echo "::notice::JIRA_BASE_URL, JIRA_PROJECT_KEY, JIRA_USER_EMAIL and JIRA_API_TOKEN are not all set; nothing to do"
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Differences (reconcile)
+        if: steps.secrets.outputs.ready == 'true'
+        run: |
+          python3 tools/plan-sync/plan_sync.py reconcile | tee reconcile.txt
+          { echo '### Plan vs tracker'; echo '```'; cat reconcile.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Pull the tracker status into the plan rows
+        if: steps.secrets.outputs.ready == 'true'
+        run: python3 tools/plan-sync/plan_sync.py pull
+
+      - name: Open a pull request when rows changed
+        if: steps.secrets.outputs.ready == 'true'
+        run: |
+          if [ -z "$(git status --porcelain plan/rows)" ]; then
+            echo "no status changes"
+            exit 0
+          fi
+          branch="chore/plan-status-pull-$(date -u +%Y%m%d)"
+          git config user.name "plan-sync"
+          git config user.email "plan-sync@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add plan/rows
+          git commit -m "Plan: pull tracker statuses ($(date -u +%F))"
+          git push --force origin "$branch"
+          gh pr create --base main --head "$branch" --title "Plan: pull tracker statuses ($(date -u +%F))" \
+            --body "Written by \`plan_sync.py pull\` from the tracker (Jira owns status). Run \`python tools/plan-sync/plan_sync.py check\` before merging: a row that became Done needs Evidence." \
+            || echo "a pull request for $branch already exists"
+
+      - name: Tracker check (fails on drift)
+        if: steps.secrets.outputs.ready == 'true'
+        run: python3 tools/plan-sync/plan_sync.py tracker-check

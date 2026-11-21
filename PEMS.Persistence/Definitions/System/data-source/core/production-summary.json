@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "production-summary",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production counts",
+    "fa": "شمارش تولید"
+  },
+  "description": {
+    "en": "Production counts",
+    "fa": "شمارش تولید"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Production",
+      "action": "Summary"
+    }
+  }
+}

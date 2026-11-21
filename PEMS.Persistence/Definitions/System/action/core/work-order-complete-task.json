@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "work-order-complete-task",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark a task complete",
+    "fa": "تکمیل تسک"
+  },
+  "description": {
+    "en": "Mark a task complete",
+    "fa": "تکمیل تسک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderTask",
+      "action": "Complete",
+      "args": {
+        "workOrderTaskId": "field:workOrderTaskId",
+        "workOrderId": "field:workOrderId",
+        "userName": "context:userName"
+      },
+      "sectionGuard": {
+        "section": "JobPlanTasks",
+        "action": "Edit",
+        "workOrderId": "field:workOrderId",
+        "recordRef": "field:workOrderTaskId"
+      }
+    },
+    "success": {
+      "en": "The task was marked complete.",
+      "fa": "تسک تکمیل شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

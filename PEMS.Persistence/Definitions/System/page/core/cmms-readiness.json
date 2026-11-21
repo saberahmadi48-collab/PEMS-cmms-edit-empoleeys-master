@@ -1,0 +1,337 @@
+{
+  "kind": "page",
+  "key": "cmms-readiness",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CMMS operational readiness",
+    "fa": "آمادگی عملیاتی CMMS"
+  },
+  "description": {
+    "en": "How ready the equipment is to run maintenance (page definition)",
+    "fa": "آمادگی تجهیزات برای اجرای تعمیرات (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "cmms-readiness",
+    "permission": "MaintenanceMasterData.View",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/EquipmentClassification/Coverage",
+                "text": {
+                  "en": "Master data coverage",
+                  "fa": "پوشش داده‌ی پایه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/Reliability/Intelligence",
+                "text": {
+                  "en": "Maintenance intelligence",
+                  "fa": "هوش تعمیرات"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/cmms-readiness-equipment",
+                "text": {
+                  "en": "Equipment readiness (all classes)",
+                  "fa": "آمادگی تجهیزات (همه‌ی کلاس‌ها)"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "total",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Total active equipment",
+              "fa": "کل تجهیزات فعال"
+            },
+            "icon": "bi-box-seam"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-readiness-totals",
+              "first": true,
+              "map": {
+                "value": "totalActiveEquipment"
+              }
+            }
+          }
+        },
+        {
+          "id": "classified",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Classified",
+              "fa": "طبقه‌بندی‌شده"
+            },
+            "icon": "bi-diagram-3"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-readiness-totals",
+              "first": true,
+              "map": {
+                "value": "classifiedEquipment"
+              }
+            }
+          }
+        },
+        {
+          "id": "unclassified",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Unclassified",
+              "fa": "طبقه‌بندی‌نشده"
+            },
+            "icon": "bi-question-diamond",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-readiness-totals",
+              "first": true,
+              "map": {
+                "value": "unclassifiedEquipment"
+              }
+            }
+          }
+        },
+        {
+          "id": "criticality",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Criticality ready",
+              "fa": "آماده از نظر بحرانیت"
+            },
+            "icon": "bi-shield-exclamation"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-readiness-totals",
+              "first": true,
+              "map": {
+                "value": "criticalityReadyEquipment"
+              }
+            }
+          }
+        },
+        {
+          "id": "strategy",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Strategy ready",
+              "fa": "آماده از نظر راهبرد"
+            },
+            "icon": "bi-signpost-split"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-readiness-totals",
+              "first": true,
+              "map": {
+                "value": "strategyReadyEquipment"
+              }
+            }
+          }
+        },
+        {
+          "id": "pm",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "PM plan ready",
+              "fa": "آماده از نظر برنامه PM"
+            },
+            "icon": "bi-calendar-check"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-readiness-totals",
+              "first": true,
+              "map": {
+                "value": "pmPlanReadyEquipment"
+              }
+            }
+          }
+        },
+        {
+          "id": "jobplan",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Job plan ready",
+              "fa": "آماده از نظر طرح کار"
+            },
+            "icon": "bi-list-check"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-readiness-totals",
+              "first": true,
+              "map": {
+                "value": "jobPlanReadyEquipment"
+              }
+            }
+          }
+        },
+        {
+          "id": "safety",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Safety ready",
+              "fa": "آماده از نظر ایمنی"
+            },
+            "icon": "bi-shield-check"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-readiness-totals",
+              "first": true,
+              "map": {
+                "value": "safetyReadyEquipment"
+              }
+            }
+          }
+        },
+        {
+          "id": "execution",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Execution ready",
+              "fa": "آماده اجرا"
+            },
+            "icon": "bi-check2-circle",
+            "tone": "success"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/cmms-readiness-totals",
+              "first": true,
+              "map": {
+                "value": "executionReadyEquipment"
+              }
+            }
+          }
+        },
+        {
+          "id": "classes-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "classes-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Class activation backlog",
+                  "fa": "بک‌لاگ فعال‌سازی کلاس‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "classes",
+          "component": "data-grid",
+          "options": {
+            "id": "classes",
+            "url": "/d/cmms-readiness-classes",
+            "idField": "equipmentClassId",
+            "columns": [
+              {
+                "key": "name",
+                "header": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "width": 240
+              },
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 110
+              },
+              {
+                "key": "equipmentCount",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیزات"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "criticalityReadyCount",
+                "header": {
+                  "en": "Criticality",
+                  "fa": "بحرانیت"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "strategyReadyCount",
+                "header": {
+                  "en": "Strategy",
+                  "fa": "راهبرد"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "pmPlanReadyCount",
+                "header": {
+                  "en": "PM plan",
+                  "fa": "برنامه PM"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "executionReadyCount",
+                "header": {
+                  "en": "Execution ready",
+                  "fa": "آماده اجرا"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "missing",
+                "header": {
+                  "en": "Missing requirements",
+                  "fa": "نیازهای ناقص"
+                },
+                "width": 420
+              }
+            ],
+            "pageSize": 20,
+            "height": 420
+          }
+        }
+      ]
+    }
+  }
+}

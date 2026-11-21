@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "definition-publish",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Publish draft",
+    "fa": "انتشار پیش‌نویس"
+  },
+  "description": {
+    "en": "Publish draft",
+    "fa": "انتشار پیش‌نویس"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The draft was published.",
+      "fa": "پیش‌نویس منتشر شد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Definition",
+      "action": "Publish",
+      "args": {
+        "reference": "field:id",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
+using PEMS.Domain.Common;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
 
@@ -56,49 +58,89 @@ public class RcmOperationalBridgeService : IRcmOperationalBridgeService
         if (equipment.EquipmentClassId != decision.RCMAnalysis?.EquipmentClassId)
             return new ApplyRcmDecisionResultDto { Success = false, Error = "کلاس تجهیز با کلاس تحلیل RCM این تصمیم مطابقت ندارد." };
 
-        var failureModeCode = decision.FMEAItem?.FailureMode?.Code;
+        var failureMode = decision.FMEAItem?.FailureMode;
+        var failureModeCode = failureMode?.Code;
         var result = new ApplyRcmDecisionResultDto();
 
-        // ==================== MaintenanceStrategy: بازاستفاده یا ساخت ====================
-        var existingStrategy = await _context.MaintenanceStrategies
-            .FirstOrDefaultAsync(x => x.EquipmentId == equipmentId && x.IsActive &&
-                x.FailureModeCode == failureModeCode);
+        // ==================== MaintenanceStrategy (الگوی کلاس‌محور) + Assignment ====================
+        // RCM کلاس‌محور: تصمیم تاییدشده‌ی RCM یک «الگو» روی کلاس تجهیز می‌سازد (نه یک استراتژی مستقل برای هر تگ)
+        // و تگ از طریق Assignment به آن وصل می‌شود. همان قوانین JA1011 اینجا هم اعمال می‌شود.
+        var strategyType = LegacyMaps.StrategyType(decision.MaintenanceStrategyType?.Code) ?? LegacyMaps.StrategyType(decision.DecisionType);
+        var consequence = LegacyMaps.Consequence(decision.ConsequenceCategory) ?? RcmCodes.Consequence.Operational;
+        if (strategyType == null)
+            return new ApplyRcmDecisionResultDto { Success = false, Error = $"نوع تصمیم «{decision.MaintenanceStrategyType?.Code ?? decision.DecisionType}» به نوع استراتژی نگهداری قابل نگاشت نیست." };
+        if (failureMode == null)
+            return new ApplyRcmDecisionResultDto { Success = false, Error = "حالت خرابی کاتالوگ برای این تصمیم مشخص نیست؛ استراتژی بدون حالت خرابی ساخته نمی‌شود." };
+        if (StrategyRules.RequiresProactiveTask(consequence, false) && StrategyRules.ReactiveTypes.Contains(strategyType))
+            return new ApplyRcmDecisionResultDto { Success = false, Error = $"طبق منطق تصمیم RCM (SAE JA1011) برای پیامد {consequence} استراتژی {strategyType} مجاز نیست؛ کار پیشگیرانه یا بازطراحی لازم است." };
 
         // طبق بند ۵۱: appliedBy جدا از CreatedBy/ModifiedBy خودکار BaseEntity نگه داشته می‌شود
-        // چون معنای متفاوتی دارد - CreatedBy یعنی «چه کسی این رکورد EF را ساخت»، اینجا یعنی
-        // «چه کسی تصمیم گرفت این توصیه‌ی RCM را اعمال کند» (ممکن است شخص دیگری باشد).
         var justificationNote = $"Applied by {appliedBy} from RCM Decision #{decision.RCMDecisionId} (approved by {decision.ApprovedBy} on {decision.ApprovedAt:yyyy-MM-dd}). {decision.Rationale}".Trim();
 
+        var existingStrategy = await _context.MaintenanceStrategies
+            .FirstOrDefaultAsync(x => x.IsActive && x.EquipmentClassId == equipment.EquipmentClassId &&
+                x.FailureModeId == failureMode.FailureModeId && x.StrategyType == strategyType &&
+                (x.Status == RcmCodes.Status.Active || x.Status == RcmCodes.Status.Approved));
+
+        MaintenanceStrategy strategy;
         if (existingStrategy != null)
         {
-            existingStrategy.MaintenanceStrategyTypeId = decision.MaintenanceStrategyTypeId;
-            existingStrategy.ConsequenceCategory = decision.ConsequenceCategory;
-            existingStrategy.Justification = justificationNote;
-            existingStrategy.StrategyType = decision.MaintenanceStrategyType?.Code ?? decision.DecisionType;
-
-            result.MaintenanceStrategyId = existingStrategy.MaintenanceStrategyId;
+            strategy = existingStrategy;
             result.MaintenanceStrategyWasReused = true;
         }
         else
         {
-            var newStrategy = new MaintenanceStrategy
+            strategy = new MaintenanceStrategy
             {
-                EquipmentId = equipmentId,
-                StrategyType = decision.MaintenanceStrategyType?.Code ?? decision.DecisionType,
+                EquipmentClassId = equipment.EquipmentClassId,
+                StrategyType = strategyType,
                 MaintenanceStrategyTypeId = decision.MaintenanceStrategyTypeId,
+                FailureModeId = failureMode.FailureModeId,
                 FailureModeCode = failureModeCode,
-                ConsequenceCategory = decision.ConsequenceCategory,
+                ConsequenceCategory = consequence,
+                IsHiddenFailure = consequence == RcmCodes.Consequence.Hidden,
                 Justification = justificationNote,
-                RecommendedTriggerType = "Calendar",
+                Source = RcmCodes.Source.RcmStudy,
+                RecommendedTriggerType = RcmCodes.Trigger.Calendar,
+                // تصمیم RCM پیش‌تر در گردش‌کار خودش تایید شده است (بند ۲۰)؛ الگو مستقیم Active ثبت و در تاریخچه اثبات می‌شود
+                Status = RcmCodes.Status.Active,
+                ApprovedBy = decision.ApprovedBy,
+                ApprovedAt = decision.ApprovedAt,
                 IsActive = true,
                 CreatedDate = DateTime.Now
             };
-
-            _context.MaintenanceStrategies.Add(newStrategy);
+            _context.MaintenanceStrategies.Add(strategy);
             await _context.SaveChangesAsync();
 
-            result.MaintenanceStrategyId = newStrategy.MaintenanceStrategyId;
+            _context.MaintenanceStrategyHistories.Add(new MaintenanceStrategyHistory
+            {
+                MaintenanceStrategyId = strategy.MaintenanceStrategyId,
+                VersionNumber = strategy.VersionNumber,
+                Action = RcmCodes.HistoryAction.Created,
+                ToStatus = strategy.Status,
+                Comment = $"From approved RCM Decision #{decision.RCMDecisionId}",
+                ActorName = appliedBy,
+                Timestamp = DateTime.Now
+            });
             result.MaintenanceStrategyWasReused = false;
+        }
+
+        result.MaintenanceStrategyId = strategy.MaintenanceStrategyId;
+
+        var assignment = await _context.MaintenanceStrategyAssignments
+            .FirstOrDefaultAsync(a => a.MaintenanceStrategyId == strategy.MaintenanceStrategyId && a.EquipmentId == equipmentId && a.IsActive);
+        if (assignment == null)
+        {
+            assignment = new MaintenanceStrategyAssignment
+            {
+                MaintenanceStrategyId = strategy.MaintenanceStrategyId,
+                EquipmentId = equipmentId,
+                Status = RcmCodes.AssignmentStatus.Active,
+                AssignedDate = DateTime.Now,
+                IsActive = true,
+                CreatedDate = DateTime.Now
+            };
+            _context.MaintenanceStrategyAssignments.Add(assignment);
         }
 
         await _context.SaveChangesAsync();
@@ -110,10 +152,12 @@ public class RcmOperationalBridgeService : IRcmOperationalBridgeService
 
             var existingPlan = await _context.MaintenancePlans
                 .FirstOrDefaultAsync(x => x.EquipmentId == equipmentId && x.IsActive &&
-                    x.MaintenanceStrategyId == result.MaintenanceStrategyId);
+                    (x.MaintenanceStrategyAssignmentId == assignment.MaintenanceStrategyAssignmentId ||
+                     x.MaintenanceStrategyId == result.MaintenanceStrategyId));
 
             if (existingPlan != null)
             {
+                existingPlan.MaintenanceStrategyAssignmentId ??= assignment.MaintenanceStrategyAssignmentId;
                 existingPlan.JobPlanId = template.JobPlanId;
                 existingPlan.TriggerType = template.TriggerType;
                 existingPlan.IntervalDays = template.IntervalDays;
@@ -131,6 +175,7 @@ public class RcmOperationalBridgeService : IRcmOperationalBridgeService
                 {
                     EquipmentId = equipmentId,
                     MaintenanceStrategyId = result.MaintenanceStrategyId!.Value,
+                    MaintenanceStrategyAssignmentId = assignment.MaintenanceStrategyAssignmentId,
                     PlanNumber = planNumber,
                     Title = $"{template.Name} (from RCM Decision #{decision.RCMDecisionId})",
                     JobPlanId = template.JobPlanId,

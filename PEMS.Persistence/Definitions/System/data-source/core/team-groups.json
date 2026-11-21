@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "team-groups",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance groups",
+    "fa": "گروه‌های نگهداری"
+  },
+  "description": {
+    "en": "Maintenance groups",
+    "fa": "گروه‌های نگهداری"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Team",
+      "action": "Groups",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

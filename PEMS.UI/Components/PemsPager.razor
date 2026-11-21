@@ -1,0 +1,15 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("pager", Category = "navigation", Icon = "bi-three-dots")]
+<nav class="@PageClass" @attributes="Options.Attributes">
+    <ul class="@UlCss">
+        @for (var p = 1; p <= Options.Total; p++)
+        {
+            <li class="@(p == Options.Current ? "page-item active" : "page-item")"><a class="page-link" href="@Options.Href.Replace("{page}", p.ToString())">@p</a></li>
+        }
+    </ul>
+</nav>
+@code {
+    [Parameter, EditorRequired] public PagerOptions Options { get; set; } = default!;
+    private string? PageClass => string.IsNullOrWhiteSpace(Options.PageClass) ? null : Options.PageClass;
+    private string UlCss => string.Join(" ", new[] { "pagination", Options.Scale?.ToLowerInvariant() switch { "small" => "pagination-sm", "large" => "pagination-lg", _ => null }, Options.Css }.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+}

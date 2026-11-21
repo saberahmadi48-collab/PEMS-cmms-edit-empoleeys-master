@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "reading-import-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Condition Reading Import (index) (old address)",
+    "fa": "Condition Reading Import (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Condition Reading Import (index) (old address)",
+    "fa": "Condition Reading Import (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ConditionReadingImport/Index",
+    "target": "/p/reading-import",
+    "permanent": false
+  }
+}

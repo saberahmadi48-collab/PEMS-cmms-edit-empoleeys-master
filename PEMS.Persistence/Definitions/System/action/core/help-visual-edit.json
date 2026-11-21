@@ -1,0 +1,54 @@
+{
+  "kind": "action",
+  "key": "help-visual-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a help visual",
+    "fa": "ذخیره‌ی تصویر راهنما"
+  },
+  "description": {
+    "en": "Save a help visual",
+    "fa": "ذخیره‌ی تصویر راهنما"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "SaveVisual",
+      "args": {
+        "visualId": "field:id",
+        "dto": {
+          "VisualType": "field:visualType",
+          "DisplayOrder": "field:displayOrder",
+          "IsPublished": "field:isPublished",
+          "SourceWorkflowModule": "field:sourceWorkflowModule",
+          "ManualDefinitionText": "field:manualDefinitionText",
+          "CaptionEn": "field:captionEn",
+          "CaptionFa": "field:captionFa",
+          "LegendEn": "field:legendEn",
+          "LegendFa": "field:legendFa",
+          "AccessibilityDescriptionEn": "field:accessibilityDescriptionEn",
+          "AccessibilityDescriptionFa": "field:accessibilityDescriptionFa",
+          "RelatedHelpKey": "field:relatedHelpKey",
+          "HelpArticleId": "literal:0"
+        }
+      },
+      "load": {
+        "operation": {
+          "model": "Help",
+          "action": "VisualOf",
+          "args": {
+            "visualId": "param:id"
+          }
+        }
+      }
+    },
+    "success": {
+      "en": "Visual content updated.",
+      "fa": "محتوای تصویری به‌روز شد."
+    },
+    "redirect": "/p/help-admin"
+  }
+}

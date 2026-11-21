@@ -1,0 +1,81 @@
+{
+  "kind": "component",
+  "key": "related-table",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Related records table",
+    "fa": "جدول رکوردهای وابسته"
+  },
+  "description": {
+    "en": "A heading and a grid of the child records of the record shown on a details page (SCRUM-795). The url filters the child data source by the record id, for example /d/children?f.parentId={{params.id|url}}.",
+    "fa": "یک عنوان و جدول رکوردهای فرزند رکورد نمایش‌داده‌شده در صفحه جزئیات. نشانی منبع داده با شناسه رکورد فیلتر می‌شود."
+  },
+  "payload": {
+    "parameters": {
+      "id": {
+        "type": "string",
+        "required": true,
+        "description": "The id of the table (unique on the page)"
+      },
+      "title": {
+        "type": "text",
+        "required": true,
+        "description": "The heading above the table"
+      },
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "The url of the grid rows: /d/{key} of a grid data source, filtered by the record id (f.x={{params.id|url}})"
+      },
+      "idField": {
+        "type": "string",
+        "required": true,
+        "description": "The row property that holds the id of a child record"
+      },
+      "columns": {
+        "type": "array",
+        "required": true,
+        "description": "The grid columns (key, header, width, type, actions)"
+      },
+      "pageSize": {
+        "type": "number",
+        "default": 10,
+        "description": "Rows per request"
+      },
+      "height": {
+        "type": "number",
+        "default": 260,
+        "description": "Height of the scroll area in pixels"
+      }
+    },
+    "instances": [
+      {
+        "id": "title",
+        "component": "content-blocks",
+        "options": {
+          "id": "${id}-title",
+          "blocks": [
+            {
+              "type": "heading",
+              "level": 6,
+              "text": "${title}"
+            }
+          ]
+        }
+      },
+      {
+        "id": "grid",
+        "component": "data-grid",
+        "options": {
+          "id": "${id}",
+          "url": "${url}",
+          "idField": "${idField}",
+          "columns": "${columns}",
+          "pageSize": "${pageSize}",
+          "height": "${height}"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "material-stock-adjust",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Adjust stock",
+    "fa": "اصلاح موجودی"
+  },
+  "description": {
+    "en": "Adjust stock",
+    "fa": "اصلاح موجودی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaterialStock",
+      "action": "Adjust",
+      "args": {
+        "materialItemId": "field:materialItemId",
+        "warehouseId": "field:warehouseId",
+        "newOnHandQuantity": "field:newOnHandQuantity",
+        "reason": "field:reason",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The stock adjustment was recorded.",
+      "fa": "اصلاح موجودی ثبت شد."
+    },
+    "redirect": "/p/material-item-details?id={materialItemId}"
+  }
+}

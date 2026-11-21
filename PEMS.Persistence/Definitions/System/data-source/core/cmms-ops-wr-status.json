@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "cmms-ops-wr-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work requests by status",
+    "fa": "درخواست‌های کار به تفکیک وضعیت"
+  },
+  "description": {
+    "en": "Work requests by status",
+    "fa": "درخواست‌های کار به تفکیک وضعیت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CmmsOperations",
+      "action": "WorkRequestsByStatus",
+      "args": {
+        "culture": "context:culture"
+      }
+    }
+  }
+}

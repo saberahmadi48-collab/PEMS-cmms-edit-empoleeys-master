@@ -1,0 +1,42 @@
+{
+  "kind": "action",
+  "key": "workflow-definition-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save the definition",
+    "fa": "ذخیره‌ی تعریف"
+  },
+  "description": {
+    "en": "Save the definition",
+    "fa": "ذخیره‌ی تعریف"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "UpdateDefinition",
+      "args": {
+        "definitionId": "field:id",
+        "name": "field:name",
+        "nameFa": "field:nameFa",
+        "description": "field:description"
+      },
+      "load": {
+        "operation": {
+          "model": "WorkflowManagement",
+          "action": "DefinitionRecord",
+          "args": {
+            "definitionId": "param:id"
+          }
+        }
+      }
+    },
+    "success": {
+      "en": "Definition saved.",
+      "fa": "تعریف ذخیره شد."
+    },
+    "redirect": "/p/workflow-management"
+  }
+}

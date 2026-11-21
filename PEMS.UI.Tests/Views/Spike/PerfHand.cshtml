@@ -1,0 +1,10 @@
+@{ var rows = Enumerable.Range(1, 1000).Select(i => "row" + i).ToList(); }
+<pems-table kind="enterprise" scale="small">
+    <pems-table-head><pems-table-row><pems-table-header>Name</pems-table-header><pems-table-header>Act</pems-table-header></pems-table-row></pems-table-head>
+    <pems-table-body>
+        @foreach (var r in rows)
+        {
+            <pems-table-row><pems-table-cell>@r</pems-table-cell><pems-table-cell><pems-form asp-action="FormPost" method="post" class="d-inline"><input type="hidden" name="key" value="@r" /><pems-button type="submit" tone="neutral">@r.ToUpper()</pems-button></pems-form></pems-table-cell></pems-table-row>
+        }
+    </pems-table-body>
+</pems-table>

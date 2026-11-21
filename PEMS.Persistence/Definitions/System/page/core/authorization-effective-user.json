@@ -1,0 +1,77 @@
+{
+  "kind": "page",
+  "key": "authorization-effective-user",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Effective permissions of a user",
+    "fa": "مجوزهای مؤثر یک کاربر"
+  },
+  "description": {
+    "en": "Effective permissions of a user (page definition)",
+    "fa": "مجوزهای مؤثر یک کاربر (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "authorization-effective-user",
+    "template": "entity-list",
+    "args": {
+      "id": "authorization-effective-user",
+      "url": "/d/authorization-effective-user-grid",
+      "idField": "resourceName",
+      "columns": [
+        {
+          "key": "userId",
+          "header": {
+            "en": "User id (type it in the filter)",
+            "fa": "شناسه‌ی کاربر (در فیلتر بنویسید)"
+          },
+          "width": 220,
+          "type": "number"
+        },
+        {
+          "key": "resourceName",
+          "header": {
+            "en": "Resource",
+            "fa": "منبع"
+          },
+          "width": 200
+        },
+        {
+          "key": "actionName",
+          "header": {
+            "en": "Action",
+            "fa": "کنش"
+          },
+          "width": 160
+        },
+        {
+          "key": "allowed",
+          "header": {
+            "en": "Allowed",
+            "fa": "مجاز"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "isDestructive",
+          "header": {
+            "en": "Destructive",
+            "fa": "مخرب"
+          },
+          "width": 110,
+          "type": "bool"
+        },
+        {
+          "key": "detail",
+          "header": {
+            "en": "Detail",
+            "fa": "جزئیات"
+          },
+          "width": 360
+        }
+      ]
+    }
+  }
+}

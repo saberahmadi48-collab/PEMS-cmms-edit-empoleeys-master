@@ -1,0 +1,553 @@
+{
+  "kind": "page",
+  "key": "purchase-order-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Purchase order",
+    "fa": "سفارش خرید"
+  },
+  "description": {
+    "en": "The order: lines, approval route, receiving and inspection release (page definition)",
+    "fa": "سفارش: اقلام، مسیر تأیید، دریافت و آزادسازی بازرسی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "purchase-order-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "po-record",
+            "fields": [
+              {
+                "key": "poNumber",
+                "label": {
+                  "en": "PO",
+                  "fa": "سفارش"
+                },
+                "mono": true
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "vendor",
+                "label": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                }
+              },
+              {
+                "key": "contract",
+                "label": {
+                  "en": "Contract",
+                  "fa": "قرارداد"
+                }
+              },
+              {
+                "key": "requisition",
+                "label": {
+                  "en": "MR",
+                  "fa": "MR"
+                }
+              },
+              {
+                "key": "currency",
+                "label": {
+                  "en": "Currency",
+                  "fa": "ارز"
+                }
+              },
+              {
+                "key": "total",
+                "label": {
+                  "en": "Total",
+                  "fa": "جمع"
+                },
+                "type": "number"
+              },
+              {
+                "key": "value",
+                "label": {
+                  "en": "Value",
+                  "fa": "مبلغ"
+                },
+                "type": "number"
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "wide": true
+              },
+              {
+                "key": "approverRole",
+                "label": {
+                  "en": "Approver role",
+                  "fa": "نقش تأییدکننده"
+                }
+              },
+              {
+                "key": "authorityLevel",
+                "label": {
+                  "en": "Authority level",
+                  "fa": "سطح اختیار"
+                },
+                "type": "number"
+              },
+              {
+                "key": "submittedBy",
+                "label": {
+                  "en": "Submitted by",
+                  "fa": "ارسال‌کننده"
+                }
+              },
+              {
+                "key": "submittedAt",
+                "label": {
+                  "en": "Submitted",
+                  "fa": "ارسال"
+                },
+                "type": "date"
+              },
+              {
+                "key": "approvedBy",
+                "label": {
+                  "en": "Approved by",
+                  "fa": "تأییدکننده"
+                }
+              },
+              {
+                "key": "approvedAt",
+                "label": {
+                  "en": "Approved",
+                  "fa": "تأیید"
+                },
+                "type": "date"
+              },
+              {
+                "key": "rejectionReason",
+                "label": {
+                  "en": "Rejection reason",
+                  "fa": "دلیل رد"
+                },
+                "wide": true
+              },
+              {
+                "key": "createdBy",
+                "label": {
+                  "en": "Created by",
+                  "fa": "ایجادکننده"
+                }
+              },
+              {
+                "key": "routeInvalid",
+                "label": {
+                  "en": "Route invalid (route again)",
+                  "fa": "مسیر نامعتبر (مسیریابی دوباره)"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "responsibleNotSet",
+                "label": {
+                  "en": "Approver not set",
+                  "fa": "تأییدکننده تعیین نشده"
+                },
+                "type": "bool"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/purchase-order-detail",
+              "idField": "poId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/po-add-lines?id={{params.id}}",
+                "text": {
+                  "en": "Add the lines of an MR",
+                  "fa": "افزودن اقلام یک MR"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/po-submit?id={{params.id}}",
+                "text": {
+                  "en": "Submit for approval",
+                  "fa": "ارسال برای تأیید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/po-route?id={{params.id}}",
+                "text": {
+                  "en": "Route again",
+                  "fa": "مسیریابی دوباره"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/po-approve?id={{params.id}}",
+                "text": {
+                  "en": "Approve",
+                  "fa": "تأیید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/po-reject?id={{params.id}}",
+                "text": {
+                  "en": "Reject",
+                  "fa": "رد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/po-issue?id={{params.id}}",
+                "text": {
+                  "en": "Issue (approved orders, Approve permission)",
+                  "fa": "صدور (سفارش تأییدشده، مجوز Approve)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/purchase-orders",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "lines",
+          "component": "def:related-table",
+          "options": {
+            "id": "lines",
+            "title": {
+              "en": "Lines",
+              "fa": "اقلام"
+            },
+            "url": "/d/purchase-order-lines?f.id={{params.id|url}}",
+            "idField": "purchaseOrderLineId",
+            "columns": [
+              {
+                "key": "lineNo",
+                "header": {
+                  "en": "No",
+                  "fa": "ردیف"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 260
+              },
+              {
+                "key": "partNumber",
+                "header": {
+                  "en": "Part no",
+                  "fa": "شماره قطعه"
+                },
+                "width": 140
+              },
+              {
+                "key": "quantity",
+                "header": {
+                  "en": "Qty",
+                  "fa": "تعداد"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "unit",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 70
+              },
+              {
+                "key": "unitPrice",
+                "header": {
+                  "en": "Unit price",
+                  "fa": "قیمت واحد"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "lineAmount",
+                "header": {
+                  "en": "Amount",
+                  "fa": "مبلغ"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "requiredDate",
+                "header": {
+                  "en": "Required",
+                  "fa": "تاریخ نیاز"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "isStockLine",
+                "header": {
+                  "en": "Stock",
+                  "fa": "انباری"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "commodityGroup",
+                "header": {
+                  "en": "Commodity group",
+                  "fa": "گروه کالا"
+                },
+                "width": 150
+              },
+              {
+                "key": "warehouse",
+                "header": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                },
+                "width": 100
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 240,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit the line",
+                      "fa": "ویرایش قلم"
+                    },
+                    "url": "/f/po-update-line?id={{params.id}}&lineId={id}&quantity={raw.quantity}&unitPrice={raw.unitPrice}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/f/po-remove-line?id={{params.id}}&lineId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "receiving",
+          "component": "def:related-table",
+          "options": {
+            "id": "receiving",
+            "title": {
+              "en": "Receiving",
+              "fa": "دریافت"
+            },
+            "url": "/d/purchase-order-receiving?f.id={{params.id|url}}",
+            "idField": "purchaseOrderLineId",
+            "columns": [
+              {
+                "key": "lineNo",
+                "header": {
+                  "en": "No",
+                  "fa": "ردیف"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 240
+              },
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 140
+              },
+              {
+                "key": "warehouse",
+                "header": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                },
+                "width": 100
+              },
+              {
+                "key": "ordered",
+                "header": {
+                  "en": "Ordered",
+                  "fa": "سفارش"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "received",
+                "header": {
+                  "en": "Received",
+                  "fa": "دریافتی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "inQc",
+                "header": {
+                  "en": "In QC",
+                  "fa": "در QC"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "accepted",
+                "header": {
+                  "en": "Accepted",
+                  "fa": "پذیرفته"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "onHold",
+                "header": {
+                  "en": "On hold",
+                  "fa": "معلق"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "outstanding",
+                "header": {
+                  "en": "Outstanding",
+                  "fa": "باقی‌مانده"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "overReceived",
+                "header": {
+                  "en": "Over",
+                  "fa": "اضافه"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "inspectionRequired",
+                "header": {
+                  "en": "Inspection",
+                  "fa": "بازرسی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "inspectionReleasedAt",
+                "header": {
+                  "en": "Released",
+                  "fa": "آزادسازی"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "inspectionPlan",
+                "header": {
+                  "en": "ITP",
+                  "fa": "ITP"
+                },
+                "width": 120
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 180,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "release",
+                    "label": {
+                      "en": "Release inspection",
+                      "fa": "آزادسازی بازرسی"
+                    },
+                    "url": "/f/po-release-inspection?id={{params.id}}&lineId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "PurchaseOrder.View"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "kind": "page",
+  "key": "storage-locations-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Storage locations details",
+    "fa": "جزئیات محل‌های نگهداری"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "storage-locations-record",
+      "url": "/d/storage-locations-grid",
+      "idField": "storageLocationId",
+      "fields": [
+        {
+          "key": "code",
+          "label": {
+            "en": "Code",
+            "fa": "کد"
+          }
+        },
+        {
+          "key": "name",
+          "label": {
+            "en": "Name",
+            "fa": "نام"
+          }
+        },
+        {
+          "key": "warehouse",
+          "label": {
+            "en": "Warehouse",
+            "fa": "انبار"
+          }
+        },
+        {
+          "key": "parent",
+          "label": {
+            "en": "Parent location",
+            "fa": "محل والد"
+          }
+        },
+        {
+          "key": "isActive",
+          "label": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "type": "bool"
+        }
+      ],
+      "backUrl": "/p/storage-locations",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/storage-locations-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

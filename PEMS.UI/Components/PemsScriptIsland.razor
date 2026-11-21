@@ -1,0 +1,31 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("script-island", Category = "display", Icon = "bi-window")]
+@using System.Text.Json
+@inject IPemsLocale Locale
+@foreach (var style in Paths(Options.Styles, ".css")) { <link rel="stylesheet" href="@style" /> }
+<div @attributes="Options.Attributes" id="@Options.Id" class="@Join(Options.Css, Options.PageClass)" aria-live="polite">
+    @if (Options.Note is not null) { <div class="text-muted small p-3">@Locale.Text(Options.Note)</div> }
+</div>
+<script type="application/json" id="@Options.BootId">@((MarkupString)Boot())</script>
+@foreach (var module in Paths([Options.Module], ".js")) { <script type="module" src="@module"></script> }
+@code {
+    [Parameter, EditorRequired] public ScriptIslandOptions Options { get; set; } = default!;
+
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+
+    /// <summary>Only files of this site under /dist/ (no scheme, no parent segment, the right extension).</summary>
+    private static IEnumerable<string> Paths(IEnumerable<string> paths, string extension)
+        => paths.Where(p => p.StartsWith("/dist/", StringComparison.Ordinal) && !p.Contains("..") && !p.Contains("//") && !p.Contains('?') && p.EndsWith(extension, StringComparison.Ordinal));
+
+    /// <summary>The boot data as JSON; a less-than sign is escaped so the text can never close the script element.</summary>
+    private string Boot()
+    {
+        var boot = new Dictionary<string, object?>();
+        foreach (var (key, value) in Options.Values) boot[key] = value;
+        boot["links"] = Options.Links;
+        boot["i18n"] = Options.I18n.ToDictionary(p => p.Key, p => Locale.Text(p.Value));
+        boot["locale"] = Locale.Culture.Name;
+        boot["rtl"] = Locale.IsRightToLeft;
+        return JsonSerializer.Serialize(boot).Replace("<", "\\u003c");
+    }
+}

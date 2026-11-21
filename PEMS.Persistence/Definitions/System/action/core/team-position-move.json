@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "team-position-move",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move a position",
+    "fa": "جابه‌جایی سمت"
+  },
+  "description": {
+    "en": "Move a position",
+    "fa": "جابه‌جایی سمت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "MovePosition",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "positionId": "field:positionId",
+        "newTeamId": "field:newTeamId"
+      }
+    },
+    "success": {
+      "en": "Position moved.",
+      "fa": "سمت جابه‌جا شد."
+    },
+    "redirect": "/p/team-details?teamId={returnTeamId}"
+  }
+}

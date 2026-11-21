@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "production-order-hold",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Put production order on hold",
+    "fa": "معلق کردن سفارش تولید"
+  },
+  "description": {
+    "en": "Put production order on hold",
+    "fa": "معلق کردن سفارش تولید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionOrder",
+      "action": "Hold",
+      "args": {
+        "productionOrderId": "field:id",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The order was put on hold.",
+      "fa": "سفارش معلق شد."
+    },
+    "redirect": "/ProductionOrder/Details/{id}"
+  }
+}

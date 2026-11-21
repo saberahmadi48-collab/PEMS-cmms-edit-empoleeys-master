@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "store-requisition-issue-line",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Issue a line",
+    "fa": "تحویل یک قلم"
+  },
+  "description": {
+    "en": "Issue a line",
+    "fa": "تحویل یک قلم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StoreRequisition",
+      "action": "IssueLine",
+      "args": {
+        "id": "field:id",
+        "lineId": "field:lineId",
+        "quantity": "field:quantity",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The issue was recorded.",
+      "fa": "تحویل ثبت شد."
+    },
+    "redirect": "/p/store-requisition-details?id={id}"
+  }
+}

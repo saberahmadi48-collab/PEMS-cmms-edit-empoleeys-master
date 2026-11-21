@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "procurement-packages-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement packages",
+    "fa": "بسته‌های تدارکات"
+  },
+  "description": {
+    "en": "Procurement packages",
+    "fa": "بسته‌های تدارکات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ProcurementPackage",
+      "action": "List"
+    }
+  }
+}

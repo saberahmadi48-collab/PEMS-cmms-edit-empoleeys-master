@@ -8,107 +8,107 @@
     var table = Model.ExtractedTableData;
 }
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+<pems-content-card css="mb-3">
+    <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
-            <h5 class="mb-0">@attachment.FileName</h5>
+            <pems-heading level="5" class="mb-0">@attachment.FileName</pems-heading>
             <span class="text-muted small">Table extraction test result - nothing was saved to the database.</span>
         </div>
-        <div class="d-flex gap-2">
+        <pems-flex gap="2">
             @if (Model.Success && table != null && table.Rows.Any())
             {
-                <form asp-action="StageForReview" method="post" class="d-inline">
+                <pems-form asp-action="StageForReview" method="post" class="d-inline">
                     <input type="hidden" name="attachmentId" value="@attachment.AttachmentId" />
-                    <button type="submit" class="btn btn-sm btn-pems-solid">
-                        <i class="bi bi-link-45deg"></i> Stage for Review (link to Equipment)
-                    </button>
-                </form>
+                    <pems-button tone="primary" size="small" type="submit">
+                        <pems-icon name="bi-link-45deg" /> Stage for Review (link to Equipment)
+                    </pems-button>
+                </pems-form>
             }
-            <a asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back</a>
-        </div>
-    </div>
-</div>
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-arrow-left" /> Back</pems-button>
+        </pems-flex>
+    </pems-flex>
+</pems-content-card>
 
 @if (!Model.Success)
 {
-    <div class="content-card">
-        <div class="alert alert-danger mb-0">@Model.ErrorMessage</div>
-    </div>
+    <pems-content-card>
+        <pems-alert tone="danger" css="mb-0">@Model.ErrorMessage</pems-alert>
+    </pems-content-card>
     return;
 }
 
-<div class="content-card mb-3">
-    <div class="admin-kpi-grid">
-        <div class="admin-kpi"><div class="admin-kpi-label">Rows extracted</div><div class="admin-kpi-value">@(table?.RowCount ?? 0)</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">@Localizer["Confidence"]</div><div class="admin-kpi-value">@Model.Confidence.ToString("P0")</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">Used OCR</div><div class="admin-kpi-value">@(Model.UsedOcr ? "Yes" : "No")</div></div>
-        <div class="admin-kpi"><div class="admin-kpi-label">Warnings</div><div class="admin-kpi-value">@Model.Warnings.Count</div></div>
-    </div>
-    <p class="text-muted small mt-2 mb-0">@Model.Summary</p>
-</div>
+<pems-content-card css="mb-3">
+    <pems-stat-grid>
+        <pems-stat label="Rows extracted">@(table?.RowCount ?? 0)</pems-stat>
+        <pems-stat label="@Localizer["Confidence"]">@Model.Confidence.ToString("P0")</pems-stat>
+        <pems-stat label="Used OCR">@(Model.UsedOcr ? "Yes" : "No")</pems-stat>
+        <pems-stat label="Warnings">@Model.Warnings.Count</pems-stat>
+    </pems-stat-grid>
+    <pems-text class="text-muted small mt-2 mb-0">@Model.Summary</pems-text>
+</pems-content-card>
 
 @if (Model.Warnings.Any())
 {
-    <div class="content-card mb-3">
-        <div class="alert alert-warning mb-0">
+    <pems-content-card css="mb-3">
+        <pems-alert tone="warning" css="mb-0">
             <strong>Warnings reported by the model:</strong>
-            <ul class="mb-0">
+            <pems-bullet-list class="mb-0">
                 @foreach (var w in Model.Warnings)
                 {
-                    <li>@w</li>
+                    <pems-bullet>@w</pems-bullet>
                 }
-            </ul>
-        </div>
-    </div>
+            </pems-bullet-list>
+        </pems-alert>
+    </pems-content-card>
 }
 
 @if (table?.DocumentInfo != null)
 {
     var info = table.DocumentInfo;
-    <div class="content-card mb-3">
-        <h6 class="mb-2">Document Info</h6>
-        <div class="row g-2 small">
-            <div class="col-md-3"><strong>Document No.</strong><div>@(info.DocumentNo ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>@Localizer["Title"]</strong><div>@(info.Title ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>@Localizer["Type"]</strong><div>@(info.DocumentType ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>@Localizer["Discipline"]</strong><div>@(info.Discipline ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>@Localizer["Revision"]</strong><div>@(info.RevisionNo ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>@Localizer["Vendor"]</strong><div>@(info.VendorName ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>Area / Unit</strong><div>@(info.Area ?? "N/A") / @(info.Unit ?? "N/A")</div></div>
-            <div class="col-md-3"><strong>@Localizer["System"]</strong><div>@(info.System ?? "N/A")</div></div>
-        </div>
-    </div>
+    <pems-content-card css="mb-3">
+        <pems-heading level="6" class="mb-2">Document Info</pems-heading>
+        <pems-row gap="2" css="small">
+            <pems-col md="3"><strong>Document No.</strong><div>@(info.DocumentNo ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>@Localizer["Title"]</strong><div>@(info.Title ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>@Localizer["Type"]</strong><div>@(info.DocumentType ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>@Localizer["Discipline"]</strong><div>@(info.Discipline ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>@Localizer["Revision"]</strong><div>@(info.RevisionNo ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>@Localizer["Vendor"]</strong><div>@(info.VendorName ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>Area / Unit</strong><div>@(info.Area ?? "N/A") / @(info.Unit ?? "N/A")</div></pems-col>
+            <pems-col md="3"><strong>@Localizer["System"]</strong><div>@(info.System ?? "N/A")</div></pems-col>
+        </pems-row>
+    </pems-content-card>
 }
 
-<div class="content-card">
-    <h6 class="mb-2">Rows (@(table?.Rows.Count ?? 0))</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise table-sm">
-            <thead>
-                <tr>
-                    <th>Tag No.</th><th>@Localizer["Description"]</th><th>Signal</th><th>JB / Terminal</th>
-                    <th>Cable</th><th>Marshalling</th><th>I/O Card / Ch</th><th>@Localizer["Loop"]</th>
-                    <th>@Localizer["System"]</th><th>Spare</th><th>@Localizer["Remarks"]</th><th>Raw Extra</th>
-                </tr>
-            </thead>
-            <tbody>
+<pems-content-card>
+    <pems-heading level="6" class="mb-2">Rows (@(table?.Rows.Count ?? 0))</pems-heading>
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
+        <pems-table kind="enterprise" scale="small">
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header>Tag No.</pems-table-header><pems-table-header>@Localizer["Description"]</pems-table-header><pems-table-header>Signal</pems-table-header><pems-table-header>JB / Terminal</pems-table-header>
+                    <pems-table-header>Cable</pems-table-header><pems-table-header>Marshalling</pems-table-header><pems-table-header>I/O Card / Ch</pems-table-header><pems-table-header>@Localizer["Loop"]</pems-table-header>
+                    <pems-table-header>@Localizer["System"]</pems-table-header><pems-table-header>Spare</pems-table-header><pems-table-header>@Localizer["Remarks"]</pems-table-header><pems-table-header>Raw Extra</pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
                 @if (table != null)
                 {
                     @foreach (var row in table.Rows)
                     {
-                        <tr>
-                            <td class="fw-semibold">@(row.TagNumber ?? "-")</td>
-                            <td class="small">@(row.Description ?? row.Service ?? "-")</td>
-                            <td class="small">@(row.SignalType ?? "-") @(row.SignalClass != null ? $"({row.SignalClass})" : "")</td>
-                            <td class="small">@(row.JunctionBox ?? "-") / @(row.Terminal ?? "-")</td>
-                            <td class="small">@(row.CableNo ?? "-")</td>
-                            <td class="small">@(row.MarshallingCabinet ?? "-") / @(row.MarshallingTerminal ?? "-")</td>
-                            <td class="small">@(row.IoCard ?? "-") / @(row.IoChannel ?? "-")</td>
-                            <td class="small">@(row.LoopNo ?? "-")</td>
-                            <td class="small">@(row.System ?? "-")</td>
-                            <td class="small">@(row.SpareOrHotSpare == true ? "Yes" : "-")</td>
-                            <td class="small" style="max-width:220px;">@(row.Remarks ?? "-")</td>
-                            <td class="small text-muted">
+                        <pems-table-row>
+                            <pems-table-cell class="fw-semibold">@(row.TagNumber ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.Description ?? row.Service ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.SignalType ?? "-") @(row.SignalClass != null ? $"({row.SignalClass})" : "")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.JunctionBox ?? "-") / @(row.Terminal ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.CableNo ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.MarshallingCabinet ?? "-") / @(row.MarshallingTerminal ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.IoCard ?? "-") / @(row.IoChannel ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.LoopNo ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.System ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(row.SpareOrHotSpare == true ? "Yes" : "-")</pems-table-cell>
+                            <pems-table-cell class="small pems-s-27af8985">@(row.Remarks ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small text-muted">
                                 @if (row.RawExtra != null && row.RawExtra.Any())
                                 {
                                     @string.Join("; ", row.RawExtra.Select(kv => $"{kv.Key}={kv.Value}"))
@@ -117,16 +117,16 @@
                                 {
                                     @:-
                                 }
-                            </td>
-                        </tr>
+                            </pems-table-cell>
+                        </pems-table-row>
                     }
                 }
-            </tbody>
-        </table>
+            </pems-table-body>
+        </pems-table>
 
         @if (table == null || !table.Rows.Any())
         {
-            <p class="text-muted text-center py-4">No rows extracted.</p>
+            <pems-text class="text-muted text-center py-4">No rows extracted.</pems-text>
         }
-    </div>
-</div>
+    </pems-table-scroll>
+</pems-content-card>

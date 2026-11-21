@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "designer-add-page-instance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a component to a page",
+    "fa": "افزودن مؤلفه به صفحه"
+  },
+  "description": {
+    "en": "Add a component to a page",
+    "fa": "افزودن مؤلفه به صفحه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The component was added to the draft.",
+      "fa": "مؤلفه به پیش‌نویس افزوده شد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "AddPageInstance",
+      "args": {
+        "reference": "field:ref",
+        "region": "field:region",
+        "id": "field:id",
+        "component": "field:component",
+        "optionsJson": "field:options",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

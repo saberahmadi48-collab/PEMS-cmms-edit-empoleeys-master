@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-security-events",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Security events (old address)",
+    "fa": "رویدادهای امنیتی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Security events (old address)",
+    "fa": "رویدادهای امنیتی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/SecurityEvents/{*rest}",
+    "target": "/p/security-events",
+    "permanent": false
+  }
+}

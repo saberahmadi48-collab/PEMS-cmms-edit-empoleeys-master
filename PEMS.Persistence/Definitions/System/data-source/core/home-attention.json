@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "home-attention",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "What requires your attention",
+    "fa": "موارد نیازمند توجه شما"
+  },
+  "description": {
+    "en": "What requires your attention",
+    "fa": "موارد نیازمند توجه شما"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Home",
+      "action": "Attention",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName"
+      }
+    }
+  }
+}

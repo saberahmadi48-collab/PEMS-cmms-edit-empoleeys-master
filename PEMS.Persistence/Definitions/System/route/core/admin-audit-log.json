@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-audit-log",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Audit log (old address)",
+    "fa": "گزارش ممیزی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Audit log (old address)",
+    "fa": "گزارش ممیزی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/AuditLog/{*rest}",
+    "target": "/p/audit-log",
+    "permanent": false
+  }
+}

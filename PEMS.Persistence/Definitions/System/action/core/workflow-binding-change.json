@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "workflow-binding-change",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change a binding",
+    "fa": "تغییر اتصال"
+  },
+  "description": {
+    "en": "Change a binding",
+    "fa": "تغییر اتصال"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "ChangeBinding",
+      "args": {
+        "bindingId": "field:id",
+        "targetVersionId": "field:targetVersionId",
+        "confirmed": "field:confirmed"
+      }
+    },
+    "success": {
+      "en": "Binding changed.",
+      "fa": "اتصال تغییر کرد."
+    },
+    "redirect": "/p/workflow-bindings"
+  }
+}

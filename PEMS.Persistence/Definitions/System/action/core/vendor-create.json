@@ -1,0 +1,52 @@
+{
+  "kind": "action",
+  "key": "vendor-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New vendor",
+    "fa": "فروشنده‌ی جدید"
+  },
+  "description": {
+    "en": "New vendor",
+    "fa": "فروشنده‌ی جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "Vendor",
+      "map": {
+        "name": "Name",
+        "vendorCode": "VendorCode",
+        "country": "Country",
+        "contactName": "ContactName",
+        "contactEmail": "ContactEmail",
+        "contactPhone": "ContactPhone"
+      },
+      "required": [
+        "Name"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "Name"
+          ],
+          "message": {
+            "en": "A vendor with this name already exists.",
+            "fa": "فروشنده‌ای با این نام وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "The vendor was created.",
+      "fa": "فروشنده ساخته شد."
+    },
+    "redirect": "/p/vendors"
+  }
+}

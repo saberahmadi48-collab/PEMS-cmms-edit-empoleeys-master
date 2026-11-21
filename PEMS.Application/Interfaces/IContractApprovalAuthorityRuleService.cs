@@ -21,4 +21,8 @@ public interface IContractApprovalAuthorityRuleService
         string? description, int priority);
 
     Task<(bool Success, string? Error)> SetActiveAsync(int ruleId, bool isActive);
+
+    /// <summary>The rules of a rule (known role, range order, class length, no identical active rule) without writing; the definition pages run it before the entity write (SCRUM-632, 774).</summary>
+    [PEMS.Application.Common.PemsOperation("ContractApprovalRule", "Validate", Roles = "SystemAdmin")]
+    Task<(bool Success, string? Error)> ValidateRuleAsync(int? ruleId, decimal? minValue, decimal? maxValue, string? criticalityClass, string requiredApproverRole);
 }

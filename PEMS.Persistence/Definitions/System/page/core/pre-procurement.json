@@ -1,0 +1,221 @@
+{
+  "kind": "page",
+  "key": "pre-procurement",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement queue",
+    "fa": "صف خرید"
+  },
+  "description": {
+    "en": "Shortages, direct purchases and engineering MRs waiting for the buyer (page definition)",
+    "fa": "کمبودها، خریدهای مستقیم و MRهای مهندسی در انتظار کارشناس خرید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "pre-procurement",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "ppr-filters",
+            "resetUrl": "/p/pre-procurement",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "در انتظار کارشناس خرید"
+                    }
+                  },
+                  {
+                    "value": "Converted",
+                    "label": {
+                      "en": "Converted",
+                      "fa": "افزوده به MR"
+                    }
+                  },
+                  {
+                    "value": "Accepted",
+                    "label": {
+                      "en": "Accepted",
+                      "fa": "پذیرفته‌شده"
+                    }
+                  },
+                  {
+                    "value": "Dismissed",
+                    "label": {
+                      "en": "Dismissed",
+                      "fa": "ردشده / برگشتی"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "source",
+                "label": {
+                  "en": "Source",
+                  "fa": "منبع"
+                },
+                "kind": "select",
+                "value": "{{params.source}}",
+                "options": [
+                  {
+                    "value": "Replenishment",
+                    "label": {
+                      "en": "Stock shortage",
+                      "fa": "کمبود انبار"
+                    }
+                  },
+                  {
+                    "value": "WorkOrderDirectPurchase",
+                    "label": {
+                      "en": "Work-order direct purchase",
+                      "fa": "خرید مستقیم دستورکار"
+                    }
+                  },
+                  {
+                    "value": "MaterialRequisition",
+                    "label": {
+                      "en": "Engineering MR",
+                      "fa": "MR مهندسی"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "queue",
+          "component": "data-grid",
+          "options": {
+            "id": "queue",
+            "url": "/d/pre-procurement-queue?f.status={{params.status|url}}&f.source={{params.source|url}}",
+            "idField": "procurementDemandId",
+            "columns": [
+              {
+                "key": "source",
+                "header": {
+                  "en": "Source",
+                  "fa": "منبع"
+                },
+                "width": 190
+              },
+              {
+                "key": "sourceNumber",
+                "header": {
+                  "en": "Source no",
+                  "fa": "شماره منبع"
+                },
+                "width": 140
+              },
+              {
+                "key": "item",
+                "header": {
+                  "en": "Item",
+                  "fa": "قلم"
+                },
+                "width": 320
+              },
+              {
+                "key": "quantity",
+                "header": {
+                  "en": "Qty",
+                  "fa": "تعداد"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "unit",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 80
+              },
+              {
+                "key": "warehouse",
+                "header": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                },
+                "width": 110
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 130
+              },
+              {
+                "key": "raisedAt",
+                "header": {
+                  "en": "Raised",
+                  "fa": "ثبت"
+                },
+                "width": 160,
+                "type": "date"
+              },
+              {
+                "key": "raisedBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 150
+              },
+              {
+                "key": "requisition",
+                "header": {
+                  "en": "MR",
+                  "fa": "MR"
+                },
+                "width": 130
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/pre-procurement-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "PreProcurement.View"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "numbering-schemes-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Numbering schemes",
+    "fa": "الگوهای شماره‌گذاری"
+  },
+  "description": {
+    "en": "Numbering schemes rows",
+    "fa": "ردیف‌های الگوهای شماره‌گذاری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Numbering",
+      "action": "Schemes"
+    }
+  }
+}

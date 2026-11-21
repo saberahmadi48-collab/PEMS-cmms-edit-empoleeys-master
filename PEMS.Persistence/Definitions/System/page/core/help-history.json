@@ -1,0 +1,76 @@
+{
+  "kind": "page",
+  "key": "help-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help article history",
+    "fa": "تاریخچه‌ی مقاله"
+  },
+  "description": {
+    "en": "Type the article id in the filter (page definition)",
+    "fa": "شناسه‌ی مقاله را در فیلتر بنویسید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "help-history",
+    "template": "entity-list",
+    "args": {
+      "id": "help-history",
+      "url": "/d/help-history-rows",
+      "idField": "timestamp",
+      "columns": [
+        {
+          "key": "articleId",
+          "header": {
+            "en": "Article id (type it)",
+            "fa": "شناسه‌ی مقاله"
+          },
+          "width": 190,
+          "type": "number"
+        },
+        {
+          "key": "timestamp",
+          "header": {
+            "en": "When",
+            "fa": "زمان"
+          },
+          "width": 170,
+          "type": "datetime"
+        },
+        {
+          "key": "entityName",
+          "header": {
+            "en": "Entity",
+            "fa": "موجودیت"
+          },
+          "width": 200
+        },
+        {
+          "key": "action",
+          "header": {
+            "en": "Action",
+            "fa": "کنش"
+          },
+          "width": 120
+        },
+        {
+          "key": "userName",
+          "header": {
+            "en": "By",
+            "fa": "توسط"
+          },
+          "width": 160
+        },
+        {
+          "key": "changedFieldsSummary",
+          "header": {
+            "en": "Changes",
+            "fa": "تغییرات"
+          },
+          "width": 420
+        }
+      ]
+    }
+  }
+}

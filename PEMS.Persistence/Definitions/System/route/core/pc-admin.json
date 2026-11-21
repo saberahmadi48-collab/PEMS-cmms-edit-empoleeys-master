@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-admin",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue administration (old address)",
+    "fa": "Part Catalogue administration (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue administration (old address)",
+    "fa": "Part Catalogue administration (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueAdmin",
+    "target": "/p/pc-admin",
+    "permanent": false
+  }
+}

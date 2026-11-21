@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "permit-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permits",
+    "fa": "مجوزهای کار"
+  },
+  "description": {
+    "en": "Permits",
+    "fa": "مجوزهای کار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PermitPage",
+      "action": "List",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "status": "param:status",
+        "pendingMyApproval": "param:pendingMyApproval"
+      }
+    }
+  }
+}

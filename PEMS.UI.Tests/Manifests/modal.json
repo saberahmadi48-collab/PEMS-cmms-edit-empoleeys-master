@@ -1,0 +1,135 @@
+{
+  "key": "modal",
+  "component": "PEMS.UI.Components.PemsModal",
+  "category": "overlays",
+  "icon": "bi-window",
+  "nameKey": "component.modal",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "skin": {
+        "enum": [
+          "bootstrap",
+          "pems"
+        ]
+      },
+      "id": {
+        "type": "string"
+      },
+      "title": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "closeLabel": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "body": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "size": {
+        "enum": [
+          "small",
+          "medium",
+          "large",
+          "extraLarge"
+        ]
+      },
+      "frame": {
+        "type": "boolean"
+      },
+      "dialogCssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "id",
+      "title",
+      "closeLabel"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ModalOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "m1",
+    "title": {
+      "en": "Details",
+      "fa": "جزئیات"
+    },
+    "closeLabel": {
+      "en": "Close",
+      "fa": "بستن"
+    },
+    "body": {
+      "en": "Text",
+      "fa": "متن"
+    }
+  }
+}

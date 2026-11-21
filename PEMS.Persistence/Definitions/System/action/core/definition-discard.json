@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "definition-discard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discard draft",
+    "fa": "حذف پیش‌نویس"
+  },
+  "description": {
+    "en": "Discard draft",
+    "fa": "حذف پیش‌نویس"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The draft was discarded.",
+      "fa": "پیش‌نویس حذف شد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Definition",
+      "action": "DiscardDraft",
+      "args": {
+        "reference": "field:id",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

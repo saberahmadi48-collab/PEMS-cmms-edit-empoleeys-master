@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "help-standards-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Standard references",
+    "fa": "Standard references"
+  },
+  "description": {
+    "en": "Standard references",
+    "fa": "Standard references"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Help",
+      "action": "StandardMatrix"
+    }
+  }
+}

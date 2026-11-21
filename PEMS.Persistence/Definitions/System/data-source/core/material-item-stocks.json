@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "material-item-stocks",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Stock of a material",
+    "fa": "موجودی یک ماده"
+  },
+  "description": {
+    "en": "Stock of a material",
+    "fa": "موجودی یک ماده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaterialItem",
+      "action": "Stocks",
+      "args": {
+        "materialItemId": "param:materialItemId"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-filter-select", Category = "list", Icon = "bi-menu-button-wide")]
+<div @attributes="Options.Attributes"><label class="lp-lbl" for="@Options.Id">@Options.Label</label><select class="form-select form-select-sm" id="@Options.Id" name="@Options.Name">@if (Options.AllText != null){@Choice("", Options.AllText, string.IsNullOrEmpty(Options.Value))}@foreach (var item in Options.Items){@Choice(item.Value, item.Text, !string.IsNullOrEmpty(Options.Value) && string.Equals(item.Value, Options.Value, StringComparison.Ordinal))}</select></div>
+@code {
+    [Parameter, EditorRequired] public ListFilterSelectOptions Options { get; set; } = default!;
+    private static RenderFragment Choice(string value, string text, bool selected) => b =>
+    {
+        b.OpenElement(0, "option");
+        if (selected) b.AddAttribute(1, "selected", "selected");
+        b.AddAttribute(2, "value", value);
+        b.AddContent(3, text);
+        b.CloseElement();
+    };
+}

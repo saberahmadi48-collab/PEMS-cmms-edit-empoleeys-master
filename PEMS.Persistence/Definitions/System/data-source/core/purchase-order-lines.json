@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "purchase-order-lines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Purchase order lines",
+    "fa": "Purchase order lines"
+  },
+  "description": {
+    "en": "Purchase order lines",
+    "fa": "Purchase order lines"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "Lines",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "purchase-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Purchase orders (old address)",
+    "fa": "Purchase orders (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Purchase orders (old address)",
+    "fa": "Purchase orders (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "PurchaseOrder",
+    "target": "/p/purchase-orders",
+    "permanent": false
+  }
+}

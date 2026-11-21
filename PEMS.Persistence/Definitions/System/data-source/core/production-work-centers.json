@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "production-work-centers",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work centers",
+    "fa": "Work centers"
+  },
+  "description": {
+    "en": "Work centers",
+    "fa": "Work centers"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Production",
+      "action": "WorkCenterChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

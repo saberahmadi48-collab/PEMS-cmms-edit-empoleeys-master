@@ -1,0 +1,76 @@
+{
+  "kind": "form",
+  "key": "crew-add-member",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a crew member",
+    "fa": "افزودن عضو"
+  },
+  "description": {
+    "en": "Add a crew member",
+    "fa": "افزودن عضو"
+  },
+  "payload": {
+    "id": "crew-add-member",
+    "title": {
+      "en": "Add a crew member",
+      "fa": "افزودن عضو"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "crew-add-member",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "crewId",
+        "label": {
+          "en": "Crew id",
+          "fa": "شناسه‌ی گروه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "employeeIdToAdd",
+        "label": {
+          "en": "Person",
+          "fa": "فرد"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "crew-employees"
+      },
+      {
+        "name": "roleId",
+        "label": {
+          "en": "Role",
+          "fa": "نقش"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "crew-roles"
+      }
+    ]
+  }
+}

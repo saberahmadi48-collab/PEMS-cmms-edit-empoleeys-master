@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "production-run-pause",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Pause the run",
+    "fa": "توقف موقت اجرا"
+  },
+  "description": {
+    "en": "Pause the run",
+    "fa": "توقف موقت اجرا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "Pause",
+      "args": {
+        "productionRunId": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The run was paused.",
+      "fa": "اجرا موقتاً متوقف شد."
+    },
+    "redirect": "/ProductionRun/Details/{id}"
+  }
+}

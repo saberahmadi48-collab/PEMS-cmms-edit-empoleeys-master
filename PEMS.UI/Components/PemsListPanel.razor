@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-panel", Category = "list", Icon = "bi-square")]
+<div @attributes="Options.Attributes" class="@ListMarkup.Css("lp-panel", Options.CssClass)">@ChildContent</div>
+@code {
+    [Parameter, EditorRequired] public ListFrameOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

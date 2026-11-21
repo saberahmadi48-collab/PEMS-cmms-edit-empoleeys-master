@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "store-requisition-issue-all",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "IssueAll",
+    "fa": "IssueAll"
+  },
+  "description": {
+    "en": "IssueAll",
+    "fa": "IssueAll"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StoreRequisition",
+      "action": "IssueAll",
+      "args": {
+        "id": "field:id",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The issue was recorded.",
+      "fa": "تحویل ثبت شد."
+    },
+    "redirect": "/p/store-requisition-details?id={id}"
+  }
+}

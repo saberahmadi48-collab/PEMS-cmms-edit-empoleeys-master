@@ -1,0 +1,39 @@
+{
+  "kind": "data-source",
+  "key": "storage-providers-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Storage providers rows",
+    "fa": "ردیف‌های ارائه‌دهندگان ذخیره‌سازی"
+  },
+  "description": {
+    "en": "The rows of the storage providers grid",
+    "fa": "ردیف‌های جدول ارائه‌دهندگان ذخیره‌سازی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "StorageProvider",
+      "fields": [
+        "Name",
+        "Code",
+        "ProviderType",
+        "RootPath",
+        "IsEnabled",
+        "IsDefault",
+        "LastHealthStatus",
+        "LastHealthCheckAt"
+      ],
+      "search": [
+        "Name",
+        "Code",
+        "RootPath"
+      ],
+      "sort": [
+        "Name"
+      ]
+    }
+  }
+}

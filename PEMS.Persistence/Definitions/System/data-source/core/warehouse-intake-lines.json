@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "warehouse-intake-lines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Warehouse intake lines",
+    "fa": "اقلام دریافت انبار"
+  },
+  "description": {
+    "en": "Warehouse intake lines",
+    "fa": "اقلام دریافت انبار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WarehouseIntake",
+      "action": "Lines",
+      "args": {
+        "workOrderId": "param:id"
+      }
+    }
+  }
+}

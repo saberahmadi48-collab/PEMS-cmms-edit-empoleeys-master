@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "moc-assess-risk",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assess MOC risk",
+    "fa": "Assess MOC risk"
+  },
+  "description": {
+    "en": "Assess MOC risk",
+    "fa": "Assess MOC risk"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MOC",
+      "action": "AssessRisk",
+      "args": {
+        "mocId": "field:mocId",
+        "riskAssessmentText": "field:riskAssessmentText",
+        "actorEmployeeId": "context:employeeId",
+        "actorDisciplineId": "context:disciplineId",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "The risk assessment was recorded.",
+      "fa": "ارزیابی ریسک ثبت شد."
+    },
+    "redirect": "/MOC/Details/{mocId}"
+  }
+}

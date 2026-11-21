@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-admin-employees",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin: employees",
+    "fa": "مدیریت کاتالوگ قطعه: کارکنان"
+  },
+  "description": {
+    "en": "Part Catalogue admin: employees",
+    "fa": "مدیریت کاتالوگ قطعه: کارکنان"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "Employees",
+      "args": {
+        "userRoles": "context:roles",
+        "q": "param:q"
+      },
+      "disposition": "inline"
+    }
+  }
+}

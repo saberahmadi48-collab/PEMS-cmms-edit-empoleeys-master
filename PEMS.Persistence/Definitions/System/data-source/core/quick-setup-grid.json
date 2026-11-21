@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "quick-setup-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Quick setup steps",
+    "fa": "مراحل راه‌اندازی سریع"
+  },
+  "description": {
+    "en": "Quick setup steps",
+    "fa": "مراحل راه‌اندازی سریع"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "QuickSetup",
+      "action": "Steps",
+      "args": {
+        "userRoles": "context:roles"
+      }
+    }
+  }
+}

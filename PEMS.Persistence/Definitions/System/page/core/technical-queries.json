@@ -1,0 +1,303 @@
+{
+  "kind": "page",
+  "key": "technical-queries",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "TQ / TSR / RFI",
+    "fa": "TQ / TSR / RFI"
+  },
+  "description": {
+    "en": "Technical queries with their counts and filters (page definition)",
+    "fa": "پرسش‌های فنی با شمارش و فیلتر (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "technical-queries",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "tq-filters",
+            "resetUrl": "/p/technical-queries",
+            "fields": [
+              {
+                "name": "queryType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "kind": "select",
+                "value": "{{params.queryType}}",
+                "options": [
+                  {
+                    "value": "TQ",
+                    "label": {
+                      "en": "TQ",
+                      "fa": "TQ"
+                    }
+                  },
+                  {
+                    "value": "TSR",
+                    "label": {
+                      "en": "TSR",
+                      "fa": "TSR"
+                    }
+                  },
+                  {
+                    "value": "RFI",
+                    "label": {
+                      "en": "RFI",
+                      "fa": "RFI"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز"
+                    }
+                  },
+                  {
+                    "value": "PendingConfirmation",
+                    "label": {
+                      "en": "PendingConfirmation",
+                      "fa": "در انتظار تأیید"
+                    }
+                  },
+                  {
+                    "value": "Reopened",
+                    "label": {
+                      "en": "Reopened",
+                      "fa": "بازگشایی‌شده"
+                    }
+                  },
+                  {
+                    "value": "Closed",
+                    "label": {
+                      "en": "Closed",
+                      "fa": "بسته"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "projectId",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "kind": "select",
+                "value": "{{params.projectId}}",
+                "options": []
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "projectId",
+                "source": "/d/tq-projects",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/tq-raise",
+                "text": {
+                  "en": "New TQ / TSR / RFI",
+                  "fa": "TQ / TSR / RFI جدید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "k-total",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Total",
+              "fa": "کل"
+            },
+            "icon": "bi-collection"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/tq-counts?f.queryType={{params.queryType|url}}&f.status={{params.status|url}}&f.projectId={{params.projectId|url}}",
+              "first": true,
+              "map": {
+                "value": "total"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-open",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Open",
+              "fa": "باز"
+            },
+            "icon": "bi-hourglass-split",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/tq-counts?f.queryType={{params.queryType|url}}&f.status={{params.status|url}}&f.projectId={{params.projectId|url}}",
+              "first": true,
+              "map": {
+                "value": "open"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-overdue",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Overdue",
+              "fa": "دیرکرد"
+            },
+            "icon": "bi-clock-history",
+            "tone": "danger"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/tq-counts?f.queryType={{params.queryType|url}}&f.status={{params.status|url}}&f.projectId={{params.projectId|url}}",
+              "first": true,
+              "map": {
+                "value": "overdue"
+              }
+            }
+          }
+        },
+        {
+          "id": "queries",
+          "component": "data-grid",
+          "options": {
+            "id": "queries",
+            "url": "/d/tq-list?f.queryType={{params.queryType|url}}&f.status={{params.status|url}}&f.projectId={{params.projectId|url}}",
+            "idField": "technicalQueryId",
+            "columns": [
+              {
+                "key": "queryNumber",
+                "header": {
+                  "en": "Number",
+                  "fa": "شماره"
+                },
+                "width": 140
+              },
+              {
+                "key": "queryType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 80
+              },
+              {
+                "key": "subject",
+                "header": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                },
+                "width": 320
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 160
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 100
+              },
+              {
+                "key": "requiredResponseDate",
+                "header": {
+                  "en": "Required by",
+                  "fa": "مهلت"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 130
+              },
+              {
+                "key": "isOverdue",
+                "header": {
+                  "en": "Overdue",
+                  "fa": "دیرکرد"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/technical-query-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    }
+  }
+}

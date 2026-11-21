@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "mr-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MR details (old address)",
+    "fa": "MR details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "MR details (old address)",
+    "fa": "MR details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaterialRequisition/Details/{id}",
+    "target": "/p/mr-details?id={id}",
+    "permanent": false
+  }
+}

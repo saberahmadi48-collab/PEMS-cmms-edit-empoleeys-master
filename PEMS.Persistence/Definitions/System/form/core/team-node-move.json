@@ -1,0 +1,62 @@
+{
+  "kind": "form",
+  "key": "team-node-move",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move a team node",
+    "fa": "جابه‌جایی گره تیم"
+  },
+  "description": {
+    "en": "Move a team node",
+    "fa": "جابه‌جایی گره تیم"
+  },
+  "payload": {
+    "id": "team-node-move",
+    "title": {
+      "en": "Move a team node",
+      "fa": "جابه‌جایی گره تیم"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "team-node-move",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "teamId",
+        "label": {
+          "en": "Team id",
+          "fa": "شناسه تیم"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Team id is required.",
+            "fa": "شناسه تیم الزامی است."
+          }
+        }
+      },
+      {
+        "name": "newParentTeamId",
+        "label": {
+          "en": "New parent team (empty = root)",
+          "fa": "تیم والد جدید (خالی = ریشه)"
+        },
+        "kind": "select",
+        "optionsFrom": "team-team-nodes"
+      },
+      {
+        "name": "newMaintenanceGroupId",
+        "label": {
+          "en": "New maintenance group (empty = keep)",
+          "fa": "گروه نگهداری جدید (خالی = بدون تغییر)"
+        },
+        "kind": "select",
+        "optionsFrom": "team-groups"
+      }
+    ]
+  }
+}

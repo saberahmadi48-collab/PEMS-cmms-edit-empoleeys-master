@@ -1,0 +1,107 @@
+{
+  "kind": "page",
+  "key": "organization-chart",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Organization chart",
+    "fa": "نمودار سازمانی"
+  },
+  "description": {
+    "en": "Organization chart (page definition)",
+    "fa": "نمودار سازمانی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "organization-chart",
+    "template": "entity-list",
+    "args": {
+      "id": "organization-chart",
+      "url": "/d/organization-chart-rows",
+      "idField": "id",
+      "columns": [
+        {
+          "key": "positionCode",
+          "header": {
+            "en": "Code",
+            "fa": "کد"
+          },
+          "width": 110
+        },
+        {
+          "key": "positionTitle",
+          "header": {
+            "en": "Position",
+            "fa": "سمت"
+          },
+          "width": 260
+        },
+        {
+          "key": "parentId",
+          "header": {
+            "en": "Parent node",
+            "fa": "گره مافوق"
+          },
+          "width": 160
+        },
+        {
+          "key": "employeeName",
+          "header": {
+            "en": "Holder",
+            "fa": "دارنده"
+          },
+          "width": 220
+        },
+        {
+          "key": "departmentName",
+          "header": {
+            "en": "Department",
+            "fa": "دپارتمان"
+          },
+          "width": 180
+        },
+        {
+          "key": "teamName",
+          "header": {
+            "en": "Team",
+            "fa": "تیم"
+          },
+          "width": 140
+        },
+        {
+          "key": "lifecycle",
+          "header": {
+            "en": "State",
+            "fa": "وضعیت"
+          },
+          "width": 110
+        },
+        {
+          "key": "childCount",
+          "header": {
+            "en": "Children",
+            "fa": "زیرمجموعه"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "assignmentFrom",
+          "header": {
+            "en": "From",
+            "fa": "از"
+          },
+          "width": 120
+        },
+        {
+          "key": "assignmentTo",
+          "header": {
+            "en": "To",
+            "fa": "تا"
+          },
+          "width": 120
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "mmd-toggle-condition-priority-mapping-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleConditionPriorityMappingActive",
+    "fa": "ToggleConditionPriorityMappingActive"
+  },
+  "description": {
+    "en": "ToggleConditionPriorityMappingActive",
+    "fa": "ToggleConditionPriorityMappingActive"
+  },
+  "payload": {
+    "id": "mmd-toggle-condition-priority-mapping-active",
+    "title": {
+      "en": "ToggleConditionPriorityMappingActive",
+      "fa": "ToggleConditionPriorityMappingActive"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-toggle-condition-priority-mapping-active",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "id"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

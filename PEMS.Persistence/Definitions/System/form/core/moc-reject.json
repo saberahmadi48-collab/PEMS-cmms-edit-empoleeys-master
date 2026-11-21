@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "moc-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject",
+    "fa": "رد"
+  },
+  "description": {
+    "en": "Reject",
+    "fa": "رد"
+  },
+  "payload": {
+    "id": "moc-reject",
+    "title": {
+      "en": "Reject",
+      "fa": "رد"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "moc-reject",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "mocId",
+        "label": {
+          "en": "MOC id",
+          "fa": "شناسه‌ی MOC"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 2000
+      }
+    ]
+  }
+}

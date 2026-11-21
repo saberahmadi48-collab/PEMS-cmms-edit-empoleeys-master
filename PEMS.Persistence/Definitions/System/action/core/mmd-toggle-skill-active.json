@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mmd-toggle-skill-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleSkillActive",
+    "fa": "وضعیت مهارت به‌روزرسانی شد."
+  },
+  "description": {
+    "en": "ToggleSkillActive",
+    "fa": "وضعیت مهارت به‌روزرسانی شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "ToggleSkillActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "وضعیت مهارت به‌روزرسانی شد.",
+      "fa": "وضعیت مهارت به‌روزرسانی شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "mrs-import-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MRS import review (old address)",
+    "fa": "MRS import review (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "MRS import review (old address)",
+    "fa": "MRS import review (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/MrsImport/Review",
+    "target": "/p/mrs-import-review",
+    "permanent": false
+  }
+}

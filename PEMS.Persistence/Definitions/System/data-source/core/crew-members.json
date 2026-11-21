@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "crew-members",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Crew members",
+    "fa": "اعضای گروه‌ها"
+  },
+  "description": {
+    "en": "Crew members",
+    "fa": "اعضای گروه‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CrewAdmin",
+      "action": "Members"
+    }
+  }
+}

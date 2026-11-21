@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "inventory-ledger",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Inventory ledger (old address)",
+    "fa": "Inventory ledger (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Inventory ledger (old address)",
+    "fa": "Inventory ledger (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/InventoryTransaction/{*rest}",
+    "target": "/p/inventory-ledger",
+    "permanent": false
+  }
+}

@@ -10,153 +10,149 @@
 
 @if (TempData["Message"] != null)
 {
-    <div class="alert alert-success py-2 px-3 small d-print-none">@TempData["Message"]</div>
+    <pems-alert tone="success" css="py-2 px-3 small d-print-none">@TempData["Message"]</pems-alert>
 }
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger py-2 px-3 small d-print-none">@TempData["Error"]</div>
+    <pems-alert tone="danger" css="py-2 px-3 small d-print-none">@TempData["Error"]</pems-alert>
 }
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+<pems-content-card css="mb-3">
+    <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
-            <h5 class="mb-1">@Model.TagNumber</h5>
+            <pems-heading level="5" class="mb-1">@Model.TagNumber</pems-heading>
             <div class="text-muted small">@Model.EquipmentType @(Model.Equipment != null ? $"— {Model.Equipment.Name}" : "")</div>
         </div>
-        <div class="d-print-none d-flex gap-2">
-            <a asp-action="Edit" asp-route-id="@Model.MechanicalEquipmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i> @Localizer["Edit"]</a>
-            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.print()"><i class="bi bi-printer"></i> @Localizer["Print"]</button>
+        <pems-flex gap="2" css="d-print-none">
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@Model.MechanicalEquipmentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
+            <pems-button tone="neutral" size="small" outline="true" type="button" data-pems-click="print"><pems-icon name="bi-printer" /> @Localizer["Print"]</pems-button>
             @if (Model.EquipmentId.HasValue)
             {
-                <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-box-seam"></i> @Localizer["Equipment"]</a>
+                <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId"><pems-icon name="bi-box-seam" /> @Localizer["Equipment"]</pems-button>
             }
-        </div>
-    </div>
+        </pems-flex>
+    </pems-flex>
 
-    <hr />
-    <div class="row g-2 small">
-        <div class="col-md-3"><strong>@Localizer["Manufacturer"]:</strong> @(Model.Manufacturer ?? "N/A")</div>
-        <div class="col-md-3"><strong>@Localizer["Model"]:</strong> @(Model.Model ?? "N/A")</div>
-        <div class="col-md-3"><strong>@Localizer["Material"]:</strong> @(Model.Material ?? "N/A")</div>
-        <div class="col-md-3"><strong>@Localizer["Design Pressure"]:</strong> @(Model.DesignPressure?.ToString() ?? "N/A")</div>
-        <div class="col-md-3"><strong>@Localizer["Design Temperature"]:</strong> @(Model.DesignTemperature?.ToString() ?? "N/A")</div>
-        <div class="col-md-3"><strong>@Localizer["Operating Pressure"]:</strong> @(Model.OperatingPressure?.ToString() ?? "N/A")</div>
-        <div class="col-md-3"><strong>@Localizer["Operating Temperature"]:</strong> @(Model.OperatingTemperature?.ToString() ?? "N/A")</div>
-    </div>
+    <pems-divider />
+    <pems-row gap="2" css="small">
+        <pems-col md="3"><strong>@Localizer["Manufacturer"]:</strong> @(Model.Manufacturer ?? "N/A")</pems-col>
+        <pems-col md="3"><strong>@Localizer["Model"]:</strong> @(Model.Model ?? "N/A")</pems-col>
+        <pems-col md="3"><strong>@Localizer["Material"]:</strong> @(Model.Material ?? "N/A")</pems-col>
+        <pems-col md="3"><strong>@Localizer["Design Pressure"]:</strong> @(Model.DesignPressure?.ToString() ?? "N/A")</pems-col>
+        <pems-col md="3"><strong>@Localizer["Design Temperature"]:</strong> @(Model.DesignTemperature?.ToString() ?? "N/A")</pems-col>
+        <pems-col md="3"><strong>@Localizer["Operating Pressure"]:</strong> @(Model.OperatingPressure?.ToString() ?? "N/A")</pems-col>
+        <pems-col md="3"><strong>@Localizer["Operating Temperature"]:</strong> @(Model.OperatingTemperature?.ToString() ?? "N/A")</pems-col>
+    </pems-row>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
     {
-        <p class="small text-muted mt-2 mb-0">@Model.Description</p>
+        <pems-text class="small text-muted mt-2 mb-0">@Model.Description</pems-text>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-gear-wide-connected"></i> @Localizer["Rotating Equipment"]</h6>
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-gear-wide-connected" /> @Localizer["Rotating Equipment"]</pems-heading>
     @if (rotating != null)
     {
-        <div class="row g-2 small">
-            <div class="col-md-3"><strong>@Localizer["Type"]:</strong> @rotating.EquipmentType</div>
-            <div class="col-md-3"><strong>@Localizer["Flow Rate"]:</strong> @(rotating.FlowRate?.ToString() ?? "N/A")</div>
-            <div class="col-md-3"><strong>@Localizer["Head"]:</strong> @(rotating.Head?.ToString() ?? "N/A")</div>
-            <div class="col-md-3"><strong>@Localizer["Speed (RPM)"]:</strong> @(rotating.SpeedRPM?.ToString() ?? "N/A")</div>
-            <div class="col-md-3"><strong>@Localizer["Power (kW)"]:</strong> @(rotating.PowerKW?.ToString() ?? "N/A")</div>
-            <div class="col-md-3"><strong>@Localizer["Driver Type"]:</strong> @(rotating.DriverType ?? "N/A")</div>
-            <div class="col-md-3"><strong>@Localizer["Bearing Type"]:</strong> @(rotating.BearingType ?? "N/A")</div>
-            <div class="col-md-3"><strong>@Localizer["Lubrication"]:</strong> @(rotating.LubricationType ?? "N/A")</div>
-        </div>
+        <pems-row gap="2" css="small">
+            <pems-col md="3"><strong>@Localizer["Type"]:</strong> @rotating.EquipmentType</pems-col>
+            <pems-col md="3"><strong>@Localizer["Flow Rate"]:</strong> @(rotating.FlowRate?.ToString() ?? "N/A")</pems-col>
+            <pems-col md="3"><strong>@Localizer["Head"]:</strong> @(rotating.Head?.ToString() ?? "N/A")</pems-col>
+            <pems-col md="3"><strong>@Localizer["Speed (RPM)"]:</strong> @(rotating.SpeedRPM?.ToString() ?? "N/A")</pems-col>
+            <pems-col md="3"><strong>@Localizer["Power (kW)"]:</strong> @(rotating.PowerKW?.ToString() ?? "N/A")</pems-col>
+            <pems-col md="3"><strong>@Localizer["Driver Type"]:</strong> @(rotating.DriverType ?? "N/A")</pems-col>
+            <pems-col md="3"><strong>@Localizer["Bearing Type"]:</strong> @(rotating.BearingType ?? "N/A")</pems-col>
+            <pems-col md="3"><strong>@Localizer["Lubrication"]:</strong> @(rotating.LubricationType ?? "N/A")</pems-col>
+        </pems-row>
     }
     else if (staticEq == null)
     {
-        <p class="text-muted small mb-2">@Localizer["هنوز به‌عنوان Rotating طبقه‌بندی نشده."]</p>
-        <button type="button" class="btn btn-sm btn-outline-primary d-print-none" data-bs-toggle="modal" data-bs-target="#classifyRotatingModal">
-            <i class="bi bi-plus-lg"></i> @Localizer["Classify as Rotating"]
-        </button>
+        <pems-text class="text-muted small mb-2">@Localizer["هنوز به‌عنوان Rotating طبقه‌بندی نشده."]</pems-text>
+        <pems-button tone="primary" size="small" outline="true" css="d-print-none" type="button" data-bs-toggle="modal" data-bs-target="#classifyRotatingModal">
+            <pems-icon name="bi-plus-lg" /> @Localizer["Classify as Rotating"]
+        </pems-button>
     }
     else
     {
-        <p class="text-muted small mb-0">@Localizer["این تجهیز به‌عنوان Static طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد."]</p>
+        <pems-text class="text-muted small mb-0">@Localizer["این تجهیز به‌عنوان Static طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد."]</pems-text>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-box"></i> @Localizer["Static Equipment"]</h6>
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-box" /> @Localizer["Static Equipment"]</pems-heading>
     @if (staticEq != null)
     {
-        <div class="row g-2 small">
-            <div class="col-md-3"><strong>@Localizer["Type"]:</strong> @staticEq.EquipmentType</div>
-            <div class="col-md-3"><strong>@Localizer["Volume"]:</strong> @(staticEq.Volume?.ToString() ?? "N/A")</div>
-            <div class="col-md-3"><strong>@Localizer["Design Pressure"]:</strong> @(staticEq.DesignPressure?.ToString() ?? "N/A")</div>
-            <div class="col-md-3"><strong>@Localizer["Design Temperature"]:</strong> @(staticEq.DesignTemperature?.ToString() ?? "N/A")</div>
-            <div class="col-md-3"><strong>@Localizer["Material"]:</strong> @(staticEq.Material ?? "N/A")</div>
-            <div class="col-md-3"><strong>@Localizer["Orientation"]:</strong> @(staticEq.Orientation ?? "N/A")</div>
-            <div class="col-md-3"><strong>@Localizer["Code Standard"]:</strong> @(staticEq.CodeStandard ?? "N/A")</div>
-        </div>
+        <pems-row gap="2" css="small">
+            <pems-col md="3"><strong>@Localizer["Type"]:</strong> @staticEq.EquipmentType</pems-col>
+            <pems-col md="3"><strong>@Localizer["Volume"]:</strong> @(staticEq.Volume?.ToString() ?? "N/A")</pems-col>
+            <pems-col md="3"><strong>@Localizer["Design Pressure"]:</strong> @(staticEq.DesignPressure?.ToString() ?? "N/A")</pems-col>
+            <pems-col md="3"><strong>@Localizer["Design Temperature"]:</strong> @(staticEq.DesignTemperature?.ToString() ?? "N/A")</pems-col>
+            <pems-col md="3"><strong>@Localizer["Material"]:</strong> @(staticEq.Material ?? "N/A")</pems-col>
+            <pems-col md="3"><strong>@Localizer["Orientation"]:</strong> @(staticEq.Orientation ?? "N/A")</pems-col>
+            <pems-col md="3"><strong>@Localizer["Code Standard"]:</strong> @(staticEq.CodeStandard ?? "N/A")</pems-col>
+        </pems-row>
     }
     else if (rotating == null)
     {
-        <p class="text-muted small mb-2">@Localizer["هنوز به‌عنوان Static طبقه‌بندی نشده."]</p>
-        <button type="button" class="btn btn-sm btn-outline-info d-print-none" data-bs-toggle="modal" data-bs-target="#classifyStaticModal">
-            <i class="bi bi-plus-lg"></i> @Localizer["Classify as Static"]
-        </button>
+        <pems-text class="text-muted small mb-2">@Localizer["هنوز به‌عنوان Static طبقه‌بندی نشده."]</pems-text>
+        <pems-button tone="info" size="small" outline="true" css="d-print-none" type="button" data-bs-toggle="modal" data-bs-target="#classifyStaticModal">
+            <pems-icon name="bi-plus-lg" /> @Localizer["Classify as Static"]
+        </pems-button>
     }
     else
     {
-        <p class="text-muted small mb-0">@Localizer["این تجهیز به‌عنوان Rotating طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد."]</p>
+        <pems-text class="text-muted small mb-0">@Localizer["این تجهیز به‌عنوان Rotating طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد."]</pems-text>
     }
-</div>
+</pems-content-card>
 
-<div class="modal fade" id="classifyRotatingModal" tabindex="-1">
-    <div class="modal-dialog modal-lg"><div class="modal-content">
-        <form asp-action="ClassifyRotating" method="post">
+<pems-modal size="large" id="classifyRotatingModal" tabindex="-1">
+        <pems-form asp-action="ClassifyRotating" method="post">
             <input type="hidden" name="mechanicalEquipmentId" value="@Model.MechanicalEquipmentId" />
-            <div class="modal-header"><h6 class="modal-title">@Localizer["Classify as Rotating Equipment"]</h6></div>
-            <div class="modal-body">
-                <div class="row g-3 mb-3">
-                    <div class="col-md-6"><label class="form-label">@Localizer["Equipment Type"]</label><input name="equipmentType" class="form-control" required placeholder="@Localizer["Pump, Compressor, Fan, Blower ..."]" /></div>
-                    <div class="col-md-6"><label class="form-label">@Localizer["Driver Type"]</label><input name="driverType" class="form-control" placeholder="@Localizer["Motor, Turbine, Engine"]" /></div>
-                </div>
-                <div class="row g-3 mb-3">
-                    <div class="col-md-3"><label class="form-label">@Localizer["Flow Rate"]</label><input type="number" step="any" name="flowRate" class="form-control" /></div>
-                    <div class="col-md-3"><label class="form-label">@Localizer["Head"]</label><input type="number" step="any" name="head" class="form-control" /></div>
-                    <div class="col-md-3"><label class="form-label">@Localizer["Speed (RPM)"]</label><input type="number" name="speedRPM" class="form-control" /></div>
-                    <div class="col-md-3"><label class="form-label">@Localizer["Power (kW)"]</label><input type="number" step="any" name="powerKW" class="form-control" /></div>
-                </div>
-                <div class="row g-3 mb-3">
-                    <div class="col-md-6"><label class="form-label">@Localizer["Bearing Type"]</label><input name="bearingType" class="form-control" /></div>
-                    <div class="col-md-6"><label class="form-label">@Localizer["Lubrication Type"]</label><input name="lubricationType" class="form-control" /></div>
-                </div>
-                <div class="mb-2"><label class="form-label">@Localizer["توضیحات (اختیاری)"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت"]</button>
-            </div>
-        </form>
-    </div></div>
-</div>
+            <pems-modal-header>@Localizer["Classify as Rotating Equipment"]</pems-modal-header>
+            <pems-modal-body>
+                <pems-row gap="3" css="mb-3">
+                    <pems-col md="6"><pems-label>@Localizer["Equipment Type"]</pems-label><pems-input name="equipmentType" required placeholder="@Localizer["Pump, Compressor, Fan, Blower ..."]" /></pems-col>
+                    <pems-col md="6"><pems-label>@Localizer["Driver Type"]</pems-label><pems-input name="driverType" placeholder="@Localizer["Motor, Turbine, Engine"]" /></pems-col>
+                </pems-row>
+                <pems-row gap="3" css="mb-3">
+                    <pems-col md="3"><pems-label>@Localizer["Flow Rate"]</pems-label><pems-input type="number" step="any" name="flowRate" /></pems-col>
+                    <pems-col md="3"><pems-label>@Localizer["Head"]</pems-label><pems-input type="number" step="any" name="head" /></pems-col>
+                    <pems-col md="3"><pems-label>@Localizer["Speed (RPM)"]</pems-label><pems-input type="number" name="speedRPM" /></pems-col>
+                    <pems-col md="3"><pems-label>@Localizer["Power (kW)"]</pems-label><pems-input type="number" step="any" name="powerKW" /></pems-col>
+                </pems-row>
+                <pems-row gap="3" css="mb-3">
+                    <pems-col md="6"><pems-label>@Localizer["Bearing Type"]</pems-label><pems-input name="bearingType" /></pems-col>
+                    <pems-col md="6"><pems-label>@Localizer["Lubrication Type"]</pems-label><pems-input name="lubricationType" /></pems-col>
+                </pems-row>
+                <pems-form-group css="mb-2"><pems-label>@Localizer["توضیحات (اختیاری)"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></pems-form-group>
+            </pems-modal-body>
+            <pems-modal-footer>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
+            </pems-modal-footer>
+        </pems-form>
+    </pems-modal>
 
-<div class="modal fade" id="classifyStaticModal" tabindex="-1">
-    <div class="modal-dialog modal-lg"><div class="modal-content">
-        <form asp-action="ClassifyStatic" method="post">
+<pems-modal size="large" id="classifyStaticModal" tabindex="-1">
+        <pems-form asp-action="ClassifyStatic" method="post">
             <input type="hidden" name="mechanicalEquipmentId" value="@Model.MechanicalEquipmentId" />
-            <div class="modal-header"><h6 class="modal-title">@Localizer["Classify as Static Equipment"]</h6></div>
-            <div class="modal-body">
-                <div class="row g-3 mb-3">
-                    <div class="col-md-6"><label class="form-label">@Localizer["Equipment Type"]</label><input name="equipmentType" class="form-control" required placeholder="@Localizer["Vessel, Tank, Column, Heat Exchanger, Filter ..."]" /></div>
-                    <div class="col-md-6"><label class="form-label">@Localizer["Orientation"]</label><input name="orientation" class="form-control" placeholder="@Localizer["Vertical, Horizontal"]" /></div>
-                </div>
-                <div class="row g-3 mb-3">
-                    <div class="col-md-3"><label class="form-label">@Localizer["Volume"]</label><input type="number" step="any" name="volume" class="form-control" /></div>
-                    <div class="col-md-3"><label class="form-label">@Localizer["Design Pressure"]</label><input type="number" step="any" name="designPressure" class="form-control" /></div>
-                    <div class="col-md-3"><label class="form-label">@Localizer["Design Temperature"]</label><input type="number" step="any" name="designTemperature" class="form-control" /></div>
-                    <div class="col-md-3"><label class="form-label">@Localizer["Code Standard"]</label><input name="codeStandard" class="form-control" placeholder="@Localizer["ASME, API"]" /></div>
-                </div>
-                <div class="mb-2"><label class="form-label">@Localizer["Material"]</label><input name="material" class="form-control" /></div>
-                <div class="mb-2"><label class="form-label">@Localizer["توضیحات (اختیاری)"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["ثبت"]</button>
-            </div>
-        </form>
-    </div></div>
-</div>
+            <pems-modal-header>@Localizer["Classify as Static Equipment"]</pems-modal-header>
+            <pems-modal-body>
+                <pems-row gap="3" css="mb-3">
+                    <pems-col md="6"><pems-label>@Localizer["Equipment Type"]</pems-label><pems-input name="equipmentType" required placeholder="@Localizer["Vessel, Tank, Column, Heat Exchanger, Filter ..."]" /></pems-col>
+                    <pems-col md="6"><pems-label>@Localizer["Orientation"]</pems-label><pems-input name="orientation" placeholder="@Localizer["Vertical, Horizontal"]" /></pems-col>
+                </pems-row>
+                <pems-row gap="3" css="mb-3">
+                    <pems-col md="3"><pems-label>@Localizer["Volume"]</pems-label><pems-input type="number" step="any" name="volume" /></pems-col>
+                    <pems-col md="3"><pems-label>@Localizer["Design Pressure"]</pems-label><pems-input type="number" step="any" name="designPressure" /></pems-col>
+                    <pems-col md="3"><pems-label>@Localizer["Design Temperature"]</pems-label><pems-input type="number" step="any" name="designTemperature" /></pems-col>
+                    <pems-col md="3"><pems-label>@Localizer["Code Standard"]</pems-label><pems-input name="codeStandard" placeholder="@Localizer["ASME, API"]" /></pems-col>
+                </pems-row>
+                <pems-form-group css="mb-2"><pems-label>@Localizer["Material"]</pems-label><pems-input name="material" /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label>@Localizer["توضیحات (اختیاری)"]</pems-label><pems-textarea name="description" rows="2"></pems-textarea></pems-form-group>
+            </pems-modal-body>
+            <pems-modal-footer>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["ثبت"]</pems-button>
+            </pems-modal-footer>
+        </pems-form>
+    </pems-modal>

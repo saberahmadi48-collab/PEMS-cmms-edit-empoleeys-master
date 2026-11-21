@@ -1,0 +1,143 @@
+{
+  "kind": "page",
+  "key": "spare-parts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Spare parts",
+    "fa": "قطعات یدکی"
+  },
+  "description": {
+    "en": "Spare parts list (page definition)",
+    "fa": "فهرست قطعات یدکی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "spare-parts",
+    "template": "entity-list",
+    "args": {
+      "id": "spare-parts",
+      "url": "/d/spare-parts-grid",
+      "idField": "sparePartId",
+      "viewsKey": "spare-parts",
+      "columns": [
+        {
+          "key": "partNumber",
+          "header": {
+            "en": "Part number",
+            "fa": "شماره‌ی قطعه"
+          },
+          "width": 160
+        },
+        {
+          "key": "partName",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 240
+        },
+        {
+          "key": "manufacturer",
+          "header": {
+            "en": "Manufacturer",
+            "fa": "سازنده"
+          },
+          "width": 160
+        },
+        {
+          "key": "model",
+          "header": {
+            "en": "Model",
+            "fa": "مدل"
+          },
+          "width": 140
+        },
+        {
+          "key": "unit",
+          "header": {
+            "en": "Unit",
+            "fa": "واحد"
+          },
+          "width": 90
+        },
+        {
+          "key": "quantityOnHand",
+          "header": {
+            "en": "On hand",
+            "fa": "موجودی"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "minStockLevel",
+          "header": {
+            "en": "Minimum",
+            "fa": "حداقل"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "reorderPoint",
+          "header": {
+            "en": "Reorder point",
+            "fa": "نقطه‌ی سفارش"
+          },
+          "width": 120,
+          "type": "number"
+        },
+        {
+          "key": "storageLocation",
+          "header": {
+            "en": "Location",
+            "fa": "محل نگهداری"
+          },
+          "width": 160
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/spare-parts-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "delete",
+              "label": {
+                "en": "Deactivate",
+                "fa": "غیرفعال کردن"
+              },
+              "url": "/a/spare-parts-delete",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Deactivate this record?",
+                "fa": "این رکورد غیرفعال کردن شود؟"
+              }
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/spare-parts-create",
+      "newLabel": {
+        "en": "New spare part",
+        "fa": "قطعه‌ی یدکی جدید"
+      }
+    }
+  }
+}

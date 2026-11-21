@@ -1,0 +1,31 @@
+{
+  "kind": "data-source",
+  "key": "report-correspondence-chart-volume-by-month",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondence chart: Volume by month",
+    "fa": "نمودار correspondence: حجم به تفکیک ماه"
+  },
+  "description": {
+    "en": "Correspondence chart: Volume by month",
+    "fa": "نمودار correspondence: حجم به تفکیک ماه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Correspondence",
+      "args": {
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      },
+      "where": {
+        "key": "VolumeByMonth"
+      }
+    }
+  }
+}

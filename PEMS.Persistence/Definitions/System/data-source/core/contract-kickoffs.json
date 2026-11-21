@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "contract-kickoffs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contract: Kick-off meetings",
+    "fa": "قرارداد: Kick-off meetings"
+  },
+  "description": {
+    "en": "Contract: Kick-off meetings",
+    "fa": "قرارداد: Kick-off meetings"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ContractPage",
+      "action": "Kickoffs",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

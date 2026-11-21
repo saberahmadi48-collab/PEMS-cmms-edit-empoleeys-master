@@ -1,0 +1,20 @@
+{
+  "kind": "data-source",
+  "key": "definition-health-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Definition store health",
+    "fa": "وضعیت ذخیره تعریف‌ها"
+  },
+  "description": {
+    "en": "Definition store health",
+    "fa": "وضعیت ذخیره تعریف‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "definition-health",
+    "permission": "Definitions.View",
+    "parameters": {}
+  }
+}

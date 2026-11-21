@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "store-requisition-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel",
+    "fa": "Cancel"
+  },
+  "description": {
+    "en": "Cancel",
+    "fa": "Cancel"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StoreRequisition",
+      "action": "Cancel",
+      "args": {
+        "id": "field:id",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The requisition was cancelled.",
+      "fa": "درخواست لغو شد."
+    },
+    "redirect": "/p/store-requisition-details?id={id}"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "knowledge-base-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Knowledge base search rows",
+    "fa": "ردیف‌های جستجوی پایگاه دانش"
+  },
+  "description": {
+    "en": "Semantic search results of the knowledge base",
+    "fa": "نتایج جستجوی معنایی پایگاه دانش"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "KnowledgeBase",
+      "action": "Search",
+      "args": {
+        "query": "param:search",
+        "topK": "literal:10"
+      }
+    }
+  }
+}

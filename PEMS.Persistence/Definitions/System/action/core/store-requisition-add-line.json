@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "store-requisition-add-line",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a line",
+    "fa": "افزودن قلم"
+  },
+  "description": {
+    "en": "Add a line",
+    "fa": "افزودن قلم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StoreRequisition",
+      "action": "AddLine",
+      "args": {
+        "storeRequisitionId": "field:storeRequisitionId",
+        "materialItemId": "field:materialItemId",
+        "requestedQuantity": "field:requestedQuantity"
+      }
+    },
+    "success": {
+      "en": "The line was added.",
+      "fa": "قلم افزوده شد."
+    },
+    "redirect": "/p/store-requisition-details?id={storeRequisitionId}"
+  }
+}

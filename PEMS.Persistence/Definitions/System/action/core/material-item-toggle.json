@@ -1,0 +1,27 @@
+{
+  "kind": "action",
+  "key": "material-item-toggle",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Activate or deactivate a material",
+    "fa": "فعال یا غیرفعال کردن ماده"
+  },
+  "description": {
+    "en": "Activate or deactivate a material",
+    "fa": "فعال یا غیرفعال کردن ماده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.toggle",
+    "parameters": {
+      "entity": "MaterialItem",
+      "property": "IsActive"
+    },
+    "success": {
+      "en": "The material status was updated.",
+      "fa": "وضعیت ماده به‌روزرسانی شد."
+    },
+    "redirect": "/p/material-items"
+  }
+}

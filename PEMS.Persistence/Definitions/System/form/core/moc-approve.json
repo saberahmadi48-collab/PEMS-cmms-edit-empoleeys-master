@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "moc-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve",
+    "fa": "تأیید"
+  },
+  "description": {
+    "en": "Approve",
+    "fa": "تأیید"
+  },
+  "payload": {
+    "id": "moc-approve",
+    "title": {
+      "en": "Approve",
+      "fa": "تأیید"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "moc-approve",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "mocId",
+        "label": {
+          "en": "MOC id",
+          "fa": "شناسه‌ی MOC"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

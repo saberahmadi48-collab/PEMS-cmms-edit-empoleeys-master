@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "mmd-add-evaluation-limit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AddEvaluationLimit",
+    "fa": "آستانه‌ی ارزیابی اضافه شد."
+  },
+  "description": {
+    "en": "AddEvaluationLimit",
+    "fa": "آستانه‌ی ارزیابی اضافه شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "AddEvaluationLimit",
+      "args": {
+        "evaluationProfileId": "field:evaluationProfileId",
+        "status": "field:status",
+        "lowValue": "field:lowValue",
+        "highValue": "field:highValue",
+        "lowInclusive": "field:lowInclusive",
+        "highInclusive": "field:highInclusive"
+      }
+    },
+    "success": {
+      "en": "آستانه‌ی ارزیابی اضافه شد.",
+      "fa": "آستانه‌ی ارزیابی اضافه شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

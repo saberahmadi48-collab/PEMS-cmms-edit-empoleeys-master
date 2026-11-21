@@ -353,6 +353,97 @@ public class NetDemandCollectorTests
         Assert.Single(c.Excluded, x => x.Reason == NetDemandIssueCode.AmbiguousOverlapWithStoreRequisition && x.MaterialItemId == e.Item);
     }
 
+    // ================================================================ SCRUM-472: warehouse intake link and supply code
+    private static async Task<int> WoMaterialIdAsync(Env e, WorkOrder wo, int item, decimal required, string supply = WorkOrderMaterialSupplyCodes.Stock)
+    {
+        var m = new WorkOrderMaterial { WorkOrderId = wo.WorkOrderId, MaterialItemId = item, RequiredQuantity = required, SupplyCode = supply };
+        e.Db.WorkOrderMaterials.Add(m);
+        await e.Db.SaveChangesAsync();
+        return m.WorkOrderMaterialId;
+    }
+
+    private static async Task LinkedSrAsync(Env e, string status, WorkOrder wo, int woLineId, int item, decimal qty, int? warehouse = null)
+    {
+        var sr = new StoreRequisition { RequisitionNumber = "SR-" + e.NextSr++, Status = status, WarehouseId = warehouse ?? e.Wh, RequestedById = 1, WorkOrderId = wo.WorkOrderId };
+        sr.Lines.Add(new StoreRequisitionLine { MaterialItemId = item, RequestedQuantity = qty, WorkOrderMaterialId = woLineId });
+        e.Db.StoreRequisitions.Add(sr);
+        await e.Db.SaveChangesAsync();
+    }
+
+    [Fact]
+    public async Task A_linked_requisition_line_is_not_an_ambiguous_overlap_and_carries_the_warehouse()
+    {
+        var e = await NewAsync();
+        var wo = await WoAsync(e, "InProgress");
+        var woLine = await WoMaterialIdAsync(e, wo, e.Item, 8);
+        await LinkedSrAsync(e, "Approved", wo, woLine, e.Item, 8, e.Wh2);
+
+        var c = await CollectAsync(e);
+
+        Assert.False(Excluded(c, NetDemandIssueCode.AmbiguousOverlapWithStoreRequisition));
+        Assert.DoesNotContain(c.Lines, l => l.Origin.Source == DemandSourceType.WorkOrderMaterial);   // fully sourced: no warehouse-less demand left
+        var sr = Single(c, DemandSourceType.StoreRequisitionLine);
+        Assert.Equal(e.Wh2, sr.WarehouseId);
+        Assert.Equal(8m, sr.GrossRemainingQuantity);
+    }
+
+    [Fact]
+    public async Task A_partly_sourced_work_order_line_keeps_only_the_unsourced_quantity()
+    {
+        var e = await NewAsync();
+        var wo = await WoAsync(e, "Assigned");
+        var woLine = await WoMaterialIdAsync(e, wo, e.Item, 8);
+        await LinkedSrAsync(e, "Draft", wo, woLine, e.Item, 5);    // a Draft requisition already counts as sourced (not dead)
+
+        var c = await CollectAsync(e);
+
+        var woDemand = Single(c, DemandSourceType.WorkOrderMaterial);
+        Assert.Equal(3m, woDemand.GrossRemainingQuantity);
+        Assert.Null(woDemand.WarehouseId);
+    }
+
+    [Fact]
+    public async Task A_cancelled_linked_requisition_no_longer_sources_the_line()
+    {
+        var e = await NewAsync();
+        var wo = await WoAsync(e, "InProgress");
+        var woLine = await WoMaterialIdAsync(e, wo, e.Item, 8);
+        await LinkedSrAsync(e, "Cancelled", wo, woLine, e.Item, 8);
+
+        var c = await CollectAsync(e);
+
+        Assert.Equal(8m, Single(c, DemandSourceType.WorkOrderMaterial).GrossRemainingQuantity);
+    }
+
+    [Fact]
+    public async Task An_unlinked_requisition_for_the_same_work_order_and_material_is_still_ambiguous()
+    {
+        var e = await NewAsync();
+        var wo = await WoAsync(e, "InProgress");
+        var woLine = await WoMaterialIdAsync(e, wo, e.Item, 8);
+        await LinkedSrAsync(e, "Approved", wo, woLine, e.Item, 3);
+        await SrAsync(e, "Approved", wo.WorkOrderId, null, true, L(e.Item, 5, 5));   // raised by hand, no link
+
+        var c = await CollectAsync(e);
+
+        Assert.True(Excluded(c, NetDemandIssueCode.AmbiguousOverlapWithStoreRequisition));
+    }
+
+    [Fact]
+    public async Task A_direct_purchase_line_is_never_stock_demand_and_does_not_block_the_result()
+    {
+        var e = await NewAsync();
+        var wo = await WoAsync(e, "InProgress");
+        await WoMaterialIdAsync(e, wo, e.Item, 4, WorkOrderMaterialSupplyCodes.DirectPurchase);
+
+        var c = await CollectAsync(e);
+
+        Assert.DoesNotContain(c.Lines, l => l.Origin.Source == DemandSourceType.WorkOrderMaterial);
+        var x = Assert.Single(c.Excluded, x => x.Reason == NetDemandIssueCode.DirectPurchaseNotStockDemand);
+        Assert.Equal(4m, x.Quantity);
+        Assert.False(NetDemandIssues.IsBlocking(NetDemandIssueCode.DirectPurchaseNotStockDemand));
+    }
+
     // ================================================================ Scope / exclusions / read-only
     [Fact]
     public async Task ScopeFilters_RestrictMaterialsAndWarehouses_ButNeverCreateDemand()

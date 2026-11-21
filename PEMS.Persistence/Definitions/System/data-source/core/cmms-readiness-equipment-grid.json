@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "cmms-readiness-equipment-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment readiness rows",
+    "fa": "ردیف‌های آمادگی تجهیزات"
+  },
+  "description": {
+    "en": "Equipment readiness rows",
+    "fa": "ردیف‌های آمادگی تجهیزات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CmmsReadiness",
+      "action": "Equipment"
+    }
+  }
+}

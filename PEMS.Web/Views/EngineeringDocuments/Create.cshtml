@@ -8,116 +8,107 @@
 }
 
 @* Same fields, names, values and behaviour as before (numbering rules, manual-number permission, dropdowns) - only grouping, labels and hierarchy changed. *@
-<form asp-action="Create" method="post" class="content-card" style="max-width: 980px;">
+<pems-form asp-action="Create" method="post"><pems-content-card css="pems-s-0d3d737f">
     <div asp-validation-summary="ModelOnly" class="text-danger small mb-2"></div>
 
-    <h2 class="vs-section__title"><i class="bi bi-card-heading"></i> @Localizer["Ed_FormIdentification"]</h2>
-    <div class="row g-3 mb-4">
-        <div class="col-md-6">
-            <label class="form-label" for="DocumentNo">@Localizer["Ed_DocNo"]</label>
+    <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-card-heading" /> @Localizer["Ed_FormIdentification"]</pems-heading>
+    <pems-row gap="3" css="mb-4">
+        <pems-col md="6">
+            <pems-label for="DocumentNo">@Localizer["Ed_DocNo"]</pems-label>
             <div class="input-group">
-                <span class="input-group-text" id="autoNumberBadge"><i class="bi bi-magic" aria-hidden="true"></i></span>
-                <input asp-for="DocumentNo" class="form-control vs-num" placeholder="@Localizer["Ed_AutoNumberHint"]" disabled="disabled" />
+                <span class="input-group-text" id="autoNumberBadge"><pems-icon name="bi-magic" aria-hidden="true" /></span>
+                <pems-input css="vs-num" asp-for="DocumentNo" placeholder="@Localizer["Ed_AutoNumberHint"]" disabled />
             </div>
             @if ((bool)(ViewBag.CanManualNumber ?? false))
             {
-                <div class="form-check mt-2">
-                    <input class="form-check-input" type="checkbox" name="useManualNumber" value="true" id="useManualNumberCheck" />
+                <pems-check-row css="mt-2">
+                    <pems-input kind="check" type="checkbox" name="useManualNumber" value="true" id="useManualNumberCheck" />
                     <label class="form-check-label small" for="useManualNumberCheck">@Localizer["Ed_ManualNumber"]</label>
-                </div>
-                <div class="form-text">@Localizer["Ed_ManualNumberHelp"]</div>
+                </pems-check-row>
+                <pems-help-text>@Localizer["Ed_ManualNumberHelp"]</pems-help-text>
             }
             else
             {
-                <div class="form-text">@Localizer["Ed_AutoNumberHelp"]</div>
+                <pems-help-text>@Localizer["Ed_AutoNumberHelp"]</pems-help-text>
             }
-        </div>
-        <div class="col-md-6">
-            <label class="form-label" for="RevisionNo">@Localizer["Ed_Revision"]</label>
-            <input asp-for="RevisionNo" class="form-control vs-num" />
-        </div>
-        <div class="col-12">
-            <label class="form-label" for="Title">@Localizer["Ed_Title"]</label>
-            <input asp-for="Title" class="form-control" />
+        </pems-col>
+        <pems-col md="6">
+            <pems-label for="RevisionNo">@Localizer["Ed_Revision"]</pems-label>
+            <pems-input css="vs-num" asp-for="RevisionNo" />
+        </pems-col>
+        <pems-col span="12">
+            <pems-label for="Title">@Localizer["Ed_Title"]</pems-label>
+            <pems-input asp-for="Title" />
             <span asp-validation-for="Title" class="text-danger small"></span>
-        </div>
-        <div class="col-12">
-            <label class="form-label" for="Description">@Localizer["Ed_Description"]</label>
-            <textarea asp-for="Description" class="form-control" rows="2"></textarea>
-        </div>
-    </div>
+        </pems-col>
+        <pems-col span="12">
+            <pems-label for="Description">@Localizer["Ed_Description"]</pems-label>
+            <pems-textarea asp-for="Description" rows="2"></pems-textarea>
+        </pems-col>
+    </pems-row>
 
-    <h2 class="vs-section__title"><i class="bi bi-diagram-3"></i> @Localizer["Ed_FormClassification"]</h2>
-    <div class="row g-3 mb-4">
-        <div class="col-md-4">
-            <label class="form-label" for="DocumentType">@Localizer["Ed_Type"]</label>
-            <select asp-for="DocumentType" class="form-select">
+    <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-diagram-3" /> @Localizer["Ed_FormClassification"]</pems-heading>
+    <pems-row gap="3" css="mb-4">
+        <pems-col md="4">
+            <pems-label for="DocumentType">@Localizer["Ed_Type"]</pems-label>
+            <pems-select asp-for="DocumentType">
                 <option value="">@Localizer["Ed_SelectType"]</option>
                 <option value="Drawing">Drawing</option>
                 <option value="Datasheet">@Localizer["Datasheet"]</option>
                 <option value="Calculation">Calculation</option>
                 <option value="Specification">@Localizer["Specification"]</option>
-            </select>
-        </div>
-        <div class="col-md-4">
-            <label class="form-label" for="ProjectId">@Localizer["Ed_Project"]</label>
-            <select asp-for="ProjectId" asp-items="ViewBag.Projects" class="form-select">
+            </pems-select>
+        </pems-col>
+        <pems-col md="4">
+            <pems-label for="ProjectId">@Localizer["Ed_Project"]</pems-label>
+            <pems-select asp-for="ProjectId" asp-items="ViewBag.Projects">
                 <option value="">@Localizer["Ed_SelectProject"]</option>
-            </select>
-        </div>
-        <div class="col-md-4">
-            <label class="form-label" for="DisciplineId">@Localizer["Ed_Discipline"]</label>
-            <select asp-for="DisciplineId" asp-items="ViewBag.Disciplines" class="form-select">
+            </pems-select>
+        </pems-col>
+        <pems-col md="4">
+            <pems-label for="DisciplineId">@Localizer["Ed_Discipline"]</pems-label>
+            <pems-select asp-for="DisciplineId" asp-items="ViewBag.Disciplines">
                 <option value="">@Localizer["Ed_SelectDiscipline"]</option>
-            </select>
-        </div>
-        <div class="col-md-4">
-            <label class="form-label" for="Area">@Localizer["Ed_Area"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
-            <input asp-for="Area" class="form-control" placeholder="ABS &amp; Common, Rubber" />
-        </div>
-        <div class="col-md-4">
-            <label class="form-label" for="Status">@Localizer["Ed_Status"]</label>
-            <select asp-for="Status" class="form-select">
+            </pems-select>
+        </pems-col>
+        <pems-col md="4">
+            <pems-label for="Area">@Localizer["Ed_Area"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></pems-label>
+            <pems-input asp-for="Area" placeholder="ABS &amp; Common, Rubber" />
+        </pems-col>
+        <pems-col md="4">
+            <pems-label for="Status">@Localizer["Ed_Status"]</pems-label>
+            <pems-select asp-for="Status">
                 <option value="Draft">@Localizer["St_Draft"]</option>
                 <option value="Review">@Localizer["Review"]</option>
                 <option value="Approved">@Localizer["St_Approved"]</option>
                 <option value="Rejected">@Localizer["St_Rejected"]</option>
-            </select>
-        </div>
-    </div>
+            </pems-select>
+        </pems-col>
+    </pems-row>
 
-    <h2 class="vs-section__title"><i class="bi bi-link-45deg"></i> @Localizer["Ed_FormTraceability"]</h2>
-    <div class="row g-3 mb-4">
-        <div class="col-md-6">
-            <label class="form-label" for="EquipmentId">@Localizer["Ed_RelatedEquipment"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
-            <select asp-for="EquipmentId" asp-items="ViewBag.Equipments" class="form-select">
+    <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-link-45deg" /> @Localizer["Ed_FormTraceability"]</pems-heading>
+    <pems-row gap="3" css="mb-4">
+        <pems-col md="6">
+            <pems-label for="EquipmentId">@Localizer["Ed_RelatedEquipment"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></pems-label>
+            <pems-select asp-for="EquipmentId" asp-items="ViewBag.Equipments">
                 <option value="">@Localizer["Ed_None"]</option>
-            </select>
-        </div>
-        <div class="col-md-6">
-            <label class="form-label" for="ContractId">@Localizer["Ed_RelatedContract"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></label>
-            <select asp-for="ContractId" asp-items="ViewBag.Contracts" class="form-select">
+            </pems-select>
+        </pems-col>
+        <pems-col md="6">
+            <pems-label for="ContractId">@Localizer["Ed_RelatedContract"] <span class="text-muted fw-normal">(@Localizer["Ed_Optional"])</span></pems-label>
+            <pems-select asp-for="ContractId" asp-items="ViewBag.Contracts">
                 <option value="">@Localizer["Ed_None"]</option>
-            </select>
-        </div>
-    </div>
+            </pems-select>
+        </pems-col>
+    </pems-row>
 
-    <div class="d-flex gap-2 justify-content-end border-top pt-3">
-        <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
-        <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-    </div>
-</form>
+    <pems-flex gap="2" justify="end" css="border-top pt-3">
+        <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
+        <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+    </pems-flex>
+</pems-content-card></pems-form>
 
 @section Scripts {
-    <script>
-        var manualCheck = document.getElementById('useManualNumberCheck');
-        var docNoInput = document.querySelector('[name="DocumentNo"]');
-        if (manualCheck) {
-            manualCheck.addEventListener('change', function () {
-                docNoInput.disabled = !this.checked;
-                if (this.checked) docNoInput.focus();
-            });
-        }
-    </script>
+    <script src="~/js/views/engineeringdocuments-create.js" asp-append-version="true"></script>
     <partial name="_ValidationScriptsPartial" />
 }

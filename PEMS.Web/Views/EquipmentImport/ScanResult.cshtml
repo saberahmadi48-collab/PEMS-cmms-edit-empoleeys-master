@@ -6,75 +6,67 @@
     var existingTags = (List<string>)ViewBag.ExistingTags;
 }
 
-<div class="content-card mb-3">
-    <h6 class="mb-2"><i class="bi bi-file-earmark-pdf"></i> Scan result: @ViewBag.FileName</h6>
-    <p class="text-muted small mb-0">
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-2"><pems-icon name="bi-file-earmark-pdf" /> Scan result: @ViewBag.FileName</pems-heading>
+    <pems-text class="text-muted small mb-0">
         This is a best-effort scan for tag-number-looking text (e.g. 80-PSH-601305, 88-B-9001) -
         it is <strong>not</strong> a full structured extraction like the Excel import. Only the tag
         number is recognized; review the list below, select the real equipment tags, then fill in
         the discipline. You'll need to edit each one afterward with the actual name/type/manufacturer.
-    </p>
-</div>
+    </pems-text>
+</pems-content-card>
 
 @if (!Model.Any())
 {
-    <div class="content-card">
-        <p class="text-muted text-center py-4">No tag-like patterns were found in this PDF.</p>
-    </div>
+    <pems-content-card>
+        <pems-text class="text-muted text-center py-4">No tag-like patterns were found in this PDF.</pems-text>
+    </pems-content-card>
 }
 else
 {
-    <div class="content-card">
-        <form asp-action="CreateFromTags" method="post">
+    <pems-content-card>
+        <pems-form asp-action="CreateFromTags" method="post">
             <input type="hidden" name="projectId" value="@ViewBag.ProjectId" />
 
-            <div class="row g-2 align-items-end mb-3">
-                <div class="col-md-4">
-                    <label class="form-label small">Discipline for all selected tags</label>
-                    <select name="disciplineId" class="form-select form-select-sm" required id="scanDisciplineSelect">
+            <pems-row gap="2" css="align-items-end mb-3">
+                <pems-col md="4">
+                    <pems-label css="small">Discipline for all selected tags</pems-label>
+                    <pems-select scale="small" name="disciplineId" required id="scanDisciplineSelect">
                         <option value="">@Localizer["-- select --"]</option>
                         @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines)
                         {
                             <option value="@d.DisciplineId">@d.Name</option>
                         }
-                    </select>
-                </div>
-                <div class="col-md-8 d-flex gap-2">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" id="selectAllTags">Select All</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary" id="deselectAllTags">Deselect All</button>
-                    <button type="submit" class="btn btn-sm btn-pems-solid">Create Selected as Equipment</button>
-                </div>
-            </div>
+                    </pems-select>
+                </pems-col>
+                <pems-col md="8" css="d-flex gap-2">
+                    <pems-button tone="neutral" size="small" outline="true" type="button" id="selectAllTags">Select All</pems-button>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" id="deselectAllTags">Deselect All</pems-button>
+                    <pems-button tone="primary" size="small" type="submit">Create Selected as Equipment</pems-button>
+                </pems-col>
+            </pems-row>
 
-            <div class="table-scroll-area" style="max-height:60vh; overflow-y:auto;">
-                <div class="row g-1">
+            <div class="table-scroll-area pems-s-a3f95238">
+                <pems-row gap="1">
                     @foreach (var tag in Model)
                     {
                         var alreadyExists = existingTags.Contains(tag.ToUpper());
-                        <div class="col-md-3 col-sm-4 col-6">
-                            <div class="form-check">
-                                <input class="form-check-input scan-tag-checkbox" type="checkbox" name="tags" value="@tag"
-                                       id="tag_@tag" checked="@(!alreadyExists)" disabled="@alreadyExists" />
+                        <pems-col md="3" sm="4" span="6">
+                            <pems-check-row>
+                                <pems-input type="checkbox" name="tags" value="@tag" id="tag_@tag" checked="@(!alreadyExists)" disabled="@alreadyExists" kind="check" css="scan-tag-checkbox" />
                                 <label class="form-check-label small" for="tag_@tag">
                                     @tag
                                     @if (alreadyExists) { <span class="text-muted">(exists)</span> }
                                 </label>
-                            </div>
-                        </div>
+                            </pems-check-row>
+                        </pems-col>
                     }
-                </div>
+                </pems-row>
             </div>
-        </form>
-    </div>
+        </pems-form>
+    </pems-content-card>
 }
 
 @section Scripts {
-    <script>
-        document.getElementById('selectAllTags')?.addEventListener('click', function () {
-            document.querySelectorAll('.scan-tag-checkbox:not(:disabled)').forEach(function (cb) { cb.checked = true; });
-        });
-        document.getElementById('deselectAllTags')?.addEventListener('click', function () {
-            document.querySelectorAll('.scan-tag-checkbox').forEach(function (cb) { cb.checked = false; });
-        });
-    </script>
+    <script src="~/js/views/equipmentimport-scanresult.js" asp-append-version="true"></script>
 }

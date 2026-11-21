@@ -1,0 +1,81 @@
+{
+  "key": "list-filters",
+  "component": "PEMS.UI.Components.PemsListFilters",
+  "category": "list",
+  "icon": "bi-funnel",
+  "nameKey": "component.list-filters",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "formId": {
+        "type": "string"
+      },
+      "action": {
+        "type": "string"
+      },
+      "count": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "resetHref": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "filtersText": {
+        "type": "string"
+      },
+      "activeFiltersText": {
+        "type": "string"
+      },
+      "resetFiltersText": {
+        "type": "string"
+      },
+      "applyFiltersText": {
+        "type": "string"
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ListFiltersOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "formId": "f",
+    "action": "/docs",
+    "count": 2,
+    "filtersText": "Filters",
+    "activeFiltersText": "active",
+    "resetFiltersText": "Reset",
+    "applyFiltersText": "Apply"
+  }
+}

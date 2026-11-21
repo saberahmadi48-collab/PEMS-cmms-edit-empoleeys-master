@@ -1,0 +1,97 @@
+{
+  "kind": "page",
+  "key": "contract-approval-authority-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contract approval authority details",
+    "fa": "جزئیات اختیار تأیید قرارداد"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "contract-approval-authority-record",
+      "url": "/d/contract-approval-authority-grid",
+      "idField": "contractApprovalAuthorityRuleId",
+      "fields": [
+        {
+          "key": "contractApprovalAuthorityRuleId",
+          "label": {
+            "en": "Id",
+            "fa": "شناسه"
+          },
+          "type": "number"
+        },
+        {
+          "key": "priority",
+          "label": {
+            "en": "Priority",
+            "fa": "اولویت"
+          },
+          "type": "number"
+        },
+        {
+          "key": "minValue",
+          "label": {
+            "en": "From value",
+            "fa": "از مبلغ"
+          },
+          "type": "number"
+        },
+        {
+          "key": "maxValue",
+          "label": {
+            "en": "To value",
+            "fa": "تا مبلغ"
+          },
+          "type": "number"
+        },
+        {
+          "key": "criticalityClass",
+          "label": {
+            "en": "Criticality",
+            "fa": "بحرانی‌بودن"
+          }
+        },
+        {
+          "key": "requiredApproverRole",
+          "label": {
+            "en": "Approver role",
+            "fa": "نقش تأییدکننده"
+          }
+        },
+        {
+          "key": "description",
+          "label": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "wide": true
+        },
+        {
+          "key": "isActive",
+          "label": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "type": "bool"
+        }
+      ],
+      "backUrl": "/p/contract-approval-authority",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/contract-approval-authority-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

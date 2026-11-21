@@ -20,6 +20,8 @@ public class PartCatalogueRequestSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "PartCatalogueRequest";
     public string DisplayName => "Part Catalogue Requests";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser(rowScope: "PartCatalogue actions: own, assigned or all for reviewers");
 
     public PartCatalogueRequestSearchProvider(PEMSDbContext context, ICurrentUserContext user, IRoleModuleActionService actions)
     {

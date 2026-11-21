@@ -1,0 +1,136 @@
+{
+  "kind": "form",
+  "key": "discipline-task",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a task",
+    "fa": "افزودن وظیفه"
+  },
+  "description": {
+    "en": "Add a task, activity or deliverable to a discipline workspace",
+    "fa": "افزودن وظیفه، فعالیت یا خروجی به فضای کاری دیسیپلین"
+  },
+  "payload": {
+    "id": "discipline-task",
+    "title": {
+      "en": "Task",
+      "fa": "وظیفه"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "discipline-task-add",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "required": true,
+        "optionsFrom": "dw-discipline-options",
+        "messages": {
+          "required": {
+            "en": "Discipline is required.",
+            "fa": "دیسیپلین الزامی است."
+          }
+        }
+      },
+      {
+        "name": "type",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "Task",
+            "label": {
+              "en": "Task",
+              "fa": "وظیفه"
+            }
+          },
+          {
+            "value": "Activity",
+            "label": {
+              "en": "Activity",
+              "fa": "فعالیت"
+            }
+          },
+          {
+            "value": "Deliverable",
+            "label": {
+              "en": "Deliverable",
+              "fa": "خروجی"
+            }
+          }
+        ],
+        "messages": {
+          "required": {
+            "en": "Type is required.",
+            "fa": "نوع الزامی است."
+          }
+        }
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "maxLength": 200,
+        "span": 2,
+        "messages": {
+          "required": {
+            "en": "Title is required.",
+            "fa": "عنوان الزامی است."
+          }
+        }
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textarea",
+        "maxLength": 1000,
+        "span": 2
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "optionsFrom": "dw-project-options"
+      },
+      {
+        "name": "responsibleEmployeeId",
+        "label": {
+          "en": "Responsible",
+          "fa": "مسئول"
+        },
+        "kind": "select",
+        "optionsFrom": "dw-employee-options"
+      },
+      {
+        "name": "dueDate",
+        "label": {
+          "en": "Due",
+          "fa": "سررسید"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}

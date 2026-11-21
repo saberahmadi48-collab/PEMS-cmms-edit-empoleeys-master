@@ -1,0 +1,46 @@
+{
+  "kind": "action",
+  "key": "designer-edit-form-field",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a form field",
+    "fa": "ویرایش فیلد فرم"
+  },
+  "description": {
+    "en": "Edit a form field",
+    "fa": "ویرایش فیلد فرم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The field was changed in the draft.",
+      "fa": "فیلد در پیش‌نویس تغییر کرد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "EditFormField",
+      "args": {
+        "reference": "field:ref",
+        "name": "field:name",
+        "titleEn": "field:titleEn",
+        "titleFa": "field:titleFa",
+        "kind": "field:kind",
+        "required": "field:required",
+        "visible": "field:visible",
+        "requiredWhen": "field:requiredWhen",
+        "readOnlyWhen": "field:readOnlyWhen",
+        "minLength": "field:minLength",
+        "maxLength": "field:maxLength",
+        "pattern": "field:pattern",
+        "span": "field:span",
+        "optionsFrom": "field:optionsFrom",
+        "helpEn": "field:helpEn",
+        "helpFa": "field:helpFa",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

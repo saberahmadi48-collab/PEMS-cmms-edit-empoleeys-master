@@ -1,0 +1,50 @@
+{
+  "key": "link",
+  "component": "PEMS.UI.Components.PemsLink",
+  "category": "navigation",
+  "icon": "bi-link",
+  "nameKey": "component.link",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "LinkOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "css": "link-primary"
+  }
+}

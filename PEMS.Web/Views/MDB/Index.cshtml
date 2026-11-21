@@ -1,111 +1,123 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.ManufacturerDataBookDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    var projects = (IEnumerable<dynamic>)ViewBag.Projects;
-    var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
+    var projects = ((IEnumerable<dynamic>)ViewBag.Projects).ToList();
+    var vendors = ((IEnumerable<dynamic>)ViewBag.Vendors).ToList();
+    var projectId = (int?)ViewBag.SelectedProjectId;
+    var vendorId = (int?)ViewBag.SelectedVendorId;
+    string? projectName = null, vendorName = null;
+    foreach (var p in projects) { if (p.ProjectId == projectId) { projectName = p.ProjectName; } }
+    foreach (var v in vendors) { if (v.VendorId == vendorId) { vendorName = v.Name; } }
+    var filterCount = (projectId.HasValue ? 1 : 0) + (vendorId.HasValue ? 1 : 0);
 
     var qsParts = new List<string>();
-    if (ViewBag.SelectedProjectId != null) qsParts.Add($"projectId={ViewBag.SelectedProjectId}");
-    if (ViewBag.SelectedVendorId != null) qsParts.Add($"vendorId={ViewBag.SelectedVendorId}");
+    if (projectId.HasValue) qsParts.Add($"projectId={projectId}");
+    if (vendorId.HasValue) qsParts.Add($"vendorId={vendorId}");
     var existingQueryString = string.Join("&", qsParts);
 }
 
-<div class="content-card mb-3">
-    <form method="get" class="row g-3">
-        <div class="col-md-4">
-            <label class="form-label">@Localizer["Project"]</label>
-            <select name="projectId" class="form-select" onchange="this.form.submit()">
-                <option value="">-- All Projects --</option>
-                @foreach (var p in projects)
-                {
-                    <option value="@p.ProjectId" selected="@(ViewBag.SelectedProjectId == p.ProjectId)">@p.ProjectName</option>
-                }
-            </select>
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">@Localizer["Vendor"]</label>
-            <select name="vendorId" class="form-select" onchange="this.form.submit()">
-                <option value="">-- All Vendors --</option>
-                @foreach (var v in vendors)
-                {
-                    <option value="@v.VendorId" selected="@(ViewBag.SelectedVendorId == v.VendorId)">@v.Name</option>
-                }
-            </select>
-        </div>
-        <div class="col-md-4 d-flex align-items-end">
-            <a asp-action="Create" class="btn btn-pems-solid"><i class="bi bi-plus-lg"></i> New MDB</a>
-        </div>
-    </form>
-</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('MDB')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="table-responsive table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="MDB">
-            <thead>
-                <tr>
-                    <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Equipment"]</th>
-                    <th data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Vendor"]</th>
-                    <th data-col-key="po" data-resizable="true" data-min-width="80" data-max-width="160" style="width:110px">PO</th>
-                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Project"]</th>
-                    <th data-col-key="plannedIssue" data-resizable="true" data-min-width="100" data-max-width="180" style="width:140px">Planned Final Issue</th>
-                    <th data-col-key="indexDue" data-resizable="true" data-min-width="100" data-max-width="200" style="width:150px">Index Due</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180" style="width:110px">@Localizer["Status"]</th>
-                    <th data-col-key="hardCopy" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">Hard Copy</th>
-                    <th data-col-key="softCopy" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">Soft Copy</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var m in Model.Items)
-                {
-                    <tr>
-                        <td><a asp-action="Details" asp-route-id="@m.MDBId">@m.EquipmentTagNumber</a></td>
-                        <td>@m.VendorName</td>
-                        <td>@m.PoNumber</td>
-                        <td>@m.ProjectName</td>
-                        <td>@(m.PlannedFinalIssueDate?.ToString("yyyy-MM-dd"))</td>
-                        <td>
-                            @(m.IndexOfContentsDueDate?.ToString("yyyy-MM-dd"))
-                            @if (m.IsIndexOverdue)
-                            {
-                                <span class="badge bg-danger">@Localizer["overdue"]</span>
-                            }
-                        </td>
-                        <td><span class="badge bg-secondary">@m.Status</span></td>
-                        <td>@(m.HardCopyShippedDate.HasValue ? "Shipped" : "-")</td>
-                        <td>@(m.SoftCopyDeliveredDate.HasValue ? "Delivered" : "-")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        @if (!Model.Items.Any())
-        {
-            <p class="text-muted small mb-0">No MDBs yet.</p>
-        }
-    </div>
+@* SCRUM-337 W1: built from the PEMS.UI list-page component; the page keeps its filters (project, vendor) and columns. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
 
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "MDB",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = existingQueryString
-    })
-</div>
+        <pems-list-toolbar heading="@Localizer["Mdb_Title"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-filters form-id="mdbFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <div>
+                        <label class="lp-lbl" for="mdbFilterProject">@Localizer["Project"]</label>
+                        <pems-select scale="small" id="mdbFilterProject" name="projectId">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var p in projects)
+                            { <option value="@p.ProjectId" selected="@(p.ProjectId == projectId)">@p.ProjectName</option> }
+                        </pems-select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="mdbFilterVendor">@Localizer["Vendor"]</label>
+                        <pems-select scale="small" id="mdbFilterVendor" name="vendorId">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var v in vendors)
+                            { <option value="@v.VendorId" selected="@(v.VendorId == vendorId)">@v.Name</option> }
+                        </pems-select>
+                    </div>
+                </pems-list-filters>
+                <pems-list-reset-columns grid-key="MDB" />
+                <pems-list-new href="@Url.Action("Create")" text="@Localizer["Mdb_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (projectId.HasValue)
+            { <pems-list-chip label="@Localizer["Project"]" value="@projectName" remove-href="@Url.Action("Index", new { vendorId })" /> }
+            @if (vendorId.HasValue)
+            { <pems-list-chip label="@Localizer["Vendor"]" value="@vendorName" remove-href="@Url.Action("Index", new { projectId })" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="MDB" empty="@(!Model.Items.Any())" empty-text="@Localizer["Mdb_Empty"]"
+                             filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Equipment"]</pems-table-header>
+                        <pems-table-header class="pems-w-140" data-col-key="vendor" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Vendor"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="po" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["Mdb_Po"]</pems-table-header>
+                        <pems-table-header data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Project"]</pems-table-header>
+                        <pems-table-header data-col-key="plannedIssue" data-resizable="true" data-min-width="100" data-max-width="180" class="vs-hide-md pems-w-140">@Localizer["Mdb_PlannedIssue"]</pems-table-header>
+                        <pems-table-header class="pems-w-170" data-col-key="indexDue" data-resizable="true" data-min-width="100" data-max-width="240">@Localizer["Mdb_IndexDue"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="hardCopy" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Mdb_HardCopy"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="softCopy" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Mdb_SoftCopy"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var m in Model.Items)
+                    {
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@m.MDBId" class="lp-subject" title="@m.EquipmentTagNumber">@m.EquipmentTagNumber</pems-link></pems-table-cell>
+                            <pems-table-cell class="small">@m.VendorName</pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@m.PoNumber</span></pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small">@m.ProjectName</pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small">@(PemsDates.Date(m.PlannedFinalIssueDate))</pems-table-cell>
+                            <pems-table-cell class="small">
+                                @(PemsDates.Date(m.IndexOfContentsDueDate))
+                                @if (m.IsIndexOverdue)
+                                { <span class="vs-pill vs-pill--icon vs-pill--danger ms-1"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Overdue"]</span> }
+                            </pems-table-cell>
+                            <pems-table-cell><span class="vs-pill vs-pill--neutral">@m.Status</span></pems-table-cell>
+                            <pems-table-cell class="small">
+                                @if (m.HardCopyShippedDate.HasValue) { <span class="vs-pill vs-pill--success">@Localizer["Mdb_Shipped"]</span> } else { <span class="text-muted">&mdash;</span> }
+                            </pems-table-cell>
+                            <pems-table-cell class="small">
+                                @if (m.SoftCopyDeliveredDate.HasValue) { <span class="vs-pill vs-pill--success">@Localizer["Mdb_Delivered"]</span> } else { <span class="text-muted">&mdash;</span> }
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "MDB",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = existingQueryString
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('MDB');
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
 }

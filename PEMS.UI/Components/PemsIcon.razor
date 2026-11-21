@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("icon", Category = "display", Icon = "bi-emoji-smile")]
+@FrameMarkup.Element("i", Css, Options.PageClass, Options.Attributes, null)
+@code {
+    [Parameter, EditorRequired] public IconOptions Options { get; set; } = default!;
+    private string Css => string.Join(" ", new[] { "bi", Options.Name, Options.Css }.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+}

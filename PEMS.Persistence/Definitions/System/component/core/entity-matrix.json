@@ -1,0 +1,89 @@
+{
+  "kind": "component",
+  "key": "entity-matrix",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Editable matrix over a data source",
+    "fa": "ماتریس قابل ویرایش روی منبع داده"
+  },
+  "description": {
+    "en": "Rows by columns of cells built from the rows of a grid data source (permission-checked); an edited cell posts { row, column, value, id } to a stored action. Used for FMEA / RCM grids, reliability tables and the extracted tables of the OCR review.",
+    "fa": "ماتریس سطر در ستون"
+  },
+  "payload": {
+    "parameters": {
+      "id": {
+        "type": "string",
+        "required": true
+      },
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "The grid data source: /d/{key}"
+      },
+      "rowField": {
+        "type": "string",
+        "required": true
+      },
+      "columnField": {
+        "type": "string",
+        "required": true
+      },
+      "valueField": {
+        "type": "string",
+        "required": true
+      },
+      "rowLabelField": {
+        "type": "string"
+      },
+      "columnLabelField": {
+        "type": "string"
+      },
+      "idField": {
+        "type": "string",
+        "description": "The row property of the record id behind a cell"
+      },
+      "sort": {
+        "type": "string"
+      },
+      "cellType": {
+        "type": "string",
+        "default": "text",
+        "description": "text, number or select"
+      },
+      "choices": {
+        "type": "array",
+        "description": "Select choices { value, label }"
+      },
+      "actionUrl": {
+        "type": "string",
+        "description": "A stored action (/a/{key}) that saves an edited cell; read only without it"
+      }
+    },
+    "instances": [
+      {
+        "id": "matrix",
+        "component": "matrix",
+        "options": {
+          "id": "${id}",
+          "cellType": "${cellType}",
+          "choices": "${choices}",
+          "actionUrl": "${actionUrl}"
+        },
+        "bindings": {
+          "matrix": {
+            "source": "${url}",
+            "rowField": "${rowField}",
+            "columnField": "${columnField}",
+            "valueField": "${valueField}",
+            "rowLabelField": "${rowLabelField}",
+            "columnLabelField": "${columnLabelField}",
+            "idField": "${idField}",
+            "sort": "${sort}"
+          }
+        }
+      }
+    ]
+  }
+}

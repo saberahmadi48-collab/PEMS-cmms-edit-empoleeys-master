@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "kpi",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "KPI dashboard (old address)",
+    "fa": "داشبورد KPI (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "KPI dashboard (old address)",
+    "fa": "داشبورد KPI (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Kpi",
+    "target": "/p/kpi",
+    "permanent": false
+  }
+}

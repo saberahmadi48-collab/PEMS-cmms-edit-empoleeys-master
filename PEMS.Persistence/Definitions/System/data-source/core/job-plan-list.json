@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "job-plan-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Job plans",
+    "fa": "طرح‌های کار"
+  },
+  "description": {
+    "en": "Job plans",
+    "fa": "طرح‌های کار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "JobPlanPage",
+      "action": "List"
+    }
+  }
+}

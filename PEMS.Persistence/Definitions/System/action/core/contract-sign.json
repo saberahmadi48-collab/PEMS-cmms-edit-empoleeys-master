@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "contract-sign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Sign contract",
+    "fa": "امضای قرارداد"
+  },
+  "description": {
+    "en": "Sign contract",
+    "fa": "امضای قرارداد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Contract",
+      "action": "Sign",
+      "args": {
+        "contractId": "field:contractId",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "currentUserId": "context:userId",
+        "ipAddress": "context:ip"
+      }
+    },
+    "success": {
+      "en": "The contract was signed.",
+      "fa": "قرارداد امضا شد."
+    },
+    "redirect": "/Contract/Details/{contractId}"
+  }
+}

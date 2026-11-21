@@ -1,0 +1,88 @@
+{
+  "kind": "form",
+  "key": "storage-locations-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create storage location",
+    "fa": "ایجاد محل نگهداری"
+  },
+  "description": {
+    "en": "Create a new storage location",
+    "fa": "ایجاد محل نگهداری جدید"
+  },
+  "payload": {
+    "id": "storage-locations-create",
+    "title": {
+      "en": "New storage location",
+      "fa": "محل نگهداری جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "storage-locations-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "owner": "platform",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "maxLength": 30,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Code is required.",
+            "fa": "کد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "warehouseId",
+        "label": {
+          "en": "Warehouse",
+          "fa": "انبار"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Warehouse is required.",
+            "fa": "انبار الزامی است."
+          }
+        },
+        "optionsFrom": "storage-locations-warehouse-id-options"
+      },
+      {
+        "name": "parentLocationId",
+        "label": {
+          "en": "Parent location",
+          "fa": "محل والد"
+        },
+        "kind": "select",
+        "optionsFrom": "storage-locations-parent-location-id-options"
+      }
+    ]
+  }
+}

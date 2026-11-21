@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-admin-employees",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin employees (old address)",
+    "fa": "Part Catalogue admin employees (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue admin employees (old address)",
+    "fa": "Part Catalogue admin employees (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueAdmin/Employees",
+    "target": "/x/pc-admin-employees",
+    "permanent": false
+  }
+}

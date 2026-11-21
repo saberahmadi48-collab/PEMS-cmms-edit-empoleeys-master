@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "ai-insights-ncr",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Recurring NCR patterns",
+    "fa": "الگوهای تکراری NCR"
+  },
+  "description": {
+    "en": "Recurring NCR patterns",
+    "fa": "الگوهای تکراری NCR"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "AiInsights",
+      "action": "NcrPatterns"
+    }
+  }
+}

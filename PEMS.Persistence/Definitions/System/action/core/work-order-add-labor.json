@@ -1,0 +1,45 @@
+{
+  "kind": "action",
+  "key": "work-order-add-labor",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a labor entry",
+    "fa": "ثبت ساعت کار"
+  },
+  "description": {
+    "en": "Add a labor entry",
+    "fa": "ثبت ساعت کار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderLabor",
+      "action": "AddEntry",
+      "args": {
+        "workOrderId": "field:workOrderId",
+        "employeeId": "field:employeeId",
+        "teamId": "field:teamId",
+        "workDate": "field:workDate",
+        "regularHours": "field:regularHours",
+        "overtimeHours": "field:overtimeHours",
+        "notes": "field:notes",
+        "actorEmployeeId": "context:employeeId",
+        "userRoles": "context:roles"
+      },
+      "sectionGuard": {
+        "section": "Labor",
+        "action": "Add",
+        "workOrderId": "field:workOrderId",
+        "reason": "field:correctionReason",
+        "audit": "EmployeeId={employeeId}; TeamId={teamId}; WorkDate={workDate}; RegularHours={regularHours}; OvertimeHours={overtimeHours}"
+      }
+    },
+    "success": {
+      "en": "The labor hours were recorded.",
+      "fa": "ساعت کار ثبت شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

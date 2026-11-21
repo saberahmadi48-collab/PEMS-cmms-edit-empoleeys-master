@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "report-procurement",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement report (old address)",
+    "fa": "گزارش تدارکات (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Procurement report (old address)",
+    "fa": "گزارش تدارکات (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Report/Procurement",
+    "target": "/p/report-procurement",
+    "permanent": false
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "kind": "page",
+  "key": "organization-issues",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Organization issues",
+    "fa": "مشکلات ساختار سازمانی"
+  },
+  "description": {
+    "en": "Organization issues (page definition)",
+    "fa": "مشکلات ساختار سازمانی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "organization-issues",
+    "template": "entity-list",
+    "args": {
+      "id": "organization-issues",
+      "url": "/d/organization-issues-rows",
+      "idField": "code",
+      "columns": [
+        {
+          "key": "severity",
+          "header": {
+            "en": "Severity",
+            "fa": "شدت"
+          },
+          "width": 90
+        },
+        {
+          "key": "code",
+          "header": {
+            "en": "Code",
+            "fa": "کد"
+          },
+          "width": 240
+        },
+        {
+          "key": "subject",
+          "header": {
+            "en": "Subject",
+            "fa": "موضوع"
+          },
+          "width": 240
+        },
+        {
+          "key": "message",
+          "header": {
+            "en": "Message",
+            "fa": "پیام"
+          },
+          "width": 480
+        }
+      ]
+    }
+  }
+}

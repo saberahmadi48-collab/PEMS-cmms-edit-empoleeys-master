@@ -1,0 +1,42 @@
+{
+  "kind": "action",
+  "key": "routing-rules-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit routing rule",
+    "fa": "ویرایش قاعده‌ی مسیریابی"
+  },
+  "description": {
+    "en": "Edit routing rule",
+    "fa": "ویرایش قاعده‌ی مسیریابی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RoutingRule",
+      "action": "Set",
+      "args": {
+        "category": "field:documentCategory",
+        "targetModule": "field:targetModule",
+        "allowAutoRouting": "field:allowAutoRouting",
+        "description": "field:description"
+      },
+      "load": {
+        "entity": "RoutingRule",
+        "map": {
+          "documentCategory": "DocumentCategory",
+          "targetModule": "TargetModule",
+          "allowAutoRouting": "AllowAutoRouting",
+          "description": "Description"
+        }
+      }
+    },
+    "success": {
+      "en": "Routing rule saved.",
+      "fa": "قاعده‌ی مسیریابی ذخیره شد."
+    },
+    "redirect": "/p/routing-rules"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "kind": "form",
+  "key": "definition-grant-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Grant a role",
+    "fa": "مجوز برای نقش"
+  },
+  "description": {
+    "en": "Opens or closes a definition for a role without a deploy; audited",
+    "fa": "Opens or closes a definition for a role without a deploy; audited"
+  },
+  "payload": {
+    "id": "definition-grant-create",
+    "title": {
+      "en": "Grant a role",
+      "fa": "مجوز برای نقش"
+    },
+    "submitLabel": {
+      "en": "Save the grant",
+      "fa": "ذخیره مجوز"
+    },
+    "actionKey": "definition-grant-create",
+    "permission": "Definitions.Approve",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "kind",
+        "label": {
+          "en": "Kind (page, form, action or data-source)",
+          "fa": "نوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Kind (page, form, action or data-source) is required.",
+            "fa": "نوع الزامی است."
+          }
+        },
+        "maxLength": 40
+      },
+      {
+        "name": "definitionKey",
+        "label": {
+          "en": "Definition key",
+          "fa": "کلید تعریف"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Definition key is required.",
+            "fa": "کلید تعریف الزامی است."
+          }
+        },
+        "maxLength": 120
+      },
+      {
+        "name": "roleName",
+        "label": {
+          "en": "Role",
+          "fa": "نقش"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Role is required.",
+            "fa": "نقش الزامی است."
+          }
+        },
+        "maxLength": 256
+      },
+      {
+        "name": "effect",
+        "label": {
+          "en": "Effect (allow or deny; a deny always wins)",
+          "fa": "اثر (allow یا deny؛ deny همیشه برنده است)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Effect (allow or deny; a deny always wins) is required.",
+            "fa": "اثر (allow یا deny؛ deny همیشه برنده است) الزامی است."
+          }
+        },
+        "maxLength": 10
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

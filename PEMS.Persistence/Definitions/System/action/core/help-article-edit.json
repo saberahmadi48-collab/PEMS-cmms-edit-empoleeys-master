@@ -1,0 +1,57 @@
+{
+  "kind": "action",
+  "key": "help-article-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a help article",
+    "fa": "ذخیره‌ی مقاله‌ی راهنما"
+  },
+  "description": {
+    "en": "Save a help article",
+    "fa": "ذخیره‌ی مقاله‌ی راهنما"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "SaveArticle",
+      "args": {
+        "articleId": "field:id",
+        "dto": {
+          "Code": "field:code",
+          "HelpCategoryId": "field:helpCategoryId",
+          "ArticleType": "field:articleType",
+          "HelpKey": "field:helpKey",
+          "RelevantRoles": "field:relevantRoles",
+          "DisplayOrder": "field:displayOrder",
+          "IsPublished": "field:isPublished",
+          "TitleEn": "field:titleEn",
+          "SummaryEn": "field:summaryEn",
+          "ContentEn": "field:contentEn",
+          "SearchKeywordsEn": "field:searchKeywordsEn",
+          "TitleFa": "field:titleFa",
+          "SummaryFa": "field:summaryFa",
+          "ContentFa": "field:contentFa",
+          "SearchKeywordsFa": "field:searchKeywordsFa"
+        },
+        "relatedArticleIds": "field:relatedArticleIds"
+      },
+      "load": {
+        "operation": {
+          "model": "Help",
+          "action": "ArticleOf",
+          "args": {
+            "articleId": "param:id"
+          }
+        }
+      }
+    },
+    "success": {
+      "en": "Help article updated.",
+      "fa": "مقاله‌ی راهنما به‌روز شد."
+    },
+    "redirect": "/p/help-admin"
+  }
+}

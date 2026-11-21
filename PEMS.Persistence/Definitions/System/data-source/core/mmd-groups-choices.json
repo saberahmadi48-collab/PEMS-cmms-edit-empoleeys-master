@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "mmd-groups-choices",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Groups",
+    "fa": "Groups"
+  },
+  "description": {
+    "en": "Groups",
+    "fa": "Groups"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "GroupsChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

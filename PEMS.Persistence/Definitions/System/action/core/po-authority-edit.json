@@ -1,0 +1,51 @@
+{
+  "kind": "action",
+  "key": "po-authority-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit authority level",
+    "fa": "ویرایش سطح اختیار"
+  },
+  "description": {
+    "en": "Edit authority level",
+    "fa": "ویرایش سطح اختیار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PoAuthority",
+      "action": "Save",
+      "args": {
+        "input": {
+          "id": "field:id",
+          "level": "field:level",
+          "minAmount": "field:minAmount",
+          "maxAmount": "field:maxAmount",
+          "currency": "field:currency",
+          "approverRole": "field:approverRole",
+          "description": "field:description",
+          "isActive": "field:isActive"
+        }
+      },
+      "load": {
+        "entity": "PurchaseOrderAuthorityRule",
+        "map": {
+          "level": "Level",
+          "currency": "Currency",
+          "minAmount": "MinAmount",
+          "maxAmount": "MaxAmount",
+          "approverRole": "ApproverRole",
+          "description": "Description",
+          "isActive": "IsActive"
+        }
+      }
+    },
+    "success": {
+      "en": "Authority level saved.",
+      "fa": "سطح اختیار ذخیره شد."
+    },
+    "redirect": "/p/po-authority"
+  }
+}

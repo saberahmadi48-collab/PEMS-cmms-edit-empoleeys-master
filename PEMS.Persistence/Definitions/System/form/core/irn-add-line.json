@@ -1,0 +1,75 @@
+{
+  "kind": "form",
+  "key": "irn-add-line",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a line",
+    "fa": "افزودن قلم"
+  },
+  "description": {
+    "en": "Add a line",
+    "fa": "افزودن قلم"
+  },
+  "payload": {
+    "id": "irn-add-line",
+    "title": {
+      "en": "Add a line",
+      "fa": "افزودن قلم"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "irn-add-line",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "irnReceiptId",
+        "label": {
+          "en": "IRN id",
+          "fa": "شناسه‌ی IRN"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "materialItemId",
+        "label": {
+          "en": "Material",
+          "fa": "ماده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "irn-stock-materials"
+      },
+      {
+        "name": "receivedQuantity",
+        "label": {
+          "en": "Received quantity",
+          "fa": "مقدار دریافتی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

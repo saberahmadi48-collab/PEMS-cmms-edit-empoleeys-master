@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "po-authority-approver-role-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approver role options",
+    "fa": "گزینه‌های نقش تأییدکننده"
+  },
+  "description": {
+    "en": "Choices for approver role",
+    "fa": "گزینه‌ها برای نقش تأییدکننده"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PoAuthority",
+      "action": "ApproverRoles"
+    }
+  }
+}

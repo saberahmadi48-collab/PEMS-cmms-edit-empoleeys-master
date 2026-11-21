@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "permit-submit-for-approval",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit permit for approval",
+    "fa": "ارسال مجوز برای تایید"
+  },
+  "description": {
+    "en": "Submit permit for approval",
+    "fa": "ارسال مجوز برای تایید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Permit",
+      "action": "SubmitForApproval",
+      "args": {
+        "permitId": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The approval chain was started.",
+      "fa": "زنجیره‌ی تایید شروع شد."
+    },
+    "redirect": "/Permit/Details/{id}"
+  }
+}

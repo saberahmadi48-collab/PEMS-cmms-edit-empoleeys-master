@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "inventory-recent-transactions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Recent inventory transactions",
+    "fa": "تراکنش‌های اخیر موجودی"
+  },
+  "description": {
+    "en": "Recent inventory transactions",
+    "fa": "تراکنش‌های اخیر موجودی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Inventory",
+      "action": "RecentTransactions"
+    }
+  }
+}

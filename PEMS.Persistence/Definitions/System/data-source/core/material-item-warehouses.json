@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "material-item-warehouses",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Warehouses",
+    "fa": "انبارها"
+  },
+  "description": {
+    "en": "Warehouses",
+    "fa": "انبارها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MaterialItem",
+      "action": "Warehouses",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

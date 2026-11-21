@@ -1,0 +1,55 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("stage-diagram", Category = "navigation", Icon = "bi-diagram-3")]
+@{ var p = Options.Variant == "wo" ? "pems-wo" : "pems-wf"; var steps = Options.Steps ?? []; }
+@if (Options.Variant == "vs")
+{
+    <div class="vs-tracker">
+        @foreach (var step in steps)
+        {
+            var vsState = step.State switch { StageState.Done => "vs-step--done", StageState.Current => "vs-step--current", StageState.Rejected => "vs-step--rejected", _ => "" };
+            <div class="@("vs-step " + vsState)" aria-current="@(step.State == StageState.Current ? "step" : null)">
+                <div class="vs-step__dot"><PemsIcon Options="@(new IconOptions { Css = step.State == StageState.Done ? "bi-check-lg" : step.Icon, Attributes = new Dictionary<string, object> { ["aria-hidden"] = "true" } })" /></div>
+                <div class="vs-step__label">@step.Label</div>
+                <div class="vs-step__meta">@step.Role</div>
+            </div>
+        }
+    </div>
+}
+else
+{
+<div class="@(p)-diagram">
+    @for (var i = 0; i < steps.Count; i++)
+    {
+        var step = steps[i];
+        var state = step.State switch { StageState.Done => "done", StageState.Current => "current", StageState.Rejected => "rejected", _ => "" };
+        <div class="@(p + "-step " + state)">
+            <div class="@(p)-circle">
+                @if (step.State == StageState.Done)
+                {
+                    <PemsIcon Options="@(new IconOptions { Name = "bi-check-lg" })" />
+                }
+                else if (step.State == StageState.Rejected && Options.Variant != "wo")
+                {
+                    <PemsIcon Options="@(new IconOptions { Name = "bi-x-lg" })" />
+                }
+                else
+                {
+                    <PemsIcon Options="@(new IconOptions { Css = step.Icon })" />
+                }
+            </div>
+            <div class="@(p)-label">@step.Label</div>
+            @if (!string.IsNullOrEmpty(step.Role) && Options.Variant != "wo")
+            {
+                <div class="@(p)-role">@step.Role</div>
+            }
+        </div>
+        @if (i < steps.Count - 1)
+        {
+            <div class="@(step.State == StageState.Done ? p + "-connector done" : p + "-connector ")"></div>
+        }
+    }
+</div>
+}
+@code {
+    [Parameter, EditorRequired] public StageDiagramOptions Options { get; set; } = default!;
+}

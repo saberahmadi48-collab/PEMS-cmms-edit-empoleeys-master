@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "designer-move-up",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move up",
+    "fa": "انتقال به بالا"
+  },
+  "description": {
+    "en": "Move up",
+    "fa": "انتقال به بالا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The part moved up in the draft.",
+      "fa": "بخش در پیش‌نویس بالا رفت."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "MoveRow",
+      "args": {
+        "rowId": "field:id",
+        "direction": "literal:up",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

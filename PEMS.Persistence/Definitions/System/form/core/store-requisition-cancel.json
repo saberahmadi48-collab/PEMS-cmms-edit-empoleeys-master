@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "store-requisition-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel a requisition",
+    "fa": "لغو درخواست"
+  },
+  "description": {
+    "en": "Cancel a requisition",
+    "fa": "لغو درخواست"
+  },
+  "payload": {
+    "id": "store-requisition-cancel",
+    "title": {
+      "en": "Cancel a requisition",
+      "fa": "لغو درخواست"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "store-requisition-cancel",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Requisition id",
+          "fa": "شناسه‌ی درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

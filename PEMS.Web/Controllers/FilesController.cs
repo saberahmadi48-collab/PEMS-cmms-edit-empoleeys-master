@@ -27,21 +27,45 @@ public class FilesController : Controller
     private readonly ICurrentUserService _currentUser;
     private readonly IAccessControlService _accessControlService;
     private readonly IFileStorageService _fileStorage;
+    private readonly PEMS.Application.Uploads.IProtectedImageStore? _images;
 
     public FilesController(
         PEMSDbContext context,
         ICurrentUserService currentUser,
         IAccessControlService accessControlService,
-        IFileStorageService fileStorage)
+        IFileStorageService fileStorage,
+        PEMS.Application.Uploads.IProtectedImageStore? images = null)
     {
         _context = context;
         _currentUser = currentUser;
         _accessControlService = accessControlService;
         _fileStorage = fileStorage;
+        _images = images;
     }
 
-    // GET /Files/Download/{id}
-    public async Task<IActionResult> Download(int id)
+    // GET /Files/Download/{id} - always a download (Content-Disposition: attachment)
+    public Task<IActionResult> Download(int id) => ServeAttachmentAsync(id, preview: false);
+
+    // GET /Files/Preview/{id} - SCRUM-202: same access checks; shown inline only for PDF, raster images and text,
+    // inside a CSP sandbox with nosniff; any other type is still a download.
+    public Task<IActionResult> Preview(int id) => ServeAttachmentAsync(id, preview: true);
+
+    // SCRUM-202: profile photos, signatures and letter editor images; only for signed-in users (global auth filter).
+    // The two /uploads routes keep the URLs of images uploaded before SCRUM-202 working, now behind the login.
+    [HttpGet("/Files/Image/{folder}/{name}")]
+    [HttpGet("/uploads/{folder:regex(^(profile-photos|signatures)$)}/{name}")]
+    [HttpGet("/uploads/letters/inline/{name}", Name = "LegacyLetterImage")]
+    public async Task<IActionResult> Image(string? folder, string name)
+    {
+        folder ??= PEMS.Application.Uploads.ProtectedImageStore.LetterImages;
+        var image = _images == null ? null : await _images.OpenAsync(folder, name);
+        if (image == null) return NotFound();
+
+        PEMS.Web.Security.Uploads.SafeFileHeaders.Apply(Response, image.Value.ContentType, null, inline: true, cacheable: true);
+        return File(image.Value.Content, image.Value.ContentType);
+    }
+
+    private async Task<IActionResult> ServeAttachmentAsync(int id, bool preview)
     {
         // ۱. Attachment Lookup - طبق بند صریح ممیزی: تنها ورودی، یک شناسه‌ی عددی داخلی است؛
         // هرگز نام فایل/مسیر از کاربر گرفته نمی‌شود - این ساختاری از Path Traversal جلوگیری می‌کند
@@ -79,9 +103,13 @@ public class FilesController : Controller
             return NotFound();
 
         var stream = await _fileStorage.OpenReadAsync(attachment.FilePath);
-        var mimeType = string.IsNullOrWhiteSpace(attachment.MimeType) ? "application/octet-stream" : attachment.MimeType;
 
-        return File(stream, mimeType, attachment.FileName);
+        // SCRUM-202: the type sent is PEMS's own for the extension, never the type the uploading browser declared (it could
+        // have said text/html); unknown types are plain bytes. Download name and inline/attachment are set by SafeFileHeaders.
+        var mimeType = PEMS.Application.Uploads.UploadPolicy.ContentTypeFor(attachment.FileName);
+        var inline = preview && PEMS.Application.Uploads.UploadPolicy.IsInlineSafe(attachment.FileName);
+        PEMS.Web.Security.Uploads.SafeFileHeaders.Apply(Response, mimeType, attachment.FileName, inline);
+        return File(stream, mimeType, enableRangeProcessing: true);
     }
 
     private async Task<(bool Allowed, string? Reason)> CheckAccessAsync(PEMS.Domain.Entities.DocumentAttachment attachment)

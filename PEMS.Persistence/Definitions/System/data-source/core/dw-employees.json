@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "dw-employees",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline workspace employees",
+    "fa": "کارکنان فضای کاری دیسیپلین"
+  },
+  "description": {
+    "en": "Discipline workspace employees",
+    "fa": "کارکنان فضای کاری دیسیپلین"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DisciplineWorkspace",
+      "action": "Employees",
+      "args": {}
+    }
+  }
+}

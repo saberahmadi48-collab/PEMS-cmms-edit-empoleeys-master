@@ -1,0 +1,306 @@
+{
+  "kind": "page",
+  "key": "mocs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Management of Change (MOC)",
+    "fa": "مدیریت تغییر (MOC)"
+  },
+  "description": {
+    "en": "Change requests with their counts and filters (page definition)",
+    "fa": "درخواست‌های تغییر با شمارش و فیلتر (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "mocs",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "moc-filters",
+            "resetUrl": "/p/mocs",
+            "fields": [
+              {
+                "name": "riskLevel",
+                "label": {
+                  "en": "Risk",
+                  "fa": "ریسک"
+                },
+                "kind": "select",
+                "value": "{{params.riskLevel}}",
+                "options": [
+                  {
+                    "value": "Low",
+                    "label": {
+                      "en": "Low",
+                      "fa": "Low"
+                    }
+                  },
+                  {
+                    "value": "Medium",
+                    "label": {
+                      "en": "Medium",
+                      "fa": "Medium"
+                    }
+                  },
+                  {
+                    "value": "High",
+                    "label": {
+                      "en": "High",
+                      "fa": "High"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Draft",
+                    "label": {
+                      "en": "Draft",
+                      "fa": "پیش‌نویس"
+                    }
+                  },
+                  {
+                    "value": "RiskAssessment",
+                    "label": {
+                      "en": "RiskAssessment",
+                      "fa": "ارزیابی ریسک"
+                    }
+                  },
+                  {
+                    "value": "PendingApproval",
+                    "label": {
+                      "en": "PendingApproval",
+                      "fa": "در انتظار تأیید"
+                    }
+                  },
+                  {
+                    "value": "Approved",
+                    "label": {
+                      "en": "Approved",
+                      "fa": "تأییدشده"
+                    }
+                  },
+                  {
+                    "value": "Implemented",
+                    "label": {
+                      "en": "Implemented",
+                      "fa": "اجراشده"
+                    }
+                  },
+                  {
+                    "value": "Closed",
+                    "label": {
+                      "en": "Closed",
+                      "fa": "بسته"
+                    }
+                  },
+                  {
+                    "value": "Rejected",
+                    "label": {
+                      "en": "Rejected",
+                      "fa": "ردشده"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "projectId",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "kind": "select",
+                "value": "{{params.projectId}}",
+                "options": []
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "projectId",
+                "source": "/d/moc-projects",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/moc-raise",
+                "text": {
+                  "en": "New MOC",
+                  "fa": "MOC جدید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "k-total",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Total",
+              "fa": "کل"
+            },
+            "icon": "bi-collection"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/moc-counts?f.riskLevel={{params.riskLevel|url}}&f.status={{params.status|url}}&f.projectId={{params.projectId|url}}",
+              "first": true,
+              "map": {
+                "value": "total"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-open",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Open",
+              "fa": "باز"
+            },
+            "icon": "bi-hourglass-split",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/moc-counts?f.riskLevel={{params.riskLevel|url}}&f.status={{params.status|url}}&f.projectId={{params.projectId|url}}",
+              "first": true,
+              "map": {
+                "value": "open"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-high",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "High risk open",
+              "fa": "ریسک زیاد باز"
+            },
+            "icon": "bi-exclamation-triangle",
+            "tone": "danger"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/moc-counts?f.riskLevel={{params.riskLevel|url}}&f.status={{params.status|url}}&f.projectId={{params.projectId|url}}",
+              "first": true,
+              "map": {
+                "value": "highRiskOpen"
+              }
+            }
+          }
+        },
+        {
+          "id": "mocs",
+          "component": "data-grid",
+          "options": {
+            "id": "mocs",
+            "url": "/d/moc-list?f.riskLevel={{params.riskLevel|url}}&f.status={{params.status|url}}&f.projectId={{params.projectId|url}}",
+            "idField": "mocId",
+            "columns": [
+              {
+                "key": "mocNumber",
+                "header": {
+                  "en": "Number",
+                  "fa": "شماره"
+                },
+                "width": 140
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 320
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 160
+              },
+              {
+                "key": "changeType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 100
+              },
+              {
+                "key": "riskLevel",
+                "header": {
+                  "en": "Risk",
+                  "fa": "ریسک"
+                },
+                "width": 90
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 140
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/moc-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "work-order-respond-discipline-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Respond to discipline review",
+    "fa": "ثبت نظر دیسیپلین"
+  },
+  "description": {
+    "en": "Respond to discipline review",
+    "fa": "ثبت نظر دیسیپلین"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderReview",
+      "action": "Respond",
+      "args": {
+        "workOrderId": "field:workOrderId",
+        "decision": "field:decision",
+        "findings": "field:findings",
+        "failureModeCode": "field:failureModeCode",
+        "failureCauseCode": "field:failureCauseCode",
+        "actorEmployeeId": "context:employeeId",
+        "actorDisciplineId": "context:disciplineId",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "Your opinion was recorded.",
+      "fa": "نظر شما ثبت شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

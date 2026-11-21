@@ -1,0 +1,45 @@
+{
+  "kind": "action",
+  "key": "work-request-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New work request",
+    "fa": "درخواست کار جدید"
+  },
+  "description": {
+    "en": "New work request",
+    "fa": "درخواست کار جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkRequestPage",
+      "action": "Create",
+      "args": {
+        "title": "field:title",
+        "priority": "field:priority",
+        "description": "field:description",
+        "equipmentId": "field:equipmentId",
+        "assetId": "field:assetId",
+        "functionalLocationId": "field:functionalLocationId",
+        "reportedCondition": "field:reportedCondition",
+        "suggestedDisciplineId": "field:suggestedDisciplineId",
+        "isHseRelated": "field:isHseRelated",
+        "isEmergency": "field:isEmergency",
+        "riskLikelihood": "field:riskLikelihood",
+        "riskSeverity": "field:riskSeverity",
+        "failureModeId": "field:failureModeId",
+        "failureEffect": "field:failureEffect",
+        "reportedDowntimeHours": "field:reportedDowntimeHours",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The work request was created.",
+      "fa": "Work Request ساخته شد."
+    },
+    "redirect": "/p/work-requests"
+  }
+}

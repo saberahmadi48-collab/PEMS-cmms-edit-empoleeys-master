@@ -1,0 +1,73 @@
+{
+  "kind": "form",
+  "key": "uoms-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create unit of measure",
+    "fa": "ایجاد واحد اندازه‌گیری"
+  },
+  "description": {
+    "en": "Create a new unit of measure",
+    "fa": "ایجاد واحد اندازه‌گیری جدید"
+  },
+  "payload": {
+    "id": "uoms-create",
+    "title": {
+      "en": "New unit of measure",
+      "fa": "واحد اندازه‌گیری جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "uoms-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "owner": "platform",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "maxLength": 30,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Code is required.",
+            "fa": "کد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

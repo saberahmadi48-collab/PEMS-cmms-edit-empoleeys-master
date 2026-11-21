@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "navigation-menu-badges",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Menu badges",
+    "fa": "Menu badges"
+  },
+  "description": {
+    "en": "Menu badges",
+    "fa": "Menu badges"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "NavigationMenu",
+      "action": "BadgeOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

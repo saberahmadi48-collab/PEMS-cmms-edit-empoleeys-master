@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "job-plan-add-skill",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a required skill",
+    "fa": "افزودن مهارت لازم"
+  },
+  "description": {
+    "en": "Add a required skill",
+    "fa": "افزودن مهارت لازم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "JobPlan",
+      "action": "AddRequiredSkill",
+      "args": {
+        "jobPlanId": "field:jobPlanId",
+        "skillId": "field:skillId",
+        "minimumProficiencyLevel": "field:minimumProficiencyLevel",
+        "plannedHours": "field:plannedHours"
+      }
+    },
+    "success": {
+      "en": "The skill was added.",
+      "fa": "مهارت افزوده شد."
+    },
+    "redirect": "/JobPlan/Details/{jobPlanId}"
+  }
+}

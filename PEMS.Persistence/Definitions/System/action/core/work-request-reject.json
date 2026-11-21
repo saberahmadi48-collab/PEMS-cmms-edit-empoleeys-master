@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "work-request-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the request",
+    "fa": "رد درخواست"
+  },
+  "description": {
+    "en": "Reject the request",
+    "fa": "رد درخواست"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkRequestPage",
+      "action": "Reject",
+      "args": {
+        "employeeId": "context:employeeId",
+        "id": "field:id",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The request was rejected.",
+      "fa": "درخواست رد شد."
+    },
+    "redirect": "/WorkRequest/Details/{id}"
+  }
+}

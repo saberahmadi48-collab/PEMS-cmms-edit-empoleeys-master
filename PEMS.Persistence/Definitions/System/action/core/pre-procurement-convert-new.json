@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "pre-procurement-convert-new",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add to a new requisition",
+    "fa": "افزودن به MR جدید"
+  },
+  "description": {
+    "en": "Add to a new requisition",
+    "fa": "افزودن به MR جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PreProcurement",
+      "action": "Convert",
+      "args": {
+        "procurementDemandId": "field:id",
+        "newMr": {
+          "mrNumber": "field:mrNumber",
+          "projectId": "field:projectId",
+          "disciplineId": "field:disciplineId",
+          "description": "field:description",
+          "requiredDate": "field:requiredDate"
+        }
+      }
+    },
+    "success": {
+      "en": "The demand was added to a new requisition.",
+      "fa": "تقاضا به MR جدید افزوده شد."
+    },
+    "redirect": "/p/pre-procurement-details?id={id}"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "disciplines-deactivate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Deactivate",
+    "fa": "غیرفعال‌سازی"
+  },
+  "description": {
+    "en": "Deactivate",
+    "fa": "غیرفعال‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DisciplineMaster",
+      "action": "SetActive",
+      "args": {
+        "disciplineId": "field:id",
+        "isActive": "literal:false"
+      }
+    },
+    "success": {
+      "en": "Discipline deactivated.",
+      "fa": "دیسیپلین غیرفعال شد."
+    },
+    "redirect": "/p/disciplines"
+  }
+}

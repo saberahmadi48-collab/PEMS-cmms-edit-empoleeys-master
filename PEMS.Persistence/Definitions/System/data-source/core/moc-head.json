@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "moc-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MOC details",
+    "fa": "جزئیات MOC"
+  },
+  "description": {
+    "en": "MOC details",
+    "fa": "جزئیات MOC"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MocPage",
+      "action": "Head",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

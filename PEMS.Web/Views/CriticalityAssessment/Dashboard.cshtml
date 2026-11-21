@@ -3,70 +3,70 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-end align-items-center mb-2">
+<pems-flex justify="end" align="center" css="mb-2">
     <div>
-        <a asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="bi bi-list-check"></i> Assessment Queue</a>
-        <a asp-controller="EquipmentCriticality" asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clock-history"></i> Published Criticality</a>
-        <a asp-controller="CmmsReadiness" asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clipboard-check"></i> Activation Backlog</a>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-list-check" /> Assessment Queue</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EquipmentCriticality" asp-action="Index"><pems-icon name="bi-clock-history" /> Published Criticality</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" href="/p/cmms-readiness"><pems-icon name="bi-clipboard-check" /> Activation Backlog</pems-button>
     </div>
-</div>
-<p class="text-muted small">
+</pems-flex>
+<pems-text class="text-muted small">
     طبق «PEMS Phase 7.6»: روش‌شناسی پروژه‌ای @Model.FrameworkVersion (متاثر از رویه‌های رایج
     مهندسی ریسک/قابلیت‌اطمینان - نه ادعای انطباق با یک استاندارد بیرونی مشخص). هدف حداکثرسازی
     پوشش نیست - هدف این است که هر عدد این‌جا واقعاً قابل‌دفاع و ردیابی‌پذیر باشد.
-</p>
+</pems-text>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-2">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@Model.TotalActiveEquipment.ToString("N0")</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="2">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@Model.TotalActiveEquipment.ToString("N0")</pems-metric>
             <div class="text-muted small">@Localizer["Total Active Equipment"]</div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@Model.Assessed.ToString("N0")</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="2">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@Model.Assessed.ToString("N0")</pems-metric>
             <div class="text-muted small">Assessed (any status)</div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold text-success">@Model.Approved.ToString("N0")</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="2">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric css="text-success">@Model.Approved.ToString("N0")</pems-metric>
             <div class="text-muted small">@Localizer["Approved"]</div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold text-warning">@Model.UnderReview.ToString("N0")</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="2">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric css="text-warning">@Model.UnderReview.ToString("N0")</pems-metric>
             <div class="text-muted small">@Localizer["Under Review"]</div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold">@Model.Draft.ToString("N0")</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="2">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric>@Model.Draft.ToString("N0")</pems-metric>
             <div class="text-muted small">@Localizer["Draft"]</div>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <div class="content-card h-100 text-center">
-            <div class="fs-4 fw-bold text-muted">@Model.Unassessed.ToString("N0")</div>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="2">
+        <pems-content-card css="h-100 text-center">
+            <pems-metric css="text-muted">@Model.Unassessed.ToString("N0")</pems-metric>
             <div class="text-muted small">Unassessed</div>
-        </div>
-    </div>
-</div>
+        </pems-content-card>
+    </pems-col>
+</pems-row>
 
-<div class="content-card">
-    <h6 class="mb-2">Published Criticality Distribution <span class="text-muted small">(current authoritative EquipmentCriticality — not the same as "Assessed")</span></h6>
-    <table class="table table-enterprise table-sm mb-0">
-        <tbody>
-            <tr><td>A (High)</td><td class="text-end">@Model.PublishedCriticalityA</td></tr>
-            <tr><td>B (Medium)</td><td class="text-end">@Model.PublishedCriticalityB</td></tr>
-            <tr><td>C (Low)</td><td class="text-end">@Model.PublishedCriticalityC</td></tr>
+<pems-content-card>
+    <pems-heading level="6" class="mb-2">Published Criticality Distribution <span class="text-muted small">(current authoritative EquipmentCriticality — not the same as "Assessed")</span></pems-heading>
+    <pems-table kind="enterprise" scale="small" css="mb-0">
+        <pems-table-body>
+            <pems-table-row><pems-table-cell>A (High)</pems-table-cell><pems-table-cell class="text-end">@Model.PublishedCriticalityA</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>B (Medium)</pems-table-cell><pems-table-cell class="text-end">@Model.PublishedCriticalityB</pems-table-cell></pems-table-row>
+            <pems-table-row><pems-table-cell>C (Low)</pems-table-cell><pems-table-cell class="text-end">@Model.PublishedCriticalityC</pems-table-cell></pems-table-row>
             @if (Model.PublishedCriticalityOther > 0)
             {
-                <tr><td>Other / Legacy value</td><td class="text-end">@Model.PublishedCriticalityOther</td></tr>
+                <pems-table-row><pems-table-cell>Other / Legacy value</pems-table-cell><pems-table-cell class="text-end">@Model.PublishedCriticalityOther</pems-table-cell></pems-table-row>
             }
-            <tr><td>Superseded (historical, excluded above)</td><td class="text-end">@Model.Superseded</td></tr>
-        </tbody>
-    </table>
-</div>
+            <pems-table-row><pems-table-cell>Superseded (historical, excluded above)</pems-table-cell><pems-table-cell class="text-end">@Model.Superseded</pems-table-cell></pems-table-row>
+        </pems-table-body>
+    </pems-table>
+</pems-content-card>

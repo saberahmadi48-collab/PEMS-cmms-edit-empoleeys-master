@@ -1,0 +1,72 @@
+{
+  "key": "related-add",
+  "component": "PEMS.UI.Components.PemsRelatedAdd",
+  "category": "list",
+  "icon": "bi-plus-lg",
+  "nameKey": "component.related-add",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string"
+      },
+      "parentName": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "parentValue": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "submitLabel": {
+        "type": "string"
+      },
+      "antiforgery": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "token"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "RelatedAddOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "action": "/jobplan/add",
+    "parentName": "jobPlanId",
+    "parentValue": "7",
+    "submitLabel": "Add"
+  }
+}

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using PEMS.Application.Interfaces;
@@ -27,6 +27,7 @@ using PEMS.WorkflowPlatform.Interfaces;
 using PEMS.WorkflowPlatform.Services;
 
 using Hangfire;
+using PEMS.Web.Licensing;
 using Hangfire.Dashboard;
 using Serilog;
 
@@ -35,17 +36,30 @@ QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
 
 // Structured Logging (طبق تکنولوژی‌های تعیین‌شده در Bible - Volume II): جایگزین Logging پیش‌فرض
 // برای عیب‌یابی بهتر در Production - خروجی هم روی Console هم فایل روزانه
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Information()
-    .Enrich.FromLogContext()
-    .WriteTo.Console()
-    .WriteTo.File("logs/pems-.log", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 30)
-    .CreateLogger();
-
-
+// All settings come from env/<name>.env + env/<name>.secrets.env (PEMS_ENV; see env/README.md), loaded before anything
+// reads configuration so logging itself is configurable per environment.
 var builder = WebApplication.CreateBuilder(args);
 
+var envFiles = PEMS.Web.Configuration.PemsConfigurationExtensions.AddPemsEnvFiles(
+    builder.Configuration, builder.Environment.EnvironmentName, builder.Environment.ContentRootPath);
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Is(Enum.Parse<Serilog.Events.LogEventLevel>(
+        PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Serilog:MinimumLevel"), ignoreCase: true))
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File(
+        PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Serilog:File:Path"),
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Serilog:File:RetainedFiles"))
+    .CreateLogger();
+
 builder.Host.UseSerilog();
+
+if (envFiles is not null)
+    Log.Information("Settings loaded for environment '{Env}' from {Files}{Secrets}",
+        envFiles.EnvName, string.Join(", ", envFiles.LoadedFiles.Select(Path.GetFileName)),
+        envFiles.SecretsFileFound ? "" : " (no secrets file: secrets must come from environment variables)");
 
 
 
@@ -69,6 +83,191 @@ builder.Services.AddSignalR();
 
 builder.Services.AddScoped<PEMS.Application.Interfaces.INotificationBroadcaster, PEMS.Web.Hubs.SignalRNotificationBroadcaster>();
 
+// Code-first install/update of the database (startup bootstrap + Admin > Database Update page)
+var databaseMigrationTimeoutMinutes = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Database:MigrationCommandTimeoutMinutes");
+// SCRUM-280: rollback point of an update. BackupDirectory may be empty (= SQL Server default backup folder), so it is not Required.
+var databaseBackupBeforeUpdate = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Database:BackupBeforeUpdate");
+var databaseBackupDirectory = builder.Configuration["Database:BackupDirectory"];
+builder.Services.AddScoped<PEMS.Application.Interfaces.IDatabaseUpdateService>(sp => new PEMS.Persistence.Services.DatabaseUpdateService(
+    sp.GetRequiredService<PEMS.Persistence.Context.PEMSDbContext>(),
+    sp.GetRequiredService<Microsoft.Extensions.Logging.ILogger<PEMS.Persistence.Services.DatabaseUpdateService>>(),
+    databaseMigrationTimeoutMinutes,
+    databaseBackupBeforeUpdate,
+    databaseBackupDirectory));
+
+// Licensing (docs/design/LICENSING_TECHNICAL_DESIGN.md). Licensing:Enforce=false in every env file until the rollout tasks: nothing is checked or blocked.
+builder.Services.AddPemsLicensing(builder.Configuration);
+PEMS.UI.ServiceCollectionExtensions.AddPemsUi(builder.Services);   // component registry + request-free renderer (SCRUM-29)
+
+// REST API /api/v1 (SCRUM-435, ADR-0009): permission policies, problem+json, OpenAPI 3.1, API-aware 401/403 for cookie sign-in.
+PEMS.Web.Api.ApiServiceCollectionExtensions.AddPemsApi(builder.Services);
+PEMS.Web.Api.ApiServiceCollectionExtensions.ConfigureApiAuthenticationResponses(builder.Services);
+builder.Services.AddExceptionHandler<PEMS.Web.Diagnostics.PemsExceptionHandler>();   // SCRUM-464: /api failures outside controllers, same problem+json
+builder.Services.AddSingleton<PEMS.Web.Api.ApiIdempotencyStore>();
+
+// Definition store (SCRUM-434, ADR-0010/0011): write service, cached runtime read side, the registered kinds and the limits (Definitions:* settings).
+builder.Services.AddSingleton(builder.Configuration.GetSection("Definitions").Get<PEMS.Application.Definitions.DefinitionLimits>() ?? new PEMS.Application.Definitions.DefinitionLimits());
+builder.Services.AddSingleton(builder.Configuration.GetSection("Validation").Get<PEMS.Application.Validation.ValidationOptions>() ?? new PEMS.Application.Validation.ValidationOptions());
+builder.Services.AddSingleton(builder.Configuration.GetSection("Definitions:Budgets").Get<PEMS.Application.Definitions.PipelineBudgets>() ?? new PEMS.Application.Definitions.PipelineBudgets());
+// SCRUM-576 and 574: compiled render plans and hydrated results per permission set
+builder.Services.AddSingleton<PEMS.Application.Definitions.RenderPlanCache>();
+builder.Services.AddSingleton<PEMS.Application.Definitions.HydrationCache>();
+PEMS.Web.Definitions.DefinitionKindExtensions.AddPemsDefinitionKinds(builder.Services);
+builder.Services.AddScoped<PEMS.Persistence.Services.DefinitionStore>();
+// SCRUM-572 (ADR-0014, amended): the definitions the runtime reads are the JSON files of the data layer, hot-reloaded; nothing is read from the database until Sprint 3 moves them (no overlap)
+builder.Services.AddSingleton(builder.Configuration.GetSection("Definitions:Files").Get<PEMS.Application.Definitions.DefinitionFileOptions>() ?? new PEMS.Application.Definitions.DefinitionFileOptions());
+builder.Services.AddSingleton<PEMS.Persistence.Definitions.FileDefinitionStore>();
+builder.Services.AddSingleton<PEMS.Application.Definitions.IDefinitionFiles>(sp => sp.GetRequiredService<PEMS.Persistence.Definitions.FileDefinitionStore>());
+builder.Services.AddSingleton(new PEMS.Application.Definitions.DefinitionOwnership(builder.Configuration.GetSection("Definitions:Ownership").Get<Dictionary<string, string>>()));
+// one owner per kind: the routed store serves each kind from its owner (files, database) and nothing for the others
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionStore>(sp => new PEMS.Application.Definitions.RoutedDefinitionStore(
+    sp.GetRequiredService<PEMS.Application.Definitions.DefinitionOwnership>(),
+    new Dictionary<PEMS.Application.Definitions.DefinitionOwner, PEMS.Application.Definitions.IDefinitionStore>
+    {
+        [PEMS.Application.Definitions.DefinitionOwner.Files] = sp.GetRequiredService<PEMS.Persistence.Definitions.FileDefinitionStore>(),
+        [PEMS.Application.Definitions.DefinitionOwner.Database] = sp.GetRequiredService<PEMS.Persistence.Services.DefinitionStore>()
+    }));
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionGrantStore, PEMS.Persistence.Definitions.EfDefinitionGrantStore>();   // SCRUM-591
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionAccess, PEMS.Persistence.Definitions.PermissionDefinitionAccess>();
+builder.Services.AddScoped<PEMS.Application.Definitions.DefinitionPipeline>();
+builder.Services.AddScoped<PEMS.Web.Definitions.PageRenderer>();
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionHydrator, PEMS.Web.Definitions.FormOptionsHydrator>();   // SCRUM-437: options of a form field from its data source
+builder.Services.AddScoped<PEMS.Web.Definitions.ActionExecutor>();
+// SCRUM-437/578 pilot: the registered providers and handlers a definition may name
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.WorkflowExecuteAction>();
+// SCRUM-593 to 595: ordered steps in one transaction, result binding and the security-key step-up as settings of an action definition
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.StepsAction>();
+// SCRUM-596 and 615: a file that comes in (file.upload) and a file that goes out (file.export) are settings of an action definition
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileUploadAction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileDownloadAction>();   // SCRUM-615: a stored file by key, inside the folder the definition names
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileExportAction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.DefinitionExportAction>();   // SCRUM-784
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.DefinitionImportAction>();   // SCRUM-784
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.GridViewSaveAction>();   // SCRUM-793
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.GridViewDeleteAction>();   // SCRUM-793
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionTransaction, PEMS.Web.Definitions.EfActionTransaction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IStepUpVerifier, PEMS.Web.Definitions.WebAuthnStepUpVerifier>();
+// the entity catalog: the master-data entities a definition may list and create, with the permissions that guard them (the code checks them; a definition cannot widen access)
+builder.Services.AddSingleton(PEMS.Web.Definitions.EntityCatalog.Default());
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.EntityGridProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.EntityAggregateProvider>();   // SCRUM-592: group by with count, sum, avg, min, max
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.ComponentCatalogGridProvider>();   // SCRUM-340: the component catalog as rows
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionsGridProvider>();   // SCRUM-449: the definition workbench as rows
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionKindsGridProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionUsagesGridProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionLargestGridProvider>();   // SCRUM-455
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionGrowthGridProvider>();   // SCRUM-786
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionVersionsGridProvider>();   // SCRUM-784, 789
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.GridViewsProvider>();   // SCRUM-793
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.OperationArgumentsGridProvider>();   // SCRUM-811
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.MenuTreeGridProvider>();   // SCRUM-813
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionSodGridProvider>();   // SCRUM-813
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionDiffGridProvider>();   // SCRUM-784
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.OwnershipPreflightGridProvider>();   // SCRUM-797
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionHealthGridProvider>();   // SCRUM-786
+// SCRUM-786 (fail closed): the only supported retention of definition versions is forever; any other value would promise a policy that is not active
+if (builder.Configuration["Definitions:RetainRetiredVersions"] is { Length: > 0 } retainSetting && !string.Equals(retainSetting, "forever", StringComparison.OrdinalIgnoreCase))
+    throw new InvalidOperationException($"Definitions:RetainRetiredVersions must be 'forever' (got '{retainSetting}'): retired definition versions are never deleted.");
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionTranslationsGridProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionPayloadGridProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider>(sp => new PEMS.Web.Definitions.OperationCatalogGridProvider(sp.GetRequiredService<PEMS.Web.Definitions.OperationCatalog>()));   // SCRUM-606   // SCRUM-439, 604, 606, 607, 608   // SCRUM-419, 609
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionImpact, PEMS.Persistence.Services.DefinitionImpactService>();   // SCRUM-450, 457, 459
+builder.Services.AddScoped<PEMS.Persistence.Services.DefinitionPublishGuard>();   // SCRUM-785, 788, 789: precheck, acknowledgement, smoke check and automatic rollback of the REST publish
+builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionWorkbench, PEMS.Persistence.Services.DefinitionWorkbench>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionDesigner, PEMS.Persistence.Services.DefinitionDesigner>();   // SCRUM-439, 604, 606, 607, 608
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMigratorCenter, PEMS.Web.Services.MigratorCenter>();   // SCRUM-582
+builder.Services.AddSingleton<PEMS.Web.Definitions.PackageFeedApplier>();   // SCRUM-807: the apply step of a feed, through the entity catalog
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.MigratorHistoryGridProvider>();   // SCRUM-814
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPackageBuilder, PEMS.Web.Services.PackageBuilder>();   // SCRUM-584 (signing key only on the vendor deployment)
+builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.EntityOptionsProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityCreateAction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityImportAction>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IAiInsightsOperations, PEMS.Web.Services.AiInsightsOperations>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMyWorkOperations, PEMS.Web.Services.MyWorkOperations>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.ICmmsOperationsReads, PEMS.Web.Services.CmmsOperationsReads>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.ICmmsReadinessReads, PEMS.Web.Services.CmmsReadinessReads>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IGlobalSearchOperations, PEMS.Web.Services.GlobalSearchOperations>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IAiSearchOperations, PEMS.Web.Services.AiSearchOperations>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IReportReads, PEMS.Web.Services.ReportReads>();   // SCRUM-747
+builder.Services.AddScoped<PEMS.Application.Interfaces.IKpiOperations, PEMS.Web.Services.KpiOperations>();   // SCRUM-713
+builder.Services.AddScoped<PEMS.Application.Interfaces.INotificationOperations, PEMS.Web.Services.NotificationOperations>();   // SCRUM-731
+builder.Services.AddScoped<PEMS.Application.Interfaces.IImportCenterOperations, PEMS.Web.Services.ImportCenterOperations>();   // SCRUM-706
+builder.Services.AddScoped<PEMS.Application.Interfaces.IDashboardSettingsOperations, PEMS.Web.Services.DashboardSettingsOperations>();   // SCRUM-680
+builder.Services.AddScoped<PEMS.Application.Interfaces.IChatAssistantOperations, PEMS.Web.Services.ChatAssistantOperations>();   // SCRUM-672
+builder.Services.AddScoped<PEMS.Application.Interfaces.IQuickSetupOperations, PEMS.Web.Services.QuickSetupOperations>();   // SCRUM-743
+builder.Services.AddScoped<PEMS.Application.Interfaces.IEngineeringDashboardOperations, PEMS.Web.Services.EngineeringDashboardOperations>();   // SCRUM-688
+builder.Services.AddScoped<PEMS.Application.Interfaces.IHelpOperations, PEMS.Web.Services.HelpOperations>();   // SCRUM-704
+builder.Services.AddScoped<PEMS.Application.Interfaces.IDisciplineWorkspaceOperations, PEMS.Web.Services.DisciplineWorkspaceOperations>();   // SCRUM-682
+builder.Services.AddScoped<PEMS.Application.Interfaces.IAiExtractionOperations, PEMS.Web.Services.AiExtractionOperations>();   // SCRUM-667
+builder.Services.AddScoped<PEMS.Application.Interfaces.IHomeOperations, PEMS.Web.Services.HomeOperations>();   // SCRUM-705
+builder.Services.AddScoped<PEMS.Application.Interfaces.IEmployeeOperations, PEMS.Web.Services.EmployeeOperations>();   // SCRUM-687
+builder.Services.AddScoped<PEMS.Application.Interfaces.ITeamOperations, PEMS.Web.Services.TeamOperations>();   // SCRUM-757
+builder.Services.AddScoped<PEMS.Application.Interfaces.IInventoryOperations, PEMS.Web.Services.InventoryOperations>();   // SCRUM-652, 654
+builder.Services.AddScoped<PEMS.Application.Interfaces.IWarehouseIntakeOperations, PEMS.Web.Services.WarehouseIntakeOperations>();   // SCRUM-665
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMaterialItemOperations, PEMS.Web.Services.MaterialItemOperations>();   // SCRUM-656
+builder.Services.AddScoped<PEMS.Application.Interfaces.IReplenishmentOperations, PEMS.Web.Services.ReplenishmentOperations>();   // SCRUM-663
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPreProcurementOperations, PEMS.Web.Services.PreProcurementOperations>();   // SCRUM-735
+builder.Services.AddScoped<PEMS.Application.Interfaces.IStoreRequisitionOperations, PEMS.Web.Services.StoreRequisitionOperations>();   // SCRUM-664
+builder.Services.AddScoped<PEMS.Application.Interfaces.IVendorOperations, PEMS.Web.Services.VendorOperations>();   // SCRUM-763
+builder.Services.AddScoped<PEMS.Application.Interfaces.IIntakeOperations, PEMS.Web.Services.IntakeOperations>();   // SCRUM-709
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMaintenanceMasterDataOperations, PEMS.Web.Services.MaintenanceMasterDataOperations>();   // SCRUM-723
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPermitOperations, PEMS.Web.Services.PermitOperations>();   // SCRUM-734
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMaintenanceStrategyOperations, PEMS.Web.Services.MaintenanceStrategyOperations>();   // SCRUM-725
+builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkOrderTaskOperations, PEMS.Web.Services.WorkOrderTaskOperations>();   // SCRUM-764
+builder.Services.AddScoped<PEMS.Application.Interfaces.ITaskItemOperations, PEMS.Web.Services.TaskItemOperations>();   // SCRUM-755
+builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkRequestOperations, PEMS.Web.Services.WorkRequestOperations>();   // SCRUM-765
+builder.Services.AddScoped<PEMS.Application.Interfaces.ITenderOperations, PEMS.Web.Services.TenderOperations>();   // SCRUM-759
+builder.Services.AddScoped<PEMS.Application.Interfaces.IContractOperations, PEMS.Web.Services.ContractOperations>();   // SCRUM-676
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMaintenancePlanOperations, PEMS.Web.Services.MaintenancePlanOperations>();   // SCRUM-724
+builder.Services.AddScoped<PEMS.Application.Interfaces.IJobPlanOperations, PEMS.Web.Services.JobPlanOperations>();   // SCRUM-711
+builder.Services.AddScoped<PEMS.Application.Interfaces.IShiftHandoverOperations, PEMS.Web.Services.ShiftHandoverOperations>();   // SCRUM-749
+builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkImportOperations, PEMS.Web.Services.WorkImportOperations>();   // SCRUM-675, 722
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMocOperations, PEMS.Web.Services.MocOperations>();   // SCRUM-720
+builder.Services.AddScoped<PEMS.Application.Interfaces.ITechnicalQueryOperations, PEMS.Web.Services.TechnicalQueryOperations>();   // SCRUM-758
+builder.Services.AddScoped<PEMS.Application.Interfaces.ICrewOperations, PEMS.Web.Services.CrewOperations>();   // SCRUM-677
+builder.Services.AddScoped<PEMS.Application.Interfaces.IFindingOperations, PEMS.Web.Services.FindingOperations>();   // SCRUM-699
+builder.Services.AddScoped<PEMS.Application.Interfaces.IProductionOperations, PEMS.Web.Services.ProductionOperations>();   // SCRUM-737, 738, 739
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMeetingInspectionOperations, PEMS.Web.Services.MeetingInspectionOperations>();   // SCRUM-707, 728
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPermitSafetyOperations, PEMS.Web.Services.PermitSafetyOperations>();   // SCRUM-696, 702, 710
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPartCatalogueRequestOperations, PEMS.Web.Services.PartCatalogueRequestOperations>();   // SCRUM-662
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPartCatalogueAdminOperations, PEMS.Web.Services.PartCatalogueAdminOperations>();   // SCRUM-658
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPartCatalogueOperations, PEMS.Web.Services.PartCatalogueOperations>();   // SCRUM-659, 660, 661
+builder.Services.AddScoped<PEMS.Application.Interfaces.IBarcodeOperations, PEMS.Web.Services.BarcodeOperations>();   // SCRUM-671
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMrsImportOperations, PEMS.Web.Services.MrsImportOperations>();   // SCRUM-657
+builder.Services.AddScoped<PEMS.Application.Interfaces.IIrnReceiptOperations, PEMS.Web.Services.IrnReceiptOperations>();   // SCRUM-655
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPurchaseOrderOperations, PEMS.Web.Services.PurchaseOrderOperations>();   // SCRUM-741
+builder.Services.AddScoped<PEMS.Application.Interfaces.IProcurementPackageOperations, PEMS.Web.Services.ProcurementPackageOperations>();   // SCRUM-736
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMaterialRequisitionOperations, PEMS.Web.Services.MaterialRequisitionOperations>();   // SCRUM-726
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMyProfileOperations, PEMS.Web.Services.MyProfileOperations>();   // SCRUM-729   // SCRUM-669   // SCRUM-703   // SCRUM-674   // SCRUM-673   // SCRUM-730: My Work as rows   // SCRUM-668: the copilot reads as operations   // batch 5: a spreadsheet of a registered entity is imported by a definition
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityUpdateAction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityDeleteAction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityToggleAction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.EntityRecordLoader>();
+// SCRUM-437: service operations: the interface methods marked [PemsOperation] are runnable from action definitions through the one handler operation.invoke
+builder.Services.AddSingleton(PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly));
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.OperationInvokeAction>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IBuildEntitlementService, PEMS.Web.Services.BuildEntitlementService>();   // SCRUM-633
+builder.Services.AddScoped<PEMS.Application.Interfaces.IHelpPageService, PEMS.Web.Services.HelpPageService>();   // SCRUM-634
+builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkflowManagementPageService, PEMS.Web.Services.WorkflowManagementPageService>();   // SCRUM-651
+builder.Services.AddScoped<PEMS.Application.Interfaces.INumberingPageService, PEMS.Web.Services.NumberingPageService>();   // SCRUM-638
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationPageService, PEMS.Web.Services.OrganizationPageService>();   // SCRUM-639
+builder.Services.AddScoped<PEMS.Application.Interfaces.INavigationMenuPageService, PEMS.Web.Services.NavigationMenuPageService>();   // SCRUM-636
+builder.Services.AddScoped<PEMS.Application.Interfaces.ILicencePageService, PEMS.Web.Services.LicencePageService>();   // SCRUM-635
+builder.Services.AddScoped<PEMS.Application.Interfaces.INavigationVisibilityPageService, PEMS.Web.Services.NavigationVisibilityPageService>();   // SCRUM-637
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPermissionMatrixPageService, PEMS.Web.Services.PermissionMatrixPageService>();   // SCRUM-641
+builder.Services.AddScoped<PEMS.Application.Interfaces.IUserAdminPageService, PEMS.Web.Services.UserAdminPageService>();   // SCRUM-650
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationImportPageService, PEMS.Web.Services.OrganizationImportPageService>();   // SCRUM-640
+builder.Services.AddScoped<PEMS.Application.Interfaces.IAuthorizationReportService, PEMS.Web.Services.AuthorizationReportService>();   // SCRUM-631
+builder.Services.AddSingleton<PEMS.Web.Definitions.OperationReader>();   // SCRUM-775: read operations as grid rows and choices
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.OperationGridProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.OperationOptionsProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.OperationFileProvider>();   // 6b: a file or JSON from a read operation, served by GET /x/{key}
+builder.Services.AddScoped<PEMS.Web.Definitions.DataSourceExecutor>();
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionShipper>(sp => (PEMS.Persistence.Services.DefinitionService)sp.GetRequiredService<PEMS.Application.Definitions.IDefinitionService>());
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionPreflight>(sp => (PEMS.Persistence.Services.DefinitionService)sp.GetRequiredService<PEMS.Application.Definitions.IDefinitionService>());   // SCRUM-797
+builder.Services.AddSingleton<PEMS.Web.Definitions.OwnershipPreflightReport>();   // SCRUM-797: the preflight of the shipped package, cached, for Database Update and /health/database
+
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
 // (مثل صفحه‌ی Login) بدون ورود قابل دسترسی هستند.
 builder.Services.AddControllersWithViews(options =>
@@ -83,9 +282,23 @@ builder.Services.AddControllersWithViews(options =>
     // طبق CMMS Production Baseline v1 بند P0-03: بعد از AuthorizeFilter اجرا می‌شود - اول
     // احراز هویت، بعد بررسی MustChangePassword روی همه‌ی درخواست‌ها (نه فقط لحظه‌ی Login).
     options.Filters.Add(new PEMS.Web.Security.PasswordChangeGateFilter());
+
+    // SCRUM-435: unhandled exceptions of API controllers become RFC 9457 problems, not the HTML error page.
+    options.Filters.Add<PEMS.Web.Api.ApiExceptionFilter>();
+
+    // SCRUM-202: every uploaded file of every action passes the shared upload guard (allowlist, size, content, malware scan).
+    options.Filters.Add<PEMS.Web.Security.Uploads.UploadGuardFilter>();
+
+    // SCRUM-421: numbers and dates bind the way a browser submits them in every culture (12.5 on a Persian page, Persian digits typed by a
+    // Persian user); error messages and empty values behave as before.
+    PEMS.UI.Binding.MvcOptionsExtensions.AddPemsInputBinding(options);
+
+    // SCRUM-540: the default validation messages ("The {0} field is required.") become resource keys, so they follow the page language.
+    options.ModelMetadataDetailsProviders.Add(new PEMS.Web.Configuration.ValidationMessageKeys());
 })
 .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
-.AddDataAnnotationsLocalization();
+// SCRUM-477: validation messages and display names are looked up in SharedResource (a text without a key is shown as written).
+.AddDataAnnotationsLocalization(o => o.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(PEMS.Web.Resources.SharedResource)));
 
 
 
@@ -93,6 +306,16 @@ builder.Services.AddControllersWithViews(options =>
 // =========================
 // Database
 // =========================
+
+// Code-first bootstrap: the database is created (if missing) before anything connects to it
+// (Hangfire storage below installs its own schema on configuration) and migrated before seeding.
+var databaseOptions = builder.Configuration
+    .GetSection(PEMS.Persistence.Initialization.DatabaseInitializationOptions.SectionName)
+    .Get<PEMS.Persistence.Initialization.DatabaseInitializationOptions>()
+    ?? new PEMS.Persistence.Initialization.DatabaseInitializationOptions();
+var databaseLogger = new Serilog.Extensions.Logging.SerilogLoggerFactory(Log.Logger).CreateLogger("DatabaseInitializer");
+await PEMS.Persistence.Initialization.DatabaseInitializer.EnsureDatabaseExistsAsync(
+    builder.Configuration.GetConnectionString("PEMSConnection"), databaseOptions, databaseLogger);
 
 builder.Services.AddDbContext<PEMSDbContext>(options =>
     options.UseSqlServer(
@@ -153,19 +376,30 @@ else
 // ASP.NET Core Identity (Authentication / Authorization)
 // =========================
 
-var authLockoutSection = builder.Configuration.GetSection("Authentication:Lockout");
-var maxFailedAccessAttempts = authLockoutSection.GetValue<int?>("MaxFailedAccessAttempts") ?? 5;
-var defaultLockoutMinutes = authLockoutSection.GetValue<int?>("DefaultLockoutMinutes") ?? 10;
+var maxFailedAccessAttempts = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Authentication:Lockout:MaxFailedAccessAttempts");
+var defaultLockoutMinutes = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Authentication:Lockout:DefaultLockoutMinutes");
+var passwordRequiredLength = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Authentication:Password:RequiredLength");
+var passwordRequireDigit = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Authentication:Password:RequireDigit");
+var passwordRequireUppercase = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Authentication:Password:RequireUppercase");
+var passwordRequireNonAlphanumeric = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Authentication:Password:RequireNonAlphanumeric");
+var passwordHistoryCount = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Authentication:Password:HistoryCount");
+builder.Services.Configure<PEMS.Web.Security.PasswordHistoryOptions>(o => o.Count = passwordHistoryCount);
+var authCookieName = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Authentication:Cookie:Name");
+var authCookieExpireHours = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Authentication:Cookie:ExpireHours");
+var securityStampValidationMinutes = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Authentication:SecurityStampValidationMinutes");
 var cookieSecurePolicy = builder.Environment.IsDevelopment() ? CookieSecurePolicy.SameAsRequest : CookieSecurePolicy.Always;
+var authCookieSlidingExpiration = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Authentication:Cookie:SlidingExpiration");
+var hstsMaxAgeDays = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Hosting:HstsMaxAgeDays");
+builder.Services.AddHsts(options => options.MaxAge = TimeSpan.FromDays(hstsMaxAgeDays));
 
 builder.Services
     .AddIdentity<ApplicationUser, ApplicationRole>(options =>
     {
         // سیاست رمز عبور - برای محیط سازمانی داخلی؛ در صورت نیاز سخت‌گیرانه‌تر شود
-        options.Password.RequiredLength = 8;
-        options.Password.RequireDigit = true;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequiredLength = passwordRequiredLength;
+        options.Password.RequireDigit = passwordRequireDigit;
+        options.Password.RequireUppercase = passwordRequireUppercase;
+        options.Password.RequireNonAlphanumeric = passwordRequireNonAlphanumeric;
 
         options.User.RequireUniqueEmail = true;
 
@@ -174,8 +408,18 @@ builder.Services
         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(defaultLockoutMinutes);
     })
     .AddEntityFrameworkStores<PEMSDbContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    // SCRUM-412: a new password must differ from the current one and the last N; PemsUserManager records the replaced hash
+    .AddPasswordValidator<PEMS.Web.Security.PasswordHistoryValidator>()
+    .AddUserManager<PEMS.Web.Security.PemsUserManager>()
+    // SCRUM-540: password-policy and other Identity messages follow the page language (Id_* resource keys)
+    .AddErrorDescriber<PEMS.Web.Security.LocalizedIdentityErrorDescriber>();
 
+
+// نقش‌های کاربر در Claim کوکی هستند؛ پیش‌فرض Identity فقط هر ۳۰ دقیقه آن‌ها را از دیتابیس تازه می‌کند و تغییر نقش/دسترسی
+// در پنل مدیر تا آن زمان (یا خروج/ورود دوباره) در سایدبار همان کاربر دیده نمی‌شد. هر دقیقه تازه‌سازی می‌شود.
+builder.Services.Configure<Microsoft.AspNetCore.Identity.SecurityStampValidatorOptions>(o =>
+    o.ValidationInterval = TimeSpan.FromMinutes(securityStampValidationMinutes));
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -183,10 +427,10 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = "/Account/Logout";
     options.AccessDeniedPath = "/Account/AccessDenied";
 
-    options.ExpireTimeSpan = TimeSpan.FromHours(8);
-    options.SlidingExpiration = true;
+    options.ExpireTimeSpan = TimeSpan.FromHours(authCookieExpireHours);
+    options.SlidingExpiration = authCookieSlidingExpiration;
 
-    options.Cookie.Name = "PEMS.Auth";
+    options.Cookie.Name = authCookieName;
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
     options.Cookie.SameSite = SameSiteMode.Lax;
@@ -201,10 +445,11 @@ builder.Services.ConfigureApplicationCookie(options =>
 // =========================
 builder.Services.AddFido2(options =>
 {
-    options.ServerDomain = builder.Configuration["Fido2:ServerDomain"] ?? "localhost";
-    options.ServerName = builder.Configuration["Fido2:ServerName"] ?? "PEMS";
-    options.Origins = (builder.Configuration.GetSection("Fido2:Origins").Get<string[]>() ?? new[] { "http://localhost:5089" }).ToHashSet();
-    options.TimestampDriftTolerance = 300000;
+    options.ServerDomain = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Fido2:ServerDomain");
+    options.ServerName = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Fido2:ServerName");
+    options.Origins = (builder.Configuration.GetSection("Fido2:Origins").Get<string[]>()
+        ?? throw new InvalidOperationException("Missing required setting 'Fido2:Origins' (Fido2__Origins__0 in env/<name>.env).")).ToHashSet();
+    options.TimestampDriftTolerance = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Fido2:TimestampDriftToleranceMs");
 });
 
 builder.Services.AddHttpContextAccessor();
@@ -268,28 +513,15 @@ builder.Services.AddScoped<IWorkflowBusinessContextProvider, PEMS.Persistence.Wo
 
 // Phase 1 Hardening: نسخه‌بندی/Binding/اعتبارسنجی/رجیستری/مدل خواندنی. IWorkflowRuntime بدون تغییر امضا؛
 // پارامترهای اختیاری سازنده‌ی WorkflowRuntimeService از همین ثبت‌ها پر می‌شوند.
-builder.Services.AddSingleton<IWorkflowActionRegistry>(_ =>
-{
-    var registry = new WorkflowActionRegistry();
-    // اکشن‌های Legacy ماژول‌های موجود (فقط نام؛ بدون اجرای کد) تا Definition های Seed شده معتبر بمانند
-    var legacy = new (string Module, string[] Actions)[]
-    {
-        ("EngineeringDocument", new[] { "Issue" }),
-        ("MOC", new[] { "Assess", "Close" }),
-        ("TechnicalQuery", new[] { "Confirm", "Reopen", "Respond" }),
-        ("VendorDocument", new[] { "AC", "AP", "CO", "NC", "RE", "Issue" }),
-    };
-    foreach (var (module, actions) in legacy)
-        foreach (var a in actions)
-            registry.RegisterModuleAction(module, a, WorkflowActionKind.Outcome, "Legacy module action");
-    PEMS.Persistence.Workflow.WorkOrderWorkflow.Register(registry);   // Phase 3B: اکشن‌های ماژول WorkOrder (Hold, Comment)
-    return registry;
-});
+// legacy module action names live in PemsWorkflowContracts (one list for the app, the seeders and the tests)
+builder.Services.AddSingleton<IWorkflowActionRegistry>(_ => PEMS.Persistence.Workflow.PemsWorkflowContracts.CreateActionRegistry());
 // فیلدهای Fact ماژول‌ها (مثلاً Part Catalogue) به گرامر شرط‌ها اضافه می‌شود
 builder.Services.AddSingleton<IWorkflowConditionEvaluator>(_ => new WorkflowConditionEvaluator(PEMS.Persistence.Workflow.PartCatalogueWorkflow.Fields));
 builder.Services.AddSingleton<IWorkflowEventSink, NoOpWorkflowEventSink>();
 builder.Services.AddScoped<IWorkflowReferenceCatalog, PemsWorkflowReferenceCatalog>();
 builder.Services.AddScoped<IWorkflowAuthorizationHook, AccessControlWorkflowAuthorizationHook>();
+// SCRUM-103: what each module's code needs from its definition; the validator rejects a version that breaks it
+builder.Services.AddSingleton<IWorkflowModuleContractRegistry>(_ => PEMS.Persistence.Workflow.PemsWorkflowContracts.CreateRegistry());
 builder.Services.AddScoped<IWorkflowVersionValidator, WorkflowVersionValidator>();
 builder.Services.AddScoped<IWorkflowBindingService, WorkflowBindingService>();
 builder.Services.AddScoped<IWorkflowDefinitionService, WorkflowDefinitionService>();
@@ -306,6 +538,7 @@ builder.Services.AddScoped<IWorkOrderReviewService, WorkOrderReviewService>();
 // نشده بودن (باگ واقعی که موقع اولین درخواست به TeamController/WorkOrder Labor کرش می‌کرد)
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IWorkOrderLaborService, WorkOrderLaborService>();
+builder.Services.AddScoped<IWorkOrderChildService, WorkOrderChildService>();
 
 // طبق «PEMS Dynamic Maintenance Organization»
 builder.Services.AddScoped<IOrganizationStructureService, OrganizationStructureService>();
@@ -320,13 +553,29 @@ builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationConsistenc
 // (ترتیب ثبت DI مهم نیست چون Scoped/Constructor Injection است، ولی همین‌جا برای خوانایی کنار هم آمدند)
 builder.Services.AddScoped<IWorkOrderReleaseGateService, WorkOrderReleaseGateService>();
 builder.Services.AddScoped<IWorkOrderLifecycleService, WorkOrderLifecycleService>();
+builder.Services.AddScoped<IWorkOrderSectionGuard, WorkOrderSectionGuard>();
 builder.Services.AddScoped<IPMGenerationService, PMGenerationService>();
 builder.Services.AddScoped<IRcmOperationalBridgeService, RcmOperationalBridgeService>();
 builder.Services.AddScoped<IStoreRequisitionLifecycleService, StoreRequisitionLifecycleService>();
+// SCRUM-472: warehouse intake of work-order materials (My Work queue, linked store requisitions)
+builder.Services.AddScoped<IWarehouseIntakeService, WarehouseIntakeService>();
+// SCRUM-471: pre-procurement intake; the same instance is the planned-supply source of the replenishment run
+builder.Services.AddScoped<PreProcurementService>();
+builder.Services.AddScoped<IPreProcurementService>(sp => sp.GetRequiredService<PreProcurementService>());
+builder.Services.AddScoped<IProcurementPipeline>(sp => sp.GetRequiredService<PreProcurementService>());
+// SCRUM-470: PO lines, submission and approval by the PO authority table; Procurement__* settings from env
+builder.Services.Configure<PEMS.Application.Interfaces.ProcurementOptions>(builder.Configuration.GetSection("Procurement"));
+builder.Services.AddScoped<IPurchaseOrderApprovalService, PurchaseOrderApprovalService>();
+// SCRUM-473: receiving against PO lines; the same class is the incoming-supply source of the net-demand calculation
+builder.Services.AddScoped<PurchaseOrderReceivingService>();
+builder.Services.AddScoped<IPurchaseOrderReceivingService>(sp => sp.GetRequiredService<PurchaseOrderReceivingService>());
+builder.Services.AddScoped<PEMS.Application.Inventory.IIncomingSupplyProvider>(sp => sp.GetRequiredService<PurchaseOrderReceivingService>());
 builder.Services.AddScoped<IIrnReceiptService, IrnReceiptService>();
 builder.Services.AddScoped<IReliabilityService, ReliabilityService>();
 builder.Services.AddScoped<IInspectionService, InspectionService>();
 builder.Services.AddScoped<IKpiService, KpiService>();
+builder.Services.AddScoped<IKpiTargetService, KpiTargetService>();
+builder.Services.AddScoped<IExecutiveKpiService, ExecutiveKpiService>();
 builder.Services.AddScoped<IPermitService, PermitService>();
 builder.Services.AddScoped<IAccessControlService, AccessControlService>();
 builder.Services.AddScoped<IUserRoleAssignmentSynchronizer, UserRoleAssignmentSynchronizer>();
@@ -339,6 +588,8 @@ builder.Services.AddScoped<PEMS.Web.Security.NavigationVisibilityResolver>();
 // طبق «PEMS — Enterprise User-Centric Authorization Workspace Consolidation»: تنها سرویس تازه‌ی این
 // فاز - هم Admin/Authorization موجود، هم Admin/Users/Details تازه، از همین یک سرویس می‌خوانند
 builder.Services.AddScoped<PEMS.Application.Interfaces.IUserAuthorizationSummaryService, PEMS.Persistence.Services.UserAuthorizationSummaryService>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IRolePermissionAdminService, PEMS.Persistence.Services.RolePermissionAdminService>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPermissionMatrixEditor, PEMS.Persistence.Services.PermissionMatrixEditor>();
 builder.Services.AddScoped<IRoleModuleActionService, RoleModuleActionService>();
 builder.Services.AddScoped<IIsolationService, IsolationService>();
 builder.Services.AddScoped<IGasTestService, GasTestService>();
@@ -376,6 +627,9 @@ builder.Services.AddScoped<IOperationsReportService, OperationsReportService>();
 // GlobalSearchService هیچ تغییری برای موجودیت جدید نیاز ندارد.
 // ==============================================================================
 builder.Services.AddScoped<IGlobalSearchService, GlobalSearchService>();
+// SCRUM-64: command palette (records through the provider security contract, permission-filtered actions)
+builder.Services.AddSingleton<PEMS.Web.Navigation.CommandPaletteActions>();
+builder.Services.AddScoped<PEMS.Web.Navigation.CommandPaletteService>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.EquipmentSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.EngineeringDocumentSearchProvider>();
 builder.Services.AddScoped<ISearchableEntityProvider, PEMS.Persistence.Services.SearchProviders.VdrItemSearchProvider>();
@@ -466,6 +720,13 @@ builder.Services.AddScoped<IDocumentHoldService, DocumentHoldService>();
 // طبق CMMS Production Baseline v1 بند P0-04: سرویس شماره‌گذاری مرکزی و اتمیک -
 // جایگزین الگوهای Count()+1 پراکنده در WorkOrder/MaintenancePlan/Instrument/StoreRequisition.
 builder.Services.AddScoped<INumberingService, NumberingService>();
+// SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (Admin > Numbering)
+builder.Services.AddScoped<INumberingSchemeService, NumberingSchemeService>();
+
+// SCRUM-429: ایمیل سازمانی (SMTP خود سازمان، MailKit) و ارسال دعوت‌نامه‌ی مناقصه؛ تنظیمات env Email__*، حساب فقط در secrets
+builder.Services.Configure<PEMS.Infrastructure.Email.EmailOptions>(builder.Configuration.GetSection("Email"));
+builder.Services.AddSingleton<IEmailSender, PEMS.Infrastructure.Email.SmtpEmailSender>();
+builder.Services.AddScoped<ITenderInvitationService, TenderInvitationService>();
 
 // Warehouse / Part Catalogue Request (درخواست کاتالوگ قطعه): تنظیمات + سرویس‌ها
 builder.Services.AddSingleton(builder.Configuration.GetSection(PartCatalogueOptions.SectionName).Get<PartCatalogueOptions>() ?? new PartCatalogueOptions());
@@ -477,8 +738,18 @@ builder.Services.AddScoped<INetDemandCollector, NetDemandCollector>();
 builder.Services.AddScoped<INetDemandService, NetDemandService>();
 // Phase 2 / P5: توصیه‌های تأمین (اجرای دستی؛ فقط روی جدول‌های خودش می‌نویسد)
 builder.Services.AddScoped<IReplenishmentRecommendationService, ReplenishmentRecommendationService>();
+// دروازه‌ی موقت P5: پیش‌فرض غیرفعال تا اعمال Migration تأییدشده؛ فقط Features:ReplenishmentRecommendations:Enabled=true فعال می‌کند
+builder.Services.AddSingleton<PEMS.Web.Security.IReplenishmentAvailability, PEMS.Web.Security.ReplenishmentAvailability>();
+// سایدبار داده‌محور (پشت پرچم Features:DynamicSidebar:Enabled؛ پیش‌فرض سایدبار قدیمی)
+builder.Services.AddSingleton<PEMS.Web.Navigation.IDynamicSidebarAvailability, PEMS.Web.Navigation.DynamicSidebarAvailability>();
+builder.Services.AddScoped<INavigationMenuService, NavigationMenuService>();
+builder.Services.AddScoped<INavigationCountService, NavigationCountService>();
+builder.Services.AddScoped<PEMS.Web.Navigation.DynamicSidebarBuilder>();
+builder.Services.AddScoped<PEMS.Web.Navigation.NavigationBadgeService>();
 builder.Services.AddScoped<IPartCatalogueService, PartCatalogueService>();
+builder.Services.AddScoped<IPartCatalogueReportService, PartCatalogueReportService>();   // SCRUM-478
 builder.Services.AddScoped<IPartCatalogueAdminService, PartCatalogueAdminService>();
+builder.Services.AddScoped<IPartCatalogueSettingsService, PartCatalogueSettingsService>();
 
 // طبق CMMS Production Baseline v1 بند ۶ (CMMS-01: Asset Foundation)
 builder.Services.AddScoped<IFunctionalLocationService, FunctionalLocationService>();
@@ -487,20 +758,78 @@ builder.Services.AddScoped<IFunctionalLocationService, FunctionalLocationService
 builder.Services.AddScoped<IJobPlanService, JobPlanService>();
 
 // طبق CMMS Production Baseline v1 بند P0-05 (CMMS-03: Work Management)
+// A3: تفکیک وظایف Work Request - پیش‌فرض روشن؛ برای خاموش کردن: "Cmms": { "WorkRequest": { "EnforceSegregationOfDuties": false } } (SystemAdmin همیشه فقط با ممیزی Override می‌کند)
+builder.Services.AddSingleton(new PEMS.Application.Common.WorkRequestPolicyOptions
+{
+    EnforceSegregationOfDuties = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Cmms:WorkRequest:EnforceSegregationOfDuties")
+});
 builder.Services.AddScoped<IWorkRequestService, WorkRequestService>();
 
 builder.Services.AddScoped<IUserDashboardService, UserDashboardService>();
 
 builder.Services.AddScoped<INotificationService, NotificationService>();
+// SCRUM-357: ممیزی + ابطال نشست + اعلان مشترک مسیرهای بازیابی حساب مدیر
+builder.Services.AddScoped<IRecoveryEventService, RecoveryEventService>();
+// SCRUM-354: محافظ آخرین مدیر فعال + ریست حساب مدیر توسط مدیر دیگر
+builder.Services.AddScoped<IAdminAccountService, AdminAccountService>();
+// SCRUM-355: کدهای بازیابی یکبارمصرف حساب مدیر
+builder.Services.AddScoped<IAdminRecoveryCodeService, AdminRecoveryCodeService>();
+
+// SCRUM-356: break-glass روی سرور (پوشه‌ی فایل درخواست، پنجره‌ی ۱۵ دقیقه، شبکه‌ی مدیریتی، توکن اختیاری فروشنده)
+var breakGlassFolder = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Security:BreakGlass:RequestFolder");
+builder.Services.AddSingleton(new PEMS.Application.Common.BreakGlassOptions
+{
+    RequestFolder = Path.GetFullPath(Path.Combine(builder.Environment.ContentRootPath, breakGlassFolder)),
+    WindowMinutes = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Security:BreakGlass:WindowMinutes"),
+    // خالی = فقط localhost
+    ManagementNetworks = PEMS.Application.Common.BreakGlassRules.ParseNetworks(builder.Configuration["Security:BreakGlass:ManagementNetworks"]),
+    VendorRecoveryEnabled = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredBool(builder.Configuration, "Security:BreakGlass:VendorRecovery:Enabled"),
+    VendorPublicKey = builder.Configuration["Security:BreakGlass:VendorRecovery:PublicKey"],
+    MachineFingerprint = builder.Configuration["Security:BreakGlass:VendorRecovery:MachineFingerprint"]
+});
+builder.Services.AddScoped<IBreakGlassService, BreakGlassService>();
+
+// SCRUM-355/356: محدودیت نرخ صفحه‌های بازیابی بدون ورود (برای هر IP، فقط POST)
+var recoveryPermitLimit = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Security:Recovery:RateLimit:PermitLimit");
+var recoveryWindow = TimeSpan.FromMinutes(PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Security:Recovery:RateLimit:WindowMinutes"));
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.AddPolicy(RecoveryRateLimiting.PolicyName, context => RecoveryRateLimiting.Partition(context, recoveryPermitLimit, recoveryWindow));
+});
 builder.Services.AddScoped<IMyWorkService, PEMS.Persistence.Services.MyWorkService>();
 
 builder.Services.AddScoped<ILetterService, LetterService>();
+builder.Services.AddScoped<ILetterTemplateService, LetterTemplateService>();
+builder.Services.AddScoped<ILetterReminderService, LetterReminderService>();
+builder.Services.AddScoped<ILetterComposeService, LetterComposeService>();
+builder.Services.AddScoped<ILetterComplianceService, LetterComplianceService>();
+builder.Services.AddScoped<IIncomingCorrespondenceService, IncomingCorrespondenceService>();
+builder.Services.AddScoped<IExecutiveDashboardService, ExecutiveDashboardService>();
+builder.Services.Configure<PEMS.Web.BackgroundJobs.LetterReminderOptions>(builder.Configuration.GetSection("LetterReminders"));
+builder.Services.AddHostedService<PEMS.Web.BackgroundJobs.LetterReminderBackgroundService>();
 
 builder.Services.AddScoped<ILetterReferralService, LetterReferralService>();
 
 builder.Services.AddScoped<ITagService, TagService>();
 
+// کارتابل نامه‌نگاری: پوشه/سطل/آرشیو شخصی، درخت برچسب، تفویض، قانون مسیریابی، مخاطبین، یادآور شخصی، گزارش (روی چارت سازمانی)
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationSubordinateResolver, PEMS.Persistence.Services.OrganizationSubordinateResolver>();
+builder.Services.AddScoped<ILetterCartableService, LetterCartableService>();
+builder.Services.AddScoped<ILetterTagTreeService, LetterTagTreeService>();
+builder.Services.AddScoped<ILetterUserSettingsService, LetterUserSettingsService>();
+builder.Services.AddScoped<ILetterDelegationService, LetterDelegationService>();
+builder.Services.AddScoped<ILetterRoutingRuleService, LetterRoutingRuleService>();
+builder.Services.AddScoped<ILetterContactService, LetterContactService>();
+builder.Services.AddScoped<ILetterPersonalReminderService, LetterPersonalReminderService>();
+builder.Services.AddScoped<ILetterReportService, LetterReportService>();
+builder.Services.AddHostedService<PEMS.Web.BackgroundJobs.LetterPersonalReminderBackgroundService>();
+
 builder.Services.AddScoped<ITaskService, TaskService>();
+
+// Task Manager (فضا/Backlog/Board/Sprint روی همان TaskItem) - دسترسی سطح-شیء در TaskAccess
+builder.Services.AddScoped<ITaskManagerService, PEMS.Persistence.Services.TaskManager.TaskManagerService>();
+builder.Services.AddScoped<IWorkSpaceService, PEMS.Persistence.Services.TaskManager.WorkSpaceService>();
 
 builder.Services.AddScoped<ICorrespondenceReportService, CorrespondenceReportService>();
 
@@ -547,6 +876,14 @@ builder.Services.AddScoped<IMaintenancePlanService, MaintenancePlanService>();
 
 builder.Services.AddScoped<IMaintenanceStrategyService, MaintenanceStrategyService>();
 
+// RCM کلاس‌محور: الگوی استراتژی + تخصیص به تگ + Plan از تخصیص + پوشش + کاتالوگ حالت خرابی ISO 14224
+builder.Services.AddScoped<IMaintenanceStrategyCommandService, MaintenanceStrategyCommandService>();
+builder.Services.AddScoped<IStrategyAssignmentService, StrategyAssignmentService>();
+builder.Services.AddScoped<IMaintenancePlanCommandService, MaintenancePlanCommandService>();
+builder.Services.AddScoped<IStrategyCoverageService, StrategyCoverageService>();
+builder.Services.AddScoped<IFailureModeCatalogService, FailureModeCatalogService>();
+builder.Services.AddScoped<IStrategyImportService, StrategyImportService>();
+
 builder.Services.AddScoped<IDisciplineWorkspaceService, DisciplineWorkspaceService>();
 
 builder.Services.AddScoped<IEquipmentClassificationService, EquipmentClassificationService>();
@@ -592,9 +929,44 @@ builder.Services.AddScoped<IEquipmentIntelligenceService, EquipmentIntelligenceS
 // طبق ممیزی امنیتی (P0 - Engineering File Security Containment): ریشه‌ی ذخیره‌سازی عمداً بیرون
 // از wwwroot (خواهر آن، نه زیرشاخه‌اش) - این همان چیزی است که آسیب‌پذیری اصلی را می‌بندد؛
 // UseStaticFiles فقط داخل wwwroot سرویس می‌دهد.
+// SCRUM-202: one upload guard for every upload (allowlist, size limit from Uploads__*, content check, malware-scan hook).
+var uploadOptions = new PEMS.Application.Uploads.UploadOptions
+{
+    MaxFileSizeMb = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Uploads:MaxFileSizeMb"),
+    MaxRequestSizeMb = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Uploads:MaxRequestSizeMb"),
+    MalwareScanMode = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Uploads:MalwareScan:Mode"),
+    MalwareScanCommand = builder.Configuration["Uploads:MalwareScan:Command"] ?? "",
+    MalwareScanArguments = builder.Configuration["Uploads:MalwareScan:Arguments"] ?? "",
+    MalwareScanTimeoutSeconds = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredInt(builder.Configuration, "Uploads:MalwareScan:TimeoutSeconds"),
+    MalwareScanQuarantineFolder = builder.Configuration["Uploads:MalwareScan:QuarantineFolder"] ?? "",
+};
+if (uploadOptions.MaxFileSizeMb <= 0 || uploadOptions.MaxRequestSizeMb < uploadOptions.MaxFileSizeMb)
+    throw new InvalidOperationException("Setting 'Uploads:MaxFileSizeMb' must be positive and not larger than 'Uploads:MaxRequestSizeMb'.");
+builder.Services.AddSingleton(uploadOptions);
+if (string.Equals(uploadOptions.MalwareScanMode, PEMS.Application.Uploads.MalwareScanModes.Command, StringComparison.OrdinalIgnoreCase))
+{
+    if (string.IsNullOrWhiteSpace(uploadOptions.MalwareScanCommand))
+        throw new InvalidOperationException("Setting 'Uploads:MalwareScan:Command' is required when 'Uploads:MalwareScan:Mode' is Command.");
+    builder.Services.AddSingleton<PEMS.Application.Uploads.IMalwareScanner, PEMS.Infrastructure.FileStorage.CommandLineMalwareScanner>();
+}
+else if (string.Equals(uploadOptions.MalwareScanMode, PEMS.Application.Uploads.MalwareScanModes.None, StringComparison.OrdinalIgnoreCase))
+    builder.Services.AddSingleton<PEMS.Application.Uploads.IMalwareScanner, PEMS.Application.Uploads.NoMalwareScanner>();
+else
+    throw new InvalidOperationException("Setting 'Uploads:MalwareScan:Mode' must be None or Command.");
+builder.Services.AddSingleton<PEMS.Application.Uploads.IUploadGuard, PEMS.Application.Uploads.UploadGuard>();
+// The request limits follow the setting, so a file the guard would accept is never cut off earlier by the server
+builder.WebHost.ConfigureKestrel(o => o.Limits.MaxRequestBodySize = uploadOptions.MaxRequestBytes);
+builder.Services.AddSingleton<PEMS.UI.Components.IUploadLimits>(new PEMS.Web.Configuration.UploadLimits(uploadOptions.MaxFileSizeMb));
+builder.Services.Configure<Microsoft.AspNetCore.Builder.IISServerOptions>(o => o.MaxRequestBodySize = uploadOptions.MaxRequestBytes);
+builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(o => o.MultipartBodyLengthLimit = uploadOptions.MaxRequestBytes);
+
 builder.Services.AddSingleton<PEMS.Application.Interfaces.IFileStorageService>(
     _ => new PEMS.Infrastructure.FileStorage.LocalFileStorageProvider(
         Path.Combine(Directory.GetCurrentDirectory(), "filestore")));
+// SCRUM-202: profile photos, signatures and editor images live in the file store too; wwwroot is only read for old files.
+builder.Services.AddSingleton<PEMS.Application.Uploads.IProtectedImageStore>(sp => new PEMS.Application.Uploads.ProtectedImageStore(
+    sp.GetRequiredService<PEMS.Application.Interfaces.IFileStorageService>(),
+    builder.Environment.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 
 // طبق «PEMS — Enterprise File Storage Management»: زیرساخت جدید و کاملاً افزودنی چند-Provider -
 // IFileStorageService بالا دست‌نخورده باقی می‌ماند؛ این‌ها موازی آن ثبت می‌شوند (بند ۲۲).
@@ -646,10 +1018,10 @@ builder.Services.AddScoped<IDocumentAIIngestionService, DocumentAIIngestionServi
 builder.Services.AddScoped<IDocumentSearchAIService, DocumentSearchAIService>();
 
 
-var ollamaUrl = builder.Configuration["Ollama:Url"] ?? "http://localhost:11434/";
+var ollamaUrl = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(builder.Configuration, "Ollama:Url");
 if (!ollamaUrl.EndsWith('/')) ollamaUrl += "/";
 
-var ollamaTimeoutMinutes = builder.Configuration.GetValue<double?>("Ollama:TimeoutMinutes") ?? 15;
+var ollamaTimeoutMinutes = PEMS.Web.Configuration.PemsConfigurationExtensions.RequiredDouble(builder.Configuration, "Ollama:TimeoutMinutes");
 
 builder.Services.AddHttpClient<IOllamaService, OllamaService>(client =>
 {
@@ -661,6 +1033,8 @@ builder.Services.AddHttpClient<IOllamaService, OllamaService>(client =>
 
 
 var app = builder.Build();
+// SCRUM-572: read and check the definition files at start-up, so an invalid file stops the start here and not on the first request that needs it
+_ = app.Services.GetRequiredService<PEMS.Application.Definitions.IDefinitionFiles>();
 
 
 
@@ -669,9 +1043,15 @@ var app = builder.Build();
 // Seed Roles / Default Admin User
 // =========================
 
+// Apply pending EF migrations (+ full-text search objects) before any seeder touches the schema.
+await PEMS.Persistence.Initialization.DatabaseInitializer.MigrateAsync(app.Services, databaseOptions, databaseLogger);
+
 using (var scope = app.Services.CreateScope())
 {
     await IdentitySeeder.SeedAsync(scope.ServiceProvider);
+
+    // SCRUM-579: the definitions that ship with the product go into the definition tables (System origin); the engines read the database only. Idempotent: install and upgrade are the same code.
+    await PEMS.Persistence.Seed.SystemDefinitionSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق «PEMS Phase 6B Closure Validation» بند ۳: مکانیزم Development-only برای بازنشانی
     // رمز کاربر admin به مقدار پیش‌فرض مستندشده - فقط وقتی IsDevelopment() و
@@ -682,6 +1062,19 @@ using (var scope = app.Services.CreateScope())
 
     // دپارتمان‌های پیش‌فرض
     await PEMS.Persistence.Seed.DepartmentSeeder.SeedAsync(scope.ServiceProvider);
+
+    // قالب‌های آماده‌ی نامه‌ی داخلی (افزودنی و Idempotent)
+    await PEMS.Persistence.Seed.LetterTemplateSeeder.SeedAsync(scope.ServiceProvider);
+
+    // طرف‌های مکاتبه از روی وندورها (Idempotent). اگر مایگریشن هنوز اعمال نشده باشد، برنامه به‌خاطر آن بالا نیامدنی نیست.
+    try
+    {
+        await scope.ServiceProvider.GetRequiredService<IIncomingCorrespondenceService>().SeedPartiesFromVendorsAsync();
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogWarning(ex, "Correspondent party seeding from vendors was skipped (is the latest migration applied?)");
+    }
 
     // دیسیپلین‌های مهندسی پیش‌فرض - بدون این Seed، پس از پاک‌سازی دیتابیس Workspace دیسیپلین‌ها
     // خالی می‌شوند و UI مربوط به default items/discipline list هیچ آیتمی نشان نمی‌دهد.
@@ -699,6 +1092,9 @@ using (var scope = app.Services.CreateScope())
     var roleCatalogResult = await PEMS.Persistence.Seed.RoleCatalogSeeder.SeedAsync(scope.ServiceProvider);
     foreach (var (custom, baseline) in roleCatalogResult.PossibleDuplicates)
         app.Logger.LogWarning("Role Catalog: custom role '{Custom}' looks like baseline role '{Baseline}' (not merged).", custom, baseline);
+
+    // P0-09: هر نقشی که روی ماژول‌های خرید/انبار مجوز دارد View هم بگیرد (فقط افزایشی) - قبل از SeedFromLegacyAsync
+    await PEMS.Persistence.Seed.ProcurementReadViewSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق سند RBAC-ABAC Authorization Architecture (فاز ۱): داده‌ی RolePermission/
     // RoleModuleAction/AspNetUserRoles بالا را به مدل عمومی جدید (Permission/RolePermissionGrant/
@@ -791,6 +1187,9 @@ using (var scope = app.Services.CreateScope())
     // Release را از Start Work جدا می‌کند (Instance های در حال اجرا روی نسخه‌ی قبلی دست‌نخورده می‌مانند).
     await PEMS.Persistence.Seed.WorkOrderLifecycleWorkflowV2Seeder.SeedAsync(scope.ServiceProvider);
 
+    // H28: مجوز جدای بازگشایی Work Order بسته‌شده (Idempotent، فقط افزایشی)
+    await PEMS.Persistence.Seed.WorkOrderReopenPermissionSeeder.SeedAsync(scope.ServiceProvider);
+
     await PEMS.Persistence.Seed.WorkflowManagementSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق «PEMS Bilingual Help & Knowledge System» - کتابخانه‌ی اولیه‌ی محتوای راهنما (ایدمپوتنت)
@@ -809,11 +1208,26 @@ using (var scope = app.Services.CreateScope())
     // طبق ممیزی Material Management (Gap B) + Step 3: زنجیره‌ی تایید Disposition دریافت مادی (IRN)
     await PEMS.Persistence.Seed.IrnDispositionWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
+    // RCM: گردش‌کار تایید استراتژی نگهداری (Draft → InReview → Approved) روی همان موتور مرکزی
+    await PEMS.Persistence.Seed.MaintenanceStrategyWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
     // طبق ممیزی Package Procurement Contract Finalization §D: گردش‌کار نهایی‌سازی قرارداد
     await PEMS.Persistence.Seed.ContractWorkflowSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق CMMS-10b: زنجیره‌ی تایید Permit to Work
     await PEMS.Persistence.Seed.PermitApprovalWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // SCRUM-472: warehouse intake of work-order materials (task in the warehouse role queue of My Work)
+    await PEMS.Persistence.Seed.WarehouseIntakeWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+    // SCRUM-471: pre-procurement review (task in the procurement role queue of My Work)
+    await PEMS.Persistence.Seed.PreProcurementWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+    // SCRUM-470: purchase-order approval by the PO authority table
+    await PEMS.Persistence.Seed.PurchaseOrderApprovalWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+    // SCRUM-473: Hold resolution of goods receipts (task in the Warehouse Manager queue of My Work)
+    await PEMS.Persistence.Seed.IrnHoldResolutionWorkflowSeeder.SeedAsync(scope.ServiceProvider);
+
+    // SCRUM-103: explicit binding for every module workflow (after all workflow seeders), so Workflow Management can edit them
+    await PEMS.Persistence.Seed.WorkflowBindingBackfillSeeder.SeedAsync(scope.ServiceProvider);
 
     // طبق CMMS-10d: حد پذیرش پارامترهای گاز + قاعده‌ی مدت اعتبار تست گاز
     await PEMS.Persistence.Seed.GasTestSeeder.SeedAsync(scope.ServiceProvider);
@@ -832,6 +1246,18 @@ using (var scope = app.Services.CreateScope())
     // طبق CMMS Production Baseline v1 بند P0-04: شمارنده‌ی WorkOrder را از روی شماره‌های قدیمی
     // (پیش از NumberingService) Seed می‌کند تا شماره‌ی بعدی با آن‌ها برخورد نکند.
     await PEMS.Persistence.Seed.NumberingBackfillSeeder.SeedAsync(scope.ServiceProvider);
+    // SCRUM-40: الگوی فعال پیش‌فرض برای هر سند تدارکاتی که هنوز الگو ندارد (الگوی ویرایش‌شده‌ی مدیر دست نمی‌خورد)
+    await PEMS.Persistence.Seed.NumberingSchemeSeeder.SeedAsync(scope.ServiceProvider);
+
+    // سایدبار داده‌محور: همگام‌سازی افزایشی کاتالوگ کد (فقط وقتی پرچم فعال است؛ جدول تا اعمال Migration وجود ندارد)
+    if (scope.ServiceProvider.GetRequiredService<PEMS.Web.Navigation.IDynamicSidebarAvailability>().IsEnabled)
+    {
+        // SCRUM-590: the items shipped as menu definitions join the code defaults; one key is owned by one of them (the code default wins), the same ownership rule applies to both
+        var defaults = PEMS.Web.Navigation.NavigationMenuDefaults.All;
+        var fed = PEMS.Web.Navigation.MenuDefinitions.From(await scope.ServiceProvider.GetRequiredService<PEMS.Application.Definitions.IDefinitionStore>().ListPublishedAsync("menu"))
+            .Where(f => !defaults.Any(d => string.Equals(d.Key, f.Key, StringComparison.OrdinalIgnoreCase))).ToList();
+        await scope.ServiceProvider.GetRequiredService<INavigationMenuService>().SyncDefaultsAsync(defaults.Concat(fed).ToList(), default, PEMS.Web.Navigation.NavigationMenuDefaults.RetiredKeys);
+    }
 }
 
 
@@ -864,12 +1290,21 @@ app.Use(async (context, next) =>
     await next();
 });
 
+// SCRUM-464: one trace id on the response (X-Trace-Id), on every log line and on the error pages; before the exception handler so the error pages carry it.
+PEMS.Web.Diagnostics.PemsTrace.UsePemsTraceId(app);
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 
     app.UseHsts();
 }
+
+// صفحه‌ی خطای دوستانه برای 4xx/5xx بدون بدنه (NotFound() و ...)؛ کد HTTP اصلی حفظ می‌شود و پاسخ‌های دارای بدنه
+// (مثلاً BadRequest(new { error })) دست‌نخورده می‌مانند.
+// Not for /api: API errors are problem+json bodies (SCRUM-435).
+app.UseWhen(ctx => !PEMS.Web.Api.ApiServiceCollectionExtensions.IsApiRequest(ctx.Request.Path),
+    branch => branch.UseStatusCodePagesWithReExecute("/Home/StatusPage", "?code={0}"));
 
 
 
@@ -894,7 +1329,9 @@ var blockedUploadFolders = new[]
 app.Use(async (context, next) =>
 {
     var path = context.Request.Path;
-    if (blockedUploadFolders.Any(f => path.StartsWithSegments(f, StringComparison.OrdinalIgnoreCase)))
+    // SCRUM-202: old letter editor images (/uploads/letters/inline) are served by the protected Files/Image action
+    if (blockedUploadFolders.Any(f => path.StartsWithSegments(f, StringComparison.OrdinalIgnoreCase))
+        && !path.StartsWithSegments("/uploads/letters/inline", StringComparison.OrdinalIgnoreCase))
     {
         context.Response.StatusCode = StatusCodes.Status404NotFound;
         return;
@@ -902,7 +1339,10 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.UseStaticFiles();
+// SCRUM-202: nothing under /uploads is ever served as a static file. The few old image URLs that remain
+// (/uploads/profile-photos, /uploads/signatures, /uploads/letters/inline) go to the Files/Image action, which needs a login.
+app.UseWhen(ctx => !ctx.Request.Path.StartsWithSegments("/uploads", StringComparison.OrdinalIgnoreCase),
+    branch => branch.UseStaticFiles());
 
 
 // Bilingual Platform: زبان از یک Cookie خوانده می‌شود (پیش‌فرض انگلیسی)؛ سوییچر زبان در
@@ -914,14 +1354,23 @@ app.UseStaticFiles();
 // مثل Timestamp های AuditLog یا نام فایل‌های Export) خاموش به تقویم شمسی تبدیل می‌شود، چون
 // همه‌ی تاریخ‌های دیتابیس میلادی ذخیره شده‌اند. فارسی فقط باید متن/جهت RTL را عوض کند، تقویم
 // را نه؛ پس تقویم روی همان CultureInfo("fa") به‌صراحت میلادی نگه داشته می‌شود.
-var faCulture = new System.Globalization.CultureInfo("fa");
-faCulture.DateTimeFormat.Calendar = new System.Globalization.GregorianCalendar();
-var enCulture = new System.Globalization.CultureInfo("en");
-var supportedCultureInfos = new List<System.Globalization.CultureInfo> { enCulture, faCulture };
+var supportedCultureInfos = (app.Configuration.GetSection("Localization:SupportedCultures").Get<string[]>()
+        ?? throw new InvalidOperationException("Missing required setting 'Localization:SupportedCultures' (Localization__SupportedCultures__0 in env/<name>.env)."))
+    .Select(name =>
+    {
+        var culture = new System.Globalization.CultureInfo(name);
+        if (culture.TwoLetterISOLanguageName == "fa")
+            culture.DateTimeFormat.Calendar = new System.Globalization.GregorianCalendar();
+        return culture;
+    })
+    .ToList();
+var defaultCultureName = PEMS.Web.Configuration.PemsConfigurationExtensions.Required(app.Configuration, "Localization:DefaultCulture");
+var defaultCulture = supportedCultureInfos.FirstOrDefault(c => c.Name == defaultCultureName)
+    ?? throw new InvalidOperationException($"Localization:DefaultCulture '{defaultCultureName}' is not in Localization:SupportedCultures.");
 
 var localizationOptions = new Microsoft.AspNetCore.Builder.RequestLocalizationOptions
 {
-    DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(enCulture, enCulture),
+    DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(defaultCulture, defaultCulture),
     SupportedCultures = supportedCultureInfos,
     SupportedUICultures = supportedCultureInfos
 };
@@ -931,14 +1380,26 @@ localizationOptions.RequestCultureProviders.Insert(0,
 
 app.UseRequestLocalization(localizationOptions);
 
+// SCRUM-540: older views still contain literal UI text.  Translate only exact, known resource
+// keys at the final HTML boundary so neither culture leaks legacy UI wording while those views
+// are migrated to explicit Localizer calls.
+app.UseMiddleware<PEMS.Web.Localization.LegacyHtmlLocalizationMiddleware>();
+
 
 app.UseRouting();
+
+// SCRUM-355/356: فقط endpointهایی که [EnableRateLimiting] دارند (صفحه‌های بازیابی) محدود می‌شوند
+app.UseRateLimiter();
 
 
 // ترتیب مهم است: احراز هویت باید قبل از احراز دسترسی اجرا شود
 app.UseAuthentication();
 
 app.UseAuthorization();
+PEMS.Web.Definitions.RouteTableExtensions.UseRouteTable(app);   // SCRUM-768: URLs of deleted controllers resolve through the route definitions
+
+// Licence gate (verification point V2): added only when Licensing:Enforce=true.
+app.UsePemsLicensing();
 
 
 // Audit Log: قبل از رسیدن به هر Controller، اطلاعات کاربر جاری را روی PEMSDbContext (که Scoped است)
@@ -978,6 +1439,9 @@ app.MapControllerRoute(
 
 app.MapHub<PEMS.Web.Hubs.NotificationHub>("/hubs/notifications");
 
+// OpenAPI 3.1 document, generated from the code and served from this server only (no CDN); signed-in users only.
+app.MapOpenApi("/api/v1/openapi.json").RequireAuthorization();
+
 // ==============================================================================
 // طبق بند ۲۰: نقطه‌ی Health Check سبک - بدون نیاز به احراز هویت (AuthorizeFilter سراسری فقط
 // روی MVC Controllers اعمال می‌شود، نه روی این Endpoint حداقلی Minimal API) و بدون هیچ جزئیات
@@ -1000,6 +1464,25 @@ app.MapGet("/health", async (PEMS.Persistence.Context.PEMSDbContext db) =>
 });
 
 
+
+// Anonymous, details-free schema state for deployment pipelines/monitors: 200 only when every shipped
+// migration is applied; 503 otherwise (body is just the state name).
+app.MapGet("/health/database", async (PEMS.Application.Interfaces.IDatabaseUpdateService updates, PEMS.Web.Definitions.OwnershipPreflightReport ownership) =>
+{
+    try
+    {
+        var status = await updates.GetStatusAsync();
+        var upToDate = status.State == PEMS.Application.DTOs.DatabaseSetupState.UpToDate;
+        // SCRUM-797: an update whose shipped forms would collide with a customer's application field stops before it writes; the form, field and reason are listed here (product form names only, no customer data)
+        var conflicts = await ownership.GetAsync();
+        var body = conflicts.Count == 0 ? status.State.ToString() : status.State + "\r\n" + string.Join("\r\n", conflicts.Select(c => c.Line));
+        return Results.Text(body, statusCode: upToDate && conflicts.Count == 0 ? StatusCodes.Status200OK : StatusCodes.Status503ServiceUnavailable);
+    }
+    catch
+    {
+        return Results.Text("Unreachable", statusCode: StatusCodes.Status503ServiceUnavailable);
+    }
+});
 
 app.Run();
 

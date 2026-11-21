@@ -1,0 +1,115 @@
+{
+  "kind": "page",
+  "key": "definition-grants",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Role grants of definitions",
+    "fa": "مجوزهای نقش برای تعریف‌ها"
+  },
+  "description": {
+    "en": "Open or close a definition for a role without a deploy",
+    "fa": "باز یا بستن تعریف برای نقش"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "definition-grants",
+    "permission": "Definitions.View",
+    "template": "entity-list",
+    "args": {
+      "id": "definition-grants",
+      "url": "/d/definition-grants-grid",
+      "idField": "DefinitionGrantId",
+      "newUrl": "/f/definition-grant-create",
+      "newLabel": {
+        "en": "Grant a role",
+        "fa": "مجوز برای نقش"
+      },
+      "columns": [
+        {
+          "key": "Kind",
+          "header": {
+            "en": "Kind",
+            "fa": "نوع"
+          },
+          "width": 110
+        },
+        {
+          "key": "DefinitionKey",
+          "header": {
+            "en": "Definition",
+            "fa": "تعریف"
+          },
+          "width": 260
+        },
+        {
+          "key": "RoleName",
+          "header": {
+            "en": "Role",
+            "fa": "نقش"
+          },
+          "width": 200
+        },
+        {
+          "key": "Effect",
+          "header": {
+            "en": "Effect",
+            "fa": "اثر"
+          },
+          "width": 90
+        },
+        {
+          "key": "Reason",
+          "header": {
+            "en": "Reason",
+            "fa": "دلیل"
+          },
+          "width": 300
+        },
+        {
+          "key": "CreatedBy",
+          "header": {
+            "en": "By",
+            "fa": "توسط"
+          },
+          "width": 140
+        },
+        {
+          "key": "CreatedDate",
+          "header": {
+            "en": "Created",
+            "fa": "ایجاد"
+          },
+          "width": 160,
+          "type": "datetime"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 120,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "remove",
+              "label": {
+                "en": "Remove",
+                "fa": "حذف"
+              },
+              "url": "/a/definition-grant-delete",
+              "method": "post",
+              "confirm": {
+                "en": "Remove this grant?",
+                "fa": "این مجوز حذف شود؟"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

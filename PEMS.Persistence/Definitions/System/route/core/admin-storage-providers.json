@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-storage-providers",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Storage providers (old address)",
+    "fa": "ارائه‌دهندگان ذخیره‌سازی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Storage providers (old address)",
+    "fa": "ارائه‌دهندگان ذخیره‌سازی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/StorageProviders/{*rest}",
+    "target": "/p/storage-providers",
+    "permanent": false
+  }
+}

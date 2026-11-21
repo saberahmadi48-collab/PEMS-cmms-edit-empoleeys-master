@@ -16,7 +16,7 @@ namespace PEMS.Web.Security;
 ///   ۱) فقط IHostEnvironment.IsDevelopment() - در Production/UAT هرگز فراخوانی محتوا اجرا نمی‌شود.
 ///   ۲) فقط با تنظیم صریح متغیر محیطی PEMS_DEV_RESET_ADMIN_PASSWORD=true - در حالت عادی حتی در
 ///      Development هم خاموش است (یک اجرای تصادفی dotnet run رمز کسی را عوض نمی‌کند).
-///   ۳) هیچ رمز جدیدی اختراع نمی‌شود - همان IdentitySeeder.DefaultAdminPassword مستندشده‌ی
+///   ۳) هیچ رمز جدیدی اختراع نمی‌شود - همان seed.Password مستندشده‌ی
 ///      موجود (که از روز اول در همین ریپازیتوری هست) دوباره اعمال می‌شود؛ هیچ اعتبار جدیدی به
 ///      کد اضافه نشد.
 ///   ۴) MustChangePassword=true (هم‌الگوی خودِ Seeder) - رمز پیش‌فرض باید بلافاصله بعد از ورود
@@ -37,25 +37,35 @@ public static class DevAdminPasswordReset
         if (Environment.GetEnvironmentVariable(EnableEnvironmentVariable) != "true")
             return;
 
+        var seed = AdminSeedSettings.From(services.GetRequiredService<Microsoft.Extensions.Configuration.IConfiguration>());
+        if (seed is null)
+        {
+            logger.LogWarning("{EnvVar}=true but Seed:Admin:* is not configured - nothing done.", EnableEnvironmentVariable);
+            return;
+        }
+
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-        var admin = await userManager.FindByNameAsync(IdentitySeeder.DefaultAdminUserName);
+        var admin = await userManager.FindByNameAsync(seed.UserName);
 
         if (admin == null)
         {
             logger.LogWarning(
                 "{EnvVar}=true بود ولی کاربر '{User}' در این پایگاه‌داده وجود ندارد - هیچ کاری انجام نشد.",
-                EnableEnvironmentVariable, IdentitySeeder.DefaultAdminUserName);
+                EnableEnvironmentVariable, seed.UserName);
             return;
         }
 
+        // its job is to put the documented seed password back; the password-history rule (SCRUM-412) must not stop it
         var token = await userManager.GeneratePasswordResetTokenAsync(admin);
-        var result = await userManager.ResetPasswordAsync(admin, token, IdentitySeeder.DefaultAdminPassword);
+        IdentityResult result;
+        using (PasswordHistoryBypass.Begin())
+            result = await userManager.ResetPasswordAsync(admin, token, seed.Password);
 
         if (!result.Succeeded)
         {
             logger.LogError(
                 "بازنشانی رمز Development-only کاربر '{User}' شکست خورد: {Errors}",
-                IdentitySeeder.DefaultAdminUserName, string.Join(", ", result.Errors.Select(e => e.Description)));
+                seed.UserName, string.Join(", ", result.Errors.Select(e => e.Description)));
             return;
         }
 
@@ -67,6 +77,6 @@ public static class DevAdminPasswordReset
         logger.LogWarning(
             "توسعه/تست: رمز کاربر '{User}' به مقدار پیش‌فرض مستندشده بازنشانی شد چون {EnvVar}=true بود. " +
             "این مکانیزم هرگز خارج از Development اجرا نمی‌شود و باید بلافاصله بعد از استفاده، رمز عوض شود.",
-            IdentitySeeder.DefaultAdminUserName, EnableEnvironmentVariable);
+            seed.UserName, EnableEnvironmentVariable);
     }
 }

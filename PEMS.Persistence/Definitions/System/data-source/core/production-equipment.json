@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "production-equipment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment",
+    "fa": "Equipment"
+  },
+  "description": {
+    "en": "Equipment",
+    "fa": "Equipment"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Production",
+      "action": "EquipmentChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

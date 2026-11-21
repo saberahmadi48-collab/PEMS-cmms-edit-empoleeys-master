@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "mr-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New MR (old address)",
+    "fa": "New MR (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New MR (old address)",
+    "fa": "New MR (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaterialRequisition/Create",
+    "target": "/f/mr-create",
+    "permanent": false
+  }
+}

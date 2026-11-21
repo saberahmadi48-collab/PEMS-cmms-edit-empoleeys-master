@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "store-requisition-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Store requisition status history",
+    "fa": "تاریخچه‌ی وضعیت درخواست انبار"
+  },
+  "description": {
+    "en": "Store requisition status history",
+    "fa": "تاریخچه‌ی وضعیت درخواست انبار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StoreRequisition",
+      "action": "History",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

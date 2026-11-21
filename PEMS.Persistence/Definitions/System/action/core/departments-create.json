@@ -1,0 +1,59 @@
+{
+  "kind": "action",
+  "key": "departments-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create department",
+    "fa": "ایجاد دپارتمان"
+  },
+  "description": {
+    "en": "Create department",
+    "fa": "ایجاد دپارتمان"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "Department",
+      "map": {
+        "code": "Code",
+        "name": "Name",
+        "description": "Description"
+      },
+      "required": [
+        "Name"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "Name"
+          ],
+          "message": {
+            "en": "A department with this name already exists.",
+            "fa": "دپارتمانی با همین نام از قبل وجود دارد."
+          }
+        },
+        {
+          "fields": [
+            "Code"
+          ],
+          "message": {
+            "en": "A department with this code already exists.",
+            "fa": "دپارتمانی با همین کد از قبل وجود دارد."
+          },
+          "ignoreEmpty": true
+        }
+      ]
+    },
+    "success": {
+      "en": "Department created.",
+      "fa": "دپارتمان ایجاد شد."
+    },
+    "redirect": "/p/departments"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "po-update-line",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a line",
+    "fa": "ویرایش قلم"
+  },
+  "description": {
+    "en": "Edit a line",
+    "fa": "ویرایش قلم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "UpdateLine",
+      "args": {
+        "lineId": "field:lineId",
+        "input": {
+          "quantity": "field:quantity",
+          "unitPrice": "field:unitPrice",
+          "requiredDate": "field:requiredDate",
+          "isStockLine": "field:isStockLine",
+          "commodityGroupId": "field:commodityGroupId",
+          "freeTextReason": "field:freeTextReason",
+          "warehouseId": "field:warehouseId"
+        }
+      }
+    },
+    "success": {
+      "en": "The line was saved.",
+      "fa": "قلم ذخیره شد."
+    },
+    "redirect": "/p/purchase-order-details?id={id}"
+  }
+}

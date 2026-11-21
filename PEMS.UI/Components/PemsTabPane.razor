@@ -1,0 +1,8 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("tab-pane", Category = "navigation", Icon = "bi-window")]
+@FrameMarkup.Element("div", Css, Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public TabPaneOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string Css => string.Join(" ", new[] { "tab-pane", Options.Fade ? "fade" : null, Options.Fade && Options.Active ? "show" : null, Options.Active ? "active" : null, Options.Css }.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+}

@@ -1,0 +1,55 @@
+{
+  "kind": "action",
+  "key": "projects-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create project",
+    "fa": "ایجاد پروژه"
+  },
+  "description": {
+    "en": "Create project",
+    "fa": "ایجاد پروژه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "Project",
+      "map": {
+        "projectCode": "ProjectCode",
+        "projectName": "ProjectName",
+        "clientName": "ClientName",
+        "location": "Location",
+        "startDate": "StartDate",
+        "endDate": "EndDate",
+        "status": "Status"
+      },
+      "required": [
+        "ProjectCode",
+        "ProjectName",
+        "Status"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "ProjectCode"
+          ],
+          "message": {
+            "en": "A project with this code already exists.",
+            "fa": "پروژه‌ای با این کد از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Project created.",
+      "fa": "پروژه ایجاد شد."
+    },
+    "redirect": "/p/projects"
+  }
+}

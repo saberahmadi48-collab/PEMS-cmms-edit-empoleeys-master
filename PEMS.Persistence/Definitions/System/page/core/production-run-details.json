@@ -1,0 +1,563 @@
+{
+  "kind": "page",
+  "key": "production-run-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production run",
+    "fa": "اجرای تولید"
+  },
+  "description": {
+    "en": "One run: inputs, outputs, losses, events and reconciliation, with the run commands (page definition)",
+    "fa": "یک اجرا: ورودی، خروجی، افت، رویدادها و تطبیق، با دستورهای اجرا (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "production-run-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "production-run-record",
+            "fields": [
+              {
+                "key": "runNumber",
+                "label": {
+                  "en": "Run",
+                  "fa": "اجرا"
+                }
+              },
+              {
+                "key": "orderNumber",
+                "label": {
+                  "en": "Order",
+                  "fa": "سفارش"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "material",
+                "label": {
+                  "en": "Material",
+                  "fa": "ماده"
+                }
+              },
+              {
+                "key": "startDate",
+                "label": {
+                  "en": "Start",
+                  "fa": "شروع"
+                },
+                "type": "date"
+              },
+              {
+                "key": "endDate",
+                "label": {
+                  "en": "End",
+                  "fa": "پایان"
+                },
+                "type": "date"
+              },
+              {
+                "key": "workCenter",
+                "label": {
+                  "en": "Work center",
+                  "fa": "مرکز کار"
+                }
+              },
+              {
+                "key": "equipment",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "operator",
+                "label": {
+                  "en": "Operator",
+                  "fa": "اپراتور"
+                }
+              },
+              {
+                "key": "shift",
+                "label": {
+                  "en": "Shift",
+                  "fa": "شیفت"
+                }
+              },
+              {
+                "key": "holdReason",
+                "label": {
+                  "en": "Hold reason",
+                  "fa": "دلیل تعلیق"
+                }
+              },
+              {
+                "key": "notes",
+                "label": {
+                  "en": "Notes",
+                  "fa": "یادداشت"
+                }
+              },
+              {
+                "key": "reconciliationNote",
+                "label": {
+                  "en": "Reconciliation",
+                  "fa": "تطبیق"
+                }
+              },
+              {
+                "key": "totalInput",
+                "label": {
+                  "en": "Total input",
+                  "fa": "جمع ورودی"
+                }
+              },
+              {
+                "key": "totalOutput",
+                "label": {
+                  "en": "Total output",
+                  "fa": "جمع خروجی"
+                }
+              },
+              {
+                "key": "totalLoss",
+                "label": {
+                  "en": "Total loss",
+                  "fa": "جمع افت"
+                }
+              },
+              {
+                "key": "difference",
+                "label": {
+                  "en": "Difference",
+                  "fa": "اختلاف"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/production-run-head",
+              "idField": "productionRunId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/production-run-start?id={{params.id}}",
+                "text": {
+                  "en": "Start",
+                  "fa": "شروع"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-run-pause?id={{params.id}}",
+                "text": {
+                  "en": "Pause",
+                  "fa": "توقف موقت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-run-resume?id={{params.id}}",
+                "text": {
+                  "en": "Resume",
+                  "fa": "ازسرگیری"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-run-hold?id={{params.id}}",
+                "text": {
+                  "en": "Hold",
+                  "fa": "تعلیق"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-run-complete?id={{params.id}}",
+                "text": {
+                  "en": "Complete",
+                  "fa": "تکمیل"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-run-cancel?id={{params.id}}",
+                "text": {
+                  "en": "Cancel",
+                  "fa": "لغو"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-run-record-input?productionRunId={{params.id}}",
+                "text": {
+                  "en": "Record an input",
+                  "fa": "ثبت ورودی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-run-record-output?productionRunId={{params.id}}",
+                "text": {
+                  "en": "Record an output",
+                  "fa": "ثبت خروجی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/production-run-record-loss?productionRunId={{params.id}}",
+                "text": {
+                  "en": "Record a loss",
+                  "fa": "ثبت افت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "inputs",
+          "component": "def:related-table",
+          "options": {
+            "id": "inputs",
+            "title": {
+              "en": "Inputs",
+              "fa": "ورودی‌ها"
+            },
+            "url": "/d/production-run-inputs?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 140
+              },
+              {
+                "key": "quantity",
+                "header": {
+                  "en": "Quantity",
+                  "fa": "مقدار"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "uom",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 70
+              },
+              {
+                "key": "sourceBatch",
+                "header": {
+                  "en": "Source batch",
+                  "fa": "بچ مبدأ"
+                },
+                "width": 140
+              },
+              {
+                "key": "postedToInventory",
+                "header": {
+                  "en": "Posted",
+                  "fa": "ارسال‌شده"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "employee",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 150
+              },
+              {
+                "key": "transactionDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 180,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "post",
+                    "label": {
+                      "en": "Post to inventory",
+                      "fa": "ارسال به موجودی"
+                    },
+                    "url": "/f/production-run-post-input?productionInputId={id}&productionRunId={{params.id}}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "outputs",
+          "component": "def:related-table",
+          "options": {
+            "id": "outputs",
+            "title": {
+              "en": "Outputs",
+              "fa": "خروجی‌ها"
+            },
+            "url": "/d/production-run-outputs?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 140
+              },
+              {
+                "key": "batchNumber",
+                "header": {
+                  "en": "Batch",
+                  "fa": "بچ"
+                },
+                "width": 140
+              },
+              {
+                "key": "quantity",
+                "header": {
+                  "en": "Quantity",
+                  "fa": "مقدار"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "uom",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 70
+              },
+              {
+                "key": "classification",
+                "header": {
+                  "en": "Class",
+                  "fa": "طبقه‌بندی"
+                },
+                "width": 120
+              },
+              {
+                "key": "postedToInventory",
+                "header": {
+                  "en": "Posted",
+                  "fa": "ارسال‌شده"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "employee",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 150
+              },
+              {
+                "key": "transactionDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 260,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "post",
+                    "label": {
+                      "en": "Post to inventory",
+                      "fa": "ارسال به موجودی"
+                    },
+                    "url": "/f/production-run-post-output?productionOutputId={id}&productionRunId={{params.id}}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "batch",
+                    "label": {
+                      "en": "Batch",
+                      "fa": "بچ"
+                    },
+                    "url": "/p/production-batch-details?id={raw.productionBatchId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "losses",
+          "component": "def:related-table",
+          "options": {
+            "id": "losses",
+            "title": {
+              "en": "Losses",
+              "fa": "افت‌ها"
+            },
+            "url": "/d/production-run-losses?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "quantity",
+                "header": {
+                  "en": "Quantity",
+                  "fa": "مقدار"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "uom",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 70
+              },
+              {
+                "key": "category",
+                "header": {
+                  "en": "Category",
+                  "fa": "دسته"
+                },
+                "width": 140
+              },
+              {
+                "key": "employee",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 150
+              },
+              {
+                "key": "transactionDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "notes",
+                "header": {
+                  "en": "Notes",
+                  "fa": "یادداشت"
+                },
+                "width": 240
+              }
+            ]
+          }
+        },
+        {
+          "id": "events",
+          "component": "def:related-table",
+          "options": {
+            "id": "events",
+            "title": {
+              "en": "Events",
+              "fa": "رویدادها"
+            },
+            "url": "/d/production-run-events?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "eventDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "eventType",
+                "header": {
+                  "en": "Event",
+                  "fa": "رویداد"
+                },
+                "width": 140
+              },
+              {
+                "key": "employee",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 150
+              },
+              {
+                "key": "details",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 320
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Production.View"
+  }
+}

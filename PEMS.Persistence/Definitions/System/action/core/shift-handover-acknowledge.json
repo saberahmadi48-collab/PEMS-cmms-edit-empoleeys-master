@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "shift-handover-acknowledge",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Acknowledge the handover",
+    "fa": "تأیید تحویل"
+  },
+  "description": {
+    "en": "Acknowledge the handover",
+    "fa": "تأیید تحویل"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ShiftHandover",
+      "action": "Acknowledge",
+      "args": {
+        "id": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The handover was acknowledged.",
+      "fa": "تحویل شیفت تایید شد."
+    },
+    "redirect": "/ShiftHandover/Details/{id}"
+  }
+}

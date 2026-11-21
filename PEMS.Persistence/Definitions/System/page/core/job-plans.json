@@ -1,0 +1,153 @@
+{
+  "kind": "page",
+  "key": "job-plans",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Job Plans",
+    "fa": "طرح‌های کار"
+  },
+  "description": {
+    "en": "Job plans with their tasks, skills and materials (page definition)",
+    "fa": "طرح‌های کار با مراحل، مهارت‌ها و مواد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "job-plans",
+    "regions": {
+      "content": [
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/job-plan-create",
+                "text": {
+                  "en": "New job plan",
+                  "fa": "طرح کار جدید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "plans",
+          "component": "data-grid",
+          "options": {
+            "id": "plans",
+            "url": "/d/job-plan-list",
+            "idField": "jobPlanId",
+            "columns": [
+              {
+                "key": "jobPlanNumber",
+                "header": {
+                  "en": "Number",
+                  "fa": "شماره"
+                },
+                "width": 130
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 300
+              },
+              {
+                "key": "equipmentClass",
+                "header": {
+                  "en": "Equipment class",
+                  "fa": "کلاس تجهیز"
+                },
+                "width": 160
+              },
+              {
+                "key": "estimatedDurationHours",
+                "header": {
+                  "en": "Hours",
+                  "fa": "ساعت"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "taskCount",
+                "header": {
+                  "en": "Tasks",
+                  "fa": "مراحل"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "planUsageCount",
+                "header": {
+                  "en": "Used by plans",
+                  "fa": "استفاده"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "permitRequired",
+                "header": {
+                  "en": "Permit",
+                  "fa": "مجوز"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "lotoRequired",
+                "header": {
+                  "en": "LOTO",
+                  "fa": "LOTO"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/job-plan-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "JobPlan.View"
+  }
+}

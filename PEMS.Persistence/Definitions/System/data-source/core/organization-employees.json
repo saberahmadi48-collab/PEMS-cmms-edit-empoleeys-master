@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "organization-employees",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employees",
+    "fa": "Employees"
+  },
+  "description": {
+    "en": "Employees",
+    "fa": "Employees"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Organization",
+      "action": "EmployeeOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

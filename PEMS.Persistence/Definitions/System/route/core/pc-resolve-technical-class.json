@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-resolve-technical-class",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup ResolveTechnicalClass (old address)",
+    "fa": "Part Catalogue lookup ResolveTechnicalClass (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue lookup ResolveTechnicalClass (old address)",
+    "fa": "Part Catalogue lookup ResolveTechnicalClass (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueLookup/ResolveTechnicalClass",
+    "target": "/x/pc-resolve-technical-class",
+    "permanent": false
+  }
+}

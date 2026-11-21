@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "help-article-unpublish",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Unpublish an article",
+    "fa": "لغو انتشار مقاله"
+  },
+  "description": {
+    "en": "Unpublish an article",
+    "fa": "لغو انتشار مقاله"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "ArticleSetPublished",
+      "args": {
+        "articleId": "field:id",
+        "isPublished": "literal:false"
+      }
+    },
+    "success": {
+      "en": "Article unpublished (moved back to draft).",
+      "fa": "انتشار مقاله لغو شد."
+    },
+    "redirect": "/p/help-admin"
+  }
+}

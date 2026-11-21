@@ -1,0 +1,174 @@
+{
+  "kind": "page",
+  "key": "shift-handovers",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Shift Handovers",
+    "fa": "تحویل شیفت"
+  },
+  "description": {
+    "en": "Shift handovers with their status (page definition)",
+    "fa": "تحویل‌های شیفت با وضعیت (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "shift-handovers",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "shift-handover-filters",
+            "resetUrl": "/p/shift-handovers",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Draft",
+                    "label": {
+                      "en": "Draft",
+                      "fa": "پیش‌نویس"
+                    }
+                  },
+                  {
+                    "value": "Prepared",
+                    "label": {
+                      "en": "Prepared",
+                      "fa": "آماده"
+                    }
+                  },
+                  {
+                    "value": "Acknowledged",
+                    "label": {
+                      "en": "Acknowledged",
+                      "fa": "تأییدشده"
+                    }
+                  },
+                  {
+                    "value": "Completed",
+                    "label": {
+                      "en": "Completed",
+                      "fa": "نهایی"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/shift-handover-create",
+                "text": {
+                  "en": "New shift handover",
+                  "fa": "تحویل شیفت جدید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "handovers",
+          "component": "data-grid",
+          "options": {
+            "id": "handovers",
+            "url": "/d/shift-handover-list?f.status={{params.status|url}}",
+            "idField": "shiftHandoverId",
+            "columns": [
+              {
+                "key": "handoverDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "shiftLabel",
+                "header": {
+                  "en": "Shift",
+                  "fa": "شیفت"
+                },
+                "width": 120
+              },
+              {
+                "key": "outgoing",
+                "header": {
+                  "en": "Outgoing",
+                  "fa": "تحویل‌دهنده"
+                },
+                "width": 180
+              },
+              {
+                "key": "incoming",
+                "header": {
+                  "en": "Incoming",
+                  "fa": "تحویل‌گیرنده"
+                },
+                "width": 180
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "itemCount",
+                "header": {
+                  "en": "Items",
+                  "fa": "اقلام"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/shift-handover-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "ShiftHandover.View"
+  }
+}

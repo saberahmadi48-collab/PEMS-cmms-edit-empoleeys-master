@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "tq-counts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "TQ counts",
+    "fa": "شمارش TQ"
+  },
+  "description": {
+    "en": "TQ counts",
+    "fa": "شمارش TQ"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TechnicalQueryPage",
+      "action": "Counts",
+      "args": {
+        "queryType": "param:queryType",
+        "status": "param:status",
+        "projectId": "param:projectId"
+      }
+    }
+  }
+}

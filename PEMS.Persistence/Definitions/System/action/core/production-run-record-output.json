@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "production-run-record-output",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record an output",
+    "fa": "ثبت خروجی"
+  },
+  "description": {
+    "en": "Record an output",
+    "fa": "ثبت خروجی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "RecordOutput",
+      "args": {
+        "productionRunId": "field:productionRunId",
+        "materialItemId": "field:materialItemId",
+        "productionBatchId": "field:productionBatchId",
+        "quantity": "field:quantity",
+        "uomId": "field:uomId",
+        "outputClassification": "field:outputClassification",
+        "notes": "field:notes",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The output was recorded.",
+      "fa": "خروجی ثبت شد."
+    },
+    "redirect": "/ProductionRun/Details/{productionRunId}"
+  }
+}

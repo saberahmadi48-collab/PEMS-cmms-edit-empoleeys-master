@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "tenders-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tenders (index) (old address)",
+    "fa": "Tenders (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Tenders (index) (old address)",
+    "fa": "Tenders (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Tender/Index",
+    "target": "/p/tenders",
+    "permanent": false
+  }
+}

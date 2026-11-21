@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "barcode-bulk-generate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate barcodes in bulk",
+    "fa": "ساخت گروهی بارکد"
+  },
+  "description": {
+    "en": "Generate barcodes in bulk",
+    "fa": "ساخت گروهی بارکد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Barcode",
+      "action": "BulkGenerate",
+      "args": {
+        "equipmentIds": "field:equipmentIds",
+        "symbology": "field:symbology",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The barcodes were generated.",
+      "fa": "بارکدها ساخته شدند."
+    }
+  }
+}

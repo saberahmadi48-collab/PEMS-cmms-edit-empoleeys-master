@@ -15,6 +15,12 @@
     var positionsText = root.getAttribute("data-positions-text");
     var membersText = root.getAttribute("data-members-text");
     var viewDetailsText = root.getAttribute("data-view-details-text");
+    var filterEmptyText = root.getAttribute("data-filter-empty-text");
+    var noDisciplineText = root.getAttribute("data-no-discipline-text");
+    var allDisciplinesText = root.getAttribute("data-all-disciplines-text");
+
+    // Pure helpers (summary, vacancy filter, discipline search) live in pems-org-chart-logic.js
+    var Logic = window.PemsOrgChartLogic;
 
     var loadingEl = document.getElementById("orgChartLoading");
     var errorEl = document.getElementById("orgChartError");
@@ -25,24 +31,47 @@
     var canvasEl = document.getElementById("orgChartCanvas");
     var retryBtn = document.getElementById("orgChartRetry");
     var disciplineFilter = document.getElementById("orgChartDisciplineFilter");
+    var disciplineSearch = document.getElementById("orgChartDisciplineSearch");
+    var summaryEl = document.getElementById("orgChartSummary");
 
     var noSelectionEl = document.getElementById("orgChartNoSelection");
     var detailContentEl = document.getElementById("orgChartDetailContent");
 
+    var rawTree = [];          // last tree from the server (unfiltered); the vacancy filter redraws from this
+    var filterMode = "all";    // all | filled | vacant
+
     var zoom = 1;
     var MIN_ZOOM = 0.4, MAX_ZOOM = 2, ZOOM_STEP = 0.15;
 
-    function showState(state) {
+    // keepSummary: the staffing summary stays visible when the chart is empty only because of the vacancy filter
+    function showState(state, keepSummary) {
         loadingEl.hidden = state !== "loading";
         errorEl.hidden = state !== "error";
         emptyEl.hidden = state !== "empty";
         viewportEl.hidden = state !== "ready";
+        if (summaryEl) summaryEl.hidden = !(state === "ready" || keepSummary === true);
     }
 
-    function esc(s) {
-        var d = document.createElement("div");
-        d.textContent = s == null ? "" : String(s);
-        return d.innerHTML;
+    // markup comes from the page's registered templates (script-templates component, pems-template.js), never from a string in this file
+    var Tpl = window.PemsTemplate;
+    function tpl(name, values) { return Tpl.fill(Tpl.clone(name), values || {}); }
+    function nodeEl(kind, icon, kindText, name) {
+        return tpl("org-node", { root: { attrs: { "data-kind": kind } }, icon: { addClass: icon }, kind: kindText, name: name });
+    }
+    function vacantBadge(icon, text) { return tpl("org-badge-vacant", { icon: icon ? { addClass: icon } : null, text: text }); }
+    function metaText(text) { return tpl("org-meta-text", { text: text }); }
+    // a detail panel: title, sub line, rows [term, value]; a value is text or a list of nodes / strings
+    function detail(title, sub, rows, link) {
+        var f = Tpl.fill(Tpl.fragment("org-detail"), { title: title, sub: sub });
+        var dl = f.querySelector("dl");
+        rows.forEach(function (r) {
+            var row = Tpl.fill(Tpl.fragment("org-detail-row"), { term: r[0] });
+            var dd = row.querySelector("dd");
+            dd.replaceChildren.apply(dd, [].concat(r[1]));
+            dl.appendChild(row);
+        });
+        if (link) f.appendChild(Tpl.fill(Tpl.clone("org-detail-link"), { link: { attrs: { href: link.href } }, label: link.label }));
+        return f;
     }
 
     // ---- Node kind → icon/label (kind comes verbatim from Team.NodeKind; never inferred from name) ----
@@ -56,29 +85,21 @@
     }
 
     function buildGroupNode(group) {
-        var li = document.createElement("li");
+        var li = tpl("org-item");
         var hasChildren = (group.children && group.children.length) || (group.teams && group.teams.length);
 
         li.appendChild(buildToggle(hasChildren));
 
-        var node = document.createElement("div");
-        node.className = "pems-org-node";
-        node.setAttribute("data-kind", "Group");
-        node.setAttribute("tabindex", "-1");
-        node.setAttribute("role", "treeitem");
+        var node = nodeEl("Group", "bi-diagram-3", groupKindLabel(group), group.name);
         if (!group.isActive) node.setAttribute("data-inactive", "true");
-        node.innerHTML =
-            '<span class="pems-org-node-kind"><i class="bi bi-diagram-3"></i>' + esc(groupKindLabel(group)) + '</span>' +
-            '<span class="pems-org-node-name">' + esc(group.name) + '</span>' +
-            '<span class="pems-org-node-meta">' + esc(group.code) + (group.disciplineName ? (' &middot; ' + esc(group.disciplineName)) : '') + '</span>';
+        node.querySelector("[data-slot=meta]").textContent = (group.code == null ? "" : group.code) + (group.disciplineName ? " · " + group.disciplineName : "");
 
         node.addEventListener("click", function () { selectGroup(group, node); });
         node.addEventListener("keydown", onNodeKeydown);
         li.appendChild(node);
 
         if (hasChildren) {
-            var ul = document.createElement("ul");
-            ul.setAttribute("role", "group");
+            var ul = tpl("org-group-list");
             (group.children || []).forEach(function (child) { ul.appendChild(buildGroupNode(child)); });
             (group.teams || []).forEach(function (team) { ul.appendChild(buildTeamNode(team)); });
             li.appendChild(ul);
@@ -96,38 +117,24 @@
     }
 
     function buildTeamNode(team) {
-        var li = document.createElement("li");
+        var li = tpl("org-item");
         var hasChildren = (team.children && team.children.length) || (team.positions && team.positions.length);
 
         li.appendChild(buildToggle(hasChildren));
 
-        var node = document.createElement("div");
-        node.className = "pems-org-node";
-        node.setAttribute("data-kind", team.nodeKind || "Team");
-        node.setAttribute("tabindex", "-1");
-        node.setAttribute("role", "treeitem");
+        var node = nodeEl(team.nodeKind || "Team", teamKindIcon(team.nodeKind), team.nodeKind || "Team", team.name);
         if (!team.isActive) node.setAttribute("data-inactive", "true");
-
-        var vacancyBadge = team.vacantPositionCount > 0
-            ? ('<span class="pems-org-badge-vacant"><i class="bi bi-exclamation-circle"></i> ' + team.vacantPositionCount + '</span>')
-            : '';
-
-        node.innerHTML =
-            '<span class="pems-org-node-kind"><i class="bi ' + teamKindIcon(team.nodeKind) + '"></i>' + esc(team.nodeKind || "Team") + '</span>' +
-            '<span class="pems-org-node-name">' + esc(team.name) + '</span>' +
-            '<span class="pems-org-node-meta">' +
-                '<span>' + membersText + ': ' + (team.memberCount || 0) + '</span>' +
-                '<span>' + positionsText + ': ' + (team.positionCount || 0) + '</span>' +
-                vacancyBadge +
-            '</span>';
+        var meta = node.querySelector("[data-slot=meta]");
+        meta.appendChild(metaText(membersText + ": " + (team.memberCount || 0)));
+        meta.appendChild(metaText(positionsText + ": " + (team.positionCount || 0)));
+        if (team.vacantPositionCount > 0) meta.appendChild(vacantBadge("bi-exclamation-circle", String(team.vacantPositionCount)));
 
         node.addEventListener("click", function () { selectTeam(team, node); });
         node.addEventListener("keydown", onNodeKeydown);
         li.appendChild(node);
 
         if (hasChildren) {
-            var ul = document.createElement("ul");
-            ul.setAttribute("role", "group");
+            var ul = tpl("org-group-list");
             (team.children || []).forEach(function (child) { ul.appendChild(buildTeamNode(child)); });
             (team.positions || []).forEach(function (position) { ul.appendChild(buildPositionNode(position)); });
             li.appendChild(ul);
@@ -139,24 +146,14 @@
     }
 
     function buildPositionNode(position) {
-        var li = document.createElement("li");
+        var li = tpl("org-item");
         li.classList.add("pems-org-leaf");
 
-        var node = document.createElement("div");
-        node.className = "pems-org-node";
-        node.setAttribute("data-kind", position.isVacant ? "Position-Vacant" : "Position-Occupied");
-        node.setAttribute("tabindex", "-1");
-        node.setAttribute("role", "treeitem");
+        var node = nodeEl(position.isVacant ? "Position-Vacant" : "Position-Occupied", "bi-person-badge", "Position", position.title);
         if (!position.isActive) node.setAttribute("data-inactive", "true");
-
-        var occupant = position.isVacant
-            ? ('<span class="pems-org-badge-vacant"><i class="bi bi-person-dash"></i> ' + vacantText + '</span>')
-            : ('<span><i class="bi bi-person-check"></i> ' + esc(position.currentAssignment.employeeName) + '</span>');
-
-        node.innerHTML =
-            '<span class="pems-org-node-kind"><i class="bi bi-person-badge"></i>Position</span>' +
-            '<span class="pems-org-node-name">' + esc(position.title) + '</span>' +
-            '<span class="pems-org-node-meta">' + occupant + '</span>';
+        node.querySelector("[data-slot=meta]").appendChild(position.isVacant
+            ? vacantBadge("bi-person-dash", vacantText)
+            : tpl("org-occupant", { name: position.currentAssignment.employeeName }));
 
         node.addEventListener("click", function () { selectPosition(position, node); });
         node.addEventListener("keydown", onNodeKeydown);
@@ -165,11 +162,8 @@
     }
 
     function buildToggle(hasChildren) {
-        var span = document.createElement("span");
-        if (!hasChildren) return span;
-        span.className = "pems-org-toggle";
-        span.innerHTML = '<i class="bi bi-dash"></i>';
-        span.setAttribute("aria-label", "Toggle");
+        if (!hasChildren) return tpl("org-toggle-empty");
+        var span = tpl("org-toggle"); span.setAttribute("aria-label", "Toggle");
         span.addEventListener("click", function (e) {
             e.stopPropagation();
             var li = span.closest("li");
@@ -193,25 +187,21 @@
         node.focus();
     }
 
-    function showDetail(rowsHtml) {
+    function showDetail(content) {
         noSelectionEl.hidden = true;
         detailContentEl.hidden = false;
-        detailContentEl.innerHTML = rowsHtml;
+        detailContentEl.replaceChildren(content);
     }
 
     function selectGroup(group, node) {
         markSelected(node);
-        showDetail(
-            '<h6 class="mb-1">' + esc(group.name) + '</h6>' +
-            '<div class="text-muted small mb-2">' + esc(groupKindLabel(group)) + '</div>' +
-            '<dl>' +
-                '<dt>Code</dt><dd>' + esc(group.code) + '</dd>' +
-                '<dt>Discipline</dt><dd>' + esc(group.disciplineName || "—") + '</dd>' +
-                '<dt>Status</dt><dd>' + (group.isActive ? "Active" : "Inactive") + '</dd>' +
-                '<dt>Sub-groups</dt><dd>' + ((group.children || []).length) + '</dd>' +
-                '<dt>Teams</dt><dd>' + ((group.teams || []).length) + '</dd>' +
-            '</dl>'
-        );
+        showDetail(detail(group.name, groupKindLabel(group), [
+            ["Code", group.code == null ? "" : String(group.code)],
+            ["Discipline", group.disciplineName || "—"],
+            ["Status", group.isActive ? "Active" : "Inactive"],
+            ["Sub-groups", String((group.children || []).length)],
+            ["Teams", String((group.teams || []).length)]
+        ]));
     }
 
     function selectTeam(team, node) {
@@ -220,40 +210,27 @@
         // صفحه‌ی جزئیات واقعی (Team/TeamDetails)، این لینک به آن‌جا می‌رود، نه صرفاً
         // Highlight کردن کارت در Team/Index (که هنوز به‌عنوان راه جایگزین کار می‌کند).
         var detailsUrl = detailsUrlTemplate + "?teamId=" + encodeURIComponent(team.teamId);
-        showDetail(
-            '<h6 class="mb-1">' + esc(team.name) + '</h6>' +
-            '<div class="text-muted small mb-2">' + esc(team.nodeKind || "Team") + '</div>' +
-            '<dl>' +
-                '<dt>Code</dt><dd>' + esc(team.code) + '</dd>' +
-                '<dt>Parent</dt><dd>' + (team.parentTeamId ? ("#" + team.parentTeamId) : "—") + '</dd>' +
-                '<dt>Status</dt><dd>' + (team.isActive ? "Active" : "Inactive") + '</dd>' +
-                '<dt>Supervisor</dt><dd>' + esc(team.supervisorName || "—") + '</dd>' +
-                '<dt>' + membersText + '</dt><dd>' + (team.memberCount || 0) + '</dd>' +
-                '<dt>' + positionsText + '</dt><dd>' + (team.positionCount || 0) +
-                    (team.vacantPositionCount ? (' <span class="pems-org-badge-vacant">(' + team.vacantPositionCount + ' ' + vacantText + ')</span>') : '') + '</dd>' +
-                '<dt>Child nodes</dt><dd>' + ((team.children || []).length) + '</dd>' +
-            '</dl>' +
-            '<a class="btn btn-pems-solid btn-sm w-100 mt-2" href="' + detailsUrl + '">' +
-                '<i class="bi bi-box-arrow-up-right"></i> ' + viewDetailsText +
-            '</a>'
-        );
+        showDetail(detail(team.name, team.nodeKind || "Team", [
+            ["Code", team.code == null ? "" : String(team.code)],
+            ["Parent", team.parentTeamId ? ("#" + team.parentTeamId) : "—"],
+            ["Status", team.isActive ? "Active" : "Inactive"],
+            ["Supervisor", team.supervisorName || "—"],
+            [membersText, String(team.memberCount || 0)],
+            [positionsText, team.vacantPositionCount
+                ? [String(team.positionCount || 0), " ", vacantBadge(null, "(" + team.vacantPositionCount + " " + vacantText + ")")]
+                : String(team.positionCount || 0)],
+            ["Child nodes", String((team.children || []).length)]
+        ], { href: detailsUrl, label: viewDetailsText }));
     }
 
     function selectPosition(position, node) {
         markSelected(node);
-        var occupantRow = position.isVacant
-            ? ('<dt>Occupant</dt><dd><span class="pems-org-badge-vacant">' + vacantText + '</span></dd>')
-            : ('<dt>Occupant</dt><dd>' + esc(position.currentAssignment.employeeName) + '</dd>' +
-               '<dt>Since</dt><dd>' + esc(new Date(position.currentAssignment.startDate).toLocaleDateString()) + '</dd>');
+        var occupantRows = position.isVacant
+            ? [["Occupant", vacantBadge(null, vacantText)]]
+            : [["Occupant", position.currentAssignment.employeeName],
+               ["Since", new Date(position.currentAssignment.startDate).toLocaleDateString()]];
 
-        showDetail(
-            '<h6 class="mb-1">' + esc(position.title) + '</h6>' +
-            '<div class="text-muted small mb-2">Position</div>' +
-            '<dl>' +
-                '<dt>Status</dt><dd>' + (position.isActive ? "Active" : "Inactive") + '</dd>' +
-                occupantRow +
-            '</dl>'
-        );
+        showDetail(detail(position.title, "Position", [["Status", position.isActive ? "Active" : "Inactive"]].concat(occupantRows)));
     }
 
     // ---- Keyboard navigation (roving focus across visible nodes) ----
@@ -353,23 +330,72 @@
 
     // ---- Load ----
 
-    function render(tree) {
-        canvasEl.innerHTML = "";
-        if (!tree || tree.length === 0) {
-            emptyTextEl.textContent = emptyText;
-            showState("empty");
+    function setText(id, value) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = value;
+    }
+
+    function updateSummary(s) {
+        setText("orgChartStatTotal", s.total);
+        setText("orgChartStatFilled", s.filled);
+        setText("orgChartStatVacant", s.vacant);
+        setText("orgChartStatOccupancy", s.occupancyPercent + "%");
+        setText("orgChartFilterFilled", s.filled);
+        setText("orgChartFilterVacant", s.vacant);
+
+        var filledPct = s.total === 0 ? 0 : (s.filled * 100) / s.total;
+        var filledBar = document.getElementById("orgChartProgressFilled");
+        var vacantBar = document.getElementById("orgChartProgressVacant");
+        if (filledBar) filledBar.style.width = filledPct.toFixed(1) + "%";
+        if (vacantBar) vacantBar.style.width = (s.total === 0 ? 0 : 100 - filledPct).toFixed(1) + "%";
+
+        var progress = document.getElementById("orgChartProgress");
+        if (progress) {
+            var label = progress.getAttribute("data-base-label") || progress.getAttribute("aria-label") || "";
+            progress.setAttribute("data-base-label", label);
+            progress.setAttribute("aria-label", label + ": " + s.occupancyPercent + "% (" + s.filled + "/" + s.total + ")");
+            progress.title = s.occupancyPercent + "%";
+        }
+    }
+
+    function resetDetail() {
+        detailContentEl.hidden = true;
+        detailContentEl.replaceChildren();
+        noSelectionEl.hidden = false;
+    }
+
+    // Draws the tree for the current vacancy filter. Filtering prunes the data (see pems-org-chart-logic.js) rather
+    // than hiding nodes, because the connector lines depend on real first/last children.
+    function draw() {
+        canvasEl.replaceChildren();
+        resetDetail();
+
+        var shown = Logic.filterTree(rawTree, filterMode);
+        if (shown.length === 0) {
+            emptyTextEl.textContent = filterEmptyText;
+            showState("empty", true);
             return;
         }
 
-        var ul = document.createElement("ul");
-        ul.className = "pems-org-tree";
-        ul.setAttribute("role", "tree");
-        tree.forEach(function (group) { ul.appendChild(buildGroupNode(group)); });
+        var ul = tpl("org-tree");
+        shown.forEach(function (group) { ul.appendChild(buildGroupNode(group)); });
         canvasEl.appendChild(ul);
 
         showState("ready");
         zoom = 1;
         applyZoom();
+    }
+
+    function render(tree) {
+        rawTree = tree || [];
+        if (rawTree.length === 0) {
+            canvasEl.replaceChildren();
+            emptyTextEl.textContent = emptyText;
+            showState("empty");
+            return;
+        }
+        updateSummary(Logic.summarize(rawTree));
+        draw();
     }
 
     function load() {
@@ -395,6 +421,65 @@
 
     retryBtn.addEventListener("click", load);
     disciplineFilter.addEventListener("change", load);
+
+    // ---- Vacancy filter (all / filled / vacant) ----
+
+    var filterButtons = Array.prototype.slice.call(document.querySelectorAll("#orgChartVacancyFilter button"));
+    filterButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+            filterMode = btn.getAttribute("data-filter");
+            filterButtons.forEach(function (b) {
+                var on = b === btn;
+                b.classList.toggle("active", on);
+                b.setAttribute("aria-pressed", on ? "true" : "false");
+            });
+            if (rawTree.length) draw();
+        });
+    });
+
+    // ---- Searchable discipline filter ----
+    // The <select> stays the source of truth (load() reads its value); the search box only narrows its options.
+    // The selected option is always kept so typing never changes the active filter by itself.
+
+    var disciplineOptions = Array.prototype.slice.call(disciplineFilter.options)
+        .filter(function (o) { return o.value !== ""; })
+        .map(function (o) { return { value: o.value, text: o.textContent }; });
+
+    function addOption(value, text, disabled) {
+        var o = new Option(text, value);
+        if (disabled) o.disabled = true;
+        disciplineFilter.appendChild(o);
+    }
+
+    function rebuildDisciplineOptions() {
+        var selected = disciplineFilter.value;
+        var query = disciplineSearch.value;
+        var matches = Logic.filterOptions(disciplineOptions, query, selected);
+
+        while (disciplineFilter.firstChild) disciplineFilter.removeChild(disciplineFilter.firstChild);
+        addOption("", allDisciplinesText, false);
+        matches.forEach(function (m) { addOption(m.value, m.text, false); });
+        if (Logic.normalize(query) && Logic.filterOptions(disciplineOptions, query, null).length === 0)
+            addOption("", noDisciplineText, true);
+        disciplineFilter.value = selected;
+    }
+
+    if (disciplineSearch) {
+        disciplineSearch.addEventListener("input", rebuildDisciplineOptions);
+        disciplineSearch.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+                disciplineSearch.value = "";
+                rebuildDisciplineOptions();
+            } else if (e.key === "Enter") {
+                e.preventDefault();
+                var only = Logic.filterOptions(disciplineOptions, disciplineSearch.value, null);
+                if (only.length === 1 && disciplineSearch.value.trim()) {
+                    disciplineFilter.value = only[0].value;
+                    disciplineFilter.dispatchEvent(new Event("change"));
+                }
+            }
+        });
+    }
 
     load();
 })();

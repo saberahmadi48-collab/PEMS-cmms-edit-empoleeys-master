@@ -230,40 +230,4 @@ public class ImportPipelineAuthorizationTests
 
     // ================= MRS Import =================
 
-    [Fact]
-    public async Task Mrs_BulkCommit_WithoutPermission_ReturnsForbid_DoesNotCommit()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Mrs_BulkCommit_WithoutPermission_ReturnsForbid_DoesNotCommit), role: SystemRoles.Viewer);
-        var service = new FakeMrsImportService();
-        var controller = new MrsImportController(service, ctx, user, null!, perms).WithTempData();
-
-        var result = await controller.BulkCommit(1, new List<int> { 10 });
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(service.CommitCalled);
-    }
-
-    [Fact]
-    public async Task Mrs_BulkCommit_WithPermission_Commits()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Mrs_BulkCommit_WithPermission_Commits), role: SystemRoles.MaintenanceEngineer);
-        var service = new FakeMrsImportService();
-        var controller = new MrsImportController(service, ctx, user, null!, perms).WithTempData();
-
-        var result = await controller.BulkCommit(1, new List<int> { 10 });
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(service.CommitCalled);
-    }
-
-    [Fact]
-    public async Task Mrs_Index_WithoutViewPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Mrs_Index_WithoutViewPermission_ReturnsForbid), role: null);
-        var controller = new MrsImportController(new FakeMrsImportService(), ctx, user, null!, perms).WithTempData();
-
-        var result = await controller.Index();
-
-        Assert.IsType<ForbidResult>(result);
-    }
 }

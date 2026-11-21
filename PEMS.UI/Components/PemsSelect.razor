@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("select", Category = "forms", Icon = "bi-menu-button-wide")]
+@FrameMarkup.Element("select", ControlState.Css(new ControlOptions { Kind = ControlKind.Select, Size = Options.Scale?.ToLowerInvariant() switch { "small" => Size.Small, "large" => Size.Large, _ => Size.Medium }, CssClass = Options.Css }), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public SelectOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

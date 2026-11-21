@@ -1,0 +1,71 @@
+{
+  "key": "pager",
+  "component": "PEMS.UI.Components.PemsPager",
+  "category": "navigation",
+  "icon": "bi-three-dots",
+  "nameKey": "component.pager",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "current": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "total": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "href": {
+        "type": "string"
+      },
+      "scale": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "PagerOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "current": 2,
+    "total": 5,
+    "href": "/items?page={page}",
+    "scale": "small",
+    "css": "mb-0"
+  }
+}

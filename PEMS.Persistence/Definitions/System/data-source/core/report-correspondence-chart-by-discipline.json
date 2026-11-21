@@ -1,0 +1,31 @@
+{
+  "kind": "data-source",
+  "key": "report-correspondence-chart-by-discipline",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondence chart: By discipline",
+    "fa": "نمودار correspondence: بر اساس دیسیپلین"
+  },
+  "description": {
+    "en": "Correspondence chart: By discipline",
+    "fa": "نمودار correspondence: بر اساس دیسیپلین"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Correspondence",
+      "args": {
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      },
+      "where": {
+        "key": "ByDiscipline"
+      }
+    }
+  }
+}

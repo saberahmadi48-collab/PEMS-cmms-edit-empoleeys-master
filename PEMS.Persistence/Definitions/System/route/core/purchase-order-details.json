@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "purchase-order-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Purchase order details (old address)",
+    "fa": "Purchase order details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Purchase order details (old address)",
+    "fa": "Purchase order details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "PurchaseOrder/Details/{id}",
+    "target": "/p/purchase-order-details?id={id}",
+    "permanent": false
+  }
+}

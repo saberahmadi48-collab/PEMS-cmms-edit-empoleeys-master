@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "finding-failure-modes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Failure modes",
+    "fa": "حالت‌های خرابی"
+  },
+  "description": {
+    "en": "Failure modes",
+    "fa": "حالت‌های خرابی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Finding",
+      "action": "FailureModeChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

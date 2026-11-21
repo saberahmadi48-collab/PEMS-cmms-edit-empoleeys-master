@@ -7,7 +7,7 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Controllers;
+using PEMS.Web.Services;
 
 namespace PEMS.Tests.Authorization;
 
@@ -76,29 +76,15 @@ public class TeamObjectScopeAuthorizationTests
         };
     }
 
-    private static (TeamController Controller, ApplicationUser User) CreateController(Fixture f, string role, int? employeeId, int nextUserId)
+    private static (TeamOperations Controller, List<string> Roles, string UserName) CreateController(Fixture f, string role, int? employeeId, int nextUserId)
     {
         var appUser = new ApplicationUser { Id = nextUserId, UserName = $"user{nextUserId}", EmployeeId = employeeId };
         f.Ctx.Users.Add(appUser);
         f.Ctx.SaveChanges();
 
         var currentUser = new FakeCurrentUserService { UserId = appUser.Id, Roles = new List<string> { role } };
-        var controller = new TeamController(f.Ctx, new TeamService(f.Ctx), new OrganizationStructureService(f.Ctx), currentUser, f.Permissions).WithTempData();
-        return (controller, appUser);
-    }
-
-    // ================= A. No permission =================
-
-    [Fact]
-    public async Task AddMember_NoPermission_InScopeTeam_Denied()
-    {
-        var f = await BuildAsync(nameof(AddMember_NoPermission_InScopeTeam_Denied));
-        var (controller, _) = CreateController(f, SystemRoles.Viewer, f.MechEmployeeId, 1);
-
-        var result = await controller.AddMember(f.MechTeamId, f.MechEmployeeId, f.MechRoleId);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Empty(f.Ctx.TeamMembers);
+        var controller = new TeamOperations(f.Ctx, new TeamService(f.Ctx), new OrganizationStructureService(f.Ctx));
+        return (controller, new List<string> { role }, appUser.UserName!);
     }
 
     // ================= B. Permission + in scope = ALLOW =================
@@ -107,11 +93,11 @@ public class TeamObjectScopeAuthorizationTests
     public async Task AddMember_MaintenanceEngineer_SameDisciplineTeamAndEmployee_Allowed()
     {
         var f = await BuildAsync(nameof(AddMember_MaintenanceEngineer_SameDisciplineTeamAndEmployee_Allowed));
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
-        var result = await controller.AddMember(f.MechTeamId, f.MechEmployeeId, f.MechRoleId);
+        var result = await controller.AddMemberAsync(roles, userName, f.MechTeamId, f.MechEmployeeId, f.MechRoleId);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.Single(f.Ctx.TeamMembers);
     }
 
@@ -122,11 +108,11 @@ public class TeamObjectScopeAuthorizationTests
     {
         // کاربر (کارمند Discipline مکانیک) سعی می‌کند به تیمِ Discipline برق عضو اضافه کند
         var f = await BuildAsync(nameof(AddMember_MaintenanceEngineer_OutOfScopeTeam_Denied_NoMutation));
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
-        var result = await controller.AddMember(f.ElecTeamId, f.MechEmployeeId, f.MechRoleId);
+        var result = await controller.AddMemberAsync(roles, userName, f.ElecTeamId, f.MechEmployeeId, f.MechRoleId);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success); Assert.Equal("You may not do this.", result.Error);
         Assert.Empty(f.Ctx.TeamMembers);
     }
 
@@ -135,11 +121,11 @@ public class TeamObjectScopeAuthorizationTests
     {
         // Team در دسترس است، ولی خودِ کارمند هدف از Discipline دیگری است
         var f = await BuildAsync(nameof(AddMember_MaintenanceEngineer_OutOfScopeEmployee_Denied_NoMutation));
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
-        var result = await controller.AddMember(f.MechTeamId, f.ElecEmployeeId, f.MechRoleId);
+        var result = await controller.AddMemberAsync(roles, userName, f.MechTeamId, f.ElecEmployeeId, f.MechRoleId);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success); Assert.Equal("You may not do this.", result.Error);
         Assert.Empty(f.Ctx.TeamMembers);
     }
 
@@ -151,11 +137,11 @@ public class TeamObjectScopeAuthorizationTests
         // شبیه‌سازی حمله‌ی IDOR دقیقاً طبق بند ۱۰: کاربر TeamId=200 را که واقعاً وجود دارد ولی
         // خارج از Scope اوست، مستقیم در فرم/AJAX جای‌گذاری می‌کند.
         var f = await BuildAsync(nameof(AddMember_IDOR_ArbitraryOutOfScopeTeamId_Denied));
-        var (controller, _) = CreateController(f, SystemRoles.EngineeringSupervisor, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.EngineeringSupervisor, f.MechEmployeeId, 1);
 
-        var result = await controller.AddMember(f.ElecTeamId, f.MechEmployeeId, f.MechRoleId);
+        var result = await controller.AddMemberAsync(roles, userName, f.ElecTeamId, f.MechEmployeeId, f.MechRoleId);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success); Assert.Equal("You may not do this.", result.Error);
         Assert.Empty(f.Ctx.TeamMembers);
     }
 
@@ -164,11 +150,11 @@ public class TeamObjectScopeAuthorizationTests
     {
         // TeamId که اصلاً وجود ندارد - باید Fail-Closed رد شود، نه اینکه خطای Service لِیک شود
         var f = await BuildAsync(nameof(AddMember_IDOR_NonExistentTeamId_Denied_FailClosed));
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
-        var result = await controller.AddMember(999999, f.MechEmployeeId, f.MechRoleId);
+        var result = await controller.AddMemberAsync(roles, userName, 999999, f.MechEmployeeId, f.MechRoleId);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success); Assert.Equal("You may not do this.", result.Error);
         Assert.Empty(f.Ctx.TeamMembers);
     }
 
@@ -180,11 +166,11 @@ public class TeamObjectScopeAuthorizationTests
         // کاربری با نقش معتبر (MaintenanceEngineer) ولی بدون هیچ Employee ای وصل - Scope قابل‌
         // تعیین نیست، پس طبق بند ۱۷ («Fail Closed») باید رد شود، نه اجازه.
         var f = await BuildAsync(nameof(AddMember_UserWithNoEmployeeLink_Denied_FailClosed));
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, employeeId: null, nextUserId: 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, employeeId: null, nextUserId: 1);
 
-        var result = await controller.AddMember(f.MechTeamId, f.MechEmployeeId, f.MechRoleId);
+        var result = await controller.AddMemberAsync(roles, userName, f.MechTeamId, f.MechEmployeeId, f.MechRoleId);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success); Assert.Equal("You may not do this.", result.Error);
         Assert.Empty(f.Ctx.TeamMembers);
     }
 
@@ -196,11 +182,11 @@ public class TeamObjectScopeAuthorizationTests
         // طبق ممیزی: EngineeringManager در همه‌ی ماژول‌های دیگر PEMS اختیار چند-دیسیپلینه دارد -
         // این‌جا هم معاف است، حتی وقتی هیچ Employee ای وصل نباشد.
         var f = await BuildAsync(nameof(AddMember_EngineeringManager_CrossDiscipline_Allowed));
-        var (controller, _) = CreateController(f, SystemRoles.EngineeringManager, employeeId: null, nextUserId: 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.EngineeringManager, employeeId: null, nextUserId: 1);
 
-        var result = await controller.AddMember(f.ElecTeamId, f.ElecEmployeeId, f.MechRoleId);
+        var result = await controller.AddMemberAsync(roles, userName, f.ElecTeamId, f.ElecEmployeeId, f.MechRoleId);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.Single(f.Ctx.TeamMembers);
     }
 
@@ -212,11 +198,11 @@ public class TeamObjectScopeAuthorizationTests
         var f = await BuildAsync(nameof(RemoveMember_InScopeTeam_Allowed));
         f.Ctx.TeamMembers.Add(new TeamMember { TeamMemberId = 1, TeamId = f.MechTeamId, EmployeeId = f.MechEmployeeId, RoleId = f.MechRoleId, IsActive = true });
         await f.Ctx.SaveChangesAsync();
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
-        var result = await controller.RemoveMember(1);
+        var result = await controller.RemoveMemberAsync(roles, userName, 1);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.False(f.Ctx.TeamMembers.Single(x => x.TeamMemberId == 1).IsActive);
     }
 
@@ -228,11 +214,11 @@ public class TeamObjectScopeAuthorizationTests
         var f = await BuildAsync(nameof(RemoveMember_OutOfScopeTeam_Denied_MembershipUnchanged));
         f.Ctx.TeamMembers.Add(new TeamMember { TeamMemberId = 1, TeamId = f.ElecTeamId, EmployeeId = f.ElecEmployeeId, RoleId = f.MechRoleId, IsActive = true });
         await f.Ctx.SaveChangesAsync();
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
-        var result = await controller.RemoveMember(1);
+        var result = await controller.RemoveMemberAsync(roles, userName, 1);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success); Assert.Equal("You may not do this.", result.Error);
         Assert.True(f.Ctx.TeamMembers.Single(x => x.TeamMemberId == 1).IsActive);
     }
 
@@ -240,11 +226,11 @@ public class TeamObjectScopeAuthorizationTests
     public async Task RemoveMember_NonExistentTeamMemberId_Denied_FailClosed()
     {
         var f = await BuildAsync(nameof(RemoveMember_NonExistentTeamMemberId_Denied_FailClosed));
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
-        var result = await controller.RemoveMember(999999);
+        var result = await controller.RemoveMemberAsync(roles, userName, 999999);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success); Assert.Equal("You may not do this.", result.Error);
     }
 
     // ================= F. Move — full security matrix (Section 11) =================
@@ -257,11 +243,11 @@ public class TeamObjectScopeAuthorizationTests
         f.Ctx.Teams.Add(new Team { TeamId = 101, Code = "T-MECH-2", Name = "Mech Team 2", MaintenanceGroupId = 1, IsActive = true });
         f.Ctx.TeamMembers.Add(new TeamMember { TeamMemberId = 1, TeamId = f.MechTeamId, EmployeeId = f.MechEmployeeId, RoleId = f.MechRoleId, IsActive = true });
         await f.Ctx.SaveChangesAsync();
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
-        var result = await controller.MoveMember(f.MechEmployeeId, f.MechTeamId, 101, f.MechRoleId);
+        var result = await controller.MoveMemberAsync(roles, userName, f.MechEmployeeId, f.MechTeamId, 101, f.MechRoleId);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.True(f.Ctx.TeamMembers.Any(x => x.TeamId == 101 && x.EmployeeId == f.MechEmployeeId && x.IsActive));
     }
 
@@ -271,11 +257,11 @@ public class TeamObjectScopeAuthorizationTests
         var f = await BuildAsync(nameof(MoveMember_SourceInScope_TargetOutOfScope_Denied_NoMutation));
         f.Ctx.TeamMembers.Add(new TeamMember { TeamMemberId = 1, TeamId = f.MechTeamId, EmployeeId = f.MechEmployeeId, RoleId = f.MechRoleId, IsActive = true });
         await f.Ctx.SaveChangesAsync();
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
-        var result = await controller.MoveMember(f.MechEmployeeId, f.MechTeamId, f.ElecTeamId, f.MechRoleId);
+        var result = await controller.MoveMemberAsync(roles, userName, f.MechEmployeeId, f.MechTeamId, f.ElecTeamId, f.MechRoleId);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success); Assert.Equal("You may not do this.", result.Error);
         // عضویت مبدأ باید دست‌نخورده بماند - نه غیرفعال شده، نه به مقصد اضافه شده
         Assert.True(f.Ctx.TeamMembers.Single(x => x.TeamMemberId == 1).IsActive);
         Assert.DoesNotContain(f.Ctx.TeamMembers, x => x.TeamId == f.ElecTeamId);
@@ -289,11 +275,11 @@ public class TeamObjectScopeAuthorizationTests
         var f = await BuildAsync(nameof(MoveMember_SourceOutOfScope_TargetInScope_Denied_NoMutation));
         f.Ctx.TeamMembers.Add(new TeamMember { TeamMemberId = 1, TeamId = f.ElecTeamId, EmployeeId = f.ElecEmployeeId, RoleId = f.MechRoleId, IsActive = true });
         await f.Ctx.SaveChangesAsync();
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
-        var result = await controller.MoveMember(f.ElecEmployeeId, f.ElecTeamId, f.MechTeamId, f.MechRoleId);
+        var result = await controller.MoveMemberAsync(roles, userName, f.ElecEmployeeId, f.ElecTeamId, f.MechTeamId, f.MechRoleId);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success); Assert.Equal("You may not do this.", result.Error);
         Assert.True(f.Ctx.TeamMembers.Single(x => x.TeamMemberId == 1).IsActive);
         Assert.DoesNotContain(f.Ctx.TeamMembers, x => x.TeamId == f.MechTeamId);
     }
@@ -307,11 +293,11 @@ public class TeamObjectScopeAuthorizationTests
         // نباید بتواند این کارمند را جابه‌جا کند چون خودِ کارمند خارج از Scope اوست.
         f.Ctx.TeamMembers.Add(new TeamMember { TeamMemberId = 1, TeamId = f.MechTeamId, EmployeeId = f.ElecEmployeeId, RoleId = f.MechRoleId, IsActive = true });
         await f.Ctx.SaveChangesAsync();
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
-        var result = await controller.MoveMember(f.ElecEmployeeId, f.MechTeamId, 101, f.MechRoleId);
+        var result = await controller.MoveMemberAsync(roles, userName, f.ElecEmployeeId, f.MechTeamId, 101, f.MechRoleId);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success); Assert.Equal("You may not do this.", result.Error);
         Assert.True(f.Ctx.TeamMembers.Single(x => x.TeamMemberId == 1).IsActive);
     }
 
@@ -322,11 +308,11 @@ public class TeamObjectScopeAuthorizationTests
         f.Ctx.Teams.Add(new Team { TeamId = 201, Code = "T-ELEC-2", Name = "Elec Team 2", MaintenanceGroupId = 2, IsActive = true });
         f.Ctx.TeamMembers.Add(new TeamMember { TeamMemberId = 1, TeamId = f.ElecTeamId, EmployeeId = f.ElecEmployeeId, RoleId = f.MechRoleId, IsActive = true });
         await f.Ctx.SaveChangesAsync();
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
-        var result = await controller.MoveMember(f.ElecEmployeeId, f.ElecTeamId, 201, f.MechRoleId);
+        var result = await controller.MoveMemberAsync(roles, userName, f.ElecEmployeeId, f.ElecTeamId, 201, f.MechRoleId);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success); Assert.Equal("You may not do this.", result.Error);
         Assert.True(f.Ctx.TeamMembers.Single(x => x.TeamMemberId == 1).IsActive);
     }
 
@@ -337,11 +323,11 @@ public class TeamObjectScopeAuthorizationTests
         f.Ctx.Teams.Add(new Team { TeamId = 201, Code = "T-ELEC-2", Name = "Elec Team 2", MaintenanceGroupId = 2, IsActive = true });
         f.Ctx.TeamMembers.Add(new TeamMember { TeamMemberId = 1, TeamId = f.ElecTeamId, EmployeeId = f.ElecEmployeeId, RoleId = f.MechRoleId, IsActive = true });
         await f.Ctx.SaveChangesAsync();
-        var (controller, _) = CreateController(f, SystemRoles.EngineeringManager, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.EngineeringManager, f.MechEmployeeId, 1);
 
-        var result = await controller.MoveMember(f.ElecEmployeeId, f.ElecTeamId, 201, f.MechRoleId);
+        var result = await controller.MoveMemberAsync(roles, userName, f.ElecEmployeeId, f.ElecTeamId, 201, f.MechRoleId);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.True(f.Ctx.TeamMembers.Any(x => x.TeamId == 201 && x.EmployeeId == f.ElecEmployeeId && x.IsActive));
     }
 
@@ -351,12 +337,12 @@ public class TeamObjectScopeAuthorizationTests
     public async Task CreateTeam_UnderOutOfScopeMaintenanceGroup_Denied_NoMutation()
     {
         var f = await BuildAsync(nameof(CreateTeam_UnderOutOfScopeMaintenanceGroup_Denied_NoMutation));
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
         // MaintenanceGroupId=2 متعلق به Discipline برق است - کاربر مکانیک است
-        var result = await controller.CreateTeam("NEW-T", "New Team", 2, null, null);
+        var result = await controller.CreateTeamAsync(roles, userName, "NEW-T", "New Team", 2, null, null);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success); Assert.Equal("You may not do this.", result.Error);
         Assert.DoesNotContain(f.Ctx.Teams, x => x.Code == "NEW-T");
     }
 
@@ -364,11 +350,11 @@ public class TeamObjectScopeAuthorizationTests
     public async Task CreateTeam_UnderInScopeMaintenanceGroup_Allowed()
     {
         var f = await BuildAsync(nameof(CreateTeam_UnderInScopeMaintenanceGroup_Allowed));
-        var (controller, _) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
+        var (controller, roles, userName) = CreateController(f, SystemRoles.MaintenanceEngineer, f.MechEmployeeId, 1);
 
-        var result = await controller.CreateTeam("NEW-T", "New Team", 1, null, null);
+        var result = await controller.CreateTeamAsync(roles, userName, "NEW-T", "New Team", 1, null, null);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.Contains(f.Ctx.Teams, x => x.Code == "NEW-T");
     }
 }

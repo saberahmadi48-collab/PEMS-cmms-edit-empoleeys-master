@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "procurement-packages-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement packages (index) (old address)",
+    "fa": "Procurement packages (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Procurement packages (index) (old address)",
+    "fa": "Procurement packages (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ProcurementPackage/Index",
+    "target": "/p/procurement-packages",
+    "permanent": false
+  }
+}

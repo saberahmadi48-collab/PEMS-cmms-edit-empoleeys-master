@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "storage-routing-storage-provider-id-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Storage provider options",
+    "fa": "گزینه‌های ارائه‌دهنده‌ی ذخیره‌سازی"
+  },
+  "description": {
+    "en": "Choices for storage provider",
+    "fa": "گزینه‌ها برای ارائه‌دهنده‌ی ذخیره‌سازی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "entity-options",
+    "parameters": {
+      "entity": "StorageProvider",
+      "value": "StorageProviderId",
+      "label": "Name"
+    }
+  }
+}

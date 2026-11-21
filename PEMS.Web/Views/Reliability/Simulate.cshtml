@@ -4,51 +4,39 @@
 
     string StatusBadge(string status) => status switch
     {
-        "READY" => "text-bg-success",
-        "NOT_READY" => "text-bg-secondary",
-        _ => "text-bg-light border"
+        "READY" => "success",
+        "NOT_READY" => "neutral",
+        _ => "light"
     };
 }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Ram" asp-route-id="@equipmentId" class="btn btn-outline-secondary btn-sm">← RAM / Weibull</a>
-</div>
+<pems-flex justify="end" align="center" css="mb-2">
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Ram" asp-route-id="@equipmentId">← RAM / Weibull</pems-button>
+</pems-flex>
 
-<div class="alert alert-warning small">
+<pems-alert tone="warning" css="small">
     <strong>Provenance = SIMULATED.</strong> این نتیجه یک برون‌یابی احتمالاتی از پارامترهای محاسبه‌شده
     است - هرگز به‌عنوان عملکرد واقعی کارخانه تفسیر نشود. @Model.MethodologyNote
-</div>
+</pems-alert>
 
-<span class="badge @StatusBadge(Model.DataStatus)">@Model.DataStatus</span>
-@if (Model.Reason != null) { <p class="text-muted small mt-2">@Model.Reason</p> }
+<pems-badge tone="@StatusBadge(Model.DataStatus)">@Model.DataStatus</pems-badge>
+@if (Model.Reason != null) { <pems-text class="text-muted small mt-2">@Model.Reason</pems-text> }
 
 @if (Model.DataStatus == "READY")
 {
-    <div class="row g-3 mt-1">
-        <div class="col-md-3">
-            <div class="content-card h-100 text-center">
-                <div class="fs-4 fw-bold">@Model.MeanAvailabilityPercent?.ToString("N2")%</div>
-                <div class="text-muted small">Mean Availability</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="content-card h-100 text-center">
-                <div class="fs-5 fw-bold">@Model.P10AvailabilityPercent?.ToString("N2")% – @Model.P90AvailabilityPercent?.ToString("N2")%</div>
-                <div class="text-muted small">P10 – P90 Range</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="content-card h-100 text-center">
-                <div class="fs-4 fw-bold">@Model.MeanDowntimeHours?.ToString("N1")h</div>
-                <div class="text-muted small">Mean Downtime / @Model.SimulatedHorizonHours.ToString("N0")h</div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="content-card h-100 text-center">
-                <div class="fs-4 fw-bold">@Model.MeanFailureCount?.ToString("N1")</div>
-                <div class="text-muted small">Mean Failure Count</div>
-            </div>
-        </div>
-    </div>
-    <p class="text-muted small mt-3">Inputs: β=@Model.InputBeta?.ToString("N3"), η=@Model.InputEta?.ToString("N1")h, MTTR=@Model.InputMTTRHours?.ToString("N1")h — @Model.Iterations iterations.</p>
+    <pems-row gap="3" css="mt-1">
+        <pems-col md="3">
+            <pems-kpi-tile label="Mean Availability">@Model.MeanAvailabilityPercent?.ToString("N2")%</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="3">
+            <pems-kpi-tile label="P10 – P90 Range">@Model.P10AvailabilityPercent?.ToString("N2")% – @Model.P90AvailabilityPercent?.ToString("N2")%</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="3">
+            <pems-kpi-tile label="Mean Downtime / @Model.SimulatedHorizonHours.ToString("N0")h">@Model.MeanDowntimeHours?.ToString("N1")h</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="3">
+            <pems-kpi-tile label="Mean Failure Count">@Model.MeanFailureCount?.ToString("N1")</pems-kpi-tile>
+        </pems-col>
+    </pems-row>
+    <pems-text class="text-muted small mt-3">Inputs: β=@Model.InputBeta?.ToString("N3"), η=@Model.InputEta?.ToString("N1")h, MTTR=@Model.InputMTTRHours?.ToString("N1")h — @Model.Iterations iterations.</pems-text>
 }

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "material-item-transactions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Recent transactions of a material",
+    "fa": "تراکنش‌های اخیر یک ماده"
+  },
+  "description": {
+    "en": "Recent transactions of a material",
+    "fa": "تراکنش‌های اخیر یک ماده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaterialItem",
+      "action": "Transactions",
+      "args": {
+        "materialItemId": "param:materialItemId"
+      }
+    }
+  }
+}

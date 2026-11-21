@@ -1,0 +1,25 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("workflow-history", Category = "data", Icon = "bi-clock-history")]
+@inject IPemsLocale Locale
+@if (Options.Entries.Count == 0)
+{
+    <div @attributes="Options.Attributes" class="@Join("pems-wfh pems-wfh--empty text-muted", Options.Css, Options.PageClass)" id="@Options.Id">@Locale.Text(Options.Empty)</div>
+}
+else
+{
+    <ol @attributes="Options.Attributes" class="@Join("pems-wfh", Options.Css, Options.PageClass)" id="@Options.Id">
+        @foreach (var e in Options.Entries.OrderByDescending(x => x.When))
+        {
+            <li class="@("pems-wfh__item pems-wfh__item--" + e.Tone)">
+                <div class="pems-wfh__head"><strong>@e.Title</strong><time class="pems-wfh__when" datetime="@e.When.ToString("s")">@PEMS.UI.PemsDates.DateTime(e.When)</time></div>
+                @if (!string.IsNullOrWhiteSpace(e.Detail)) { <div class="pems-wfh__detail">@e.Detail</div> }
+                @if (!string.IsNullOrWhiteSpace(e.Actor)) { <div class="pems-wfh__actor">@e.Actor</div> }
+                @if (!string.IsNullOrWhiteSpace(e.Comment)) { <blockquote class="pems-wfh__comment">@e.Comment</blockquote> }
+            </li>
+        }
+    </ol>
+}
+@code {
+    [Parameter, EditorRequired] public WorkflowHistoryOptions Options { get; set; } = default!;
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+}

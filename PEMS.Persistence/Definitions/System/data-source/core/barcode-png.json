@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "barcode-png",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode image (PNG)",
+    "fa": "تصویر بارکد (PNG)"
+  },
+  "description": {
+    "en": "Barcode image (PNG)",
+    "fa": "تصویر بارکد (PNG)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Barcode",
+      "action": "Png",
+      "args": {
+        "id": "param:id"
+      },
+      "disposition": "inline"
+    }
+  }
+}

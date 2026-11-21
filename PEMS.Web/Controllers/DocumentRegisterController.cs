@@ -97,6 +97,14 @@ public class DocumentRegisterController : Controller
         };
     }
 
+    /// <summary>SCRUM-538: opens a document's own details page by its type (engineering, VDR, contract, maintenance); the target page checks the permissions.</summary>
+    [HttpGet]
+    public async Task<IActionResult> Open(int id)
+    {
+        var target = PEMS.Web.Helpers.DocumentLinks.Target(await _context.Documents.AsNoTracking().FirstOrDefaultAsync(d => d.DocumentId == id));
+        return target is { } t ? RedirectToAction("Details", t.Controller, new { id = t.Id }) : NotFound();
+    }
+
     public async Task<IActionResult> Index(string? project, string? disciplines, string? status, string? q, int page = 1, int? pageSize = null)
     {
         ViewData["Title"] = "Document Register";

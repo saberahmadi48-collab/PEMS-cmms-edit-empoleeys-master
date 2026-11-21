@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "ai-search",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI search (old address)",
+    "fa": "جستجوی هوشمند (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "AI search (old address)",
+    "fa": "جستجوی هوشمند (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "AISearch/{*rest}",
+    "target": "/p/ai-search",
+    "permanent": false
+  }
+}

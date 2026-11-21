@@ -1,0 +1,107 @@
+{
+  "kind": "form",
+  "key": "definition-save-draft",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a draft",
+    "fa": "ذخیره پیش‌نویس"
+  },
+  "description": {
+    "en": "Save a draft",
+    "fa": "ذخیره پیش‌نویس"
+  },
+  "payload": {
+    "id": "definition-save-draft",
+    "title": {
+      "en": "Save a draft",
+      "fa": "ذخیره پیش‌نویس"
+    },
+    "submitLabel": {
+      "en": "Save draft",
+      "fa": "ذخیره"
+    },
+    "actionKey": "definition-save-draft",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "kind",
+        "label": {
+          "en": "Kind",
+          "fa": "نوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Kind is required.",
+            "fa": "نوع الزامی است."
+          }
+        },
+        "maxLength": 60
+      },
+      {
+        "name": "key",
+        "label": {
+          "en": "Key",
+          "fa": "کلید"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Key is required.",
+            "fa": "کلید الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "appKey",
+        "label": {
+          "en": "App",
+          "fa": "برنامه"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "placeholder": {
+          "en": "core",
+          "fa": "core"
+        }
+      },
+      {
+        "name": "payload",
+        "label": {
+          "en": "Payload (JSON)",
+          "fa": "بار (JSON)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Payload (JSON) is required.",
+            "fa": "بار (JSON) الزامی است."
+          }
+        },
+        "maxLength": 1000000,
+        "span": 2,
+        "helpText": {
+          "en": "The JSON payload of the definition, checked by the kind when you save.",
+          "fa": "بار JSON تعریف؛ هنگام ذخیره توسط نوع آن بررسی می‌شود."
+        }
+      },
+      {
+        "name": "changeSummary",
+        "label": {
+          "en": "What changed",
+          "fa": "چه تغییر کرد"
+        },
+        "kind": "text",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

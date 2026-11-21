@@ -1,0 +1,65 @@
+{
+  "kind": "component",
+  "key": "entity-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Dashboard of numbers",
+    "fa": "داشبورد اعداد"
+  },
+  "description": {
+    "en": "KPI tiles whose numbers come from one row of a grid data source (a statistics row), read with the permission of the source.",
+    "fa": "کاشی‌های شاخص که عددهایشان از یک ردیف منبع داده می‌آید."
+  },
+  "payload": {
+    "parameters": {
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "The url of the grid data source that holds the statistics row: /d/{key}"
+      },
+      "idField": {
+        "type": "string",
+        "required": true,
+        "description": "The row property that holds the id"
+      },
+      "rowId": {
+        "type": "string",
+        "required": true,
+        "description": "The id of the statistics row (usually 1)"
+      },
+      "tiles": {
+        "type": "array",
+        "required": true,
+        "description": "The tiles: { key (row property), label, icon, iconClass, tone, href }"
+      }
+    },
+    "regions": {
+      "kpis": [
+        {
+          "id": "tile",
+          "each": "${tiles}",
+          "as": "tile",
+          "component": "kpi-tile",
+          "options": {
+            "label": "${tile.label}",
+            "icon": "${tile.icon}",
+            "iconClass": "${tile.iconClass}",
+            "tone": "${tile.tone}",
+            "href": "${tile.href}"
+          },
+          "bindings": {
+            "record": {
+              "source": "${url}",
+              "idField": "${idField}",
+              "id": "${rowId}",
+              "map": {
+                "value": "${tile.key}"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

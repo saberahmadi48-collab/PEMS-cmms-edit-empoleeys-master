@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "permit-types",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permit types",
+    "fa": "انواع مجوز"
+  },
+  "description": {
+    "en": "Permit types",
+    "fa": "انواع مجوز"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PermitPage",
+      "action": "TypeChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

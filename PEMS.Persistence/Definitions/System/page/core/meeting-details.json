@@ -1,0 +1,258 @@
+{
+  "kind": "page",
+  "key": "meeting-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Meeting",
+    "fa": "جلسه"
+  },
+  "description": {
+    "en": "One meeting: agenda, minutes, attendees and action items (page definition)",
+    "fa": "یک جلسه: دستور، صورتجلسه، حاضران و اقدام‌ها (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "meeting-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "meeting-record",
+            "fields": [
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "meetingDate",
+                "label": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "type": "date"
+              },
+              {
+                "key": "location",
+                "label": {
+                  "en": "Location",
+                  "fa": "محل"
+                }
+              },
+              {
+                "key": "organizer",
+                "label": {
+                  "en": "Organizer",
+                  "fa": "برگزارکننده"
+                }
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "agenda",
+                "label": {
+                  "en": "Agenda",
+                  "fa": "دستور جلسه"
+                },
+                "wide": true
+              },
+              {
+                "key": "minutesNotes",
+                "label": {
+                  "en": "Minutes",
+                  "fa": "صورتجلسه"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/meeting-head",
+              "idField": "meetingId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/meeting-update-minutes?meetingId={{params.id}}",
+                "text": {
+                  "en": "Minutes and status",
+                  "fa": "صورتجلسه و وضعیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/meeting-add-action-item?meetingId={{params.id}}",
+                "text": {
+                  "en": "Add an action item",
+                  "fa": "افزودن اقدام"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/meetings",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "attendees",
+          "component": "def:related-table",
+          "options": {
+            "id": "attendees",
+            "title": {
+              "en": "Attendees",
+              "fa": "حاضران"
+            },
+            "url": "/d/meeting-attendees?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 240
+              },
+              {
+                "key": "isRequired",
+                "header": {
+                  "en": "Required",
+                  "fa": "الزامی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "attended",
+                "header": {
+                  "en": "Attended",
+                  "fa": "حاضر"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "mark",
+                    "label": {
+                      "en": "Mark attendance",
+                      "fa": "ثبت حضور"
+                    },
+                    "url": "/f/meeting-mark-attended?meetingAttendeeId={id}&meetingId={{params.id}}&attended=true",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "items",
+          "component": "def:related-table",
+          "options": {
+            "id": "items",
+            "title": {
+              "en": "Action items",
+              "fa": "اقدام‌ها"
+            },
+            "url": "/d/meeting-action-items?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 300
+              },
+              {
+                "key": "assignedTo",
+                "header": {
+                  "en": "Assigned to",
+                  "fa": "مسئول"
+                },
+                "width": 180
+              },
+              {
+                "key": "dueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 100
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              },
+              {
+                "key": "isOverdue",
+                "header": {
+                  "en": "Overdue",
+                  "fa": "دیرکرد"
+                },
+                "width": 90,
+                "type": "bool"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

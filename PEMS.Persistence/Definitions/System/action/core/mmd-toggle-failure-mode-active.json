@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mmd-toggle-failure-mode-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleFailureModeActive",
+    "fa": "وضعیت Failure Mode به‌روزرسانی شد."
+  },
+  "description": {
+    "en": "ToggleFailureModeActive",
+    "fa": "وضعیت Failure Mode به‌روزرسانی شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "ToggleFailureModeActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "وضعیت Failure Mode به‌روزرسانی شد.",
+      "fa": "وضعیت Failure Mode به‌روزرسانی شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

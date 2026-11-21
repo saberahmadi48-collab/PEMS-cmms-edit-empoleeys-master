@@ -1,0 +1,268 @@
+{
+  "kind": "page",
+  "key": "technical-query-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "TQ / TSR / RFI",
+    "fa": "TQ / TSR / RFI"
+  },
+  "description": {
+    "en": "One technical query with the response workflow commands (page definition)",
+    "fa": "یک پرسش فنی با دستورهای گردش پاسخ (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "technical-query-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "tq-record",
+            "fields": [
+              {
+                "key": "queryNumber",
+                "label": {
+                  "en": "Number",
+                  "fa": "شماره"
+                }
+              },
+              {
+                "key": "queryType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "workflowStage",
+                "label": {
+                  "en": "Workflow stage",
+                  "fa": "مرحله‌ی گردش کار"
+                }
+              },
+              {
+                "key": "subject",
+                "label": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                },
+                "wide": true
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "wide": true
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "discipline",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "relatedDocument",
+                "label": {
+                  "en": "Related document",
+                  "fa": "سند مرتبط"
+                }
+              },
+              {
+                "key": "relatedEquipment",
+                "label": {
+                  "en": "Related equipment",
+                  "fa": "تجهیز مرتبط"
+                }
+              },
+              {
+                "key": "priority",
+                "label": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
+              },
+              {
+                "key": "raisedDate",
+                "label": {
+                  "en": "Raised",
+                  "fa": "ثبت"
+                },
+                "type": "date"
+              },
+              {
+                "key": "requiredResponseDate",
+                "label": {
+                  "en": "Required by",
+                  "fa": "مهلت"
+                },
+                "type": "date"
+              },
+              {
+                "key": "isOverdue",
+                "label": {
+                  "en": "Overdue",
+                  "fa": "دیرکرد"
+                }
+              },
+              {
+                "key": "responseText",
+                "label": {
+                  "en": "Response",
+                  "fa": "پاسخ"
+                },
+                "wide": true
+              },
+              {
+                "key": "respondedDate",
+                "label": {
+                  "en": "Responded",
+                  "fa": "تاریخ پاسخ"
+                },
+                "type": "date"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/tq-head",
+              "idField": "technicalQueryId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/technical-query-respond?technicalQueryId={{params.id}}",
+                "text": {
+                  "en": "Respond",
+                  "fa": "پاسخ"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/technical-query-confirm?technicalQueryId={{params.id}}",
+                "text": {
+                  "en": "Confirm and close",
+                  "fa": "تأیید و بستن"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/technical-query-reopen?technicalQueryId={{params.id}}",
+                "text": {
+                  "en": "Reopen",
+                  "fa": "بازگشایی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/tq-upload-attachment?technicalQueryId={{params.id}}",
+                "text": {
+                  "en": "Add an attachment",
+                  "fa": "افزودن پیوست"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/technical-queries",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "attachments",
+          "component": "def:related-table",
+          "options": {
+            "id": "attachments",
+            "title": {
+              "en": "Attachments",
+              "fa": "پیوست‌ها"
+            },
+            "url": "/d/tq-attachments?f.id={{params.id|url}}",
+            "idField": "attachmentId",
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 320
+              },
+              {
+                "key": "fileSize",
+                "header": {
+                  "en": "Size",
+                  "fa": "اندازه"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "uploadDate",
+                "header": {
+                  "en": "Uploaded",
+                  "fa": "بارگذاری"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 140,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "download",
+                    "label": {
+                      "en": "Download",
+                      "fa": "دریافت"
+                    },
+                    "url": "/Files/Download/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -30,6 +30,15 @@
         ["LeadReview"] = Localizer["Vd_Role_Lead"].Value, ["ReturnToVendor"] = Localizer["Vd_Role_DocControl"].Value, ["Closed"] = "—"
     };
     var wfIsPendingResubmission = wfStatus == "PendingResubmission";
+    // تب پیش‌فرض: گردش‌کار (شروع یا ادامه‌ی چرخه‌ی بازبینی)؛ مدرک بسته‌شده با نمای کلی باز می‌شود
+    var vdrDefaultTab = wfStatus == "Closed" ? "overview" : "workflow";
+    // SCRUM-530: the Files tab (every submission file with a preview); ?tab=files&file={attachmentId} opens it on that file
+    var vdrFiles = VdrFiles.From(Model.Submissions);
+    var vdrPreviewFile = VdrFiles.Selected(vdrFiles, int.TryParse(Context.Request.Query["file"], out var requestedFileId) ? requestedFileId : null);
+    if (Context.Request.Query["tab"] == "files") vdrDefaultTab = "files";
+    var vdrPreviewUrl = vdrPreviewFile == null ? null : Url.Action("Preview", "Files", new { id = vdrPreviewFile.AttachmentId });
+    // شماره‌ی بازنگری بعدی را سیستم پیشنهاد می‌کند (آخرین + ۱)؛ همین مقدار با فرم ارسال می‌شود
+    var nextRevisionNo = (Model.LatestRevisionNo ?? -1) + 1;
 
     int wfCurrentIndex;
     if (!string.IsNullOrEmpty(wfStageName) && Array.IndexOf(wfStageOrder, wfStageName) >= 0)
@@ -63,239 +72,102 @@
     };
 }
 
-@{ ViewData["Title"] = Model.DocumentNumber; }
+@{ ViewData["Title"] = Model.DocumentNumber; ViewData["HidePageTitle"] = true; }
 @section Styles {
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-<div class="vs-page">
+<pems-page-shell kind="workspace">
 
-<div class="vs-header">
-    <div class="d-flex flex-wrap align-items-center gap-2">
-        <span class="vs-pill @VdrUi.WorkflowTone(Model.WorkflowStatus)">@VdrUi.Loc(Localizer, "St_", Model.WorkflowStatus)</span>
-        @if (Model.IsOverdue) { <span class="vs-pill vs-pill--danger">@Localizer["Vs_Overdue"]</span> }
-        <span class="vs-cell-strong">@Model.VendorName</span>
-        <span class="vs-cell-sub">&middot; @Model.ProjectName &middot; @Localizer["Vd_Rev"] @(Model.LatestRevisionNo ?? 0)</span>
+<nav aria-label="@Localizer["Vd_Breadcrumb"]" class="small text-muted mb-2">
+    <pems-link asp-action="Index">VDR</pems-link> / <pems-link href="/p/vendor-details?id=@Model.VendorId">@Model.VendorName</pems-link> / <span>@Model.DocumentNumber</span>
+</nav>
+
+<div class="vs-doc-head">
+    <div class="vs-doc-identity">
+        <pems-flex align="center" gap="2" wrap="true">
+            <pems-heading level="1" class="vs-doc-number vs-num">@Model.DocumentNumber</pems-heading>
+            <span class="vs-pill @VdrUi.WorkflowTone(Model.WorkflowStatus)">@VdrUi.Loc(Localizer, "St_", Model.WorkflowStatus)</span>
+            @if (Model.IsOverdue) { <span class="vs-pill vs-pill--danger">@Localizer["Vs_Overdue"]</span> }
+            <span class="vs-pill vs-pill--current">@Localizer["Vd_Rev"] <span class="vs-num">@(Model.LatestRevisionNo ?? 0)</span></span>
+        </pems-flex>
+        <div class="vs-doc-meta">@Localizer["Vd_VendorLabel"] <pems-link href="/p/vendor-details?id=@Model.VendorId">@Model.VendorName</pems-link> &middot; @Model.ProjectName@(string.IsNullOrEmpty(Model.DisciplineCodeRaw) ? "" : " · " + Model.DisciplineCodeRaw)</div>
     </div>
-    <a asp-action="Index" class="vs-btn vs-btn--sm"><i class="bi bi-arrow-left"></i> @Localizer["Vs_Back"]</a>
-</div>
-
-<div class="vs-panel">
-    <div class="vs-panel__body">
-        <div class="vs-tracker">
-            @foreach (var st in wfStageDiagramModel.Stages)
-            {
-                var cls = st.State switch { StageItemState.Done => "vs-step--done", StageItemState.Current => "vs-step--current", StageItemState.Rejected => "vs-step--rejected", _ => "" };
-                <div class="vs-step @cls">
-                    <div class="vs-step__dot"><i class="bi @(st.State == StageItemState.Done ? "bi-check-lg" : st.IconCssClass)"></i></div>
-                    <div class="vs-step__label">@st.Label</div>
-                    <div class="vs-step__meta">@st.RoleLabel</div>
-                </div>
-            }
-        </div>
-    </div>
-</div>
-
-<ul class="nav nav-tabs mb-3" id="vdrTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
-            <i class="bi bi-info-circle"></i> @Localizer["Vs_TabOverview"]
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-submissions" type="button">
-            <i class="bi bi-clock-history"></i> @Localizer["Vs_TabSubmissions"] <span class="badge bg-secondary">@Model.Submissions.Count</span>
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-comments" type="button">
-            <i class="bi bi-chat-square-text"></i> @Localizer["Vs_TabComments"]
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
-            <i class="bi bi-signpost-split"></i> @Localizer["Vs_TabWorkflow"]
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
-            <i class="bi bi-envelope-paper"></i> @Localizer["Vs_TabCorrespondence"]
-            @if (relatedLetters.Any()) { <span class="badge bg-secondary">@relatedLetters.Count</span> }
-        </button>
-    </li>
-</ul>
-
-<div class="tab-content">
-
-@* ===================== Overview ===================== *@
-<div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
-<div class="vs-panel">
-    <div class="vs-panel__body">
-        <div class="vs-info">
-            <div><p class="vs-info__label">@Localizer["Vs_Type"]</p><p class="vs-info__value">@Model.DocumentTypeCode</p></div>
-            <div><p class="vs-info__label">@Localizer["Vs_Po"]</p><p class="vs-info__value">@Model.PoNumber</p></div>
-            <div>
-                <p class="vs-info__label">@Localizer["Vs_Equipment"]</p>
-                <p class="vs-info__value">
-                    @if (Model.EquipmentId.HasValue)
-                    { <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</a> }
-                    else
-                    { <span class="text-muted">-</span> }
-                </p>
-            </div>
-            <div><p class="vs-info__label">@Localizer["Vs_Discipline"]</p><p class="vs-info__value">@Model.DisciplineCodeRaw @(Model.IsMultiDiscipline ? Localizer["Vs_MultiDiscipline"].Value : "")</p></div>
-            <div><p class="vs-info__label">@Localizer["Vs_Class"]</p><p class="vs-info__value">@Model.DocumentClass</p></div>
-            <div><p class="vs-info__label">@Localizer["Vs_PlannedFirstIssue"]</p><p class="vs-info__value">@(Model.PlannedFirstIssueDate?.ToString("yyyy-MM-dd"))</p></div>
-            <div class="vs-info__wide"><p class="vs-info__label">@Localizer["Vs_Description"]</p><p class="vs-info__value">@Model.DocumentDescription</p></div>
-        </div>
-    </div>
-</div>
-
-@* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۳.۱: شماره‌ی رسمی مدرک به فرمت
-   CONTRACTOR. هر فیلد مرجع خالی این‌جا پر می‌شود و همزمان روی Vendor/Project/VDR Item ذخیره
-   می‌شود - دفعه‌ی بعد از قبل پرشده می‌آید. *@
-<div class="content-card mb-3">
-    <h6 class="mb-2">@Localizer["Vd_OfficialNoTitle"]</h6>
-    <p class="text-muted small mb-3">
-        @Localizer["Vd_OfficialNoHint"]
-    </p>
-    <form asp-action="GenerateContractorNumber" method="post">
-        <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-        <div class="row g-3">
-            <div class="col-md-3"><label class="form-label">@Localizer["Vd_VendorCode"]</label><input name="vendorCode" class="form-control" placeholder="e.g. FSK" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Vd_PlantCode"]</label><input name="plantCode" class="form-control" placeholder="e.g. J" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Vd_UnitCode"]</label><input name="unitCode" class="form-control" placeholder="e.g. 85" /></div>
-            <div class="col-md-3"><label class="form-label">@Localizer["Vd_MaterialCode"]</label><input name="materialCode" class="form-control" value="@Model.MaterialCode" placeholder="e.g. 0611" /></div>
-        </div>
-        <button type="submit" class="btn btn-outline-primary btn-sm mt-3">
-            <i class="bi bi-hash"></i> @Localizer["Vd_GenOfficial"]
-        </button>
-    </form>
-</div>
-
-@* طبق بخش ۴.۳.۲ همان سند: شماره‌ی موازی به فرمت SUB-CONTRACTOR/Vendor *@
-<div class="content-card mb-3">
-    <h6 class="mb-2">@Localizer["Vd_VendorNoTitle"]</h6>
-    <p class="text-muted small mb-3">
-        @Localizer["Vd_VendorNoHint"]
-        @if (!string.IsNullOrWhiteSpace(Model.VendorFormatDocumentNumber))
-        {
-            <span>@Localizer["Vd_Current"] <strong>@Model.VendorFormatDocumentNumber</strong></span>
+    <div class="vs-doc-actions">
+        <pems-link asp-action="Index" class="vs-btn"><pems-icon name="bi-arrow-left" aria-hidden="true" /> @Localizer["Vs_Back"]</pems-link>
+        @* SCRUM-559: More actions, each item only with its permission (same menu as Engineering Documents) *@
+        @{
+            var vdrCanEdit = Model.IsActive && ViewBag.CanEditItem is true;
+            var vdrCanHold = Model.IsActive && !Model.IsOnHold && ViewBag.CanHold is true;
+            var vdrCanRelease = Model.IsOnHold && ViewBag.CanReleaseHold is true;
+            var vdrCanDeactivate = Model.IsActive && ViewBag.CanDeactivate is true;
+            var vdrCanNumbers = User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin);   // SCRUM-529: numbers live in Admin
         }
-    </p>
-    <form asp-action="GenerateVendorNumber" method="post">
-        <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-        <div class="row g-3">
-            <div class="col-md-4"><label class="form-label">@Localizer["Vd_JobNumber"]</label><input name="jobNumber" class="form-control" placeholder="e.g. 3863" /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Vd_UnitCode"]</label><input name="unitCode" class="form-control" placeholder="e.g. 85" /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Vd_TypologyCode"]</label><input name="typologyCode" class="form-control" value="@Model.TypologyCode" placeholder="e.g. GS, LG, IS ..." /></div>
-        </div>
-        <button type="submit" class="btn btn-outline-primary btn-sm mt-3">
-            <i class="bi bi-hash"></i> @Localizer["Vd_GenVendor"]
-        </button>
-    </form>
-</div>
-</div>
-
-@* ===================== Submissions ===================== *@
-<div class="tab-pane fade" id="tab-submissions" role="tabpanel">
-<div class="content-card mb-3">
-    <h6 class="mb-3">@Localizer["Vd_SubHistory"]</h6>
-    <table class="table table-enterprise">
-        <thead>
-            <tr><th>@Localizer["Vd_Rev"]</th><th>@Localizer["Vd_VendorTransmittal"]</th><th>@Localizer["Vd_ClientTransmittal"]</th><th>@Localizer["Vd_VendorIssued"]</th><th>@Localizer["Vd_Poi"]</th><th>@Localizer["Vd_Sla"]</th><th>@Localizer["Vd_Ftp"]</th><th>@Localizer["Vd_CommentSheet"]</th><th>@Localizer["Vd_CommentDate"]</th><th>@Localizer["Vd_Category"]</th><th>@Localizer["Vd_Resubmit"]</th><th>@Localizer["Vd_CommentFile"]</th><th>@Localizer["Vd_ReplyFile"]</th></tr>
-        </thead>
-        <tbody>
-            @foreach (var s in Model.Submissions)
-            {
-                <tr>
-                    <td>@s.RevisionNo</td>
-                    <td>@s.VendorTransmittalNo</td>
-                    <td>
-                        @if (s.ClientTransmittalId.HasValue)
-                        {
-                            <a asp-controller="Transmittal" asp-action="Details" asp-route-id="@s.ClientTransmittalId">@s.ClientTransmittalNo</a>
-                        }
-                        else
-                        {
-                            @s.ClientTransmittalNo
-                        }
-                    </td>
-                    <td>@(s.VendorActualIssuedDate?.ToString("yyyy-MM-dd"))</td>
-                    <td>@s.PurposeOfIssueCode</td>
-                    <td>
-                        @if (s.ClientCommentDate == null && s.ContractorCommentDueDate.HasValue)
-                        {
-                            <span class="badge @(s.IsContractorCommentOverdue ? "bg-danger" : "bg-info text-dark")">
-                                @Localizer["Vd_ContractorDue"] @s.ContractorCommentDueDate.Value.ToString("yyyy-MM-dd")@(s.IsContractorCommentOverdue ? " " + Localizer["Vd_OverdueParen"].Value : "")
-                            </span>
-                        }
-                        else if (s.ReplySheetDate == null && s.VendorReturnDueDate.HasValue)
-                        {
-                            <span class="badge @(s.IsVendorReturnOverdue ? "bg-danger" : "bg-info text-dark")">
-                                @Localizer["Vd_ReturnDue"] @s.VendorReturnDueDate.Value.ToString("yyyy-MM-dd")@(s.IsVendorReturnOverdue ? " " + Localizer["Vd_OverdueParen"].Value : "")
-                            </span>
-                        }
-                    </td>
-                    <td>
-                        @if (s.FtpUploadedDate.HasValue)
-                        {
-                            <span class="badge bg-success" title="@s.FtpRemotePath"><i class="bi bi-check-circle"></i> @s.FtpUploadedDate.Value.ToString("yyyy-MM-dd")</span>
-                        }
-                        else
-                        {
-                            <form asp-action="UploadToFtp" method="post" enctype="multipart/form-data" class="d-flex gap-1">
-                                <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-                                <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
-                                <input type="file" name="file" class="form-control form-control-sm" style="max-width:120px;" required />
-                                <button class="btn btn-sm btn-outline-primary" title="@Localizer["Vd_UploadFtp"]"><i class="bi bi-cloud-upload"></i></button>
-                            </form>
-                        }
-                    </td>
-                    <td>@s.ClientCommentSheetNo</td>
-                    <td>@(s.ClientCommentDate?.ToString("yyyy-MM-dd"))</td>
-                    <td><span class="badge bg-secondary">@s.ReviewCategory</span></td>
-                    <td>@(s.RequiresResubmission ? Localizer["Vd_Yes"].Value : "")</td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(s.CommentSheetFilePath))
-                        {
-                            <a href="@Url.Action("Download", "Files", new { id = s.CommentSheetAttachmentId })" target="_blank" class="btn btn-sm btn-outline-secondary" title="@s.CommentSheetFileName"><i class="bi bi-file-earmark-text"></i></a>
-                        }
-                        else
-                        {
-                            <form asp-action="UploadCommentSheet" method="post" enctype="multipart/form-data" class="d-flex gap-1">
-                                <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-                                <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
-                                <input type="file" name="file" class="form-control form-control-sm" style="max-width:120px;" required />
-                                <button class="btn btn-sm btn-outline-primary"><i class="bi bi-upload"></i></button>
-                            </form>
-                        }
-                    </td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(s.ReplySheetFilePath))
-                        {
-                            <a href="@Url.Action("Download", "Files", new { id = s.ReplySheetAttachmentId })" target="_blank" class="btn btn-sm btn-outline-secondary" title="@s.ReplySheetFileName"><i class="bi bi-file-earmark-text"></i></a>
-                        }
-                        else
-                        {
-                            <form asp-action="UploadReplySheet" method="post" enctype="multipart/form-data" class="d-flex gap-1">
-                                <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-                                <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
-                                <input type="file" name="file" class="form-control form-control-sm" style="max-width:120px;" required />
-                                <button class="btn btn-sm btn-outline-primary"><i class="bi bi-upload"></i></button>
-                            </form>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @if (!Model.Submissions.Any()) { <p class="text-muted">@Localizer["Vd_NoSubmissions"]</p> }
-</div>
+        @if (vdrCanEdit || vdrCanHold || vdrCanRelease || vdrCanDeactivate || vdrCanNumbers)
+        {
+            <div class="dropdown" id="vdrMoreActions">
+                <pems-button plain="true" css="vs-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    @Localizer["Ed_MoreActions"]
+                </pems-button>
+                <pems-dropdown-menu end="true">
+                    @if (vdrCanEdit)
+                    {
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#vdrEditModal"><pems-icon name="bi-pencil" /> @Localizer["Vdr_EditDetails"]</pems-button></pems-bullet>
+                    }
+                    @if (vdrCanNumbers)
+                    {
+                        <pems-bullet><pems-link class="dropdown-item" asp-area="Admin" asp-controller="Numbering" asp-action="Index" asp-route-vdrItemId="@Model.VDRItemId" asp-fragment="vdr-numbers"><pems-icon name="bi-hash" /> @Localizer["Vd_NumbersInAdmin"]</pems-link></pems-bullet>
+                    }
+                    @if (vdrCanHold)
+                    {
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#vdrHoldModal"><pems-icon name="bi-pause-circle" /> @Localizer["Vdr_Hold"]</pems-button></pems-bullet>
+                    }
+                    @if (vdrCanRelease)
+                    {
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#vdrReleaseModal"><pems-icon name="bi-play-circle" /> @Localizer["Vdr_ReleaseHold"]</pems-button></pems-bullet>
+                    }
+                    @if (vdrCanDeactivate)
+                    {
+                        <pems-bullet><pems-divider class="dropdown-divider" /></pems-bullet>
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#vdrDeactivateModal"><pems-icon name="bi-archive" /> @Localizer["Vdr_Deactivate"]</pems-button></pems-bullet>
+                    }
+                </pems-dropdown-menu>
+            </div>
+        }
+    </div>
 </div>
 
-@* ===================== Comments (شامل PDF Viewer) ===================== *@
-<div class="tab-pane fade" id="tab-comments" role="tabpanel">
+@if (!Model.IsActive)
+{
+    <pems-alert tone="secondary" css="py-2 px-3 small mb-3"><pems-icon name="bi-archive" aria-hidden="true" /> @Localizer["Vdr_InactiveBanner"]</pems-alert>
+}
+@if (Model.IsOnHold)
+{
+    <pems-alert tone="warning" css="py-2 px-3 small mb-3"><pems-icon name="bi-pause-circle" aria-hidden="true" /> @Localizer["Vdr_OnHoldBanner"]@(string.IsNullOrEmpty(Model.HoldReason) ? "" : ": " + Model.HoldReason)@(Model.HoldDate.HasValue ? " (" + PemsDates.Date(Model.HoldDate.Value) + ")" : "")</pems-alert>
+}
+
+<pems-nav css="mb-3" id="vdrTabs" role="tablist">
+    <pems-tab target="tab-overview" active="@(vdrDefaultTab == "overview")">
+            <pems-icon name="bi-info-circle" /> @Localizer["Vs_TabOverview"]
+        </pems-tab>
+    <pems-tab target="tab-workflow" active="@(vdrDefaultTab == "workflow")">
+            <pems-icon name="bi-signpost-split" /> @Localizer["Vs_TabWorkflow"]
+        </pems-tab>
+    <pems-tab target="tab-submissions">
+            <pems-icon name="bi-clock-history" /> @Localizer["Vs_TabSubmissions"] <pems-badge tone="neutral">@Model.Submissions.Count</pems-badge>
+        </pems-tab>
+    <pems-tab target="tab-files" active="@(vdrDefaultTab == "files")">
+            <pems-icon name="bi-paperclip" /> @Localizer["Vd_TabFiles"] <pems-badge tone="neutral">@vdrFiles.Count</pems-badge>
+        </pems-tab>
+    <pems-tab target="tab-comments">
+            <pems-icon name="bi-chat-square-text" /> @Localizer["Vs_TabComments"]
+        </pems-tab>
+    <pems-tab target="tab-correspondence">
+            <pems-icon name="bi-envelope-paper" /> @Localizer["Vs_TabCorrespondence"]
+            @if (relatedLetters.Any()) { <pems-badge tone="neutral">@relatedLetters.Count</pems-badge> }
+        </pems-tab>
+</pems-nav>
 
 @{
     var comments = (List<PEMS.Application.DTOs.VDRCommentDto>)ViewBag.Comments;
@@ -303,28 +175,242 @@
         .FirstOrDefault(s => !string.IsNullOrEmpty(s.MainFilePath) && s.MainFilePath.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase));
 }
 
+<pems-tab-content>
+
+@* ===================== Overview ===================== *@
+<pems-tab-pane fade="true" css="@(vdrDefaultTab == "overview" ? "show active" : "")" id="tab-overview" role="tabpanel">
+<div class="vs-panel">
+    <div class="vs-panel__body">
+        <pems-info-grid>
+            <pems-info-item label="@Localizer["Vs_Type"]">@Model.DocumentTypeCode</pems-info-item>
+            <pems-info-item label="@Localizer["Vs_Po"]">@Model.PoNumber</pems-info-item>
+            <pems-info-item label="@Localizer["Vs_Equipment"]">
+                    @if (Model.EquipmentId.HasValue)
+                    { <pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</pems-link> }
+                    else
+                    { <span class="text-muted">-</span> }
+            </pems-info-item>
+            <pems-info-item label="@Localizer["Vs_Discipline"]">@Model.DisciplineCodeRaw @(Model.IsMultiDiscipline ? Localizer["Vs_MultiDiscipline"].Value : "")</pems-info-item>
+            <pems-info-item label="@Localizer["Vs_Class"]">@Model.DocumentClass</pems-info-item>
+            <pems-info-item label="@Localizer["Vs_PlannedFirstIssue"]">@(PemsDates.Date(Model.PlannedFirstIssueDate))</pems-info-item>
+            <pems-info-item label="@Localizer["Vd_VendorFormatNo"]" mono empty-text="-">@Model.VendorFormatDocumentNumber</pems-info-item>
+            <pems-info-item label="@Localizer["Vs_Description"]" wide>@Model.DocumentDescription</pems-info-item>
+        </pems-info-grid>
+    </div>
+</div>
+
+@* SCRUM-529: the CONTRACTOR and SUB-CONTRACTOR number forms are in Admin > Document numbering; SCRUM-559: the link is in More actions. *@
+</pems-tab-pane>
+
+@* ===================== Submissions ===================== *@
+<pems-tab-pane fade="true" id="tab-submissions" role="tabpanel">
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3">@Localizer["Vd_SubHistory"]</pems-heading>
+    <pems-related-table>
+        <pems-table-head>
+            <pems-table-row><pems-table-header>@Localizer["Vd_Rev"]</pems-table-header><pems-table-header>@Localizer["Vd_VendorTransmittal"]</pems-table-header><pems-table-header>@Localizer["Vd_ClientTransmittal"]</pems-table-header><pems-table-header>@Localizer["Vd_VendorIssued"]</pems-table-header><pems-table-header>@Localizer["Vd_Poi"]</pems-table-header><pems-table-header>@Localizer["Vd_Sla"]</pems-table-header><pems-table-header>@Localizer["Vd_Ftp"]</pems-table-header><pems-table-header>@Localizer["Vd_CommentSheet"]</pems-table-header><pems-table-header>@Localizer["Vd_CommentDate"]</pems-table-header><pems-table-header>@Localizer["Vd_Category"]</pems-table-header><pems-table-header>@Localizer["Vd_Resubmit"]</pems-table-header><pems-table-header>@Localizer["Vd_CommentFile"]</pems-table-header><pems-table-header>@Localizer["Vd_ReplyFile"]</pems-table-header></pems-table-row>
+        </pems-table-head>
+        <pems-table-body>
+            @foreach (var s in Model.Submissions)
+            {
+                <pems-table-row>
+                    <pems-table-cell>@s.RevisionNo</pems-table-cell>
+                    <pems-table-cell>@s.VendorTransmittalNo</pems-table-cell>
+                    <pems-table-cell>
+                        @if (s.ClientTransmittalId.HasValue)
+                        {
+                            <pems-link asp-controller="Transmittal" asp-action="Details" asp-route-id="@s.ClientTransmittalId">@s.ClientTransmittalNo</pems-link>
+                        }
+                        else
+                        {
+                            @s.ClientTransmittalNo
+                        }
+                    </pems-table-cell>
+                    <pems-table-cell>@(PemsDates.Date(s.VendorActualIssuedDate))</pems-table-cell>
+                    <pems-table-cell>@s.PurposeOfIssueCode</pems-table-cell>
+                    <pems-table-cell>
+                        @if (s.ClientCommentDate == null && s.ContractorCommentDueDate.HasValue)
+                        {
+                            <pems-badge tone="@(s.IsContractorCommentOverdue ? "danger" : "info")">
+                                @Localizer["Vd_ContractorDue"] @PemsDates.Date(s.ContractorCommentDueDate.Value)@(s.IsContractorCommentOverdue ? " " + Localizer["Vd_OverdueParen"].Value : "")
+                            </pems-badge>
+                        }
+                        else if (s.ReplySheetDate == null && s.VendorReturnDueDate.HasValue)
+                        {
+                            <pems-badge tone="@(s.IsVendorReturnOverdue ? "danger" : "info")">
+                                @Localizer["Vd_ReturnDue"] @PemsDates.Date(s.VendorReturnDueDate.Value)@(s.IsVendorReturnOverdue ? " " + Localizer["Vd_OverdueParen"].Value : "")
+                            </pems-badge>
+                        }
+                    </pems-table-cell>
+                    <pems-table-cell>
+                        @if (s.FtpUploadedDate.HasValue)
+                        {
+                            <pems-badge tone="success" title="@s.FtpRemotePath"><pems-icon name="bi-check-circle" /> @PemsDates.Date(s.FtpUploadedDate.Value)</pems-badge>
+                        }
+                        else
+                        {
+                            <pems-form asp-action="UploadToFtp" method="post" enctype="multipart/form-data"><pems-flex gap="1">
+                                <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                                <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
+                                <pems-uploader class="pems-maxw-120" scale="small" name="file" required />
+                                <pems-button tone="primary" size="small" outline="true" title="@Localizer["Vd_UploadFtp"]"><pems-icon name="bi-cloud-upload" /></pems-button>
+                            </pems-flex></pems-form>
+                        }
+                    </pems-table-cell>
+                    <pems-table-cell>@s.ClientCommentSheetNo</pems-table-cell>
+                    <pems-table-cell>@(PemsDates.Date(s.ClientCommentDate))</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="neutral">@s.ReviewCategory</pems-badge></pems-table-cell>
+                    <pems-table-cell>@(s.RequiresResubmission ? Localizer["Vd_Yes"].Value : "")</pems-table-cell>
+                    <pems-table-cell>
+                        @if (!string.IsNullOrEmpty(s.CommentSheetFilePath))
+                        {
+                            <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Download", "Files", new { id = s.CommentSheetAttachmentId })" target="_blank" title="@s.CommentSheetFileName"><pems-icon name="bi-file-earmark-text" /></pems-button>
+                        }
+                        else
+                        {
+                            <pems-form asp-action="UploadCommentSheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
+                                <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                                <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
+                                <pems-uploader class="pems-maxw-120" scale="small" name="file" required />
+                                <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
+                            </pems-flex></pems-form>
+                        }
+                    </pems-table-cell>
+                    <pems-table-cell>
+                        @if (!string.IsNullOrEmpty(s.ReplySheetFilePath))
+                        {
+                            <pems-button tone="neutral" size="small" outline="true" as="a" href="@Url.Action("Download", "Files", new { id = s.ReplySheetAttachmentId })" target="_blank" title="@s.ReplySheetFileName"><pems-icon name="bi-file-earmark-text" /></pems-button>
+                        }
+                        else
+                        {
+                            <pems-form asp-action="UploadReplySheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
+                                <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                                <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
+                                <pems-uploader class="pems-maxw-120" scale="small" name="file" required />
+                                <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /></pems-button>
+                            </pems-flex></pems-form>
+                        }
+                    </pems-table-cell>
+                </pems-table-row>
+            }
+        </pems-table-body>
+    </pems-related-table>
+    @if (!Model.Submissions.Any()) { <pems-text class="text-muted">@Localizer["Vd_NoSubmissions"]</pems-text> }
+</pems-content-card>
+</pems-tab-pane>
+
+@* ===================== Files (SCRUM-530) ===================== *@
+<pems-tab-pane fade="true" css="@(vdrDefaultTab == "files" ? "show active" : "")" id="tab-files" role="tabpanel">
+    @* SCRUM-531: upload a file to a submission; it is stored in PEMS and listed below (Upload to FTP keeps no copy in PEMS) *@
+    <pems-content-card css="mb-3">
+        <pems-heading level="6" class="mb-2"><pems-icon name="bi-upload" /> @Localizer["Vd_UploadTitle"]</pems-heading>
+        @if (Model.Submissions.Count == 0)
+        {
+            <pems-text class="text-muted small mb-0">@Localizer["Vd_UploadNeedsSubmission"]</pems-text>
+        }
+        else
+        {
+            <pems-text class="text-muted small mb-3">@Localizer["Vd_UploadHint"]</pems-text>
+            <pems-form asp-action="UploadSubmissionFile" method="post" enctype="multipart/form-data" id="vdrFileUpload">
+                <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+                <pems-row gap="2" css="align-items-end">
+                    <pems-col md="3">
+                        <pems-label for="vdrUploadSubmission">@Localizer["Vd_UploadRevision"]</pems-label>
+                        <pems-select id="vdrUploadSubmission" name="submissionId" required>
+                            @foreach (var s in Model.Submissions.OrderByDescending(x => x.RevisionNo))
+                            {
+                                <option value="@s.VDRSubmissionId">@Localizer["Vs_Rev"] @s.RevisionNo@(string.IsNullOrEmpty(s.VendorTransmittalNo) ? "" : " - " + s.VendorTransmittalNo)</option>
+                            }
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="3">
+                        <pems-label for="vdrUploadKind">@Localizer["Vd_FileKind"]</pems-label>
+                        <pems-select id="vdrUploadKind" name="kind" required>
+                            @foreach (var k in VdrFiles.Kinds) { <option value="@k">@Localizer["Vd_FileKind_" + k]</option> }
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label for="vdrUploadFile">@Localizer["Vd_FileName"]</pems-label>
+                        <pems-uploader id="vdrUploadFile" name="file" required />
+                    </pems-col>
+                    <pems-col md="2">
+                        <pems-button tone="primary" type="submit" css="w-100"><pems-icon name="bi-upload" /> @Localizer["Vd_Upload"]</pems-button>
+                    </pems-col>
+                </pems-row>
+            </pems-form>
+        }
+    </pems-content-card>
+
+    @if (vdrFiles.Count == 0)
+    {
+        <pems-text class="text-muted text-center py-4">@Localizer["Vd_NoFiles"]</pems-text>
+    }
+    else
+    {
+        <pems-table kind="enterprise" css="mb-3">
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header>@Localizer["Vd_FileName"]</pems-table-header>
+                    <pems-table-header>@Localizer["Vs_Rev"]</pems-table-header>
+                    <pems-table-header>@Localizer["Vd_FileKind"]</pems-table-header>
+                    <pems-table-header class="text-end"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
+                @foreach (var f in vdrFiles)
+                {
+                    <pems-table-row class="@(vdrPreviewFile?.AttachmentId == f.AttachmentId ? "table-active" : "")">
+                        <pems-table-cell>@f.FileName</pems-table-cell>
+                        <pems-table-cell><span class="vs-num">@f.RevisionNo</span></pems-table-cell>
+                        <pems-table-cell>@Localizer["Vd_FileKind_" + f.Kind]</pems-table-cell>
+                        <pems-table-cell class="text-end">
+                            <pems-flex gap="1" justify="end">
+                                @if (f.CanPreview)
+                                {
+                                    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@Model.VDRItemId" asp-route-tab="files" asp-route-file="@f.AttachmentId" asp-fragment="tab-files" aria-label="@Localizer["Vd_Preview"] @f.FileName"><pems-icon name="bi-eye" /> @Localizer["Vd_Preview"]</pems-button>
+                                }
+                                <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="Files" asp-action="Download" asp-route-id="@f.AttachmentId" aria-label="@Localizer["Vd_Download"] @f.FileName"><pems-icon name="bi-download" /></pems-button>
+                            </pems-flex>
+                        </pems-table-cell>
+                    </pems-table-row>
+                }
+            </pems-table-body>
+        </pems-table>
+
+        @if (vdrPreviewFile != null)
+        {
+            <pems-heading level="6" class="mb-2"><pems-icon name="bi-eye" /> @vdrPreviewFile.FileName</pems-heading>
+        }
+        <pems-file-preview id="vdrFilePreview" src="@vdrPreviewUrl" title="@vdrPreviewFile?.FileName" empty-text="@Localizer["Vd_NoPreview"]" />
+    }
+</pems-tab-pane>
+
+@* ===================== Comments (شامل PDF Viewer) ===================== *@
+<pems-tab-pane fade="true" id="tab-comments" role="tabpanel">
+
+
+
 @if (latestSubmissionWithFile != null)
 {
-    <div class="content-card mb-3">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> @Localizer["Vd_DocViewer"] <span class="text-muted small">@Localizer["Vd_PinHint"]</span></h6>
-            <div class="d-flex align-items-center gap-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfPrevPage"><i class="bi bi-chevron-left"></i></button>
+    <pems-content-card css="mb-3">
+        <pems-flex justify="between" align="center" css="mb-2">
+            <pems-heading level="6" class="mb-0"><pems-icon name="bi-file-earmark-pdf" /> @Localizer["Vd_DocViewer"] <span class="text-muted small">@Localizer["Vd_PinHint"]</span></pems-heading>
+            <pems-flex align="center" gap="2">
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfPrevPage"><pems-icon name="bi-chevron-left" /></pems-button>
                 <span class="small" id="pdfPageLabel">@Localizer["Vd_Page"] - / -</span>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfNextPage"><i class="bi bi-chevron-right"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomOut"><i class="bi bi-zoom-out"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomIn"><i class="bi bi-zoom-in"></i></button>
-            </div>
-        </div>
-        <div id="pdfCanvasWrapper" style="position:relative; border:1px solid var(--pems-surface-border,#dee2e6); overflow:auto; max-height:75vh; text-align:center; cursor:crosshair;">
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfNextPage"><pems-icon name="bi-chevron-right" /></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomOut"><pems-icon name="bi-zoom-out" /></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomIn"><pems-icon name="bi-zoom-in" /></pems-button>
+            </pems-flex>
+        </pems-flex>
+        <div class="pems-pdf-canvas" id="pdfCanvasWrapper">
             <canvas id="pdfCanvas"></canvas>
         </div>
-    </div>
+    </pems-content-card>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.js"></script>
-    <script>
+    <script type="module" src="~/js/pdfjs-loader.js"></script>
+    <script type="module">
         (function () {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
 
             var pdfUrl = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Url.Action("Download", "Files", new { id = latestSubmissionWithFile.AttachmentId })));
             var wrapper = document.getElementById('pdfCanvasWrapper');
@@ -406,36 +492,36 @@
     </script>
 }
 
-<div class="content-card mb-3">
-    <h6 class="mb-3">@Localizer["Vd_CommentMgmt"] <span class="text-muted small">@Localizer["Vd_ActionIndependent"]</span></h6>
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3">@Localizer["Vd_CommentMgmt"] <span class="text-muted small">@Localizer["Vd_ActionIndependent"]</span></pems-heading>
 
-    <table class="table table-enterprise">
-        <thead><tr><th>@Localizer["Vd_No"]</th><th>@Localizer["Vd_Rev"]</th><th>@Localizer["Vd_Category"]</th><th>@Localizer["Vd_SheetZone"]</th><th>@Localizer["Vd_Comment"]</th><th>@Localizer["Vd_RaisedBy"]</th><th>@Localizer["Vd_Raised"]</th><th>@Localizer["Vd_ActionStatus"]</th><th>@Localizer["Vd_Response"]</th></tr></thead>
-        <tbody>
+    <pems-related-table>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Vd_No"]</pems-table-header><pems-table-header>@Localizer["Vd_Rev"]</pems-table-header><pems-table-header>@Localizer["Vd_Category"]</pems-table-header><pems-table-header>@Localizer["Vd_SheetZone"]</pems-table-header><pems-table-header>@Localizer["Vd_Comment"]</pems-table-header><pems-table-header>@Localizer["Vd_RaisedBy"]</pems-table-header><pems-table-header>@Localizer["Vd_Raised"]</pems-table-header><pems-table-header>@Localizer["Vd_ActionStatus"]</pems-table-header><pems-table-header>@Localizer["Vd_Response"]</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var c in comments)
             {
-                <tr>
-                    <td><strong>@c.CommentNo</strong></td>
-                    <td>@c.RevisionNo</td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(c.Category)) { <span class="badge bg-secondary">@VdrUi.Loc(Localizer, "Vd_Cat_", c.Category)</span> }
-                        @if (!string.IsNullOrEmpty(c.Severity)) { <span class="badge bg-dark">@VdrUi.Loc(Localizer, "Vd_Sev_", c.Severity)</span> }
-                    </td>
-                    <td class="small">@c.Sheet @c.Zone</td>
-                    <td class="small">
+                <pems-table-row>
+                    <pems-table-cell><strong>@c.CommentNo</strong></pems-table-cell>
+                    <pems-table-cell>@c.RevisionNo</pems-table-cell>
+                    <pems-table-cell>
+                        @if (!string.IsNullOrEmpty(c.Category)) { <pems-badge tone="neutral">@VdrUi.Loc(Localizer, "Vd_Cat_", c.Category)</pems-badge> }
+                        @if (!string.IsNullOrEmpty(c.Severity)) { <pems-badge tone="dark">@VdrUi.Loc(Localizer, "Vd_Sev_", c.Severity)</pems-badge> }
+                    </pems-table-cell>
+                    <pems-table-cell class="small">@c.Sheet @c.Zone</pems-table-cell>
+                    <pems-table-cell class="small">
                         @c.CommentText
                         @if (!string.IsNullOrEmpty(c.AttachmentFilePath))
                         {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.AttachmentFileName</a></div>
+                            <div><pems-link href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.AttachmentFileName</pems-link></div>
                         }
                         @if (!string.IsNullOrEmpty(c.RequiredAction))
                         {
                             <div class="text-muted">@Localizer["Vd_Required"] @c.RequiredAction</div>
                         }
-                    </td>
-                    <td>@c.RaisedByName</td>
-                    <td>@c.RaisedDate.ToString("yyyy-MM-dd")</td>
-                    <td>
+                    </pems-table-cell>
+                    <pems-table-cell>@c.RaisedByName</pems-table-cell>
+                    <pems-table-cell>@PemsDates.Date(c.RaisedDate)</pems-table-cell>
+                    <pems-table-cell>
                         @{
                             var ab = c.ActionStatus switch
                             {
@@ -447,348 +533,435 @@
                             };
                         }
                         <span class="vs-pill @VdrUi.CommentActionTone(c.ActionStatus)">@VdrUi.Loc(Localizer, "St_", c.ActionStatus)</span>
-                        <form asp-action="SetCommentAction" method="post" class="d-inline">
+                        <pems-form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                            <select name="actionStatus" class="form-select form-select-sm mt-1" style="width:170px;" onchange="this.form.submit()">
+                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" data-pems-change="submit-form">
                                 @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@VdrUi.Loc(Localizer, "St_", s)</option> }
-                            </select>
-                        </form>
-                    </td>
-                    <td class="small">
+                            </pems-select>
+                        </pems-form>
+                    </pems-table-cell>
+                    <pems-table-cell class="small">
                         @c.ResponseText
                         @if (!string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.ReplyAttachmentFileName</a></div>
+                            <div><pems-link href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.ReplyAttachmentFileName</pems-link></div>
                         }
                         @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
-                            <button type="button" class="btn btn-sm btn-outline-primary mt-1" data-bs-toggle="modal" data-bs-target="#replyModal_@c.VDRCommentId">
-                                <i class="bi bi-reply"></i> @Localizer["Vd_Reply"]
-                            </button>
+                            <pems-button tone="primary" size="small" outline="true" css="mt-1" type="button" data-bs-toggle="modal" data-bs-target="#replyModal" data-fill-commentid="@c.VDRCommentId" data-fill-commentno="@c.CommentNo" data-fill-commenttext="@c.CommentText">
+                                <pems-icon name="bi-reply" /> @Localizer["Vd_Reply"]
+                            </pems-button>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
-    </table>
-    @if (!comments.Any()) { <p class="text-muted">@Localizer["Vd_NoComments"]</p> }
+        </pems-table-body>
+    </pems-related-table>
+    @if (!comments.Any()) { <pems-text class="text-muted">@Localizer["Vd_NoComments"]</pems-text> }
 
     @if (Model.Submissions.Any())
     {
-        <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#addCommentModal">
-            <i class="bi bi-plus-lg"></i> @Localizer["Vd_AddComment"]
-        </button>
+        <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#addCommentModal">
+            <pems-icon name="bi-plus-lg" /> @Localizer["Vd_AddComment"]
+        </pems-button>
     }
-</div>
-</div>
+</pems-content-card>
+</pems-tab-pane>
 @* پایان تب Comments - مدال‌های زیر مستقل از تب فعال همیشه در دسترس‌اند *@
 
 @* طبق درخواست: افزودن کامنت به‌صورت Popup تا کاربر از صفحه‌ی اصلی خارج نشود *@
-<div class="modal fade" id="addCommentModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form asp-action="AddComment" method="post" enctype="multipart/form-data">
+<pems-modal size="large" id="addCommentModal" tabindex="-1">
+            <pems-form asp-action="AddComment" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                 <input type="hidden" name="pageNumber" id="pinPageNumber" value="" />
                 <input type="hidden" name="pinX" id="pinX" value="" />
                 <input type="hidden" name="pinY" id="pinY" value="" />
-                <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_AddComment"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["Vd_AddComment"]</pems-modal-header>
+                <pems-modal-body>
                     <div id="pinLocationLabel" class="small text-primary mb-2"></div>
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label small">@Localizer["Vd_Revision"]</label>
-                            <select name="vdrSubmissionId" class="form-select form-select-sm">
+                    <pems-row gap="3">
+                        <pems-col md="4">
+                            <pems-label css="small">@Localizer["Vd_Revision"]</pems-label>
+                            <pems-select scale="small" name="vdrSubmissionId">
                                 @foreach (var s in Model.Submissions)
                                 { <option value="@s.VDRSubmissionId">@Localizer["Vd_Rev"] @s.RevisionNo</option> }
-                            </select>
-                        </div>
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Vd_RaisedBy"]</label><input name="raisedByName" class="form-control form-control-sm" /></div>
-                        <div class="col-md-4">
-                            <label class="form-label small">@Localizer["Vd_Category"]</label>
-                            <select name="category" class="form-select form-select-sm">
+                            </pems-select>
+                        </pems-col>
+                        <pems-col md="4"><pems-label css="small">@Localizer["Vd_RaisedBy"]</pems-label><pems-input scale="small" name="raisedByName" /></pems-col>
+                        <pems-col md="4">
+                            <pems-label css="small">@Localizer["Vd_Category"]</pems-label>
+                            <pems-select scale="small" name="category">
                                 <option value="">@Localizer["Vd_Select"]</option>
                                 @foreach (var cat in new[] { "Technical", "Safety", "Constructability", "Documentation", "Specification", "Calculation", "Typographical", "Clarification" })
                                 { <option value="@cat">@Localizer["Vd_Cat_" + cat]</option> }
-                            </select>
-                        </div>
-                        <div class="col-md-3"><label class="form-label small">@Localizer["Vd_Sheet"]</label><input name="sheet" class="form-control form-control-sm" placeholder="e.g. Sheet 4" /></div>
-                        <div class="col-md-3"><label class="form-label small">@Localizer["Vd_Zone"]</label><input name="zone" class="form-control form-control-sm" placeholder="e.g. Grid B3" /></div>
-                        <div class="col-md-3"><label class="form-label small">@Localizer["Vd_Reference"]</label><input name="reference" class="form-control form-control-sm" placeholder="e.g. Note 12" /></div>
-                        <div class="col-md-3">
-                            <label class="form-label small">@Localizer["Vd_Severity"]</label>
-                            <select name="severity" class="form-select form-select-sm">
+                            </pems-select>
+                        </pems-col>
+                        <pems-col md="3"><pems-label css="small">@Localizer["Vd_Sheet"]</pems-label><pems-input scale="small" name="sheet" placeholder="e.g. Sheet 4" /></pems-col>
+                        <pems-col md="3"><pems-label css="small">@Localizer["Vd_Zone"]</pems-label><pems-input scale="small" name="zone" placeholder="e.g. Grid B3" /></pems-col>
+                        <pems-col md="3"><pems-label css="small">@Localizer["Vd_Reference"]</pems-label><pems-input scale="small" name="reference" placeholder="e.g. Note 12" /></pems-col>
+                        <pems-col md="3">
+                            <pems-label css="small">@Localizer["Vd_Severity"]</pems-label>
+                            <pems-select scale="small" name="severity">
                                 <option value="">@Localizer["Vd_Select"]</option>
                                 @foreach (var sev in new[] { "Low", "Medium", "High", "Critical" })
                                 { <option value="@sev">@Localizer["Vd_Sev_" + sev]</option> }
-                            </select>
-                        </div>
-                        <div class="col-12"><label class="form-label small">@Localizer["Vd_Comment"]</label><textarea name="commentText" class="form-control form-control-sm" rows="3" required></textarea></div>
-                        <div class="col-md-6"><label class="form-label small">@Localizer["Vd_RequiredAction"]</label><input name="requiredAction" class="form-control form-control-sm" placeholder="e.g. Revise Drawing" /></div>
-                        <div class="col-md-6"><label class="form-label small">@Localizer["Vd_DueDate"]</label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
-                        <div class="col-12"><label class="form-label small">@Localizer["Vd_Attachment"] <span class="text-muted">@Localizer["Vd_Optional"]</span></label><input type="file" name="attachment" class="form-control form-control-sm" /></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">@Localizer["Vd_SaveComment"]</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                            </pems-select>
+                        </pems-col>
+                        <pems-col span="12"><pems-label css="small">@Localizer["Vd_Comment"]</pems-label><pems-textarea scale="small" name="commentText" rows="3" required></pems-textarea></pems-col>
+                        <pems-col md="6"><pems-label css="small">@Localizer["Vd_RequiredAction"]</pems-label><pems-input scale="small" name="requiredAction" placeholder="e.g. Revise Drawing" /></pems-col>
+                        <pems-col md="6"><pems-label css="small">@Localizer["Vd_DueDate"]</pems-label><pems-date name="dueDate" scale="small" /></pems-col>
+                        <pems-col span="12"><pems-label css="small">@Localizer["Vd_Attachment"] <span class="text-muted">@Localizer["Vd_Optional"]</span></pems-label><pems-uploader scale="small" name="attachment" /></pems-col>
+                    </pems-row>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
+                    <pems-button tone="primary" type="submit">@Localizer["Vd_SaveComment"]</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
 
 @* طبق درخواست: پاسخ به کامنت هم Popup است و می‌تواند خودِ فایل را پیوست کند تا کاربر همه‌چیز
    را دستی تایپ نکند *@
-@foreach (var c in comments)
+@if (comments.Any())
 {
-    <div class="modal fade" id="replyModal_@c.VDRCommentId" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
+    <pems-modal id="replyModal" tabindex="-1">
+                <pems-form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-                    <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                    <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_ReplyTo"] @c.CommentNo</h6></div>
-                    <div class="modal-body">
-                        <p class="small text-muted">@c.CommentText</p>
-                        <div class="mb-2">
-                            <label class="form-label small">@Localizer["Vd_VendorReply"] <span class="text-muted">@Localizer["Vd_OptionalIfFile"]</span></label>
-                            <textarea name="responseText" class="form-control form-control-sm" rows="3"></textarea>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label small">@Localizer["Vd_OrAttachReply"]</label>
-                            <input type="file" name="replyAttachment" class="form-control form-control-sm" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</button>
-                        <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Vd_SaveReply"]</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                    <input type="hidden" name="commentId" value="" />
+                    <pems-modal-header>@Localizer["Vd_ReplyTo"] <span data-fill-text="commentno"></span></pems-modal-header>
+                    <pems-modal-body>
+                        <pems-text class="small text-muted" data-fill-text="commenttext"></pems-text>
+                        <pems-form-group css="mb-2">
+                            <pems-label css="small">@Localizer["Vd_VendorReply"] <span class="text-muted">@Localizer["Vd_OptionalIfFile"]</span></pems-label>
+                            <pems-textarea scale="small" name="responseText" rows="3"></pems-textarea>
+                        </pems-form-group>
+                        <pems-form-group css="mb-2">
+                            <pems-label css="small">@Localizer["Vd_OrAttachReply"]</pems-label>
+                            <pems-uploader scale="small" name="replyAttachment" />
+                        </pems-form-group>
+                    </pems-modal-body>
+                    <pems-modal-footer>
+                        <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
+                        <pems-button tone="primary" size="small" type="submit">@Localizer["Vd_SaveReply"]</pems-button>
+                    </pems-modal-footer>
+                </pems-form>
+            </pems-modal>
 }
 
 @* ===================== Workflow (اکشن‌ها + تاریخچه‌ی واقعی) ===================== *@
-<div class="tab-pane fade" id="tab-workflow" role="tabpanel">
-<div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-signpost-split"></i> @Localizer["Vd_ReviewWorkflow"]</h6>
-
-    @if (Model.Submissions.Any())
-    {
-        <p class="text-muted small">@Localizer["Vd_AlreadyRecorded"] @string.Join(", ", Model.Submissions.OrderBy(s => s.RevisionNo).Select(s => Localizer["Vd_Rev"].Value + " " + s.RevisionNo))</p>
-    }
+<pems-tab-pane fade="true" css="@(vdrDefaultTab == "workflow" ? "show active" : "")" id="tab-workflow" role="tabpanel">
+<section class="vs-panel mb-3" aria-labelledby="vdrStagesTitle">
+    <div class="vs-panel__body">
+        <pems-heading level="2" id="vdrStagesTitle" class="vs-section__title">@Localizer["Vd_ReviewStages"]</pems-heading>
+        <pems-stage-diagram variant="vs" steps="@wfStageDiagramModel.Steps" />
+    </div>
+</section>
 
     @{
         var workflowRunning = (bool)(ViewBag.WorkflowRunning ?? false);
         var currentStageName = (string?)ViewBag.CurrentStageName;
     }
 
-    @if (!workflowRunning)
-    {
-        <p class="text-muted small">@Localizer["Vd_NoActiveCycle"]</p>
-        <form asp-action="SubmitForReview" method="post" class="row g-2">
-            <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-            <div class="col-md-2"><label class="form-label small">@Localizer["Vd_Rev"]</label><input name="revisionNo" type="number" min="0" class="form-control form-control-sm" value="@((Model.LatestRevisionNo ?? -1) + 1)" required /></div>
-            <div class="col-md-3"><label class="form-label small">@Localizer["Vd_VendorTransmittalReq"] <span class="text-danger">*</span></label><input name="vendorTransmittalNo" class="form-control form-control-sm" required /></div>
-            <div class="col-md-2"><label class="form-label small">@Localizer["Vd_VendorIssuedDate"]</label><input name="vendorActualIssuedDate" type="date" class="form-control form-control-sm" /></div>
-            <div class="col-md-2">
-                <label class="form-label small">@Localizer["Vd_Poi"]</label>
-                @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۶.۱ - همین لیست دقیقاً در
-                   EngineeringDocuments/Edit.cshtml (فیلد IssuePurpose) هم تکرار شده؛ اگر این‌جا تغییر داد آن‌جا را هم به‌روزرسانی کنید. *@
-                <select name="purposeOfIssueCode" class="form-select form-select-sm">
-                    <option value="">--</option>
-                    <option value="IFA">IFA</option>
-                    <option value="IFR">IFR</option>
-                    <option value="IFI">IFI</option>
-                    <option value="FI">FI</option>
-                    <option value="AB">AB @Localizer["Vd_LegacyTag"]</option>
-                    <option value="AFD">AFD @Localizer["Vd_LegacyTag"]</option>
-                </select>
-            </div>
 
-            <div class="col-12 mt-2">
-                <label class="form-label small fw-bold">@Localizer["Vd_ReviewDisciplines"]</label>
-                <div class="row">
-                    @foreach (var d in (IEnumerable<PEMS.Domain.Entities.Discipline>)ViewBag.AllDisciplines)
-                    {
-                        <div class="col-6 col-md-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="disciplineIds" value="@d.DisciplineId" id="vdrDisc_@d.DisciplineId">
-                                <label class="form-check-label small" for="vdrDisc_@d.DisciplineId">@d.Name</label>
+@if (!workflowRunning)
+{
+    var allDisciplinesForStart = ((IEnumerable<PEMS.Domain.Entities.Discipline>)ViewBag.AllDisciplines).ToList();
+
+    @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۶.۱ - همین لیست POI در EngineeringDocuments/Edit.cshtml (فیلد IssuePurpose) هم تکرار شده؛ اگر این‌جا تغییر کرد آن‌جا را هم به‌روزرسانی کنید. *@
+    <pems-form asp-action="SubmitForReview" method="post" id="vdrStartForm">
+        <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+        <input type="hidden" name="revisionNo" value="@nextRevisionNo" />
+        <pems-row gap="3" css="align-items-start">
+            <pems-col lg="8">
+                <section class="vs-panel mb-3" aria-labelledby="vdrStep1Title">
+                    <div class="vs-panel__body">
+                        <pems-flex justify="between" align="baseline" gap="2" wrap="true">
+                            <pems-heading level="2" id="vdrStep1Title" class="vs-section__title mb-1">@Localizer["Vd_Step1Title"]</pems-heading>
+                            <span class="small text-muted">@Localizer["Vd_Step1Of"]</span>
+                        </pems-flex>
+                        <pems-text class="small text-muted">@Localizer["Vd_Step1Hint"]</pems-text>
+                        <pems-row gap="3">
+                            <pems-col md="6">
+                                <pems-label for="vdrTransmittal">@Localizer["Vd_VendorTransmittalReq"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
+                                <pems-input id="vdrTransmittal" name="vendorTransmittalNo" required autocomplete="off" aria-describedby="vdrTransmittalHelp" />
+                                <pems-help-text id="vdrTransmittalHelp">@Localizer["Vd_TransmittalHelp"]</pems-help-text>
+                            </pems-col>
+                            <pems-col md="6">
+                                <pems-label for="vdrIssuedDate">@Localizer["Vd_VendorIssuedDate"]</pems-label>
+                                <pems-date id="vdrIssuedDate" name="vendorActualIssuedDate" aria-describedby="vdrIssuedHelp" />
+                                <pems-help-text id="vdrIssuedHelp">@Localizer["Vd_IssuedDateHelp"]</pems-help-text>
+                            </pems-col>
+                            <pems-col md="6">
+                                <pems-label for="vdrPoi">@Localizer["Vd_PoiFull"]</pems-label>
+                                <pems-select id="vdrPoi" name="purposeOfIssueCode" aria-describedby="vdrPoiHelp">
+                                    <option value="">@Localizer["Vd_SelectPurpose"]</option>
+                                    <option value="IFA">@Localizer["Vd_PoiOpt_IFA"]</option>
+                                    <option value="IFR">@Localizer["Vd_PoiOpt_IFR"]</option>
+                                    <option value="IFI">@Localizer["Vd_PoiOpt_IFI"]</option>
+                                    <option value="FI">@Localizer["Vd_PoiOpt_FI"]</option>
+                                    <option value="AB">AB @Localizer["Vd_LegacyTag"]</option>
+                                    <option value="AFD">AFD @Localizer["Vd_LegacyTag"]</option>
+                                </pems-select>
+                                <pems-help-text id="vdrPoiHelp">@Localizer["Vd_PoiHelp"]</pems-help-text>
+                            </pems-col>
+                            <pems-col md="6">
+                                <pems-label as="span" css="d-block" id="vdrRevLabel">@Localizer["Vd_Rev"]</pems-label>
+                                <div class="pems-readonly-field" aria-labelledby="vdrRevLabel" aria-describedby="vdrRevHelp">@nextRevisionNo</div>
+                                <pems-help-text id="vdrRevHelp">@Localizer["Vd_SystemSetRev"]</pems-help-text>
+                            </pems-col>
+                        </pems-row>
+                    </div>
+                </section>
+
+                <section class="vs-panel mb-3" aria-labelledby="vdrStep2Title">
+                    <div class="vs-panel__body">
+                        <pems-flex justify="between" align="center" gap="2" wrap="true">
+                            <div>
+                                <pems-heading level="2" id="vdrStep2Title" class="vs-section__title mb-1">@Localizer["Vd_Step2Title"] <span class="fw-normal text-muted small">(@Localizer["Vd_Optional"])</span></pems-heading>
+                                <pems-text class="small text-muted mb-0" id="vdrDiscSummary" aria-live="polite" data-none="@Localizer["Vd_NoDiscSelected"]" data-some="@Localizer["Vd_DiscSelected"]">@Localizer["Vd_NoDiscSelected"]</pems-text>
                             </div>
+                            <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="collapse" data-bs-target="#vdrDiscPicker" aria-expanded="false" aria-controls="vdrDiscPicker">@Localizer["Vd_ChooseDisciplines"]</pems-button>
+                        </pems-flex>
+                        <div class="collapse mt-3" id="vdrDiscPicker">
+                            <div class="small fw-bold mb-2">@Localizer["Vd_ReviewDisciplines"]</div>
+                            <pems-row>
+                                @foreach (var d in allDisciplinesForStart)
+                                {
+                                    <pems-col span="6" md="4">
+                                        <pems-check-row>
+                                            <pems-input kind="check" type="checkbox" name="disciplineIds" value="@d.DisciplineId" id="vdrDisc_@d.DisciplineId" data-name="@d.Name" />
+                                            <label class="form-check-label small" for="vdrDisc_@d.DisciplineId">@d.Name</label>
+                                        </pems-check-row>
+                                    </pems-col>
+                                }
+                            </pems-row>
                         </div>
-                    }
-                </div>
-            </div>
+                    </div>
+                </section>
+            </pems-col>
 
-            <div class="col-12 mt-2">
-                <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-play-fill"></i> @Localizer["Vd_StartReview"]</button>
-            </div>
-        </form>
+            <pems-col lg="4">
+                <section class="vs-panel" aria-labelledby="vdrSummaryTitle">
+                    <div class="vs-panel__body">
+                        <pems-heading level="2" id="vdrSummaryTitle" class="vs-section__title">@Localizer["Vd_ReviewSummary"]</pems-heading>
+                        <pems-info-grid class="small mb-3">
+    <pems-info-item label="@Localizer["Vd_Reviewers"]">@Localizer["Vd_Role_Lead"], @Localizer["Vd_Role_DocControl"]</pems-info-item>
+    @* SCRUM-560: vdr-details.js writes the chosen disciplines into this value *@
+    <pems-info-item label="@Localizer["Vd_Step2Title"]" value-id="vdrSummaryDisc">@Localizer["Vd_None"]</pems-info-item>
+</pems-info-grid>
+                        <pems-button tone="primary" css="w-100" type="submit" id="vdrStartBtn" aria-describedby="vdrWhyDisabled"><pems-icon name="bi-play-fill" aria-hidden="true" /> @Localizer["Vd_StartReview"]</pems-button>
+                        <pems-text id="vdrWhyDisabled" class="small text-warning-emphasis mt-2 mb-0" hidden>@Localizer["Vd_EnterTransmittalToEnable"]</pems-text>
+                    </div>
+                </section>
+            </pems-col>
+        </pems-row>
+    </pems-form>
+}
+else
+{
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-signpost-split" /> @Localizer["Vd_ReviewWorkflow"]</pems-heading>
+
+    @if (Model.Submissions.Any())
+    {
+        <pems-text class="text-muted small">@Localizer["Vd_AlreadyRecorded"] @string.Join(", ", Model.Submissions.OrderBy(s => s.RevisionNo).Select(s => Localizer["Vd_Rev"].Value + " " + s.RevisionNo))</pems-text>
     }
-    else if (currentStageName == "DisciplineReview")
+
+    @if (currentStageName == "DisciplineReview")
     {
         var reviewStatus = (IEnumerable<PEMS.Application.Interfaces.VdrReviewStatusItemDto>)ViewBag.ReviewStatus;
         var myDisciplineId = ViewBag.MyDisciplineId as int?;
         var myPending = reviewStatus.FirstOrDefault(x => x.DisciplineId == myDisciplineId && x.Status == "Pending");
 
-        <h6 class="small fw-bold">@Localizer["Vd_ParallelReview"]</h6>
-        <div class="d-flex flex-wrap gap-2 mb-3">
+        <pems-heading level="6" class="small fw-bold">@Localizer["Vd_ParallelReview"]</pems-heading>
+        <pems-flex wrap="true" gap="2" css="mb-3">
             @foreach (var r in reviewStatus)
             {
-                var badgeClass = r.Status switch { "Approve" => "bg-success", "Comment" => "bg-warning text-dark", "Reject" => "bg-danger", _ => "bg-secondary" };
-                <span class="badge @badgeClass">@r.DisciplineName: @VdrUi.Loc(Localizer, "St_", r.Status)</span>
+                var badgeClass = r.Status switch { "Approve" => "success", "Comment" => "warning", "Reject" => "danger", _ => "neutral" };
+                <pems-badge tone="@badgeClass">@r.DisciplineName: @VdrUi.Loc(Localizer, "St_", r.Status)</pems-badge>
             }
-        </div>
+        </pems-flex>
 
         @if (myPending != null)
         {
-            <div class="d-flex gap-2">
-                <form asp-action="DisciplineRespond" method="post" class="d-inline">
+            <pems-flex gap="2">
+                <pems-form asp-action="DisciplineRespond" method="post" class="d-inline">
                     <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                     <input type="hidden" name="decision" value="Approve" />
-                    <button class="btn btn-success btn-sm">@Localizer["Vd_Approve"]</button>
-                </form>
-                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#vdrCommentModal">@Localizer["Vd_CommentBtn"]</button>
-                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#vdrRejectModal">@Localizer["Vd_RejectBtn"]</button>
-            </div>
+                    <pems-button tone="success" size="small">@Localizer["Vd_Approve"]</pems-button>
+                </pems-form>
+                <pems-button tone="warning" size="small" type="button" data-bs-toggle="modal" data-bs-target="#vdrCommentModal">@Localizer["Vd_CommentBtn"]</pems-button>
+                <pems-button tone="danger" size="small" type="button" data-bs-toggle="modal" data-bs-target="#vdrRejectModal">@Localizer["Vd_RejectBtn"]</pems-button>
+            </pems-flex>
 
-            <div class="modal fade" id="vdrCommentModal" tabindex="-1">
-                <div class="modal-dialog"><div class="modal-content">
-                    <form asp-action="DisciplineRespond" method="post">
+            <pems-modal id="vdrCommentModal" tabindex="-1">
+                    <pems-form asp-action="DisciplineRespond" method="post">
                         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                         <input type="hidden" name="decision" value="Comment" />
-                        <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_RecordComment"]</h6></div>
-                        <div class="modal-body"><textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea></div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</button>
-                            <button type="submit" class="btn btn-warning btn-sm">@Localizer["Vd_Submit"]</button>
-                        </div>
-                    </form>
-                </div></div>
-            </div>
-            <div class="modal fade" id="vdrRejectModal" tabindex="-1">
-                <div class="modal-dialog"><div class="modal-content">
-                    <form asp-action="DisciplineRespond" method="post">
+                        <pems-modal-header>@Localizer["Vd_RecordComment"]</pems-modal-header>
+                        <pems-modal-body><pems-textarea scale="small" name="comment" rows="3" required></pems-textarea></pems-modal-body>
+                        <pems-modal-footer>
+                            <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
+                            <pems-button tone="warning" size="small" type="submit">@Localizer["Vd_Submit"]</pems-button>
+                        </pems-modal-footer>
+                    </pems-form>
+                </pems-modal>
+            <pems-modal id="vdrRejectModal" tabindex="-1">
+                    <pems-form asp-action="DisciplineRespond" method="post">
                         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                         <input type="hidden" name="decision" value="Reject" />
-                        <div class="modal-header"><h6 class="modal-title">@Localizer["Vd_RejectTitle"]</h6></div>
-                        <div class="modal-body"><textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea></div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</button>
-                            <button type="submit" class="btn btn-danger btn-sm">@Localizer["Vd_RejectBtn"]</button>
-                        </div>
-                    </form>
-                </div></div>
-            </div>
+                        <pems-modal-header>@Localizer["Vd_RejectTitle"]</pems-modal-header>
+                        <pems-modal-body><pems-textarea scale="small" name="comment" rows="3" required></pems-textarea></pems-modal-body>
+                        <pems-modal-footer>
+                            <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Vd_Cancel"]</pems-button>
+                            <pems-button tone="danger" size="small" type="submit">@Localizer["Vd_RejectBtn"]</pems-button>
+                        </pems-modal-footer>
+                    </pems-form>
+                </pems-modal>
         }
         else
         {
-            <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> @Localizer["Vd_WaitingOthers"]</span>
+            <pems-badge tone="warning"><pems-icon name="bi-hourglass-split" /> @Localizer["Vd_WaitingOthers"]</pems-badge>
         }
     }
     else if (currentStageName == "LeadReview")
     {
-        <h6 class="small fw-bold">@Localizer["Vd_FinalDecision"]</h6>
-        <form asp-action="LeadReview" method="post" class="row g-2">
+        <pems-heading level="6" class="small fw-bold">@Localizer["Vd_FinalDecision"]</pems-heading>
+        <pems-form asp-action="LeadReview" method="post"><pems-row gap="2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-            <div class="col-md-3">
-                <label class="form-label small">@Localizer["Vd_ReviewCategory"]</label>
-                <select name="reviewCategory" class="form-select form-select-sm" required>
+            <pems-col md="3">
+                <pems-label css="small">@Localizer["Vd_ReviewCategory"]</pems-label>
+                <pems-select scale="small" name="reviewCategory" required>
                     <option value="AP">@Localizer["Vd_Cat_AP"]</option>
                     <option value="NC">@Localizer["Vd_Cat_NC"]</option>
                     <option value="AC">@Localizer["Vd_Cat_AC"]</option>
                     <option value="CO">@Localizer["Vd_Cat_CO"]</option>
                     <option value="RE">@Localizer["Vd_Cat_RE"]</option>
-                </select>
-            </div>
-            <div class="col-md-3"><label class="form-label small">@Localizer["Vd_CommentSheetNo"]</label><input name="clientCommentSheetNo" class="form-control form-control-sm" /></div>
-            <div class="col-md-3"><label class="form-label small">@Localizer["Vd_CommentDate"]</label><input name="clientCommentDate" type="date" class="form-control form-control-sm" /></div>
-            <div class="col-md-3 d-flex align-items-end">
-                <button type="submit" class="btn btn-sm btn-pems-solid w-100">@Localizer["Vd_RecordFinal"]</button>
-            </div>
-        </form>
+                </pems-select>
+            </pems-col>
+            <pems-col md="3"><pems-label css="small">@Localizer["Vd_CommentSheetNo"]</pems-label><pems-input scale="small" name="clientCommentSheetNo" /></pems-col>
+            <pems-col md="3"><pems-label css="small">@Localizer["Vd_CommentDate"]</pems-label><pems-date name="clientCommentDate" scale="small" /></pems-col>
+            <pems-col md="3" css="d-flex align-items-end">
+                <pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Vd_RecordFinal"]</pems-button>
+            </pems-col>
+        </pems-row></pems-form>
     }
     else if (currentStageName == "ReturnToVendor")
     {
-        <h6 class="small fw-bold">@Localizer["Vd_FormalReturn"]</h6>
-        <p class="text-muted small">@Localizer["Vd_ReturnHint"]</p>
-        <form asp-action="ReturnToVendor" method="post" class="row g-2">
+        <pems-heading level="6" class="small fw-bold">@Localizer["Vd_FormalReturn"]</pems-heading>
+        <pems-text class="text-muted small">@Localizer["Vd_ReturnHint"]</pems-text>
+        <pems-form asp-action="ReturnToVendor" method="post"><pems-row gap="2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
-            <div class="col-md-4"><label class="form-label small">@Localizer["Vd_ReplySheetNo"]</label><input name="replySheetNo" class="form-control form-control-sm" /></div>
-            <div class="col-md-4"><label class="form-label small">@Localizer["Vd_ClientTransmittalNo"]</label><input name="clientTransmittalNo" class="form-control form-control-sm" /></div>
-            <div class="col-md-4 d-flex align-items-end">
-                <button type="submit" class="btn btn-sm btn-pems-solid w-100"><i class="bi bi-send"></i> @Localizer["Vd_ReturnToVendor"]</button>
-            </div>
-        </form>
+            <pems-col md="4"><pems-label css="small">@Localizer["Vd_ReplySheetNo"]</pems-label><pems-input scale="small" name="replySheetNo" /></pems-col>
+            <pems-col md="4"><pems-label css="small">@Localizer["Vd_ClientTransmittalNo"]</pems-label><pems-input scale="small" name="clientTransmittalNo" /></pems-col>
+            <pems-col md="4" css="d-flex align-items-end">
+                <pems-button tone="primary" size="small" css="w-100" type="submit"><pems-icon name="bi-send" /> @Localizer["Vd_ReturnToVendor"]</pems-button>
+            </pems-col>
+        </pems-row></pems-form>
     }
-</div>
+</pems-content-card>
+}
+
 
 @* تاریخچه‌ی واقعی گردش‌کار از موتور عمومی (نه فقط رشته‌ی خلاصه‌ی وضعیت) *@
-<div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-clock-history"></i> @Localizer["Vd_WorkflowHistory"]</h6>
-    @if (workflowHistory.Any())
+<pems-content-card>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-clock-history" /> @Localizer["Vd_WorkflowHistory"]</pems-heading>
+    <pems-workflow-history options="@(new PEMS.UI.Components.WorkflowHistoryOptions
     {
-        <table class="table table-enterprise mb-0">
-            <thead><tr><th>@Localizer["Vd_From"]</th><th>@Localizer["Vd_To"]</th><th>@Localizer["Vd_Action"]</th><th>@Localizer["Vd_Decision"]</th><th>@Localizer["Vd_Comment"]</th><th>@Localizer["Vd_Date"]</th></tr></thead>
-            <tbody>
-                @foreach (var h in workflowHistory.OrderByDescending(x => x.ActionDate))
-                {
-                    <tr>
-                        <td class="small">@VdrUi.Loc(Localizer, "Vd_Stage_", h.FromStageName)</td>
-                        <td class="small">@VdrUi.Loc(Localizer, "Vd_Stage_", h.ToStageName)</td>
-                        <td><span class="badge bg-secondary">@h.ActionType</span></td>
-                        <td class="small">@h.Decision</td>
-                        <td class="small">@h.Comment</td>
-                        <td class="small text-muted">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p class="text-muted text-center py-4 mb-0">@Localizer["Vd_NoWorkflowYet"]</p>
-    }
-</div>
-</div>
+        Entries = WorkflowComponents.History(workflowHistory, System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa", null, n => string.IsNullOrEmpty(n) ? null : VdrUi.Loc(Localizer, "Vd_Stage_", n)),
+        Empty = PEMS.UI.Abstractions.TranslatableText.Literal(Localizer["Vd_NoWorkflowYet"].Value)
+    })" />
+</pems-content-card>
+</pems-tab-pane>
 
 @* ===================== Correspondence ===================== *@
-<div class="tab-pane fade" id="tab-correspondence" role="tabpanel">
-<div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> @Localizer["Vd_RelatedCorr"]</h6>
+<pems-tab-pane fade="true" id="tab-correspondence" role="tabpanel">
+<pems-content-card>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-envelope-paper" /> @Localizer["Vd_RelatedCorr"]</pems-heading>
     @if (relatedLetters.Any())
     {
-        <table class="table table-enterprise">
-            <thead><tr><th>@Localizer["Vd_Type"]</th><th>@Localizer["Vd_LetterNo"]</th><th>@Localizer["Vd_Subject"]</th><th>@Localizer["Vd_Date"]</th><th>@Localizer["Vd_Status"]</th><th></th></tr></thead>
-            <tbody>
+        <pems-related-table>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Vd_Type"]</pems-table-header><pems-table-header>@Localizer["Vd_LetterNo"]</pems-table-header><pems-table-header>@Localizer["Vd_Subject"]</pems-table-header><pems-table-header>@Localizer["Vd_Date"]</pems-table-header><pems-table-header>@Localizer["Vd_Status"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var l in relatedLetters)
                 {
-                    <tr>
-                        <td><span class="badge bg-secondary">@l.LetterType</span></td>
-                        <td>@l.LetterNumber</td>
-                        <td>@l.Subject</td>
-                        <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
-                        <td><span class="badge bg-info text-dark">@l.Status</span></td>
-                        <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
-                    </tr>
+                    <pems-table-row>
+                        <pems-table-cell><pems-badge tone="neutral">@l.LetterType</pems-badge></pems-table-cell>
+                        <pems-table-cell>@l.LetterNumber</pems-table-cell>
+                        <pems-table-cell>@l.Subject</pems-table-cell>
+                        <pems-table-cell class="small text-muted">@PemsDates.Date(l.LetterDate)</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="info">@l.Status</pems-badge></pems-table-cell>
+                        <pems-table-cell><pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId"><pems-icon name="bi-eye" /></pems-button></pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
-        </table>
+            </pems-table-body>
+        </pems-related-table>
     }
     else
     {
-        <p class="text-muted text-center py-4 mb-0">@Localizer["Vd_NoCorr"]</p>
+        <pems-text class="text-muted text-center py-4 mb-0">@Localizer["Vd_NoCorr"]</pems-text>
     }
-</div>
-</div>
+</pems-content-card>
+</pems-tab-pane>
 
-</div>
+</pems-tab-content>
 @* پایان tab-content *@
 
-</div>
+</pems-page-shell>
 @* پایان vs-page *@
+
+@* ===================== SCRUM-559: More actions dialogs ===================== *@
+@if (Model.IsActive && ViewBag.CanEditItem is true)
+{
+    <pems-modal id="vdrEditModal" tabindex="-1">
+        <pems-form asp-action="UpdateDetails" method="post">
+            <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+            <pems-modal-header><pems-icon name="bi-pencil" /> @Localizer["Vdr_EditDetails"]</pems-modal-header>
+            <pems-modal-body>
+                <pems-label css="small" for="vdrEditDesc">@Localizer["Vs_Description"]</pems-label>
+                <pems-textarea scale="small" id="vdrEditDesc" name="documentDescription" rows="2">@Model.DocumentDescription</pems-textarea>
+                <pems-row gap="2" css="mt-2">
+                    <pems-col md="6"><pems-label css="small" for="vdrEditClass">@Localizer["Vdr_Class"]</pems-label><pems-input scale="small" type="number" min="1" id="vdrEditClass" name="documentClass" value="@Model.DocumentClass" /></pems-col>
+                    <pems-col md="6"><pems-label css="small" for="vdrEditPlanned">@Localizer["Vdr_PlannedFirstIssue"]</pems-label><pems-date scale="small" id="vdrEditPlanned" name="plannedFirstIssueDate" value="@PemsDates.Date(Model.PlannedFirstIssueDate)" /></pems-col>
+                    <pems-col md="6"><pems-label css="small" for="vdrEditEquipment">@Localizer["Vdr_EquipmentTag"]</pems-label><pems-input scale="small" id="vdrEditEquipment" name="equipmentTag" value="@Model.EquipmentTagNumber" dir="ltr" /></pems-col>
+                    <pems-col md="6"><pems-label css="small" for="vdrEditDisc">@Localizer["Vdr_DisciplineCode"]</pems-label><pems-input scale="small" id="vdrEditDisc" name="disciplineCodeRaw" value="@Model.DisciplineCodeRaw" dir="ltr" /></pems-col>
+                    <pems-col md="12"><pems-label css="small" for="vdrEditVfn">@Localizer["Vd_VendorFormatNo"]</pems-label><pems-input scale="small" id="vdrEditVfn" name="vendorFormatDocumentNumber" value="@Model.VendorFormatDocumentNumber" dir="ltr" /></pems-col>
+                </pems-row>
+            </pems-modal-body>
+            <pems-modal-footer>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-check2" /> @Localizer["Vdr_Save"]</pems-button>
+            </pems-modal-footer>
+        </pems-form>
+    </pems-modal>
+}
+@foreach (var (modalId, action, icon, title, hint, tone, show) in new[]
+{
+    ("vdrHoldModal", "Hold", "bi-pause-circle", "Vdr_Hold", "Vdr_HoldHint", "dark", Model.IsActive && !Model.IsOnHold && ViewBag.CanHold is true),
+    ("vdrReleaseModal", "ReleaseHold", "bi-play-circle", "Vdr_ReleaseHold", "Vdr_ReleaseHint", "primary", Model.IsOnHold && ViewBag.CanReleaseHold is true),
+    ("vdrDeactivateModal", "Deactivate", "bi-archive", "Vdr_Deactivate", "Vdr_DeactivateHint", "danger", Model.IsActive && ViewBag.CanDeactivate is true),
+})
+{
+    if (!show) { continue; }
+    <pems-modal id="@modalId" tabindex="-1">
+        <pems-form asp-action="@action" method="post">
+            <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
+            <pems-modal-header><pems-icon name="@icon" /> @Localizer[title]</pems-modal-header>
+            <pems-modal-body>
+                <pems-text class="text-muted small">@Localizer[hint]</pems-text>
+                <pems-label css="small" for="@(modalId)Reason">@Localizer["Vdr_Reason"]</pems-label>
+                <pems-input scale="small" id="@(modalId)Reason" name="reason" required />
+            </pems-modal-body>
+            <pems-modal-footer>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="@tone" size="small" type="submit"><pems-icon name="@icon" /> @Localizer[title]</pems-button>
+            </pems-modal-footer>
+        </pems-form>
+    </pems-modal>
+}
+
+@section Scripts {
+    <script src="~/js/views/vdr-details.js" asp-append-version="true"></script>
+}

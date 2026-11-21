@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "profile-photo-save",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save my profile photo",
+    "fa": "ذخیره عکس پروفایل من"
+  },
+  "description": {
+    "en": "Save my profile photo",
+    "fa": "ذخیره عکس پروفایل من"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MyProfile",
+      "action": "SavePhoto",
+      "args": {
+        "userName": "context:userName",
+        "file": "file:file"
+      },
+      "upload": {
+        "profile": "image",
+        "maxFileMb": 10
+      }
+    },
+    "success": {
+      "en": "Profile photo saved.",
+      "fa": "عکس پروفایل ذخیره شد."
+    },
+    "redirect": "/p/my-profile"
+  }
+}

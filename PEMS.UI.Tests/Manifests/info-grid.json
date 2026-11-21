@@ -1,0 +1,50 @@
+{
+  "key": "info-grid",
+  "component": "PEMS.UI.Components.PemsInfoGrid",
+  "category": "display",
+  "icon": "bi-card-list",
+  "nameKey": "component.info-grid",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "layout": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "InfoGridOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "layout": "rows"
+  }
+}

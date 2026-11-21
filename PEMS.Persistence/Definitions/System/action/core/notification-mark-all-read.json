@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "notification-mark-all-read",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark all notifications read",
+    "fa": "خوانده شدن همه اعلان‌ها"
+  },
+  "description": {
+    "en": "Mark all notifications read",
+    "fa": "خوانده شدن همه اعلان‌ها"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Notification",
+      "action": "MarkAllRead",
+      "args": {
+        "userName": "context:userName"
+      }
+    },
+    "success": {
+      "en": "All marked as read.",
+      "fa": "همه خوانده‌شده شدند."
+    },
+    "redirect": "/p/notifications"
+  }
+}

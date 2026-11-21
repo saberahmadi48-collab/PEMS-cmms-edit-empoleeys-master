@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "cmms-ops-wo-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work orders by status",
+    "fa": "دستورکارها به تفکیک وضعیت"
+  },
+  "description": {
+    "en": "Work orders by status",
+    "fa": "دستورکارها به تفکیک وضعیت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CmmsOperations",
+      "action": "WorkOrdersByStatus",
+      "args": {
+        "culture": "context:culture"
+      }
+    }
+  }
+}

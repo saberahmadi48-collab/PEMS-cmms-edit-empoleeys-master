@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "purchase-order-receiving",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Purchase order receiving",
+    "fa": "Purchase order receiving"
+  },
+  "description": {
+    "en": "Purchase order receiving",
+    "fa": "Purchase order receiving"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "Receiving",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

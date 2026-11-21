@@ -1,0 +1,34 @@
+{
+  "kind": "data-source",
+  "key": "pc-report-parts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue report: Parts per equipment",
+    "fa": "گزارش کاتالوگ قطعه: Parts per equipment"
+  },
+  "description": {
+    "en": "Part Catalogue report: Parts per equipment",
+    "fa": "گزارش کاتالوگ قطعه: Parts per equipment"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueReport",
+      "action": "Parts",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "period": "param:period",
+        "from": "param:from",
+        "to": "param:to",
+        "sectionId": "param:sectionId",
+        "requestType": "param:requestType",
+        "status": "param:status",
+        "employeeId": "param:employeeId",
+        "equipmentId": "param:equipmentId"
+      }
+    }
+  }
+}

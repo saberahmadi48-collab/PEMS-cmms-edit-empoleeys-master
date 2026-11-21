@@ -1,0 +1,41 @@
+{
+  "kind": "data-source",
+  "key": "maintenance-groups-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance groups rows",
+    "fa": "ردیف‌های گروه‌های تعمیراتی"
+  },
+  "description": {
+    "en": "The rows of the maintenance groups grid",
+    "fa": "ردیف‌های جدول گروه‌های تعمیراتی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "MaintenanceGroup",
+      "fields": [
+        "Code",
+        "Name",
+        "Description",
+        "IsActive",
+        "DisciplineId"
+      ],
+      "search": [
+        "Code",
+        "Name",
+        "Description"
+      ],
+      "lookups": [
+        {
+          "name": "discipline",
+          "entity": "Discipline",
+          "foreignKey": "DisciplineId",
+          "label": "Name"
+        }
+      ]
+    }
+  }
+}

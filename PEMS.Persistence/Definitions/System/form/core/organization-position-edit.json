@@ -1,0 +1,66 @@
+{
+  "kind": "form",
+  "key": "organization-position-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a position",
+    "fa": "ویرایش سمت"
+  },
+  "description": {
+    "en": "Edit a position",
+    "fa": "ویرایش سمت"
+  },
+  "payload": {
+    "id": "organization-position-edit",
+    "title": {
+      "en": "Edit a position",
+      "fa": "ویرایش سمت"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "organization-position-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "required": true,
+        "maxLength": 200
+      },
+      {
+        "name": "positionCode",
+        "label": {
+          "en": "Position code",
+          "fa": "کد سمت"
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "departmentId",
+        "label": {
+          "en": "Department",
+          "fa": "دپارتمان"
+        },
+        "kind": "select",
+        "optionsFrom": "organization-departments"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "mrs-import-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject rows",
+    "fa": "رد ردیف‌ها"
+  },
+  "description": {
+    "en": "Reject rows",
+    "fa": "رد ردیف‌ها"
+  },
+  "payload": {
+    "id": "mrs-import-reject",
+    "title": {
+      "en": "Reject rows",
+      "fa": "رد ردیف‌ها"
+    },
+    "submitLabel": {
+      "en": "Reject",
+      "fa": "رد"
+    },
+    "actionKey": "mrs-import-reject",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه‌ی دسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "rowIds",
+        "label": {
+          "en": "Row ids, separated by commas",
+          "fa": "شناسه‌ی ردیف‌ها، با ویرگول"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

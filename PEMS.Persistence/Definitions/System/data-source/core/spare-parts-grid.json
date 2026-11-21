@@ -1,0 +1,48 @@
+{
+  "kind": "data-source",
+  "key": "spare-parts-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Spare parts rows",
+    "fa": "ردیف‌های قطعات یدکی"
+  },
+  "description": {
+    "en": "The rows of the spare parts grid",
+    "fa": "ردیف‌های جدول قطعات یدکی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "SparePart",
+      "fields": [
+        "PartNumber",
+        "PartName",
+        "Manufacturer",
+        "Model",
+        "Unit",
+        "QuantityOnHand",
+        "MinStockLevel",
+        "ReorderPoint",
+        "StorageLocation"
+      ],
+      "search": [
+        "PartNumber",
+        "PartName",
+        "Manufacturer",
+        "StorageLocation"
+      ],
+      "where": {
+        "IsActive": true
+      },
+      "presets": {
+        "lowStock": {
+          "left": "QuantityOnHand",
+          "op": "lte",
+          "right": "ReorderPoint"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "spare-parts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Spare parts (old address)",
+    "fa": "Spare parts (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Spare parts (old address)",
+    "fa": "Spare parts (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "SparePart/{*rest}",
+    "target": "/p/spare-parts",
+    "permanent": false
+  }
+}

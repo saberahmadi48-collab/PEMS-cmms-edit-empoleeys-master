@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.DTOs;
@@ -105,7 +106,8 @@ public class FilesControllerAccessTests : IAsyncLifetime
     }
 
     private async Task<(int DocumentId, int AttachmentId)> SeedDocumentWithAttachmentAsync(
-        int? disciplineId, bool documentActive = true, bool attachmentActive = true, string content = "test-bytes")
+        int? disciplineId, bool documentActive = true, bool attachmentActive = true, string content = "test-bytes",
+        string fileName = "FST-test.txt", string mimeType = "text/plain")
     {
         var doc = new EngineeringDocument
         {
@@ -123,16 +125,16 @@ public class FilesControllerAccessTests : IAsyncLifetime
         await _ctx.SaveChangesAsync();
 
         await using var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(content));
-        var key = await _storage.SaveAsync("documents", "FST-test.txt", stream);
+        var key = await _storage.SaveAsync("documents", fileName, stream);
 
         var attachment = new DocumentAttachment
         {
             DocumentId = doc.DocumentId,
-            FileName = "FST-test.txt",
-            FileExtension = ".txt",
+            FileName = fileName,
+            FileExtension = Path.GetExtension(fileName),
             FilePath = key,
             FileSize = content.Length,
-            MimeType = "text/plain",
+            MimeType = mimeType,
             UploadDate = DateTime.Now,
             IsActive = attachmentActive,
             AIStatus = "NotApplicable"
@@ -147,7 +149,67 @@ public class FilesControllerAccessTests : IAsyncLifetime
     {
         var currentUser = new FakeCurrentUserService(userId, roles);
         var accessControl = new FakeAccessControlService(canViewAllDisciplines);
-        return new FilesController(_ctx, currentUser, accessControl, _storage);
+        return new FilesController(_ctx, currentUser, accessControl, _storage)
+        {
+            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
+        };
+    }
+
+    // ==================== SCRUM-202: served files carry nosniff + CSP; preview is inline only for safe types ====================
+    [Fact]
+    public async Task Download_IsAlwaysAnAttachment_WithNosniffAndSandbox()
+    {
+        var (_, attachmentId) = await SeedDocumentWithAttachmentAsync(_mechDisciplineId);
+        var controller = BuildController(_mechUserId, new[] { "EngineeringManager" }, canViewAllDisciplines: true);
+
+        var file = Assert.IsType<FileStreamResult>(await controller.Download(attachmentId));
+        await file.FileStream.DisposeAsync();
+
+        var headers = controller.Response.Headers;
+        Assert.Equal("nosniff", headers.XContentTypeOptions.ToString());
+        Assert.Contains("sandbox", headers.ContentSecurityPolicy.ToString());
+        Assert.StartsWith("attachment", headers.ContentDisposition.ToString());
+        Assert.Contains("FST-test.txt", headers.ContentDisposition.ToString());
+    }
+
+    [Fact]
+    public async Task Preview_OfASafeType_IsInline_InASandbox()
+    {
+        var (_, attachmentId) = await SeedDocumentWithAttachmentAsync(_mechDisciplineId);
+        var controller = BuildController(_mechUserId, new[] { "EngineeringManager" }, canViewAllDisciplines: true);
+
+        var file = Assert.IsType<FileStreamResult>(await controller.Preview(attachmentId));
+        await file.FileStream.DisposeAsync();
+
+        Assert.Equal("text/plain", file.ContentType);
+        Assert.StartsWith("inline", controller.Response.Headers.ContentDisposition.ToString());
+        Assert.Contains("sandbox", controller.Response.Headers.ContentSecurityPolicy.ToString());
+        Assert.Contains("default-src 'none'", controller.Response.Headers.ContentSecurityPolicy.ToString());
+        Assert.Equal("nosniff", controller.Response.Headers.XContentTypeOptions.ToString());
+    }
+
+    [Fact]
+    public async Task Preview_OfHtmlStoredWithAnHtmlType_IsADownloadOfPlainBytes()
+    {
+        // an old row whose MIME type came from the browser: it must never be rendered as a page in the PEMS origin
+        var (_, attachmentId) = await SeedDocumentWithAttachmentAsync(_mechDisciplineId,
+            content: "<script>alert(1)</script>", fileName: "FST-page.html", mimeType: "text/html");
+        var controller = BuildController(_mechUserId, new[] { "EngineeringManager" }, canViewAllDisciplines: true);
+
+        var file = Assert.IsType<FileStreamResult>(await controller.Preview(attachmentId));
+        await file.FileStream.DisposeAsync();
+
+        Assert.Equal("application/octet-stream", file.ContentType);
+        Assert.StartsWith("attachment", controller.Response.Headers.ContentDisposition.ToString());
+    }
+
+    [Fact]
+    public async Task Preview_UsesTheSameAccessCheck_AsDownload()
+    {
+        var (_, attachmentId) = await SeedDocumentWithAttachmentAsync(_mechDisciplineId);
+        var controller = BuildController(_elecUserId, new[] { "DisciplineEngineer" }, canViewAllDisciplines: false);
+
+        Assert.IsType<ForbidResult>(await controller.Preview(attachmentId));
     }
 
     // ==================== 2. Authenticated unauthorized user (wrong discipline) → denied ====================

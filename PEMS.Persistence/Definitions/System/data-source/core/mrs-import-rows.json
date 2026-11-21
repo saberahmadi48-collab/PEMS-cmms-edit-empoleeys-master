@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "mrs-import-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MRS import rows",
+    "fa": "ردیف‌های ورود MRS"
+  },
+  "description": {
+    "en": "MRS import rows",
+    "fa": "ردیف‌های ورود MRS"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MrsImport",
+      "action": "Rows",
+      "args": {
+        "batchId": "param:batchId",
+        "matchStatus": "param:matchStatus"
+      }
+    }
+  }
+}

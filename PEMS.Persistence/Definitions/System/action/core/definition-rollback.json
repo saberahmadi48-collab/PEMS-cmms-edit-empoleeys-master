@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "definition-rollback",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Roll back to a version",
+    "fa": "بازگشت به نسخه"
+  },
+  "description": {
+    "en": "Roll back to a version",
+    "fa": "بازگشت به نسخه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The definition was rolled back.",
+      "fa": "تعریف به نسخه قبلی برگشت."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Definition",
+      "action": "Rollback",
+      "args": {
+        "reference": "field:id",
+        "toVersion": "field:toVersion",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

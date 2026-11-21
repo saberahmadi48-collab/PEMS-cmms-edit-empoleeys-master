@@ -1,0 +1,95 @@
+{
+  "kind": "form",
+  "key": "meeting-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Schedule a meeting",
+    "fa": "برگزاری جلسه"
+  },
+  "description": {
+    "en": "Schedule a meeting",
+    "fa": "برگزاری جلسه"
+  },
+  "payload": {
+    "id": "meeting-create",
+    "title": {
+      "en": "Schedule a meeting",
+      "fa": "برگزاری جلسه"
+    },
+    "submitLabel": {
+      "en": "Schedule",
+      "fa": "ثبت"
+    },
+    "actionKey": "meeting-create",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "meetingDate",
+        "label": {
+          "en": "Date and time",
+          "fa": "تاریخ و ساعت"
+        },
+        "kind": "datetime",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "location",
+        "label": {
+          "en": "Location",
+          "fa": "محل"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "organizerName",
+        "label": {
+          "en": "Organizer",
+          "fa": "برگزارکننده"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project id",
+          "fa": "شناسه‌ی پروژه"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "agenda",
+        "label": {
+          "en": "Agenda",
+          "fa": "دستور جلسه"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "kind": "form",
+  "key": "irn-disposition",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the disposition of every line",
+    "fa": "ثبت Disposition همه‌ی اقلام"
+  },
+  "description": {
+    "en": "Record the disposition of every line",
+    "fa": "ثبت Disposition همه‌ی اقلام"
+  },
+  "payload": {
+    "id": "irn-disposition",
+    "title": {
+      "en": "Record the disposition of every line",
+      "fa": "ثبت Disposition همه‌ی اقلام"
+    },
+    "submitLabel": {
+      "en": "Record",
+      "fa": "ثبت"
+    },
+    "actionKey": "irn-disposition",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "IRN id",
+          "fa": "شناسه‌ی IRN"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "mode",
+        "label": {
+          "en": "Result",
+          "fa": "نتیجه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "AcceptAll",
+            "label": {
+              "en": "Accept everything",
+              "fa": "پذیرش همه"
+            }
+          },
+          {
+            "value": "RejectAll",
+            "label": {
+              "en": "Reject everything",
+              "fa": "رد همه"
+            }
+          },
+          {
+            "value": "HoldAll",
+            "label": {
+              "en": "Hold everything",
+              "fa": "تعلیق همه"
+            }
+          }
+        ]
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت"
+        },
+        "kind": "textArea",
+        "maxLength": 1000,
+        "span": 2
+      }
+    ]
+  }
+}

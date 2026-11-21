@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "navigation-visibility-user-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Navigation seen by a user",
+    "fa": "ناوبری قابل مشاهده برای یک کاربر"
+  },
+  "description": {
+    "en": "What a user sees",
+    "fa": "آنچه یک کاربر می‌بیند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "NavigationVisibility",
+      "action": "UserRows",
+      "args": {
+        "userId": "param:userId"
+      }
+    }
+  }
+}

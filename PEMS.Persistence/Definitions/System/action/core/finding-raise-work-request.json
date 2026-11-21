@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "finding-raise-work-request",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Raise a work request",
+    "fa": "ایجاد درخواست کار"
+  },
+  "description": {
+    "en": "Raise a work request",
+    "fa": "ایجاد درخواست کار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Finding",
+      "action": "RaiseWorkRequest",
+      "args": {
+        "employeeId": "context:employeeId",
+        "findingId": "field:findingId"
+      }
+    },
+    "success": {
+      "en": "The work request was created from the finding.",
+      "fa": "Work Request از یافته ساخته شد."
+    },
+    "redirect": "/p/findings?f.equipmentId={equipmentId}"
+  }
+}

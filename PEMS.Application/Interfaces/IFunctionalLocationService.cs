@@ -35,5 +35,11 @@ public interface IFunctionalLocationService
     /// پیشوند رشته‌ای Code). وقتی includeSelf=false، فقط فرزندان واقعی برمی‌گردند (نه خودِ
     /// شناسه‌های ورودی) - برای مواردی که فراخوان‌کننده خودش شناسه‌های Exact را جدا مدیریت می‌کند.
     /// </summary>
+    /// <summary>
+    /// SCRUM-513: one level of the tree picker. With <paramref name="query"/> empty: the active children of <paramref name="parentId"/> (null = the roots), sorted by code;
+    /// with a query (two characters or more): active locations whose code or name contains it, over the whole tree, as a flat list. Paged, so a tree of any size is read 20 nodes at a time.
+    /// </summary>
+    Task<TreeNodePage> GetTreeNodesAsync(int? parentId, string? query, int page, int pageSize);
+
     Task<List<int>> GetDescendantIdsAsync(IEnumerable<int> functionalLocationIds, bool includeSelf);
 }

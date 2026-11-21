@@ -1,0 +1,8 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("page-shell", Category = "layout", Icon = "bi-window")]
+@FrameMarkup.Element("div", string.IsNullOrWhiteSpace(Options.Css) ? Root : Root + " " + Options.Css.Trim(), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public PageShellOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string Root => string.Equals(Options.Kind, "admin", StringComparison.OrdinalIgnoreCase) ? "admin-page-shell" : "vs-page";
+}

@@ -1,0 +1,94 @@
+{
+  "kind": "form",
+  "key": "shift-handover-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New shift handover",
+    "fa": "تحویل شیفت جدید"
+  },
+  "description": {
+    "en": "New shift handover",
+    "fa": "تحویل شیفت جدید"
+  },
+  "payload": {
+    "id": "shift-handover-create",
+    "title": {
+      "en": "New shift handover",
+      "fa": "تحویل شیفت جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "shift-handover-create",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "outgoingEmployeeId",
+        "label": {
+          "en": "Outgoing",
+          "fa": "تحویل‌دهنده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "shift-handover-employees"
+      },
+      {
+        "name": "incomingEmployeeId",
+        "label": {
+          "en": "Incoming",
+          "fa": "تحویل‌گیرنده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "shift-handover-employees"
+      },
+      {
+        "name": "shiftLabel",
+        "label": {
+          "en": "Shift",
+          "fa": "شیفت"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "handoverDate",
+        "label": {
+          "en": "Handover date",
+          "fa": "تاریخ تحویل"
+        },
+        "kind": "datetime",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

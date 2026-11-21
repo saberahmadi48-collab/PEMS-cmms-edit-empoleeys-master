@@ -51,9 +51,7 @@
 
         var headers = table.querySelectorAll('th[data-col-key][data-resizable="true"]');
         headers.forEach(function (th) {
-            var handle = document.createElement('span');
-            handle.className = 'pems-col-resize-handle';
-            handle.setAttribute('aria-hidden', 'true');
+            var handle = window.PemsTemplate.clone('col-resize-handle');
             th.appendChild(handle);
 
             var startX = 0;

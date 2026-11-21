@@ -12,4 +12,10 @@ public interface IPartCatalogueDuplicateService
 {
     Task<List<PcExistingPartHit>> SearchExistingPartsAsync(string? q, int take = 20);
     Task<PcDuplicateResult> FindDuplicateCandidatesAsync(PcDuplicateProbe probe);
+
+    /// <summary>
+    /// SCRUM-428: the registered part with exactly this part number (normalised: case, spaces and - / . _ ignored), from a completed
+    /// part catalogue request (latest first) or else from Material Master; null when the part is not catalogued.
+    /// </summary>
+    Task<PcExistingPartHit?> FindRegisteredPartAsync(string? partNumber);
 }

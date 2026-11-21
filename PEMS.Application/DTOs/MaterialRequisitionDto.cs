@@ -27,6 +27,9 @@ public class MRItemDto
     public double Quantity { get; set; }
     public string? Unit { get; set; }
     public string? Remarks { get; set; }
+
+    /// <summary>SCRUM-428: linked to a registered part (Material Master or a completed part catalogue request).</summary>
+    public bool IsCatalogued { get; set; }
 }
 
 public class MRQDto

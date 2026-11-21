@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "production-order-hold",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Hold the order",
+    "fa": "تعلیق سفارش"
+  },
+  "description": {
+    "en": "Hold the order",
+    "fa": "تعلیق سفارش"
+  },
+  "payload": {
+    "id": "production-order-hold",
+    "title": {
+      "en": "Hold the order",
+      "fa": "تعلیق سفارش"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-order-hold",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Order id",
+          "fa": "شناسه‌ی سفارش"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      }
+    ]
+  }
+}

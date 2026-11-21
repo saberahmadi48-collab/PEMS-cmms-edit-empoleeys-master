@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "meeting-action-items",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Meeting: Action items",
+    "fa": "جلسه: Action items"
+  },
+  "description": {
+    "en": "Meeting: Action items",
+    "fa": "جلسه: Action items"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Meeting",
+      "action": "ActionItems",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

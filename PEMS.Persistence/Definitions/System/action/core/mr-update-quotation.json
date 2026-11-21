@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "mr-update-quotation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Evaluate a quotation",
+    "fa": "ارزیابی استعلام"
+  },
+  "description": {
+    "en": "Evaluate a quotation",
+    "fa": "ارزیابی استعلام"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaterialRequisition",
+      "action": "UpdateQuotationEvaluation",
+      "args": {
+        "mrqId": "field:mrqId",
+        "technical": "field:technical",
+        "commercial": "field:commercial",
+        "approval": "field:approval"
+      }
+    },
+    "success": {
+      "en": "The evaluation was updated.",
+      "fa": "ارزیابی به‌روز شد."
+    },
+    "redirect": "/p/mr-details?id={mrId}"
+  }
+}

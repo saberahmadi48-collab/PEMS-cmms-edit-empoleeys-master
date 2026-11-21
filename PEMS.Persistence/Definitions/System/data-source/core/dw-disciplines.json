@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "dw-disciplines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline workspace disciplines",
+    "fa": "دیسیپلین‌های فضای کاری"
+  },
+  "description": {
+    "en": "Discipline workspace disciplines",
+    "fa": "دیسیپلین‌های فضای کاری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DisciplineWorkspace",
+      "action": "Disciplines",
+      "args": {}
+    }
+  }
+}

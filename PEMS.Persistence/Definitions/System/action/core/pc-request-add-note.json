@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "pc-request-add-note",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a note",
+    "fa": "افزودن یادداشت"
+  },
+  "description": {
+    "en": "Add a note",
+    "fa": "افزودن یادداشت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "AddNote",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "id": "field:id",
+        "text": "field:text"
+      }
+    },
+    "success": {
+      "en": "The note was added.",
+      "fa": "یادداشت افزوده شد."
+    },
+    "redirect": "/p/pc-request-details?id={id}"
+  }
+}

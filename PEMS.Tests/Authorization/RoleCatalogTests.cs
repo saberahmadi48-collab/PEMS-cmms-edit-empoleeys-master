@@ -255,6 +255,34 @@ public class RoleCatalogTests
     // ---------------- Authorization واقعی (Allow/Deny) ----------------
 
     [Fact]
+    public async Task SCRUM547_The_warehouse_manager_resolves_holds_and_the_buyer_opens_the_IRN_but_neither_approves_QA()
+    {
+        var (_, perm, _) = await StartupLikeAsync(nameof(SCRUM547_The_warehouse_manager_resolves_holds_and_the_buyer_opens_the_IRN_but_neither_approves_QA));
+        var manager = new[] { RoleCatalog.WarehouseManager };
+        var buyer = new[] { RoleCatalog.ProcurementBuyer };
+
+        Assert.True(await perm.HasPermissionAsync(manager, "IRN", "Edit"));     // Hold resolution
+        Assert.False(await perm.HasPermissionAsync(manager, "IRN", "Create"));
+        Assert.True(await perm.HasPermissionAsync(buyer, "IRN", "View"));       // close short / replacement decision
+        Assert.False(await perm.HasPermissionAsync(buyer, "IRN", "Edit"));
+        foreach (var role in new[] { manager, buyer })
+            Assert.False(await perm.HasPermissionAsync(role, "IRN", "Approve"));   // QA approval stays with QAManager
+    }
+
+    [Fact]
+    public void SCRUM547_Existing_databases_get_the_two_IRN_grants_once_through_a_data_migration()
+    {
+        var file = Directory.GetFiles(Path.Combine(PEMS.Tests.TestSupport.SupportedReleases.RepoRoot(), "PEMS.Migrations", "Migrations"), "*_Scrum547IrnDefaultGrants.cs")
+            .Single(f => !f.EndsWith(".Designer.cs", StringComparison.Ordinal));
+        var sql = File.ReadAllText(file).Replace("\r\n", "\n");
+
+        Assert.Contains("SET [CanView] = 1, [CanEdit] = 1\nWHERE [RoleName] = N'WH.Manager' AND [ModuleName] = N'IRN'", sql);
+        Assert.Contains("SELECT N'PRC.Buyer', N'IRN', 1, 0, 0, 0, 0", sql);
+        Assert.Contains("NOT EXISTS (SELECT 1 FROM [RolePermissions] WHERE [RoleName] = N'PRC.Buyer' AND [ModuleName] = N'IRN')", sql);
+        Assert.DoesNotContain("DELETE FROM", sql, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public async Task Storekeeper_And_WarehouseManager_HaveSeparatedAuthority_AndNothingElse()
     {
         var (_, perm, _) = await StartupLikeAsync(nameof(Storekeeper_And_WarehouseManager_HaveSeparatedAuthority_AndNothingElse));
@@ -315,51 +343,5 @@ public class RoleCatalogTests
             Assert.False(snap.IsModuleVisible("Administration"));
             Assert.False(snap.IsModuleVisible("ContractManagement"));
         }
-    }
-
-    // ---------------- Roles admin UI guard ----------------
-
-    private static async Task<(RolesController C, PEMSDbContext Ctx)> RolesControllerAsync(string db)
-    {
-        var ctx = PemsDbContextFactory.CreateInMemory($"RoleCatalog_ctrl_{db}");
-        var services = new ServiceCollection();
-        services.AddSingleton(ctx);
-        services.AddLogging();
-        services.AddIdentityCore<ApplicationUser>().AddRoles<ApplicationRole>().AddEntityFrameworkStores<PEMSDbContext>();
-        var sp = services.BuildServiceProvider();
-        var c = new RolesController(sp.GetRequiredService<RoleManager<ApplicationRole>>(), sp.GetRequiredService<UserManager<ApplicationUser>>(), ctx).WithTempData();
-        return (c, ctx);
-    }
-
-    [Fact]
-    public async Task Delete_CatalogRole_IsRejected_CustomRoleCanBeDeleted()
-    {
-        var (c, ctx) = await RolesControllerAsync(nameof(Delete_CatalogRole_IsRejected_CustomRoleCanBeDeleted));
-        await RoleCatalogSeeder.SeedAsync(ctx);
-        ctx.Roles.Add(new ApplicationRole("MyCustom") { NormalizedName = "MYCUSTOM" });
-        await ctx.SaveChangesAsync();
-        var mnt = await ctx.Roles.SingleAsync(r => r.Name == "MNT.Manager");
-        var custom = await ctx.Roles.SingleAsync(r => r.Name == "MyCustom");
-
-        await c.Delete(mnt.Id);          // قبلاً (فقط SystemRoles.All) قابل حذف بود
-        await c.Delete(custom.Id);
-
-        Assert.True(await ctx.Roles.AnyAsync(r => r.Name == "MNT.Manager"));
-        Assert.False(await ctx.Roles.AnyAsync(r => r.Name == "MyCustom"));
-    }
-
-    [Fact]
-    public async Task RolesIndex_ExposesDomainCategoryAndOrder()
-    {
-        var (c, ctx) = await RolesControllerAsync(nameof(RolesIndex_ExposesDomainCategoryAndOrder));
-        await RoleCatalogSeeder.SeedAsync(ctx);
-
-        var view = Assert.IsType<ViewResult>(await c.Index());
-        var model = Assert.IsAssignableFrom<List<PEMS.Web.Areas.Admin.Models.RoleListItemViewModel>>(view.Model);
-
-        Assert.Equal(BaselineCount, model.Count);
-        Assert.Equal(SystemRoles.SystemAdmin, model[0].Name);
-        Assert.Equal("Warehouse", model.Single(m => m.Name == RoleCatalog.WarehouseStorekeeper).Domain);
-        Assert.All(model, m => Assert.True(m.IsSystemRole));
     }
 }

@@ -1,0 +1,39 @@
+{
+  "kind": "data-source",
+  "key": "contract-approval-authority-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contract approval authority rows",
+    "fa": "ردیف‌های اختیار تأیید قرارداد"
+  },
+  "description": {
+    "en": "The rows of the contract approval authority grid",
+    "fa": "ردیف‌های جدول اختیار تأیید قرارداد"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "ContractApprovalAuthorityRule",
+      "fields": [
+        "ContractApprovalAuthorityRuleId",
+        "Priority",
+        "MinValue",
+        "MaxValue",
+        "CriticalityClass",
+        "RequiredApproverRole",
+        "Description",
+        "IsActive"
+      ],
+      "search": [
+        "RequiredApproverRole",
+        "Description"
+      ],
+      "sort": [
+        "Priority",
+        "-ContractApprovalAuthorityRuleId"
+      ]
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "kind": "form",
+  "key": "barcode-replace",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Replace a barcode",
+    "fa": "جایگزینی بارکد"
+  },
+  "description": {
+    "en": "Replace a barcode",
+    "fa": "جایگزینی بارکد"
+  },
+  "payload": {
+    "id": "barcode-replace",
+    "title": {
+      "en": "Replace a barcode",
+      "fa": "جایگزینی بارکد"
+    },
+    "submitLabel": {
+      "en": "Replace",
+      "fa": "جایگزینی"
+    },
+    "actionKey": "barcode-replace",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Barcode id",
+          "fa": "شناسه‌ی بارکد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "symbology",
+        "label": {
+          "en": "Symbology",
+          "fa": "نوع بارکد"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Code128",
+            "label": {
+              "en": "Code 128",
+              "fa": "Code 128"
+            }
+          },
+          {
+            "value": "QR",
+            "label": {
+              "en": "QR",
+              "fa": "QR"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

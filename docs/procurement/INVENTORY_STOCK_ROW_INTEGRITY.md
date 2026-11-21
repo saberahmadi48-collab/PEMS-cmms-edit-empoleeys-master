@@ -43,7 +43,7 @@ Resolution rules: one row → use it; none → existing safe creation; several �
 Index-only, additive: filtered unique index `UX_MaterialStocks_Item_Warehouse_NoLocation` on (`MaterialItemId`, `WarehouseId`)
 `WHERE [StorageLocationId] IS NULL`. `Up` first runs a pre-flight that `THROW`s (whole migration rolls back, nothing changed) if
 duplicate NULL-location rows exist. It never merges or deletes data. `Down` drops the index. Idempotent script:
-`docs/procurement/MaterialStockNoLocationUniqueness.migration.sql`.
+`legacy-trash/manual-sql/docs/procurement/MaterialStockNoLocationUniqueness.migration.sql`.
 
 The migration is **not applied** to `PEMSDB`/`PEMSDB_PcatClone`. Because it only adds an index, an un-migrated database keeps working
 (EF queries are unchanged); without it duplicates are still detected and stopped at the application level.

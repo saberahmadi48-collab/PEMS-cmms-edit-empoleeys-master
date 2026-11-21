@@ -3,93 +3,93 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="alert alert-info py-2 px-3 small mb-3">
-    <i class="bi bi-info-circle"></i> ستون‌های MR No / PO No فقط به‌عنوان متن ذخیره می‌شوند - دیگر
+<pems-alert tone="info" css="py-2 px-3 small mb-3">
+    <pems-icon name="bi-info-circle" /> ستون‌های MR No / PO No فقط به‌عنوان متن ذخیره می‌شوند - دیگر
     خودکار Vendor/MR/VDR جدید ساخته نمی‌شود. برای اتصال به داده‌ی موجود، بعد از Commit به
-    <a asp-controller="Relationship" asp-action="Equipment" asp-route-id="0" onclick="return false;" class="text-decoration-underline">@Localizer["Relationship Explorer"]</a>
+    <pems-link asp-controller="Relationship" asp-action="Equipment" asp-route-id="0" data-pems-click="prevent" class="text-decoration-underline">@Localizer["Relationship Explorer"]</pems-link>
     هر تجهیز مراجعه کن و پیشنهاد اتصال را تایید کن.
-</div>
+</pems-alert>
 
-<div class="content-card mb-3">
-    <div class="row g-3">
-        <div class="col-md-3"><strong>@Localizer["File:"]</strong> @Model.FileName</div>
-        <div class="col-md-3"><strong>@Localizer["Project:"]</strong> @Model.ProjectName</div>
-        <div class="col-md-2"><strong>@Localizer["Total:"]</strong> @Model.Rows.Count</div>
-        <div class="col-md-2"><strong>Updates:</strong> @Model.Rows.Count(x => x.IsUpdate)</div>
-        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
-    </div>
+<pems-content-card css="mb-3">
+    <pems-row gap="3">
+        <pems-col md="3"><strong>@Localizer["File:"]</strong> @Model.FileName</pems-col>
+        <pems-col md="3"><strong>@Localizer["Project:"]</strong> @Model.ProjectName</pems-col>
+        <pems-col md="2"><strong>@Localizer["Total:"]</strong> @Model.Rows.Count</pems-col>
+        <pems-col md="2"><strong>Updates:</strong> @Model.Rows.Count(x => x.IsUpdate)</pems-col>
+        <pems-col md="2"><strong>@Localizer["Status:"]</strong> <pems-badge tone="@(Model.Status == "Committed" ? "success" : "neutral")">@Model.Status</pems-badge></pems-col>
+    </pems-row>
 
     @if (Model.Status == "Staging")
     {
         <div class="pems-command-bar">
-            <form asp-action="Commit" method="post">
+            <pems-form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.EquipmentImportBatchId" />
-                <button type="submit" class="btn btn-pems-solid" onclick="return confirm('Commit the selected rows into the live Equipment register?')">
-                    <i class="bi bi-check-circle"></i> Commit Selected Rows
-                </button>
-            </form>
-            <form asp-action="Discard" method="post">
+                <pems-button tone="primary" type="submit" data-pems-confirm="Commit the selected rows into the live Equipment register?">
+                    <pems-icon name="bi-check-circle" /> Commit Selected Rows
+                </pems-button>
+            </pems-form>
+            <pems-form asp-action="Discard" method="post">
                 <input type="hidden" name="batchId" value="@Model.EquipmentImportBatchId" />
-                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Discard this entire import batch?')">
-                    <i class="bi bi-trash"></i> Discard Batch
-                </button>
-            </form>
+                <pems-button tone="danger" outline="true" type="submit" data-pems-confirm="Discard this entire import batch?">
+                    <pems-icon name="bi-trash" /> Discard Batch
+                </pems-button>
+            </pems-form>
         </div>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card">
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
-            <thead>
-                <tr>
-                    <th>@Localizer["Include"]</th><th>#</th><th>Tag No</th><th>@Localizer["Name"]</th><th>@Localizer["Type"]</th>
-                    <th>@Localizer["Discipline"]</th><th>@Localizer["Area"]</th><th>P&amp;ID</th><th>MR No</th><th>PO No</th><th>Existing?</th>
-                </tr>
-            </thead>
-            <tbody>
+<pems-content-card>
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
+        <pems-table kind="enterprise">
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header>@Localizer["Include"]</pems-table-header><pems-table-header>#</pems-table-header><pems-table-header>Tag No</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header>
+                    <pems-table-header>@Localizer["Discipline"]</pems-table-header><pems-table-header>@Localizer["Area"]</pems-table-header><pems-table-header>P&amp;ID</pems-table-header><pems-table-header>MR No</pems-table-header><pems-table-header>PO No</pems-table-header><pems-table-header>Existing?</pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
                 @foreach (var r in Model.Rows)
                 {
-                    <tr>
-                        <td>
+                    <pems-table-row>
+                        <pems-table-cell>
                             @if (Model.Status == "Staging")
                             {
-                                <form asp-action="ToggleRow" method="post">
+                                <pems-form asp-action="ToggleRow" method="post">
                                     <input type="hidden" name="rowId" value="@r.EquipmentImportRowId" />
                                     <input type="hidden" name="batchId" value="@Model.EquipmentImportBatchId" />
                                     <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
-                                    <button type="submit" class="btn btn-sm @(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" style="width:36px;">
-                                        <i class="bi @(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")"></i>
-                                    </button>
-                                </form>
+                                    <pems-button class="pems-w-36" tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit">
+                                        <pems-icon css="@(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")" />
+                                    </pems-button>
+                                </pems-form>
                             }
                             else
                             {
                                 @(r.IncludeInCommit ? "Yes" : "No")
                             }
-                        </td>
-                        <td>@r.RowNumber</td>
-                        <td>
+                        </pems-table-cell>
+                        <pems-table-cell>@r.RowNumber</pems-table-cell>
+                        <pems-table-cell>
                             <strong>@r.TagNumber</strong>
                             @if (r.ValidationStatus == "Warning")
                             {
-                                <div class="badge bg-warning text-dark d-block mt-1" style="white-space:normal; text-align:right;">
-                                    <i class="bi bi-exclamation-triangle"></i> @r.ValidationMessage
-                                </div>
+                                <pems-badge class="pems-wrap-start" tone="warning" css="d-block mt-1">
+                                    <pems-icon name="bi-exclamation-triangle" /> @r.ValidationMessage
+                                </pems-badge>
                             }
-                        </td>
-                        <td class="small">@r.Name</td>
-                        <td class="small">@r.Payload?.EquipmentTypeCode</td>
-                        <td class="small">@r.DisciplineCodeRaw</td>
-                        <td class="small">@r.Payload?.Area</td>
-                        <td class="small">@r.Payload?.PIDNumber</td>
-                        <td class="small">@r.Payload?.MRNumber</td>
-                        <td class="small">@r.Payload?.PONumber</td>
-                        <td>@(r.IsUpdate ? "Update existing" : "New")</td>
-                    </tr>
+                        </pems-table-cell>
+                        <pems-table-cell class="small">@r.Name</pems-table-cell>
+                        <pems-table-cell class="small">@r.Payload?.EquipmentTypeCode</pems-table-cell>
+                        <pems-table-cell class="small">@r.DisciplineCodeRaw</pems-table-cell>
+                        <pems-table-cell class="small">@r.Payload?.Area</pems-table-cell>
+                        <pems-table-cell class="small">@r.Payload?.PIDNumber</pems-table-cell>
+                        <pems-table-cell class="small">@r.Payload?.MRNumber</pems-table-cell>
+                        <pems-table-cell class="small">@r.Payload?.PONumber</pems-table-cell>
+                        <pems-table-cell>@(r.IsUpdate ? "Update existing" : "New")</pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
-        </table>
-    </div>
-    @if (!Model.Rows.Any()) { <p class="text-muted text-center py-4">No equipment rows recognized in this file.</p> }
-</div>
+            </pems-table-body>
+        </pems-table>
+    </pems-table-scroll>
+    @if (!Model.Rows.Any()) { <pems-text class="text-muted text-center py-4">No equipment rows recognized in this file.</pems-text> }
+</pems-content-card>

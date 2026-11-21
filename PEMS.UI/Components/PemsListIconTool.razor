@@ -1,0 +1,29 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-icon-tool", Category = "list", Icon = "bi-hand-index")]
+@if (Options.Tag == "a")
+{
+    <a @attributes="Attrs"><i aria-hidden="true" class="@("bi " + Options.Icon)"></i><span class="visually-hidden">@Options.Label</span>@ChildContent</a>
+}
+else
+{
+    <button @attributes="Attrs"><i aria-hidden="true" class="@("bi " + Options.Icon)"></i><span class="visually-hidden">@Options.Label</span>@ChildContent</button>
+}
+@code {
+    [Parameter, EditorRequired] public ListIconToolOptions Options { get; set; } = default!;
+    /// <summary>Markup after the hidden label (a count badge).</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private IEnumerable<KeyValuePair<string, object>> Attrs
+    {
+        get
+        {
+            var all = new List<KeyValuePair<string, string?>>
+            {
+                new("class", string.IsNullOrEmpty(Options.ExtraClass) ? "lp-icon-btn" : "lp-icon-btn " + Options.ExtraClass),
+                new("title", Options.Label)
+            };
+            if (Options.Tag != "a") all.Add(new("type", "button"));
+            if (Options.Attributes is not null) all.AddRange(Options.Attributes.Select(a => new KeyValuePair<string, string?>(a.Key, a.Value)));
+            return ListMarkup.Sorted(all);
+        }
+    }
+}

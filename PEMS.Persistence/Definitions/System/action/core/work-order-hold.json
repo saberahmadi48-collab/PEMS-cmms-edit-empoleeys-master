@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "work-order-hold",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Put work order on hold",
+    "fa": "متوقف کردن Work Order"
+  },
+  "description": {
+    "en": "Put work order on hold",
+    "fa": "متوقف کردن Work Order"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrder",
+      "action": "AdvanceStatus",
+      "args": {
+        "workOrderId": "field:id",
+        "nextStatus": "literal:OnHold",
+        "reason": "field:reason",
+        "changedByEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Work order put on hold.",
+      "fa": "Work Order متوقف شد."
+    },
+    "redirect": "/WorkOrder/Details/{id}"
+  }
+}

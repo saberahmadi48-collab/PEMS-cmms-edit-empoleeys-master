@@ -49,6 +49,87 @@ public class DisciplineMasterService : IDisciplineMasterService
         return DisciplineOpResult.Ok();
     }
 
+    private static DisciplineDetail ToDetail(Discipline d) =>
+        new(d.DisciplineId, d.Code, d.Name, d.Description, d.ImportAliases, d.TransmittalCode, d.IsActive, d.CreatedDate, d.RowVersion);
+
+    public async Task<DisciplineDetail?> GetAsync(int disciplineId, CancellationToken ct = default)
+    {
+        var d = await _ctx.Disciplines.AsNoTracking().FirstOrDefaultAsync(x => x.DisciplineId == disciplineId, ct);
+        return d == null ? null : ToDetail(d);
+    }
+
+    public async Task<DisciplinePageResult> QueryAsync(DisciplineQuery query, CancellationToken ct = default)
+    {
+        IQueryable<Discipline> rows = _ctx.Disciplines.AsNoTracking();
+        if (!string.IsNullOrWhiteSpace(query.Q))
+        {
+            var t = query.Q.Trim();
+            rows = rows.Where(d => d.Code.Contains(t) || d.Name.Contains(t) || (d.Description ?? "").Contains(t) || (d.ImportAliases ?? "").Contains(t));
+        }
+        if (query.IsActive is { } active) rows = rows.Where(d => d.IsActive == active);
+        if (!string.IsNullOrWhiteSpace(query.TransmittalCode)) { var tc = query.TransmittalCode.Trim().ToUpper(); rows = rows.Where(d => d.TransmittalCode == tc); }
+
+        var total = await rows.CountAsync(ct);
+        IOrderedQueryable<Discipline>? ordered = null;
+        foreach (var (field, desc) in query.Sort)
+        {
+            ordered = (field.ToLowerInvariant(), ordered == null, desc) switch
+            {
+                ("code", true, false) => rows.OrderBy(d => d.Code),
+                ("code", true, true) => rows.OrderByDescending(d => d.Code),
+                ("code", false, false) => ordered!.ThenBy(d => d.Code),
+                ("code", false, true) => ordered!.ThenByDescending(d => d.Code),
+                ("name", true, false) => rows.OrderBy(d => d.Name),
+                ("name", true, true) => rows.OrderByDescending(d => d.Name),
+                ("name", false, false) => ordered!.ThenBy(d => d.Name),
+                ("name", false, true) => ordered!.ThenByDescending(d => d.Name),
+                ("createddate", true, false) => rows.OrderBy(d => d.CreatedDate),
+                ("createddate", true, true) => rows.OrderByDescending(d => d.CreatedDate),
+                ("createddate", false, false) => ordered!.ThenBy(d => d.CreatedDate),
+                ("createddate", false, true) => ordered!.ThenByDescending(d => d.CreatedDate),
+                _ => ordered,
+            };
+        }
+        ordered = ordered == null ? rows.OrderBy(d => d.Name).ThenBy(d => d.DisciplineId) : ordered.ThenBy(d => d.DisciplineId);
+        var items = await ordered.Skip((query.Page - 1) * query.PageSize).Take(query.PageSize).ToListAsync(ct);
+        return new DisciplinePageResult(items.Select(ToDetail).ToList(), total);
+    }
+
+    public async Task<DisciplineOpResult> CreateAsync(DisciplineWrite write, CancellationToken ct = default)
+    {
+        var (err, c, n, aliases, tc) = await NormalizeAsync(null, write.Code, write.Name, write.ImportAliases, write.TransmittalCode, ct);
+        if (err != null) return DisciplineOpResult.Fail(err);
+        var d = new Discipline { Code = c, Name = n, Description = Clean(write.Description), ImportAliases = aliases, TransmittalCode = tc, IsActive = write.IsActive, CreatedDate = DateTime.Now };
+        _ctx.Disciplines.Add(d);
+        await _ctx.SaveChangesAsync(ct);
+        return DisciplineOpResult.Ok(ToDetail(d));
+    }
+
+    public async Task<DisciplineOpResult> ReplaceAsync(int disciplineId, DisciplineWrite write, byte[]? expectedRowVersion, CancellationToken ct = default)
+    {
+        var d = await _ctx.Disciplines.FirstOrDefaultAsync(x => x.DisciplineId == disciplineId, ct);
+        if (d == null) return DisciplineOpResult.Fail("Disc_Err_NotFound");
+        var (err, c, n, aliases, tc) = await NormalizeAsync(disciplineId, write.Code, write.Name, write.ImportAliases, write.TransmittalCode, ct);
+        if (err != null) return DisciplineOpResult.Fail(err);
+        if (expectedRowVersion != null) _ctx.Entry(d).Property(x => x.RowVersion).OriginalValue = expectedRowVersion;
+        d.Code = c; d.Name = n; d.Description = Clean(write.Description); d.ImportAliases = aliases; d.TransmittalCode = tc; d.IsActive = write.IsActive;
+        try { await _ctx.SaveChangesAsync(ct); }
+        catch (DbUpdateConcurrencyException) { return DisciplineOpResult.Fail(DisciplineErrorKeys.Concurrency); }
+        return DisciplineOpResult.Ok(ToDetail(d));
+    }
+
+    public async Task<DisciplineOpResult> DeleteAsync(int disciplineId, byte[]? expectedRowVersion, CancellationToken ct = default)
+    {
+        var d = await _ctx.Disciplines.FirstOrDefaultAsync(x => x.DisciplineId == disciplineId, ct);
+        if (d == null) return DisciplineOpResult.Fail("Disc_Err_NotFound");
+        if (expectedRowVersion != null) _ctx.Entry(d).Property(x => x.RowVersion).OriginalValue = expectedRowVersion;
+        _ctx.Disciplines.Remove(d);
+        try { await _ctx.SaveChangesAsync(ct); }
+        catch (DbUpdateConcurrencyException) { return DisciplineOpResult.Fail(DisciplineErrorKeys.Concurrency); }
+        catch (DbUpdateException) { _ctx.Entry(d).State = EntityState.Unchanged; return DisciplineOpResult.Fail(DisciplineErrorKeys.InUse); }
+        return DisciplineOpResult.Ok();
+    }
+
     private static string? Clean(string? v) => string.IsNullOrWhiteSpace(v) ? null : v.Trim();
 
     private async Task<(string? Error, string Code, string Name, string? Aliases, string? TransmittalCode)> NormalizeAsync(

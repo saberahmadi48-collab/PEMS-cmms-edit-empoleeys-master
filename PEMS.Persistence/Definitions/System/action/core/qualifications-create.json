@@ -1,0 +1,49 @@
+{
+  "kind": "action",
+  "key": "qualifications-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create qualification",
+    "fa": "ایجاد صلاحیت"
+  },
+  "description": {
+    "en": "Create qualification",
+    "fa": "ایجاد صلاحیت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "Qualification",
+      "map": {
+        "name": "Name",
+        "disciplineId": "DisciplineId",
+        "description": "Description"
+      },
+      "required": [
+        "Name"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "Name"
+          ],
+          "message": {
+            "en": "A qualification with this name already exists.",
+            "fa": "صلاحیتی با همین نام از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Qualification created.",
+      "fa": "صلاحیت ایجاد شد."
+    },
+    "redirect": "/p/qualifications"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mrs-import-batches",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MRS import batches",
+    "fa": "دسته‌های ورود MRS"
+  },
+  "description": {
+    "en": "MRS import batches",
+    "fa": "دسته‌های ورود MRS"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MrsImport",
+      "action": "Batches"
+    }
+  }
+}

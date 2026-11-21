@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "reading-import-discard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discard the batch",
+    "fa": "دور ریختن دسته"
+  },
+  "description": {
+    "en": "Discard the batch",
+    "fa": "دور ریختن دسته"
+  },
+  "payload": {
+    "id": "reading-import-discard",
+    "title": {
+      "en": "Discard the batch",
+      "fa": "دور ریختن دسته"
+    },
+    "submitLabel": {
+      "en": "Discard",
+      "fa": "دور ریختن"
+    },
+    "actionKey": "reading-import-discard",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه‌ی دسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

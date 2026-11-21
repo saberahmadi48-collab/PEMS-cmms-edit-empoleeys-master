@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "production-run-resume",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Resume the run",
+    "fa": "ازسرگیری اجرا"
+  },
+  "description": {
+    "en": "Resume the run",
+    "fa": "ازسرگیری اجرا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "Resume",
+      "args": {
+        "productionRunId": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The run resumed.",
+      "fa": "اجرا ازسرگیری شد."
+    },
+    "redirect": "/ProductionRun/Details/{id}"
+  }
+}

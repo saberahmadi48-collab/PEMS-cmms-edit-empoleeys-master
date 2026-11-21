@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "contract-reviews",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contract: Discipline reviews",
+    "fa": "قرارداد: Discipline reviews"
+  },
+  "description": {
+    "en": "Contract: Discipline reviews",
+    "fa": "قرارداد: Discipline reviews"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ContractPage",
+      "action": "Reviews",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

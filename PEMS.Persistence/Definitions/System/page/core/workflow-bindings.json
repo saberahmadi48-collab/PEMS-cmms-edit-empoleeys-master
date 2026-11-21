@@ -1,0 +1,126 @@
+{
+  "kind": "page",
+  "key": "workflow-bindings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Workflow bindings",
+    "fa": "اتصال‌های گردش‌کار"
+  },
+  "description": {
+    "en": "Workflow bindings (page definition)",
+    "fa": "اتصال‌های گردش‌کار (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "workflow-bindings",
+    "template": "entity-list",
+    "args": {
+      "id": "workflow-bindings",
+      "url": "/d/workflow-bindings-rows",
+      "idField": "bindingId",
+      "columns": [
+        {
+          "key": "module",
+          "header": {
+            "en": "Module",
+            "fa": "ماژول"
+          },
+          "width": 140,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "entityType",
+          "header": {
+            "en": "Entity",
+            "fa": "موجودیت"
+          },
+          "width": 160,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "context",
+          "header": {
+            "en": "Context",
+            "fa": "بافت"
+          },
+          "width": 160,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "definitionName",
+          "header": {
+            "en": "Workflow",
+            "fa": "گردش‌کار"
+          },
+          "width": 240,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "pinnedVersionNumber",
+          "header": {
+            "en": "Pinned version",
+            "fa": "نسخه‌ی ثابت"
+          },
+          "width": 130,
+          "sortable": false,
+          "filterable": false,
+          "type": "number"
+        },
+        {
+          "key": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "width": 90,
+          "sortable": false,
+          "filterable": false,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 520,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "change",
+              "label": {
+                "en": "Change the version",
+                "fa": "تغییر نسخه"
+              },
+              "url": "/f/workflow-binding-change/{id}",
+              "method": "get",
+              "showWhen": "row.editable == true and row.isActive == true"
+            },
+            {
+              "key": "deactivate",
+              "label": {
+                "en": "Deactivate",
+                "fa": "غیرفعال‌سازی"
+              },
+              "url": "/a/workflow-binding-deactivate",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Deactivate this binding?",
+                "fa": "این اتصال غیرفعال شود؟"
+              },
+              "showWhen": "row.editable == true and row.isActive == true"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

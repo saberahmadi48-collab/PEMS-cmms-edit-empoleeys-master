@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "barcode-verify",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode verify (old address)",
+    "fa": "Barcode verify (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Barcode verify (old address)",
+    "fa": "Barcode verify (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Barcode/Verify",
+    "target": "/p/barcode-verify",
+    "permanent": false
+  }
+}

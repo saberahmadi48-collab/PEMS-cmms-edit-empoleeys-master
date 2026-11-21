@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "irn-vendors",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendors",
+    "fa": "فروشندگان"
+  },
+  "description": {
+    "en": "Vendors",
+    "fa": "فروشندگان"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Irn",
+      "action": "Vendors",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

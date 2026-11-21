@@ -1,0 +1,29 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("data-view", Category = "data", Icon = "bi-kanban")]
+@using System.Text.Json
+@inject IPemsLocale Locale
+<div @attributes="Options.Attributes" class="@Join("pems-view", "pems-view--" + Options.View, Options.Css, Options.PageClass)" id="@Options.Id" data-pems-view="" data-config="@Config()"></div>
+@code {
+    [Parameter, EditorRequired] public DataViewOptions Options { get; set; } = default!;
+
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+
+    /// <summary>The configuration the script reads: every text in the language of the request, the locale for month and weekday names.</summary>
+    private string Config()
+    {
+        var t = Options.Texts;
+        string T(PEMS.UI.Abstractions.TranslatableText x) => Locale.Text(x);
+        var config = new
+        {
+            url = Options.Url, view = Options.View, fields = Options.Fields, calendar = Options.Calendar, weekStart = Options.WeekStart, itemUrl = Options.ItemUrl, moveUrl = Options.MoveUrl,
+            pageSize = Options.PageSize, height = Options.Height, locale = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+            groups = Options.Groups.Select(g => new { value = g.Value, label = T(g.Label), tone = g.Tone }),
+            texts = new
+            {
+                loading = T(t.Loading), empty = T(t.Empty), error = T(t.Error), more = T(t.More), today = T(t.Today), previous = T(t.Previous), next = T(t.Next),
+                jalali = T(t.Jalali), gregorian = T(t.Gregorian), uncategorized = T(t.Uncategorized), moreItems = T(t.MoreItems), collapse = T(t.Collapse), expand = T(t.Expand)
+            }
+        };
+        return JsonSerializer.Serialize(config, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });
+    }
+}

@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("related-row-form", Category = "list", Icon = "bi-pencil-square")]
+<form action="@(Options.Action ?? "")" hidden="hidden" id="@Options.Id" method="post">@if (Options.Antiforgery is not null){<input name="@Options.Antiforgery.Name" type="hidden" value="@Options.Antiforgery.Token" />}@ChildContent</form>
+@code {
+    [Parameter, EditorRequired] public RelatedRowFormOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

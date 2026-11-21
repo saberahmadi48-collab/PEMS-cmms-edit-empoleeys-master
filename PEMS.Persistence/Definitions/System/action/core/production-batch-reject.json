@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "production-batch-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the batch",
+    "fa": "رد بچ"
+  },
+  "description": {
+    "en": "Reject the batch",
+    "fa": "رد بچ"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "RejectBatch",
+      "args": {
+        "productionBatchId": "field:id",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      },
+      "guard": {
+        "resource": "Production",
+        "action": "Approve",
+        "resourceId": "field:id",
+        "mode": "sod"
+      }
+    },
+    "success": {
+      "en": "The batch was rejected.",
+      "fa": "بچ رد شد."
+    },
+    "redirect": "/ProductionRun/BatchDetails/{id}"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "kind": "form",
+  "key": "pc-request-execute",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve, return or cancel",
+    "fa": "تأیید، بازگشت یا لغو"
+  },
+  "description": {
+    "en": "Approve, return or cancel",
+    "fa": "تأیید، بازگشت یا لغو"
+  },
+  "payload": {
+    "id": "pc-request-execute",
+    "title": {
+      "en": "Approve, return or cancel",
+      "fa": "تأیید، بازگشت یا لغو"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-request-execute",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Request id",
+          "fa": "شناسه‌ی درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "action",
+        "label": {
+          "en": "Decision",
+          "fa": "تصمیم"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Approve",
+            "label": {
+              "en": "Approve",
+              "fa": "تأیید"
+            }
+          },
+          {
+            "value": "Return",
+            "label": {
+              "en": "Return",
+              "fa": "بازگشت"
+            }
+          },
+          {
+            "value": "Cancel",
+            "label": {
+              "en": "Cancel the request",
+              "fa": "لغو درخواست"
+            }
+          }
+        ]
+      },
+      {
+        "name": "partNumber",
+        "label": {
+          "en": "Part number (registration step)",
+          "fa": "شماره‌ی قطعه (گام ثبت)"
+        },
+        "kind": "text",
+        "maxLength": 50
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment (required to return or cancel)",
+          "fa": "توضیح (برای بازگشت یا لغو الزامی است)"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

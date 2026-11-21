@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "help-visual-unpublish",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Unpublish a visual",
+    "fa": "لغو انتشار تصویر"
+  },
+  "description": {
+    "en": "Unpublish a visual",
+    "fa": "لغو انتشار تصویر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "VisualSetPublished",
+      "args": {
+        "visualId": "field:id",
+        "isPublished": "literal:false"
+      }
+    },
+    "success": {
+      "en": "Visual unpublished.",
+      "fa": "انتشار تصویر لغو شد."
+    },
+    "redirect": "/p/help-admin"
+  }
+}

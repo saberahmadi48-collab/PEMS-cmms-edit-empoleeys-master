@@ -41,4 +41,7 @@ public class LetterReferral : BaseEntity
     public string? ResponseNote { get; set; }
 
     public DateTime? CompletedDate { get; set; }
+
+    /// <summary>نامه‌ی ارجاعی (Letter.IsReferral) که این ارجاع با آن صادر شد؛ null برای ارجاع‌های قدیمیِ فرم ساده.</summary>
+    public int? ReferralLetterId { get; set; }
 }

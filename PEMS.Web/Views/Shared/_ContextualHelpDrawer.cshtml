@@ -13,59 +13,15 @@
    ============================================================================== *@
 @* دکمه‌ی فراخوان در _ContextualHelpButton است؛ این Partial باید «بیرون از <header>» (مثلاً بعد از آن) رندر شود تا z-index پنل (1045) در Stacking Context هدر (1030) گیر نکند. *@
 
-<div class="offcanvas @(isRtl ? "offcanvas-start" : "offcanvas-end")" tabindex="-1" id="pemsHelpDrawer" aria-labelledby="pemsHelpDrawerLabel">
+<pems-offcanvas side="@(isRtl ? "start" : "end")" tabindex="-1" id="pemsHelpDrawer" aria-labelledby="pemsHelpDrawerLabel" data-context-url="@Url.Action("Context", "Help", new { area = "" })" data-help-index-url="@Url.Action("Index", "Help", new { area = "" })" data-text-no-content="@L("No Help content yet for this page.", "هنوز محتوای راهنمایی برای این صفحه ثبت نشده.")" data-text-browse="@L("Browse Help Center", "مرور مرکز راهنما")" data-text-diagram="@L("View diagram in full article", "مشاهده‌ی نمودار در مقاله‌ی کامل")" data-text-related="@L("Related", "مرتبط")" data-text-open="@L("Open full article", "باز کردن مقاله‌ی کامل")" data-text-error="@L("Could not load Help content.", "بارگذاری محتوای راهنما ممکن نشد.")">
     <div class="offcanvas-header border-bottom">
-        <h6 class="offcanvas-title" id="pemsHelpDrawerLabel"><i class="bi bi-life-preserver"></i> @L("Help", "راهنما")</h6>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <pems-heading level="6" class="offcanvas-title" id="pemsHelpDrawerLabel"><pems-icon name="bi-life-preserver" /> @L("Help", "راهنما")</pems-heading>
+        <pems-button plain="true" type="button" css="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></pems-button>
     </div>
     <div class="offcanvas-body" id="pemsHelpDrawerBody">
-        <p class="text-muted small text-center py-4">@L("Loading...", "در حال بارگذاری...")</p>
+        <pems-skeleton kind="card" label="@L("Loading...", "در حال بارگذاری...")" />
     </div>
-</div>
+</pems-offcanvas>
 
-<script>
-    (function () {
-        var drawer = document.getElementById('pemsHelpDrawer');
-        if (!drawer) return;
-
-        var loadedForKey = null;
-
-        drawer.addEventListener('show.bs.offcanvas', function (evt) {
-            var trigger = evt.relatedTarget;
-            var helpKey = trigger ? trigger.getAttribute('data-help-key') : null;
-            if (!helpKey || helpKey === loadedForKey) return;
-
-            var body = document.getElementById('pemsHelpDrawerBody');
-            body.innerHTML = '<p class="text-muted small text-center py-4">@L("Loading...", "در حال بارگذاری...")</p>';
-
-            fetch('@Url.Action("Context", "Help", new { area = "" })?key=' + encodeURIComponent(helpKey))
-                .then(function (r) { return r.json(); })
-                .then(function (data) {
-                    loadedForKey = helpKey;
-                    if (!data.found) {
-                        body.innerHTML = '<p class="text-muted small text-center py-4">@L("No Help content yet for this page.", "هنوز محتوای راهنمایی برای این صفحه ثبت نشده.")</p>'
-                            + '<a class="btn btn-sm btn-outline-secondary w-100" href="@Url.Action("Index", "Help", new { area = "" })">@L("Browse Help Center", "مرور مرکز راهنما")</a>';
-                        return;
-                    }
-                    var related = (data.relatedArticles || []).map(function (r) {
-                        return '<a class="btn btn-sm btn-outline-secondary me-1 mb-1" href="/Help/Article/' + r.code + '">' + r.title + '</a>';
-                    }).join('');
-
-                    var visualHint = data.hasVisual
-                        ? '<a class="btn btn-sm btn-outline-primary w-100 mb-2" href="' + data.articleUrl + '"><i class="bi bi-diagram-3"></i> @L("View diagram in full article", "مشاهده‌ی نمودار در مقاله‌ی کامل")</a>'
-                        : '';
-
-                    body.innerHTML =
-                        '<h6>' + data.title + '</h6>' +
-                        '<p class="text-muted small">' + data.summary + '</p>' +
-                        visualHint +
-                        '<div class="pems-help-article-body small">' + data.content + '</div>' +
-                        (related ? '<hr/><p class="small text-muted mb-1">@L("Related", "مرتبط")</p><div>' + related + '</div>' : '') +
-                        '<hr/><a class="btn btn-sm btn-pems-solid w-100" href="' + data.articleUrl + '"><i class="bi bi-box-arrow-up-right"></i> @L("Open full article", "باز کردن مقاله‌ی کامل")</a>';
-                })
-                .catch(function () {
-                    body.innerHTML = '<p class="text-danger small text-center py-4">@L("Could not load Help content.", "بارگذاری محتوای راهنما ممکن نشد.")</p>';
-                });
-        });
-    })();
-</script>
+<pems-script-templates set="help-drawer"></pems-script-templates>
+<script src="~/js/views/shared-contextualhelpdrawer.js" asp-append-version="true"></script>

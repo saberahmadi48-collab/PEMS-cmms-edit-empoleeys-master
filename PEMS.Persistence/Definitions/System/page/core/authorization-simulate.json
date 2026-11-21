@@ -1,0 +1,105 @@
+{
+  "kind": "page",
+  "key": "authorization-simulate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permission simulator",
+    "fa": "شبیه‌ساز مجوز"
+  },
+  "description": {
+    "en": "Permission simulator (page definition)",
+    "fa": "شبیه‌ساز مجوز (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "authorization-simulate",
+    "template": "entity-list",
+    "args": {
+      "id": "authorization-simulate",
+      "url": "/d/authorization-simulate-grid",
+      "idField": "userId",
+      "columns": [
+        {
+          "key": "userId",
+          "header": {
+            "en": "User id",
+            "fa": "شناسه‌ی کاربر"
+          },
+          "width": 140,
+          "type": "number"
+        },
+        {
+          "key": "resourceName",
+          "header": {
+            "en": "Resource",
+            "fa": "منبع"
+          },
+          "width": 180
+        },
+        {
+          "key": "actionName",
+          "header": {
+            "en": "Action",
+            "fa": "کنش"
+          },
+          "width": 160
+        },
+        {
+          "key": "resourceId",
+          "header": {
+            "en": "Resource id (optional)",
+            "fa": "شناسه‌ی منبع (اختیاری)"
+          },
+          "width": 180
+        },
+        {
+          "key": "allowed",
+          "header": {
+            "en": "Allowed",
+            "fa": "مجاز"
+          },
+          "width": 100,
+          "type": "bool",
+          "filterable": false
+        },
+        {
+          "key": "reason",
+          "header": {
+            "en": "Reason",
+            "fa": "دلیل"
+          },
+          "width": 160,
+          "filterable": false
+        },
+        {
+          "key": "detail",
+          "header": {
+            "en": "Detail",
+            "fa": "جزئیات"
+          },
+          "width": 300,
+          "filterable": false
+        },
+        {
+          "key": "matchedRoleName",
+          "header": {
+            "en": "Matched role",
+            "fa": "نقش منطبق"
+          },
+          "width": 180,
+          "filterable": false
+        },
+        {
+          "key": "matchedScopeType",
+          "header": {
+            "en": "Scope",
+            "fa": "دامنه"
+          },
+          "width": 120,
+          "filterable": false
+        }
+      ]
+    }
+  }
+}

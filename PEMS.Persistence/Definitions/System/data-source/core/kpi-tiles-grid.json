@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "kpi-tiles-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Executive KPI tiles",
+    "fa": "شاخص‌های داشبورد مدیریتی"
+  },
+  "description": {
+    "en": "Executive KPI tiles",
+    "fa": "شاخص‌های داشبورد مدیریتی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Kpi",
+      "action": "Tiles",
+      "args": {
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      }
+    }
+  }
+}

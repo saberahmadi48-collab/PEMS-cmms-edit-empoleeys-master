@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "irn-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New incoming receipt",
+    "fa": "رسید ورودی جدید"
+  },
+  "description": {
+    "en": "New incoming receipt",
+    "fa": "رسید ورودی جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Irn",
+      "action": "Create",
+      "args": {
+        "vendorId": "field:vendorId",
+        "warehouseId": "field:warehouseId",
+        "receivingDate": "field:receivingDate",
+        "purchaseOrderId": "field:purchaseOrderId",
+        "notes": "field:notes",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The receipt was created as a Draft.",
+      "fa": "رسید به‌صورت پیش‌نویس ساخته شد."
+    },
+    "redirect": "/p/irn-receipts"
+  }
+}

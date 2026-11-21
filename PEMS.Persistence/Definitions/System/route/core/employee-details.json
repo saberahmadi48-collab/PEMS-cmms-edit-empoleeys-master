@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "employee-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employee details (old address)",
+    "fa": "جزئیات کارمند (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Employee details (old address)",
+    "fa": "جزئیات کارمند (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Employee/Details/{id}",
+    "target": "/p/employee-details?id={id}",
+    "permanent": false
+  }
+}

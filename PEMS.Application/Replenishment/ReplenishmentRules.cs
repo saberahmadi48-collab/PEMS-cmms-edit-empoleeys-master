@@ -16,7 +16,7 @@ namespace PEMS.Application.Replenishment;
 public static class ReplenishmentRules
 {
     /// <summary>با تغییر قواعد این نسخه را افزایش دهید؛ اثر انگشت همه‌ی توصیه‌ها عمداً یک‌بار تغییر می‌کند.</summary>
-    public const int CalculatorVersion = 1;
+    public const int CalculatorVersion = 2;   // SCRUM-473: incoming supply from open PO lines enters the shortage
 
     /// <summary>کد صریح و قابل‌نمایش: تقاضای مواد Work Order بدون انبار قطعی؛ تا تعیین انبارِ تأییدشده، هرگز با استنتاج به انبار نسبت داده نمی‌شود.</summary>
     public const string RequiresWarehouseAttribution = "RequiresWarehouseAttribution";

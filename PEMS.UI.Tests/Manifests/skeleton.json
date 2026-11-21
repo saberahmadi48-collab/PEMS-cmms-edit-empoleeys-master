@@ -1,0 +1,97 @@
+{
+  "key": "skeleton",
+  "component": "PEMS.UI.Components.PemsSkeleton",
+  "category": "feedback",
+  "icon": "bi-hourglass-split",
+  "nameKey": "component.skeleton",
+  "optionsParameter": null,
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "cols": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "id": {
+        "type": "string"
+      },
+      "kind": {
+        "type": "string"
+      },
+      "label": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "lines": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "rows": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "cols",
+      "type": "Int32",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "id",
+      "type": "String",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "kind",
+      "type": "String",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "TranslatableText",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "lines",
+      "type": "Int32",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "rows",
+      "type": "Int32",
+      "kind": "option",
+      "required": false
+    }
+  ],
+  "sample": {
+    "lines": 3
+  }
+}

@@ -176,7 +176,7 @@ public class RelationshipController : Controller
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Relationship", "View"))
             return Forbid();
 
-        ViewData["Title"] = "تایید دسته‌جمعی اتصال‌ها";
+        ViewData["Title"] = "Bulk Approve Bindings";
         ViewData["Section"] = "AI Engineering Intelligence";
 
         var items = await _service.GetAllSuggestedLinksAsync(projectId);

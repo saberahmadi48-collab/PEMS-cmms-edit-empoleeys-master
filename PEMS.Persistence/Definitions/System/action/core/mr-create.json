@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "mr-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New MR",
+    "fa": "MR جدید"
+  },
+  "description": {
+    "en": "New MR",
+    "fa": "MR جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaterialRequisition",
+      "action": "Create",
+      "args": {
+        "mrNumber": "field:mrNumber",
+        "projectId": "field:projectId",
+        "disciplineId": "field:disciplineId",
+        "equipmentTagNumber": "field:equipmentTagNumber",
+        "description": "field:description",
+        "requiredDate": "field:requiredDate",
+        "responsibleEngineerId": "field:responsibleEngineerId",
+        "items": "field:items"
+      }
+    },
+    "success": {
+      "en": "The MR was created.",
+      "fa": "MR ساخته شد."
+    },
+    "redirect": "/p/material-requisitions"
+  }
+}

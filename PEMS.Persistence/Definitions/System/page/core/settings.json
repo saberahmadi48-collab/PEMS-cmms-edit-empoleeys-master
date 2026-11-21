@@ -1,0 +1,327 @@
+{
+  "kind": "page",
+  "key": "settings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Settings",
+    "fa": "تنظیمات"
+  },
+  "description": {
+    "en": "Personal settings and links to the system settings (page definition)",
+    "fa": "تنظیمات شخصی و پیوند به تنظیمات سیستم (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "settings",
+    "regions": {
+      "content": [
+        {
+          "id": "preferences",
+          "component": "content-blocks",
+          "options": {
+            "id": "preferences",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 5,
+                "text": {
+                  "en": "My Preferences",
+                  "fa": "ترجیحات من"
+                }
+              },
+              {
+                "type": "cards",
+                "columns": 3,
+                "cards": [
+                  {
+                    "icon": "bi-grid-1x2",
+                    "title": {
+                      "en": "Dashboard Widgets",
+                      "fa": "ویجت‌های داشبورد"
+                    },
+                    "text": {
+                      "en": "Choose which widgets appear on your home dashboard.",
+                      "fa": "انتخاب کنید کدام ویجت‌ها در داشبورد خانه نمایش داده شوند."
+                    },
+                    "links": [
+                      {
+                        "href": "/DashboardSettings",
+                        "label": {
+                          "en": "Customize",
+                          "fa": "شخصی‌سازی"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "bi-translate",
+                    "title": {
+                      "en": "Language",
+                      "fa": "زبان"
+                    },
+                    "text": {
+                      "en": "Switch the interface between English and Persian (فارسی).",
+                      "fa": "زبان رابط را بین انگلیسی و فارسی تغییر دهید."
+                    },
+                    "links": [
+                      {
+                        "href": "/Culture/SetCulture?culture=en&returnUrl=/p/settings",
+                        "label": {
+                          "en": "English",
+                          "fa": "English"
+                        }
+                      },
+                      {
+                        "href": "/Culture/SetCulture?culture=fa&returnUrl=/p/settings",
+                        "label": {
+                          "en": "فارسی",
+                          "fa": "فارسی"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "bi-moon-stars",
+                    "title": {
+                      "en": "Theme",
+                      "fa": "پوسته"
+                    },
+                    "text": {
+                      "en": "Toggle Dark / Light mode using the moon icon in the top bar.",
+                      "fa": "با نماد ماه در نوار بالا بین حالت تیره و روشن جابه‌جا شوید."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "administration",
+          "component": "content-blocks",
+          "visible": "'SystemAdmin' in user.roles or 'EngineeringManager' in user.roles",
+          "options": {
+            "id": "administration",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 5,
+                "text": {
+                  "en": "System Administration",
+                  "fa": "مدیریت سیستم"
+                }
+              },
+              {
+                "type": "cards",
+                "columns": 4,
+                "cards": [
+                  {
+                    "icon": "bi-people",
+                    "title": {
+                      "en": "Users",
+                      "fa": "کاربران"
+                    },
+                    "text": {
+                      "en": "Create logins and assign roles.",
+                      "fa": "ایجاد ورود و تخصیص نقش."
+                    },
+                    "links": [
+                      {
+                        "href": "/Admin/Users",
+                        "label": {
+                          "en": "Open",
+                          "fa": "باز کردن"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "bi-person-badge",
+                    "title": {
+                      "en": "Employees",
+                      "fa": "کارکنان"
+                    },
+                    "text": {
+                      "en": "Manage employee records, department & discipline.",
+                      "fa": "مدیریت پرونده کارکنان، دپارتمان و دیسپلین."
+                    },
+                    "links": [
+                      {
+                        "href": "/Employee",
+                        "label": {
+                          "en": "Open",
+                          "fa": "باز کردن"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "bi-building",
+                    "title": {
+                      "en": "Departments",
+                      "fa": "دپارتمان‌ها"
+                    },
+                    "text": {
+                      "en": "Organizational departments.",
+                      "fa": "دپارتمان‌های سازمان."
+                    },
+                    "links": [
+                      {
+                        "href": "/p/departments",
+                        "label": {
+                          "en": "Open",
+                          "fa": "باز کردن"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "bi-diagram-3",
+                    "title": {
+                      "en": "Disciplines",
+                      "fa": "دیسپلین‌ها"
+                    },
+                    "text": {
+                      "en": "Engineering discipline list & import aliases.",
+                      "fa": "فهرست دیسپلین‌های مهندسی و نام‌های مستعار ایمپورت."
+                    },
+                    "links": [
+                      {
+                        "href": "/Discipline",
+                        "label": {
+                          "en": "Open",
+                          "fa": "باز کردن"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "bi-sliders",
+                    "title": {
+                      "en": "Permission Matrix",
+                      "fa": "ماتریس مجوزها"
+                    },
+                    "text": {
+                      "en": "What each role can create, edit, and approve.",
+                      "fa": "هر نقش چه چیزی را می‌تواند ایجاد، ویرایش و تأیید کند."
+                    },
+                    "links": [
+                      {
+                        "href": "/p/permission-matrix",
+                        "label": {
+                          "en": "Open",
+                          "fa": "باز کردن"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "bi-shield-check",
+                    "title": {
+                      "en": "Roles",
+                      "fa": "نقش‌ها"
+                    },
+                    "text": {
+                      "en": "System roles list.",
+                      "fa": "فهرست نقش‌های سیستم."
+                    },
+                    "links": [
+                      {
+                        "href": "/p/roles",
+                        "label": {
+                          "en": "Open",
+                          "fa": "باز کردن"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "bi-signpost-split",
+                    "title": {
+                      "en": "Routing Rules",
+                      "fa": "قوانین مسیریابی"
+                    },
+                    "text": {
+                      "en": "AI Intake auto-routing configuration.",
+                      "fa": "پیکربندی مسیریابی خودکار دریافت هوشمند."
+                    },
+                    "links": [
+                      {
+                        "href": "/p/routing-rules",
+                        "label": {
+                          "en": "Open",
+                          "fa": "باز کردن"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "bi-clock-history",
+                    "title": {
+                      "en": "Audit Log",
+                      "fa": "گزارش ممیزی"
+                    },
+                    "text": {
+                      "en": "Full history of who changed what.",
+                      "fa": "تاریخچه کامل اینکه چه کسی چه چیزی را تغییر داده است."
+                    },
+                    "links": [
+                      {
+                        "href": "/p/audit-log",
+                        "label": {
+                          "en": "Open",
+                          "fa": "باز کردن"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "bi-hdd-network",
+                    "title": {
+                      "en": "Storage Providers",
+                      "fa": "ارائه‌دهندگان ذخیره‌سازی"
+                    },
+                    "text": {
+                      "en": "Local, Network Share, FTP & SFTP storage destinations.",
+                      "fa": "مقصدهای ذخیره‌سازی محلی، اشتراک شبکه، FTP و SFTP."
+                    },
+                    "links": [
+                      {
+                        "href": "/p/storage-providers",
+                        "label": {
+                          "en": "Open",
+                          "fa": "باز کردن"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "icon": "bi-signpost-2",
+                    "title": {
+                      "en": "Storage Routing",
+                      "fa": "مسیریابی ذخیره‌سازی"
+                    },
+                    "text": {
+                      "en": "Which module/document type saves to which provider.",
+                      "fa": "هر ماژول یا نوع سند در کدام ارائه‌دهنده ذخیره می‌شود."
+                    },
+                    "links": [
+                      {
+                        "href": "/p/storage-routing",
+                        "label": {
+                          "en": "Open",
+                          "fa": "باز کردن"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

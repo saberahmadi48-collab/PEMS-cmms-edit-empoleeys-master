@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "production-recent-losses",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Recent production losses",
+    "fa": "افت‌های اخیر"
+  },
+  "description": {
+    "en": "Recent production losses",
+    "fa": "افت‌های اخیر"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Production",
+      "action": "RecentLosses"
+    }
+  }
+}

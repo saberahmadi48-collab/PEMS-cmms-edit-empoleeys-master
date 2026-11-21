@@ -1,164 +1,195 @@
-﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.EquipmentDto>
+@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.EquipmentDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var dash = (PEMS.Application.Interfaces.EquipmentDashboardDto)ViewBag.Dashboard;
+    var projects = ((IEnumerable<dynamic>)ViewBag.Projects).ToList();
+    var disciplines = ((IEnumerable<dynamic>)ViewBag.Disciplines).ToList();
+    var q = (string?)ViewBag.SearchTerm;
+    var projectId = (int?)ViewBag.SelectedProjectId;
+    var disciplineId = (int?)ViewBag.SelectedDisciplineId;
+    var equipmentType = (string?)ViewBag.SelectedEquipmentType;
+    var status = (string?)ViewBag.SelectedStatus;
+    string? projectName = null, disciplineName = null;
+    foreach (var p in projects) { if (p.ProjectId == projectId) { projectName = p.ProjectName; } }
+    foreach (var d in disciplines) { if (d.DisciplineId == disciplineId) { disciplineName = d.Name; } }
+    var filterCount = (projectId.HasValue ? 1 : 0) + (disciplineId.HasValue ? 1 : 0) + (string.IsNullOrEmpty(equipmentType) ? 0 : 1) + (string.IsNullOrEmpty(status) ? 0 : 1);
+
+    var qsParts = new List<string>();
+    if (projectId.HasValue) qsParts.Add($"projectId={projectId}");
+    if (disciplineId.HasValue) qsParts.Add($"disciplineId={disciplineId}");
+    if (!string.IsNullOrEmpty(equipmentType)) qsParts.Add($"equipmentType={Uri.EscapeDataString(equipmentType)}");
+    if (!string.IsNullOrEmpty(status)) qsParts.Add($"status={Uri.EscapeDataString(status)}");
+    if (!string.IsNullOrEmpty(q)) qsParts.Add($"q={Uri.EscapeDataString(q)}");
 }
 
-@* One search (was two: a quick-jump card + a filter box). The single input keeps both behaviours: picking a suggestion opens that
-   equipment's passport, pressing Enter filters the list. KPI cards became a chip strip; New Equipment moved into the toolbar. *@
-<div class="vs-chips">
-    <span class="vs-chip">@Localizer["Eq_Total"] <strong>@dash.TotalCount</strong></span>
-    <span class="vs-chip"><i class="bi bi-check-circle" aria-hidden="true"></i> @Localizer["Eq_Active"] <strong>@dash.ActiveCount</strong></span>
-    <span class="vs-chip"><i class="bi bi-dash-circle" aria-hidden="true"></i> @Localizer["Eq_Inactive"] <strong>@dash.InactiveCount</strong></span>
-    @foreach (var d in dash.ByDiscipline.Take(4))
-    {
-        <span class="vs-chip">@d.Discipline <strong>@d.Count</strong></span>
-    }
-</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-<form method="get" class="vs-toolbar" role="search">
-    <div class="pems-search-bar">
-        <i class="bi bi-search pems-search-icon" aria-hidden="true"></i>
-        <input name="q" id="equipmentQuickSearch" value="@ViewBag.SearchTerm" class="form-control" placeholder="@Localizer["Eq_SearchPlaceholder"]" aria-label="@Localizer["Eq_SearchPlaceholder"]"
-               data-pems-search data-search-type="Equipment" autocomplete="off" />
-    </div>
-    <select name="projectId" class="form-select form-select-sm" aria-label="@Localizer["Ed_Project"]">
-        <option value="">@Localizer["Eq_AllProjects"]</option>
-        @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == (int?)ViewBag.SelectedProjectId)">@p.ProjectName</option> }
-    </select>
-    <select name="disciplineId" class="form-select form-select-sm" aria-label="@Localizer["Ed_Discipline"]">
-        <option value="">@Localizer["Eq_AllDisciplines"]</option>
-        @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == (int?)ViewBag.SelectedDisciplineId)">@d.Name</option> }
-    </select>
-    <select name="equipmentType" class="form-select form-select-sm" aria-label="@Localizer["Ed_Type"]">
-        <option value="">@Localizer["Eq_AllTypes"]</option>
-        @foreach (var t in (IEnumerable<string>)ViewBag.EquipmentTypes) { <option value="@t" selected="@(t == (string?)ViewBag.SelectedEquipmentType)">@t</option> }
-    </select>
-    <select name="status" class="form-select form-select-sm" aria-label="@Localizer["Ed_Status"]">
-        <option value="">@Localizer["Eq_AllStatuses"]</option>
-        @foreach (var s in (IEnumerable<string>)ViewBag.Statuses) { <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option> }
-    </select>
-    <button type="submit" class="vs-btn vs-btn--sm"><i class="bi bi-funnel" aria-hidden="true"></i> @Localizer["Eq_Apply"]</button>
-    <a asp-action="Index" class="vs-icon-btn" title="@Localizer["Reset"]" aria-label="@Localizer["Reset"]"><i class="bi bi-x-lg" aria-hidden="true"></i></a>
-    <span class="vs-toolbar__end">
-        <button type="button" class="vs-btn vs-btn--primary vs-btn--sm" data-bs-toggle="modal" data-bs-target="#createEquipmentModal">
-            <i class="bi bi-plus-lg" aria-hidden="true"></i> @Localizer["Eq_NewEquipment"]
-        </button>
-    </span>
-</form>
+@* SCRUM-337 W2: built from the PEMS.UI list-page component. One search keeps both behaviours: picking a suggestion opens
+   that equipment's passport, pressing Enter filters the list. The counts became the KPI row; "New equipment" still opens
+   the create modal. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
 
-<script>
-    document.getElementById('equipmentQuickSearch').addEventListener('pems:search-select', function (e) {
-        if (e.detail && e.detail.url) window.location.href = e.detail.url;
-    });
-</script>
+        <pems-list-toolbar heading="@Localizer["Eq_Title"]" total="@Model.TotalCount">
+            <pems-list-search id="eqSearchForm" action="@Url.Action("Index")" input-id="equipmentQuickSearch" name="q" value="@q"
+                              placeholder="@Localizer["Eq_SearchPlaceholder"]" search-type="Equipment">
+                @if (projectId.HasValue) { <input type="hidden" name="projectId" value="@projectId" /> }
+                @if (disciplineId.HasValue) { <input type="hidden" name="disciplineId" value="@disciplineId" /> }
+                @if (!string.IsNullOrEmpty(equipmentType)) { <input type="hidden" name="equipmentType" value="@equipmentType" /> }
+                @if (!string.IsNullOrEmpty(status)) { <input type="hidden" name="status" value="@status" /> }
+            </pems-list-search>
 
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Equipment')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="Equipment">
-            <thead>
-                <tr>
-                    <th data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Tag Number"]</th>
-                    <th data-col-key="name" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Name"]</th>
-                    <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">@Localizer["Type"]</th>
-                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Project"]</th>
-                    <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Discipline"]</th>
-                    <th data-col-key="docs" data-resizable="true" data-min-width="70" data-max-width="120" style="width:80px">Docs</th>
-                    <th data-col-key="vdr" data-resizable="true" data-min-width="70" data-max-width="120" style="width:80px">@Localizer["VDR"]</th>
-                    <th data-col-key="wo" data-resizable="true" data-min-width="80" data-max-width="140" style="width:100px">@Localizer["Work Orders"]</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Status"]</th>
-                    <th data-col-key="actions" data-resizable="false" style="width:70px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var e in Model.Items)
+            <pems-list-tools search-for="eqSearchForm">
+                <pems-list-filters form-id="eqFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index", new { q })">
+                    <input type="hidden" name="q" value="@q" />
+                    <div>
+                        <label class="lp-lbl" for="eqFilterProject">@Localizer["Ed_Project"]</label>
+                        <pems-select scale="small" id="eqFilterProject" name="projectId">
+                            <option value="">@Localizer["Eq_AllProjects"]</option>
+                            @foreach (var p in projects) { <option value="@p.ProjectId" selected="@(p.ProjectId == projectId)">@p.ProjectName</option> }
+                        </pems-select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="eqFilterDiscipline">@Localizer["Ed_Discipline"]</label>
+                        <pems-select scale="small" id="eqFilterDiscipline" name="disciplineId">
+                            <option value="">@Localizer["Eq_AllDisciplines"]</option>
+                            @foreach (var d in disciplines) { <option value="@d.DisciplineId" selected="@(d.DisciplineId == disciplineId)">@d.Name</option> }
+                        </pems-select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="eqFilterType">@Localizer["Ed_Type"]</label>
+                        <pems-select scale="small" id="eqFilterType" name="equipmentType">
+                            <option value="">@Localizer["Eq_AllTypes"]</option>
+                            @foreach (var t in (IEnumerable<string>)ViewBag.EquipmentTypes) { <option value="@t" selected="@(t == equipmentType)">@t</option> }
+                        </pems-select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="eqFilterStatus">@Localizer["Ed_Status"]</label>
+                        <pems-select scale="small" id="eqFilterStatus" name="status">
+                            <option value="">@Localizer["Eq_AllStatuses"]</option>
+                            @foreach (var s in (IEnumerable<string>)ViewBag.Statuses) { <option value="@s" selected="@(s == status)">@s</option> }
+                        </pems-select>
+                    </div>
+                </pems-list-filters>
+                <pems-list-kpi-toggle target="eqKpis" storage-key="pems.equipment.kpis" />
+                <pems-list-reset-columns grid-key="Equipment" />
+                <pems-list-new modal="createEquipmentModal" text="@Localizer["Eq_NewEquipment"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-kpis id="eqKpis">
+            <span class="vs-chip">@Localizer["Eq_Total"] <strong>@dash.TotalCount</strong></span>
+            <span class="vs-chip"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["Eq_Active"] <strong>@dash.ActiveCount</strong></span>
+            <span class="vs-chip"><pems-icon name="bi-dash-circle" aria-hidden="true" /> @Localizer["Eq_Inactive"] <strong>@dash.InactiveCount</strong></span>
+            @foreach (var d in dash.ByDiscipline.Take(4))
+            {
+                <span class="vs-chip">@d.Discipline <strong>@d.Count</strong></span>
+            }
+        </pems-list-kpis>
+
+        <pems-list-chips reset-href="@Url.Action("Index", new { q })">
+            @if (!string.IsNullOrEmpty(q))
+            { <pems-list-chip label="@Localizer["Search"]" value="@q" remove-href="@Url.Action("Index", new { projectId, disciplineId, equipmentType, status })" /> }
+            @if (projectId.HasValue)
+            { <pems-list-chip label="@Localizer["Ed_Project"]" value="@projectName" remove-href="@Url.Action("Index", new { q, disciplineId, equipmentType, status })" /> }
+            @if (disciplineId.HasValue)
+            { <pems-list-chip label="@Localizer["Ed_Discipline"]" value="@disciplineName" remove-href="@Url.Action("Index", new { q, projectId, equipmentType, status })" /> }
+            @if (!string.IsNullOrEmpty(equipmentType))
+            { <pems-list-chip label="@Localizer["Ed_Type"]" value="@equipmentType" remove-href="@Url.Action("Index", new { q, projectId, disciplineId, status })" /> }
+            @if (!string.IsNullOrEmpty(status))
+            { <pems-list-chip label="@Localizer["Ed_Status"]" value="@status" remove-href="@Url.Action("Index", new { q, projectId, disciplineId, equipmentType })" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="Equipment" empty="@(!Model.Items.Any())" empty-text="@Localizer["Eq_Empty"]"
+                             filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ins_Tag"]</pems-table-header>
+                        <pems-table-header class="pems-w-200" data-col-key="name" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["Eq_Name"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Ed_Type"]</pems-table-header>
+                        <pems-table-header data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ed_Project"]</pems-table-header>
+                        <pems-table-header data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Ed_Discipline"]</pems-table-header>
+                        <pems-table-header class="pems-w-80" data-col-key="docs" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Eq_Docs"]</pems-table-header>
+                        <pems-table-header class="pems-w-80" data-col-key="vdr" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["VDR"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="wo" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Cm_WorkOrders"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Ed_Status"]</pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var e in Model.Items)
+                    {
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Details" asp-route-id="@e.EquipmentId" class="lp-subject" title="@e.TagNumber">@e.TagNumber</pems-link></pems-table-cell>
+                            <pems-table-cell><span class="vs-title-cell" title="@e.Name">@e.Name</span></pems-table-cell>
+                            <pems-table-cell class="small">@e.EquipmentType</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@e.ProjectName</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@e.DisciplineName</pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@e.DocumentsCount</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@e.VDRItemsCount</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@e.WorkOrdersCount</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @(e.Status == "Active" ? "vs-pill--success" : "vs-pill--neutral")">@e.Status</span></pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
                 {
-                    <tr>
-                        <td>@e.TagNumber</td>
-                        <td>@e.Name</td>
-                        <td>@e.EquipmentType</td>
-                        <td>@e.ProjectName</td>
-                        <td>@e.DisciplineName</td>
-                        <td><span class="badge bg-secondary">@e.DocumentsCount</span></td>
-                        <td><span class="badge bg-secondary">@e.VDRItemsCount</span></td>
-                        <td><span class="badge bg-secondary">@e.WorkOrdersCount</span></td>
-                        <td><span class="badge bg-success">@e.Status</span></td>
-                        <td><a asp-action="Details" asp-route-id="@e.EquipmentId" class="btn btn-sm btn-outline-secondary"><i class="bi bi-eye"></i></a></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No equipment registered yet.</p> }
-    </div>
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "Equipment",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.Join("&", qsParts)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
-    @{
-        var qsParts = new List<string>();
-        if (ViewBag.SelectedProjectId != null) qsParts.Add($"projectId={ViewBag.SelectedProjectId}");
-        if (ViewBag.SelectedDisciplineId != null) qsParts.Add($"disciplineId={ViewBag.SelectedDisciplineId}");
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedEquipmentType)) qsParts.Add($"equipmentType={Uri.EscapeDataString((string)ViewBag.SelectedEquipmentType)}");
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) qsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
-        if (!string.IsNullOrEmpty((string?)ViewBag.SearchTerm)) qsParts.Add($"q={Uri.EscapeDataString((string)ViewBag.SearchTerm)}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "Equipment",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
+<pems-modal size="large" id="createEquipmentModal" tabindex="-1">
+            <pems-form asp-controller="Equipment" asp-action="Create" method="post">
+                <pems-modal-header>@Localizer["Eq_NewEquipment"]</pems-modal-header>
+                <pems-modal-body>
+                    <pems-row gap="3">
+                        <pems-col md="4"><pems-label>@Localizer["Tag Number"]</pems-label><pems-input name="TagNumber" required /></pems-col>
+                        <pems-col md="4"><pems-label>@Localizer["Name"]</pems-label><pems-input name="Name" required /></pems-col>
+                        <pems-col md="4"><pems-label>@Localizer["Type"]</pems-label><pems-input name="EquipmentType" placeholder="@Localizer["Pump, Vessel, Motor ..."]" /></pems-col>
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Project"]</pems-label>
+                            <pems-select name="ProjectId" required>
+                                @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
+                            </pems-select>
+                        </pems-col>
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Discipline"]</pems-label>
+                            <pems-select name="DisciplineId" required>
+                                @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
+                            </pems-select>
+                        </pems-col>
+                        <pems-col md="4"><pems-label>@Localizer["Manufacturer"]</pems-label><pems-input name="Manufacturer" /></pems-col>
+                        <pems-col md="4"><pems-label>@Localizer["Model"]</pems-label><pems-input name="Model" /></pems-col>
+                        <pems-col md="4"><pems-label>@Localizer["Serial Number"]</pems-label><pems-input name="SerialNumber" /></pems-col>
+                        <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="Description" rows="2"></pems-textarea></pems-col>
+                    </pems-row>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('Equipment');
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+    <script src="~/js/views/equipment-index.js" asp-append-version="true"></script>
 }
-
-<div class="modal fade" id="createEquipmentModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form asp-controller="Equipment" asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">New Equipment</h6></div>
-                <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-md-4"><label class="form-label">@Localizer["Tag Number"]</label><input name="TagNumber" class="form-control" required /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Name"]</label><input name="Name" class="form-control" required /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Type"]</label><input name="EquipmentType" class="form-control" placeholder="@Localizer["Pump, Vessel, Motor ..."]" /></div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Project"]</label>
-                            <select name="ProjectId" class="form-select" required>
-                                @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Discipline"]</label>
-                            <select name="DisciplineId" class="form-select" required>
-                                @foreach (var d in (IEnumerable<dynamic>)ViewBag.Disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                            </select>
-                        </div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Manufacturer"]</label><input name="Manufacturer" class="form-control" /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Model"]</label><input name="Model" class="form-control" /></div>
-                        <div class="col-md-4"><label class="form-label">@Localizer["Serial Number"]</label><input name="SerialNumber" class="form-control" /></div>
-                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="Description" class="form-control" rows="2"></textarea></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "purchase-orders-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Purchase orders (index) (old address)",
+    "fa": "Purchase orders (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Purchase orders (index) (old address)",
+    "fa": "Purchase orders (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "PurchaseOrder/Index",
+    "target": "/p/purchase-orders",
+    "permanent": false
+  }
+}

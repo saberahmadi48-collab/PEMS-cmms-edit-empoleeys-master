@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "definition-validate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Validate draft",
+    "fa": "اعتبارسنجی پیش‌نویس"
+  },
+  "description": {
+    "en": "Validate draft",
+    "fa": "اعتبارسنجی پیش‌نویس"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The draft is valid.",
+      "fa": "پیش‌نویس معتبر است."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Definition",
+      "action": "Validate",
+      "args": {
+        "reference": "field:id",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

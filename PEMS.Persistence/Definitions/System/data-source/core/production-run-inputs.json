@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "production-run-inputs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production: Run inputs",
+    "fa": "تولید: Run inputs"
+  },
+  "description": {
+    "en": "Production: Run inputs",
+    "fa": "تولید: Run inputs"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Production",
+      "action": "RunInputs",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

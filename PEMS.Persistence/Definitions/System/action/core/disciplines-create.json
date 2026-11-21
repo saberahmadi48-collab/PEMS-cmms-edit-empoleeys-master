@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "disciplines-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create discipline",
+    "fa": "ایجاد دیسیپلین"
+  },
+  "description": {
+    "en": "Create discipline",
+    "fa": "ایجاد دیسیپلین"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DisciplineMaster",
+      "action": "Create",
+      "args": {
+        "code": "field:code",
+        "name": "field:name",
+        "description": "field:description",
+        "importAliases": "field:importAliases",
+        "transmittalCode": "field:transmittalCode"
+      }
+    },
+    "success": {
+      "en": "Discipline created.",
+      "fa": "دیسیپلین ایجاد شد."
+    },
+    "redirect": "/p/disciplines"
+  }
+}

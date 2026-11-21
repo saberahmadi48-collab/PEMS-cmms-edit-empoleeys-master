@@ -1,0 +1,208 @@
+{
+  "key": "record-view",
+  "component": "PEMS.UI.Components.PemsRecordView",
+  "category": "display",
+  "icon": "bi-card-text",
+  "nameKey": "component.record-view",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "fields": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "label": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "type": {
+              "type": "string"
+            },
+            "wide": {
+              "type": "boolean"
+            },
+            "mono": {
+              "type": "boolean"
+            },
+            "template": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "key",
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "values": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "texts": {
+        "type": "object",
+        "properties": {
+          "yes": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "no": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "empty": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "notFound": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "fields"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "RecordViewOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "record",
+    "fields": [
+      {
+        "key": "code",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "mono": true
+      },
+      {
+        "key": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        }
+      },
+      {
+        "key": "isActive",
+        "label": {
+          "en": "Active",
+          "fa": "فعال"
+        },
+        "type": "bool"
+      },
+      {
+        "key": "created",
+        "label": {
+          "en": "Created",
+          "fa": "ایجاد"
+        },
+        "type": "date"
+      }
+    ],
+    "values": {
+      "code": "D-100",
+      "name": "Cooling water",
+      "isActive": "true",
+      "created": "2026-11-10"
+    }
+  }
+}

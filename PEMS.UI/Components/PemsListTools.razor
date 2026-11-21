@@ -1,0 +1,12 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-tools", Category = "list", Icon = "bi-three-dots")]
+<div @attributes="Options.Attributes" class="@ListMarkup.Css("lp-tools", Options.CssClass)">@if (!string.IsNullOrEmpty(Options.SearchFor)){<PemsListIconTool Options="@Open" />}@ChildContent</div>
+@code {
+    [Parameter, EditorRequired] public ListToolsOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private ListIconToolOptions Open => new()
+    {
+        Icon = "bi-search", Label = Options.SearchOpenText,
+        Attributes = new Dictionary<string, string> { ["data-lp-search-open"] = "", ["aria-controls"] = Options.SearchFor!, ["aria-expanded"] = "false" }
+    };
+}

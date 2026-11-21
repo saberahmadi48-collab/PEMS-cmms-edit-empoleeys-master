@@ -1,0 +1,32 @@
+/* Stage diagrams of the workflow partials (_PemsStageDiagram, _WorkOrderStagesDiagram). Were <style> blocks in the views (ratchet style-block). */
+/* _PemsStageDiagram.cshtml (SCRUM-509: moved out of the view into a stylesheet of its own) */
+    /* طبق «PEMS — Engineering Documents Upper-Whitespace Correction»: پدینگ عمودی ۱.۵rem بالا/
+       پایین (=۴۸px خالی فقط برای فاصله، جدا از خودِ محتوای دایره/برچسب) روی یک نمودار که همیشه
+       بالای هر دو مصرف‌کننده (EngineeringDocuments/Details و VDR/Details) نمایش داده می‌شود، سهم
+       واقعی در فضای خالی بالای صفحه دارد - محتوای نمودار (دایره+برچسب+نقش) تغییر نکرد، فقط فاصله‌ی
+       اطراف آن جمع‌تر شد. هر دو مصرف‌کننده‌ی این Partial بررسی شدند - تغییری در هیچ‌کدام لازم نیست. */
+    .pems-wf-diagram { display: flex; align-items: flex-start; justify-content: space-between; padding: 0.65rem 0.5rem; overflow-x: auto; }
+    .pems-wf-step { display: flex; flex-direction: column; align-items: center; min-width: 92px; text-align: center; position: relative; z-index: 1; }
+    .pems-wf-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; border: 2px solid #dee2e6; background: #fff; color: #adb5bd; transition: all .2s; }
+    .pems-wf-step.done .pems-wf-circle { background: #198754; border-color: #198754; color: #fff; }
+    .pems-wf-step.current .pems-wf-circle { background: #0d6efd; border-color: #0d6efd; color: #fff; box-shadow: 0 0 0 4px rgba(13,110,253,.2); animation: pems-wf-pulse 1.6s infinite; }
+    .pems-wf-step.rejected .pems-wf-circle { background: #dc3545; border-color: #dc3545; color: #fff; }
+    .pems-wf-label { font-size: .78rem; font-weight: 600; margin-top: .4rem; color: #495057; }
+    .pems-wf-step.current .pems-wf-label { color: #0d6efd; }
+    .pems-wf-step.rejected .pems-wf-label { color: #dc3545; }
+    .pems-wf-role { font-size: .68rem; color: #adb5bd; margin-top: .1rem; }
+    .pems-wf-connector { flex: 1; height: 2px; background: #dee2e6; margin-top: 22px; min-width: 20px; }
+    .pems-wf-connector.done { background: #198754; }
+    @keyframes pems-wf-pulse { 0% { box-shadow: 0 0 0 4px rgba(13,110,253,.2); } 50% { box-shadow: 0 0 0 8px rgba(13,110,253,.08); } 100% { box-shadow: 0 0 0 4px rgba(13,110,253,.2); } }
+
+/* _WorkOrderStagesDiagram.cshtml (SCRUM-509: moved out of the view into a stylesheet of its own) */
+    .pems-wo-diagram { display: flex; align-items: flex-start; justify-content: space-between; padding: 1.2rem 0.5rem; overflow-x: auto; }
+    .pems-wo-step { display: flex; flex-direction: column; align-items: center; min-width: 84px; text-align: center; position: relative; z-index: 1; }
+    .pems-wo-circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; border: 2px solid #dee2e6; background: #fff; color: #adb5bd; }
+    .pems-wo-step.done .pems-wo-circle { background: #198754; border-color: #198754; color: #fff; }
+    .pems-wo-step.current .pems-wo-circle { background: #0d6efd; border-color: #0d6efd; color: #fff; box-shadow: 0 0 0 4px rgba(13,110,253,.2); animation: pems-wo-pulse 1.6s infinite; }
+    .pems-wo-label { font-size: .74rem; font-weight: 600; margin-top: .35rem; color: #495057; }
+    .pems-wo-step.current .pems-wo-label { color: #0d6efd; }
+    .pems-wo-connector { flex: 1; height: 2px; background: #dee2e6; margin-top: 20px; min-width: 16px; }
+    .pems-wo-connector.done { background: #198754; }
+    @keyframes pems-wo-pulse { 0% { box-shadow: 0 0 0 4px rgba(13,110,253,.2); } 50% { box-shadow: 0 0 0 8px rgba(13,110,253,.08); } 100% { box-shadow: 0 0 0 4px rgba(13,110,253,.2); } }

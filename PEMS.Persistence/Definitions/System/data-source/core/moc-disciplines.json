@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "moc-disciplines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Disciplines",
+    "fa": "دیسیپلین‌ها"
+  },
+  "description": {
+    "en": "Disciplines",
+    "fa": "دیسیپلین‌ها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MocPage",
+      "action": "DisciplineChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

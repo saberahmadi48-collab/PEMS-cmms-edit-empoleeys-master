@@ -1,0 +1,113 @@
+{
+  "kind": "page",
+  "key": "barcode-scan",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Scan a barcode",
+    "fa": "اسکن بارکد"
+  },
+  "description": {
+    "en": "Type or scan a code: what it points to and where to open it (page definition)",
+    "fa": "کد را بنویسید یا اسکن کنید: به چه چیزی اشاره دارد و کجا باز می‌شود (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "barcode-scan",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "scan-filters",
+            "resetUrl": "/p/barcode-scan",
+            "fields": [
+              {
+                "name": "code",
+                "label": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "kind": "text",
+                "value": "{{params.code}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "resolution",
+          "component": "data-grid",
+          "options": {
+            "id": "resolution",
+            "url": "/d/barcode-resolution?f.code={{params.code|url}}&f.expectedTargetType={{params.expectedTargetType|url}}&f.expectedTargetId={{params.expectedTargetId|url}}",
+            "idField": "targetType",
+            "columns": [
+              {
+                "key": "success",
+                "header": {
+                  "en": "Resolved",
+                  "fa": "شناسایی"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "errorMessage",
+                "header": {
+                  "en": "Problem",
+                  "fa": "مشکل"
+                },
+                "width": 260
+              },
+              {
+                "key": "targetType",
+                "header": {
+                  "en": "Target",
+                  "fa": "هدف"
+                },
+                "width": 130
+              },
+              {
+                "key": "targetId",
+                "header": {
+                  "en": "Id",
+                  "fa": "شناسه"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "label",
+                "header": {
+                  "en": "Record",
+                  "fa": "رکورد"
+                },
+                "width": 260
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              },
+              {
+                "key": "targetUrl",
+                "header": {
+                  "en": "Open",
+                  "fa": "باز کردن"
+                },
+                "width": 300
+              }
+            ],
+            "pageSize": 5,
+            "height": 200
+          }
+        }
+      ]
+    },
+    "permission": "Barcode.View"
+  }
+}

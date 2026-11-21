@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "irn-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QA decision on the disposition",
+    "fa": "تصمیم QA درباره‌ی Disposition"
+  },
+  "description": {
+    "en": "QA decision on the disposition",
+    "fa": "تصمیم QA درباره‌ی Disposition"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Irn",
+      "action": "Approve",
+      "args": {
+        "userRoles": "context:roles",
+        "id": "field:id",
+        "decision": "field:decision",
+        "comment": "field:comment",
+        "employeeId": "context:employeeId",
+        "ip": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "The QA decision was recorded.",
+      "fa": "تصمیم QA ثبت شد."
+    },
+    "redirect": "/p/irn-details?id={id}"
+  }
+}

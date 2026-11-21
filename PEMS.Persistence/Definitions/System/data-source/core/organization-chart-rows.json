@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "organization-chart-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Organization chart",
+    "fa": "Organization chart"
+  },
+  "description": {
+    "en": "Organization chart rows",
+    "fa": "Organization chart rows"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Organization",
+      "action": "ChartRows"
+    }
+  }
+}

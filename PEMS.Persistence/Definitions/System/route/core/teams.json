@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "teams",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Teams (old address)",
+    "fa": "تیم‌ها (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Teams (old address)",
+    "fa": "تیم‌ها (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Team",
+    "target": "/p/teams",
+    "permanent": false
+  }
+}

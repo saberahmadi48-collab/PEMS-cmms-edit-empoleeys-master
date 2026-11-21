@@ -1,0 +1,80 @@
+{
+  "kind": "page",
+  "key": "inventory-master-data",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Inventory Master Data",
+    "fa": "اطلاعات پایه موجودی"
+  },
+  "description": {
+    "en": "Units of measure, material categories, warehouses and storage locations (page definition)",
+    "fa": "واحدها، دسته‌بندی مواد، انبارها و محل‌های نگهداری (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "inventory-master-data",
+    "regions": {
+      "content": [
+        {
+          "id": "intro",
+          "component": "content-blocks",
+          "options": {
+            "id": "intro",
+            "blocks": [
+              {
+                "type": "text",
+                "text": {
+                  "en": "Each list below is a definition page with its own create, edit and activate / deactivate commands.",
+                  "fa": "هر فهرست زیر یک صفحه‌ی تعریفی با دستورهای ایجاد، ویرایش و فعال / غیرفعال است."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "go",
+          "component": "content-blocks",
+          "options": {
+            "id": "go",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/material-categories",
+                "text": {
+                  "en": "Material categories",
+                  "fa": "دسته‌بندی مواد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/uoms",
+                "text": {
+                  "en": "Units of measure",
+                  "fa": "واحدهای اندازه‌گیری"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/warehouses",
+                "text": {
+                  "en": "Warehouses",
+                  "fa": "انبارها"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/storage-locations",
+                "text": {
+                  "en": "Storage locations",
+                  "fa": "محل‌های نگهداری"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "InventoryMasterData.View"
+  }
+}

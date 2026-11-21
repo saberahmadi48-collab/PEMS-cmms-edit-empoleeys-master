@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "mmd-create-condition-priority-mapping",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateConditionPriorityMapping",
+    "fa": "CreateConditionPriorityMapping"
+  },
+  "description": {
+    "en": "CreateConditionPriorityMapping",
+    "fa": "CreateConditionPriorityMapping"
+  },
+  "payload": {
+    "id": "mmd-create-condition-priority-mapping",
+    "title": {
+      "en": "CreateConditionPriorityMapping",
+      "fa": "CreateConditionPriorityMapping"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-create-condition-priority-mapping",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "condition",
+        "label": {
+          "en": "Condition",
+          "fa": "condition"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "priority"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      }
+    ]
+  }
+}

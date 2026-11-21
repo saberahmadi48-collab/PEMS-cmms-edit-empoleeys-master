@@ -1,0 +1,118 @@
+{
+  "key": "drawer",
+  "component": "PEMS.UI.Components.PemsDrawer",
+  "category": "overlays",
+  "icon": "bi-layout-sidebar-inset-reverse",
+  "nameKey": "component.drawer",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "skin": {
+        "enum": [
+          "bootstrap",
+          "pems"
+        ]
+      },
+      "id": {
+        "type": "string"
+      },
+      "title": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "closeLabel": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "body": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "side": {
+        "enum": [
+          "end",
+          "start"
+        ]
+      },
+      "frame": {
+        "type": "boolean"
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "id",
+      "title",
+      "closeLabel"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "DrawerOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "d1",
+    "title": {
+      "en": "Filters",
+      "fa": "فیلترها"
+    },
+    "closeLabel": {
+      "en": "Close",
+      "fa": "بستن"
+    },
+    "side": "end"
+  }
+}

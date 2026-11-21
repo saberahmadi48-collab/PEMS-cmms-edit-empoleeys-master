@@ -7,6 +7,7 @@
 /// </summary>
 public interface IVendorRiskService
 {
+    [PEMS.Application.Common.PemsOperation("Vendor", "RecalculateRisk", "Vendors.Edit")]
     Task RecalculateAsync(int vendorId);
 
     Task RecalculateAllAsync();

@@ -1,0 +1,13 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("loading-state", Category = "feedback", Icon = "bi-hourglass")]
+@inject IPemsLocale Locale
+<div class="pems-state pems-state--loading" role="status" aria-busy="true" aria-live="polite">
+    <p class="pems-state__title">@Locale.Text(Options.Title)</p>
+    @for (var i = 0; i < Options.Lines; i++)
+    {
+        <div class="pems-skeleton__line" aria-hidden="true"></div>
+    }
+</div>
+@code {
+    [Parameter, EditorRequired] public LoadingStateOptions Options { get; set; } = default!;
+}

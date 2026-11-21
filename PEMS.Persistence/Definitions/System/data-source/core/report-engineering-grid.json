@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "report-engineering-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering report rows",
+    "fa": "ردیف‌های گزارش مهندسی"
+  },
+  "description": {
+    "en": "Engineering report rows",
+    "fa": "ردیف‌های گزارش مهندسی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Engineering",
+      "args": {
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      }
+    }
+  }
+}

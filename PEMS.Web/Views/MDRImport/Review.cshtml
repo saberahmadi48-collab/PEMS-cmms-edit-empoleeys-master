@@ -3,101 +3,75 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card mb-3">
-    <div class="row g-3">
-        <div class="col-md-3"><strong>@Localizer["File:"]</strong> @Model.FileName</div>
-        <div class="col-md-3"><strong>@Localizer["Project:"]</strong> @Model.ProjectName</div>
-        <div class="col-md-2"><strong>@Localizer["Total:"]</strong> @Model.RowsTotal</div>
-        <div class="col-md-2"><strong>@Localizer["Duplicates:"]</strong> @Model.RowsDuplicate</div>
-        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
-    </div>
+<pems-content-card css="mb-3">
+    <pems-row gap="3">
+        <pems-col md="3"><strong>@Localizer["File:"]</strong> @Model.FileName</pems-col>
+        <pems-col md="3"><strong>@Localizer["Project:"]</strong> @Model.ProjectName</pems-col>
+        <pems-col md="2"><strong>@Localizer["Total:"]</strong> @Model.RowsTotal</pems-col>
+        <pems-col md="2"><strong>@Localizer["Duplicates:"]</strong> @Model.RowsDuplicate</pems-col>
+        <pems-col md="2"><strong>@Localizer["Status:"]</strong> <pems-badge tone="@(Model.Status == "Committed" ? "success" : "neutral")">@Model.Status</pems-badge></pems-col>
+    </pems-row>
 
     @if (Model.HeaderWarnings.Any())
     {
-        <div class="alert alert-warning mt-3 mb-0 small">
-            <strong><i class="bi bi-exclamation-triangle"></i> ستون‌های شناسایی‌نشده در فایل اکسل:</strong>
-            <ul class="mb-0 mt-1">
+        <pems-alert tone="warning" css="mt-3 mb-0 small">
+            <strong><pems-icon name="bi-exclamation-triangle" /> ستون‌های شناسایی‌نشده در فایل اکسل:</strong>
+            <pems-bullet-list class="mb-0 mt-1">
                 @foreach (var w in Model.HeaderWarnings)
                 {
-                    <li>@w</li>
+                    <pems-bullet>@w</pems-bullet>
                 }
-            </ul>
-        </div>
+            </pems-bullet-list>
+        </pems-alert>
     }
 
     @if (Model.Status == "Staged")
     {
-        <div class="d-flex gap-2 mt-3">
-            <form asp-action="Commit" method="post">
+        <pems-flex gap="2" css="mt-3">
+            <pems-form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.MDRImportBatchId" />
-                <button type="submit" class="btn btn-pems-solid" onclick="return confirm('Commit the selected rows into the live Engineering Documents register?')">
-                    <i class="bi bi-check-circle"></i> Commit Selected Rows
-                </button>
-            </form>
-            <form asp-action="Discard" method="post">
+                <pems-button tone="primary" type="submit" data-pems-confirm="Commit the selected rows into the live Engineering Documents register?">
+                    <pems-icon name="bi-check-circle" /> Commit Selected Rows
+                </pems-button>
+            </pems-form>
+            <pems-form asp-action="Discard" method="post">
                 <input type="hidden" name="batchId" value="@Model.MDRImportBatchId" />
-                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Discard this entire import batch?')">
-                    <i class="bi bi-trash"></i> Discard Batch
-                </button>
-            </form>
-        </div>
+                <pems-button tone="danger" outline="true" type="submit" data-pems-confirm="Discard this entire import batch?">
+                    <pems-icon name="bi-trash" /> Discard Batch
+                </pems-button>
+            </pems-form>
+        </pems-flex>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card">
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
-            <thead>
-                <tr>
-                    <th>@Localizer["Include"]</th><th>#</th><th>@Localizer["Sheet"]</th><th>@Localizer["Document No"]</th><th>@Localizer["Title"]</th>
-                    <th>@Localizer["Scope"]</th><th>@Localizer["Area"]</th><th>@Localizer["Discipline"]</th><th>@Localizer["Rev"]</th><th>@Localizer["Comment Status"]</th><th>Final Status</th><th>Remark</th><th>Frozen</th>
-                    <th>@Localizer["Validation"]</th><th>@Localizer["Message"]</th><th>@Localizer["Duplicate"]</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var r in Model.Rows)
-                {
-                    <tr class="@(r.ValidationStatus == "Error" ? "table-danger" : r.ValidationStatus == "Warning" ? "table-warning" : "")">
-                        <td>
+<pems-content-card>
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
+        @{
+            var rows_48 = Model.Rows;
+            var cell_48_0 = DataCell.Template(rows_48, @<text>@{ var r = item; }
                             @if (Model.Status == "Staged")
                             {
-                                <form asp-action="ToggleRow" method="post">
+                                <pems-form asp-action="ToggleRow" method="post">
                                     <input type="hidden" name="rowId" value="@r.MDRImportRowId" />
                                     <input type="hidden" name="batchId" value="@Model.MDRImportBatchId" />
                                     <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
-                                    <button type="submit" class="btn btn-sm @(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" style="width:36px;">
-                                        <i class="bi @(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")"></i>
-                                    </button>
-                                </form>
+                                    <pems-button class="pems-w-36" tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit">
+                                        <pems-icon css="@(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")" />
+                                    </pems-button>
+                                </pems-form>
                             }
                             else
                             {
                                 @(r.IncludeInCommit ? "Yes" : "No")
                             }
-                        </td>
-                        <td>@r.RowNumber</td>
-                        <td class="small text-muted">@r.SheetName</td>
-                        <td>@r.DocumentNumber</td>
-                        <td class="small">@r.Payload?.Title</td>
-                        <td class="small text-muted">@r.Payload?.Scope</td>
-                        <td>@r.Payload?.Area</td>
-                        <td>@r.Payload?.DisciplineCodeRaw</td>
-                        <td>@r.Payload?.Revisions.LastOrDefault()?.RevisionNo</td>
-                        <td>@r.Payload?.Revisions.LastOrDefault()?.CommentStatus</td>
-                        <td class="small text-muted">@r.Payload?.FinalStatusRaw</td>
-                        <td class="small text-muted" style="max-width:220px;">@r.Payload?.Remark</td>
-                        <td>@(r.Payload?.IsFrozen == true ? "❄" : "")</td>
-                        <td>
+                        </text>);
+            var cell_48_13 = DataCell.Template(rows_48, @<text>@{ var r = item; }
                             @{
-                                var vb = r.ValidationStatus switch { "Error" => "bg-danger", "Warning" => "bg-warning text-dark", _ => "bg-success" };
+                                var vb = r.ValidationStatus switch { "Error" => "danger", "Warning" => "warning", _ => "success" };
                             }
-                            <span class="badge @vb">@r.ValidationStatus</span>
-                        </td>
-                        <td class="small text-muted">@r.ValidationMessage</td>
-                        <td>@(r.IsDuplicate ? "Update existing" : "New")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+                            <pems-badge tone="@vb">@r.ValidationStatus</pems-badge>
+                        </text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_48, c_ => c_.Add(((Localizer["Include"])?.ToString() ?? ""), r => (object?)cell_48_0(r)).Add("#", r => (object?)(r.RowNumber)).Add(((Localizer["Sheet"])?.ToString() ?? ""), r => (object?)(r.SheetName), css: "small text-muted").Add(((Localizer["Document No"])?.ToString() ?? ""), r => (object?)(r.DocumentNumber)).Add(((Localizer["Title"])?.ToString() ?? ""), r => (object?)(r.Payload?.Title), css: "small").Add(((Localizer["Scope"])?.ToString() ?? ""), r => (object?)(r.Payload?.Scope), css: "small text-muted").Add(((Localizer["Area"])?.ToString() ?? ""), r => (object?)(r.Payload?.Area)).Add(((Localizer["Discipline"])?.ToString() ?? ""), r => (object?)(r.Payload?.DisciplineCodeRaw)).Add(((Localizer["Rev"])?.ToString() ?? ""), r => (object?)((r.Payload?.Revisions.LastOrDefault()?.RevisionNo))).Add(((Localizer["Comment Status"])?.ToString() ?? ""), r => (object?)((r.Payload?.Revisions.LastOrDefault()?.CommentStatus))).Add("Final Status", r => (object?)(r.Payload?.FinalStatusRaw), css: "small text-muted").Add("Remark", r => (object?)(r.Payload?.Remark), css: "small text-muted pems-s-27af8985").Add("Frozen", r => (object?)((r.Payload?.IsFrozen == true ? "❄" : ""))).Add(((Localizer["Validation"])?.ToString() ?? ""), r => (object?)cell_48_13(r)).Add(((Localizer["Message"])?.ToString() ?? ""), r => (object?)(r.ValidationMessage), css: "small text-muted").Add(((Localizer["Duplicate"])?.ToString() ?? ""), r => (object?)((r.IsDuplicate ? "Update existing" : "New"))), rowClass: r => (r.ValidationStatus == "Error" ? "table-danger" : r.ValidationStatus == "Warning" ? "table-warning" : "")))" />
+    </pems-table-scroll>
+</pems-content-card>

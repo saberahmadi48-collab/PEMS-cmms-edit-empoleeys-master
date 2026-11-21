@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-permission-matrix",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permission matrix (old address)",
+    "fa": "ماتریس مجوز (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Permission matrix (old address)",
+    "fa": "ماتریس مجوز (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/PermissionMatrix/{*rest}",
+    "target": "/p/permission-matrix",
+    "permanent": false
+  }
+}

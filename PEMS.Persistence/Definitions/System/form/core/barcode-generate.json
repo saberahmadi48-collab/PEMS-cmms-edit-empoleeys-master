@@ -1,0 +1,83 @@
+{
+  "kind": "form",
+  "key": "barcode-generate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate a barcode",
+    "fa": "ساخت بارکد"
+  },
+  "description": {
+    "en": "Generate a barcode",
+    "fa": "ساخت بارکد"
+  },
+  "payload": {
+    "id": "barcode-generate",
+    "title": {
+      "en": "Generate a barcode",
+      "fa": "ساخت بارکد"
+    },
+    "submitLabel": {
+      "en": "Generate",
+      "fa": "ساخت"
+    },
+    "actionKey": "barcode-generate",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "targetType",
+        "label": {
+          "en": "Target type",
+          "fa": "نوع هدف"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "targetId",
+        "label": {
+          "en": "Target id",
+          "fa": "شناسه‌ی هدف"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "symbology",
+        "label": {
+          "en": "Symbology",
+          "fa": "نوع بارکد"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Code128",
+            "label": {
+              "en": "Code 128",
+              "fa": "Code 128"
+            }
+          },
+          {
+            "value": "QR",
+            "label": {
+              "en": "QR",
+              "fa": "QR"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

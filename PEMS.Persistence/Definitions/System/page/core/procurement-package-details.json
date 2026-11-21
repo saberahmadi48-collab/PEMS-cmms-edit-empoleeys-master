@@ -1,0 +1,538 @@
+{
+  "kind": "page",
+  "key": "procurement-package-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement package",
+    "fa": "بسته‌ی تدارکات"
+  },
+  "description": {
+    "en": "The package: MRs, quotations, clarifications, approvals and the tender cycle (page definition)",
+    "fa": "بسته: MRها، استعلام‌ها، شفاف‌سازی‌ها، تأییدها و چرخه‌ی مناقصه (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "procurement-package-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "package-record",
+            "fields": [
+              {
+                "key": "packageNumber",
+                "label": {
+                  "en": "Package",
+                  "fa": "بسته"
+                },
+                "mono": true
+              },
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "wide": true
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "discipline",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "stage",
+                "label": {
+                  "en": "Stage",
+                  "fa": "مرحله"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "mrs",
+                "label": {
+                  "en": "MRs",
+                  "fa": "MR"
+                },
+                "type": "number"
+              },
+              {
+                "key": "mrqs",
+                "label": {
+                  "en": "MRQs",
+                  "fa": "MRQ"
+                },
+                "type": "number"
+              },
+              {
+                "key": "openCommunications",
+                "label": {
+                  "en": "Open clarifications",
+                  "fa": "شفاف‌سازی باز"
+                },
+                "type": "number"
+              },
+              {
+                "key": "createdDate",
+                "label": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "type": "date"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/procurement-package-detail",
+              "idField": "procurementPackageId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/procurement-package-advance?packageId={{params.id}}",
+                "text": {
+                  "en": "Move to a stage",
+                  "fa": "رفتن به مرحله"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/procurement-package-link-mr?packageId={{params.id}}",
+                "text": {
+                  "en": "Link an MR",
+                  "fa": "پیوند MR"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/procurement-package-add-communication?packageId={{params.id}}",
+                "text": {
+                  "en": "Add a clarification",
+                  "fa": "افزودن شفاف‌سازی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/procurement-package-approve?packageId={{params.id}}",
+                "text": {
+                  "en": "Record an approval decision",
+                  "fa": "ثبت تصمیم تأیید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/procurement-package-closeout?packageId={{params.id}}",
+                "text": {
+                  "en": "Close out the package",
+                  "fa": "بستن بسته"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/tenders?procurementPackageId={{params.id}}",
+                "text": {
+                  "en": "Tenders of this package",
+                  "fa": "مناقصه‌های این بسته"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/procurement-packages",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "pkgMrs",
+          "component": "def:related-table",
+          "options": {
+            "id": "pkgMrs",
+            "title": {
+              "en": "Material requisitions",
+              "fa": "درخواست‌های مواد"
+            },
+            "url": "/d/procurement-package-mrs?f.id={{params.id|url}}",
+            "idField": "mrId",
+            "columns": [
+              {
+                "key": "mrNumber",
+                "header": {
+                  "en": "MR",
+                  "fa": "MR"
+                },
+                "width": 140
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 300
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 140
+              },
+              {
+                "key": "requiredDate",
+                "header": {
+                  "en": "Required",
+                  "fa": "تاریخ نیاز"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/mr-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "pkgMrqs",
+          "component": "def:related-table",
+          "options": {
+            "id": "pkgMrqs",
+            "title": {
+              "en": "Quotations (MRQ)",
+              "fa": "استعلام‌ها (MRQ)"
+            },
+            "url": "/d/procurement-package-quotations?f.id={{params.id|url}}",
+            "idField": "mrqId",
+            "columns": [
+              {
+                "key": "mrqNumber",
+                "header": {
+                  "en": "MRQ",
+                  "fa": "MRQ"
+                },
+                "width": 130
+              },
+              {
+                "key": "mrNumber",
+                "header": {
+                  "en": "MR",
+                  "fa": "MR"
+                },
+                "width": 130
+              },
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 180
+              },
+              {
+                "key": "quotedAmount",
+                "header": {
+                  "en": "Amount",
+                  "fa": "مبلغ"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "approval",
+                "header": {
+                  "en": "Approval",
+                  "fa": "تأیید"
+                },
+                "width": 120
+              }
+            ]
+          }
+        },
+        {
+          "id": "pkgComms",
+          "component": "def:related-table",
+          "options": {
+            "id": "pkgComms",
+            "title": {
+              "en": "Clarifications and communications",
+              "fa": "شفاف‌سازی‌ها و مکاتبات"
+            },
+            "url": "/d/procurement-package-communications?f.id={{params.id|url}}",
+            "idField": "procurementCommunicationId",
+            "columns": [
+              {
+                "key": "type",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 140
+              },
+              {
+                "key": "subject",
+                "header": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                },
+                "width": 220
+              },
+              {
+                "key": "body",
+                "header": {
+                  "en": "Body",
+                  "fa": "متن"
+                },
+                "width": 300
+              },
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 160
+              },
+              {
+                "key": "raisedBy",
+                "header": {
+                  "en": "Raised by",
+                  "fa": "ثبت‌کننده"
+                },
+                "width": 140
+              },
+              {
+                "key": "raisedDate",
+                "header": {
+                  "en": "Raised",
+                  "fa": "تاریخ"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "actionStatus",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "response",
+                "header": {
+                  "en": "Response",
+                  "fa": "پاسخ"
+                },
+                "width": 260
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "respond",
+                    "label": {
+                      "en": "Respond",
+                      "fa": "پاسخ"
+                    },
+                    "url": "/f/procurement-package-respond?packageId={{params.id}}&communicationId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "status",
+                    "label": {
+                      "en": "Set the status",
+                      "fa": "تعیین وضعیت"
+                    },
+                    "url": "/f/procurement-package-communication-status?packageId={{params.id}}&communicationId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "pkgApprovals",
+          "component": "def:related-table",
+          "options": {
+            "id": "pkgApprovals",
+            "title": {
+              "en": "Approval history",
+              "fa": "تاریخچه‌ی تأیید"
+            },
+            "url": "/d/procurement-package-approvals?f.id={{params.id|url}}",
+            "idField": "procurementApprovalId",
+            "columns": [
+              {
+                "key": "approver",
+                "header": {
+                  "en": "Approver",
+                  "fa": "تأییدکننده"
+                },
+                "width": 180
+              },
+              {
+                "key": "decision",
+                "header": {
+                  "en": "Decision",
+                  "fa": "تصمیم"
+                },
+                "width": 120
+              },
+              {
+                "key": "comment",
+                "header": {
+                  "en": "Comment",
+                  "fa": "توضیح"
+                },
+                "width": 300
+              },
+              {
+                "key": "approvalDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "pkgTenders",
+          "component": "def:related-table",
+          "options": {
+            "id": "pkgTenders",
+            "title": {
+              "en": "Tenders, awards and contracts",
+              "fa": "مناقصه‌ها، برنده‌ها و قراردادها"
+            },
+            "url": "/d/procurement-package-tenders?f.id={{params.id|url}}",
+            "idField": "tenderId",
+            "columns": [
+              {
+                "key": "tenderNumber",
+                "header": {
+                  "en": "Tender",
+                  "fa": "مناقصه"
+                },
+                "width": 140
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 260
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "awardedVendor",
+                "header": {
+                  "en": "Awarded to",
+                  "fa": "برنده"
+                },
+                "width": 180
+              },
+              {
+                "key": "awardedDate",
+                "header": {
+                  "en": "Awarded",
+                  "fa": "تاریخ"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "contractId",
+                "header": {
+                  "en": "Contract id",
+                  "fa": "قرارداد"
+                },
+                "width": 110,
+                "type": "number"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "ProcurementPackage.View"
+  }
+}

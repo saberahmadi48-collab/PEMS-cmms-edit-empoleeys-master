@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "procurement-package-communication-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set the status of a clarification",
+    "fa": "تعیین وضعیت شفاف‌سازی"
+  },
+  "description": {
+    "en": "Set the status of a clarification",
+    "fa": "تعیین وضعیت شفاف‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProcurementPackage",
+      "action": "SetCommunicationStatus",
+      "args": {
+        "packageId": "field:packageId",
+        "communicationId": "field:communicationId",
+        "actionStatus": "field:actionStatus"
+      }
+    },
+    "success": {
+      "en": "The status was saved.",
+      "fa": "وضعیت ثبت شد."
+    },
+    "redirect": "/p/procurement-package-details?id={packageId}"
+  }
+}

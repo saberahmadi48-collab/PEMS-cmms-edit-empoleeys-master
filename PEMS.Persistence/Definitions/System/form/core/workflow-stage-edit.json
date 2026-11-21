@@ -1,0 +1,182 @@
+{
+  "kind": "form",
+  "key": "workflow-stage-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a stage",
+    "fa": "ویرایش مرحله"
+  },
+  "description": {
+    "en": "Edit a stage",
+    "fa": "ویرایش مرحله"
+  },
+  "payload": {
+    "id": "workflow-stage-edit",
+    "title": {
+      "en": "Edit a stage",
+      "fa": "ویرایش مرحله"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "workflow-stage-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "required": true,
+        "maxLength": 200
+      },
+      {
+        "name": "nameFa",
+        "label": {
+          "en": "Name (Persian)",
+          "fa": "نام (فارسی)"
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "businessStatus",
+        "label": {
+          "en": "Business status",
+          "fa": "وضعیت کسب‌وکار"
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "stageOrder",
+        "label": {
+          "en": "Order",
+          "fa": "ترتیب"
+        },
+        "kind": "number",
+        "required": true,
+        "min": 0
+      },
+      {
+        "name": "responsibleRole",
+        "label": {
+          "en": "Responsible role (role name or Permission:Resource.Action)",
+          "fa": "نقش مسئول (نام نقش یا Permission:Resource.Action)"
+        },
+        "maxLength": 200,
+        "span": 2
+      },
+      {
+        "name": "responsibleEmployeeId",
+        "label": {
+          "en": "Responsible employee",
+          "fa": "کارمند مسئول"
+        },
+        "kind": "select",
+        "optionsFrom": "workflow-employees"
+      },
+      {
+        "name": "stageType",
+        "label": {
+          "en": "Stage type",
+          "fa": "نوع مرحله"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "Sequential",
+            "label": {
+              "en": "Sequential",
+              "fa": "Sequential"
+            }
+          },
+          {
+            "value": "Parallel",
+            "label": {
+              "en": "Parallel",
+              "fa": "Parallel"
+            }
+          }
+        ]
+      },
+      {
+        "name": "approvalStrategy",
+        "label": {
+          "en": "Approval strategy",
+          "fa": "راهبرد تأیید"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "AllApprovalsRequired",
+            "label": {
+              "en": "AllApprovalsRequired",
+              "fa": "AllApprovalsRequired"
+            }
+          },
+          {
+            "value": "MandatoryRolesOnly",
+            "label": {
+              "en": "MandatoryRolesOnly",
+              "fa": "MandatoryRolesOnly"
+            }
+          },
+          {
+            "value": "MinimumCount",
+            "label": {
+              "en": "MinimumCount",
+              "fa": "MinimumCount"
+            }
+          },
+          {
+            "value": "FirstResponse",
+            "label": {
+              "en": "FirstResponse",
+              "fa": "FirstResponse"
+            }
+          }
+        ]
+      },
+      {
+        "name": "minimumApprovalCount",
+        "label": {
+          "en": "Minimum approvals",
+          "fa": "حداقل تأیید"
+        },
+        "kind": "number",
+        "min": 1
+      },
+      {
+        "name": "timeoutHours",
+        "label": {
+          "en": "Timeout (hours)",
+          "fa": "مهلت (ساعت)"
+        },
+        "kind": "number",
+        "min": 1
+      },
+      {
+        "name": "isMandatory",
+        "label": {
+          "en": "Mandatory",
+          "fa": "الزامی"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

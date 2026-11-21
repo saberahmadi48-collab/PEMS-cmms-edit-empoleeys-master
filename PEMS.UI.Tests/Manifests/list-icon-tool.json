@@ -1,0 +1,61 @@
+{
+  "key": "list-icon-tool",
+  "component": "PEMS.UI.Components.PemsListIconTool",
+  "category": "list",
+  "icon": "bi-hand-index",
+  "nameKey": "component.list-icon-tool",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "tag": {
+        "type": "string"
+      },
+      "icon": {
+        "type": "string"
+      },
+      "label": {
+        "type": "string"
+      },
+      "extraClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "additionalProperties": {
+          "type": "string"
+        }
+      }
+    },
+    "required": [
+      "icon",
+      "label"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ListIconToolOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "icon": "bi-gear",
+    "label": "Settings"
+  }
+}

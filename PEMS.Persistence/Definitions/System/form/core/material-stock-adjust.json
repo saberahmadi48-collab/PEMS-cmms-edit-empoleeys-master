@@ -1,0 +1,84 @@
+{
+  "kind": "form",
+  "key": "material-stock-adjust",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Adjust stock",
+    "fa": "اصلاح موجودی"
+  },
+  "description": {
+    "en": "Adjust stock",
+    "fa": "اصلاح موجودی"
+  },
+  "payload": {
+    "id": "material-stock-adjust",
+    "title": {
+      "en": "Adjust stock",
+      "fa": "اصلاح موجودی"
+    },
+    "submitLabel": {
+      "en": "Adjust",
+      "fa": "ثبت اصلاح"
+    },
+    "actionKey": "material-stock-adjust",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "materialItemId",
+        "label": {
+          "en": "Material id",
+          "fa": "شناسه‌ی ماده"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "warehouseId",
+        "label": {
+          "en": "Warehouse",
+          "fa": "انبار"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "material-item-warehouses"
+      },
+      {
+        "name": "newOnHandQuantity",
+        "label": {
+          "en": "New on-hand quantity",
+          "fa": "موجودی جدید"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

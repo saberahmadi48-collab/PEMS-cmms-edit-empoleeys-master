@@ -1,86 +1,88 @@
 @model PEMS.Application.DTOs.RcmFmeaCoverageMatrixDto
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
+@{
+    var rows = Model.Classes.Where(x => x.EquipmentCount > 0).ToList();
 
-<div class="content-card mb-3">
-    <p class="text-muted small mb-3">
-        دامنه‌ی تحلیل عمداً EquipmentClass است، نه Equipment (طبق «Class First») - هرگز به‌ازای
-        هر تجهیز یک تحلیل جدا ساخته نمی‌شود. آماده‌بودن (Readiness) صرفاً به دلیل وجود کلاس یا
-        وجود یک تحلیل تاییدنشده اعلام نمی‌شود.
-    </p>
-    <div class="row g-3 text-center">
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@Model.ClassesWithEquipment</div>
-            <div class="text-muted small">@Localizer["Classes with Equipment"]</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold text-success">@Model.ClassesFmeaReady</div>
-            <div class="text-muted small">FMEA Ready</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold text-warning">@Model.ClassesFmeaPartiallyReady</div>
-            <div class="text-muted small">FMEA Partial</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold text-success">@Model.ClassesRcmReady</div>
-            <div class="text-muted small">RCM Ready</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold text-warning">@Model.ClassesRcmPartiallyReady</div>
-            <div class="text-muted small">RCM Partial</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@Model.TotalApprovedFMEAs / @Model.TotalApprovedRCMs</div>
-            <div class="text-muted small">Approved FMEA / RCM</div>
-        </div>
-    </div>
-</div>
+    string ReadinessText(string? s) => VdrUi.Loc(Localizer, "Rf_Rd_", s);
+    string ReadinessTone(string? s) => s switch
+    {
+        "READY" => "vs-pill--success",
+        "PARTIALLY_READY" => "vs-pill--warning",
+        _ => "vs-pill--neutral"
+    };
+}
 
-<div class="content-card">
-    <div class="table-responsive">
-        <table class="table table-enterprise table-sm">
-            <thead>
-                <tr>
-                    <th>@Localizer["Equipment Class"]</th>
-                    <th class="text-end">@Localizer["Equipment"]</th>
-                    <th class="text-end">Func. Req.</th>
-                    <th class="text-end">@Localizer["Failure Modes"]</th>
-                    <th class="text-end">Causes</th>
-                    <th class="text-end">Effects</th>
-                    <th class="text-end">Consequences</th>
-                    <th class="text-end">@Localizer["Strategy Types"]</th>
-                    <th>@Localizer["FMEA"]</th>
-                    <th>@Localizer["RCM"]</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var c in Model.Classes.Where(x => x.EquipmentCount > 0))
-                {
-                    string Badge(string status) => status switch
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+@* SCRUM-337 W2b: built from the PEMS.UI list-page component. The coverage counts are the KPI row (shown first on
+   this page: open="true" until the viewer hides it), the "Class first" note is the heading tooltip and each equipment class row
+   opens its detail. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Rf_Title"]" heading-title="@Localizer["Rf_Hint"]" total="@rows.Count">
+            <pems-list-tools>
+                <pems-list-kpi-toggle target="rfKpis" storage-key="pems.rcmFmea.kpis" open="true" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-kpis id="rfKpis" open="true">
+            <span class="vs-chip">@Localizer["Rf_ClassesWithEquipment"] <strong>@Model.ClassesWithEquipment</strong></span>
+            <span class="vs-chip"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["Rf_FmeaReady"] <strong>@Model.ClassesFmeaReady</strong></span>
+            <span class="vs-chip">@Localizer["Rf_FmeaPartial"] <strong>@Model.ClassesFmeaPartiallyReady</strong></span>
+            <span class="vs-chip"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["Rf_RcmReady"] <strong>@Model.ClassesRcmReady</strong></span>
+            <span class="vs-chip">@Localizer["Rf_RcmPartial"] <strong>@Model.ClassesRcmPartiallyReady</strong></span>
+            <span class="vs-chip">@Localizer["Rf_Approved"] <strong>@Model.TotalApprovedFMEAs / @Model.TotalApprovedRCMs</strong></span>
+        </pems-list-kpis>
+
+        <pems-list-grid>
+            <pems-list-table empty="@(!rows.Any())" empty-text="@Localizer["Rf_Empty"]">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["Rcm_EquipmentClass"]</pems-table-header>
+                        <pems-table-header class="text-end">@Localizer["Equipment"]</pems-table-header>
+                        <pems-table-header class="text-end vs-hide-md">@Localizer["Rf_FuncReq"]</pems-table-header>
+                        <pems-table-header class="text-end">@Localizer["Cm_FailureModes"]</pems-table-header>
+                        <pems-table-header class="text-end vs-hide-md">@Localizer["Rf_Causes"]</pems-table-header>
+                        <pems-table-header class="text-end vs-hide-md">@Localizer["Rf_Effects"]</pems-table-header>
+                        <pems-table-header class="text-end vs-hide-md">@Localizer["Rf_Consequences"]</pems-table-header>
+                        <pems-table-header class="text-end vs-hide-md">@Localizer["Rf_StrategyTypes"]</pems-table-header>
+                        <pems-table-header>@Localizer["Rf_Fmea"]</pems-table-header>
+                        <pems-table-header>@Localizer["Rf_Rcm"]</pems-table-header>
+                        <pems-table-header class="pems-w-60"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var c in rows)
                     {
-                        "READY" => "text-bg-success",
-                        "PARTIALLY_READY" => "text-bg-warning",
-                        "INSUFFICIENT_DATA" => "text-bg-secondary",
-                        _ => "text-bg-light"
-                    };
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell><pems-link asp-action="ClassDetail" asp-route-id="@c.EquipmentClassId" class="lp-subject">@c.Name</pems-link> <span class="vs-num text-muted small">@c.Code</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@c.EquipmentCount.ToString("N0")</span></pems-table-cell>
+                            <pems-table-cell class="text-end vs-hide-md"><span class="vs-num">@c.FunctionalRequirementCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@c.FailureModeCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end vs-hide-md"><span class="vs-num">@c.FailureCauseCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end vs-hide-md"><span class="vs-num">@c.FailureEffectCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end vs-hide-md"><span class="vs-num">@c.FailureConsequenceCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end vs-hide-md"><span class="vs-num">@c.StrategyTypeCount</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @ReadinessTone(c.FMEAReadiness)">@ReadinessText(c.FMEAReadiness)</span> <span class="small text-muted">@string.Format(Localizer["Rf_ApprovedCount"].Value, c.ApprovedFMEACount)</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @ReadinessTone(c.RCMReadiness)">@ReadinessText(c.RCMReadiness)</span> <span class="small text-muted">@string.Format(Localizer["Rf_ApprovedCount"].Value, c.ApprovedRCMCount)</span></pems-table-cell>
+                            <pems-table-cell class="text-end">
+                                <pems-link asp-action="ClassDetail" asp-route-id="@c.EquipmentClassId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><pems-icon name="bi-box-arrow-up-right" aria-hidden="true" /></pems-link>
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
-                    <tr>
-                        <td><strong>@c.Name</strong> <code class="small">@c.Code</code></td>
-                        <td class="text-end">@c.EquipmentCount.ToString("N0")</td>
-                        <td class="text-end">@c.FunctionalRequirementCount</td>
-                        <td class="text-end">@c.FailureModeCount</td>
-                        <td class="text-end">@c.FailureCauseCount</td>
-                        <td class="text-end">@c.FailureEffectCount</td>
-                        <td class="text-end">@c.FailureConsequenceCount</td>
-                        <td class="text-end">@c.StrategyTypeCount</td>
-                        <td><span class="badge @Badge(c.FMEAReadiness)">@c.FMEAReadiness</span> <span class="small text-muted">(@c.ApprovedFMEACount approved)</span></td>
-                        <td><span class="badge @Badge(c.RCMReadiness)">@c.RCMReadiness</span> <span class="small text-muted">(@c.ApprovedRCMCount approved)</span></td>
-                        <td><a asp-action="ClassDetail" asp-route-id="@c.EquipmentClassId" class="btn btn-sm btn-outline-secondary">Open</a></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

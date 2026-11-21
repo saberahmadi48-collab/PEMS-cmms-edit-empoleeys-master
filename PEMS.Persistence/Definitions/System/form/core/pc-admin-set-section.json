@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "pc-admin-set-section",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set a section",
+    "fa": "تنظیم بخش"
+  },
+  "description": {
+    "en": "Set a section",
+    "fa": "تنظیم بخش"
+  },
+  "payload": {
+    "id": "pc-admin-set-section",
+    "title": {
+      "en": "Set a section",
+      "fa": "تنظیم بخش"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-admin-set-section",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "sectionId",
+        "label": {
+          "en": "Section",
+          "fa": "بخش"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "requiresSparePartsReview",
+        "label": {
+          "en": "Requires spare parts review",
+          "fa": "نیازمند بررسی قطعات یدکی"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "isActive",
+        "label": {
+          "en": "Active",
+          "fa": "فعال"
+        },
+        "kind": "checkbox"
+      }
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "key": "list-grid",
+  "component": "PEMS.UI.Components.PemsListGrid",
+  "category": "list",
+  "icon": "bi-grid",
+  "nameKey": "component.list-grid",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ListFrameOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {}
+}

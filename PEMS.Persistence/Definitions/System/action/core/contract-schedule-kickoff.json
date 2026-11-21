@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "contract-schedule-kickoff",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Schedule the kick-off meeting",
+    "fa": "برنامه‌ریزی جلسه Kick-off"
+  },
+  "description": {
+    "en": "Schedule the kick-off meeting",
+    "fa": "برنامه‌ریزی جلسه Kick-off"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ContractPage",
+      "action": "ScheduleKickoff",
+      "args": {
+        "contractId": "field:contractId",
+        "meetingDate": "field:meetingDate",
+        "location": "field:location",
+        "agenda": "field:agenda"
+      }
+    },
+    "success": {
+      "en": "The kick-off meeting was scheduled.",
+      "fa": "جلسه‌ی Kick-off برنامه‌ریزی شد."
+    },
+    "redirect": "/Contract/Details/{contractId}"
+  }
+}

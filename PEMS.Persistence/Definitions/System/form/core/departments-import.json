@@ -1,0 +1,38 @@
+{
+  "kind": "form",
+  "key": "departments-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import departments",
+    "fa": "ایمپورت دپارتمان‌ها"
+  },
+  "description": {
+    "en": "Upload a spreadsheet of departments",
+    "fa": "بارگذاری صفحه‌گسترده دپارتمان‌ها"
+  },
+  "payload": {
+    "id": "departments-import",
+    "title": {
+      "en": "Import departments (.xlsx: Code, Name, Description)",
+      "fa": "ایمپورت دپارتمان‌ها (xlsx: کد، نام، توضیحات)"
+    },
+    "submitLabel": {
+      "en": "Import",
+      "fa": "ایمپورت"
+    },
+    "actionKey": "departments-import",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "file",
+        "label": {
+          "en": "Spreadsheet",
+          "fa": "صفحه‌گسترده"
+        },
+        "kind": "file",
+        "required": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "page",
+  "key": "organization-blocked",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Requests blocked by the organization",
+    "fa": "درخواست‌های متوقف‌شده"
+  },
+  "description": {
+    "en": "Requests blocked by the organization (page definition)",
+    "fa": "درخواست‌های متوقف‌شده (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "organization-blocked",
+    "template": "entity-list",
+    "args": {
+      "id": "organization-blocked",
+      "url": "/d/organization-blocked-rows",
+      "idField": "requestId",
+      "columns": [
+        {
+          "key": "module",
+          "header": {
+            "en": "Module",
+            "fa": "ماژول"
+          },
+          "width": 140
+        },
+        {
+          "key": "requestNumber",
+          "header": {
+            "en": "Request",
+            "fa": "درخواست"
+          },
+          "width": 160
+        },
+        {
+          "key": "requesterName",
+          "header": {
+            "en": "Requester",
+            "fa": "درخواست‌دهنده"
+          },
+          "width": 220
+        },
+        {
+          "key": "reason",
+          "header": {
+            "en": "Reason",
+            "fa": "دلیل"
+          },
+          "width": 360
+        },
+        {
+          "key": "submittedDate",
+          "header": {
+            "en": "Submitted",
+            "fa": "ارسال"
+          },
+          "width": 150,
+          "type": "datetime"
+        }
+      ]
+    }
+  }
+}

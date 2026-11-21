@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "intake-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI intake queue (index) (old address)",
+    "fa": "AI intake queue (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "AI intake queue (index) (old address)",
+    "fa": "AI intake queue (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Intake/Index",
+    "target": "/p/intake",
+    "permanent": false
+  }
+}

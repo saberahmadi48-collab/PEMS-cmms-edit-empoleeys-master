@@ -1,0 +1,59 @@
+{
+  "kind": "page",
+  "key": "routing-confidence-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI confidence thresholds details",
+    "fa": "جزئیات آستانه‌های اطمینان هوش مصنوعی"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "routing-confidence-record",
+      "url": "/d/routing-confidence-grid",
+      "idField": "aIConfidenceSettingsId",
+      "fields": [
+        {
+          "key": "highThreshold",
+          "label": {
+            "en": "High threshold",
+            "fa": "آستانه‌ی بالا"
+          },
+          "type": "number"
+        },
+        {
+          "key": "mediumThreshold",
+          "label": {
+            "en": "Medium threshold",
+            "fa": "آستانه‌ی متوسط"
+          },
+          "type": "number"
+        },
+        {
+          "key": "modifiedDate",
+          "label": {
+            "en": "Modified",
+            "fa": "آخرین تغییر"
+          },
+          "type": "datetime"
+        }
+      ],
+      "backUrl": "/p/routing-confidence",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/routing-confidence-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

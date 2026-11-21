@@ -1,0 +1,88 @@
+{
+  "kind": "form",
+  "key": "designer-set-value",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set a value of a definition draft",
+    "fa": "تنظیم مقدار در پیش‌نویس"
+  },
+  "description": {
+    "en": "Set a value of a definition draft",
+    "fa": "تنظیم مقدار در پیش‌نویس"
+  },
+  "payload": {
+    "id": "designer-set-value",
+    "title": {
+      "en": "Set a value of a definition draft",
+      "fa": "تنظیم مقدار در پیش‌نویس"
+    },
+    "submitLabel": {
+      "en": "Set",
+      "fa": "تنظیم"
+    },
+    "actionKey": "designer-set-value",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ref",
+        "label": {
+          "en": "Definition",
+          "fa": "تعریف"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Definition is required.",
+            "fa": "تعریف الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "appKey:kind:key, for example core:form:department-create",
+          "fa": "appKey:kind:key"
+        }
+      },
+      {
+        "name": "pointer",
+        "label": {
+          "en": "Pointer",
+          "fa": "نشانی"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Pointer is required.",
+            "fa": "نشانی الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "/columns/0/header",
+          "fa": "/columns/0/header"
+        }
+      },
+      {
+        "name": "value",
+        "label": {
+          "en": "Value (JSON)",
+          "fa": "مقدار (JSON)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Value (JSON) is required.",
+            "fa": "مقدار (JSON) الزامی است."
+          }
+        },
+        "maxLength": 100000,
+        "span": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "kind": "form",
+  "key": "organization-assignment-end",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "End an assignment",
+    "fa": "پایان تخصیص"
+  },
+  "description": {
+    "en": "End an assignment",
+    "fa": "پایان تخصیص"
+  },
+  "payload": {
+    "id": "organization-assignment-end",
+    "title": {
+      "en": "End an assignment",
+      "fa": "پایان تخصیص"
+    },
+    "submitLabel": {
+      "en": "End the assignment",
+      "fa": "پایان تخصیص"
+    },
+    "actionKey": "organization-assignment-end",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "key": "card",
+  "component": "PEMS.UI.Components.PemsCard",
+  "category": "display",
+  "icon": "bi-card-text",
+  "nameKey": "component.card",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "CardOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "cssClass": "shadow-sm"
+  }
+}

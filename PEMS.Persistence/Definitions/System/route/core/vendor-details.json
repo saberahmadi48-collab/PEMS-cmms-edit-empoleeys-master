@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "vendor-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor details (old address)",
+    "fa": "Vendor details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Vendor details (old address)",
+    "fa": "Vendor details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Vendor/Details/{id}",
+    "target": "/p/vendor-details?id={id}",
+    "permanent": false
+  }
+}

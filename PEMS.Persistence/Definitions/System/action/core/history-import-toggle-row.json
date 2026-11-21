@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "history-import-toggle-row",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Include or exclude a row",
+    "fa": "شمول یا حذف ردیف"
+  },
+  "description": {
+    "en": "Include or exclude a row",
+    "fa": "شمول یا حذف ردیف"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceHistoryImport",
+      "action": "ToggleRow",
+      "args": {
+        "rowId": "field:rowId",
+        "include": "field:include"
+      }
+    },
+    "success": {
+      "en": "The row was updated.",
+      "fa": "ردیف به‌روز شد."
+    },
+    "redirect": "/p/history-import-review?batchId={batchId}"
+  }
+}

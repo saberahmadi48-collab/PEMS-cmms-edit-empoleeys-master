@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "navigation-menu-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Menu items",
+    "fa": "آیتم‌های منو"
+  },
+  "description": {
+    "en": "The menu tree",
+    "fa": "درخت منو"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "NavigationMenu",
+      "action": "Rows",
+      "args": {
+        "culture": "context:culture"
+      }
+    }
+  }
+}

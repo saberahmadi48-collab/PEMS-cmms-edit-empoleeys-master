@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "inventory-summary",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Inventory dashboard totals",
+    "fa": "جمع‌های داشبورد موجودی"
+  },
+  "description": {
+    "en": "Inventory dashboard totals",
+    "fa": "جمع‌های داشبورد موجودی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Inventory",
+      "action": "Summary"
+    }
+  }
+}

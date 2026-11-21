@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "work-order-set-schedule",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set work order schedule",
+    "fa": "ثبت زمان‌بندی Work Order"
+  },
+  "description": {
+    "en": "Set work order schedule",
+    "fa": "ثبت زمان‌بندی Work Order"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrder",
+      "action": "Schedule",
+      "sectionGuard": {
+        "section": "Schedule",
+        "action": "Edit",
+        "workOrderId": "field:id",
+        "audit": "PlannedStart={plannedStart:O}; PlannedFinish={plannedFinish:O}"
+      },
+      "args": {
+        "workOrderId": "field:id",
+        "plannedStart": "field:plannedStart",
+        "plannedFinish": "field:plannedFinish"
+      }
+    },
+    "success": {
+      "en": "Schedule saved.",
+      "fa": "زمان‌بندی ثبت شد."
+    },
+    "redirect": "/WorkOrder/Details/{id}"
+  }
+}

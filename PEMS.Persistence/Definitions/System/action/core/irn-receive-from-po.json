@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "irn-receive-from-po",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Receive against an order line",
+    "fa": "دریافت از خط سفارش"
+  },
+  "description": {
+    "en": "Receive against an order line",
+    "fa": "دریافت از خط سفارش"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Irn",
+      "action": "ReceiveFromPo",
+      "args": {
+        "id": "field:id",
+        "purchaseOrderLineId": "field:purchaseOrderLineId",
+        "quantity": "field:quantity"
+      }
+    },
+    "success": {
+      "en": "The line was received.",
+      "fa": "قلم دریافت شد."
+    },
+    "redirect": "/p/irn-details?id={id}"
+  }
+}

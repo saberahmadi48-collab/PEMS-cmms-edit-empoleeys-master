@@ -1,0 +1,93 @@
+{
+  "kind": "form",
+  "key": "designer-move-menu-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move a menu item",
+    "fa": "جابه‌جایی آیتم منو"
+  },
+  "description": {
+    "en": "Move a menu item",
+    "fa": "جابه‌جایی آیتم منو"
+  },
+  "payload": {
+    "id": "designer-move-menu-item",
+    "title": {
+      "en": "Move a menu item",
+      "fa": "جابه‌جایی آیتم منو"
+    },
+    "submitLabel": {
+      "en": "Move",
+      "fa": "جابه‌جایی"
+    },
+    "actionKey": "designer-move-menu-item",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ref",
+        "label": {
+          "en": "Definition",
+          "fa": "تعریف"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Definition is required.",
+            "fa": "تعریف الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "appKey:kind:key, for example core:form:department-create",
+          "fa": "appKey:kind:key, for example core:form:department-create"
+        }
+      },
+      {
+        "name": "itemKey",
+        "label": {
+          "en": "Item key",
+          "fa": "کلید آیتم"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Item key is required.",
+            "fa": "کلید آیتم الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "parent",
+        "label": {
+          "en": "New parent item key (empty = top level)",
+          "fa": "آیتم والد جدید (خالی = سطح اول)"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "order",
+        "label": {
+          "en": "Order",
+          "fa": "ترتیب"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Order is required.",
+            "fa": "ترتیب الزامی است."
+          }
+        },
+        "min": 0,
+        "max": 9999
+      }
+    ]
+  }
+}

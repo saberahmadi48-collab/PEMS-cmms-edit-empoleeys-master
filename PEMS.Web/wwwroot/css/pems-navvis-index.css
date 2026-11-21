@@ -1,0 +1,17 @@
+/* Moved verbatim from the <style> block of PEMS.Web/Areas/Admin/Views/NavigationVisibility/Index.cshtml (SCRUM-347). */
+.navvis-module { border: 1px solid var(--bs-border-color); border-radius: 8px; padding: 2px 12px; background: var(--bs-body-bg); }
+.navvis-module-summary { cursor: pointer; padding: 10px 4px; font-weight: 600; display: flex; align-items: center; }
+.navvis-title { flex: 1 1 auto; }
+.navvis-subgroup { margin: 6px 0 6px 18px; border-left: 2px solid var(--bs-border-color); padding-left: 12px; }
+.navvis-subgroup-summary { cursor: pointer; font-weight: 500; padding: 6px 0; color: var(--bs-secondary-color); }
+.navvis-children { padding: 2px 0 10px 18px; }
+.navvis-item { border-top: 1px dashed var(--bs-border-color); padding: 8px 0; }
+.navvis-item:first-child { border-top: none; }
+.navvis-item-summary { cursor: pointer; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.navvis-item-name { font-weight: 500; }
+.navvis-capability { font-family: var(--bs-font-monospace); font-size: 11.5px; color: var(--bs-secondary-color); }
+.navvis-role-grid { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 0 6px; }
+.navvis-role-pill { display: flex; align-items: center; gap: 6px; border: 1px solid var(--bs-border-color); border-radius: 999px; padding: 3px 6px 3px 10px; font-size: 12.5px; }
+.navvis-role-pill form { display: inline-flex; }
+.navvis-role-pill button { border: none; background: transparent; padding: 2px 4px; line-height: 1; border-radius: 50%; }
+.navvis-role-pill button:hover { background: var(--bs-secondary-bg); }

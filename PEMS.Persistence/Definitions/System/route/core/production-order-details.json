@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "production-order-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production order details (old address)",
+    "fa": "Production order details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Production order details (old address)",
+    "fa": "Production order details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ProductionOrder/Details/{id}",
+    "target": "/p/production-order-details?id={id}",
+    "permanent": false
+  }
+}

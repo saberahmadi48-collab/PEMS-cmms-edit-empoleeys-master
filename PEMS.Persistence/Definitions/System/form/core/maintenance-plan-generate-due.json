@@ -1,0 +1,28 @@
+{
+  "kind": "form",
+  "key": "maintenance-plan-generate-due",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate every due work order",
+    "fa": "ساخت همه‌ی دستورکارهای سررسید"
+  },
+  "description": {
+    "en": "Generate every due work order",
+    "fa": "ساخت همه‌ی دستورکارهای سررسید"
+  },
+  "payload": {
+    "id": "maintenance-plan-generate-due",
+    "title": {
+      "en": "Generate every due work order",
+      "fa": "ساخت همه‌ی دستورکارهای سررسید"
+    },
+    "submitLabel": {
+      "en": "Generate",
+      "fa": "ساخت"
+    },
+    "actionKey": "maintenance-plan-generate-due",
+    "columns": 1,
+    "fields": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-numbering",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document numbering (old address)",
+    "fa": "شماره‌گذاری (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Document numbering (old address)",
+    "fa": "شماره‌گذاری (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/Numbering/{*rest}",
+    "target": "/p/numbering",
+    "permanent": false
+  }
+}

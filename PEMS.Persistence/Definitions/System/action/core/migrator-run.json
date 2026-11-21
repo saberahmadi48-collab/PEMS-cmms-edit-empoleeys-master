@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "migrator-run",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Run a package",
+    "fa": "اجرای بسته"
+  },
+  "description": {
+    "en": "Runs an install, update or feed package after the confirmation",
+    "fa": "بسته نصب، به‌روزرسانی یا تغذیه داده را پس از تأیید اجرا می‌کند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The package was run.",
+      "fa": "بسته اجرا شد."
+    },
+    "redirect": "/p/migrator-history",
+    "parameters": {
+      "model": "Migrator",
+      "action": "Run",
+      "args": {
+        "package": "file:file",
+        "confirm": "field:confirm",
+        "actor": "context:userName"
+      },
+      "upload": {
+        "profile": "migrationPackage",
+        "maxFileMb": 100
+      }
+    }
+  }
+}

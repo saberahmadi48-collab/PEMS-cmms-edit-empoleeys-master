@@ -3,55 +3,33 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-controller="FunctionalLocation" asp-action="Index" class="btn btn-outline-secondary btn-sm">← Functional Locations</a>
-</div>
+<pems-flex justify="end" align="center" css="mb-2">
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="FunctionalLocation" asp-action="Index">← Functional Locations</pems-button>
+</pems-flex>
 
-<div class="content-card mb-3">
-    <p class="text-muted small">
+<pems-content-card css="mb-3">
+    <pems-text class="text-muted small">
         Upload an Excel file with <strong>AREA NAME</strong> / <strong>AREA CODE</strong> columns.
         A cell with multiple comma-separated codes (e.g. "85A07, 85A08, 85A10, 85A12") is
         automatically expanded into separate Functional Location records, grouped under an
         Area-level parent node. Nothing is written to the live Functional Locations table until
         you review the parsed rows and click Commit.
-    </p>
-    <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
-        <div class="col-md-8">
-            <label class="form-label small">Functional Location Excel File</label>
-            <input type="file" name="file" class="form-control" accept=".xlsx" required />
-        </div>
-        <div class="col-md-4">
-            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-cloud-upload"></i> @Localizer["Upload"]</button>
-        </div>
-    </form>
-</div>
+    </pems-text>
+    <pems-form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
+        <pems-col md="8">
+            <pems-label css="small">Functional Location Excel File</pems-label>
+            <pems-uploader name="file" accept=".xlsx" required />
+        </pems-col>
+        <pems-col md="4">
+            <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-cloud-upload" /> @Localizer["Upload"]</pems-button>
+        </pems-col>
+    </pems-row></pems-form>
+</pems-content-card>
 
-<div class="content-card">
-    <h6 class="mb-3">@Localizer["Recent Import Batches"]</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead><tr><th>@Localizer["File"]</th><th>@Localizer["Date"]</th><th>@Localizer["Imported By"]</th><th class="text-end">Source Rows</th><th class="text-end">Expanded</th><th class="text-end">@Localizer["New"]</th><th class="text-end">Existing</th><th class="text-end">@Localizer["Conflicts"]</th><th class="text-end">@Localizer["Invalid"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-        <tbody>
-            @foreach (var b in Model)
-            {
-                <tr>
-                    <td>@b.FileName</td>
-                    <td>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="small">@b.ImportedByName</td>
-                    <td class="text-end">@b.SourceRowCount</td>
-                    <td class="text-end">@b.ExpandedLocationCount</td>
-                    <td class="text-end"><span class="badge bg-success">@b.NewCount</span></td>
-                    <td class="text-end"><span class="badge bg-secondary">@b.ExistingCount</span></td>
-                    <td class="text-end">@if (b.ConflictCount > 0) { <span class="badge bg-warning text-dark">@b.ConflictCount</span> } else { @b.ConflictCount }</td>
-                    <td class="text-end">@if (b.InvalidCount > 0) { <span class="badge bg-danger">@b.InvalidCount</span> } else { @b.InvalidCount }</td>
-                    <td><span class="badge @(b.Status == "Committed" ? "bg-success" : "bg-secondary")">@b.Status</span></td>
-                    <td>
-                        <a asp-action="Review" asp-route-batchId="@b.FunctionalLocationImportBatchId" class="btn btn-sm btn-outline-primary">Review</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4">No Functional Location imports yet.</p> }
-</div>
+<pems-content-card>
+    <pems-heading level="6" class="mb-3">@Localizer["Recent Import Batches"]</pems-heading>
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
+    <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["File"])?.ToString() ?? ""), b => (object?)(b.FileName)).Add(((Localizer["Date"])?.ToString() ?? ""), b => (object?)((PemsDates.DateTime(b.ImportDate)))).Add(((Localizer["Imported By"])?.ToString() ?? ""), b => (object?)(b.ImportedByName), css: "small").Add("Source Rows", b => (object?)(b.SourceRowCount), css: "text-end", headerCss: "text-end").Add("Expanded", b => (object?)(b.ExpandedLocationCount), css: "text-end", headerCss: "text-end").Add(((Localizer["New"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("success", b.NewCount)), css: "text-end", headerCss: "text-end").Add("Existing", b => (object?)(DataCell.Badge("neutral", b.ExistingCount)), css: "text-end", headerCss: "text-end").Add(((Localizer["Conflicts"])?.ToString() ?? ""), b => (object?)((b.ConflictCount > 0 ? (object?)DataCell.Badge("warning", b.ConflictCount) : b.ConflictCount)), css: "text-end", headerCss: "text-end").Add(((Localizer["Invalid"])?.ToString() ?? ""), b => (object?)((b.InvalidCount > 0 ? (object?)DataCell.Badge("danger", b.InvalidCount) : b.InvalidCount)), css: "text-end", headerCss: "text-end").Add(((Localizer["Status"])?.ToString() ?? ""), b => (object?)(DataCell.Badge(b.Status == "Committed" ? "success" : "neutral", b.Status))).Add("", b => (object?)(DataCell.ButtonLink(Url.Action("Review", null, new { batchId = b.FunctionalLocationImportBatchId }), "primary", "small", true, null, "Review")))))" />
+    </pems-table-scroll>
+    @if (!Model.Any()) { <pems-text class="text-muted text-center py-4">No Functional Location imports yet.</pems-text> }
+</pems-content-card>

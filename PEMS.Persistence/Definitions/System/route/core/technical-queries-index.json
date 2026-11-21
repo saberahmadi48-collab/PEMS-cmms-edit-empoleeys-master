@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "technical-queries-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "TQ / TSR / RFI (index) (old address)",
+    "fa": "TQ / TSR / RFI (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "TQ / TSR / RFI (index) (old address)",
+    "fa": "TQ / TSR / RFI (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "TechnicalQuery/Index",
+    "target": "/p/technical-queries",
+    "permanent": false
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "kind": "form",
+  "key": "designer-entity-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Entity list data source",
+    "fa": "منبع داده فهرست موجودیت"
+  },
+  "description": {
+    "en": "Typed settings of an entity list data source; preview the rows at /d/{key}?pageSize=5 after publish",
+    "fa": "Typed settings of an entity list data source; preview the rows at /d/{key}?pageSize=5 after publish"
+  },
+  "payload": {
+    "id": "designer-entity-grid",
+    "title": {
+      "en": "Entity list data source",
+      "fa": "منبع داده فهرست موجودیت"
+    },
+    "submitLabel": {
+      "en": "Apply to the draft",
+      "fa": "اعمال بر پیش‌نویس"
+    },
+    "actionKey": "designer-entity-grid",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ref",
+        "label": {
+          "en": "Definition",
+          "fa": "تعریف"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Definition is required.",
+            "fa": "تعریف الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "appKey:kind:key, for example core:form:department-create",
+          "fa": "appKey:kind:key, for example core:form:department-create"
+        }
+      },
+      {
+        "name": "entity",
+        "label": {
+          "en": "Entity",
+          "fa": "موجودیت"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Entity is required.",
+            "fa": "موجودیت الزامی است."
+          }
+        },
+        "maxLength": 100,
+        "placeholder": {
+          "en": "Department",
+          "fa": "Department"
+        }
+      },
+      {
+        "name": "fields",
+        "label": {
+          "en": "Fields shown (comma separated)",
+          "fa": "فیلدهای نمایشی"
+        },
+        "kind": "text",
+        "maxLength": 500,
+        "placeholder": {
+          "en": "Code, Name, IsActive",
+          "fa": "Code, Name, IsActive"
+        }
+      },
+      {
+        "name": "searchFields",
+        "label": {
+          "en": "Fields the search reads",
+          "fa": "فیلدهای جستجو"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "sort",
+        "label": {
+          "en": "Default sort (a - before a field sorts down)",
+          "fa": "ترتیب پیش‌فرض"
+        },
+        "kind": "text",
+        "maxLength": 200,
+        "placeholder": {
+          "en": "-CreatedDate",
+          "fa": "-CreatedDate"
+        }
+      },
+      {
+        "name": "whereJson",
+        "label": {
+          "en": "Fixed row scope (JSON property to value)",
+          "fa": "دامنه ثابت ردیف‌ها (JSON)"
+        },
+        "kind": "textArea",
+        "maxLength": 1000,
+        "placeholder": {
+          "en": "{ \"IsActive\": true }",
+          "fa": "{ \"IsActive\": true }"
+        },
+        "span": 2
+      },
+      {
+        "name": "pageSize",
+        "label": {
+          "en": "Most rows (1 to 500)",
+          "fa": "بیشینه ردیف"
+        },
+        "kind": "text",
+        "maxLength": 3
+      }
+    ]
+  }
+}

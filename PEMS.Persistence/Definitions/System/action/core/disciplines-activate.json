@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "disciplines-activate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Activate",
+    "fa": "فعال‌سازی"
+  },
+  "description": {
+    "en": "Activate",
+    "fa": "فعال‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DisciplineMaster",
+      "action": "SetActive",
+      "args": {
+        "disciplineId": "field:id",
+        "isActive": "literal:true"
+      }
+    },
+    "success": {
+      "en": "Discipline reactivated.",
+      "fa": "دیسیپلین فعال شد."
+    },
+    "redirect": "/p/disciplines"
+  }
+}

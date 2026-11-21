@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "work-request-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the request",
+    "fa": "رد درخواست"
+  },
+  "description": {
+    "en": "Reject the request",
+    "fa": "رد درخواست"
+  },
+  "payload": {
+    "id": "work-request-reject",
+    "title": {
+      "en": "Reject the request",
+      "fa": "رد درخواست"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "work-request-reject",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Request id",
+          "fa": "شناسه‌ی درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      }
+    ]
+  }
+}

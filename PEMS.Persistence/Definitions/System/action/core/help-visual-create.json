@@ -1,0 +1,45 @@
+{
+  "kind": "action",
+  "key": "help-visual-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a help visual",
+    "fa": "ایجاد تصویر راهنما"
+  },
+  "description": {
+    "en": "Create a help visual",
+    "fa": "ایجاد تصویر راهنما"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "SaveVisual",
+      "args": {
+        "visualId": "literal:0",
+        "dto": {
+          "VisualType": "field:visualType",
+          "DisplayOrder": "field:displayOrder",
+          "IsPublished": "field:isPublished",
+          "SourceWorkflowModule": "field:sourceWorkflowModule",
+          "ManualDefinitionText": "field:manualDefinitionText",
+          "CaptionEn": "field:captionEn",
+          "CaptionFa": "field:captionFa",
+          "LegendEn": "field:legendEn",
+          "LegendFa": "field:legendFa",
+          "AccessibilityDescriptionEn": "field:accessibilityDescriptionEn",
+          "AccessibilityDescriptionFa": "field:accessibilityDescriptionFa",
+          "RelatedHelpKey": "field:relatedHelpKey",
+          "HelpArticleId": "field:id"
+        }
+      }
+    },
+    "success": {
+      "en": "Visual content created.",
+      "fa": "محتوای تصویری ایجاد شد."
+    },
+    "redirect": "/p/help-admin"
+  }
+}

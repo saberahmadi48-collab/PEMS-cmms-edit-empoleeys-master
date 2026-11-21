@@ -1,0 +1,24 @@
+{
+  "_comment": [
+    "SCRUM-280 (#262): database states PEMS must upgrade from. One entry per release that reached a customer, demo or UAT database.",
+    "A release is its migration set: every migration of the current chain up to lastMigration, minus notIncluded",
+    "(migrations merged later with an older timestamp, which that release never had).",
+    "DatabaseUpgradePathSqlTests upgrades a copy of each to head and compares it with a fresh install;",
+    "MigrationCompatibilityRulesTests keeps the migrations of every listed release unchanged (released-migrations.sha256).",
+    "Add an entry when you ship (docs/deployment/CODE_FIRST_DATABASE.md, 'Supported releases'); keep at least the last three (N-2)."
+  ],
+  "releases": [
+    {
+      "name": "2026-10-22 first self-installing build",
+      "commit": "1e891a4",
+      "lastMigration": "20261022152254_FullTextSearch",
+      "notIncluded": [ "20261021210353_IncomingCorrespondenceRegistry" ]
+    },
+    {
+      "name": "2026-10-25 demo (gate-pass 5e0fb3d)",
+      "commit": "5e0fb3d",
+      "lastMigration": "20261024103606_ReferralAsLetter",
+      "notIncluded": []
+    }
+  ]
+}

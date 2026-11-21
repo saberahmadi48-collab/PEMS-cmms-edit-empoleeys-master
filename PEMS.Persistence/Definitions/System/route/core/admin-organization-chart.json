@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-organization-chart",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Organization (old address)",
+    "fa": "سازمان (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Organization (old address)",
+    "fa": "سازمان (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/Organization/Chart/{*rest}",
+    "target": "/p/organization-chart",
+    "permanent": false
+  }
+}

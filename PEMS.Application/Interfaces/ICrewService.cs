@@ -6,6 +6,7 @@ namespace PEMS.Application.Interfaces;
 /// </summary>
 public interface ICrewService
 {
+    [PEMS.Application.Common.PemsOperation("Crew", "Create", "WorkOrder.Edit")]
     Task<(bool Success, string? Error, int? CrewId)> CreateAsync(string code, string name, int? workOrderId);
 
     Task AddOrReactivateMemberAsync(int crewId, int employeeId, int roleId);

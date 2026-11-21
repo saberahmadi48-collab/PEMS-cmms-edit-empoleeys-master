@@ -21,7 +21,6 @@ public class LinuxDeploymentArtifactsTests
 
     [Theory]
     [InlineData("PEMS.Web/appsettings.json")]
-    [InlineData("PEMS.Web/appsettings.UAT.json")]
     public void CommittedAppSettings_ContainNoLiteralSecrets(string file)
     {
         var text = Read(file);
@@ -115,6 +114,40 @@ public class LinuxDeploymentArtifactsTests
         Assert.Contains("--confirm-reviewed", s);
         foreach (var f in new[] { "deploy/docker/compose.pems-web.yml", "deploy/docker/Dockerfile.release", "deploy/remote/pems-docker.sh" })
             Assert.DoesNotContain('\r', Read(f));
+    }
+
+    [Fact]
+    public void GitAttributes_CheckOutEveryLinuxFileWithLf()
+    {
+        // SCRUM-534: on Windows `text=auto` turned the docker files into CRLF in the working copy, so the LF check above failed there
+        var a = Read(".gitattributes");
+        foreach (var rule in new[] { "deploy/remote/*.sh text eol=lf", "deploy/docker/* text eol=lf", "deploy/tests/*.sh text eol=lf", "deploy/tests/fakes/* text eol=lf" })
+            Assert.Contains(rule, a);
+    }
+
+    [Theory]
+    [InlineData("graphify-out/")]
+    [InlineData(".claude/")]
+    [InlineData("tools/loadtest/results/")]
+    [InlineData("**/logs/")]
+    [InlineData("PEMS.Web/filestore/")]   // uploaded files are runtime data, never baked into an image
+    [InlineData(".kilo/")]
+    [InlineData("**/bin/")]
+    [InlineData(".git/")]
+    public void DockerIgnore_KeepsLocalToolOutputOutOfTheBuildContext(string entry)
+    {
+        // SCRUM-532: graphify-out (GBs) in the context made `docker build` fail at COPY . .
+        var lines = Read(".dockerignore").Split('\n').Select(l => l.Trim()).ToList();
+        Assert.Contains(entry, lines);
+    }
+
+    [Theory]
+    [InlineData("tools/loadtest/pems-api-baseline.js")]
+    [InlineData("tools/loadtest/pems-baseline.js")]
+    public void LoadTestScripts_KeepTheLoginCookieAcrossIterations(string script)
+    {
+        // SCRUM-535: both scripts log in once per VU; without this k6 clears the cookie jar each iteration and every later request gets 401
+        Assert.Matches(new System.Text.RegularExpressions.Regex(@"export const options = \{\s*(//[^\n]*\n\s*)*noCookiesReset: true,"), Read(script));
     }
 
     [Fact]

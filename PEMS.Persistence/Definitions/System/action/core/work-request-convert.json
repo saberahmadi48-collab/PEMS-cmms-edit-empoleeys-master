@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "work-request-convert",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Convert to a work order",
+    "fa": "تبدیل به دستورکار"
+  },
+  "description": {
+    "en": "Convert to a work order",
+    "fa": "تبدیل به دستورکار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkRequestPage",
+      "action": "ConvertToWorkOrder",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userName": "context:userName",
+        "id": "field:id",
+        "workOrderType": "field:workOrderType",
+        "equipmentId": "field:equipmentId"
+      }
+    },
+    "success": {
+      "en": "The work order was created from the request; find it in the work orders.",
+      "fa": "WorkOrder ساخته شد؛ آن را در دستورکارها ببینید."
+    },
+    "redirect": "/WorkRequest/Details/{id}"
+  }
+}

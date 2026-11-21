@@ -1,0 +1,157 @@
+{
+  "kind": "page",
+  "key": "workflow-management",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Workflow management",
+    "fa": "مدیریت گردش‌کار"
+  },
+  "description": {
+    "en": "Workflow management (page definition)",
+    "fa": "مدیریت گردش‌کار (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "workflow-management",
+    "template": "entity-list",
+    "args": {
+      "id": "workflow-management",
+      "url": "/d/workflow-definitions-rows",
+      "idField": "definitionId",
+      "columns": [
+        {
+          "key": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 260,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "module",
+          "header": {
+            "en": "Module",
+            "fa": "ماژول"
+          },
+          "width": 140,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "category",
+          "header": {
+            "en": "Category",
+            "fa": "دسته"
+          },
+          "width": 140,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "width": 90,
+          "sortable": false,
+          "filterable": false,
+          "type": "bool"
+        },
+        {
+          "key": "publishedVersion",
+          "header": {
+            "en": "Published",
+            "fa": "منتشرشده"
+          },
+          "width": 110,
+          "sortable": false,
+          "filterable": false,
+          "type": "number"
+        },
+        {
+          "key": "openDraftStatus",
+          "header": {
+            "en": "Draft",
+            "fa": "پیش‌نویس"
+          },
+          "width": 120,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "activeBindings",
+          "header": {
+            "en": "Bindings",
+            "fa": "اتصال‌ها"
+          },
+          "width": 100,
+          "sortable": false,
+          "filterable": false,
+          "type": "number"
+        },
+        {
+          "key": "editable",
+          "header": {
+            "en": "Editable",
+            "fa": "قابل ویرایش"
+          },
+          "width": 110,
+          "sortable": false,
+          "filterable": false,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 520,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "details",
+              "label": {
+                "en": "Details",
+                "fa": "جزئیات"
+              },
+              "url": "/p/workflow-details?id={id}",
+              "method": "get"
+            },
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/workflow-definition-edit/{id}",
+              "method": "get",
+              "showWhen": "row.editable == true"
+            },
+            {
+              "key": "archive",
+              "label": {
+                "en": "Archive",
+                "fa": "بایگانی"
+              },
+              "url": "/a/workflow-archive",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Archive this definition?",
+                "fa": "این تعریف بایگانی شود؟"
+              },
+              "showWhen": "row.isActive == true"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

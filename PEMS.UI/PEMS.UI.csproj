@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <!-- PEMS component library (ADR-0002). Spike state (SCRUM-23): standalone, not referenced by PEMS.Web yet. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <RootNamespace>PEMS.UI</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\PEMS.UI.Abstractions\PEMS.UI.Abstractions.csproj" />
+    <!-- Validates stored component options against the generated JSON Schema (#433). BSD-3-Clause, built on System.Text.Json, JSON Schema 2020-12.
+         JsonSchema.Net 9.x was rejected: Open Source Maintenance Fee EULA, not a plain open-source licence. -->
+    <PackageReference Include="LateApexEarlySpeed.Json.Schema" Version="4.2.2" />
+  </ItemGroup>
+
+</Project>

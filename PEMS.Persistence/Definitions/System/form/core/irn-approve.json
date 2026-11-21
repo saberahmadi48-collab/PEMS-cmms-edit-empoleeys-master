@@ -1,0 +1,85 @@
+{
+  "kind": "form",
+  "key": "irn-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QA decision on the disposition",
+    "fa": "تصمیم QA درباره‌ی Disposition"
+  },
+  "description": {
+    "en": "QA decision on the disposition",
+    "fa": "تصمیم QA درباره‌ی Disposition"
+  },
+  "payload": {
+    "id": "irn-approve",
+    "title": {
+      "en": "QA decision on the disposition",
+      "fa": "تصمیم QA درباره‌ی Disposition"
+    },
+    "submitLabel": {
+      "en": "Decide",
+      "fa": "ثبت تصمیم"
+    },
+    "actionKey": "irn-approve",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "IRN id",
+          "fa": "شناسه‌ی IRN"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "decision",
+        "label": {
+          "en": "Decision",
+          "fa": "تصمیم"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Approve",
+            "label": {
+              "en": "Approve (post the accepted quantity to stock)",
+              "fa": "تأیید (ثبت مقدار پذیرفته در موجودی)"
+            }
+          },
+          {
+            "value": "Reject",
+            "label": {
+              "en": "Reject (back for re-inspection)",
+              "fa": "رد (بازگشت برای بازرسی مجدد)"
+            }
+          }
+        ]
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment",
+          "fa": "توضیح"
+        },
+        "kind": "textArea",
+        "maxLength": 1000,
+        "span": 2
+      }
+    ]
+  }
+}

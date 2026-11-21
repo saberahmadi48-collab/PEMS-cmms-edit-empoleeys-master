@@ -1,0 +1,115 @@
+{
+  "kind": "form",
+  "key": "employee-labor-rate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set a labor rate",
+    "fa": "ثبت نرخ دستمزد"
+  },
+  "description": {
+    "en": "Set a new labor rate of an employee",
+    "fa": "ثبت نرخ دستمزد جدید برای کارمند"
+  },
+  "payload": {
+    "id": "employee-labor-rate",
+    "title": {
+      "en": "Labor rate",
+      "fa": "نرخ دستمزد"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "employee-labor-rate",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "employeeId",
+        "label": {
+          "en": "Employee id",
+          "fa": "شناسه کارمند"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Employee id is required.",
+            "fa": "شناسه کارمند الزامی است."
+          }
+        }
+      },
+      {
+        "name": "rateType",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "Normal",
+            "label": {
+              "en": "Normal",
+              "fa": "عادی"
+            }
+          },
+          {
+            "value": "Overtime",
+            "label": {
+              "en": "Overtime",
+              "fa": "اضافه‌کاری"
+            }
+          }
+        ]
+      },
+      {
+        "name": "rate",
+        "label": {
+          "en": "Rate",
+          "fa": "نرخ"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Rate is required.",
+            "fa": "نرخ الزامی است."
+          }
+        }
+      },
+      {
+        "name": "currency",
+        "label": {
+          "en": "Currency",
+          "fa": "واحد پول"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Currency is required.",
+            "fa": "واحد پول الزامی است."
+          }
+        },
+        "maxLength": 10
+      },
+      {
+        "name": "effectiveFrom",
+        "label": {
+          "en": "Effective from",
+          "fa": "از تاریخ"
+        },
+        "kind": "date",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Effective from is required.",
+            "fa": "از تاریخ الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

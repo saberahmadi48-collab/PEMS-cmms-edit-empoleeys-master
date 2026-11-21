@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "designer-action-guard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Action guard",
+    "fa": "محافظ کنش"
+  },
+  "description": {
+    "en": "Action guard",
+    "fa": "محافظ کنش"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The guard was set in the draft.",
+      "fa": "محافظ در پیش‌نویس تنظیم شد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "SetActionGuard",
+      "args": {
+        "reference": "field:ref",
+        "resource": "field:resource",
+        "action": "field:action",
+        "resourceId": "field:resourceId",
+        "mode": "field:mode",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

@@ -7,14 +7,14 @@
 }
 
 <div class="text-center">
-    <div style="font-size:52px; color:#d98c2b;">
-        <i class="bi bi-shield-lock-fill"></i>
+    <div class="pems-s-73ec564c">
+        <pems-icon name="bi-shield-lock-fill" />
     </div>
-    <h2 class="mt-2">@Localizer["Access Denied"]</h2>
-    <p class="subtitle">
+    <pems-heading level="2" class="mt-2">@Localizer["Access Denied"]</pems-heading>
+    <pems-text class="subtitle">
         You don't have permission to view this page.
         If you believe this is a mistake, contact your System Administrator.
-    </p>
+    </pems-text>
 
-    <a asp-controller="Home" asp-action="Index" class="btn btn-pems">@Localizer["Back to Dashboard"]</a>
+    <pems-button as="a" tone="none" css="btn-pems" asp-controller="Home" asp-action="Index">@Localizer["Back to Dashboard"]</pems-button>
 </div>

@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "shift-handover-acknowledge",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Acknowledge the handover",
+    "fa": "تأیید تحویل"
+  },
+  "description": {
+    "en": "Acknowledge the handover",
+    "fa": "تأیید تحویل"
+  },
+  "payload": {
+    "id": "shift-handover-acknowledge",
+    "title": {
+      "en": "Acknowledge the handover",
+      "fa": "تأیید تحویل"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "shift-handover-acknowledge",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Handover id",
+          "fa": "شناسه‌ی تحویل"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

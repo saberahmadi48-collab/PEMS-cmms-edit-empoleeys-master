@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "report",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reports (old address)",
+    "fa": "گزارش‌ها (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Reports (old address)",
+    "fa": "گزارش‌ها (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Report",
+    "target": "/p/report-correspondence",
+    "permanent": false
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "kind": "form",
+  "key": "barcode-bulk-generate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate barcodes in bulk",
+    "fa": "ساخت گروهی بارکد"
+  },
+  "description": {
+    "en": "Generate barcodes in bulk",
+    "fa": "ساخت گروهی بارکد"
+  },
+  "payload": {
+    "id": "barcode-bulk-generate",
+    "title": {
+      "en": "Generate barcodes in bulk",
+      "fa": "ساخت گروهی بارکد"
+    },
+    "submitLabel": {
+      "en": "Generate and download",
+      "fa": "ساخت و دریافت"
+    },
+    "actionKey": "barcode-bulk-generate",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "equipmentIds",
+        "label": {
+          "en": "Equipment ids, separated by commas",
+          "fa": "شناسه‌ی تجهیزات، با ویرگول"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "symbology",
+        "label": {
+          "en": "Symbology",
+          "fa": "نوع بارکد"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Code128",
+            "label": {
+              "en": "Code 128",
+              "fa": "Code 128"
+            }
+          },
+          {
+            "value": "QR",
+            "label": {
+              "en": "QR",
+              "fa": "QR"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

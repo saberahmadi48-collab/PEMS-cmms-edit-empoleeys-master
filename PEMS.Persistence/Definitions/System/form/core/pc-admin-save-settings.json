@@ -1,0 +1,54 @@
+{
+  "kind": "form",
+  "key": "pc-admin-save-settings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save the part number settings",
+    "fa": "ذخیره‌ی تنظیمات شماره‌ی قطعه"
+  },
+  "description": {
+    "en": "Save the part number settings",
+    "fa": "ذخیره‌ی تنظیمات شماره‌ی قطعه"
+  },
+  "payload": {
+    "id": "pc-admin-save-settings",
+    "title": {
+      "en": "Save the part number settings",
+      "fa": "ذخیره‌ی تنظیمات شماره‌ی قطعه"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-admin-save-settings",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "partNoGenerationMethod",
+        "label": {
+          "en": "Generation method (MANUAL or API)",
+          "fa": "روش تولید (MANUAL یا API)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 20
+      },
+      {
+        "name": "partNoFormat",
+        "label": {
+          "en": "Format",
+          "fa": "قالب"
+        },
+        "kind": "text",
+        "maxLength": 100
+      }
+    ]
+  }
+}

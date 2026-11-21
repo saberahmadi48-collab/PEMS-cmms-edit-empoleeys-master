@@ -1,0 +1,100 @@
+{
+  "kind": "page",
+  "key": "cmms-readiness-equipment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment readiness",
+    "fa": "آمادگی تجهیزات"
+  },
+  "description": {
+    "en": "Readiness of each equipment (page definition)",
+    "fa": "آمادگی هر تجهیز (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "cmms-readiness-equipment",
+    "permission": "MaintenanceMasterData.View",
+    "template": "entity-list",
+    "args": {
+      "id": "cmms-readiness-equipment",
+      "url": "/d/cmms-readiness-equipment-grid",
+      "idField": "equipmentId",
+      "columns": [
+        {
+          "key": "tagNumber",
+          "header": {
+            "en": "Tag",
+            "fa": "تگ"
+          },
+          "width": 150
+        },
+        {
+          "key": "equipmentClassName",
+          "header": {
+            "en": "Class",
+            "fa": "کلاس"
+          },
+          "width": 220
+        },
+        {
+          "key": "classification",
+          "header": {
+            "en": "Classification",
+            "fa": "طبقه‌بندی"
+          },
+          "width": 160
+        },
+        {
+          "key": "criticality",
+          "header": {
+            "en": "Criticality",
+            "fa": "بحرانیت"
+          },
+          "width": 160
+        },
+        {
+          "key": "strategy",
+          "header": {
+            "en": "Strategy",
+            "fa": "راهبرد"
+          },
+          "width": 150
+        },
+        {
+          "key": "pmPlan",
+          "header": {
+            "en": "PM plan",
+            "fa": "برنامه PM"
+          },
+          "width": 150
+        },
+        {
+          "key": "jobPlan",
+          "header": {
+            "en": "Job plan",
+            "fa": "طرح کار"
+          },
+          "width": 150
+        },
+        {
+          "key": "safety",
+          "header": {
+            "en": "Safety",
+            "fa": "ایمنی"
+          },
+          "width": 150
+        },
+        {
+          "key": "executionReady",
+          "header": {
+            "en": "Execution ready",
+            "fa": "آماده اجرا"
+          },
+          "width": 130,
+          "type": "bool"
+        }
+      ]
+    }
+  }
+}

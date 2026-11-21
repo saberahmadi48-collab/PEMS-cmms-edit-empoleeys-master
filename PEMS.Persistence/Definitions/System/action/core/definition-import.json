@@ -1,0 +1,25 @@
+{
+  "kind": "action",
+  "key": "definition-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import definitions from a package",
+    "fa": "ورود تعریف‌ها از بسته"
+  },
+  "description": {
+    "en": "Creates drafts from a package file; nothing is published",
+    "fa": "از فایل بسته پیش‌نویس می‌سازد؛ چیزی منتشر نمی‌شود"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "definition.import",
+    "permission": "Definitions.Create",
+    "parameters": {},
+    "success": {
+      "en": "The package was imported as drafts.",
+      "fa": "بسته به‌صورت پیش‌نویس وارد شد."
+    },
+    "redirect": "/p/definition-workbench"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-technical-classes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup: TechnicalClasses",
+    "fa": "جستجوی کاتالوگ قطعه: TechnicalClasses"
+  },
+  "description": {
+    "en": "Part Catalogue lookup: TechnicalClasses",
+    "fa": "جستجوی کاتالوگ قطعه: TechnicalClasses"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueLookup",
+      "action": "TechnicalClasses",
+      "args": {
+        "userRoles": "context:roles",
+        "q": "param:q"
+      },
+      "disposition": "inline"
+    }
+  }
+}

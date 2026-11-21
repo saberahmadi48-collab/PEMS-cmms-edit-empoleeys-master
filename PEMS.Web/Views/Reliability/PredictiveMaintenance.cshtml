@@ -8,53 +8,39 @@
 
     string StatusBadge(string status) => status switch
     {
-        "READY" => "text-bg-success",
-        "PARTIAL" => "text-bg-warning",
-        "NOT_READY" => "text-bg-secondary",
-        _ => "text-bg-light border"
+        "READY" => "success",
+        "PARTIAL" => "warning",
+        "NOT_READY" => "neutral",
+        _ => "light"
     };
 }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["← Reliability"]</a>
-</div>
-<p class="text-muted small">
+<pems-flex justify="end" align="center" css="mb-2">
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["← Reliability"]</pems-button>
+</pems-flex>
+<pems-text class="text-muted small">
     طبق «PEMS Phase 9» بند ۱۶: هیچ مدلی بدون اعتبارسنجی واقعی «آماده‌ی تولید» اعلام نمی‌شود.
     زیرساخت نرم‌افزاری از الان آماده است تا وقتی داده‌ی کافی جمع شود، بدون بازطراحی معماری.
-</p>
+</pems-text>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-6">
-        <div class="content-card h-100 text-center">
+<pems-row gap="3" css="mb-3">
+    <pems-col md="6">
+        <pems-content-card css="h-100 text-center">
             <div class="text-muted small">Engine (software/architecture)</div>
-            <span class="badge fs-6 @StatusBadge(readiness.EngineStatus)">@readiness.EngineStatus</span>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="content-card h-100 text-center">
+            <pems-badge tone="@StatusBadge(readiness.EngineStatus)" css="fs-6">@readiness.EngineStatus</pems-badge>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="6">
+        <pems-content-card css="h-100 text-center">
             <div class="text-muted small">Production Model (validated on real data)</div>
-            <span class="badge fs-6 @StatusBadge(readiness.ProductionModelStatus)">@readiness.ProductionModelStatus</span>
-        </div>
-    </div>
-</div>
-<p class="text-muted small">@readiness.Reason</p>
+            <pems-badge tone="@StatusBadge(readiness.ProductionModelStatus)" css="fs-6">@readiness.ProductionModelStatus</pems-badge>
+        </pems-content-card>
+    </pems-col>
+</pems-row>
+<pems-text class="text-muted small">@readiness.Reason</pems-text>
 
-<div class="content-card">
-    <h6 class="mb-2">Defined Models (@readiness.ModelCount total, @readiness.ValidatedModelCount validated)</h6>
-    <table class="table table-enterprise table-sm mb-0">
-        <thead><tr><th>@Localizer["Target"]</th><th>Algorithm</th><th>Training Data</th><th>@Localizer["Validation"]</th><th class="text-end">Results</th></tr></thead>
-        <tbody>
-            @foreach (var m in Model)
-            {
-                <tr>
-                    <td>@m.TargetName</td>
-                    <td class="small">@m.Algorithm</td>
-                    <td><span class="badge @StatusBadge(m.TrainingDataStatus)">@m.TrainingDataStatus</span></td>
-                    <td class="small">@m.ValidationStatus</td>
-                    <td class="text-end">@m.ResultCount</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">هیچ مدل پیش‌بینانه‌ای هنوز تعریف نشده - هیچ داده‌ی جعلی برای پرکردن این صفحه درج نشده.</p> }
-</div>
+<pems-content-card>
+    <pems-heading level="6" class="mb-2">Defined Models (@readiness.ModelCount total, @readiness.ValidatedModelCount validated)</pems-heading>
+    <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Target"])?.ToString() ?? ""), m => (object?)(m.TargetName)).Add("Algorithm", m => (object?)(m.Algorithm), css: "small").Add("Training Data", m => (object?)(m.TrainingDataStatus), kind: DataCellKind.Badge, tone: m => ((StatusBadge(m.TrainingDataStatus))?.ToString())).Add(((Localizer["Validation"])?.ToString() ?? ""), m => (object?)(m.ValidationStatus), css: "small").Add("Results", m => (object?)(m.ResultCount), css: "text-end", headerCss: "text-end")))" dense="true" css="mb-0" />
+    @if (!Model.Any()) { <pems-text class="text-muted text-center py-4 mb-0">هیچ مدل پیش‌بینانه‌ای هنوز تعریف نشده - هیچ داده‌ی جعلی برای پرکردن این صفحه درج نشده.</pems-text> }
+</pems-content-card>

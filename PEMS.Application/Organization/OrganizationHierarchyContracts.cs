@@ -103,12 +103,15 @@ public interface IOrganizationHierarchyService
     Task<List<(int EmployeeId, string Label)>> GetActiveEmployeesAsync(CancellationToken ct = default);
 
     /// <summary>سمت جدید (Master-data). Department/Parent اختیاری؛ در صورت وجود باید فعال باشند. هرگز سمت ساختگی از متن آزاد ساخته نمی‌شود.</summary>
+    [PEMS.Application.Common.PemsOperation("Organization", "CreatePosition", Roles = "SystemAdmin")]
     Task<OrgOpResult> CreatePositionAsync(string title, string? positionCode, int? departmentId, string? description, int? parentPositionId, CancellationToken ct = default);
 
     /// <summary>ویرایش عنوان/کد/دپارتمان/توضیح. تغییر مافوق از SetPositionHierarchyAsync (اعتبارسنجی دور/خودارجاع) انجام می‌شود.</summary>
+    [PEMS.Application.Common.PemsOperation("Organization", "UpdatePosition", Roles = "SystemAdmin")]
     Task<OrgOpResult> UpdatePositionAsync(int positionId, string title, string? positionCode, int? departmentId, string? description, CancellationToken ct = default);
 
     /// <summary>غیرفعال‌سازی فقط وقتی دارنده‌ی فعال ندارد (تخصیص بی‌صدا بسته نمی‌شود)؛ فعال‌سازی مجدد آزاد است. حذف فیزیکی وجود ندارد.</summary>
+    [PEMS.Application.Common.PemsOperation("Organization", "SetPositionActive", Roles = "SystemAdmin")]
     Task<OrgOpResult> SetPositionActiveAsync(int positionId, bool isActive, CancellationToken ct = default);
 
     Task<List<(int DepartmentId, string Name)>> GetActiveDepartmentsAsync(CancellationToken ct = default);
@@ -121,13 +124,17 @@ public interface IOrganizationHierarchyService
     Task<OrgOpResult> SetPrimaryPositionAsync(int employeeId, int? positionId, CancellationToken ct = default);
 
     /// <summary>تعیین کد سمت و سمت مافوق. ParentPositionId=null یعنی سمت ریشه. Self/Cycle/Inactive رد می‌شود.</summary>
+    [PEMS.Application.Common.PemsOperation("Organization", "SetPositionHierarchy", Roles = "SystemAdmin")]
     Task<OrgOpResult> SetPositionHierarchyAsync(int positionId, string? positionCode, int? parentPositionId, CancellationToken ct = default);
 
     /// <summary>اشغال سمت. سمت باید فعال و فاقد دارنده‌ی فعال باشد؛ کارمند فعال؛ حداکثر یک تخصیص اصلیِ فعال برای هر کارمند.</summary>
+    [PEMS.Application.Common.PemsOperation("Organization", "Assign", Roles = "SystemAdmin")]
     Task<OrgOpResult> AssignAsync(OrganizationAssignmentRequest request, CancellationToken ct = default);
 
+    [PEMS.Application.Common.PemsOperation("Organization", "UpdateAssignment", Roles = "SystemAdmin")]
     Task<OrgOpResult> UpdateAssignmentAsync(int assignmentId, bool isPrimary, DateTime startDate, DateTime? endDate, CancellationToken ct = default);
 
     /// <summary>پایان تخصیص (سمت Vacant می‌شود؛ تاریخچه حفظ می‌شود).</summary>
+    [PEMS.Application.Common.PemsOperation("Organization", "EndAssignment", Roles = "SystemAdmin")]
     Task<OrgOpResult> EndAssignmentAsync(int assignmentId, string? notes, CancellationToken ct = default);
 }

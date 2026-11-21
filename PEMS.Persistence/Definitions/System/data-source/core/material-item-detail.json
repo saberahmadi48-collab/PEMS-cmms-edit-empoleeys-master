@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "material-item-detail",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material",
+    "fa": "ماده"
+  },
+  "description": {
+    "en": "Material",
+    "fa": "ماده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaterialItem",
+      "action": "Detail",
+      "args": {
+        "materialItemId": "param:materialItemId"
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "kind": "action",
+  "key": "skills-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit skill",
+    "fa": "ویرایش مهارت"
+  },
+  "description": {
+    "en": "Edit skill",
+    "fa": "ویرایش مهارت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.update",
+    "parameters": {
+      "entity": "Skill",
+      "map": {
+        "name": "Name",
+        "disciplineId": "DisciplineId",
+        "description": "Description"
+      },
+      "required": [
+        "Name"
+      ],
+      "unique": [
+        {
+          "fields": [
+            "Name"
+          ],
+          "message": {
+            "en": "A skill with this name already exists.",
+            "fa": "مهارتی با همین نام از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Skill saved.",
+      "fa": "مهارت ذخیره شد."
+    },
+    "redirect": "/p/skills"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "kind": "action",
+  "key": "disciplines-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit discipline",
+    "fa": "ویرایش دیسیپلین"
+  },
+  "description": {
+    "en": "Edit discipline",
+    "fa": "ویرایش دیسیپلین"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DisciplineMaster",
+      "action": "Update",
+      "args": {
+        "disciplineId": "field:id",
+        "code": "field:code",
+        "name": "field:name",
+        "description": "field:description",
+        "importAliases": "field:importAliases",
+        "transmittalCode": "field:transmittalCode"
+      },
+      "load": {
+        "entity": "Discipline",
+        "map": {
+          "code": "Code",
+          "name": "Name",
+          "description": "Description",
+          "importAliases": "ImportAliases",
+          "transmittalCode": "TransmittalCode"
+        }
+      }
+    },
+    "success": {
+      "en": "Discipline saved.",
+      "fa": "دیسیپلین ذخیره شد."
+    },
+    "redirect": "/p/disciplines"
+  }
+}

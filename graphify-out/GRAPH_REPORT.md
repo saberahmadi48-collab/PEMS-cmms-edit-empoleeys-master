@@ -1,4134 +1,3103 @@
-# Graph Report - PEMS-cmms-edit-empoleeys-master  (2026-10-08)
+# Graph Report - PEMS  (2026-11-06)
 
 ## Corpus Check
-- 2240 files · ~7,068,809 words
+- 2877 files · ~3,557,431 words
 - Verdict: corpus is large enough that graph structure adds value.
+- Unclassified: 74 file(s) not represented in the graph (top: .css 41, (none) 9, .example 7)
 
 ## Summary
-- 35461 nodes · 72586 edges · 1715 communities (1567 shown, 114 thin omitted)
-- Extraction: 91% EXTRACTED · 9% INFERRED · 0% AMBIGUOUS · INFERRED: 6852 edges (avg confidence: 0.83)
+- 35734 nodes · 105477 edges · 1039 communities (805 shown, 234 thin omitted)
+- Extraction: 88% EXTRACTED · 12% INFERRED · 0% AMBIGUOUS · INFERRED: 12715 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4bf68edf`
+- Built from commit: `53e58100`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - PEMSDbContext
-- .CreateService
+- LetterService
 - PEMS.Persistence.Services
-- PEMS.Web.Controllers
-- Detailed evidence checklist per module
-- DocumentHoldService
+- microsoft_aspnetcore_mvc
+- PEMS.Persistence.Identity
+- DocumentHoldDto
 - GlobalSearchResultItemDto
 - HelpArticleAdminEditDto
-- chart-4.4.4.umd.min.js
-- .claude/Role/PEMS — Role-Based E2E Testing Framework & Claude Execution Baseline.md
-- .github/Role/PEMS — Role-Based E2E Testing Framework & Claude Execution Baseline.md
-- Detailed evidence checklist per module
-- Detailed evidence checklist per module
+- IStringLocalizer
+- EngineeringDocumentSummaryCountsDto
+- JobPlan
+- microsoft_entityframeworkcore
+- Tender
 - DisciplineWorkspaceDto
-- EmployeeSkill
+- ProcurementApprovalBreakGlassTests.CreateSeededDbAsync
 - .SeedFullBaselineAsync
-- EngineeringRevisionQualityDto
-- Task
+- Dictionary
+- EngineeringDocumentDto
 - .CreateInfra
-- PEMS Help Governance Baseline — Mandatory Documentation Synchronization.md
-- EmployeeCertification
-- .claude/Role/UIUX/PEMS Contract Management — Enterprise Petrochemical Dashboard Specification & Claude Implementation Brief.md
-- .github/Role/UIUX/PEMS Contract Management — Enterprise Petrochemical Dashboard Specification & Claude Implementation Brief.md
-- DesignSystemGenerator
+- PemsDbContextFactory.CreateInMemory
+- WorkflowDefinitionRow
+- SurfaceAndPackageTests
+- IReadOnlyDictionary
 - SparePart
-- CrewMember
-- .CreateInMemory
-- WorkOrderLabor
-- Project
+- HashSet
+- StorageProviderUpsertRequest
+- MaterialItem
+- ReplenishmentRecommendation
 - Equipment
-- .claude/Role/Engineering Management  EDMS — Three-Pass Audit & Implementation Directive.MD
-- .github/Role/Engineering Management  EDMS — Three-Pass Audit & Implementation Directive.MD
-- RoutingRuleService
+- ViewDescriptor
+- FakeLetterService
+- WorkflowRuntimeViewModel
 - ActorResolutionResult
-- WorkRequest
-- RamAnalysisDto
-- d3.min.js
-- .CreateInfra
-- r
-- EngineeringDocumentsController
+- RcmRulesTests
+- ContractCreationAtomicitySqlTests
+- IXLWorksheet
+- PcActor
+- JsonDescriptorRenderTests
+- PartCatalogueService
 - MrsImportRow
-- .claude/Role/CMMS Production Architecture Gate & Implementation Directive.md
-- .github/Role/CMMS Production Architecture Gate & Implementation Directive.md
-- .github/skill/VS Code Principal Software Architect Skill — SKILL.md
-- chart-4.4.1.umd.min.js
-- .vscode/skill/VS Code Principal Software Architect Skill — SKILL.md
-- n
-- .claude/Role/PEMS Engineering Intelligence — Master Audit & Implementation Directive.md
-- .claude/Role/UIUX/E-05 — PETROCHEMICAL  EPC ENGINEERING MANAGEMENT COCKPIT.md
-- .github/Role/PEMS Engineering Intelligence — Master Audit & Implementation Directive.md
-- .github/Role/UIUX/E-05 — PETROCHEMICAL  EPC ENGINEERING MANAGEMENT COCKPIT.md
+- FakeDisciplineService
+- BlockComponentsTests.Run
+- WorkSpace
+- INotificationService
+- PermitGridPaginationTests.CreateController
+- WoSection
+- FrameOptions
+- IncomingRegistrationInput
+- ICurrentUserContext
+- TreeItemOptions
 - TransmittalDto
 - VDRItemDto
-- WorkOrder
-- EngineeringDocumentDto
-- PartCatalogueRequest
-- Instrument
+- StrategyImportController
+- TranslatableText
+- MaintenanceSpareUsage
+- FailureModeEditDto
 - CriticalityAssessment
-- PEMS CMMS Architecture Standard
-- PEMS CMMS Architecture Standard
-- MDRImportRowPayload
+- EngineeringDocumentListFilter
+- VDRItem
+- .Actor
 - ProjectIntelligenceModule
 - WorkRequestDetailDto
-- VENDOR'S DOCUMENTATION
-- VENDOR'S DOCUMENTATION
-- Task
-- .NewAsync
+- FakeCurrentUserContext
+- TenderService
+- ValueTask
+- StoreRequisitionLifecycleServiceTests.A
 - Document
 - WorkRequestConcurrencyGateTests
-- WorkOrderController
-- .claude/Role/PEMS CMMS-10a — Execution Baseline & Claude Implementation Directive.md
-- PEMS Engineering Domain Blueprint V2
-- .CreateController
-- .github/Role/PEMS CMMS-10a — Execution Baseline & Claude Implementation Directive.md
-- PEMS Engineering Domain Blueprint V2
-- .CreateController
-- PEMS_ENGINEERING_DASHBOARD_AGENT.md
-- PEMS CMMS Maintenance Organization Blueprint
-- PEMS CMMS Maintenance Organization Blueprint
-- ReliabilityIntelligenceService
-- ShiftHandoverDetailDto
-- LetterDto
-- PEMS CMMS-10
-- PEMS CMMS-10
-- ManufacturerDataBook
-- WorkflowRuntimeViewModel
-- WorkflowInstanceDto
-- FunctionalLocation
-- HelpStandardReferenceAdminEditDto
-- MRDto
-- CriticalityAssessmentDetailDto
-- LetterController
-- WorkRequestWorkflowTests
-- MDRImportController
-- WorkOrder
-- HelpController
-- Controller
-- qu
-- .CreateController
-- Transmittal
-- .CreateController
-- I
-- VDRCommentDto
-- TableExtractionRow
-- DocumentSearchRequest
-- BarcodeIdentityDto
-- DocumentRegisterFilter
-- VDRImportController
-- .ChainAsync
-- i
-- OrganizationHierarchyService
-- .claude/Role/CMMS Inventory & Material Management Architect & Implementation Engineer.md
-- .github/Role/CMMS Inventory & Material Management Architect & Implementation Engineer.md
-- validate_data.py
-- VDRController
-- PEMS.Tests
-- DocumentAttachment
-- IrnReceipt
-- .SeedBaselineAsync
-- PermitListDto
-- os
-- EquipmentClassCoverageDto
-- AccessControlService
-- Code
-- RelationshipController
-- an
-- .CreateController
-- AccessControlRequest
-- راهنمای پیاده‌سازی ماژول VDR (Vendor Document Register)
-- .ExecuteActionAsync
-- راهنمای پیاده‌سازی ماژول VDR (Vendor Document Register)
-- ContractController
-- WorkflowDefinitionRow
-- VDRSubmissionDto
-- search
-- 2. Audit Findings By Area
-- PEMS.Domain.Entities
-- ShiftHandover
-- EquipmentIntelligenceProfileDto
-- zs
-- MaterialItemDetailDto
-- EngineeringDocumentIntelligenceController
-- FMEAItemDto
-- WorkOrderConcurrencyGateTests
-- .claude/Role/PEMS — CMMS-10b Approval & Authorization Plan Baseline.md
-- .github/Role/PEMS — CMMS-10b Approval & Authorization Plan Baseline.md
-- EmployeeController
-- TableExtractionController
-- IsolationPointListDto
-- d3-org-chart.min.js
-- FunctionalLocationImportService
+- TaskManagerController
+- ProcurementCommunication
+- StoreRequisitionLifecycleServiceTests.NewAsync
+- EquipmentCriticalityGridPaginationTests.CreateController
+- IEnumerable
 - SimopsConflict
-- .claude/Role/PEMS Enterprise Organization, Role & Permission Management — RBAC-ABAC Authorization Architecture.md
-- TechnicalQueryService
-- MOCController
-- .github/Role/PEMS Enterprise Organization, Role & Permission Management — RBAC-ABAC Authorization Architecture.md
-- EquipmentClassRcmFmeaReadinessDto
-- ConditionMonitoringPointDto
-- CriticalityAssessmentService
-- StorageProviderDto
-- MrsImportRowDto
-- Task
-- DocumentComment
-- MDRImportService
-- Employee
-- FilesControllerAccessTests
-- PEMS Engineering Intelligence — Master Audit Report
-- E-05A — Engineering Management Dashboard: Data Contract & KPI Feasibility Audit
-- ConditionMonitoringPoint
-- PEMS Engineering Intelligence — Master Audit Report
-- E-05A — Engineering Management Dashboard: Data Contract & KPI Feasibility Audit
-- FMEAItem
-- PurchaseOrderDto
-- .SeedFullBaselineAsync
-- e
-- E-05B — Engineering Management Dashboard: Architecture & Query Design
-- E-05B — Engineering Management Dashboard: Architecture & Query Design
-- ISearchableEntityProvider
-- .CreateController
-- PEMS Operations & Production Architecture Specification v1.0
-- QCController
-- E-05D — Engineering Dashboard UI/UX & Operational Drilldown Implementation
-- 2. High-risk performance findings
-- E-05D — Engineering Dashboard UI/UX & Operational Drilldown Implementation
-- StorageProvider
-- TechnicalQueryController
-- jn
-- FunctionalLocationImportController
-- .CreateAsync
-- TransmittalService
-- VDRItem
-- PagedResult
-- CbmDashboardDto
-- .SeedFullBaselineAsync
-- PartCatalogueDetailsDto
-- _update
-- PEMS EDMS — Phase 2 Implementation Report
-- MaintenanceEffectivenessDto
-- pems-baseline.js
-- INotificationService
-- .ExecuteActionAsync
-- DocumentWorkflow
-- DocumentRegisterController
-- PcActor
-- .CreateController
-- PEMS Operations Phase 2D — Packaging Technical Specification
-- PartCatalogueRulesAndRoutingTests
-- .CreateController
-- ProductionDowntimeEvent
-- AccountController
-- E-05C — Engineering Dashboard Quality Query Implementation Gate
-- E-05C — Engineering Dashboard Quality Query Implementation Gate
-- RolePermissionGrant
-- ReliabilitySimulationDto
-- BarcodeResolutionResultDto
-- EquipmentMaintenanceIntelligenceDto
+- PurchaseOrder
+- StrategyDetailDto
+- EnterpriseActorResolver
+- SignedFileCodec.Parse
+- ReliabilityIntelligenceService
+- AdminRecoveryCodeService.RedeemAsync
+- PartCatalogueListItemDto
+- CartableReportDto
+- LicensingExtensions.AddPemsLicensing
 - INumberingService
-- test_design_system_mode.py
-- FtpStorageProviderClient
-- به‌روزرسانی: Engineering Document Intelligence (طراحی الهام‌گرفته از AVEVA Engineering)
+- Employee
+- FakeWorkflowRuntime
+- HttpContext
+- HelpStandardReferenceAdminEditDto
+- IFormFile
+- .CreateService
+- WorkOrderController
+- WorkRequestWorkflowTests
+- MDRImportRow
+- .Calc
+- LetterReferralDto
+- PagedResult
+- StateComponentsTests
+- VDRCommentDto
+- TechnicalClassMatcherTests
+- GasTest
+- NavigationVisibilityTests.SeedAsync
+- UploadGuardTests
+- TableExtractionRow
+- WorkflowInstance
+- ManualContractCreationSqlTests
+- DocumentRegisterFilter
+- OllamaRequest
+- Position
+- EmployeeQualification
+- OrganizationHierarchyService
+- VDRSubmission
+- UploadOptions
+- PemsDateTagHelper
+- BarcodeIdentity
+- PEMS.Tests
+- ReplenishmentRecommendationService
+- Contract
+- ProductionDowntimeServiceTests.SeedBaselineAsync
+- TaskManagerService
+- TagHelperOutput
+- EquipmentClassCoverageDto
+- WorkflowBinding
+- EngineeringDashboardViewModel
+- DefinitionService
+- FMEAItemDto
+- FakeWorkflowRuntime
+- WorkflowDesignerModel
+- ButtonOptions
+- MDRImportService
+- StorageProviderDto
+- WorkflowGraphNode
+- LicenseVerifier.VerifyBinding
+- VDRSubmissionDto
+- CartableServicesTests
+- TagHelper
+- PEMS.Domain.Entities
+- FMEAItem
+- RamAnalysisDto
+- time-series-chart-shell.tsx
+- MaterialItemDetailDto
+- WorkRequestCreateRequest
+- PartCatalogueRequestAttribute
+- WorkOrderConcurrencyGateTests
+- LetterApprovalStep
+- ProductionTarget
+- ShiftHandoverController
+- JobPlanDetailDto
+- IsolationPointListDto
+- Action
+- FunctionalLocationImportService
+- LetterWorkspaceDashboardDto
+- ReliabilityDataQualityDto
+- CriticalityAssessmentService
+- PermitDetailDto
+- PEMS.Web.Models
+- EquipmentClassRcmFmeaReadinessDto
+- NotificationLifecycleTests
+- BarcodeIdentityDto
+- AssetDetailDto
+- MrsImportRowDto
+- EngineeringExtractionPromptBuilder
+- MaintenanceStrategy
+- IsolationPoint
+- StorageProvidersController
+- ComponentManifestTests
+- OverlayOptions.cs
+- PemsInfoItemTagHelper
+- chart-context.tsx
+- IPemsComponentRenderer
+- EquipmentClass
+- .NewAsync
+- InspectionListItemDto
+- StorageException
+- Charts.tsx
+- Alarm
+- NetDemandCollectorTests
+- ApiConformanceHost.StartAsync
+- PcReportEquipmentPartRow
+- .SeedAsync
+- EngineeringDocumentRepository.GetPagedAsync
+- LicenseManager.ApplyLicenceAsync
+- Func
+- StorageProvider
+- DefinitionsApiController
+- RepresentativeDataFiller
+- RCMAnalysisDto
+- .CreateAsync
+- CartableSettingsServicesTests.Contacts_SearchAndGroups
+- DocumentComment
+- ConditionReadingImportRow
+- CbmDashboardDto
+- ReplenishmentControllerAuthorizationTests.CreateAsync
+- PartCatalogueDetailsDto
+- EquipmentIntelligenceProfileDto
+- FunctionalLocation
+- CriticalityMatrixRowDto
+- pems-baseline.js
+- BaseEntity
+- NetDemandScope
+- ContractService
+- AdminAccountServiceTests
+- ApiPolicyGateTests.Actions
+- InventoryTransaction
+- PartCatalogueRulesAndRoutingTests
+- LetterTestWorld.NewContext
+- PlanInputDto
+- InspectionTestPlan
+- plan_sync.py
+- ExecutiveDashboardRequest
+- EngineeringDocumentsController
+- CmmsOperationsDashboardDto
+- ElectricalEquipment
+- EquipmentMaintenanceIntelligenceDto
+- Theory
+- MaterialRequisition
+- NetDemandServiceTests.NewAsync
+- EquipmentReliabilityDto
 - FailureRecord
-- TechnicalQuery
-- به‌روزرسانی: Engineering Document Intelligence (طراحی الهام‌گرفته از AVEVA Engineering)
-- .NewItem
-- .CreateController
-- WorkflowAuthorizationContext
-- PEMS.Application.AI.Parser
-- MaterialItemController
-- Tailwind CSS Utility Reference
-- VDRService
+- PartCatalogueDuplicateDetectionTests
+- funnel-chart.tsx
+- DateTimeOffset
+- UploadGuardTests.FilterContext
+- WorkOrderAuthorizationHook.AuthorizeAsync
+- Team
+- Env
+- LetterTag
+- IQueryable
 - RcmReviewRecommendationDto
 - CorrespondenceReportDto
-- .SeedAsync
-- PEMS Workflow Platform — Phase 2 Closure Audit (Work Request)
-- PEMS Phase 2C-2 — Shared Resource Workspace Audit
+- RelationshipExplorationDto
+- RcmReviewRecommendation
+- Sprint
 - SimopsConflictListDto
-- slide_search_core.py
-- DocumentWorkflowController
+- test_plan_sync.py
+- Task
 - DashboardViewModel
-- .RunPagedQuery
-- .SeedFromLegacyAsync
-- PEMS EDMS — G-28 Context-Corrected Remediation Design: External Approval Recognition
+- DynamicSidebarTests
+- InstrumentPassportSummaryDto
+- DateTime
 - DocumentIntelligenceDetailDto
 - GlobalSearchResponseDto
 - Letter
-- Workflow Platform — Phase 3A: Work Order Governance Baseline
+- TaskActor
 - PredictiveMaintenanceResult
-- .CreateController
-- WorkflowStage
-- WorkflowActor
-- StorageRouteUpsertRequest
-- IsolationPoint
-- 41. FINAL REPORT FORMAT
-- NumberingService
-- .SeedAsync
+- InspectionService.GetPagedFleetAsync
+- OverlayComponentsTests
+- WorkflowDefinitionService
+- EquipmentDatasheet
+- OrganizationResolver
+- FormDefinition
+- RelationshipGapItemDto
+- MaterialStock
 - EngineeringReportDto
-- MOC
-- scripts/core.py
-- .CreateInfra
+- LetterPrintModel
+- BarcodeLabelContent
+- EquipmentClassificationAndFailureTaxonomyTests.SeedFullBaselineAsync
 - List<
-- RolePermission
-- .CreateController
-- WorkRequestStatusHistory
-- .RunIndex
-- ProcurementPackageDto
+- BreakGlassOptions
+- PEMS.Licensing.Formats
+- LetterComposeInput
+- Task
+- clean
 - ProductionOrderService
-- ICurrentUserContext
+- MDRImportBatchDto
 - PemsSearchBox
 - HelpArticle
-- PEMS Engineering — G/M Hardening + Final Engineering Acceptance Audit
-- PEMS Engineering — G/M Hardening + Final Engineering Acceptance Audit
-- DocumentRevision
-- ChatAssistantService
-- MaintenanceKpiDto
-- MaintenancePlanListDto
+- EnterpriseFileStorageService.SaveAsync
+- TaskItemDto
+- CorrespondentParty
+- ProcurementDemand
+- BkChartPagesTests
+- LetterUserState
 - .NewEnvAsync
 - BarcodeService
-- Brand Guidelines v1.0
-- MOCService
-- Permit
-- LetterStar
+- Warehouse
+- Type
+- .BuildDraftAsync
+- LetterService.SearchAsync
 - DelayRootCauseAnalysisDto
-- .Seed
-- .SeedDocumentWithRevisionAAsync
-- http
-- http
+- PEMS.Application.PartCatalogue
+- RolePermissionAdminServiceTests.SeedAsync
+- WorkItemQuery
+- OperationsReportServiceTests.SeedRunningRunAsync
 - VDRReportDto
-- 35. ENGINEERING KPIs
-- CMMS-10 — Architecture Conflict Report
-- 11. COMMERCIAL CONTROL
-- این نشست: رفع باگ‌های واقعی + بازنگری کامل UI + استخراج MRQ/VDR از فایل تجهیزات
-- 35. ENGINEERING KPIs
-- CMMS-10 — Architecture Conflict Report
-- 11. COMMERCIAL CONTROL
-- این نشست: رفع باگ‌های واقعی + بازنگری کامل UI + استخراج MRQ/VDR از فایل تجهیزات
-- 37. CODE REVIEW MODE
-- NonConformanceReport
-- WorkflowGraphNode
-- MaintenanceHistoryImportRowDto
-- EngineeringDocument
-- Bid
+- VDRDashboardDto
+- ProgressOptions
+- ProductionOutput
+- ProductionDowntimeEvent
+- TraceIdTests
+- ProductionBatch
+- MaterialRequisitionGridPaginationTests.CreateController
+- MapActions
+- TenderControllerP0Tests.CreateAsync
+- LetterRoutingRule
+- LetterRecipient
+- MaintenanceHistoryImportBatchSummaryDto
+- Fact
+- ReferralWebTests
 - GasTestListDto
+- ExecutiveDashboardControllerTests.NewRig
 - WorkflowAdminActor
-- WorkflowAdministrationService
-- ProcurementPipelineRowDto
-- IntakeDetailDto
+- TenderAwardHardeningTests.ClosedTenderWithBidAsync
+- DatabaseUpdateRunDto
 - WorkflowManagementController
-- VdrWorkflowService
+- MrsImportDescriptionLengthTests.Seed
 - AuditLog
-- .CreateService
-- MaterialStock
+- MaterialRequisitionQuotation
+- ConfirmDialogOptions
 - AIReliabilityInsightDto
-- ProductionTargetDto
-- StorageRoute
-- design_system.py
-- 37. CODE REVIEW MODE
-- CLAUDE.md — PEMS (Project Engineering Management System)
-- TeamController
-- color
-- HelpVisualDefinition
-- ClassActivationBacklogItemDto
-- AIDocumentClassification
-- FunctionalLocationService
-- RoleListItemViewModel
-- DeterministicTableExtractor
-- ReliabilityController
-- MaintenanceHistoryImportService
-- PcAdminOverview
-- RcmFmeaController
-- IFunctionalLocationService
-- Task
-- 2. Existing Transmittal Capabilities (verified in code, not assumed)
-- ClassIntelligenceProfileDto
-- .HasPermissionAsync
-- IWebAuthnService
-- 56. AUDIT — PASS/FAIL CRITERIA
-- PaginationViewModel
-- 56. AUDIT — PASS/FAIL CRITERIA
-- PEMS.Persistence.Migrations
-- RcmReviewRecommendation
-- WorkflowConditionEvaluator
-- .CreateInfra
-- MaterialRequisition
-- WorkOrderCalendarItemDto
-- PEMS Operations Architecture & Period-Based Reporting — Audit
-- Workflow Platform — Phase 3B: Work Order Migration
-- q
-- WorkOrderTask
-- PermitAuthenticationAuthorityCompetency
-- AddAccessControlCoreModel
-- RelationshipService
-- Design
-- ManufacturerDataBookDto
-- FakeLetterService
-- Finding
-- RequirePermissionAttribute
-- ContractDto
-- 4. Application Roles
-- SetupStepDto
-- AddTransmittalGovernanceAndHoldLifecycle
-- 4. Application Roles
-- EnterpriseFileStorageService
-- NotificationLifecycleTests
-- search
-- BarcodeController
-- Canvas Design System
-- VDRImportRowPayload
-- PEMS EDMS — G-28 Audit: MDR Import "Approved" Status Semantics
-- .SeedAuthorizationAsync
-- .NewPlan
-- .CreateAsync
-- ProcurementPackageService
-- EquipmentFunctionalLocationAssignmentBatchSummaryDto
-- MaterialReservation
-- ProcurementCommunication
-- AddDocumentTypeCodeLookup
-- AddVendorDocumentTypologySupport
-- AddFtpUploadTracking
-- AddManufacturerDataBookModule
-- MaterialItem
-- AddMrsImportMetadataAndSourceDocument
-- AddOrgHierarchyPositionAndSoD
-- PartCatalogueSeeder
-- .CreateController
-- 10. SECOND DASHBOARD AREA
-- 11. REQUIRED VISUALIZATIONS
-- 44. ترتیب اجرای پروژه
-- Material Master Import — Excel Metadata Extraction & Registration
-- 46. DEFINITION OF DONE
-- ErrorModel
-- WorkflowInstance
-- 10. SECOND DASHBOARD AREA
-- 44. ترتیب اجرای پروژه
-- Material Master Import — Excel Metadata Extraction & Registration
-- 46. DEFINITION OF DONE
-- 1. Findings
-- ProductionOrder
-- EmployeeLaborRate
-- AddEnterpriseMaintenanceMasterData
-- FileSystemStorageProviderClientTests
-- ManagerChainResult
-- IrnReceiptStatusHistory
-- BarcodeIdentity
-- .SeedBaselineAsync
-- FunctionalLocationImportBatchDto
-- Discipline
-- TableExtractionStaging
-- ReportController
-- Ctx
-- OrganizationResolver
-- QualificationAndCertification
-- InstrumentController
-- EquipmentPassportDto
-- WarehouseAndStock
-- InventoryTransactionAndSpareUsageRetarget
-- PartCatalogueAdminController
-- CentralNumberingSequence
-- StoreRequisitionLifecycleService
-- ShiftHandoverStatusHistory
-- zt
-- .CreateController
-- PermitIsolationPoints
-- Alarm
-- PermitSimopsAndShiftHandover
-- NotificationDto
-- AddTransmittalNumberingSupport
-- AddContractorDocumentNumberingFields
-- AddTransmittalNoUniqueIndex
-- AddDocumentListPerformanceIndexes
-- AddAuditLogPerformanceIndexes
-- AssetDetailDto
-- OrganizationStructureService
-- .Seed
-- AddCriticalityAssessmentWorkflow
-- WidenMaintenanceActivityCode
-- PEMS Engineering Module — Three-Pass Audit & Gap Matrix
-- PEMS Enterprise RBAC-ABAC Authorization — Phase 2 (Org Hierarchy, Position, Scope, SoD) Report
-- 40. KPI DEFINITIONS
-- ماژول جدید: Official Correspondence (Letter Management)
-- PEMS Engineering Module — Three-Pass Audit & Gap Matrix
-- PEMS Enterprise RBAC-ABAC Authorization — Phase 2 (Org Hierarchy, Position, Scope, SoD) Report
-- 40. KPI DEFINITIONS
-- ماژول جدید: Official Correspondence (Letter Management)
-- OrganizationTeamNodeDto
-- WorkflowDesignerModel
-- .StageFromExcelAsync
-- WorkflowPlatformContracts.cs
-- IEquipmentClassificationService
-- CalibrationHistory
-- CredentialProtector
-- IntakeQueueItemDto
-- InstrumentPassportSummaryDto
+- ProductionTargetService
+- IncomingCorrespondenceDtos.cs
 - PredictiveMaintenanceModelDto
+- IrnReceipt
+- re
+- TeamController
+- HomeController
+- HelpVisualRenderDto
+- WorkItemComment
+- CredentialProtector
+- UiRegistryDriftTests
+- EngineeringRelationship
+- SidebarNode
+- ClassIntelligenceProfileDto
+- MaintenanceHistoryImportService
+- PartCatalogueDtos.cs
+- SecurityEventDto
+- ExtractedTableRow
+- OrganizationPositionRow
+- EffectivePermissionDto
+- CustomerInstall
+- BidNegotiation
+- DocumentAttachmentDto
+- Notification
+- FakeSignals
+- ConditionReading
+- ProductionInput
+- HelpVisual
+- RcmFmeaTests.SeedFullBaselineAsync
+- ProductionRun
+- WorkOrderCalendarItemDto
+- area-chart.tsx
+- VDRListItemDto
+- Jira
+- WorkOrderTask
+- LetterDelegationDto
+- AlertOptions
+- WorkflowPlatformContracts.cs
+- ConversationMessageDto
+- ManufacturerDataBookDto
+- IServiceProvider
+- CartableCountsDto
+- NavigationMenuService
+- IncomingRegistrationResult
+- VendorCreateHardeningTests.Create
+- LetterReferral
 - EvaluationProfile
-- ShiftHandoverController
-- spacing
-- CmmsReportDto
-- .A
-- search_stack
-- ApplicationUser
-- PEMS Operational Data, Product Management, Packaging & Period-Reporting Architecture — Audit
-- PEMS Workflow Platform — Architecture Audit (no implementation)
-- .CommitBatchAsync
+- DisciplineController
+- NavigationMenuController
+- pems-docker.sh
+- cn
+- TenderContractCreatorEventControllerTests.CreateAsync
+- TaskManagerViewRenderTests.SeedAsync
+- VDRImportRowPayload
+- ColumnDescriptor
+- MaintenancePlanService.GetListAsync
+- PemsWorkflowContractTests
+- RoleAssignment
+- HelpKnowledgeSeederTests.SeedAllAsync
+- UserAuditLogRowVm
+- MaterialReservation
+- IncomingFileInput
+- LetterTimelineEventDto
+- PartCatalogueFormDto
+- LetterComposeControllerTests
+- JobPlanService.GetListAsync
+- PurchaseOrderDto
+- SetupService.GetStatusAsync
+- PurchaseOrderCreationPathTests
+- PartCatalogueRequest
+- SearchableSelectTests
+- StoreRequisitionClosureGateTests.NewAsync
+- DisposableSqlDatabase
+- EquipmentCriticality
+- VDRImportServiceVendorResolutionTests
+- IncomingCorrespondenceRulesTests
+- LoginViewModel
+- ShellAccessibilityTests
+- PemsNumericModelBinder
+- WorkSpaceDto
+- FunctionalLocationImportBatch
+- ReportingPeriod.Resolve
+- EngineeringDocument
+- ReplenishmentRunRequest
+- MOC
+- AccessDecision
+- FtpStorageProviderClient
+- CriticalityFailureMaintenanceRowDto
+- JalaliDateTests
+- SetupStepDto
+- .SeedBaselineAsync
+- LocalFileStorageProvider
+- IrnDispositionServiceTests.Seed
+- Asset
+- TesseractOcrService
+- InvalidOperationException
+- pattern-audit.py
+- IrnDispositionRecord
+- IReadOnlyCollection
+- EquipmentPassportDto
+- WorkOrderDisciplineFinding
+- MrsImportMetadataTests
+- PremiumGlassSystemTests
+- LetterVersion
+- StoreRequisitionLifecycleService
+- Transmittal
+- LetterTestWorld.Services
+- RolePermissionDto
+- SharedPartialsGoldenTests
+- EmployeeCertification
+- IrnReceiptService
+- DatabaseUpdateServiceSqlTests.Empty_database_installs_then_updates_after_new_migrations_appear
+- ContractResubmitAndApprovalTests.CreateAsync
+- WorkflowVersionImmutabilityGuard.Check
+- OCRProcessingAttachmentListDto
+- AIAnalysisResult
+- Phase7IntelligenceTests
+- CrewMember
+- OrganizationStructureService
+- LicenseEventEntry
+- PEMS_Backlog_Roadmap_48d3eaf8.md
+- PurchaseOrderApprovalService
+- CartableWebTests
+- MrsImportRowMetadata
+- Vendor
+- StatusPage.cshtml
+- ControlTagHelperTests
+- SearchAccessRule
+- sparkline.tsx
+- OrganizationTeamNodeDto
+- IrnReceiptServiceTests.Seed
+- .StageFromExcelAsync
+- PartCatalogueSchemaContractTests
+- QuickSetupAuthorizationTests.CreateInfra
+- JsonSerializerOptions
+- PMTemplate
+- TeamMember
+- TableExtractionRowInput
+- ReliabilityIntelligenceService.GetCriticalityFailureMaintenanceMatrixAsync
+- SealTests.NewSeal
+- WorkRequestService.ConvertToWorkOrderAsync
+- PcEditViewModel
+- chart-tooltip.tsx
+- AuthorizationAuditLog
+- Permit
+- MaintenanceStrategyHistory
+- DccRegisterIncomingTests
+- bar.tsx
 - PEMS.Application.DTOs
-- EquipmentImportController
+- MrsImportBatchCapacityTests.Seed
 - pems-data-grid.js
-- راهنمای توسعه‌ی کامل «Engineering Management» و «AI Engineering Intelligence»
-- راهنمای فاز Framework جدید PEMS.Web
-- 33. Implementation Order
-- 45. Definition of Done
-- PEMS Enterprise RBAC-ABAC Authorization — Phase 1 (Foundation) Report
-- .claude/Role/Permit Authentication, Authority & Competency Rules.MD
-- 45. IMPLEMENTATION PHASES
-- TagDto
+- EquipmentClassReliabilityDto
+- RoleListItemViewModel
+- IrnReceiptStatusHistory
+- TableExtractionGridPaginationTests.CreateController
+- ProductionPostingIdempotencyTests.SeedReleasedOutputAsync
+- StoreRequisitionGridPaginationTests.CreateController
+- ThreadMessageDto
+- EquipmentImportService
 - PEMS.Web.Services
-- راهنمای توسعه‌ی کامل «Engineering Management» و «AI Engineering Intelligence»
-- راهنمای فاز Framework جدید PEMS.Web
-- 33. Implementation Order
-- 45. Definition of Done
-- PEMS Enterprise RBAC-ABAC Authorization — Phase 1 (Foundation) Report
-- .github/Role/Permit Authentication, Authority & Competency Rules.MD
-- 45. IMPLEMENTATION PHASES
-- 7. ARCHITECTURAL CHANGE GATE
-- MDRImportBatch
-- NullTempDataProvider
-- PEMS Operations & Production — Phase 1 Implementation Report
-- RelationshipGapItemDto
-- .CreateController
-- AddEquipmentClassificationFailureTaxonomyAndPMTemplates
+- FunctionalLocationImportRow
+- IOPoint
+- VendorTokenStatus
+- NavigationRuleEvaluator
+- TenderInvitationTests.EnvAsync
+- NavigationMenuItemDefinition
+- ReplenishmentController
+- MaterialSourceImportDto
+- RoutingRule
+- ApiServiceCollectionExtensions.AddPemsApi
+- NavigationMenuCustomLinkInput
+- MechanicalEquipmentListDto
+- NetDemandIssueCode
+- PemsDbContextFactory.CreateIsolatedSqlServerOrThrow
 - EquipmentFunctionalLocationAssignmentRow
 - EquipmentFunctionalLocationAssignmentRowDto
-- .CreateDraftDocument
-- ProductionRunDto
-- MechanicalEquipment
-- GlobalSearchResults
-- Form & Input Components
-- Tailwind CSS Responsive Design
-- RelationshipExplorationDto
-- PEMS Workflow Platform — Phase 2: Work Request Migration + Dynamic Workflow UI
-- 7. ARCHITECTURAL CHANGE GATE
-- F — Material Coding (Appendix 4): SOURCE-BLOCKED
-- 2. Non-Negotiable Rules
-- 23. Engineering Document Intelligence برای همه Disciplineها
-- 42. TESTING
-- 62. FINAL ACCEPTANCE TEST
-- F — Material Coding (Appendix 4): SOURCE-BLOCKED
-- 2. Non-Negotiable Rules
-- 23. Engineering Document Intelligence برای همه Disciplineها
-- 42. TESTING
-- 62. FINAL ACCEPTANCE TEST
-- 24. TEST DESIGN
-- .BuildModel
-- .HasActionAsync
-- TechnicalQueryListItemDto
-- BaseEntity
-- .SeedRunningRunAsync
-- FunctionalLocationImportRow
-- Project
-- MaterialStockService
-- Equipment
-- .ImportAsync
-- manifest.json
-- EquipmentDashboardDto
-- 24. TEST DESIGN
-- .CreateService
-- 25. UI
-- 26. Required Automated Security Tests
-- .claude/Role/PEMS-UI-01-Focused-Enterprise-UX-Audit.md
-- 25. ROLE-BASED DASHBOARD
-- ادیتور متن غنی برای بدنه‌ی نامه (نسخه‌ی کوچک‌شده‌ی Word)
-- MaintenancePlan
-- 25. UI
-- 26. Required Automated Security Tests
-- .github/Role/PEMS-UI-01-Focused-Enterprise-UX-Audit.md
-- 25. ROLE-BASED DASHBOARD
-- ادیتور متن غنی برای بدنه‌ی نامه (نسخه‌ی کوچک‌شده‌ی Word)
-- BidNegotiation
-- .CreateController
-- IStorageProviderClient
-- PEMS Packaging — Configurability Architecture Decisions (M-1 … M-5)
-- VDRImportBatch
-- AddMaintenanceIntelligenceAndRcmFeedback
-- secrets1
-- _Pagination.cshtml
-- 30. Testing
-- 32. خروجی‌های اجباری قبل از Coding
-- 2. Baseline Principles
-- 25. DISCIPLINE SCOPING
-- 31. Dashboards
-- 3. Operational Roles
-- 12. ROLE-AWARE DASHBOARD
-- 22. Security Rules
-- 9. UI Authorization Validation
-- 22. CONTRACTOR PERFORMANCE
-- دسته ۱ از بازبینی معماری سه‌گانه (Business Analyst / Architect / Engineering Consultant)
-- به‌روزرسانی بزرگ: Enterprise Document Core (یکپارچه‌سازی کامل، طبق PEMS Development Specification)
-- به‌روزرسانی: Background Jobs (Hangfire) + Structured Logging (Serilog)
-- بازطراحی بزرگ: AI Intake Queue + Intelligent Routing (طبق AI Engineering Intelligence Redesign)
-- گام ۱: اعمال اصلاحات فیلترینگ (طبق اولویت Critical گزارش ممیزی)
-- تحلیل تطبیق PEMS با «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE»
-- WorkRequestController
+- PEMSDbContext.SaveChanges
+- ProcurementWarehouseListPagesTests
+- NavigationVisibilityRowDescription
+- CriticalityAssessmentEvidence
+- NavigationMenuItemEditInput
+- EquipmentImportRow
+- IPurchaseOrderApprovalService.cs
+- band.tsx
+- RevisionScopedClientReviewTests
+- PartCatalogueRequestApproval
+- LetterDelegation
+- Valve
+- AssetService.GetListAsync
+- RecordingSink
+- DatabaseUpdateService
+- TrackerTests
+- NavigationMenuAdminRow
+- IFunctionalLocationService
+- EquipmentPassportWorkRequestTests.Passport_ExposesStrategiesAndPlans_FromExistingEquipmentRelations
+- EquipmentNozzle
+- OCRProcessingGridPaginationTests.CreateController
+- MRDto
+- TypedModel
+- RcmCodes
+- EnvironmentFilesTests
+- gauge.tsx
+- ProjectDto
+- DocumentSearchResult
+- IrnReceiptLine
+- IrnReceipt/Index.cshtml
+- ExecutiveKpiTests
+- PemsKpiTileTagHelper
+- WorkOrderGridPaginationTests.CreateController
+- InstrumentService
+- IntakeQueueItemDto
+- AuthorizationAudit/Index.cshtml
+- pems-date.js
+- StageDiagramItem
+- PmComplianceDto
+- BarcodePanelViewModel
+- InstrumentListDto
+- MDBDocumentDto
+- EquipmentSearchProvider
+- ui:badge
+- PcResponsibilityInput
+- FailureHistoryItemDto
+- ForbidResult
+- BreakGlassServiceTests
+- TransmittalItemDto
+- Check
+- MaintenancePlan/Create.cshtml
+- CauseEffect
+- system_text_regularexpressions
+- PartyThreadItemDto
+- init
+- VDRImportService
+- Letter/Index.cshtml
+- RelatedTransmittalDto
+- ControlLoop
+- Panel
+- IntakeService.GetQueueAsync
+- SoDPolicyControllerTests.CreateAsync
+- Vendor/Create.cshtml
+- CmmsListPagesTests
+- UnitTest1.cs
+- ExistingFlSnapshot
+- Instrument/Passport.cshtml
+- ChartComponentTests.Run
+- PEMS.Application.DTOs.HelpArticleDetailDto
 - EmployeeListItemDto
-- 30. Testing
-- 32. خروجی‌های اجباری قبل از Coding
-- 2. Baseline Principles
-- 25. DISCIPLINE SCOPING
-- 31. Dashboards
-- 3. Operational Roles
-- 22. Security Rules
-- 9. UI Authorization Validation
-- 22. CONTRACTOR PERFORMANCE
-- دسته ۱ از بازبینی معماری سه‌گانه (Business Analyst / Architect / Engineering Consultant)
-- به‌روزرسانی بزرگ: Enterprise Document Core (یکپارچه‌سازی کامل، طبق PEMS Development Specification)
-- به‌روزرسانی: Background Jobs (Hangfire) + Structured Logging (Serilog)
-- بازطراحی بزرگ: AI Intake Queue + Intelligent Routing (طبق AI Engineering Intelligence Redesign)
-- گام ۱: اعمال اصلاحات فیلترینگ (طبق اولویت Critical گزارش ممیزی)
-- تحلیل تطبیق PEMS با «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE»
-- 5. ARCHITECTURE INVENTORY
-- IFileStorageService
+- LetterTagNodeDto
+- StorageHealthResultDto
+- Payloads.cs
+- AdminUsersGridPaginationTests.RunPagedQuery
+- IrnReceiptListDto
+- Fx
+- LicenseDates
+- RcmFmea/ClassDetail.cshtml
+- CheckTests
+- DatabaseUpdateStatusDto
+- PartCatalogueReportServiceTests
+- LetterTemplateDto
+- DefinitionTestWorld.NewService
+- TaskManagerDtos.cs
+- DocumentHoldService
+- PartCatalogueSettingsServiceTests.New
+- NavigationMenuItem
 - HashingStream
-- Phase 4 — Help Increment 3C — Reliability Analytics Deep Audit — Final Report
-- .CreateService
+- pems-template.js
+- EmployeeLaborRate
 - MaintenanceHistoryImportRow
 - Cable
-- .CreateService
-- Typography Specifications
-- .UploadPhoto
+- MaterialRequisitionServiceTests.CreateService
+- RepeatFailureGroupDto
+- StoreRequisitionListDto
 - webauthn.js
-- 5. ARCHITECTURE INVENTORY
-- 45. ARCHITECTURAL DECISION FRAMEWORK
-- 4. STATUS VS ACTION VS COMMENT STATUS
-- 34. Testing
-- 24. Severity
-- 35. PETROCHEMICAL-SPECIFIC CONTRACT VIEWS
-- دسته ۲ از بازبینی معماری سه‌گانه
-- Reports + Meeting Management + امضای الکترونیکی سبک
-- دسته ۳ (اولویت اول): Bilingual Platform واقعی (انگلیسی/فارسی + RTL خودکار)
-- این نشست: رفع باگ Chat Assistant (بدون پاسخ) + بهینه‌سازی برای سخت‌افزار ضعیف
-- رفع باگ جدی: DbUpdateConcurrencyException هنگام ویرایش مدرک + بازطراحی کامل Edit
-- به‌روزرسانی: دو استاندارد کم‌ریسک از PEMS Architecture & Development Bible v1.0
-- بررسی و افزودن: Docker / docker-compose / CI (طبق Bible Volume X)
-- UnitTest1.cs
+- TransmittalRecipientDto
+- ManualContractCreationTests.BuildAsync
+- RelatedListComponentTests
+- EngineeringDocuments/Details.cshtml
+- Views/Shared/_Layout.cshtml
+- PartCatalogueManufacturer
+- ThemeContrastTests
+- ProductionDowntimeEventDto
+- WorkItemCreateInput
+- RoutingRuleDto
+- EngineeringDocumentRepository
+- OfflineAssetsTests
+- IPemsLocale
+- ClientReviewTests
 - PEMS.Web.Repositories
 - PEMS.Web.DATA
-- j
-- 45. ARCHITECTURAL DECISION FRAMEWORK
-- 4. STATUS VS ACTION VS COMMENT STATUS
-- 34. Testing
-- 24. Severity
-- 35. PETROCHEMICAL-SPECIFIC CONTRACT VIEWS
-- دسته ۲ از بازبینی معماری سه‌گانه
-- Reports + Meeting Management + امضای الکترونیکی سبک
-- دسته ۳ (اولویت اول): Bilingual Platform واقعی (انگلیسی/فارسی + RTL خودکار)
-- این نشست: رفع باگ Chat Assistant (بدون پاسخ) + بهینه‌سازی برای سخت‌افزار ضعیف
-- رفع باگ جدی: DbUpdateConcurrencyException هنگام ویرایش مدرک + بازطراحی کامل Edit
-- به‌روزرسانی: دو استاندارد کم‌ریسک از PEMS Architecture & Development Bible v1.0
-- بررسی و افزودن: Docker / docker-compose / CI (طبق Bible Volume X)
-- ExtractedDocumentInfo
-- IRoleModuleActionService
-- UsersController
-- secrets1
-- EquipmentFunctionalLocationAssignmentService
-- Vendor
-- WorkflowStageInput
-- InspectionListItemDto
-- BarcodeLabelContent
-- 3. مهم‌ترین تصمیم معماری
-- 43. SEARCH
-- 56. THREE-PASS FINAL QA
-- 36. Implementation Priority
-- .claude/Role/PEMS_PROJECT_INTELLIGENCE_REPORT.md
-- .claude/Role/PEMS_PROJECT_INTELLIGENCE_SPEC.md
-- 29. ALERT CENTER
-- 49. THREE-LAYER INFORMATION ARCHITECTURE
-- 57. THREE-PASS MANDATORY AUDIT
-- سیستم برچسب عمومی (Tags) + وظایف مستقل (Task Actions)
-- TeamMember
-- Valve
-- ClassificationDashboardDto
-- 3. مهم‌ترین تصمیم معماری
-- 43. SEARCH
-- 56. THREE-PASS FINAL QA
-- 36. Implementation Priority
-- .github/Role/PEMS_PROJECT_INTELLIGENCE_REPORT.md
-- .github/Role/PEMS_PROJECT_INTELLIGENCE_SPEC.md
-- 29. ALERT CENTER
-- 49. THREE-LAYER INFORMATION ARCHITECTURE
-- 57. THREE-PASS MANDATORY AUDIT
-- سیستم برچسب عمومی (Tags) + وظایف مستقل (Task Actions)
-- QuickSetup/Index.cshtml
-- IOllamaService
-- .SeedFullBaselineAsync
-- .AddLaborEntryAsync
-- PEMS_PROJECT_INTELLIGENCE_REPORT.md
-- 51. FINAL EXECUTION COMMAND
-- 8. Permit Issuer and Permit Receiver
-- 3. Engineering Domain Boundary
-- 4. Separate Business Lifecycle from AI Lifecycle
-- Master Audit, Architecture & Implementation Directive
-- 1. Required Authorization Architecture
-- PEMS Enterprise Organization, Role & Permission Management
-- 2. Testing Philosophy
-- 23. MILESTONES
-- 4. EXECUTIVE DASHBOARD — FIRST SCREEN
-- Enterprise Petrochemical Contract Management Dashboard
-- .CreateService
-- .SeedAsync
-- CriticalityAssessment/Details.cshtml
-- VendorController
-- 51. FINAL EXECUTION COMMAND
-- 8. Permit Issuer and Permit Receiver
-- 3. Engineering Domain Boundary
-- 4. Separate Business Lifecycle from AI Lifecycle
-- Master Audit, Architecture & Implementation Directive
-- 1. Required Authorization Architecture
-- PEMS Enterprise Organization, Role & Permission Management
-- 2. Testing Philosophy
-- 23. MILESTONES
-- 4. EXECUTIVE DASHBOARD — FIRST SCREEN
-- Enterprise Petrochemical Contract Management Dashboard
-- EngineeringDocumentListFilter
-- DocumentAttachmentDto
-- DocumentRevisionDto
-- ProductionOrderDto
-- WORKFLOW_PLATFORM_PHASE4_WORKFLOW_ADMINISTRATION.md
-- .CreateService
-- CriticalityAssessment/Dashboard.cshtml
-- _RichTextEditorScripts.cshtml
-- MCP Tool Priority
-- 5. Entity Architecture
-- CLAUDE ROLE
-- 12. WORK ORDER STATE MACHINE
-- 2. CRITICAL RULE — AUDIT FIRST
-- 9. ENGINEERING DASHBOARD
-- PEMS ENGINEERING MODULE
-- FINAL COMMAND
-- Permit to Work, Isolation & Operational Control
-- 3. NON-NEGOTIABLE PRINCIPLES
-- PEMS ENGINEERING DASHBOARD AGENT
-- 6. Document Intelligence Pipeline
-- 18. Role Management UI
-- Definition of Done
-- PEMS — Role-Based E2E Testing Framework
-- 16. DELAY & EOT MANAGEMENT
-- 27. CONTRACT CLAUSE INTELLIGENCE
-- 3. USERS AND MANAGEMENT VIEWPOINTS
-- CriticalityAssessment/Index.cshtml
-- ErrorModel
-- 5. Entity Architecture
-- CLAUDE ROLE
-- 12. WORK ORDER STATE MACHINE
-- 2. CRITICAL RULE — AUDIT FIRST
-- 9. ENGINEERING DASHBOARD
-- PEMS ENGINEERING MODULE
-- FINAL COMMAND
-- Permit to Work, Isolation & Operational Control
-- 6. Document Intelligence Pipeline
-- 18. Role Management UI
-- Definition of Done
-- PEMS — Role-Based E2E Testing Framework
-- 16. DELAY & EOT MANAGEMENT
-- 27. CONTRACT CLAUSE INTELLIGENCE
-- 3. USERS AND MANAGEMENT VIEWPOINTS
-- Principal Software Architect — VS Code Skill
-- 2. PRIMARY PRINCIPLE
-- IndexModel
-- Reliability/Index.cshtml
-- JobPlan/Index.cshtml
-- MDB/Index.cshtml
-- MrsImport/Index.cshtml
-- ShiftHandover/Index.cshtml
-- Crew/Index.cshtml
-- MaintenanceMasterData/Index.cshtml
-- InventoryMasterData/Index.cshtml
-- Asset/Details.cshtml
-- Equipment/Details.cshtml
-- Reliability/Details.cshtml
-- JobPlan/Details.cshtml
-- Kpi/Index.cshtml
-- MDB/Details.cshtml
-- MaterialItem/Details.cshtml
-- MrsImport/Review.cshtml
-- Asset/Index.cshtml
-- FunctionalLocation/Index.cshtml
-- Inspection/Index.cshtml
-- Instrument/Index.cshtml
-- InventoryTransaction/Index.cshtml
-- MaterialItem/Index.cshtml
-- MaterialRequisition/Index.cshtml
-- Quotations.cshtml
-- Permit/Index.cshtml
-- StoreRequisition/Index.cshtml
-- TableExtraction/Index.cshtml
-- WorkRequest/Index.cshtml
-- ShiftHandover/Details.cshtml
-- ReliabilityDataQualityDto
-- ProjectIntelligence/Index.cshtml
-- _RoleCheckboxes.cshtml
-- Instrument/Edit.cshtml
-- TestTailwindConfigGenerator
+- DateHidden
+- PoLineSupply.Compute
+- e1ce37e4-5b57-41c4-80c9-4669c2b3c40f_d08ecd0a.md
+- StoreRequisitionStatuses
+- SignalClass
+- GuidelineRegistryTests
+- BadgeOptions
+- LetterWorkspaceIndexTests
 - MaintenanceStrategyListDto
-- TableExtraction/Review.cshtml
-- Transmittal/Details.cshtml
-- Vendor/Edit.cshtml
-- CriticalityAssessment/Create.cshtml
-- PrivacyModel
-- Principal Software Architect — VS Code Skill
-- 2. PRIMARY PRINCIPLE
-- PermitApprovalAuditRecord
-- WorkOrderListDto
-- MeetingDto
-- Discipline
-- ExtractedTableRow
-- PEMS EDMS — Phase 4 Final Report
-- ProductionRunController
-- Logo Usage Rules
-- PEMS EDMS — Phase 3 Final Report: Transmittal Historical Integrity & Acknowledgement
-- .SearchAsync
-- EquipmentImportBatch
-- HomeController
-- Component Specifications
-- GasTest
-- DESIGN.md
-- PEMS.Infrastructure
-- shadcn/ui Accessibility Patterns
-- IOPoint
-- ClientReviewTests
-- .SeedAsync
-- html-token-validator.py
-- ProductionBatchDto
-- EquipmentReliabilityDto
-- PartCatalogueFormDto
-- DocumentUploadController
-- .SeedAsync
-- PEMS.Persistence.csproj
-- Tender
-- .SeedClassAsync
-- .GetPassportAsync
-- NavigationModuleNode
-- radius
-- AddRcmFmeaDecisionIntelligence
-- EquipmentImportBatchDto
-- Wave6BP1UniqueConstraints
-- MaintenanceHistory
-- .SeedDocumentWithTwoRevisions
-- PEMS.AI
-- PEMS Operations Phase 2A — Foundational Hardening Report
-- PEMS Operations Phase 2C — Production Safety Correction & Business Decision Baseline
-- InventoryTransaction
-- EquipmentClassification/Index.cshtml
-- PEMS Shared Resource Workspace — Conceptual Design Specification
-- ManufacturerDataBookService
-- HelpStandardReference
-- 2. Technical Design Principles (Skills)
-- 55. TEST MATRIX
-- 55. TEST MATRIX
-- 53. FINAL RESPONSE FORMAT
-- PEMS.Web
-- PEMS_OPERATIONS_PACKAGING_FINAL_ARCHITECTURE_SAFETY_REVIEW.md
-- TaskItem
-- .CreateController
-- Task
-- Migration
-- WebAuthnCredential
-- IntakeService
-- NavigationUserModuleNode
-- PEMS Enterprise Utility - Global Onboarding Strategy (Minimalist)
-- 53. FINAL RESPONSE FORMAT
-- Meeting
-- ModulePermissionInput
-- EffectivePermissionDto
-- WorkflowConfigAudit
-- WorkflowStageEditModel
-- OrganizationPositionRow
-- Users/Index.cshtml
-- PEMS.Application.Exceptions
-- 30. CONTRACT MANAGEMENT KPI PANEL
-- PartCatalogueRequestController
-- 30. CONTRACT MANAGEMENT KPI PANEL
-- RedisCacheService
-- quill.min.js
-- HelpVisual
-- AIConfidenceSettings
-- EquipmentClassificationSuggestion
-- FunctionalLocationListDto
-- IFileStorageService — Design Only (Not Wired Into the App)
-- AIAnalysisResult
-- ChangePassword.cshtml
-- ProcurementReportDto
-- Login.cshtml
-- MaintenanceHistoryImportBatchSummaryDto
-- PEMS Operations Phase 2E — Packaging Business Governance and Performance Baseline
-- .AuthorizeSensitiveActionAsync
-- ChatAssistant/Index.cshtml
-- ITenderService
-- .CreateService
-- Contract/Details.cshtml
-- Contract/Index.cshtml
-- .CreateService
-- SimulateFormVm
-- WorkOrderActor
-- Department/Index.cshtml
-- .CreateIsolatedSqlServerOrThrow
-- DocumentWorkflowDto
-- .SeedRunWithOutputAsync
-- PEMS Operations — Packaging Program Final Audit Report (Phase 2G → 3I)
-- AuthorizationAuditLog
-- .CreateController
-- Employee/Details.cshtml
-- PermitDetailDto
-- Asset
-- TransmittalRecipient
-- EngineeringDocuments/Create.cshtml
-- EmployeeAssignment
-- tn
-- UploadAttachment.cshtml
-- Equipment/Create.cshtml
-- ExtractedTableDocumentInfo
-- OrganizationChartNodeDto
-- EquipmentImport/Index.cshtml
-- EquipmentImport/Review.cshtml
-- PEMS Operations — Packaging Master Program: Final Audit Report
-- EquipmentDatasheet
-- JobPlanController
-- InspectionService
-- Intake/Review.cshtml
-- IrnDispositionRecord
-- KnowledgeBase/Index.cshtml
-- .SearchAsync
-- Letter/Details.cshtml
-- Letter/Index.cshtml
-- .CreateService
-- .CreateService
-- y
-- ProcurementPackage
-- .Seed
-- MaintenanceStrategy/Index.cshtml
-- .Seed
-- MaterialRequisition/Details.cshtml
-- MDB/Create.cshtml
-- DocumentHold
-- TenderService
-- g
-- Meeting/Details.cshtml
-- Meeting/Index.cshtml
-- MOC/Details.cshtml
-- k
-- .OnModelCreating
-- Notification/Index.cshtml
-- _NotificationDropdown.cshtml
-- MDBController
-- ExecutionGateDecision
-- ConditionReadingImportRow
-- .CreateService
-- Workflow Platform — Phase 3: Work Order Audit
-- ProcurementPackage/Index.cshtml
-- PEMS — Final Procurement-to-Contract Ownership, Traceability, UI Alignment & Closure Audit
-- Projects/Edit.cshtml
-- .NewAsync
-- ContractNTP
-- LoginViewModel
-- ItpDetails.cshtml
-- ItpIndex.cshtml
-- PEMS Workflow Platform — Phase 1 Hardening
-- ConditionReadingImportBatchSummaryDto
-- MaterialRequisitionController
-- .generate
-- BulkSuggestions.cshtml
-- .CreateController
-- VDRSubmission
-- .SeedAsync
-- .CreateService
-- OrganizationController
-- Procurement.cshtml
-- Vdr.cshtml
-- .SeedAsync
-- AssetListDto
+- WorkItemDetailDto
+- PreProcurementServiceTests.NewAsync
+- IAsyncLifetime
+- PartCatalogueReportDto
+- ExtractedDocumentInfo
+- PositionManagementUiTests
 - UserWorkspaceVm
-- NavigationVisibilityOverride
-- .CreateController
-- ShiftHandover/Create.cshtml
-- VDRImportServiceVendorResolutionTests
-- Work Request Concurrency Gate
-- TenderController
-- IManufacturerDataBookService
-- ImportCenterNavigationTests
-- ProductionWorkCenter
-- Transmittal/Create.cshtml
-- Transmittal/Index.cshtml
-- PEMS.Web.Resources
-- PART A — Normative Requirements
-- PurchaseOrder
-- ProductionRun
-- Vendor/Create.cshtml
-- Vendor/Details.cshtml
-- Vendor/Index.cshtml
-- ITextExtractor
-- .CreateController
-- PipeSpecification
-- ed
-- notifications-hub.js
-- این نشست: تکمیل CMMS (Maintenance Strategy/Plan، Work Order، Spare Parts)
-- گام ۱ از سند Engineering Intelligence Redesign: Procurement Package (یکپارچه‌سازی MR + MRQ)
-- بازطراحی بنیادین UI/UX
-- این نشست: تکمیل CMMS (Maintenance Strategy/Plan، Work Order، Spare Parts)
-- گام ۱ از سند Engineering Intelligence Redesign: Procurement Package (یکپارچه‌سازی MR + MRQ)
-- بازطراحی بنیادین UI/UX
-- LoadTestSeed.csproj
-- PEMS.slnx
-- gray
-- input
-- فاز بعدی: AI Relationship Engine + ارتقای Chat Assistant
-- تکمیل نهایی این نشست
-- این نشست: سه ویژگی Enterprise + اصلاحات واقعی
-- PEMS.Web.Models
-- فاز بعدی: AI Relationship Engine + ارتقای Chat Assistant
-- تکمیل نهایی این نشست
-- این نشست: سه ویژگی Enterprise + اصلاحات واقعی
-- PEMS.Application
-- NavigationVisibilityOverrideDto
-- PEMS Letter Details — Controlled Lifecycle & Gmail-Inspired UX — Final Report
-- InspectionChecklist
-- PEMS Enterprise Utility - Final System Documentation & Hand-off
-- PASS 1 — BUSINESS / PETROCHEMICAL ENGINEERING AUDIT
-- بررسی کامل چرخه‌ی مدرک مهندسی (از ثبت تا صدور) + دیدن فقط دیسیپلین خودی
-- رفع: Dashboard با وضعیت واقعی مدارک هماهنگ نبود
-- به‌روزرسانی: Security پایه (Audit Log + Permission Matrix)
-- به‌روزرسانی بزرگ: Semantic Search / RAG واقعی (طبق Volume VIII - Bible)
-- PASS 1 — BUSINESS / PETROCHEMICAL ENGINEERING AUDIT
-- بررسی کامل چرخه‌ی مدرک مهندسی (از ثبت تا صدور) + دیدن فقط دیسیپلین خودی
-- رفع: Dashboard با وضعیت واقعی مدارک هماهنگ نبود
-- به‌روزرسانی: Security پایه (Audit Log + Permission Matrix)
-- به‌روزرسانی بزرگ: Semantic Search / RAG واقعی (طبق Volume VIII - Bible)
-- StorageHealthResultDto
-- Dark Mode (بخشی قابل‌تحویل از Design System، بند ۸)
-- بازطراحی Correspondence بر اساس نمونه‌ی واقعی (کارتابل Fonix/PARGAR)
-- Dark Mode (بخشی قابل‌تحویل از Design System، بند ۸)
-- بازطراحی Correspondence بر اساس نمونه‌ی واقعی (کارتابل Fonix/PARGAR)
-- WebApplication1.csproj
-- CmmsOperationsDashboardDto
-- .AddOrReactivateAsync
-- IDocumentCommentService
-- AddReliabilityAnalyticsIndexes
-- .CreateIssuedDocumentWithRevision00
-- TesseractOcrService
-- Coverage.cshtml
-- DocumentHoldDto
-- .SeedAsync
-- PEMS EDMS — Phase 2 Lifecycle Audit
-- _
-- RcmFmea/ClassDetail.cshtml
-- PEMS Supply Chain & Procurement Chain — Baseline Audit (Phase 0 + Phase 1)
-- .Seed
-- .CreateSqlServerOrThrow
-- .CreateController
-- PEMS Resource Header — VDR Pilot Design Specification
-- UserDashboardWidgetDto
-- Intelligence.cshtml
-- RcmFeedback.cshtml
-- AIExtractionController
-- RcmFmea/Index.cshtml
-- Contract
-- ReviewQueue.cshtml
-- RoutingRulesController
-- Phase 3 — Complete Acceptance, Localization and Language Purity
-- .CreateRepo
-- .SeedAsync
-- IEntityTypeConfiguration
-- AddEnterpriseFileStorageManagement
-- ReviewQueueItemDto
-- PEMS Engineering Documents — Portal UX Specification
-- ConditionReadingImportService
-- Workflow Platform — Phase 4 Admin Audit (Workflow Administration & Visual Designer)
-- IsolationStatusHistory
-- UserFormViewModel
-- En
-- MaterialCategory
-- DisciplineTask
-- Reliability/ClassDetail.cshtml
-- DataQuality.cshtml
-- CrewController
-- FunctionalLocationImportBatch
-- AddDocumentRevisionFileBinding
-- PEMS CMMS — Source Data Readiness & Migration Mapping
-- ProcurementApproval
-- PARTIALLY
-- .SeedAsync
-- .CreateController
-- Reliability/Dashboard.cshtml
-- AddTransmittalHistoricalSnapshotAndAcknowledgement
-- .CreateServiceAsync
-- PEMS — Enterprise Barcode System
-- .StageFromExcelAsync
-- PEMS Phase 2C-3 — Safe Extraction of Shared Stage Diagram
-- Backlog.cshtml
-- RoutingRule
-- CmmsOperations/Dashboard.cshtml
-- PEMS Portal UX — Azure-Inspired Audit
-- PEMS — Warehouse and Inventory Barcode Integration
-- PEMS Operations Phase 2B — Business Semantics & Packaging Design Gate
-- WorkflowBindingImpact
-- OrganizationChartTests
-- AiInsights.cshtml
-- PEMS EDMS — Implementation Roadmap
-- ClassIntelligence.cshtml
-- EquipmentProfile.cshtml
-- Simulate.cshtml
-- PEMS Operations Phase 2D — Packaging Decision & Specification Audit Report
-- ProductionOrderController
-- LetterReferralDto
-- ExistingFlSnapshot
-- su
-- DataGridPageSizeTests
-- .Resolve
-- IrnReceiptLine
-- FunctionalLocationImport/Index.cshtml
-- FunctionalLocationImport/Review.cshtml
-- SimopsInteractionRule
-- EngineeringWorkflowTestBase
-- Asset Approval Checklist
-- PEMS EDMS — Gap Matrix
-- MDBDocumentDto
-- SimopsController
-- PEMS EDMS — Phase 2 Lifecycle Design
-- .SeedReservedAsync
-- WorkflowPlatformPhase2StageBusinessMapping
-- .CreateController
-- WorkflowPlatformPhase1Hardening
-- IIntakeService
-- HelpArticleTranslation
-- .CreateController
-- IVendorRiskService
-- HangfireDashboardAuthFilter.cs
-- .CommitBatchAsync
-- Logo AI Prompt Engineering
-- .Seed
+- Numbering/Index.cshtml
+- InspectionService
+- VendorDto
+- LetterNumberSequence
+- IntakeDetailDto
+- EngineeringDocumentFreezeTests.SeedAsync
+- WorkItemListItemDto
+- PartCatalogueReport/Index.cshtml
+- ui:alert
+- NavigationBadges.Find
+- NavigationMenu/Index.cshtml
+- ui:button-frame
+- PartCatalogueRequest/Index.cshtml
+- OpenOutgoingDto
+- SecurityEvents/Index.cshtml
+- TaskItem
+- .BuildAsync
+- TableExtractionAttachmentListDto
+- WorkOrderChangeLog
+- WorkingDayCalculator.AddWorkingDays
+- License/Index.cshtml
+- _HelpNodeTree.cshtml
+- 3fd7cedb-e10d-4640-9bab-27bb586dd654_bb19cbe4.md
 - StorageProviders/Index.cshtml
 - StorageRouting/Index.cshtml
-- StorageProviders/Create.cshtml
-- StorageProviders/Edit.cshtml
-- StorageProviders/_Form.cshtml
-- StorageRouting/Create.cshtml
-- StorageRouting/Edit.cshtml
-- StorageRouting/_Form.cshtml
-- 1. Phase 1 — Repository Audit (no modifications during this phase)
-- Organization Architecture Review (pre-import)
-- color
-- MOCListItemDto
-- EngineeringNumberingAndFreeze
-- .isRequired
-- PipingComponent
-- AddFunctionalLocationImport
-- HelpVisualAdminEditDto
-- WorkflowInstanceRunningUniquePerEntity
-- WorkOrderGovernanceOrigin
-- .CreateService
-- AddProductionCore
-- CurrentUserService
-- .SaveChangesAsync
-- ResourceHeaderViewModel
-- EquipmentReadinessRowDto
-- PEMS CMMS — Data Migration & Controlled Data Onboarding
-- PEMS.Persistence.Seed
-- KnowledgeBaseSearchResultDto
-- .CreateService
-- PEMS Phase 2A — Global Search Security, EDMS Command Bar, Pending My Action Foundation
-- PEMS Phase 2C-1 — Navigation Integrity and Shift Handover Exposure
-- CmmsOperationalReadinessDto
-- DepartmentController
-- PermissionService
-- PEMS — Organization Hierarchy & Workflow Actor Resolution: Phase 0 Audit
-- Color Palette Management
-- AddOperationsFoundationPhase2A
-- PEMS UAT Deployment Runbook (self-service, Azure Container Apps + Azure SQL Database)
-- MaterialRequisitionItem
-- QualificationCertificationDiscipline
-- CIP Deliverable Guide
-- AssetArchitectureRebuild
-- BM25
-- Task
-- States and Variants
-- EquipmentFunctionalLocationAssignmentController
-- PEMS CMMS — Equipment ↔ Functional Location Assignment & Import
-- PEMS — CMMS/Vendor Base Authorization Wiring
-- PEMS Phase 2B — Portal Information Architecture + Contextual Help Audit
-- .SeedAsync
-- HelpController
-- IVdrWorkflowService
-- BidEvaluation
-- .CreateServiceAsync
-- PEMS Operations/CMMS Navigation Boundary Correction — Report
-- MaintenanceHistoryImportController
-- PEMS Phase 2C-4B — Safe VDR Resource Header Pilot (Implementation)
-- PEMS Contextual Help Architecture (Design — Not Implemented)
-- FINAL SUMMARY
-- .SeedAsync
-- .CreateService
-- StageDiagramItem
-- PEMS — Bulk Define Maintenance Strategy: Scope & Location/Equipment Resolution
-- AddEquipmentFunctionalLocationAssignment
-- AddMaintenanceHistoryImport
-- InspectionController
-- PEMS Authorization Architecture Baseline — Phase 1-5 — 2026-09-29.md
-- ul
-- Panel
-- UI Styling Skill
-- EngineeringDocumentsUiTests
-- CrewAndCrewMember
-- .CreateAsync
-- RoutingRuleDto
-- StoreRequisitionController
-- .SeedAsync
-- PEMS_Organization_Structure_Proposal_a9ee3f48.md
-- .CreateService
-- PEMS Correspondence Workspace — Gmail-Inspired UX Redesign — Final Report
-- PEMS — Equipment ↔ Functional Location Assignment: Final Integrity Verification
-- PEMS Phase 2C-4C — Final Resource Header Closure Audit
-- PEMS Portal Information Architecture (Future-State Design — Not Implemented)
-- PEMS — Package Procurement Contract Finalization — Implementation Progress
-- Workflow
-- InstrumentInheritFromEquipment
-- .CreateService
-- GasParameterLimit
-- Design System
-- Tailwind CSS Customization
-- HelpWorkflowDiagramService
-- AssetSummaryDto
-- .CommitBatchAsync
-- TailwindConfigGenerator
-- 1. Deep Audit Report
-- .SeedAllAsync
-- PEMS_OPERATIONS_PRODUCTION_ARCHITECTURE_SPEC_v1.md
-- ResolveResult
-- BM25
-- ProductionOutputDto
-- DocumentIdcReferral
-- WorkflowAdminDefinitionNameFaVersionRowVersion
-- MDBDocument
-- Success
-- Operations.cshtml
-- ProductionOrder/Index.cshtml
-- BatchDetails.cshtml
-- Production/Dashboard.cshtml
-- ProductionOrder/Details.cshtml
-- ProductionRun/Details.cshtml
-- FileSecurityHttpTests
-- PipingLine
-- Routing by Task Type
-- EquipmentFunctionalLocationAssignment/Index.cshtml
-- MaintenanceHistoryImport/Index.cshtml
-- PEMS.Application.DTOs.BarcodeIdentityDto
-- EquipmentFunctionalLocationAssignment/Review.cshtml
-- MaintenanceHistoryImport/Review.cshtml
-- _BarcodePanel.cshtml
-- _PemsResourceHeader.cshtml
-- _PemsStageDiagram.cshtml
-- BulkGenerate.cshtml
-- RCMService
-- ResolveError.cshtml
-- generate-slide.py
-- fontSize
-- shadcn/ui Theming & Customization
-- Asset Organization Guide
-- Primary Color Meanings
-- Core Logo Types
-- MechanicalEquipmentPassportSummaryDto
-- AIReliabilityInsight
-- Brand Consistency Checklist
-- CIP Mockup Prompt Engineering
-- Color Semantics
-- fetch-background.py
-- button
-- VendorDocumentTypologyCode
-- .CreateController
-- pems-org-position-chart.js
-- TestThresholdGate
-- .RecordDispositionAsync
-- AddBarcodeIdentity
-- Design Principles
-- Design Principles
-- icon/generate.py
-- ShadcnInstaller
-- CatalogRefreshTest
-- PEMS Operations Phase 2D — Packaging Business Decision Register
-- OllamaRequest
-- pems-org-chart.js
-- .CreateService
-- PEMS — Enterprise Role Catalog: Audit, Gap Analysis & Decision Record
-- CIP Design Reference
-- Icon Design Reference
-- Copywriting Formulas
-- Copywriting Formulas
-- detect_domain
-- ProductionInputDto
-- StoreRequisitionLineTraceability
-- Banner Design - Multi-Format Creative Banner System
-- Messaging Framework
-- Brand Voice Framework
-- extract-colors.cjs
-- validate-asset.cjs
-- Layout Patterns
-- Tailwind Integration
-- Layout Patterns
-- ConditionMonitoringFoundationStatusDto
-- ProductionOrderListDto
-- a
-- AIExtractedTag
-- IrnReceiptController
-- update.md
-- Logo Design Reference
-- Token Architecture
-- wa
-- Employee/Index.cshtml
-- AddEmployeeProfileFields
-- AddIdcReferralOutcomeTracking
-- AddBilingualHelpKnowledgeSystem
-- AddHelpVisualDocumentation
-- AddHelpStandardReferences
-- .SeedAllAsync
-- Primitive Tokens
-- validate-tokens.cjs
-- design-tokens-starter.json
-- FakeClients
-- 3. Genuine gaps (the only things that should actually be built)
-- .generate_config_string
-- Classification A — User-Facing Page candidates (future Help increments)
-- StoreRequisitionTraceabilityIdempotency
-- RevalidateStoreRequisitionConstraints
-- Core Visual Elements
-- inject-brand-context.cjs
-- CIP Design Style Guide
-- embed-tokens.cjs
-- up
-- test_tailwind_config_gen.py
-- Quick Reference
-- Employee Details — Stitch UI Redesign: Implementation Notes
-- .SetCulture
-- Barcode/Index.cshtml
-- iu
-- Phase 2 — True Page-by-Page Redesign
-- ._base_config
-- MaintenanceGroupAndSkills
-- Brand
-- Slide Strategies
-- logo/generate.py
-- Component Tokens
-- generate-tokens.cjs
-- duration
-- Slide Strategies
-- PEMS_OPERATIONS_PACKAGING_FINAL_BUSINESS_BASELINE.md
-- PEMS Operations Phase 2F — Final Business Decision Baseline
-- PEMS Operations Phase 2G — Executive Decision and Role Mapping Workbook
-- OrganizationPositionHierarchy
-- .CreateService
-- PEMS Workspace Design System (`pems-workspace.css`, `.vs-*`)
-- VdrUi
-- OrganizationAssignmentEmployeeIndex
-- sync-brand-to-tokens.cjs
-- _run
-- Engineering Documents (EDMS) — enterprise capability audit
-- MemoryCacheService
-- Home/Index.cshtml
-- PEMS Operations Phase 3 — Packaging Architecture Freeze Package
-- RichTextSanitizerService
-- .SeedAsync
-- UI/UX Pro Max - Design Intelligence
-- PEMS — Import Center (single source of truth for "where is every Import?")
-- Enterprise Actor Resolution & Supply-Chain (Part Catalogue) Workflow — architecture baseline
-- IrnReceiptListDto
-- MaintenancePlan/Index.cshtml
-- MyProfile/Index.cshtml
-- HelpAdminAuthorizationTests
-- Slides Reference
-- HTML Slide Template
-- HTML Slide Template
-- Query Contract
-- Phase 4 — Article Count Reconciliation (Increment 3A.1)
-- Permit/Details.cshtml
-- .SetQualificationAsync
-- EquipmentDto
-- Slides
-- Pre-Delivery Checklist
-- Prerequisites
-- Brand Guidelines Template
-- Common Rules for Professional UI
-- Example Workflow
-- PEMS — Site-wide UI/UX unification: final report
-- ImportCenter/Index.cshtml
-- EngineeringDocuments/Index.cshtml
-- VDR/Index.cshtml
-- AuditLog/Index.cshtml
-- EngineeringDashboard/Index.cshtml
-- ProductionOrder/Create.cshtml
-- Tips for Better Results
-- .SearchAsync
-- TechnicalQuery/Details.cshtml
-- test_sync_brand_to_tokens.py
-- main
-- FakeHubContext
-- EngineeringRelationship
-- Article.cshtml
-- _HelpStandardBadges.cshtml
-- _HelpVisual.cshtml
-- slides-create.md
-- create.md
-- VDRDashboardDto
-- MechanicalEquipmentController
-- ProductionDashboardDto
-- AddIrnReceiving
-- MaintenancePlanController
-- AddIrnDisposition
-- .Create
-- AddProcurementContractFinalization
-- .test_recommend_plugins
-- AddContractApprovalMatrix
-- .test_generate_config_with_colors
-- .test_generate_config_with_plugins
-- AddContractCompletionLifecycle
-- .test_validate_config_empty_theme
-- .test_write_config
-- .test_init_javascript
-- AddProcurementClarificationHardening
-- .test_write_config_invalid_path
-- Ag
-- WorkflowBindingRow
-- .test_base_config_structure
-- ProcurementCommunicationResponse
-- Bindings.cshtml
-- StandardMatrix.cshtml
-- History.cshtml
-- StandardCreate.cshtml
-- VisualCreate.cshtml
-- CmmsReadiness/ClassDetail.cshtml
-- SkillsAndRequiredSkills
 - WorkflowManagement/Index.cshtml
+- ContractApprovalAuthority/Index.cshtml
+- ui:date
+- FieldDescriptor
+- SoDPolicy/Index.cshtml
+- ShiftHandoverDetailDto
+- PartCatalogueAdmin/Index.cshtml
+- DatabaseUpdate/Index.cshtml
+- InventoryTransaction/Index.cshtml
+- check_commit_keys.py
+- StoreRequisition/Index.cshtml
+- ReliabilityDto.cs
+- SavedFilterDto
+- PartCatalogueRequest/Details.cshtml
+- IrnReceipt/Details.cshtml
+- TransmittalRelatedDocumentQueryTests.SeedAsync
+- Env
+- GlobalPageHeaderTests
+- RcmDisplay
+- MaintenanceStrategy/Index.cshtml
+- RedirectToActionResult
+- .SeedAsync
+- _CreateModal.cshtml
+- maintenancestrategy-edit.js
+- pems-permission-matrix.js
+- myprofile-index.js
+- HttpRequest
+- StandardMatrix.cshtml
+- Diagnostics.cshtml
+- _NotificationDropdown.cshtml
+- _ResolutionPreview.cshtml
+- Reliability/ClassDetail.cshtml
+- EngineeringDocumentDetailQueryTests.GetByIdAsync_UsesAsSplitQuery_IssuesMultipleRoundTrips_NotOneCartesianJoin
+- VisualCreate.cshtml
+- MrsImport/Review.cshtml
+- StorageProviders/_Form.cshtml
 - WorkflowManagement/Details.cshtml
-- Help/Create.cshtml
+- DocumentRevisionDto
+- ProductionOrderDto
+- Replenishment/Details.cshtml
+- NavigationVisibilityUserVm
+- Authorization/Simulate.cshtml
 - Help/Edit.cshtml
 - _HelpArticleForm.cshtml
-- PEMS.Web/Views/Help/Index.cshtml
-- Search.cshtml
-- _ContextualHelpDrawer.cshtml
-- _HelpNodeTree.cshtml
-- _HelpNodeTreeItem.cshtml
-- FindingController
-- EquipmentAssetFoundation
-- CmmsReadiness/Index.cshtml
-- pems-ui.js
-- ConditionMonitoring.cshtml
-- PredictiveMaintenance.cshtml
-- EnterpriseActorResolution
-- Ram.cshtml
-- jm
-- Denied.cshtml
-- WidenMaterialItemDescriptionToUnbounded
-- PEMS_SITE_WIDE_UIUX_REDESIGN_FINAL_REPORT.md
-- Passport.cshtml
-- AddTenderContractLink
-- ConditionPriorityMapping
-- AIExtraction/Review.cshtml
-- post-checkout
-- post-commit
-- post-merge
-- pre-push
-- Analyze.cshtml
-- JobPlanAndMaintenanceTask
-- BindingImpact.cshtml
-- Designer.cshtml
-- AddItpPackageContractScope
-- Equipment/Index.cshtml
-- PEMSDbContextFactory
-- PermitGasTesting
-- Team/Index.cshtml
-- LetterControlledLifecycle
-- ProductionRunListDto
-- StandardReference
-- RawRow
-- .CreateController
-- EquipmentReadinessService
-- RequiredSkillPlannedHours
-- AddWorkOrderContractorCost
-- .CreateAsync
-- o
-- Chart.cshtml
-- ForgotPassword.cshtml
-- ScanResult.cshtml
-- Letter/Create.cshtml
-- .CreateService
-- NcrDetails.cshtml
-- AddContractApprovalRulePriority
-- PEMS Packaging — Final Business Decision Pack
-- GapReport.cshtml
-- PMTemplate
-- ProductionDtos.cs
-- FakePermissionService
-- ProductionLossDto
-- MaterialMaster
-- ReservationRequisitionAndMrsImport
-- CoreEmployeePersonnelTypeAndPermit
-- 9. PHASE 6.5 — FINAL CLOSURE GATE (2026-10-08)
-- Engineering.cshtml
-- .SeedAsync
-- PremiumGlassSystemTests
-- PEMS Navigation Visibility Architecture Baseline — Phase 6
-- PEMS Packaging — Configurability Architecture Audit
-- PEMS Packaging — Final Decision Workshop Report
-- .CreateAsync
-- PEMS_OPERATIONS_PACKAGING_POLICY_INFRASTRUCTURE_TECHNICAL_DESIGN.md
-- 7. Role Responsibilities (detail)
-- .SeedAsync
-- .SeedAsync
-- WorkRequestAndWorkOrderLifecycle
-- .FindBestMatch
-- PermitExecutionGate
-- .CommitBatchAsync
-- DocumentTypeCode
-- Roles/Index.cshtml
-- Discipline/Details.cshtml
-- .Normalize_MapsToAllowedTheme_OrFallsBackToLight
-- PurchaseOrder/Index.cshtml
-- Tender/Index.cshtml
-- ContractApprovalAuthority/Index.cshtml
-- IrnReceipt/Index.cshtml
-- Discipline/Index.cshtml
-- MrsImportController
-- Report/Index.cshtml
-- TechnicalQuery/Index.cshtml
-- PurchaseOrder/Details.cshtml
-- pems-part-catalogue.js
-- Tender/Details.cshtml
-- Part Catalogue Request module (Warehouse) — implementation report
-- PEMS Operations Phase 2E — Packaging Business Governance Audit Report
-- MaintenanceHistoryImportRowPayload
-- DashboardSettings/Index.cshtml
-- DocumentWorkflow/Index.cshtml
-- EngineeringDocumentIntelligence/Review.cshtml
-- ThreadMessageDto
-- FunctionalLocationImportRowDto
-- MyReferrals.cshtml
-- DateTime
-- PurchaseOrder/Create.cshtml
-- Phase4_Reliability
-- Tender/Create.cshtml
-- AddInspectionMeasurementFields
-- DocumentRevisions/Create.cshtml
-- Task
-- .CreateController
-- ConditionReadingImportController
-- Intake/Index.cshtml
-- ProcurementPackage/Details.cshtml
-- ProductionRun/Create.cshtml
-- MaintenanceStrategy
-- README.PEMS.md
-- StorageException
-- AddDynamicMaintenanceOrganization
-- AddWorkOrderScheduling
-- AddNavigationVisibilityOverride
-- Phase1_MechanicalPassport_CM_EvaluationProfile_Finding
-- Phase9_ConditionReadingImport
-- Phase2_ConditionPriorityMapping
-- Notification_DismissedDate
-- PartCatalogue_Schema
-- SiteWideUiSystemTests
-- InventoryMasterDataController
-- Packaging Business Sign-Off
-- Phase3_MechanicalEquipmentPassport_UniqueIndexes
-- Phase4_MaintenanceStrategy_CBM_ConditionMonitoringLink
-- Phase3_ConditionReadingInstrumentLink
-- RoleCatalogMetadata
-- VDRListItemDto
-- InstrumentPassportAndCalibrationHistory
-- MaintenanceGroupLayer
-- WorkOrderSchedulingTests
-- LanguagePurityTests
-- ThemeSystemTests
-- PEMS.WorkflowPlatform.Interfaces
-- PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring — Production Readiness Report
-- Business Question
-- Candidate Options
-- Business Question
-- Business Question
-- 4. Packaging (new — depends entirely on Phase 3 entities)
-- PEMS Operations Phase 2E — Packaging Executive Decision Pack
-- LocalOnlyUrlHelper
-- StoreRequisitionStatuses
-- Diagnostics.cshtml
-- StoreRequisitionListDto
-- Organization/Index.cshtml
-- EngineeringDocumentService
-- 23. Security Principles
-- Business Question
-- 6. Maintenance
-- .AddWorkingDays
-- .Resolve
-- PMGenerationResultDto
-- RawRow
-- IVdrDocumentNumberingService
-- PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring — Phase 0 Audit
-- PEMS Packaging — Final Decision Readiness Audit
-- PEMS Operations Phase 2G — Executive Decision Readiness Audit Report
-- Business Question
-- 5. Quality
-- 7. Inventory
-- e1ce37e4-5b57-41c4-80c9-4669c2b3c40f_d08ecd0a.md
-- Result.cshtml
-- 11. Phase 4 — Administrative Authorization Surface
-- PEMS.Tests.Web
-- Options
-- PEMS Operations Phase 2E — KPI / PI / RI / KRI Catalog
-- 8. Finance
-- 9. HSE
-- PEMS Operations Phase 2G — Business Sign-off Baseline
-- PEMS Operations Phase 2H — Architecture Activation Record
-- PEMS Operations Phase 2H — Final Decision Closure
-- PEMS Phase 3 — Packaging Activation Checklist
-- SkillSeeder
-- NavigationVisibilityResolver
-- GlobalPageHeaderTests
-- 16. Work Order Security Invariants
-- 27. Mandatory Audit Questions for Future Work
-- PEMS Operations Phase 2H — Decision Closure Audit Report
-- TI-1 Policy Infrastructure
-- TI-3 Approval Role Mapping
-- Logical Data Model
-- 10. Security
-- 3fd7cedb-e10d-4640-9bab-27bb586dd654_bb19cbe4.md
-- 9c5fe8ca-8e1a-4e40-9b53-52a95ba0f811_c9f9e316.md
-- IFtpUploadService
-- Dictionary
-- PEMS Authorization Architecture Baseline
-- Business Decision
-- TI-4 Scope Precedence
-- 11. Process / Engineering
-- 3. Production (existing scope — context for Packaging metrics, not new)
-- ConditionReadingImport/Index.cshtml
-- MyWork.cshtml
-- Finding/Index.cshtml
-- SoDPolicy/Index.cshtml
-- NavigationVisibility/Index.cshtml
-- PartCatalogueAdmin/Index.cshtml
-- PartCatalogueRequest/Index.cshtml
-- CBMDashboard.cshtml
-- Trend.cshtml
-- ConditionReadingImport/Review.cshtml
-- MaintenanceCalendar/Index.cshtml
-- TeamDetails.cshtml
-- MechanicalEquipment/Index.cshtml
-- AuthorizationAudit/Index.cshtml
-- OrganizationImport/Index.cshtml
-- Users/Create.cshtml
-- PartCatalogueRequest/Details.cshtml
-- ResolveResult
-- EffectiveRole.cshtml
-- Authorization/EffectiveUser.cshtml
-- NavigationVisibility/EffectiveUser.cshtml
-- Authorization/Simulate.cshtml
-- SoDPolicy/Create.cshtml
-- Users/Details.cshtml
-- IrnReceipt/Details.cshtml
-- PartCatalogueRequest/Edit.cshtml
-- StoreRequisition/Details.cshtml
-- MechanicalEquipment/Edit.cshtml
-- MechanicalEquipment/Passport.cshtml
-- pems-maintenance-calendar.js
-- Policy Resolution Model
-- TI-2 Policy Value Representation
-- Users/Edit.cshtml
-- RoutingRules/Index.cshtml
-- DocumentRegister/Index.cshtml
 - Admin/Views/Help/Index.cshtml
-- Inventory/Index.cshtml
-- DocumentRevisions/Index.cshtml
-- NcrIndex.cshtml
-- Cmms.cshtml
-- GlobalSearch/Index.cshtml
-- OrganizationChart.cshtml
-- AISearch/Index.cshtml
-- 14. SoD Architecture
-- 18. Testing Baseline
-- 24. Deferred Hardening Items
-- 4. Core Sources of Authority
-- 12. E-5 — Organizational Role Mapping
-- Current PEMS Findings
-- 10. Phase 3 — Hard-Coded Role Migration
-- Historical Policy Resolution
-- Phase 3A Implications
+- LetterAdvancedFilter
+- EngineeringDocuments/Index.cshtml
+- Preview.cshtml
+- chatassistant-index.js
+- Home/Index.cshtml
+- TechnicalClassResolutionStatus
+- MyProfile/Index.cshtml
 - 104bab50-33c1-42c2-8198-b5fbf3fcca62_8dc12ebc.md
 - a661ac73-c48f-4d89-8d74-c952007e6840_f4486726.md
 - CommodityGroups_b256d4fe.md
 - INWH-PLA-FO-001_91eeabc8.md
-- Item 11-Product Family_4b0ba2a5.md
-- Item 6-TECHNICAL CLASSESS-2026-08-29_0ced83b2.md
-- Item 9-Com_. Group 1 _17d7bb0c.md
 - ProductFamilies_fd6a0cb2.md
-- TECHNICAL CLASSESS-2026-08-29_5bbb8185.md
 - TechnicalClasses_101e260e.md
-- نمونه فرم اکسل_edc1a7b7.md
-- MOC/Index.cshtml
-- Performance/Index.cshtml
-- Projects/Create.cshtml
-- EngineeringDocuments/Edit.cshtml
-- BulkCreate.cshtml
-- _ResolutionPreview.cshtml
-- MDRImport/Review.cshtml
-- Projects/Index.cshtml
-- _PageHeader.cshtml
-- Tag/Index.cshtml
-- PermissionMatrix/Index.cshtml
-- VDRImport/Index.cshtml
-- WorkRequest/Create.cshtml
-- EngineeringDocumentIntelligence/Index.cshtml
-- OCRProcessing/Index.cshtml
-- .test_add_fonts
-- Relationship/Index.cshtml
-- .test_generate_typescript_config
-- .test_validate_config_no_content
-- .test_write_config_creates_content
-- .test_full_configuration_javascript
-- .test_default_output_path_typescript
-- .test_default_content_paths_vue
-- .test_add_colors
+- VDRImportBatch
+- MaintenancePlanListDto
+- AdminResetViewModel
+- ReliabilitySimulationDto
+- NavigationUserModuleNode
+- MaintenanceStrategyAssignment
+- x-axis.tsx
+- CancellationToken
+- WorkRequest
+- IReadOnlyList
+- PEMS.Infrastructure
+- PEMS.Persistence.csproj
+- UploadGuard.CheckAsync
+- NavigationModuleNode
+- ProcurementPackage
+- PEMS.AI
+- ApiListQuery
+- .NewItem
+- PurchaseOrderLine
+- PEMS.Web
+- InventoryTransactionService.GetLedgerAsync
+- MaintenanceBacklogItemDto
+- ICurrentUserService
+- DocumentAttachment
+- UsableStockService
+- PEMS.Web/Program.cs
+- DocumentWorkflowService
+- ErrorMapperTests
+- MaterialRequisitionItem
+- PurchaseOrderReceivingServiceTests.NewAsync
+- ExtractedTableData
+- ProcurementReportDto
+- .BuildAsync
+- ClassActivationBacklogItemDto
+- StrategyInputDto
+- EffectiveUserVm
+- WorkOrderActor
+- StorageRouteUpsertRequest
+- MeetingDto
+- Project
+- LicenseFailure
+- pems-cartable-settings.js
+- MechanicalEquipmentPassportSummaryDto
+- PreProcurementService
+- ProductionOrder
+- PartCataloguePrintModel
+- audit.mjs
+- HttpContextCurrentUser
+- AIExtractedTag
+- NavigationMenuItemDto
+- ProductionRunDto
+- CmmsReportDto
+- RecoveryTestWorld
+- Department
+- ICollection
+- BreakGlassViewModel
+- PurchaseOrderApprovalServiceTests.NewAsync
+- MaintenanceEffectivenessDto
+- FunctionalRequirement
+- ConditionReadingImportBatchSummaryDto
+- ProcurementCommunicationDto
+- WorkOrderListDto
+- MrsImportService
+- EquipmentDto
+- HelpWorkflowDiagramService
+- letter-compose.js
+- .NewAsync
+- UiStandardTests
+- ui:list-grid
+- NumberingService
+- notifications-hub.js
+- IDisposable
+- LoadTestSeed.csproj
+- PEMS.slnx
+- DashboardEngineeringDto
+- SecurityEvent
+- AdminResetResult
+- ExecutiveKpiPageViewModel
+- PEMS.WorkflowPlatform
+- FakePermissionService
+- PartCatalogueSettingsDto
+- DashboardProcurementDto
+- HelpVisualDefinition
+- PaginationModel
+- PemsDbContextFactory.CreateSqlServerOrThrow
+- ConditionMonitoringPointDto
+- DocumentWorkflowDto
+- RecoveryEventServiceTests
+- ResourceHeaderViewModel
+- .CreateService
+- RichTextEditorTexts.Json
+- ImportCenterNavigationTests
+- PEMSDbContext.OnModelCreating
+- ExecutionGateDecisionDto
+- LetterComposeViewModel
+- ConditionReadingImportService
+- WorkflowActionRegistry
+- DocumentControlListPagesTests
+- y-axis.tsx
+- CriticalityAssessmentDetailDto
+- ExecutiveDashboardServiceTests.NewContext
+- pems-user-permissions.js
+- SkeletonComponentTests
+- StorageProviders/Create.cshtml
+- StorageProviders/Edit.cshtml
+- StorageRouting/Create.cshtml
+- StorageRouting/Edit.cshtml
+- Instrument
+- PemsTreeItemTagHelper
+- PipingComponent
+- InstrumentService.GetListAsync
+- VdrDetailsLayoutTests.RenderAsync
+- IncomingCorrespondenceServiceTests.NewRig
+- MaintenanceHistory
+- ReplenishmentAvailabilityGateTests
+- SupportedReleases
+- pems-errors.js
+- CommodityGroupResponsible
+- ApiConformanceTests
+- rest_inventory.py
+- RecoveryEventService
+- LetterRoutingRuleDto
+- ILogger
+- KpiTileComponentTests
+- init
+- FakeUrl
+- PurchaseOrderController
+- HelpServiceTests.CreateService
+- EnvFiles.Load
+- WorkflowStageInput
+- DeterministicTableExtractor
+- DocumentWorkflowHistoryItemDto
+- FunctionalLocationService
+- Controller
+- Task
+- EngineeringDocumentDetailsLayoutTests.RenderAsync
+- PEMS.Web.Models.StageDiagramViewModel
+- TestAccountProvisioner.csproj
+- BadActorDto
+- pems-org-position-chart.js
+- use-delayed-tooltip-data.ts
+- pems-org-chart.js
+- NavigationVisibilityOverride
+- init
+- LetterDto
+- OllamaEmbeddingRequest
+- FakeClients
+- TemporaryPasswordGenerator.Generate
+- init
+- VdrUi
+- pems-rte.js
+- TechnicalQueryListItemDto
+- ExecutiveDashboardDto
+- RolePermission
+- LetterIndexViewRenderTests
+- init
+- pems-ui.js
+- pems-tree.js
+- DatabaseUpgradePathSqlTests.Database_of_a_supported_release_upgrades_to_the_fresh_install_schema_and_keeps_its_data
+- ResolveResult
+- IEntityTypeConfiguration
+- SimulateFormVm
+- MOCListItemDto
+- test-pems-docker.sh
+- projection-utils.ts
+- IActionResult
+- Regex
+- PartCatalogueCommodityGroup
+- initLookup
+- FunctionalLocationImportBatchDto
+- LoginPageLocalizationTests
+- BarcodeResolutionResultDto
+- pems-jalali.js
+- .CreateAsync
+- AssetListDto
+- SiteWideUiSystemTests
+- ThemeSystemTests
+- MaterialItemListDto
+- LetterComplianceReportDto
+- DatabaseUpdateRun
+- BkChartSpec
+- RcmRealSqlTests.cs
+- CriticalityDashboardDto
+- MaterialStockRowDto
+- ApplyRcmDecisionResultDto
+- NumberingScheme
+- Skill
+- pems-maintenance-calendar.js
+- LocalizationKeyCoverageTests
+- ProductionBatchDto
+- init
+- MaintenanceStrategyController
+- deploy.ps1
+- pems-skeleton.js
+- InventoryTransactionRowDto
+- PemsLinuxProbe.csproj
+- AdminBaseDataListPagesTests.Logs_FilterRowsMoveIntoTheDropdown_AndEachActiveFilterIsAChip
+- EquipmentFunctionalLocationAssignmentRowPayload
+- EquipmentServiceGridTests.CreateService
+- AssetSummaryDto
+- CartableRulesTests
+- TenderApprovalSeparation
+- ApplicationUser
+- MaintenancePlanController
+- pems-list.js
+- SoDPolicyListItemVm
+- sidebar-badges.js
+- filter
+- CriticalityAssessmentListDto
+- PEMS.Licensing.csproj
+- ConditionMonitoringTrendDto
+- RolePermissionChangeResult
+- ApiOpenApi.DescribeStandardParts
+- DefinitionReference
+- RazorViewRenderer.RenderAsync
+- pems-confirm.js
+- HelpNodeTreeItem
+- pems-org-chart-logic.js
+- AdoptionRatchetTests
+- pems-overlay.js
+- wireCombobox
+- Ledger.cshtml
+- LetterAccessRules.CanView
+- smoke-test.sh
+- test-migration-chain.sh
+- pems-task-manager.js
+- backup-database.sh
+- AntiforgeryProbe.razor
+- Customers.cshtml
+- bollinger.ts
+- Import.cshtml
+- Issue.cshtml
+- Keys.cshtml
+- CriticalityAssessmentServiceTests.Framework_ClassFromMaxScore_MapsExactlyPerDocumentedThresholds
+- PEMS.UI.Tests/_Imports.razor
+- ExecutiveDashboard/Index.cshtml
+- admin-numbering.js
+- mr-items.js
+- pems-multiselect.js
+- pems-secret-reveal.js
+- PemsActionBar.razor
+- PEMS.UI.Tests.Host.SpikeModel
+- DescriptorForm.cshtml
+- DescriptorTable.cshtml
+- lint.sh
 
 ## God Nodes (most connected - your core abstractions)
-1. `PEMSDbContext` - 1209 edges
-2. `List<` - 718 edges
-3. `PEMS.Domain.Entities` - 664 edges
-4. `PEMS.Application.DTOs` - 494 edges
-5. `PEMS.Application.Interfaces` - 492 edges
-6. `PEMS.Persistence.Context` - 472 edges
-7. `PEMS.Persistence.Services` - 345 edges
-8. `PEMS.Web.Resources` - 282 edges
-9. `Success` - 275 edges
-10. `PEMS.Tests.TestSupport` - 209 edges
+1. `PEMSDbContext` - 1619 edges
+2. `List<` - 924 edges
+3. `PEMS.Domain.Entities` - 879 edges
+4. `PEMS.Application.DTOs` - 693 edges
+5. `PEMS.Application.Interfaces` - 656 edges
+6. `PEMS.Persistence.Context` - 545 edges
+7. `PEMS.Persistence.Services` - 517 edges
+8. `PEMS.Tests.TestSupport` - 354 edges
+9. `PEMS.Web.Controllers` - 202 edges
+10. `PEMS.Persistence.Identity` - 200 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `EquipmentClassificationService` --references--> `EquipmentClassCode`  [EXTRACTED]
-  PEMS.Persistence/Servises/EquipmentClassificationService.cs → PEMS.Application/DTOs/EquipmentMaintenanceIntelligenceDto.cs
-- `FakeLetterService` --references--> `Subject`  [EXTRACTED]
-  PEMS.Tests/TestSupport/FakeLetterService.cs → PEMS.Application/DTOs/LetterDtos.cs
-- `FakeLetterService` --references--> `RelatedDocumentId`  [EXTRACTED]
-  PEMS.Tests/TestSupport/FakeLetterService.cs → PEMS.Application/DTOs/LetterDtos.cs
-- `PartCatalogueSeeder` --references--> `Grade`  [EXTRACTED]
-  PEMS.Persistence/Seed/PartCatalogueSeeder.cs → PEMS.Domain/Entities/PartCatalogue/PartCatalogueReference.cs
-- `DocumentAIIngestionService` --references--> `IDocumentAIService`  [EXTRACTED]
-  PEMS.Persistence/Servises/DocumentAIIngestionService.cs → PEMS.AI/Interfaces/IDocumentAIService.cs
+- `setIso()` --indirect_call--> `iso()`  [INFERRED]
+  PEMS.Web/wwwroot/js/dcc-register.js → tools/js-tests/pems-date.test.js
+- `UsersController` --calls--> `AdminAccountService`  [INFERRED]
+  PEMS.Web/Areas/Admin/Controllers/UsersController.cs → PEMS.Persistence/Servises/AdminAccountService.cs
+- `WorkflowActorResolutionRuntimeTests` --calls--> `WorkflowVersionValidator`  [INFERRED]
+  PEMS.Tests/Workflow/WorkflowActorResolutionRuntimeTests.cs → PEMS.WorkflowPlatform/Services/WorkflowVersionValidator.cs
+- `EmployeeController` --calls--> `OrganizationValidationService`  [INFERRED]
+  PEMS.Web/Controllers/EmployeeController.cs → PEMS.Persistence/Servises/OrganizationValidationService.cs
+- `EmployeeController` --calls--> `OrganizationHierarchyService`  [INFERRED]
+  PEMS.Web/Controllers/EmployeeController.cs → PEMS.Persistence/Servises/OrganizationHierarchyService.cs
 
 ## Import Cycles
 - None detected.
 
-## Communities (1715 total, 114 thin omitted)
+## Communities (1039 total, 234 thin omitted)
 
 ### Community 0 - "PEMSDbContext"
 Cohesion: 0.01
-Nodes (297): AIConfidenceSettings, IdentityDbContext, DbSet, EntityEntry, MrsImportRowMetadata, PartCatalogueRequestEquipment, PEMSDbContext, AIDocumentClassifications (+289 more)
+Nodes (342): PEMSDbContext, AdminRecoveryCodes, AIConfidenceSettings, AIDocumentClassifications, AIExtractedSpecifications, AIExtractedTags, AIReliabilityInsights, Alarms (+334 more)
 
-### Community 1 - ".CreateService"
-Cohesion: 0.25
-Nodes (5): Fact, InlineData, Task, Theory, LetterControlledLifecycleTests
+### Community 1 - "LetterService"
+Cohesion: 0.06
+Nodes (16): IRichTextSanitizerService, LetterReview, Comment, CreatedDate, Decision, IsActive, Letter, LetterId (+8 more)
 
 ### Community 2 - "PEMS.Persistence.Services"
-Cohesion: 0.03
-Nodes (10): PEMS.Tests.Setup, PEMS.Persistence.Services, PEMS.Application.Organization, PEMS.Tests.Cmms, PEMS.Tests.TestSupport, PEMS.Tests.Inventory, PEMS.Tests.Help, PEMS.Persistence.Repositories (+2 more)
-
-### Community 3 - "PEMS.Web.Controllers"
-Cohesion: 0.03
-Nodes (18): PEMS.Web.Areas.Warehouse.Controllers, PEMS.Web.Controllers, PEMS.Tests.Notifications, PEMS.Application.Common, PEMS.Web.Security, PEMS.Web.Hubs, Microsoft.AspNetCore.Mvc.Rendering, DataProvenance (+10 more)
-
-### Community 4 - "Detailed evidence checklist per module"
 Cohesion: 0.02
-Nodes (117): Account, AI, AIExtraction, AIInsights, AISearch, Asset, AuditLog (Area: Admin), Barcode (+109 more)
+Nodes (15): PEMS.Tests.Cartable, PEMS.Tests.Setup, PEMS.Application.Inventory, PEMS.Persistence.Services, PEMS.Application.Organization, PEMS.Tests.Cmms, PEMS.Tests.TestSupport, PEMS.Tests.Rcm (+7 more)
 
-### Community 5 - "DocumentHoldService"
-Cohesion: 0.25
-Nodes (8): Task, IDocumentHoldService, Task, DocumentHoldService, Fact, InvalidOperationException, Task, HoldBlocksWorkflowTests
+### Community 3 - "microsoft_aspnetcore_mvc"
+Cohesion: 0.02
+Nodes (32): PEMS.Web.Areas.Warehouse.Controllers, PEMS.Web.Api, PEMS.Web.ViewModels, PEMS.Web.Resources, PEMS.Web.Areas.Admin.Models, PEMS.Web.Navigation, PEMS.Web.Controllers, PEMS.Web.Helpers (+24 more)
+
+### Community 4 - "PEMS.Persistence.Identity"
+Cohesion: 0.03
+Nodes (13): PEMS.Tests.Search, PEMS.Tests.Procurement, PEMS.Persistence.Identity, PEMS.Tests.Workflow, PEMS.Persistence.Seed, PEMS.Tests.MyWork, PEMS.Persistence.Workflow, PEMS.WorkflowPlatform.Dtos (+5 more)
+
+### Community 5 - "DocumentHoldDto"
+Cohesion: 0.18
+Nodes (10): DocumentHoldDto, DocumentHoldId, HoldByName, HoldDate, IsOpen, Reason, ReleaseByName, ReleaseDate (+2 more)
 
 ### Community 6 - "GlobalSearchResultItemDto"
-Cohesion: 0.06
-Nodes (41): Items, GlobalSearchResultItemDto, EntityType, HighlightedLabel, Id, Label, Score, SubLabel (+33 more)
+Cohesion: 0.04
+Nodes (61): GlobalSearchResultItemDto, EntityType, HighlightedLabel, Id, Label, Score, SubLabel, Url (+53 more)
 
 ### Community 7 - "HelpArticleAdminEditDto"
-Cohesion: 0.05
-Nodes (50): DateTime, HelpArticleAdminEditDto, ArticleType, Code, ContentEn, ContentFa, DisplayOrder, HelpArticleId (+42 more)
-
-### Community 8 - "chart-4.4.4.umd.min.js"
 Cohesion: 0.02
-Nodes (181): c(), a(), aa(), Ae(), afterDatasetsUpdate(), afterDraw(), afterUpdate(), ai() (+173 more)
+Nodes (69): HelpArticleAdminEditDto, ArticleType, Code, ContentEn, ContentFa, DisplayOrder, HelpArticleId, HelpCategoryId (+61 more)
 
-### Community 9 - ".claude/Role/PEMS — Role-Based E2E Testing Framework & Claude Execution Baseline.md"
-Cohesion: 0.03
-Nodes (68): 10. Server/API Authorization, 10. Validation, 11. CMMS-10a E2E Scenario, 11. Error Handling, 12. Contractor Personnel Scenario, 12. Loading States, 13. Empty States, 13. Negative Security Tests (+60 more)
+### Community 8 - "IStringLocalizer"
+Cohesion: 0.01
+Nodes (211): IReadOnlyList<PEMS.Application.Interfaces.PoAuthorityRuleView>, IReadOnlyList<PEMS.Domain.Entities.AuditLog>, Microsoft.Extensions.Localization, PEMS.Web.Areas.Admin.Models.UserFormViewModel, SharedResource, List<PEMS.Application.DTOs.MrsImportBatchSummaryDto>, List<PEMS.Application.DTOs.WorkflowBindingRow>, List<PEMS.Application.Organization.OrganizationPositionRow> (+203 more)
 
-### Community 10 - ".github/Role/PEMS — Role-Based E2E Testing Framework & Claude Execution Baseline.md"
-Cohesion: 0.03
-Nodes (68): 10. Server/API Authorization, 10. Validation, 11. CMMS-10a E2E Scenario, 11. Error Handling, 12. Contractor Personnel Scenario, 12. Loading States, 13. Empty States, 13. Negative Security Tests (+60 more)
+### Community 9 - "EngineeringDocumentSummaryCountsDto"
+Cohesion: 0.24
+Nodes (6): EngineeringDocumentSummaryCountsDto, Approved, Frozen, Pending, Rejected, Total
 
-### Community 11 - "Detailed evidence checklist per module"
-Cohesion: 0.03
-Nodes (68): Account, AI, AIExtraction, AIInsights, AISearch, AuditLog (Area: Admin), ChatAssistant, ComingSoon (+60 more)
+### Community 10 - "JobPlan"
+Cohesion: 0.02
+Nodes (92): JobPlan, CreatedDate, EquipmentClass, EquipmentClassId, EstimatedDurationHours, IsActive, JobPlanId, JobPlanNumber (+84 more)
 
-### Community 12 - "Detailed evidence checklist per module"
+### Community 11 - "microsoft_entityframeworkcore"
+Cohesion: 0.05
+Nodes (3): PEMS.Tests.TaskManager, PEMS.Persistence.Services.TaskManager, PEMS.Persistence.Configurations
+
+### Community 12 - "Tender"
 Cohesion: 0.03
-Nodes (68): Account, AI, AIExtraction, AIInsights, AISearch, AuditLog (Area: Admin), ChatAssistant, ComingSoon (+60 more)
+Nodes (68): Bid, BidId, BidNumber, CommercialSubmissionReference, Currency, Evaluations, FinalValue, IsActive (+60 more)
 
 ### Community 13 - "DisciplineWorkspaceDto"
-Cohesion: 0.05
-Nodes (40): DateTime, DisciplineSummaryDto, Code, DisciplineId, DocumentsCount, EquipmentCount, Name, OpenTasksCount (+32 more)
+Cohesion: 0.07
+Nodes (29): DisciplineSummaryDto, Code, DisciplineId, DocumentsCount, EquipmentCount, Name, OpenTasksCount, OverdueTasksCount (+21 more)
 
-### Community 14 - "EmployeeSkill"
-Cohesion: 0.06
-Nodes (35): DateTime, EmployeeSkill, CertifiedDate, CreatedDate, Employee, EmployeeId, EmployeeSkillId, IsActive (+27 more)
+### Community 14 - "ProcurementApprovalBreakGlassTests.CreateSeededDbAsync"
+Cohesion: 0.17
+Nodes (3): PurchaseOrderService, ProcurementApprovalBreakGlassTests, IdentifierValidationTests
 
 ### Community 15 - ".SeedFullBaselineAsync"
-Cohesion: 0.14
-Nodes (26): DateTime, PermitExecutionRequirement, CreatedDate, IsActive, PermitExecutionRequirementId, PermitType, RequireIsolationVerified, RequireValidGasTest (+18 more)
+Cohesion: 0.09
+Nodes (20): PMGenerationResultDto, GeneratedWorkOrderNumbers, PlansSkippedAlreadyHasOpenWorkOrder, WorkOrdersGenerated, WorkOrderReleaseGateResultDto, CanRelease, Reasons, IPMGenerationService (+12 more)
 
-### Community 16 - "EngineeringRevisionQualityDto"
+### Community 16 - "Dictionary"
 Cohesion: 0.05
-Nodes (46): EngineeringDocumentSummaryCountsDto, Approved, Frozen, Overdue, Pending, Rejected, Total, EngineeringRevisionQualityDto (+38 more)
+Nodes (31): ChatMessage, ChatMessageId, Content, CreatedDate, Role, UserId, Permission, ActionName (+23 more)
 
-### Community 17 - "Task"
+### Community 17 - "EngineeringDocumentDto"
 Cohesion: 0.04
-Nodes (68): DateTime, ICollection, ActorResponsibilityKinds, ActorResponsibilityScopes, ActorSelectionStrategies, CommodityGroupResponsible, CommodityGroup, CommodityGroupId (+60 more)
+Nodes (45): EngineeringDocumentDto, ActualDate, ApprovedBy, ApprovedBySignaturePath, ApprovedDate, Area, Attachments, CheckedBy (+37 more)
 
 ### Community 18 - ".CreateInfra"
 Cohesion: 0.10
-Nodes (19): CurrentUser, DateTime, Discipline, Fact, ForbidResult, Group, JsonResult, MaintenanceGroup (+11 more)
+Nodes (4): FakeCrewService, FakeDisciplineWorkspaceService, FakeTeamService, OrganizationMasterDataAuthorizationTests
 
-### Community 19 - "PEMS Help Governance Baseline — Mandatory Documentation Synchronization.md"
-Cohesion: 0.05
-Nodes (42): 10. ERROR AND VALIDATION REQUIREMENT, 11. UI REDESIGN REQUIREMENT, 12. TERMINOLOGY REQUIREMENT, 13. BILINGUAL REQUIREMENT, 14. HELP COMPLETENESS CHECK, 15. HELP CHANGE TYPES, 16. MANDATORY IMPLEMENTATION REPORT, 17. HELP MUST BE PART OF THE SAME CHANGESET (+34 more)
-
-### Community 20 - "EmployeeCertification"
-Cohesion: 0.04
-Nodes (50): DateTime, Certification, CertificationId, CreatedDate, Description, DisciplineId, IsActive, DateTime (+42 more)
-
-### Community 21 - ".claude/Role/UIUX/PEMS Contract Management — Enterprise Petrochemical Dashboard Specification & Claude Implementation Brief.md"
+### Community 20 - "PemsDbContextFactory.CreateInMemory"
 Cohesion: 0.03
-Nodes (57): 10. CONTRACT HEADER, 12. PAYMENT MANAGEMENT, 13. VARIATION MANAGEMENT, 14. CLAIMS MANAGEMENT, 15. CLAIM EXPOSURE, 17. LIQUIDATED DAMAGES, 18. CONTRACTUAL OBLIGATIONS, 19. CONTRACTUAL NOTICE MANAGEMENT (+49 more)
+Nodes (49): ModulePermissionInput, CanApprove, CanCreate, CanDelete, CanEdit, CanFreeze, CanHold, CanManualNumber (+41 more)
 
-### Community 22 - ".github/Role/UIUX/PEMS Contract Management — Enterprise Petrochemical Dashboard Specification & Claude Implementation Brief.md"
+### Community 21 - "WorkflowDefinitionRow"
 Cohesion: 0.03
-Nodes (57): 10. CONTRACT HEADER, 12. PAYMENT MANAGEMENT, 13. VARIATION MANAGEMENT, 14. CLAIMS MANAGEMENT, 15. CLAIM EXPOSURE, 17. LIQUIDATED DAMAGES, 18. CONTRACTUAL OBLIGATIONS, 19. CONTRACTUAL NOTICE MANAGEMENT (+49 more)
+Nodes (63): WorkflowBindingImpact, BindingId, CurrentVersion, Definition, DefinitionId, RunningByVersion, RunningInstances, TargetVersion (+55 more)
 
-### Community 23 - "DesignSystemGenerator"
-Cohesion: 0.06
-Nodes (21): DesignSystemGenerator, Generates design system recommendations from aggregated searches., Load reasoning rules from CSV., Find matching reasoning rule for a category., Apply reasoning rules to search results., Select best matching result based on priority keywords., apply_decision_rules(), _object_without_duplicates() (+13 more)
+### Community 22 - "SurfaceAndPackageTests"
+Cohesion: 0.10
+Nodes (10): LicenseReasons, LicenseState, ActivationRequired, Active, ActiveWarning, NotEnforced, Restricted, SurfaceAndPackageTests (+2 more)
+
+### Community 23 - "IReadOnlyDictionary"
+Cohesion: 0.02
+Nodes (127): FakeFacts, NeedsExtra, SupportedFields, KpiTileOptions, Attributes, Compact, CssClass, Hint (+119 more)
 
 ### Community 24 - "SparePart"
-Cohesion: 0.05
-Nodes (46): SparePartListDto, Description, IsLowStock, Manufacturer, MinStockLevel, Model, PartName, PartNumber (+38 more)
+Cohesion: 0.07
+Nodes (31): SparePartListDto, Description, IsLowStock, Manufacturer, MinStockLevel, Model, PartName, PartNumber (+23 more)
 
-### Community 25 - "CrewMember"
-Cohesion: 0.08
-Nodes (25): DateTime, ICollection, Crew, Code, CreatedDate, IsActive, Members, Name (+17 more)
+### Community 25 - "HashSet"
+Cohesion: 0.03
+Nodes (91): BulkAssignCandidateDto, Conflict, ConflictingStrategyId, Equipment, WillReceive, BulkAssignConflict, BulkAssignFilter, Areas (+83 more)
 
-### Community 26 - ".CreateInMemory"
-Cohesion: 0.05
-Nodes (46): C, IdentityRole, ModuleGrant, ApplicationRole, Category, Description, DisplayName, Domain (+38 more)
+### Community 26 - "StorageProviderUpsertRequest"
+Cohesion: 0.10
+Nodes (19): StorageProviderUpsertRequest, AllowDelete, AllowRead, AllowWrite, BaseUrl, Code, Host, IsEnabled (+11 more)
 
-### Community 27 - "WorkOrderLabor"
-Cohesion: 0.04
-Nodes (45): MaintenanceGroup, DateTime, ICollection, Position, Assignments, ChildPositions, CreatedDate, Department (+37 more)
+### Community 27 - "MaterialItem"
+Cohesion: 0.03
+Nodes (75): JobPlanRequiredMaterial, CreatedDate, JobPlan, JobPlanId, JobPlanRequiredMaterialId, MaterialItem, MaterialItemId, RequiredQuantity (+67 more)
 
-### Community 28 - "Project"
-Cohesion: 0.12
-Nodes (15): DateTime, Project, ClientName, CreatedDate, EndDate, IsActive, JobNumber, Location (+7 more)
+### Community 28 - "ReplenishmentRecommendation"
+Cohesion: 0.02
+Nodes (90): NetDemandRun, AutoReopened, CalculatorVersion, Closed, CompletedAt, Created, FailureMessage, NetDemandRunId (+82 more)
 
 ### Community 29 - "Equipment"
 Cohesion: 0.06
-Nodes (35): DateTime, ICollection, Equipment, Area, ChildEquipments, ClassificationConfidence, ClassificationSource, CreatedDate (+27 more)
+Nodes (37): Equipment, Area, ChildEquipments, ClassificationConfidence, ClassificationSource, CreatedDate, Description, Discipline (+29 more)
 
-### Community 30 - ".claude/Role/Engineering Management  EDMS — Three-Pass Audit & Implementation Directive.MD"
+### Community 30 - "ViewDescriptor"
+Cohesion: 0.12
+Nodes (13): PEMS.Web.ViewComponents, ViewDescriptor, Columns, EmptyText, Id, Title, PemsTableModel, PemsTableViewComponent (+5 more)
+
+### Community 31 - "FakeLetterService"
 Cohesion: 0.04
-Nodes (53): 11. DISCIPLINE DASHBOARD, 12. ENGINEERING DOCUMENT 360°, 13. DOCUMENT RELATIONSHIPS, 14. IDC — INTERDISCIPLINARY CHECK, 15. IDC RULE, 16. COMMENTS / REVIEW COMMENTS, 17. COMMENT RESOLUTION, 18. TRANSMITTAL (+45 more)
+Nodes (21): LetterViewer, LetterBulkResult, Failed, Succeeded, RelatedLetterDto, LetterDate, LetterId, LetterNumber (+13 more)
 
-### Community 31 - ".github/Role/Engineering Management  EDMS — Three-Pass Audit & Implementation Directive.MD"
-Cohesion: 0.04
-Nodes (53): 11. DISCIPLINE DASHBOARD, 12. ENGINEERING DOCUMENT 360°, 13. DOCUMENT RELATIONSHIPS, 14. IDC — INTERDISCIPLINARY CHECK, 15. IDC RULE, 16. COMMENTS / REVIEW COMMENTS, 17. COMMENT RESOLUTION, 18. TRANSMITTAL (+45 more)
-
-### Community 32 - "RoutingRuleService"
-Cohesion: 0.17
-Nodes (10): AutoRoute, Func, Task, TimeSpan, ICacheService, AIConfidenceSettings, Category, Module (+2 more)
+### Community 32 - "WorkflowRuntimeViewModel"
+Cohesion: 0.03
+Nodes (62): WorkflowAvailableAction, ActionType, DeniedReason, IsAllowed, Label, LabelFa, ToStageId, ToStageName (+54 more)
 
 ### Community 33 - "ActorResolutionResult"
+Cohesion: 0.08
+Nodes (22): PEMS.Application.ActorResolution, ActorCandidate, ActorContextKeys, ActorDataQualityFinding, ActorExclusion, ActorResolutionRequest, ActorResolutionResult, Candidates (+14 more)
+
+### Community 34 - "RcmRulesTests"
 Cohesion: 0.05
-Nodes (52): Emp, EmpInfo, CancellationToken, DateTime, IReadOnlyDictionary, IReadOnlyList, Task, ActorCandidate (+44 more)
+Nodes (41): LegacyMaps, ConsequenceMap, FrequencyMap, StrategyTypeMap, PlanRuleInput, AllowPastDueDate, AssignmentActive, IntervalDays (+33 more)
 
-### Community 34 - "WorkRequest"
-Cohesion: 0.06
-Nodes (33): DateTime, WorkRequest, ApprovedBy, ApprovedById, ApprovedDate, Asset, AssetId, CreatedDate (+25 more)
+### Community 35 - "ContractCreationAtomicitySqlTests"
+Cohesion: 0.16
+Nodes (3): ContractCreationAtomicitySqlTests, Rig, NthSaveFaultInterceptor
 
-### Community 35 - "RamAnalysisDto"
-Cohesion: 0.05
-Nodes (38): RamAnalysisDto, CalendarWindowHoursConsidered, EquipmentId, FailureRateLambdaPerHour, FailureSampleSize, InherentAvailabilityDataStatus, InherentAvailabilityPercent, MaintainabilityDataStatus (+30 more)
-
-### Community 36 - "d3.min.js"
-Cohesion: 0.01
-Nodes (164): Ac(), Ai(), ao(), ar(), au(), Av(), bc(), bd() (+156 more)
-
-### Community 37 - ".CreateInfra"
-Cohesion: 0.15
-Nodes (16): ISetupService, Permissions, created, CurrentUser, Fact, ForbidResult, IServiceProvider, skipped (+8 more)
-
-### Community 38 - "r"
+### Community 36 - "IXLWorksheet"
 Cohesion: 0.07
-Nodes (105): A(), g(), ae(), l(), al(), c(), b(), a() (+97 more)
+Nodes (22): RawRow, DateRaw, EquipmentTagRaw, NotesRaw, ParsedDate, PointTagRaw, SourceRaw, SourceRowNumber (+14 more)
 
-### Community 39 - "EngineeringDocumentsController"
-Cohesion: 0.14
-Nodes (17): IEnumerable, Task, IAccessControlService, IReadOnlyList, DateTime, DbUpdateException, HttpGet, HttpPost (+9 more)
+### Community 37 - "PcActor"
+Cohesion: 0.06
+Nodes (17): PcImportResult, Added, ElapsedMs, Errors, Kind, Skipped, Unchanged, Updated (+9 more)
+
+### Community 38 - "JsonDescriptorRenderTests"
+Cohesion: 0.16
+Nodes (7): FormState, Empty, Errors, Values, PemsJson, Options, JsonDescriptorRenderTests
+
+### Community 39 - "PartCatalogueService"
+Cohesion: 0.06
+Nodes (21): PartCatalogueAttributeDto, Name, Value, PcMessage, PartCatalogueRequestStep, ActivatedDate, AssignedEmployeeId, DecidedDate (+13 more)
 
 ### Community 40 - "MrsImportRow"
-Cohesion: 0.03
-Nodes (71): MrsImportBatch, DateTime, ICollection, MrsImportBatch, ImportDate, ImportedBy, ImportedById, MrsImportBatchId (+63 more)
-
-### Community 41 - ".claude/Role/CMMS Production Architecture Gate & Implementation Directive.md"
-Cohesion: 0.04
-Nodes (48): 10. MAINTENANCE TASK, 11. JOB PLAN, 13. WORK ORDER EXECUTION, 14. LABOR MANAGEMENT, 15. SKILLS, QUALIFICATIONS AND CERTIFICATIONS, 16. WORKFORCE ASSIGNMENT, 17. INVENTORY ARCHITECTURE, 18. INVENTORY CONCURRENCY — P0 (+40 more)
-
-### Community 42 - ".github/Role/CMMS Production Architecture Gate & Implementation Directive.md"
-Cohesion: 0.04
-Nodes (48): 10. MAINTENANCE TASK, 11. JOB PLAN, 13. WORK ORDER EXECUTION, 14. LABOR MANAGEMENT, 15. SKILLS, QUALIFICATIONS AND CERTIFICATIONS, 16. WORKFORCE ASSIGNMENT, 17. INVENTORY ARCHITECTURE, 18. INVENTORY CONCURRENCY — P0 (+40 more)
-
-### Community 43 - ".github/skill/VS Code Principal Software Architect Skill — SKILL.md"
-Cohesion: 0.04
-Nodes (48): 10. AUTHORIZATION ARCHITECTURE, 11. SEPARATION OF DUTIES, 12. DATABASE GOVERNANCE, 13. DATABASE DESIGN, 14. ORM GOVERNANCE, 15. API DESIGN, 16. UI ARCHITECTURE, 17. RTL / PERSIAN SYSTEMS (+40 more)
-
-### Community 44 - "chart-4.4.1.umd.min.js"
-Cohesion: 0.01
-Nodes (167): A(), Aa(), addBox(), addControllers(), addElements(), addPlugins(), addScales(), Ai() (+159 more)
-
-### Community 45 - ".vscode/skill/VS Code Principal Software Architect Skill — SKILL.md"
-Cohesion: 0.04
-Nodes (48): 10. AUTHORIZATION ARCHITECTURE, 11. SEPARATION OF DUTIES, 12. DATABASE GOVERNANCE, 13. DATABASE DESIGN, 14. ORM GOVERNANCE, 15. API DESIGN, 16. UI ARCHITECTURE, 17. RTL / PERSIAN SYSTEMS (+40 more)
-
-### Community 46 - "n"
 Cohesion: 0.05
-Nodes (57): at(), ax(), e(), Bg(), cf(), l(), Cg(), dg() (+49 more)
+Nodes (42): MrsImportRow, Batch, CreatedDate, ErrorMessage, MatchedMaterialItem, MatchedMaterialItemId, MatchStatus, Metadata (+34 more)
 
-### Community 47 - ".claude/Role/PEMS Engineering Intelligence — Master Audit & Implementation Directive.md"
-Cohesion: 0.04
-Nodes (46): 10. Confidence Score, 11. Human-in-the-Loop, 12. Cross-Document Reconciliation, 13. Golden Engineering Record, 14. Attribute-Level Reconciliation, 15. Conflict Types, 16. Orphan Detection, 17. Relationship Graph (+38 more)
+### Community 41 - "FakeDisciplineService"
+Cohesion: 0.09
+Nodes (21): ApiTestHost, FakeDisciplineService, DeleteInUse, Rows, ThrowOnQuery, DisciplinesApiControllerTests, DefinitionsApiControllerTests, ApiPage (+13 more)
 
-### Community 48 - ".claude/Role/UIUX/E-05 — PETROCHEMICAL  EPC ENGINEERING MANAGEMENT COCKPIT.md"
-Cohesion: 0.04
-Nodes (46): 10. DISCIPLINE PERFORMANCE MATRIX, 11. DISCIPLINE × STATUS HEATMAP, 12. OVERDUE CONTROL CENTER, 13. TOP MANAGEMENT EXCEPTIONS, 14. DOCUMENT AGING, 15. WORKFLOW BOTTLENECK ANALYSIS, 16. IDC PERFORMANCE, 17. APPROVAL PIPELINE (+38 more)
+### Community 42 - "BlockComponentsTests.Run"
+Cohesion: 0.06
+Nodes (29): HeaderSlot, Html, PemsAccordionHeaderTagHelper, PemsAccordionItemTagHelper, BodyCss, ButtonCss, Parent, Target (+21 more)
 
-### Community 49 - ".github/Role/PEMS Engineering Intelligence — Master Audit & Implementation Directive.md"
+### Community 43 - "WorkSpace"
 Cohesion: 0.04
-Nodes (46): 10. Confidence Score, 11. Human-in-the-Loop, 12. Cross-Document Reconciliation, 13. Golden Engineering Record, 14. Attribute-Level Reconciliation, 15. Conflict Types, 16. Orphan Detection, 17. Relationship Graph (+38 more)
+Nodes (55): SprintStates, WorkItemLinkTypes, WorkItemStatus, Category, IsActive, Name, NameFa, SortOrder (+47 more)
 
-### Community 50 - ".github/Role/UIUX/E-05 — PETROCHEMICAL  EPC ENGINEERING MANAGEMENT COCKPIT.md"
+### Community 44 - "INotificationService"
+Cohesion: 0.05
+Nodes (39): LetterReminderDto, IsDone, IsDue, LetterId, LetterNumber, LetterReminderId, Note, RemindAt (+31 more)
+
+### Community 45 - "PermitGridPaginationTests.CreateController"
+Cohesion: 0.09
+Nodes (12): RoleModuleAction, Action, CreatedDate, Module, RoleModuleActionId, RoleName, ProcurementReadViewSeeder, AddRoleActions (+4 more)
+
+### Community 46 - "WoSection"
+Cohesion: 0.05
+Nodes (42): SectionAccess, Correctable, Editable, Hidden, ReadOnly, WoPhase, Cancelled, Closed (+34 more)
+
+### Community 47 - "FrameOptions"
+Cohesion: 0.03
+Nodes (61): ButtonFrameOptions, As, Css, Disabled, Outline, Size, Tone, ColOptions (+53 more)
+
+### Community 48 - "IncomingRegistrationInput"
+Cohesion: 0.07
+Nodes (26): IncomingCorrespondenceRules, IncomingRegistrationInput, Category, CcEmployeeIds, ConfidentialityLevel, ConfirmDuplicate, ContractId, CorrespondentPartyId (+18 more)
+
+### Community 49 - "ICurrentUserContext"
+Cohesion: 0.07
+Nodes (26): ICurrentUserContext, EmployeeId, Roles, UserId, AttachmentSearchProvider, Access, DisplayName, EntityType (+18 more)
+
+### Community 50 - "TreeItemOptions"
 Cohesion: 0.04
-Nodes (46): 10. DISCIPLINE PERFORMANCE MATRIX, 11. DISCIPLINE × STATUS HEATMAP, 12. OVERDUE CONTROL CENTER, 13. TOP MANAGEMENT EXCEPTIONS, 14. DOCUMENT AGING, 15. WORKFLOW BOTTLENECK ANALYSIS, 16. IDC PERFORMANCE, 17. APPROVAL PIPELINE (+38 more)
+Nodes (58): AntiforgeryField, RelatedActOptions, Form, Icon, Label, Tone, RelatedAddOptions, Action (+50 more)
 
 ### Community 51 - "TransmittalDto"
-Cohesion: 0.03
-Nodes (61): DateTime, RelatedTransmittalDto, Purpose, RevisionNoAtTransmittal, SentDate, Status, TransmittalDate, TransmittalId (+53 more)
+Cohesion: 0.07
+Nodes (27): TransmittalDto, CancelledDate, CancelledReason, Description, From, IsIssued, IsResponseOverdue, Items (+19 more)
 
 ### Community 52 - "VDRItemDto"
 Cohesion: 0.06
-Nodes (34): VDRItemDto, DelayDays, DisciplineCodeRaw, DocumentClass, DocumentDescription, DocumentNumber, DocumentTypeCode, EquipmentId (+26 more)
+Nodes (31): VDRItemDto, DelayDays, DisciplineCodeRaw, DocumentClass, DocumentDescription, DocumentNumber, DocumentTypeCode, EquipmentId (+23 more)
 
-### Community 53 - "WorkOrder"
-Cohesion: 0.01
-Nodes (153): EquipmentClass, FailureCause, FailureEffect, FailureMode, DateTime, ICollection, FailureCause, Code (+145 more)
+### Community 53 - "StrategyImportController"
+Cohesion: 0.08
+Nodes (19): StrategyImportResultDto, Committed, Rows, RowsAccepted, RowsRead, RowsRejected, StrategyImportRowResultDto, Accepted (+11 more)
 
-### Community 54 - "EngineeringDocumentDto"
-Cohesion: 0.04
-Nodes (47): DateTime, EngineeringDocumentDto, ActualDate, ApprovedBy, ApprovedBySignaturePath, ApprovedDate, Area, Attachments (+39 more)
+### Community 54 - "TranslatableText"
+Cohesion: 0.07
+Nodes (12): PageHeaderModel, Section, Title, TranslatableText, Empty, IsEmpty, Texts, TranslatableTextJsonConverter (+4 more)
 
-### Community 55 - "PartCatalogueRequest"
-Cohesion: 0.01
-Nodes (221): PartCatalogueCommodityGroupChild, ChildGroup, ChildGroupId, CommodityGroupChildId, NeedsConfirmation, ParentGroup, ParentGroupId, PartCatalogueCurrency (+213 more)
+### Community 55 - "MaintenanceSpareUsage"
+Cohesion: 0.14
+Nodes (19): MaintenanceSpareUsage, CreatedDate, Description, IsActive, MaintenanceSpareUsageId, MaterialItem, MaterialItemId, Quantity (+11 more)
 
-### Community 56 - "Instrument"
-Cohesion: 0.04
-Nodes (44): DateTime, Instrument, Accuracy, AlarmSetpoint, BarrierRelay, CableNumber, CalibrationInterval, Communication (+36 more)
+### Community 56 - "FailureModeEditDto"
+Cohesion: 0.07
+Nodes (24): FailureCauseOptionDto, Code, FailureCauseId, Name, NameFa, FailureModeEditDto, CauseIds, Code (+16 more)
 
 ### Community 57 - "CriticalityAssessment"
-Cohesion: 0.05
-Nodes (38): DateTime, ICollection, CriticalityAssessment, ApprovedAt, ApprovedBy, AssessmentDate, CalculatedMaxScore, CreatedDate (+30 more)
+Cohesion: 0.08
+Nodes (24): CriticalityAssessment, ApprovedAt, ApprovedBy, AssessmentDate, CalculatedMaxScore, CreatedDate, CriticalityAssessmentId, EnvironmentScore (+16 more)
 
-### Community 58 - "PEMS CMMS Architecture Standard"
-Cohesion: 0.05
-Nodes (43): 10. Failure Management, 11. Failure Master Data, 12. Maintenance History, 13. Spare Parts and Inventory, 14. Inspection and Condition Monitoring, 15. Reliability Analytics, 16. Criticality, 17. Cost (+35 more)
+### Community 58 - "EngineeringDocumentListFilter"
+Cohesion: 0.14
+Nodes (11): EngineeringDocumentListFilter, Area, DisciplineId, MinRevisionCount, Page, PageSize, ProjectId, Search (+3 more)
 
-### Community 59 - "PEMS CMMS Architecture Standard"
-Cohesion: 0.05
-Nodes (43): 10. Failure Management, 11. Failure Master Data, 12. Maintenance History, 13. Spare Parts and Inventory, 14. Inspection and Condition Monitoring, 15. Reliability Analytics, 16. Criticality, 17. Cost (+35 more)
+### Community 59 - "VDRItem"
+Cohesion: 0.06
+Nodes (31): VDRItem, CommercialExpeditorName, DisciplineCodeRaw, DocumentClass, DocumentClassRaw, DocumentDescription, DocumentNumber, DocumentTypeCode (+23 more)
 
-### Community 60 - "MDRImportRowPayload"
-Cohesion: 0.03
-Nodes (61): DateTime, MDRImportBatchDto, FileName, HeaderWarnings, ImportDate, MDRImportBatchId, ProjectId, ProjectName (+53 more)
+### Community 60 - ".Actor"
+Cohesion: 0.19
+Nodes (5): FailingContext, FailNextSave, RcmAssignmentTests, RcmStrategyLifecycleTests, RcmTestFactory
 
 ### Community 61 - "ProjectIntelligenceModule"
 Cohesion: 0.05
-Nodes (41): IWebHostEnvironment, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, ProjectIntelligenceController, DateTime, Dictionary (+33 more)
+Nodes (42): RazorViewRenderer, TestEnv, ApplicationName, ContentRootFileProvider, ContentRootPath, EnvironmentName, WebRootFileProvider, WebRootPath (+34 more)
 
 ### Community 62 - "WorkRequestDetailDto"
-Cohesion: 0.05
-Nodes (46): DateTime, WorkRequestDetailDto, ApprovedByName, ApprovedDate, AssetId, AssetNumber, CanConvert, Description (+38 more)
+Cohesion: 0.04
+Nodes (58): WorkRequestDetailDto, ApprovedByName, ApprovedDate, AssetId, AssetNumber, CanConvert, Description, EquipmentCriticalityClass (+50 more)
 
-### Community 63 - "VENDOR'S DOCUMENTATION"
-Cohesion: 0.05
-Nodes (42): ACRONYMS, APPENDIX - 1 – CONTRACTOR DISCIPLINE CODE, APPENDIX - 2 – CONTRACTOR DOCUMENT TYPE, APPENDIX - 3 -- VENDOR DOCUMENT TYPOLOGY AND CODES, APPENDIX – 4 - MATERIAL CODING, Coding of Approval Results, COMMUNICATION, Contents (Top-Level Material Codes) (+34 more)
+### Community 63 - "FakeCurrentUserContext"
+Cohesion: 0.13
+Nodes (18): LetterSearchProvider, Access, DisplayName, EntityType, MaterialRequisitionSearchProvider, Access, DisplayName, EntityType (+10 more)
 
-### Community 64 - "VENDOR'S DOCUMENTATION"
-Cohesion: 0.05
-Nodes (42): ACRONYMS, APPENDIX - 1 – CONTRACTOR DISCIPLINE CODE, APPENDIX - 2 – CONTRACTOR DOCUMENT TYPE, APPENDIX - 3 -- VENDOR DOCUMENT TYPOLOGY AND CODES, APPENDIX – 4 - MATERIAL CODING, Coding of Approval Results, COMMUNICATION, Contents (Top-Level Material Codes) (+34 more)
+### Community 64 - "TenderService"
+Cohesion: 0.16
+Nodes (5): TenderService, FailOnNthSave, Arrange, FailOnNthSave, TenderContractCreatorEventTests
 
-### Community 65 - "Task"
-Cohesion: 0.09
-Nodes (17): TargetType, Confirmed, CurrentUser, EquipmentId, Fact, ForbidResult, InlineData, IReadOnlyList (+9 more)
+### Community 65 - "ValueTask"
+Cohesion: 0.12
+Nodes (4): InFlightHolder, Spid, InjectedTransientException, SessionKiller
 
-### Community 66 - ".NewAsync"
-Cohesion: 0.23
-Nodes (7): Dictionary, Fact, InlineData, StoreRequisition, Task, Theory, StoreRequisitionLifecycleServiceTests
+### Community 66 - "StoreRequisitionLifecycleServiceTests.A"
+Cohesion: 0.22
+Nodes (5): Fx, Actions, Db, Svc, StoreRequisitionHardeningTests
 
 ### Community 67 - "Document"
-Cohesion: 0.06
-Nodes (36): DateTime, ICollection, Document, ActualDate, AIWorkflowStage, Area, Comments, CommentStatus (+28 more)
+Cohesion: 0.02
+Nodes (86): AIDocumentClassification, AIDocumentClassificationId, Attachment, AttachmentId, ConfidenceLevel, ConfidenceScore, CreatedDate, Document (+78 more)
 
 ### Community 68 - "WorkRequestConcurrencyGateTests"
-Cohesion: 0.15
-Nodes (19): Outcome, Perm, Barrier, CancellationToken, DbContextEventData, DbContextOptions, Exception, Fact (+11 more)
+Cohesion: 0.16
+Nodes (6): Outcome, BarrierInterceptor, FakeNumbering, Outcome, Snapshot, WorkRequestConcurrencyGateTests
 
-### Community 69 - "WorkOrderController"
+### Community 70 - "ProcurementCommunication"
+Cohesion: 0.07
+Nodes (30): ProcurementCommunication, ActionStatus, Attachment, AttachmentId, Body, ProcurementCommunicationId, ProcurementPackage, ProcurementPackageId (+22 more)
+
+### Community 72 - "EquipmentCriticalityGridPaginationTests.CreateController"
 Cohesion: 0.17
-Nodes (10): IReadOnlyList, Task, IWorkOrderReviewService, DateTime, HttpGet, HttpPost, IActionResult, Task (+2 more)
+Nodes (10): EquipmentCriticalityListDto, CriticalityClass, EnvironmentImpact, EquipmentCriticalityId, EquipmentId, EquipmentTagNumber, ProductionImpact, RiskLevel (+2 more)
 
-### Community 70 - ".claude/Role/PEMS CMMS-10a — Execution Baseline & Claude Implementation Directive.md"
-Cohesion: 0.05
-Nodes (40): 10. Competency Foundation, 11. State Machine, 12. Auditability, 13. Numbering, 14. Authorization Boundary, 15. Database Rules, 16. UI Requirements, 17. Validation (+32 more)
+### Community 73 - "IEnumerable"
+Cohesion: 0.02
+Nodes (33): IAccessControlService, IAdminAccountService, IEmployeeLaborRateService, IExecutiveDashboardService, IRolePermissionAdminService, IUserAuthorizationSummaryService, IUserRoleAssignmentSynchronizer, EmployeeLaborRateService (+25 more)
 
-### Community 71 - "PEMS Engineering Domain Blueprint V2"
-Cohesion: 0.05
-Nodes (40): 10. Engineering Tag, 11. Engineering Entity Identity, 12. Engineering Attributes, 13. Document Occurrence, 14. Provenance, 15. AI Extraction, 16. AI Confidence, 17. Relationship Model (+32 more)
-
-### Community 72 - ".CreateController"
-Cohesion: 0.12
-Nodes (24): EquipmentCriticalityListDto, CriticalityClass, EnvironmentImpact, EquipmentCriticalityId, EquipmentId, EquipmentTagNumber, ProductionImpact, RiskLevel (+16 more)
-
-### Community 73 - ".github/Role/PEMS CMMS-10a — Execution Baseline & Claude Implementation Directive.md"
-Cohesion: 0.05
-Nodes (40): 10. Competency Foundation, 11. State Machine, 12. Auditability, 13. Numbering, 14. Authorization Boundary, 15. Database Rules, 16. UI Requirements, 17. Validation (+32 more)
-
-### Community 74 - "PEMS Engineering Domain Blueprint V2"
-Cohesion: 0.05
-Nodes (40): 10. Engineering Tag, 11. Engineering Entity Identity, 12. Engineering Attributes, 13. Document Occurrence, 14. Provenance, 15. AI Extraction, 16. AI Confidence, 17. Relationship Model (+32 more)
-
-### Community 75 - ".CreateController"
-Cohesion: 0.28
-Nodes (8): Controller, Equipment, Fact, IActionResult, RedirectToActionResult, Task, ViewResult, BulkDefineMaintenanceStrategyTests
-
-### Community 76 - "PEMS_ENGINEERING_DASHBOARD_AGENT.md"
-Cohesion: 0.05
-Nodes (39): 10. ENGINEERING HEALTH SCORE, 13. SECURITY MODEL, 14. DISCIPLINE SCOPE, 15. PROJECT FILTER, 16. GLOBAL FILTER CONTRACT, 17. DRILLDOWN CONTRACT, 18. TIME INTELLIGENCE, 19. PERFORMANCE REQUIREMENTS (+31 more)
-
-### Community 77 - "PEMS CMMS Maintenance Organization Blueprint"
-Cohesion: 0.05
-Nodes (38): 10. Reliability Engineering, 11. Maintenance Planning, 12. Shutdown / Turnaround, 13. Team, 14. Crew, 15. Employee, 16. Skill, 17. Required Skill (+30 more)
-
-### Community 78 - "PEMS CMMS Maintenance Organization Blueprint"
-Cohesion: 0.05
-Nodes (38): 10. Reliability Engineering, 11. Maintenance Planning, 12. Shutdown / Turnaround, 13. Team, 14. Crew, 15. Employee, 16. Skill, 17. Required Skill (+30 more)
-
-### Community 79 - "ReliabilityIntelligenceService"
-Cohesion: 0.13
-Nodes (17): Task, RcmFeedbackService, CriticalityFailureMaintenanceRowDto, CriticalityMatrixRowDto, DateTime, IEnumerable, RepeatFailureGroupDto, Status (+9 more)
-
-### Community 80 - "ShiftHandoverDetailDto"
+### Community 74 - "SimopsConflict"
 Cohesion: 0.06
-Nodes (38): DateTime, ShiftHandoverDetailDto, AcknowledgedDate, CompletedDate, HandoverDate, IncomingEmployeeId, IncomingName, Items (+30 more)
+Nodes (34): SimopsConflict, AcceptanceJustification, AcceptedByEmployee, AcceptedByEmployeeId, AcceptedDate, AssessedByEmployee, AssessedByEmployeeId, AssessedDate (+26 more)
 
-### Community 81 - "LetterDto"
-Cohesion: 0.03
-Nodes (64): DateTime, LetterAttachmentDto, AttachmentId, FileName, FilePath, LetterDetailDto, Attachments, Body (+56 more)
+### Community 75 - "PurchaseOrder"
+Cohesion: 0.07
+Nodes (28): PurchaseOrder, ApprovedAt, ApprovedByUserName, ApproverRole, AuthorityRule, AuthorityRuleId, Contract, ContractId (+20 more)
 
-### Community 82 - "PEMS CMMS-10"
+### Community 76 - "StrategyDetailDto"
+Cohesion: 0.04
+Nodes (51): StrategyDetailDto, ApprovedAt, ApprovedBy, Assignments, AuthorEmployeeId, EquipmentClassName, FailureModeName, FailureModeNameFa (+43 more)
+
+### Community 77 - "EnterpriseActorResolver"
+Cohesion: 0.10
+Nodes (14): EmpInfo, EnterpriseActorResolver, Raw, EmployeeId, Priority, Reasons, ActorResolutionWorkflowHook, Fx (+6 more)
+
+### Community 78 - "SignedFileCodec.Parse"
+Cohesion: 0.36
+Nodes (5): FileFormats, ParsedFile, SignatureBlock, SignedFile, SignedFileCodec
+
+### Community 80 - "AdminRecoveryCodeService.RedeemAsync"
+Cohesion: 0.10
+Nodes (18): RecoveryCodeRules, RecoveryCodeRedeemResult, PasswordErrors, RemainingCodes, Status, Succeeded, RecoveryCodeRedeemStatus, LockedOut (+10 more)
+
+### Community 81 - "PartCatalogueListItemDto"
 Cohesion: 0.05
-Nodes (37): 10. Isolation / LOTO, 11. Isolation Point, 12. Gas Testing, 13. SIMOPS Control, 14. Area and Unit Control, 15. Shift Handover, 16. Permit Suspension, 17. Emergency Control (+29 more)
+Nodes (40): PartCatalogueListFilter, FromDate, Page, PageSize, RequestType, Search, SectionId, Status (+32 more)
 
-### Community 83 - "PEMS CMMS-10"
+### Community 82 - "CartableReportDto"
+Cohesion: 0.04
+Nodes (49): CartableBucketDto, CartableReportDto, AnsweredLate, AnsweredOnTime, AvgReferralDays, AvgResponseDays, ByDiscipline, ByMonth (+41 more)
+
+### Community 83 - "LicensingExtensions.AddPemsLicensing"
+Cohesion: 0.09
+Nodes (19): CngInstallKeyStore, EcdsaSigner, KeyProtection, PublicKey, FileInstallKeyStore, IInstallKeyStore, IInstallSigner, KeyProtection (+11 more)
+
+### Community 84 - "INumberingService"
+Cohesion: 0.09
+Nodes (10): INumberingService, ITransmittalNumberingService, TransmittalNumberingService, VdrDocumentNumberingService, VendorDocumentTypologyMatcher, FakeNumberingService, FakeNumbering, FakeNumbering (+2 more)
+
+### Community 85 - "Employee"
+Cohesion: 0.02
+Nodes (104): AIExtractedSpecification, Attachment, AttachmentId, Confidence, CreatedDate, ExtractedSpecificationId, FieldName, FieldValue (+96 more)
+
+### Community 86 - "FakeWorkflowRuntime"
 Cohesion: 0.05
-Nodes (37): 10. Isolation / LOTO, 11. Isolation Point, 12. Gas Testing, 13. SIMOPS Control, 14. Area and Unit Control, 15. Shift Handover, 16. Permit Suspension, 17. Emergency Control (+29 more)
+Nodes (42): PendingTaskDto, AssignedDate, BusinessObjectId, BusinessObjectType, DueDate, IsOverdue, IsPersonal, Module (+34 more)
 
-### Community 84 - "ManufacturerDataBook"
-Cohesion: 0.08
-Nodes (24): DateTime, ICollection, ManufacturerDataBook, CreatedDate, Documents, Equipment, EquipmentId, HardCopyCount (+16 more)
-
-### Community 85 - "WorkflowRuntimeViewModel"
-Cohesion: 0.03
-Nodes (68): WorkflowAvailableAction, ActionType, DeniedReason, IsAllowed, Label, LabelFa, ToStageId, ToStageName (+60 more)
-
-### Community 86 - "WorkflowInstanceDto"
-Cohesion: 0.05
-Nodes (48): DateTime, Dictionary, HashSet, IReadOnlyList, Task, FakeWorkflowRuntime, ExplicitAssignedDates, LastExecutedActionType (+40 more)
-
-### Community 87 - "FunctionalLocation"
-Cohesion: 0.12
-Nodes (15): DateTime, ICollection, FunctionalLocation, Area, Children, Code, CreatedDate, Description (+7 more)
+### Community 87 - "HttpContext"
+Cohesion: 0.13
+Nodes (5): MemoryTempDataProvider, ControllerTempDataExtensions, NullTempDataProvider, NullTempDataProvider, PemsComponentRenderer
 
 ### Community 88 - "HelpStandardReferenceAdminEditDto"
 Cohesion: 0.05
-Nodes (49): HelpStandardReferenceAdminEditDto, ApplicabilityStatus, Code, ContentEn, ContentFa, DisplayOrder, EditionOrYear, EvidencePath (+41 more)
+Nodes (43): HelpStandardReferenceAdminEditDto, ApplicabilityStatus, Code, ContentEn, ContentFa, DisplayOrder, EditionOrYear, EvidencePath (+35 more)
 
-### Community 89 - "MRDto"
+### Community 89 - "IFormFile"
+Cohesion: 0.03
+Nodes (32): IDocumentCommentService, IFileStorageService, IFunctionalLocationImportService, IVdrDocumentNumberingService, IVDRService, IProtectedImageStore, DocumentCommentService, SpyVDRService (+24 more)
+
+### Community 91 - "WorkOrderController"
 Cohesion: 0.06
-Nodes (38): DateTime, MRDto, CreatedDate, Description, DisciplineId, DisciplineName, EquipmentTagNumber, Items (+30 more)
-
-### Community 90 - "CriticalityAssessmentDetailDto"
-Cohesion: 0.04
-Nodes (55): DateTime, CriticalityAssessmentDetailDto, ApprovedAt, ApprovedBy, AssessmentDate, CalculatedMaxScore, CriticalityAssessmentId, EnvironmentScore (+47 more)
-
-### Community 91 - "LetterController"
-Cohesion: 0.15
-Nodes (13): Task, ILetterNumberingService, Task, LetterNumberingService, DateTime, HttpGet, HttpPost, IActionResult (+5 more)
+Nodes (18): ICrewService, DirectPurchaseDemandDto, IWarehouseIntakeService, WarehouseIntakeActor, WarehouseIntakeDto, IsOpen, WarehouseIntakeLineDto, WarehouseIntakeRequisitionRef (+10 more)
 
 ### Community 92 - "WorkRequestWorkflowTests"
-Cohesion: 0.13
-Nodes (17): IReadOnlyList, WorkRequestActor, Dictionary, Error, Id, IReadOnlyList, Task, WorkOrderId (+9 more)
+Cohesion: 0.11
+Nodes (5): WorkflowActionRules, Persian, WorkRequest, WorkRequestService, WorkRequestWorkflowTests
 
-### Community 93 - "MDRImportController"
-Cohesion: 0.16
-Nodes (13): created, skipped, Stream, Task, updated, IMDRImportService, HttpGet, HttpPost (+5 more)
+### Community 93 - "MDRImportRow"
+Cohesion: 0.15
+Nodes (13): MDRImportRow, Batch, CreatedDocumentId, DocumentNumber, IncludeInCommit, IsDuplicate, MDRImportBatchId, MDRImportRowId (+5 more)
 
-### Community 94 - "WorkOrder"
-Cohesion: 0.05
-Nodes (37): WorkOrder, DateTime, WorkOrderDisciplineFinding, CycleNumber, Decision, Discipline, DisciplineId, FailureCauseCode (+29 more)
-
-### Community 95 - "HelpController"
-Cohesion: 0.34
-Nodes (5): HttpPost, IActionResult, Task, ValidateAntiForgeryToken, HelpController
-
-### Community 96 - "Controller"
-Cohesion: 0.04
-Nodes (56): Controller, IEnumerable, Task, IPermissionService, IActionResult, DepartmentController, IActionResult, EmployeeController (+48 more)
-
-### Community 97 - "qu"
+### Community 94 - ".Calc"
 Cohesion: 0.08
-Nodes (10): draw(), fu(), Ia(), lu(), qu, quadraticCurveTo(), Ru, f() (+2 more)
+Nodes (40): NetDemandCalculator, DemandContribution, DemandLine, DemandOrigin, DemandSourceType, StoreRequisitionLine, WorkOrderMaterial, DemandUnitStatus (+32 more)
 
-### Community 98 - ".CreateController"
-Cohesion: 0.31
-Nodes (8): Controller, Fact, ForbidResult, RedirectToActionResult, Task, ViewResult, FakeNumberingService, JobPlanControllerAuthorizationTests
+### Community 95 - "LetterReferralDto"
+Cohesion: 0.03
+Nodes (70): LetterAccessOutcome, Forbidden, NotFound, Ok, LetterApprovalStepDto, ApproverName, ApproverUserId, Comment (+62 more)
 
-### Community 99 - "Transmittal"
-Cohesion: 0.04
-Nodes (53): DateTime, ICollection, Transmittal, CancelledBy, CancelledById, CancelledDate, CancelledReason, CreatedDate (+45 more)
+### Community 96 - "PagedResult"
+Cohesion: 0.02
+Nodes (55): ContractDto, ContractId, ContractNo, ContractValue, Currency, EndDate, ProjectId, ProjectName (+47 more)
 
-### Community 100 - ".CreateController"
-Cohesion: 0.17
-Nodes (18): Controller, CurrentUser, DateTime, Fact, FakeCurrentUserService, ForbidResult, InlineData, Runtime (+10 more)
+### Community 97 - "StateComponentsTests"
+Cohesion: 0.12
+Nodes (17): EmptyStateOptions, Action, Description, Icon, Title, ErrorStateOptions, Action, Description (+9 more)
 
-### Community 101 - "I"
+### Community 98 - "VDRCommentDto"
 Cohesion: 0.06
-Nodes (19): afterDatasetsUpdate(), Ce(), ea(), generateLabels(), getController(), I(), ia(), k() (+11 more)
+Nodes (32): VDRCommentDto, ActionStatus, AttachmentFileName, AttachmentFilePath, AttachmentId, Category, ClosedByName, ClosedDate (+24 more)
 
-### Community 102 - "VDRCommentDto"
+### Community 99 - "TechnicalClassMatcherTests"
+Cohesion: 0.12
+Nodes (9): Entry, TechnicalClassMatcher, TechnicalClassRef, TechnicalClassResolution, Candidates, Reason, Resolved, Status (+1 more)
+
+### Community 100 - "GasTest"
+Cohesion: 0.05
+Nodes (40): GasReading, CreatedDate, GasReadingId, GasTest, GasTestId, IsActive, Parameter, Result (+32 more)
+
+### Community 101 - "NavigationVisibilityTests.SeedAsync"
 Cohesion: 0.06
-Nodes (33): DateTime, VDRCommentDto, ActionStatus, AttachmentFileName, AttachmentFilePath, AttachmentId, Category, ClosedByName (+25 more)
+Nodes (16): NavigationVisibilityOverrideDto, IsVisible, ItemKey, ModifiedBy, ModifiedDate, ModuleKey, NavigationVisibilityOverrideId, Reason (+8 more)
+
+### Community 102 - "UploadGuardTests"
+Cohesion: 0.16
+Nodes (3): UploadGuardTests, UploadPolicyAttribute, Profile
 
 ### Community 103 - "TableExtractionRow"
 Cohesion: 0.04
-Nodes (49): DateTime, ICollection, TableExtractionBatch, CreatedBy, CreatedById, CreatedDate, ExtractionMethod, Rows (+41 more)
+Nodes (45): TableExtractionBatch, CreatedBy, CreatedById, CreatedDate, ExtractionMethod, Rows, SourceAttachment, SourceAttachmentId (+37 more)
 
-### Community 104 - "DocumentSearchRequest"
-Cohesion: 0.09
-Nodes (22): PEMS.Application.AI.Search.Interfaces, PEMS.Application.AI.Search.Services, PEMS.Application.AI.Search.Models, Task, IDocumentSearchAIService, DocumentSearchRequest, Direction, Discipline (+14 more)
+### Community 104 - "WorkflowInstance"
+Cohesion: 0.02
+Nodes (104): EngineeringDocumentWorkflowBackfillService, WorkflowHistoryConfiguration, WorkflowHistory, ActionDate, ActionType, Browser, Comment, Decision (+96 more)
 
-### Community 105 - "BarcodeIdentityDto"
-Cohesion: 0.07
-Nodes (30): DateTime, BarcodeIdentityDto, BarcodeIdentityId, Code, CreatedByName, CreatedDate, DisableReason, LastPrintedDate (+22 more)
+### Community 105 - "ManualContractCreationSqlTests"
+Cohesion: 0.11
+Nodes (11): Env, ManualContractCreationSqlTests, MasterConnection, Seed, CommitFaultInterceptor, CommitProbe, FirstReaderAfterCommitFailureHook, KillSessionAtCommitInterceptor (+3 more)
 
 ### Community 106 - "DocumentRegisterFilter"
-Cohesion: 0.23
-Nodes (11): DocumentRegisterFilter, Disciplines, Page, PageSize, ProjectName, Search, Status, DateTime (+3 more)
+Cohesion: 0.21
+Nodes (7): DocumentRegisterFilter, Disciplines, PageSize, ProjectName, Search, Status, DocumentRegisterQueryTests
 
-### Community 107 - "VDRImportController"
-Cohesion: 0.16
-Nodes (14): created, skipped, Stream, Task, updated, IVDRImportService, HttpGet, HttpPost (+6 more)
+### Community 107 - "OllamaRequest"
+Cohesion: 0.22
+Nodes (9): OllamaRequest, Format, Model, Options, Prompt, Stream, OllamaRequestOptions, NumPredict (+1 more)
 
-### Community 108 - ".ChainAsync"
-Cohesion: 0.19
-Nodes (10): Fact, IEnumerable, InlineData, MemoryStream, Task, Theory, NoActions, OrganizationHierarchyTests (+2 more)
+### Community 108 - "Position"
+Cohesion: 0.04
+Nodes (56): IOrganizationValidationService, OrganizationImportResult, AssignmentsCreated, AssignmentsUpdated, Committed, Errors, PositionsCreated, PositionsUpdated (+48 more)
 
-### Community 109 - "i"
+### Community 109 - "EmployeeQualification"
 Cohesion: 0.06
-Nodes (39): g(), i(), e(), o(), r(), u(), n(), t() (+31 more)
+Nodes (32): EmployeeQualification, CreatedDate, Employee, EmployeeId, EmployeeQualificationId, EvidenceDocumentPath, ExpiryDate, IsActive (+24 more)
 
 ### Community 110 - "OrganizationHierarchyService"
-Cohesion: 0.11
-Nodes (24): CancellationToken, DateTime, IReadOnlyList, Label, Name, Task, DirectManagerInfo, IOrganizationHierarchyService (+16 more)
-
-### Community 111 - ".claude/Role/CMMS Inventory & Material Management Architect & Implementation Engineer.md"
-Cohesion: 0.06
-Nodes (31): 10. Inventory Transaction Ledger, 11. Work Order Integration, 12. Maintenance Spare Usage, 13. Reservation, 14. Material Request, 15. Minimum / Maximum / Reorder, 16. Critical Spare, 17. Serial / Batch / Lot (+23 more)
-
-### Community 112 - ".github/Role/CMMS Inventory & Material Management Architect & Implementation Engineer.md"
-Cohesion: 0.06
-Nodes (31): 10. Inventory Transaction Ledger, 11. Work Order Integration, 12. Maintenance Spare Usage, 13. Reservation, 14. Material Request, 15. Minimum / Maximum / Reorder, 16. Critical Spare, 17. Serial / Batch / Lot (+23 more)
-
-### Community 113 - "validate_data.py"
 Cohesion: 0.08
-Nodes (45): read_rows(), TestAccessibilityGuidance, TestChartsTypographyAndIcons, TestCurrentReactGuidance, TestSemanticColors, _catalog_date(), _check_app_interface_contract(), _check_catalog_contract() (+37 more)
+Nodes (29): DirectManagerInfo, IOrganizationHierarchyService, OrganizationAssignmentRequest, OrganizationChartDto, Nodes, RootCount, Warnings, OrganizationChartNodeDto (+21 more)
 
-### Community 114 - "VDRController"
-Cohesion: 0.30
-Nodes (8): DateTime, HttpGet, HttpPost, IActionResult, IFormFile, Task, ValidateAntiForgeryToken, VDRController
+### Community 111 - "VDRSubmission"
+Cohesion: 0.06
+Nodes (31): VDRSubmission, Attachment, AttachmentId, ClientCommentDate, ClientCommentSheetNo, ClientTransmittal, ClientTransmittalId, ClientTransmittalNo (+23 more)
+
+### Community 112 - "UploadOptions"
+Cohesion: 0.09
+Nodes (25): IMalwareScanner, Enabled, MalwareScanVerdict, Clean, Failed, Infected, NoMalwareScanner, Enabled (+17 more)
+
+### Community 113 - "PemsDateTagHelper"
+Cohesion: 0.08
+Nodes (19): PemsDateTagHelper, Calendar, Css, Disabled, For, Max, Min, Name (+11 more)
+
+### Community 114 - "BarcodeIdentity"
+Cohesion: 0.08
+Nodes (24): BarcodeIdentity, BarcodeIdentityId, Code, CreatedBy, CreatedById, CreatedDate, DisabledBy, DisabledById (+16 more)
 
 ### Community 115 - "PEMS.Tests"
-Cohesion: 0.22
-Nodes (9): coverlet.collector (10.0.1), Microsoft.AspNetCore.Mvc.Testing (10.0.10), Microsoft.EntityFrameworkCore.InMemory (10.0.10), Microsoft.NET.Test.Sdk (18.8.1), xunit (2.9.3), xunit.runner.visualstudio (3.1.5), PEMS.Tests, net10.0 (+1 more)
+Cohesion: 0.15
+Nodes (13): coverlet.collector (10.0.1), Microsoft.AspNetCore.Mvc.Testing (10.0.10), Microsoft.EntityFrameworkCore.InMemory (10.0.10), PEMS.Migrations, net10.0, Microsoft.EntityFrameworkCore.Design (10.0.10), Microsoft.NET.Sdk, PEMS.Tests (+5 more)
 
-### Community 116 - "DocumentAttachment"
+### Community 116 - "ReplenishmentRecommendationService"
 Cohesion: 0.03
-Nodes (74): DateTime, ICollection, DocumentAttachment, AIConfidence, AIError, AIKeywords, AIProcessedDate, AIStatus (+66 more)
+Nodes (68): IReplenishmentRecommendationService, ReplenishmentActor, ReplenishmentCommandResult, ReplenishmentDetails, BlockingIssueCodes, ClosedReason, CoveredByReservations, DemandLastChangedAt (+60 more)
 
-### Community 117 - "IrnReceipt"
+### Community 117 - "Contract"
+Cohesion: 0.02
+Nodes (80): Contract, ApprovedBy, ApprovedById, ApprovedDate, CompletedDate, ContractId, ContractNo, ContractValue (+72 more)
+
+### Community 118 - "ProductionDowntimeServiceTests.SeedBaselineAsync"
+Cohesion: 0.31
+Nodes (4): IProductionDowntimeService, ProductionDowntimeService, FakeNumberingService, ProductionDowntimeServiceTests
+
+### Community 119 - "TaskManagerService"
+Cohesion: 0.13
+Nodes (7): WorkItemHistoryEntryDto, Action, Changes, Timestamp, UserName, TaskItemStatuses, TaskManagerService
+
+### Community 120 - "TagHelperOutput"
 Cohesion: 0.04
-Nodes (48): StorageLocation, Warehouse, DateTime, ICollection, IrnReceipt, CreatedDate, IrnNumber, IrnReceiptId (+40 more)
-
-### Community 118 - ".SeedBaselineAsync"
-Cohesion: 0.09
-Nodes (30): ProductionDowntimeEventDto, CauseCategory, Description, DurationMinutes, EndTime, EquipmentId, EquipmentTagNumber, ProductionDowntimeEventId (+22 more)
-
-### Community 119 - "PermitListDto"
-Cohesion: 0.08
-Nodes (29): PermitListDto, CreatedDate, EquipmentTagNumber, IssuerName, PermitId, PermitNumber, PermitType, Priority (+21 more)
-
-### Community 120 - "os"
-Cohesion: 0.03
-Nodes (26): beforeUpdate(), getLabelAndValue(), getLabelForValue(), initialize(), ks(), labelColor(), labelPointStyle(), ma (+18 more)
+Nodes (11): ListFrameOptions, Attributes, CssClass, BlockTagHelper, ControlTagHelper, ListRender, OverlayTagHelper, PemsTreeItemContext (+3 more)
 
 ### Community 121 - "EquipmentClassCoverageDto"
 Cohesion: 0.06
 Nodes (33): EquipmentClassCoverageDto, Code, DirectActivityCount, DirectFailureModeCount, DirectJobPlanCount, DirectPMTemplateCount, DirectStandardReferenceCount, EquipmentClassId (+25 more)
 
-### Community 122 - "AccessControlService"
-Cohesion: 0.07
-Nodes (37): overrides, AccessDecision, Allowed, Detail, MatchedRoleName, MatchedScopeType, MatchedScopeValue, Reason (+29 more)
-
-### Community 123 - "Code"
-Cohesion: 0.06
-Nodes (42): CauseCodes, ConsequenceCode, EffectCode, ParentCode, Code, Name, NameFa, Order (+34 more)
-
-### Community 124 - "RelationshipController"
-Cohesion: 0.14
-Nodes (12): TargetId, Confirmed, EquipmentId, IReadOnlyList, Task, IRelationshipService, HttpGet, HttpPost (+4 more)
-
-### Community 125 - "an"
+### Community 122 - "WorkflowBinding"
 Cohesion: 0.02
-Nodes (32): addBox(), addElements(), afterEvent(), an(), As(), beforeUpdate(), Bi(), Ci() (+24 more)
+Nodes (77): PEMS.WorkflowPlatform.Configurations, WorkflowBindingConfiguration, WorkflowConfigAuditConfiguration, WorkflowDefinitionConfiguration, WorkflowInstanceConfiguration, WorkflowInstanceStageCandidateConfiguration, WorkflowInstanceStageConfiguration, WorkflowStageConfiguration (+69 more)
 
-### Community 126 - ".CreateController"
-Cohesion: 0.29
-Nodes (8): Controller, DateTime, Fact, ForbidResult, InlineData, Task, Theory, MaterialRequisitionGridPaginationTests
+### Community 123 - "EngineeringDashboardViewModel"
+Cohesion: 0.08
+Nodes (25): EngineeringAttentionQueueItem, DisciplineName, DocumentId, DocumentNo, Reason, RejectionCount, RevisionCount, Severity (+17 more)
 
-### Community 127 - "AccessControlRequest"
-Cohesion: 0.11
-Nodes (29): IDictionary, AccessControlRequest, ActionName, Context, IpAddress, ResourceId, ResourceName, UserId (+21 more)
+### Community 124 - "DefinitionService"
+Cohesion: 0.04
+Nodes (68): DefinitionDetail, DefinitionFailure, Concurrency, Conflict, Invalid, None, NotFound, DefinitionFieldError (+60 more)
 
-### Community 128 - "راهنمای پیاده‌سازی ماژول VDR (Vendor Document Register)"
-Cohesion: 0.07
-Nodes (28): Migration, Migration, Migration, Migration, Migration, Migration, Migration, Migration (+20 more)
-
-### Community 129 - ".ExecuteActionAsync"
-Cohesion: 0.11
-Nodes (29): FakeFacts, FakeHook, CancellationToken, Fact, Func, InvalidOperationException, IReadOnlyCollection, IReadOnlyDictionary (+21 more)
-
-### Community 130 - "راهنمای پیاده‌سازی ماژول VDR (Vendor Document Register)"
-Cohesion: 0.07
-Nodes (28): Migration, Migration, Migration, Migration, Migration, Migration, Migration, Migration (+20 more)
-
-### Community 131 - "ContractController"
-Cohesion: 0.15
-Nodes (17): DateTime, Error, IReadOnlyList, MeetingId, NtpId, RevisionId, Success, Task (+9 more)
-
-### Community 132 - "WorkflowDefinitionRow"
-Cohesion: 0.05
-Nodes (46): DateTime, WorkflowAuditRow, Action, Actor, Current, Details, Previous, Timestamp (+38 more)
-
-### Community 133 - "VDRSubmissionDto"
-Cohesion: 0.07
-Nodes (29): DateTime, VDRSubmissionDto, AttachmentId, ClientCommentDate, ClientCommentSheetNo, ClientTransmittalId, ClientTransmittalNo, CommentSheetAttachmentId (+21 more)
-
-### Community 134 - "search"
-Cohesion: 0.07
-Nodes (42): BM25, detect_domain(), get_cip_brief(), _load_csv(), Load CSV and return list of dicts, Core search function using BM25, Auto-detect the most relevant domain from query, Main search function with auto-domain detection (+34 more)
-
-### Community 135 - "2. Audit Findings By Area"
-Cohesion: 0.09
-Nodes (22): 0. Headline Finding, 1. Repository Baseline (§4/§28.2), 2. Audit Findings By Area, 3. Reconciliation Table: Old Assumption vs. Current Evidence, 4. PHASE 4 AUDIT VERDICT (Decision Gate), A. Verified Fixed (this phase, including the post-implementation verification pass), Area A — MDR Completeness & Register, Area B — Engineering Workspaces & Navigation (+14 more)
-
-### Community 136 - "PEMS.Domain.Entities"
-Cohesion: 0.03
-Nodes (10): PEMS.Domain.Entities, PEMS.Domain.Common, OrganizationDomains, EmployeeAssignmentTypes, LetterReviewDecisions, PartCatalogueApproverSources, PartCatalogueConditions, PartCatalogueStepKinds (+2 more)
-
-### Community 137 - "ShiftHandover"
-Cohesion: 0.07
-Nodes (27): DateTime, ShiftHandover, AcknowledgedDate, CompletedDate, CreatedDate, HandoverDate, IncomingEmployee, IncomingEmployeeId (+19 more)
-
-### Community 138 - "EquipmentIntelligenceProfileDto"
-Cohesion: 0.05
-Nodes (36): EquipmentIntelligenceProfileDto, ActiveMaintenancePlanCount, ActiveStrategyCount, AnyLinkedJobPlanRequiresLOTO, AnyLinkedJobPlanRequiresPermit, AvailabilityPercent, ConditionMonitoringStatus, CorrectiveWorkOrderCount (+28 more)
-
-### Community 139 - "zs"
-Cohesion: 0.03
-Nodes (46): add(), afterDraw(), afterEvent(), afterUpdate(), An(), bt(), buildTicks(), _calculateBarValuePixels() (+38 more)
-
-### Community 140 - "MaterialItemDetailDto"
-Cohesion: 0.03
-Nodes (77): DateTime, InventoryTransactionRowDto, EmployeeName, InventoryTransactionId, MaterialCode, MaterialDescription, Quantity, Reason (+69 more)
-
-### Community 141 - "EngineeringDocumentIntelligenceController"
-Cohesion: 0.21
-Nodes (7): Task, IEngineeringDocumentIntelligenceService, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, EngineeringDocumentIntelligenceController
-
-### Community 142 - "FMEAItemDto"
+### Community 125 - "FMEAItemDto"
 Cohesion: 0.03
 Nodes (59): FMEAAnalysisDto, AnalysisDate, ApprovedAt, ApprovedBy, Description, EquipmentClassId, EquipmentClassName, FMEAAnalysisId (+51 more)
 
-### Community 143 - "WorkOrderConcurrencyGateTests"
-Cohesion: 0.14
-Nodes (18): Barrier, CancellationToken, DbContextEventData, DbContextOptions, Exception, Fact, Func, IInterceptor (+10 more)
+### Community 126 - "FakeWorkflowRuntime"
+Cohesion: 0.13
+Nodes (13): Env, Db, Perms, Runtime, Service, Numbers, WarehouseIntakeServiceTests, FakeWorkflowRuntime (+5 more)
 
-### Community 144 - ".claude/Role/PEMS — CMMS-10b Approval & Authorization Plan Baseline.md"
+### Community 127 - "WorkflowDesignerModel"
 Cohesion: 0.07
-Nodes (26): 10. ISSUE GATE, 11. REJECTION / RETURN, 12. AUDIT, 13. UI REQUIREMENTS, 14. ROLE-BASED UI, 15. SECURITY TESTS, 16. MULTI-ROLE E2E TEST, 17. APPROVAL MATRIX TEST (+18 more)
+Nodes (30): WorkflowAuditRow, Action, Actor, Current, Details, Previous, Timestamp, VersionNumber (+22 more)
 
-### Community 145 - ".github/Role/PEMS — CMMS-10b Approval & Authorization Plan Baseline.md"
-Cohesion: 0.07
-Nodes (26): 10. ISSUE GATE, 11. REJECTION / RETURN, 12. AUDIT, 13. UI REQUIREMENTS, 14. ROLE-BASED UI, 15. SECURITY TESTS, 16. MULTI-ROLE E2E TEST, 17. APPROVAL MATRIX TEST (+18 more)
+### Community 128 - "ButtonOptions"
+Cohesion: 0.10
+Nodes (19): ButtonOptions, CssClass, Disabled, Href, Label, Opens, Outline, RowKey (+11 more)
 
-### Community 146 - "EmployeeController"
-Cohesion: 0.28
-Nodes (9): DateTime, HttpPost, IActionResult, IFormFile, RoleManager, Task, UserManager, ValidateAntiForgeryToken (+1 more)
+### Community 129 - "MDRImportService"
+Cohesion: 0.05
+Nodes (38): MDRImportRowPayload, Area, DisciplineCodeRaw, DocumentNumber, DocumentTypeCode, ExtraWorkRaw, FinalStatusRaw, IsFrozen (+30 more)
 
-### Community 147 - "TableExtractionController"
+### Community 130 - "StorageProviderDto"
+Cohesion: 0.09
+Nodes (22): StorageProviderDto, ActiveRouteCount, AllowDelete, AllowRead, AllowWrite, BaseUrl, Code, HasPassword (+14 more)
+
+### Community 131 - "WorkflowGraphNode"
 Cohesion: 0.06
-Nodes (39): Errors, DateTime, Dictionary, TableExtractionAttachmentListDto, AIStatus, AttachmentId, FileExtension, FileName (+31 more)
+Nodes (31): WorkflowGraphEdge, ActionType, FromStageId, Kind, Label, LabelFa, LabelX, LabelY (+23 more)
+
+### Community 132 - "LicenseVerifier.VerifyBinding"
+Cohesion: 0.09
+Nodes (14): Ed25519, InstallKeyVerifier, TrustedKey, TrustedKeyFile, TrustedKeySet, Keys, LicenseVerifier, VerificationContext (+6 more)
+
+### Community 133 - "VDRSubmissionDto"
+Cohesion: 0.07
+Nodes (28): VDRSubmissionDto, AttachmentId, ClientCommentDate, ClientCommentSheetNo, ClientTransmittalId, ClientTransmittalNo, CommentSheetAttachmentId, CommentSheetFileName (+20 more)
+
+### Community 134 - "CartableServicesTests"
+Cohesion: 0.20
+Nodes (7): IOrganizationSubordinateResolver, OrgRelations, Empty, SubordinateIds, SubordinateInfo, OrganizationSubordinateResolver, CartableServicesTests
+
+### Community 135 - "TagHelper"
+Cohesion: 0.02
+Nodes (119): ListPageComponentTests, PemsAccordionTagHelper, Css, Id, PemsCardTagHelper, Css, PemsListGroupTagHelper, Css (+111 more)
+
+### Community 136 - "PEMS.Domain.Entities"
+Cohesion: 0.02
+Nodes (25): PEMS.Domain.Entities, PEMS.Domain.Common, PEMS.Application.Interfaces.WarehouseIntakeDto, OrganizationDomains, EmployeeAssignmentTypes, IrnRejectionActions, LetterReviewDecisions, NavigationMenuItemKinds (+17 more)
+
+### Community 137 - "FMEAItem"
+Cohesion: 0.02
+Nodes (110): FailureCause, Code, CreatedDate, Description, DisplayOrder, FailureCauseId, IsActive, IsSystemDefault (+102 more)
+
+### Community 138 - "RamAnalysisDto"
+Cohesion: 0.07
+Nodes (29): RamAnalysisDto, CalendarWindowHoursConsidered, EquipmentId, FailureRateLambdaPerHour, FailureSampleSize, InherentAvailabilityDataStatus, InherentAvailabilityPercent, MaintainabilityDataStatus (+21 more)
+
+### Community 139 - "time-series-chart-shell.tsx"
+Cohesion: 0.04
+Nodes (102): DEFAULT_ANIMATION_EASING, bandConfigFromProps(), BandConfigProps, bandKeysByAxis(), defaultBandLabel(), extractBandConfigs(), getChildComponentName(), nonEmptyString() (+94 more)
+
+### Community 140 - "MaterialItemDetailDto"
+Cohesion: 0.07
+Nodes (27): MaterialItemDetailDto, CategoryId, CategoryName, Description, DisciplineId, DisciplineName, IsActive, IsBatchControlled (+19 more)
+
+### Community 141 - "WorkRequestCreateRequest"
+Cohesion: 0.10
+Nodes (20): WorkRequestActor, WorkRequestCreateRequest, AssetId, Description, EquipmentId, FailureEffect, FailureModeId, FunctionalLocationId (+12 more)
+
+### Community 142 - "PartCatalogueRequestAttribute"
+Cohesion: 0.11
+Nodes (18): PcDuplicateProbe, ExcludeRequestId, ManufacturerId, ManufacturerPartNumber, NewManufacturerName, SupplierPartNumber, PartCatalogueRequestAttribute, Name (+10 more)
+
+### Community 143 - "WorkOrderConcurrencyGateTests"
+Cohesion: 0.12
+Nodes (12): WorkOrderCreateRequest, Description, DueDate, EquipmentId, MaintenancePlanId, Priority, WorkOrderNumber, WorkOrderType (+4 more)
+
+### Community 144 - "LetterApprovalStep"
+Cohesion: 0.15
+Nodes (12): LetterApprovalStep, ApproverUserId, Comment, CreatedDate, DecidedDate, Letter, LetterApprovalStepId, LetterId (+4 more)
+
+### Community 145 - "ProductionTarget"
+Cohesion: 0.08
+Nodes (26): ProductionTarget, CreatedDate, IsActive, MaterialItem, MaterialItemId, ProductionOrder, ProductionOrderId, ProductionTargetId (+18 more)
+
+### Community 146 - "ShiftHandoverController"
+Cohesion: 0.12
+Nodes (4): IShiftHandoverService, ShiftHandoverService, SpyShiftHandoverService, ShiftHandoverController
+
+### Community 147 - "JobPlanDetailDto"
+Cohesion: 0.05
+Nodes (45): JobPlanDetailDto, EquipmentClassId, EquipmentClassName, EstimatedDurationHours, IsActive, JobPlanId, JobPlanNumber, LOTORequired (+37 more)
 
 ### Community 148 - "IsolationPointListDto"
 Cohesion: 0.08
-Nodes (26): DateTime, IsolationPointListDto, DeisolatedByName, DeisolatedDate, EnergyType, EquipmentTagNumber, IsolatedByName, IsolatedDate (+18 more)
+Nodes (25): IsolationPointListDto, DeisolatedByName, DeisolatedDate, EnergyType, EquipmentTagNumber, IsolatedByName, IsolatedDate, IsolationMethod (+17 more)
 
-### Community 149 - "d3-org-chart.min.js"
+### Community 149 - "Action"
+Cohesion: 0.09
+Nodes (23): ExecutiveKpiDashboardDto, EquipmentByStatus, From, GeneratedAt, Tiles, To, TopEquipmentByCost, KpiNamedCountDto (+15 more)
+
+### Community 151 - "LetterWorkspaceDashboardDto"
 Cohesion: 0.08
-Nodes (30): addNode(), calculateCompactFlexDimensions(), calculateCompactFlexPositions(), clearHighlighting(), collapse(), collapseAll(), constructor(), diagonal() (+22 more)
+Nodes (27): LetterAgingBucketDto, Count, Key, LetterAttentionItemDto, DaysOverdue, DueDate, LetterId, LetterNumber (+19 more)
 
-### Community 150 - "FunctionalLocationImportService"
-Cohesion: 0.37
-Nodes (7): JsonSerializerOptions, Stream, FunctionalLocationImportService, Fact, Stream, Task, FunctionalLocationImportServiceTests
-
-### Community 151 - "SimopsConflict"
-Cohesion: 0.05
-Nodes (36): DateTime, SimopsConflict, AcceptanceJustification, AcceptedByEmployee, AcceptedByEmployeeId, AcceptedDate, AssessedByEmployee, AssessedByEmployeeId (+28 more)
-
-### Community 152 - ".claude/Role/PEMS Enterprise Organization, Role & Permission Management — RBAC-ABAC Authorization Architecture.md"
+### Community 152 - "ReliabilityDataQualityDto"
 Cohesion: 0.08
-Nodes (25): 10. Separation of Duties, 11. Scope-Based Access, 12. Role Assignment, 13. Temporary / Delegated Roles, 14. Emergency Authorization, 15. Backend Enforcement, 16. Authorization Decision, 17. Workflow-State Authorization (+17 more)
+Nodes (25): ReliabilityDataQualityDto, CompletedOrClosedWorkOrders, CriticalityCoveragePercent, EquipmentReliabilityCoveragePercent, EquipmentWithCriticality, EquipmentWithFailureHistory, EquipmentWithMaintenancePlan, EquipmentWithMaintenanceStrategy (+17 more)
 
-### Community 153 - "TechnicalQueryService"
-Cohesion: 0.20
-Nodes (9): DateTime, IReadOnlyList, Task, ITechnicalQueryService, DateTime, IReadOnlyList, Task, TechnicalQuery (+1 more)
+### Community 154 - "PermitDetailDto"
+Cohesion: 0.04
+Nodes (46): PermitDetailDto, CancellationReason, ClosedDate, CreatedDate, Description, EquipmentId, EquipmentTagNumber, FunctionalLocationBreadcrumb (+38 more)
 
-### Community 154 - "MOCController"
-Cohesion: 0.29
-Nodes (9): DateTime, HttpGet, HttpPost, IActionResult, IFormFile, RequestSizeLimit, Task, ValidateAntiForgeryToken (+1 more)
-
-### Community 155 - ".github/Role/PEMS Enterprise Organization, Role & Permission Management — RBAC-ABAC Authorization Architecture.md"
-Cohesion: 0.08
-Nodes (25): 10. Separation of Duties, 11. Scope-Based Access, 12. Role Assignment, 13. Temporary / Delegated Roles, 14. Emergency Authorization, 15. Backend Enforcement, 16. Authorization Decision, 17. Workflow-State Authorization (+17 more)
+### Community 155 - "PEMS.Web.Models"
+Cohesion: 0.04
+Nodes (21): PEMS.Web.Models, PEMS.Application.Uploads, PEMS.Infrastructure.FileStorage, PEMS.Application.Exceptions, PEMS.Web.Diagnostics, PEMS.Tests.FileStorage, IFtpUploadService, IsConfigured (+13 more)
 
 ### Community 156 - "EquipmentClassRcmFmeaReadinessDto"
 Cohesion: 0.05
-Nodes (37): EquipmentClassRcmFmeaReadinessDto, ApprovedFMEACount, ApprovedRCMCount, Code, DraftFMEACount, DraftRCMCount, EquipmentClassId, EquipmentCount (+29 more)
+Nodes (44): EquipmentClassRcmFmeaReadinessDto, ApprovedFMEACount, ApprovedRCMCount, Code, DraftFMEACount, DraftRCMCount, EquipmentClassId, EquipmentCount (+36 more)
 
-### Community 157 - "ConditionMonitoringPointDto"
+### Community 157 - "NotificationLifecycleTests"
 Cohesion: 0.06
-Nodes (39): DateTime, ConditionMonitoringPassportSummaryDto, HasCbmStrategy, NextDueDate, OpenFindingCount, PointCount, Points, ConditionMonitoringPointDto (+31 more)
+Nodes (16): FakeCaller, ConnectionAborted, ConnectionId, Features, Items, User, UserIdentifier, FakeHubContext (+8 more)
 
-### Community 158 - "CriticalityAssessmentService"
-Cohesion: 0.15
-Nodes (12): Id, Task, ICriticalityAssessmentService, CriticalityFramework, Dictionary, Id, Task, CriticalityAssessmentService (+4 more)
+### Community 158 - "BarcodeIdentityDto"
+Cohesion: 0.10
+Nodes (16): BarcodeIdentityDto, BarcodeIdentityId, Code, CreatedByName, CreatedDate, DisableReason, LastPrintedDate, PrintCount (+8 more)
 
-### Community 159 - "StorageProviderDto"
+### Community 159 - "AssetDetailDto"
 Cohesion: 0.05
-Nodes (47): StorageProviderDto, ActiveRouteCount, AllowDelete, AllowRead, AllowWrite, BaseUrl, Code, HasPassword (+39 more)
+Nodes (42): AssetDetailDto, AssetId, AssetNumber, CommissioningDate, CriticalityClass, Description, EquipmentId, EquipmentName (+34 more)
 
 ### Community 160 - "MrsImportRowDto"
-Cohesion: 0.03
-Nodes (72): Skipped, Count, DateTime, MrsImportBatchDetailDto, Batch, Rows, MrsImportBatchSummaryDto, ApprovedCount (+64 more)
+Cohesion: 0.05
+Nodes (44): MrsImportBatchSummaryDto, ApprovedCount, DuplicateCount, ImportDate, InvalidCount, MatchedCount, MrsImportBatchId, NewCount (+36 more)
 
-### Community 161 - "Task"
-Cohesion: 0.08
-Nodes (25): Built, InvalidOperationException, ArgumentException, CancellationToken, Fact, InvalidOperationException, Task, UnauthorizedAccessException (+17 more)
+### Community 162 - "MaintenanceStrategy"
+Cohesion: 0.01
+Nodes (155): AIReliabilityInsight, AIReliabilityInsightId, Confidence, CreatedDate, Equipment, EquipmentClass, EquipmentClassId, EquipmentId (+147 more)
 
-### Community 162 - "DocumentComment"
-Cohesion: 0.04
-Nodes (52): Document, ContractDocument, ClauseReference, Contract, ContractId, DocumentRevision, DateTime, DocumentComment (+44 more)
-
-### Community 163 - "MDRImportService"
-Cohesion: 0.10
-Nodes (16): IEnumerable, DisciplineMatcher, created, DateTime, Dictionary, HashSet, ILogger, IXLWorksheet (+8 more)
-
-### Community 164 - "Employee"
-Cohesion: 0.03
-Nodes (78): Employee, Position, DateTime, Department, Code, CreatedDate, DepartmentId, Description (+70 more)
-
-### Community 165 - "FilesControllerAccessTests"
-Cohesion: 0.15
-Nodes (15): AttachmentId, FileStreamResult, LocalFileStorageProviderTestable, Stream, Task, LocalFileStorageProvider, DocumentId, Fact (+7 more)
-
-### Community 166 - "PEMS Engineering Intelligence — Master Audit Report"
-Cohesion: 0.08
-Nodes (24): 10. Existing Traceability, 11. Existing Migration State, 12. Duplicate Components, 13. Architectural Weaknesses, 14. Missing Components (confirmed absent, not just weak), 15. Tagsight Benchmark Comparison, 16. Target Architecture (proposed, pending approval), 17. Target Domain Model (+16 more)
-
-### Community 167 - "E-05A — Engineering Management Dashboard: Data Contract & KPI Feasibility Audit"
-Cohesion: 0.08
-Nodes (24): 10. Vendor / Contractor Data Audit, 11. Health Model Feasibility, 12. Data Quality Risks, 13. Query Feasibility, 14. Index / Performance Assessment, 15. Proposed DTO Contract, 16. Proposed Query/API Contract, 17. Recommended E-05B Architecture (+16 more)
-
-### Community 168 - "ConditionMonitoringPoint"
-Cohesion: 0.04
-Nodes (53): DateTime, ICollection, ConditionMonitoringPoint, AlarmThresholdHigh, AlarmThresholdLow, ConditionMonitoringPointId, CreatedDate, Description (+45 more)
-
-### Community 169 - "PEMS Engineering Intelligence — Master Audit Report"
-Cohesion: 0.08
-Nodes (24): 10. Existing Traceability, 11. Existing Migration State, 12. Duplicate Components, 13. Architectural Weaknesses, 14. Missing Components (confirmed absent, not just weak), 15. Tagsight Benchmark Comparison, 16. Target Architecture (proposed, pending approval), 17. Target Domain Model (+16 more)
-
-### Community 170 - "E-05A — Engineering Management Dashboard: Data Contract & KPI Feasibility Audit"
-Cohesion: 0.08
-Nodes (24): 10. Vendor / Contractor Data Audit, 11. Health Model Feasibility, 12. Data Quality Risks, 13. Query Feasibility, 14. Index / Performance Assessment, 15. Proposed DTO Contract, 16. Proposed Query/API Contract, 17. Recommended E-05B Architecture (+16 more)
-
-### Community 171 - "FMEAItem"
-Cohesion: 0.02
-Nodes (112): DateTime, ICollection, FMEAAnalysis, AnalysisDate, ApprovedAt, ApprovedBy, CreatedDate, Description (+104 more)
-
-### Community 172 - "PurchaseOrderDto"
-Cohesion: 0.09
-Nodes (23): PurchaseOrderDto, ContractId, ContractNo, Description, PoId, PoNumber, ProjectId, ProjectName (+15 more)
-
-### Community 173 - ".SeedFullBaselineAsync"
-Cohesion: 0.13
-Nodes (22): AnalysisStats, FailureModeProjection, FMEAAnalysis, FMEAAnalysisDto, Task, FMEAService, Dictionary, Task (+14 more)
-
-### Community 174 - "e"
+### Community 163 - "IsolationPoint"
 Cohesion: 0.07
-Nodes (26): an(), bt(), ch(), Dt(), e(), fh(), Fx(), gg() (+18 more)
+Nodes (29): IsolationPoint, Asset, AssetId, CreatedDate, DeisolatedByEmployee, DeisolatedByEmployeeId, DeisolatedDate, EnergyType (+21 more)
 
-### Community 175 - "E-05B — Engineering Management Dashboard: Architecture & Query Design"
-Cohesion: 0.08
-Nodes (23): 10. Vendor Model, 11. Exception Model, 12. Trend Model, 13. Performance Strategy, 14. Aging Model, 15. Index Strategy, 16. API Contract, 17. DTO Contract (+15 more)
+### Community 165 - "StorageProvidersController"
+Cohesion: 0.10
+Nodes (4): IStorageProviderService, IStorageRouteService, StorageProvidersController, StorageRoutingController
 
-### Community 176 - "E-05B — Engineering Management Dashboard: Architecture & Query Design"
-Cohesion: 0.08
-Nodes (23): 10. Vendor Model, 11. Exception Model, 12. Trend Model, 13. Performance Strategy, 14. Aging Model, 15. Index Strategy, 16. API Contract, 17. DTO Contract (+15 more)
+### Community 166 - "ComponentManifestTests"
+Cohesion: 0.12
+Nodes (7): ComponentManifestCatalog, OptionsError, OptionsValidationResult, Ok, ComponentManifestTests, SnapshotDir, Unannotated
 
-### Community 177 - "ISearchableEntityProvider"
-Cohesion: 0.06
-Nodes (36): ISearchableEntityProvider, DisplayName, EntityType, ContractSearchProvider, DisplayName, EntityType, DepartmentSearchProvider, DisplayName (+28 more)
+### Community 167 - "OverlayOptions.cs"
+Cohesion: 0.03
+Nodes (66): ComponentSkin, Bootstrap, Pems, DrawerOptions, Attributes, Body, CloseLabel, CssClass (+58 more)
 
-### Community 178 - ".CreateController"
-Cohesion: 0.13
-Nodes (15): Controller, Fact, RedirectToActionResult, Stream, Task, ViewResult, ThrowingCommentService, ThrowingFileStorageService (+7 more)
+### Community 168 - "PemsInfoItemTagHelper"
+Cohesion: 0.12
+Nodes (13): InfoGridComponentTests, PemsInfoGridTagHelper, Layout, PemsInfoItemTagHelper, EmptyText, Label, Ltr, Mono (+5 more)
 
-### Community 179 - "PEMS Operations & Production Architecture Specification v1.0"
+### Community 169 - "chart-context.tsx"
 Cohesion: 0.04
-Nodes (45): A. Executive Summary, AA. Traceability Lifecycle, AB. QR/Barcode Architecture, AC. Pallet/Handling Unit Architecture, AD. Inventory Transaction Architecture, AE. State Machines, AF. RBAC / SoD Matrix, AG. KPI Dictionary (ISO 22400-aligned) (+37 more)
+Nodes (99): Area(), AreaProps, AreaGradientDefs(), AreaGradientDefsProps, useAreaLoadingPulseState(), AreaLabelBox, evenlySpacedLabelIndices(), layoutAreaValueLabels() (+91 more)
 
-### Community 180 - "QCController"
-Cohesion: 0.31
-Nodes (6): HttpGet, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, QCController
+### Community 170 - "IPemsComponentRenderer"
+Cohesion: 0.06
+Nodes (16): IPemsComponentRenderer, PemsAlertTagHelper, Css, Tone, TraceId, PemsOffcanvasTagHelper, Css, Side (+8 more)
 
-### Community 181 - "E-05D — Engineering Dashboard UI/UX & Operational Drilldown Implementation"
-Cohesion: 0.09
-Nodes (22): 10. Responsive / RTL Review, 11. Performance Results, 12. Accessibility Review, 13. Test Results, 14. Regression Results — and the Test-Data-Pollution Finding, 15. Graphify Baseline, 16. Graphify Final State, 17. Git Diff Summary (+14 more)
+### Community 171 - "EquipmentClass"
+Cohesion: 0.03
+Nodes (65): EquipmentClass, ChildEquipmentClasses, Code, CreatedDate, Description, DisplayOrder, EquipmentClassId, IsActive (+57 more)
 
-### Community 182 - "2. High-risk performance findings"
-Cohesion: 0.09
-Nodes (22): 1. Current runtime topology, 2. High-risk performance findings, 3. Mandatory test matrix, 4. Primary user journeys, 5. Required metrics, 6. Initial hypotheses to validate, 7. Pass/fail gates, 8. Next implementation step (+14 more)
+### Community 172 - ".NewAsync"
+Cohesion: 0.16
+Nodes (5): MaterialItem, Warehouse, ReplenishmentRecommendationServiceTests, ReplenishmentRulesTests, Result
 
-### Community 183 - "E-05D — Engineering Dashboard UI/UX & Operational Drilldown Implementation"
-Cohesion: 0.09
-Nodes (22): 10. Responsive / RTL Review, 11. Performance Results, 12. Accessibility Review, 13. Test Results, 14. Regression Results — and the Test-Data-Pollution Finding, 15. Graphify Baseline, 16. Graphify Final State, 17. Git Diff Summary (+14 more)
+### Community 173 - "InspectionListItemDto"
+Cohesion: 0.12
+Nodes (16): InspectionListItemDto, ConditionStatus, Description, DueStatus, EquipmentId, InspectionDate, InspectionRecordId, InspectionType (+8 more)
+
+### Community 174 - "StorageException"
+Cohesion: 0.20
+Nodes (5): StorageErrorCodes, StorageException, Code, FileSystemStorageProviderClient, FileSystemStorageProviderClientTests
+
+### Community 175 - "Charts.tsx"
+Cohesion: 0.05
+Nodes (103): fetchDashboard(), App(), BUCKET_COLOR, C, CATEGORICAL, SEVERITY_COLOR, Bar(), BarChart() (+95 more)
+
+### Community 176 - "Alarm"
+Cohesion: 0.15
+Nodes (13): Alarm, Action, AlarmId, AlarmTag, AlarmType, CreatedDate, Description, Instrument (+5 more)
+
+### Community 177 - "NetDemandCollectorTests"
+Cohesion: 0.20
+Nodes (6): DemandCollection, NetDemandIssues, Env, Collector, Db, NetDemandCollectorTests
+
+### Community 178 - "ApiConformanceHost.StartAsync"
+Cohesion: 0.11
+Nodes (9): IDefinitionStore, PublishedDefinition, DefinitionStore, Entry, HeaderAuthHandler, HeaderAuthHandler, ApiExceptionFilter, ApiIdempotencyStore (+1 more)
+
+### Community 179 - "PcReportEquipmentPartRow"
+Cohesion: 0.02
+Nodes (92): PartCatalogueReportPeriods, PcReportActivityDto, People, Rows, PcReportActivityRow, Action, AssignedPartNumber, Date (+84 more)
+
+### Community 180 - ".SeedAsync"
+Cohesion: 0.15
+Nodes (10): RcmPlanAndSchedulingTests, Seed, RcmEnv, Assignments, Commands, Ctx, Permissions, Queries (+2 more)
+
+### Community 182 - "LicenseManager.ApplyLicenceAsync"
+Cohesion: 0.06
+Nodes (31): LicenceArchive, EvaluationInput, EvaluationSettings, LicenseEvaluator, LicenseStatus, NotEnforced, WritesAllowed, FingerprintCollector (+23 more)
+
+### Community 183 - "Func"
+Cohesion: 0.13
+Nodes (7): ICacheService, MemoryCacheService, RedisCacheService, LetterVersioning, PostingScope, NoCache, RetryAnySqlExceptionStrategy
 
 ### Community 184 - "StorageProvider"
+Cohesion: 0.06
+Nodes (41): IStorageRouteResolver, StorageProvider, AllowDelete, AllowRead, AllowWrite, BaseUrl, Code, CreatedDate (+33 more)
+
+### Community 185 - "DefinitionsApiController"
+Cohesion: 0.08
+Nodes (9): ApiControllerBase, ApiETag, ApiFields, ApiFieldError, ApiProblem, DefinitionsApiController, Actor, DisciplineMergePatch (+1 more)
+
+### Community 186 - "RepresentativeDataFiller"
+Cohesion: 0.26
+Nodes (4): Column, ForeignKey, RepresentativeDataFiller, Result
+
+### Community 187 - "RCMAnalysisDto"
 Cohesion: 0.07
-Nodes (29): DateTime, ICollection, StorageProvider, AllowDelete, AllowRead, AllowWrite, BaseUrl, Code (+21 more)
-
-### Community 185 - "TechnicalQueryController"
-Cohesion: 0.29
-Nodes (9): DateTime, HttpGet, HttpPost, IActionResult, IFormFile, RequestSizeLimit, Task, ValidateAntiForgeryToken (+1 more)
-
-### Community 186 - "jn"
-Cohesion: 0.11
-Nodes (5): Be(), jn, ne(), numeric(), xo
-
-### Community 187 - "FunctionalLocationImportController"
-Cohesion: 0.35
-Nodes (7): HttpGet, HttpPost, IActionResult, IFormFile, Task, ValidateAntiForgeryToken, FunctionalLocationImportController
+Nodes (27): RCMAnalysisDto, ApprovedAt, ApprovedBy, Decisions, EquipmentClassId, EquipmentClassName, FMEAAnalysisId, PreparedBy (+19 more)
 
 ### Community 188 - ".CreateAsync"
-Cohesion: 0.06
-Nodes (36): Error, RuleId, Success, Task, IContractApprovalAuthorityRuleService, DateTime, ContractApprovalAuthorityRule, ContractApprovalAuthorityRuleId (+28 more)
+Cohesion: 0.12
+Nodes (12): ContractApprovalAuthorityRule, ContractApprovalAuthorityRuleId, CreatedDate, CriticalityClass, Description, IsActive, MaxValue, MinValue (+4 more)
 
-### Community 189 - "TransmittalService"
+### Community 189 - "CartableSettingsServicesTests.Contacts_SearchAndGroups"
 Cohesion: 0.10
-Nodes (16): Task, ITransmittalService, DbUpdateException, Dictionary, Task, Transmittal, TransmittalService, Fact (+8 more)
+Nodes (19): LetterContactDto, Id, Kind, Name, Subtitle, LetterContactGroupDto, CanEdit, IsPersonal (+11 more)
 
-### Community 190 - "VDRItem"
+### Community 190 - "DocumentComment"
 Cohesion: 0.06
-Nodes (34): VDRSubmission, DateTime, ICollection, VDRItem, CommercialExpeditorName, DisciplineCodeRaw, DocumentClass, DocumentClassRaw (+26 more)
+Nodes (35): DocumentComment, ActionStatus, Attachment, AttachmentId, Category, ClosedByName, ClosedDate, CommentNo (+27 more)
 
-### Community 191 - "PagedResult"
-Cohesion: 0.08
-Nodes (27): PagedResult, Items, Page, PageSize, TotalCount, TotalPages, DateTime, desc (+19 more)
+### Community 191 - "ConditionReadingImportRow"
+Cohesion: 0.12
+Nodes (15): ConditionReadingImportRow, Batch, CommittedConditionReadingId, ConditionReadingImportBatchId, ConditionReadingImportRowId, DuplicateOfConditionReadingId, IncludeInCommit, PayloadJson (+7 more)
 
 ### Community 192 - "CbmDashboardDto"
-Cohesion: 0.06
-Nodes (32): CbmDashboardDto, AlarmCount, AttentionPoints, AttentionPointsTruncated, CriticalCount, DueSoonCbmPlanCount, LinkedFindingCount, OpenFindingCount (+24 more)
-
-### Community 193 - ".SeedFullBaselineAsync"
-Cohesion: 0.11
-Nodes (16): EquipmentTypeExact, NameExact, NamePrefix, IServiceProvider, Task, Task, EquipmentClassCoverageService, Reason (+8 more)
+Cohesion: 0.08
+Nodes (25): CbmDashboardDto, AlarmCount, AttentionPoints, AttentionPointsTruncated, CriticalCount, DueSoonCbmPlanCount, LinkedFindingCount, OpenFindingCount (+17 more)
 
 ### Community 194 - "PartCatalogueDetailsDto"
-Cohesion: 0.02
-Nodes (107): PartCatalogueActionState, ActiveStepKey, CanApprove, CanCancel, CanEdit, CanGenerateNumber, CanRetryRouting, CanReturn (+99 more)
-
-### Community 195 - "_update"
-Cohesion: 0.10
-Nodes (11): beforeLayout(), bs, cn(), getPlugin(), ki(), qi(), Ui(), _update() (+3 more)
-
-### Community 196 - "PEMS EDMS — Phase 2 Implementation Report"
-Cohesion: 0.06
-Nodes (30): 10. Controllers/API Changes, 11. Views and UI Pages Changed, 12. JavaScript and CSS Changes, 13. Authorization Changes, 14. Workflow Changes, 15. Audit Changes, 16. Database Migrations, 17. Data Migration and Backfill (+22 more)
-
-### Community 197 - "MaintenanceEffectivenessDto"
 Cohesion: 0.03
-Nodes (64): DateTime, Dictionary, CriticalityFailureMaintenanceRowDto, CriticalityClass, DistinctEquipmentClassCount, EquipmentClassesWithApprovedRcmCount, EquipmentCount, FailureCount (+56 more)
+Nodes (78): PartCatalogueActionState, ActiveStepKey, CanApprove, CanCancel, CanEdit, CanGenerateNumber, CanRetryRouting, CanReturn (+70 more)
+
+### Community 195 - "EquipmentIntelligenceProfileDto"
+Cohesion: 0.05
+Nodes (36): EquipmentIntelligenceProfileDto, ActiveMaintenancePlanCount, ActiveStrategyCount, AnyLinkedJobPlanRequiresLOTO, AnyLinkedJobPlanRequiresPermit, AvailabilityPercent, ConditionMonitoringStatus, CorrectiveWorkOrderCount (+28 more)
+
+### Community 196 - "FunctionalLocation"
+Cohesion: 0.16
+Nodes (14): FunctionalLocation, Area, Children, Code, CreatedDate, Description, FunctionalLocationId, IsActive (+6 more)
+
+### Community 197 - "CriticalityMatrixRowDto"
+Cohesion: 0.09
+Nodes (22): CriticalityMatrixRowDto, CriticalityClass, EquipmentCount, EquipmentWithFailureHistoryCount, FailureCount, Findings, PmCompliancePercent, RepeatFailureGroupCount (+14 more)
 
 ### Community 198 - "pems-baseline.js"
-Cohesion: 0.13
-Nodes (22): ADMIN_VUS, auditLogSession(), auditLogTrend, dashboardTrend, detailTrend, ensureLoggedIn(), equipmentTrend, errorRate (+14 more)
+Cohesion: 0.08
+Nodes (28): apiErrorRate, ensureLogin(), loginFailures, options, tokenOf(), VUS, ADMIN_VUS, auditLogSession() (+20 more)
 
-### Community 199 - "INotificationService"
-Cohesion: 0.18
-Nodes (9): Task, INotificationService, HttpGet, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, NotificationController (+1 more)
+### Community 199 - "BaseEntity"
+Cohesion: 0.02
+Nodes (98): BaseEntity, CreatedBy, ModifiedBy, RowVersion, TenantId, EmployeeAreaScope, Area, CreatedDate (+90 more)
 
-### Community 200 - ".ExecuteActionAsync"
-Cohesion: 0.19
-Nodes (10): DateTime, IReadOnlyList, Task, DocumentWorkflowService, Fact, Task, EngineeringWorkflowHistorySqlServerDiagnosticTests, IReadOnlyList (+2 more)
+### Community 200 - "NetDemandScope"
+Cohesion: 0.10
+Nodes (20): INetDemandCollector, INetDemandService, IUsableStockService, NetDemandCaller, NetDemandReport, NetDemandScope, MaterialRow, NetDemandCollector (+12 more)
 
-### Community 201 - "DocumentWorkflow"
+### Community 201 - "ContractService"
+Cohesion: 0.08
+Nodes (21): ContractCreateResult, ContractCreatorEventStatus, AlreadyRecorded, ContractNotFound, CreatorUnidentified, NotApplicable, NotRecorded, OutcomeUnknown (+13 more)
+
+### Community 204 - "ApiPolicyGateTests.Actions"
 Cohesion: 0.06
-Nodes (28): EventId, ILogger, ILoggerProvider, LogLevel, DateTime, DocumentWorkflow, ActionBy, ActionById (+20 more)
+Nodes (9): ApiPolicyGateTests, HelpAdminAuthorizationTests, CmmsEndpointSecurityTests, RecordingProxy, Calls, Target, Stub, On (+1 more)
 
-### Community 202 - "DocumentRegisterController"
-Cohesion: 0.13
-Nodes (16): SavedFilterDto, IsDefault, Name, QueryString, SavedFilterId, Task, ISavedFilterService, Task (+8 more)
-
-### Community 203 - "PcActor"
-Cohesion: 0.05
-Nodes (45): ExistingPart, IXLCell, OrgIssue, PartCatalogueAttributeDto, Name, Value, PcImportResult, Added (+37 more)
-
-### Community 204 - ".CreateController"
-Cohesion: 0.35
-Nodes (7): Controller, DateTime, Fact, InlineData, Task, Theory, StoreRequisitionGridPaginationTests
-
-### Community 205 - "PEMS Operations Phase 2D — Packaging Technical Specification"
-Cohesion: 0.04
-Nodes (48): 10. Domain Concepts, 11. Package Definition, 12. PackagingRun Definition, 13. PackagingInput, 14. PackagingOutput, 15. PackagingLoss, 16. PackagingEvent, 17. HandlingUnit (+40 more)
+### Community 205 - "InventoryTransaction"
+Cohesion: 0.09
+Nodes (28): InventoryTransaction, Employee, EmployeeId, InventoryTransactionId, MaterialItemId, MaterialReservation, MaterialReservationId, ProductionBatch (+20 more)
 
 ### Community 206 - "PartCatalogueRulesAndRoutingTests"
+Cohesion: 0.07
+Nodes (28): PartCatalogueValidationContext, AllowedGroup1Ids, AllowedGroup2Ids, CurrencyCode, DrawingOrDocumentAttachmentCount, EquipmentLineCount, ExistingManufacturers, ExistingPartResolved (+20 more)
+
+### Community 208 - "PlanInputDto"
+Cohesion: 0.03
+Nodes (64): AssignmentChoiceDto, AssignmentId, EquipmentClassName, FailureModeName, FailureModeNameFa, Label, StrategyType, StrategyVersion (+56 more)
+
+### Community 209 - "InspectionTestPlan"
+Cohesion: 0.02
+Nodes (111): InspectionChecklist, CreatedDate, InspectionChecklistId, InspectionRecord, InspectionRecordId, IsPassed, ItemName, Remarks (+103 more)
+
+### Community 210 - "plan_sync.py"
+Cohesion: 0.11
+Nodes (22): check(), cmd_new(), cmd_pull(), cmd_push(), cmd_reconcile(), cmd_report(), cmd_set(), cmd_show() (+14 more)
+
+### Community 211 - "ExecutiveDashboardRequest"
+Cohesion: 0.08
+Nodes (29): DashboardCountDto, Label, Value, DashboardOperationsDto, AvgCompletionDays, ByPriority, CriticalWorkOrders, Equipment (+21 more)
+
+### Community 212 - "EngineeringDocumentsController"
 Cohesion: 0.04
-Nodes (53): IEndpointRouteBuilder, IReadOnlySet, IsCapital, IsCritical, Max, Min, HashSet, Normalized (+45 more)
+Nodes (15): AccessControlRequest, ActionName, Context, IpAddress, ResourceId, ResourceName, UserId, IDocumentHoldService (+7 more)
 
-### Community 207 - ".CreateController"
-Cohesion: 0.31
-Nodes (9): Controller, DateTime, Equipment, Fact, ForbidResult, InlineData, Task, Theory (+1 more)
+### Community 213 - "CmmsOperationsDashboardDto"
+Cohesion: 0.08
+Nodes (25): CmmsOperationsDashboardDto, GeneratedAt, MaintenanceTypeBreakdown, PmCompliance, WorkOrderAssigned, WorkOrderCancelled, WorkOrderClosed, WorkOrderCompleted (+17 more)
 
-### Community 208 - "ProductionDowntimeEvent"
-Cohesion: 0.05
-Nodes (37): DateTime, ProductionDowntimeEvent, CauseCategory, CreatedDate, Description, EndTime, Equipment, EquipmentId (+29 more)
-
-### Community 209 - "AccountController"
-Cohesion: 0.28
-Nodes (11): Authorize, AllowAnonymous, HttpGet, HttpPost, IActionResult, ILogger, Task, UserManager (+3 more)
-
-### Community 210 - "E-05C — Engineering Dashboard Quality Query Implementation Gate"
-Cohesion: 0.10
-Nodes (20): 10. Graphify Result, 11. Git Diff Summary, 12. Known Limitations, 13. Architecture Decisions Confirmed, 14. E-05D Readiness Assessment, 1. Executive Summary, 2.1 What "First-Pass Approval" actually means (verified, not assumed), 2.2 Validated definition (+12 more)
-
-### Community 211 - "E-05C — Engineering Dashboard Quality Query Implementation Gate"
-Cohesion: 0.10
-Nodes (20): 10. Graphify Result, 11. Git Diff Summary, 12. Known Limitations, 13. Architecture Decisions Confirmed, 14. E-05D Readiness Assessment, 1. Executive Summary, 2.1 What "First-Pass Approval" actually means (verified, not assumed), 2.2 Validated definition (+12 more)
-
-### Community 212 - "RolePermissionGrant"
-Cohesion: 0.06
-Nodes (32): Approve, Create, Edit, IAsyncLifetime, DateTime, ChatMessage, ChatMessageId, Content (+24 more)
-
-### Community 213 - "ReliabilitySimulationDto"
-Cohesion: 0.09
-Nodes (23): ReliabilitySimulationDto, DataStatus, EquipmentId, InputBeta, InputEta, InputMTTRHours, Iterations, MeanAvailabilityPercent (+15 more)
-
-### Community 214 - "BarcodeResolutionResultDto"
-Cohesion: 0.29
-Nodes (6): BarcodeResolutionResultDto, BarcodeIdentityId, ErrorCode, ErrorMessage, Status, Success
+### Community 214 - "ElectricalEquipment"
+Cohesion: 0.12
+Nodes (16): ElectricalEquipment, CreatedDate, Description, ElectricalEquipmentId, Equipment, EquipmentId, EquipmentType, IsActive (+8 more)
 
 ### Community 215 - "EquipmentMaintenanceIntelligenceDto"
 Cohesion: 0.05
-Nodes (39): EquipmentMaintenanceIntelligenceDto, ApplicableActivities, ApplicableFailureModes, ApplicableStandardReferences, CandidateJobPlans, CandidatePMTemplates, ClassificationConfidence, ClassificationSource (+31 more)
+Nodes (40): EquipmentMaintenanceIntelligenceDto, ApplicableActivities, ApplicableFailureModes, ApplicableStandardReferences, CandidateJobPlans, CandidatePMTemplates, ClassificationConfidence, ClassificationSource (+32 more)
 
-### Community 216 - "INumberingService"
+### Community 216 - "Theory"
 Cohesion: 0.03
-Nodes (72): Title, JobPlanId, JobPlanNumber, JobPlanDetailDto, EquipmentClassId, EquipmentClassName, EstimatedDurationHours, IsActive (+64 more)
+Nodes (11): LetterResponseHistory, ApiPipelineBaselineTests, ShiftHandoverNavigationExposureTests, LetterComplianceTests, FileSecurityHttpTests, FrameState, ConfirmScriptTests, LiteralTextGateTests (+3 more)
 
-### Community 217 - "test_design_system_mode.py"
-Cohesion: 0.08
-Nodes (21): _contrast_ratio(), _derive_dark_palette(), _palette_is_dark(), _query_wants_dark(), WCAG relative luminance of a #RRGGBB string, or None if unparseable., True when a colors.csv row's Background is a dark surface., WCAG contrast ratio for two hex colors, or None if either is invalid., True when a styles.csv row describes itself as dark-first. (+13 more)
+### Community 217 - "MaterialRequisition"
+Cohesion: 0.09
+Nodes (23): MaterialRequisition, CreatedDate, Description, Discipline, DisciplineId, EngineeringDocuments, EquipmentTagNumber, IsActive (+15 more)
 
-### Community 218 - "FtpStorageProviderClient"
-Cohesion: 0.26
-Nodes (9): AsyncFtpClient, CancellationToken, Stream, Task, FtpStorageProviderClient, Stream, Task, FtpUploadService (+1 more)
+### Community 218 - "NetDemandServiceTests.NewAsync"
+Cohesion: 0.20
+Nodes (10): Env, Db, Perms, Svc, NetDemandServiceTests, Env, Db, Demand (+2 more)
 
-### Community 219 - "به‌روزرسانی: Engineering Document Intelligence (طراحی الهام‌گرفته از AVEVA Engineering)"
-Cohesion: 0.29
-Nodes (7): Migration, به‌روزرسانی: Engineering Document Intelligence (طراحی الهام‌گرفته از AVEVA Engineering), جریان کامل (دقیقاً طبق درخواست), داده‌محوری به‌سبک AVEVA Engineering, طراحی UI (مطابق الگوی موفق VDR که خواستید), محدودیت شفاف, چه چیزی استخراج و پیشنهاد می‌شود (همان موتور AI که برای VDR ساخته شد، توسعه‌یافته)
+### Community 219 - "EquipmentReliabilityDto"
+Cohesion: 0.17
+Nodes (12): EquipmentReliabilityDto, AvailabilityPercent, EquipmentId, EquipmentType, FailureCount, FailureHistory, FirstFailureDate, LastFailureDate (+4 more)
 
 ### Community 220 - "FailureRecord"
-Cohesion: 0.08
-Nodes (41): Downtime, IReliabilityService, DateTime, FailureRecord, CorrectiveAction, CreatedDate, Description, DowntimeHours (+33 more)
-
-### Community 221 - "TechnicalQuery"
-Cohesion: 0.07
-Nodes (28): DateTime, ICollection, TechnicalQuery, Attachments, CreatedDate, Description, Discipline, DisciplineId (+20 more)
-
-### Community 222 - "به‌روزرسانی: Engineering Document Intelligence (طراحی الهام‌گرفته از AVEVA Engineering)"
-Cohesion: 0.29
-Nodes (7): Migration, به‌روزرسانی: Engineering Document Intelligence (طراحی الهام‌گرفته از AVEVA Engineering), جریان کامل (دقیقاً طبق درخواست), داده‌محوری به‌سبک AVEVA Engineering, طراحی UI (مطابق الگوی موفق VDR که خواستید), محدودیت شفاف, چه چیزی استخراج و پیشنهاد می‌شود (همان موتور AI که برای VDR ساخته شد، توسعه‌یافته)
-
-### Community 223 - ".NewItem"
-Cohesion: 0.32
-Nodes (8): Item, Fact, InlineData, MaterialItem, Task, Theory, MaterialItemLowStockPaginationTests, Stock
-
-### Community 224 - ".CreateController"
-Cohesion: 0.26
-Nodes (9): Controller, Fact, ForbidResult, InlineData, RedirectToActionResult, Task, Theory, ViewResult (+1 more)
-
-### Community 225 - "WorkflowAuthorizationContext"
-Cohesion: 0.08
-Nodes (29): CancellationToken, Task, AccessControlWorkflowAuthorizationHook, CancellationToken, Dictionary, HashSet, Task, WorkOrderAuthorizationHook (+21 more)
-
-### Community 226 - "PEMS.Application.AI.Parser"
-Cohesion: 0.11
-Nodes (9): PEMS.AI.Services, PEMS.Application.AI.Parser, PEMS.Application.AI.Models, PEMS.Application.AI.Services, PEMS.AI.Models, PEMS.Application.AI.Interfaces, PEMS.AI.Interfaces, JsonSerializerOptions (+1 more)
-
-### Community 227 - "MaterialItemController"
-Cohesion: 0.45
-Nodes (5): HttpPost, IActionResult, Task, ValidateAntiForgeryToken, MaterialItemController
-
-### Community 228 - "Tailwind CSS Utility Reference"
 Cohesion: 0.05
-Nodes (43): Arbitrary Values, Aspect Ratio, Background Colors, Border Color, Border Radius, Border Style, Border Width, Borders (+35 more)
+Nodes (35): FailureParetoItemDto, Count, CumulativePercent, DowntimeHours, Key, FailureRecord, CorrectiveAction, CreatedDate (+27 more)
 
-### Community 229 - "VDRService"
-Cohesion: 0.17
-Nodes (12): Task, VDRItem, VDRService, DateTime, DbContextOptions, Fact, InlineData, Project (+4 more)
+### Community 221 - "PartCatalogueDuplicateDetectionTests"
+Cohesion: 0.06
+Nodes (27): PcDuplicateResult, AutoMergeAllowed, Candidates, InFlightRequestsWithSameMpn, IsAmbiguous, PcExistingPartHit, Description, ManufacturerName (+19 more)
+
+### Community 222 - "funnel-chart.tsx"
+Cohesion: 0.06
+Nodes (58): clipRevealTransition(), DEFAULT_ANIMATION_DURATION_MS, DEFAULT_CHART_ENTER_TRANSITION, ChartRevealClip(), ChartRevealClipMode, ChartRevealClipProps, FunnelChart(), FunnelChartProps (+50 more)
+
+### Community 223 - "DateTimeOffset"
+Cohesion: 0.11
+Nodes (13): ManualTime, FixedClock, Now, FixedClock, Now, AuditRow, CustomerRow, Ledger (+5 more)
+
+### Community 224 - "UploadGuardTests.FilterContext"
+Cohesion: 0.13
+Nodes (3): TempDataFactory, Last, UploadGuardFilter
+
+### Community 225 - "WorkOrderAuthorizationHook.AuthorizeAsync"
+Cohesion: 0.13
+Nodes (8): AccessControlWorkflowAuthorizationHook, WorkOrderAuthorizationHook, FakeAuthHook, Calls, GrantedPermissions, IWorkflowAuthorizationHook, WorkflowAuthorizationContext, WorkflowAuthorizationResult
+
+### Community 226 - "Team"
+Cohesion: 0.04
+Nodes (50): MaintenanceGroup, Children, Code, CreatedDate, Description, Discipline, DisciplineId, IsActive (+42 more)
+
+### Community 227 - "Env"
+Cohesion: 0.08
+Nodes (27): UserRoleAssignmentSynchronizer, EmployeeRoleDisciplineManagementTests, Env, Ctx, Roles, Sp, Users, StubLabor (+19 more)
+
+### Community 228 - "LetterTag"
+Cohesion: 0.09
+Nodes (20): LetterTag, CreatedDate, Letter, LetterId, LetterTagId, Tag, TagId, Tag (+12 more)
 
 ### Community 230 - "RcmReviewRecommendationDto"
 Cohesion: 0.08
-Nodes (25): DateTime, GenerateEvidenceResultDto, GeneratedForTagNumbers, RecommendationsGenerated, StrategiesEvaluated, StrategiesSkippedAlreadyPending, RcmReviewRecommendationDto, EquipmentId (+17 more)
+Nodes (24): GenerateEvidenceResultDto, GeneratedForTagNumbers, RecommendationsGenerated, StrategiesEvaluated, StrategiesSkippedAlreadyPending, RcmReviewRecommendationDto, EquipmentId, EquipmentTagNumber (+16 more)
 
 ### Community 231 - "CorrespondenceReportDto"
-Cohesion: 0.08
-Nodes (24): Incoming, Outgoing, Discipline, Month, CorrespondenceReportDto, AvgReferralCompletionDays, ByDiscipline, ByStatus (+16 more)
+Cohesion: 0.13
+Nodes (14): CorrespondenceReportDto, AvgReferralCompletionDays, ByDiscipline, ByStatus, OverdueReferrals, TopSenders, TopTags, TotalIncoming (+6 more)
 
-### Community 232 - ".SeedAsync"
-Cohesion: 0.24
-Nodes (9): Art, IServiceProvider, Task, Art, Cat, HelpKnowledgeSeeder, Std, RelatedCodes (+1 more)
+### Community 232 - "RelationshipExplorationDto"
+Cohesion: 0.06
+Nodes (39): RelationshipExplorationDto, Bids, ContractNTPs, Contracts, Documents, Equipment, InspectionTestPlans, KickoffMeetings (+31 more)
 
-### Community 233 - "PEMS Workflow Platform — Phase 2 Closure Audit (Work Request)"
-Cohesion: 0.08
-Nodes (25): 10. Browser QA (method and coverage), 11. RTL (Persian) QA, 12. LTR (English) QA, 13. Action / security QA (browser), 14. Cancel QA, 15. Conversion QA, 16. Legacy request QA, 17. Participant model (+17 more)
+### Community 233 - "RcmReviewRecommendation"
+Cohesion: 0.09
+Nodes (22): RcmReviewRecommendation, CreatedDate, Equipment, EquipmentId, Evidence, FailureCountInWindow, GeneratedDate, IsActive (+14 more)
 
-### Community 234 - "PEMS Phase 2C-2 — Shared Resource Workspace Audit"
-Cohesion: 0.05
-Nodes (43): Engineering Document (`Views/EngineeringDocuments/Details.cshtml`), Equipment (`Views/Equipment/Details.cshtml`) — یافته‌ی اصلاحی این فاز, PEMS Phase 2C-2 — Shared Resource Workspace Audit, Permit (`Views/Permit/Details.cshtml`) — منبع پیچیده‌ترین اکشن‌ها, VDR (`Views/VDR/Details.cshtml`), Work Order (`Views/WorkOrder/Details.cshtml`), آنچه CMMS کم دارد (اصلاح‌شده نسبت به فرض قبلی), آنچه EDMS خوب انجام می‌دهد (+35 more)
+### Community 234 - "Sprint"
+Cohesion: 0.11
+Nodes (13): Sprint, CompletedDate, CreatedDate, EndDate, Goal, Name, SprintId, StartDate (+5 more)
 
 ### Community 235 - "SimopsConflictListDto"
-Cohesion: 0.05
-Nodes (47): DateTime, SimopsCandidateDto, EquipmentTagNumber, ExistingConflictId, ExistingConflictStatus, FunctionalLocationName, MatchBasis, PermitId (+39 more)
+Cohesion: 0.04
+Nodes (46): SimopsCandidateDto, EquipmentTagNumber, ExistingConflictId, ExistingConflictStatus, FunctionalLocationName, MatchBasis, PermitId, PermitNumber (+38 more)
 
-### Community 236 - "slide_search_core.py"
-Cohesion: 0.08
-Nodes (36): format_context(), format_result(), main(), Format a single search result for display, Format contextual recommendations for display., BM25, calculate_pattern_break(), detect_domain() (+28 more)
+### Community 236 - "test_plan_sync.py"
+Cohesion: 0.12
+Nodes (4): KeyTests, file_node(), node(), EditCommandTests
 
-### Community 237 - "DocumentWorkflowController"
-Cohesion: 0.10
-Nodes (24): DateTime, IReadOnlyList, Task, DocumentWorkflowHistoryItemDto, ActionDate, ActionType, ActorName, Comment (+16 more)
+### Community 237 - "Task"
+Cohesion: 0.12
+Nodes (5): WorkRequestPolicyOptions, EnforceSegregationOfDuties, WorkRequestRiskAssessor, WorkRequestRiskResult, WorkRequestAuditFixTests
 
 ### Community 238 - "DashboardViewModel"
 Cohesion: 0.07
-Nodes (26): Dictionary, DashboardViewModel, AIAlertsCount, DocumentsByStatus, DocumentsCount, EquipmentCount, KpiCards, ModulesPending (+18 more)
+Nodes (29): DashboardViewModel, ActiveContractsCount, AIAlertsCount, DocumentsByStatus, DocumentsCount, EquipmentCount, KpiCards, ModulesPending (+21 more)
 
-### Community 239 - ".RunPagedQuery"
-Cohesion: 0.32
-Nodes (8): Ids, PageSize, Fact, InlineData, Task, Theory, AdminUsersGridPaginationTests, Total
-
-### Community 240 - ".SeedFromLegacyAsync"
-Cohesion: 0.07
-Nodes (34): DateTime, Permission, ActionName, CreatedDate, Description, IsActive, IsDestructive, Name (+26 more)
-
-### Community 241 - "PEMS EDMS — G-28 Context-Corrected Remediation Design: External Approval Recognition"
+### Community 239 - "DynamicSidebarTests"
 Cohesion: 0.09
-Nodes (21): 10. Architecture Options (Corrected), 11. Interim Safeguards (documentation-only, no implementation performed), 12. Business Decisions Still Required, 13. Future Implementation Phases, 14. Data-Preservation Requirements, 15. Explicit Non-Goals, 16. Explicit Statement, 1. Corrected Executive Verdict (+13 more)
+Nodes (9): Descriptors, ActionDescriptors, DynamicSidebarTests, Flag, IsEnabled, LegacyLink, PassThroughLocalizer, Repl (+1 more)
 
-### Community 242 - "DocumentIntelligenceDetailDto"
-Cohesion: 0.04
-Nodes (47): DateTime, Dictionary, AIDocumentClassificationDto, AIDocumentClassificationId, AttachmentId, ConfidenceScore, DocumentId, PredictedDisciplineCode (+39 more)
-
-### Community 243 - "GlobalSearchResponseDto"
-Cohesion: 0.09
-Nodes (22): GlobalSearchResponseDto, EntityType, HasMore, Items, Page, PageSize, Query, TotalCount (+14 more)
-
-### Community 244 - "Letter"
-Cohesion: 0.04
-Nodes (49): DateTime, ICollection, Letter, ApprovedById, ApprovedDate, Attachments, Body, ClosedDate (+41 more)
-
-### Community 245 - "Workflow Platform — Phase 3A: Work Order Governance Baseline"
-Cohesion: 0.08
-Nodes (25): 10. Maintenance Planning rules (Baseline), 11. Originating-discipline rules (Baseline), 12. Responsible maintenance discipline rules (Baseline), 13. Separation of duties (Baseline + Derived; enforced, not advisory), 14. Emergency rules (Baseline), 15. Work Order type matrix (repository types only), 16. Multi-Discipline Review architecture, 17. Workflow instance identity model (+17 more)
-
-### Community 246 - "PredictiveMaintenanceResult"
-Cohesion: 0.08
-Nodes (28): DateTime, ICollection, PredictiveMaintenanceModel, Algorithm, CreatedDate, Description, IsActive, PredictiveMaintenanceModelId (+20 more)
-
-### Community 247 - ".CreateController"
-Cohesion: 0.34
-Nodes (7): Controller, Fact, ForbidResult, RedirectToActionResult, Task, ViewResult, MaintenanceStrategyControllerAuthorizationTests
-
-### Community 248 - "WorkflowStage"
-Cohesion: 0.02
-Nodes (132): PEMS.WorkflowPlatform.Configurations, IServiceProvider, Task, ContractWorkflowSeeder, IServiceProvider, Task, EngineeringDocumentWorkflowSeeder, IServiceProvider (+124 more)
-
-### Community 249 - "WorkflowActor"
-Cohesion: 0.06
-Nodes (45): IServiceProvider, Task, PartCatalogueWorkflowSeeder, IServiceProvider, Task, WorkOrderLifecycleWorkflowSeeder, IServiceProvider, Task (+37 more)
-
-### Community 250 - "StorageRouteUpsertRequest"
-Cohesion: 0.12
-Nodes (21): StorageRouteUpsertRequest, DocumentType, IsDefault, IsEnabled, Module, Priority, RelativeRootPath, StorageProviderId (+13 more)
-
-### Community 251 - "IsolationPoint"
-Cohesion: 0.07
-Nodes (30): DateTime, IsolationPoint, Asset, AssetId, CreatedDate, DeisolatedByEmployee, DeisolatedByEmployeeId, DeisolatedDate (+22 more)
-
-### Community 252 - "41. FINAL REPORT FORMAT"
-Cohesion: 0.12
-Nodes (17): 41. FINAL REPORT FORMAT, Architecture Changes, Backend Changes, Browser Validation, Database / Migration Changes, Drilldown Matrix, Executive Summary, Final Verdict (+9 more)
-
-### Community 253 - "NumberingService"
-Cohesion: 0.18
-Nodes (13): Config, DbUpdateException, Dictionary, Func, Task, Config, NumberingService, Fact (+5 more)
-
-### Community 254 - ".SeedAsync"
-Cohesion: 0.25
-Nodes (9): Exception, DocumentFrozenException, ctx, doc, Fact, InvalidOperationException, repo, Task (+1 more)
-
-### Community 255 - "EngineeringReportDto"
-Cohesion: 0.08
-Nodes (23): Issued, ProjectName, Discipline, Month, EngineeringReportDto, ApprovedCount, AvgDaysToApprove, ByDiscipline (+15 more)
-
-### Community 256 - "MOC"
-Cohesion: 0.05
-Nodes (40): DateTime, ICollection, MOC, ApprovedById, ApprovedDate, Attachments, ChangeType, ClosedById (+32 more)
-
-### Community 257 - "scripts/core.py"
-Cohesion: 0.08
-Nodes (40): _contains_phrase(), _domain_keywords(), _exact_match_diagnostic(), _exact_row_identity(), _file_signature(), _get_bm25(), _legacy_successor_guidance(), _load_csv() (+32 more)
-
-### Community 258 - ".CreateInfra"
-Cohesion: 0.22
-Nodes (10): CurrentUser, Fact, ForbidResult, Permissions, RedirectToActionResult, Task, ViewResult, EquipmentClassificationAuthorizationTests (+2 more)
-
-### Community 259 - "List<"
-Cohesion: 0.06
-Nodes (44): PcLookupItem, Code, Extra, Id, Text, Exact, Similar, IPartCatalogueLookupService (+36 more)
-
-### Community 260 - "RolePermission"
-Cohesion: 0.12
-Nodes (16): DateTime, RolePermission, CanApprove, CanCreate, CanDelete, CanEdit, CanFreeze, CanHold (+8 more)
-
-### Community 261 - ".CreateController"
-Cohesion: 0.35
-Nodes (7): Controller, Fact, ForbidResult, RedirectToActionResult, Task, ViewResult, CriticalityAssessmentControllerAuthorizationTests
-
-### Community 262 - "WorkRequestStatusHistory"
-Cohesion: 0.11
-Nodes (20): WorkRequest, DateTime, WorkRequestStatusHistory, ChangedBy, ChangedById, ChangedDate, FromStatus, Reason (+12 more)
-
-### Community 263 - ".RunIndex"
-Cohesion: 0.40
-Nodes (6): DateTime, Fact, InlineData, Task, Theory, TableExtractionGridPaginationTests
-
-### Community 264 - "ProcurementPackageDto"
-Cohesion: 0.06
-Nodes (38): DateTime, ProcurementApprovalDto, ApprovalDate, ApproverName, Comment, Decision, ProcurementApprovalId, ProcurementCommunicationDto (+30 more)
-
-### Community 265 - "ProductionOrderService"
-Cohesion: 0.08
-Nodes (22): ProductionOrderId, Task, DateTime, Task, IProductionOrderService, DateTime, Dictionary, ProductionOrderId (+14 more)
-
-### Community 266 - "ICurrentUserContext"
-Cohesion: 0.07
-Nodes (26): IReadOnlyList, ICurrentUserContext, EmployeeId, Roles, UserId, Task, TotalCount, AttachmentSearchProvider (+18 more)
-
-### Community 267 - "PemsSearchBox"
-Cohesion: 0.26
-Nodes (3): debounce(), initAll(), PemsSearchBox
-
-### Community 268 - "HelpArticle"
-Cohesion: 0.06
-Nodes (37): DateTime, ICollection, HelpArticle, ArticleType, Category, Code, CreatedDate, DisplayOrder (+29 more)
-
-### Community 269 - "PEMS Engineering — G/M Hardening + Final Engineering Acceptance Audit"
-Cohesion: 0.12
-Nodes (15): 10. Browser Verification, 11. Remaining Gaps, 12. Final Acceptance Matrix, 13. Bug found and fixed during this audit (per §34: stop and document, don't hide), 1. Executive Verdict, 2. G — Transmittal Governance, 3. M — Hold & Clouded, 4. Hold State-Machine Interaction Table (as implemented, not assumed) (+7 more)
-
-### Community 270 - "PEMS Engineering — G/M Hardening + Final Engineering Acceptance Audit"
-Cohesion: 0.12
-Nodes (15): 10. Browser Verification, 11. Remaining Gaps, 12. Final Acceptance Matrix, 13. Bug found and fixed during this audit (per §34: stop and document, don't hide), 1. Executive Verdict, 2. G — Transmittal Governance, 3. M — Hold & Clouded, 4. Hold State-Machine Interaction Table (as implemented, not assumed) (+7 more)
-
-### Community 271 - "DocumentRevision"
-Cohesion: 0.05
-Nodes (38): DateTime, ICollection, DocumentRevision, AIRevisionSummary, ApprovedBy, ApprovedById, Attachments, ChangeDescription (+30 more)
-
-### Community 272 - "ChatAssistantService"
-Cohesion: 0.14
-Nodes (14): DateTime, ChatMessageDto, Content, CreatedDate, Role, Task, IChatAssistantService, Task (+6 more)
-
-### Community 273 - "MaintenanceKpiDto"
-Cohesion: 0.05
-Nodes (47): DateTime, CostByEquipmentItem, Cost, EquipmentId, TagNumber, CostByGroupItem, Cost, GroupName (+39 more)
-
-### Community 274 - "MaintenancePlanListDto"
-Cohesion: 0.08
-Nodes (24): DateTime, MaintenancePlanListDto, EquipmentId, EquipmentTagNumber, IntervalDays, IsOverdue, LastExecutionDate, LastExecutionMeterReading (+16 more)
-
-### Community 275 - ".NewEnvAsync"
-Cohesion: 0.09
-Nodes (25): Env, FakeActions, FakeNotifications, Fact, HashSet, Id, IEnumerable, Stream (+17 more)
-
-### Community 276 - "BarcodeService"
-Cohesion: 0.21
-Nodes (9): Barcode, HashSet, WasExisting, BarcodeService, Equipment, Fact, InvalidOperationException, Task (+1 more)
-
-### Community 277 - "Brand Guidelines v1.0"
-Cohesion: 0.05
-Nodes (37): 1. Color Palette, 2. Typography, 3. Logo Usage, 4. Voice & Tone, 5. Imagery Guidelines, 6. Design Components, Accessibility, AI Image Generation (+29 more)
-
-### Community 278 - "MOCService"
-Cohesion: 0.17
-Nodes (9): DateTime, IReadOnlyList, Task, IMOCService, DateTime, IReadOnlyList, MOC, Task (+1 more)
-
-### Community 279 - "Permit"
-Cohesion: 0.07
-Nodes (28): DateTime, Permit, CancellationReason, ClosedDate, CreatedDate, Description, Equipment, EquipmentId (+20 more)
-
-### Community 280 - "LetterStar"
-Cohesion: 0.15
-Nodes (15): DateTime, LetterStar, ApplicationUserId, CreatedDate, Letter, LetterId, LetterStarId, EntityTypeBuilder (+7 more)
-
-### Community 281 - "DelayRootCauseAnalysisDto"
-Cohesion: 0.09
-Nodes (24): AvgDelayDays, DelayRootCauseAnalysisDto, AverageDelayDays, ByDiscipline, ByStage, ByVendor, NarrativeSummary, TotalDelayedDocuments (+16 more)
-
-### Community 282 - ".Seed"
-Cohesion: 0.35
-Nodes (6): ctx, Fact, MemoryStream, svc, Task, MrsImportMetadataTests
-
-### Community 283 - ".SeedDocumentWithRevisionAAsync"
-Cohesion: 0.26
-Nodes (12): fileA, ctx, doc, DocumentAttachment, DocumentRevision, Fact, InvalidOperationException, Project (+4 more)
-
-### Community 284 - "http"
-Cohesion: 0.13
-Nodes (15): ASPNETCORE_ENVIRONMENT, applicationUrl, commandName, dotnetRunMessages, environmentVariables, launchBrowser, applicationUrl, commandName (+7 more)
-
-### Community 285 - "http"
-Cohesion: 0.13
-Nodes (15): ASPNETCORE_ENVIRONMENT, applicationUrl, commandName, dotnetRunMessages, environmentVariables, launchBrowser, applicationUrl, commandName (+7 more)
-
-### Community 286 - "VDRReportDto"
-Cohesion: 0.14
-Nodes (13): Month, Vendor, VDRReportDto, ByReviewCategory, ByVendor, ByWorkflowStatus, ClosedCount, OverdueCount (+5 more)
-
-### Community 287 - "35. ENGINEERING KPIs"
-Cohesion: 0.25
-Nodes (8): 35. ENGINEERING KPIs, Comments, Discipline, Documents, Review, Revisions, Schedule, Vendor
-
-### Community 288 - "CMMS-10 — Architecture Conflict Report"
-Cohesion: 0.13
-Nodes (14): 0. Headline Finding, 10. Notifications — real channel exists, but no scheduler, 11. Numbering & migrations — no conflict, straightforward extension, 12. Summary — Decisions Needed Before Design, and Recommended Decomposition, 1. Existing HSE / Permit-adjacent entities — none found, 2. WorkOrder lifecycle — no existing permit-gate hook point, 3. Asset / FunctionalLocation hierarchy — flatter than the baseline assumes, 4. Maintenance Master Data — reusable for Competency, with one gap (+6 more)
-
-### Community 289 - "11. COMMERCIAL CONTROL"
-Cohesion: 0.13
-Nodes (15): 11. COMMERCIAL CONTROL, Advance Payment, Advance Recovery, Approved Variations, Claims Approved, Claims Rejected, Claims Submitted, Current Contract Value (+7 more)
-
-### Community 290 - "این نشست: رفع باگ‌های واقعی + بازنگری کامل UI + استخراج MRQ/VDR از فایل تجهیزات"
-Cohesion: 0.29
-Nodes (7): Migration نهایی, استخراج MRQ و ساخت خودکار VDR از فایل اکسل تجهیزات (تست‌شده روی فایل واقعی شما), این نشست: رفع باگ‌های واقعی + بازنگری کامل UI + استخراج MRQ/VDR از فایل تجهیزات, بازنگری سیستماتیک UI (نه سطحی), بخش تنظیمات, رفع باگ‌های واقعی گزارش‌شده, گزارش‌گیری مستقل هر بخش
-
-### Community 291 - "35. ENGINEERING KPIs"
-Cohesion: 0.25
-Nodes (8): 35. ENGINEERING KPIs, Comments, Discipline, Documents, Review, Revisions, Schedule, Vendor
-
-### Community 292 - "CMMS-10 — Architecture Conflict Report"
-Cohesion: 0.13
-Nodes (14): 0. Headline Finding, 10. Notifications — real channel exists, but no scheduler, 11. Numbering & migrations — no conflict, straightforward extension, 12. Summary — Decisions Needed Before Design, and Recommended Decomposition, 1. Existing HSE / Permit-adjacent entities — none found, 2. WorkOrder lifecycle — no existing permit-gate hook point, 3. Asset / FunctionalLocation hierarchy — flatter than the baseline assumes, 4. Maintenance Master Data — reusable for Competency, with one gap (+6 more)
-
-### Community 293 - "11. COMMERCIAL CONTROL"
-Cohesion: 0.13
-Nodes (15): 11. COMMERCIAL CONTROL, Advance Payment, Advance Recovery, Approved Variations, Claims Approved, Claims Rejected, Claims Submitted, Current Contract Value (+7 more)
-
-### Community 294 - "این نشست: رفع باگ‌های واقعی + بازنگری کامل UI + استخراج MRQ/VDR از فایل تجهیزات"
-Cohesion: 0.29
-Nodes (7): Migration نهایی, استخراج MRQ و ساخت خودکار VDR از فایل اکسل تجهیزات (تست‌شده روی فایل واقعی شما), این نشست: رفع باگ‌های واقعی + بازنگری کامل UI + استخراج MRQ/VDR از فایل تجهیزات, بازنگری سیستماتیک UI (نه سطحی), بخش تنظیمات, رفع باگ‌های واقعی گزارش‌شده, گزارش‌گیری مستقل هر بخش
-
-### Community 295 - "37. CODE REVIEW MODE"
-Cohesion: 0.22
-Nodes (9): 37. CODE REVIEW MODE, Architecture, Correctness, Data, Maintainability, Performance, Regression, Security (+1 more)
-
-### Community 296 - "NonConformanceReport"
-Cohesion: 0.02
-Nodes (100): DateTime, InspectionRecord, Condition, CreatedDate, Description, Equipment, EquipmentId, InspectionDate (+92 more)
-
-### Community 297 - "WorkflowGraphNode"
-Cohesion: 0.06
-Nodes (32): WorkflowGraphEdge, ActionType, FromStageId, Kind, Label, LabelFa, LabelX, LabelY (+24 more)
-
-### Community 298 - "MaintenanceHistoryImportRowDto"
-Cohesion: 0.11
-Nodes (18): MaintenanceHistoryImportBatchDto, Rows, MaintenanceHistoryImportRowDto, ActionTaken, CommittedMaintenanceHistoryId, DuplicateOfMaintenanceHistoryId, EquipmentDescription, EquipmentTag (+10 more)
-
-### Community 299 - "EngineeringDocument"
-Cohesion: 0.04
-Nodes (48): DataGridPageSize, DateTime, ICollection, EngineeringDocument, ApprovedBy, ApprovedByEmployee, ApprovedById, ApprovedDate (+40 more)
-
-### Community 300 - "Bid"
-Cohesion: 0.11
-Nodes (18): DateTime, ICollection, Bid, BidId, BidNumber, CommercialSubmissionReference, Currency, Evaluations (+10 more)
-
-### Community 301 - "GasTestListDto"
-Cohesion: 0.06
-Nodes (40): DateTime, GasReadingDto, Parameter, Result, Unit, Value, GasReadingInputDto, Parameter (+32 more)
-
-### Community 302 - "WorkflowAdminActor"
-Cohesion: 0.17
-Nodes (12): IReadOnlyList, WorkflowAdminActor, WorkflowAdminResult, Error, Id, IsConflict, IsForbidden, RowVersion (+4 more)
-
-### Community 303 - "WorkflowAdministrationService"
-Cohesion: 0.16
-Nodes (11): Editable, Category, Def, Error, Func, Module, Name, Reason (+3 more)
-
-### Community 304 - "ProcurementPipelineRowDto"
-Cohesion: 0.10
-Nodes (20): ProcurementPipelineRowDto, BidStatus, CommercialEvaluationStatus, ContractNo, ContractStatus, ContractValue, KickoffStatus, NtpStatus (+12 more)
-
-### Community 305 - "IntakeDetailDto"
-Cohesion: 0.07
-Nodes (28): IntakeDetailDto, AIError, AIStatus, AttachmentId, ClassificationId, ConfidenceLevel, ConfidenceScore, FileName (+20 more)
-
-### Community 306 - "WorkflowManagementController"
-Cohesion: 0.30
-Nodes (9): Dictionary, Func, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, ValidationRow, WorkflowManagementController (+1 more)
-
-### Community 307 - "VdrWorkflowService"
-Cohesion: 0.33
-Nodes (5): DateTime, IReadOnlyList, Task, VDRSubmission, VdrWorkflowService
-
-### Community 308 - "AuditLog"
-Cohesion: 0.10
-Nodes (20): DateTime, AuditLog, Action, AuditLogId, ChangedFieldsSummary, EntityKeyValue, EntityName, IsAIAssisted (+12 more)
-
-### Community 309 - ".CreateService"
-Cohesion: 0.40
-Nodes (5): Fact, InlineData, Task, Theory, FunctionalLocationGridPaginationTests
-
-### Community 310 - "MaterialStock"
-Cohesion: 0.07
-Nodes (27): DateTime, MaterialStock, AvailableQuantity, CreatedDate, IsActive, IsLowStock, IsOutOfStock, LastUpdated (+19 more)
-
-### Community 311 - "AIReliabilityInsightDto"
-Cohesion: 0.08
-Nodes (26): DateTime, AIReliabilityInsightDto, AIReliabilityInsightId, Confidence, EquipmentClassId, EquipmentClassName, EquipmentId, EquipmentTagNumber (+18 more)
-
-### Community 312 - "ProductionTargetDto"
-Cohesion: 0.10
-Nodes (27): ProductionTargetDto, IsActive, MaterialCode, MaterialItemId, OrderNumber, ProductionTargetId, ProductionWorkCenterId, ShiftCode (+19 more)
-
-### Community 313 - "StorageRoute"
-Cohesion: 0.15
-Nodes (19): DateTime, StorageRoute, CreatedDate, DocumentType, IsActive, IsDefault, IsEnabled, Module (+11 more)
-
-### Community 314 - "design_system.py"
-Cohesion: 0.08
-Nodes (30): ansi_ljust(), _detect_page_type(), format_ascii_box(), format_markdown(), format_master_md(), format_page_override_md(), generate_design_system(), _generate_intelligent_overrides() (+22 more)
-
-### Community 315 - "37. CODE REVIEW MODE"
-Cohesion: 0.22
-Nodes (9): 37. CODE REVIEW MODE, Architecture, Correctness, Data, Maintainability, Performance, Regression, Security (+1 more)
-
-### Community 316 - "CLAUDE.md — PEMS (Project Engineering Management System)"
-Cohesion: 0.14
-Nodes (13): 1. Strengthen `Instrument` (or create `InstrumentPassport` detail table), 2. Calibration History (new or extend existing), CLAUDE.md — PEMS (Project Engineering Management System), Current Goal: Instrument Equipment Passport + Full CMMS Instrumentation Module, Existing CMMS Core (already implemented), Existing Controllers (CMMS-related), graphify, Important Conventions Already in Code (+5 more)
-
-### Community 317 - "TeamController"
-Cohesion: 0.14
-Nodes (10): Task, IOrganizationStructureService, Task, ITeamService, HttpGet, HttpPost, IActionResult, Task (+2 more)
-
-### Community 318 - "color"
-Cohesion: 0.05
-Nodes (37): $type, $value, background, destructive, destructive-foreground, foreground, muted, muted-foreground (+29 more)
-
-### Community 319 - "HelpVisualDefinition"
-Cohesion: 0.13
-Nodes (21): N, HelpVisualDefinition, Edges, Nodes, HelpVisualEdgeDto, FromNodeId, Kind, LabelEn (+13 more)
-
-### Community 320 - "ClassActivationBacklogItemDto"
-Cohesion: 0.11
-Nodes (18): ClassActivationBacklogItemDto, ClassifiedIntoThisClassCount, Code, CriticalityReadyCount, EquipmentClassId, EquipmentCount, ExecutionReadyCount, HasDefensibleBasis (+10 more)
-
-### Community 321 - "AIDocumentClassification"
-Cohesion: 0.07
-Nodes (26): DateTime, AIDocumentClassification, AIDocumentClassificationId, Attachment, AttachmentId, ConfidenceLevel, ConfidenceScore, CreatedDate (+18 more)
-
-### Community 322 - "FunctionalLocationService"
-Cohesion: 0.11
-Nodes (14): DateTime, Equipment, Task, EquipmentService, Dictionary, FunctionalLocation, FunctionalLocationPickerItemDto, Id (+6 more)
-
-### Community 323 - "RoleListItemViewModel"
-Cohesion: 0.10
-Nodes (21): HttpPost, IActionResult, RoleManager, Task, UserManager, ValidateAntiForgeryToken, RolesController, RoleFormViewModel (+13 more)
-
-### Community 324 - "DeterministicTableExtractor"
-Cohesion: 0.16
-Nodes (11): ColumnBin, extracted, Dictionary, end, ExtractedTableData, Regex, start, ColumnBin (+3 more)
-
-### Community 325 - "ReliabilityController"
-Cohesion: 0.08
-Nodes (23): FromDate, Task, IClassIntelligenceService, DateTime, Task, IRcmFeedbackService, DateTime, Task (+15 more)
-
-### Community 326 - "MaintenanceHistoryImportService"
-Cohesion: 0.31
-Nodes (9): JsonSerializerOptions, Stream, MaintenanceHistoryImportService, Equipment, Fact, Stream, Task, WorkOrder (+1 more)
-
-### Community 327 - "PcAdminOverview"
-Cohesion: 0.04
-Nodes (65): Child, Parent, Dictionary, PcAdminApprover, PcAdminCommodityResponsible, PcAdminFinding, PcAdminGroupMap, PcAdminOverview (+57 more)
-
-### Community 328 - "RcmFmeaController"
-Cohesion: 0.24
-Nodes (7): Task, IFMEAService, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, RcmFmeaController
-
-### Community 329 - "IFunctionalLocationService"
-Cohesion: 0.08
-Nodes (26): DateTime, Task, IAssetService, Id, IEnumerable, Task, IFunctionalLocationService, Asset (+18 more)
-
-### Community 330 - "Task"
-Cohesion: 0.10
-Nodes (18): BackfillResultDto, AutoClassifiedCount, SuggestionsCreatedCount, Controller, Equipment, Fact, IEnumerable, RedirectToActionResult (+10 more)
-
-### Community 331 - "2. Existing Transmittal Capabilities (verified in code, not assumed)"
-Cohesion: 0.10
-Nodes (19): 0. Headline Finding, 1. Source-of-Truth Chain (§2 of the master prompt, answered with evidence), 2.1 Entities, 2.2 Numbering (§5), 2.3 Immutability After Issue (§3, §10, §11 — the core Phase 3 concern), 2.4 What "historical snapshot" actually captures today vs. what's missing, 2.5 Authorization (§17), 2.6 Held-Document Integration (existing business rule, reused not rebuilt) (+11 more)
-
-### Community 332 - "ClassIntelligenceProfileDto"
-Cohesion: 0.09
-Nodes (22): Dictionary, ClassIntelligenceProfileDto, ApprovedFMEACount, ApprovedRCMCount, AverageAvailabilityPercent, AverageMTBFHours, AverageMTTRHours, BadActorCount (+14 more)
-
-### Community 333 - ".HasPermissionAsync"
-Cohesion: 0.27
-Nodes (6): DateTime, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, MaintenanceMasterDataController
-
-### Community 334 - "IWebAuthnService"
-Cohesion: 0.11
-Nodes (19): AuthenticatorAssertionRawResponse, AuthenticatorAttestationRawResponse, IFido2, CredentialDbId, Error, Success, Task, IWebAuthnService (+11 more)
-
-### Community 335 - "56. AUDIT — PASS/FAIL CRITERIA"
-Cohesion: 0.22
-Nodes (9): 56. AUDIT — PASS/FAIL CRITERIA, Commercial, Compliance, Contractor, Executive, Integration, Legal / Disputes, Schedule (+1 more)
-
-### Community 336 - "PaginationViewModel"
-Cohesion: 0.15
-Nodes (10): PEMS.Web.ViewModels, PaginationViewModel, AllowedPageSizes, BaseUrl, ExistingQueryString, GridKey, Page, PageSize (+2 more)
-
-### Community 337 - "56. AUDIT — PASS/FAIL CRITERIA"
-Cohesion: 0.22
-Nodes (9): 56. AUDIT — PASS/FAIL CRITERIA, Commercial, Compliance, Contractor, Executive, Integration, Legal / Disputes, Schedule (+1 more)
-
-### Community 338 - "PEMS.Persistence.Migrations"
-Cohesion: 0.06
-Nodes (22): PEMS.Persistence.Migrations, DateTime, DateTimeOffset, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, InitialCreate (+14 more)
-
-### Community 339 - "RcmReviewRecommendation"
-Cohesion: 0.09
-Nodes (22): DateTime, RcmReviewRecommendation, CreatedDate, Equipment, EquipmentId, Evidence, FailureCountInWindow, GeneratedDate (+14 more)
-
-### Community 340 - "WorkflowConditionEvaluator"
-Cohesion: 0.13
-Nodes (14): Clause, InlineData, IReadOnlyDictionary, Theory, WorkflowConditionEvaluatorTests, IReadOnlyCollection, IReadOnlyDictionary, IReadOnlyList (+6 more)
-
-### Community 341 - ".CreateInfra"
-Cohesion: 0.15
-Nodes (20): DecisionId, IServiceProvider, Task, IServiceProvider, Task, IServiceProvider, Task, IServiceProvider (+12 more)
-
-### Community 342 - "MaterialRequisition"
-Cohesion: 0.04
-Nodes (50): ProcurementPackage, DateTime, ICollection, MaterialRequisition, CreatedDate, Description, Discipline, DisciplineId (+42 more)
-
-### Community 343 - "WorkOrderCalendarItemDto"
-Cohesion: 0.05
-Nodes (49): DateTime, CalendarFilterOptionDto, Id, Name, MaintenanceCalendarResultDto, Items, RangeEnd, RangeStart (+41 more)
-
-### Community 344 - "PEMS Operations Architecture & Period-Based Reporting — Audit"
-Cohesion: 0.05
-Nodes (36): 10. Operational Parameter Model Recommendation, 11. Daily Operations Record Recommendation, 12. Daily/Weekly/Monthly Period Semantics, 13. Calendar and Shift Handling, 14. Approval and Correction Workflow, 15. RBAC and SoD Recommendations, 16. Data Integrity and Double-Counting Risks, 17. Performance and Query Strategy (+28 more)
-
-### Community 345 - "Workflow Platform — Phase 3B: Work Order Migration"
-Cohesion: 0.07
-Nodes (27): 10. Legacy Work Orders, 11. Concurrency and idempotency, 12. Migrations, 13. Files, 14. Runtime-driven UI, 15. Dynamic-workflow proof, 16. Bilingual Help, 17. Hard-coded logic classification (+19 more)
-
-### Community 347 - "WorkOrderTask"
-Cohesion: 0.16
-Nodes (19): DateTime, WorkOrderTask, CompletedBy, CompletedDate, CreatedDate, Description, IsCompleted, TaskNumber (+11 more)
-
-### Community 348 - "PermitAuthenticationAuthorityCompetency"
-Cohesion: 0.17
-Nodes (8): DateTime, Guid, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, PermitAuthenticationAuthorityCompetency
-
-### Community 349 - "AddAccessControlCoreModel"
-Cohesion: 0.17
-Nodes (8): DateTime, Guid, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddAccessControlCoreModel
-
-### Community 350 - "RelationshipService"
-Cohesion: 0.14
-Nodes (13): Confirmed, DateTime, Equipment, EquipmentId, IReadOnlyList, TargetId, TargetType, Task (+5 more)
-
-### Community 351 - "Design"
-Cohesion: 0.06
-Nodes (35): Banner Design (Built-in), Banner: Design Rules, Banner: Quick Size Reference, Banner: Top Art Styles, Banner: Workflow, CIP Design (Built-in), CIP: Generate Brief, CIP: Generate Mockups (+27 more)
-
-### Community 352 - "ManufacturerDataBookDto"
-Cohesion: 0.09
-Nodes (23): DateTime, ManufacturerDataBookDto, DocumentsPartA, DocumentsPartB, DocumentsPartC, EquipmentId, EquipmentTagNumber, HardCopyCount (+15 more)
-
-### Community 353 - "FakeLetterService"
-Cohesion: 0.05
-Nodes (30): Dictionary, LetterDashboardDto, ByStatus, ByType, MyOpenReferrals, OverdueReferrals, PendingLetters, RecentlyReceived (+22 more)
-
-### Community 354 - "Finding"
-Cohesion: 0.09
-Nodes (22): DateTime, Finding, Condition, ConditionReading, ConditionReadingId, CreatedDate, Description, Equipment (+14 more)
-
-### Community 355 - "RequirePermissionAttribute"
-Cohesion: 0.17
-Nodes (8): Attribute, IAsyncAuthorizationFilter, AuthorizationFilterContext, Task, PasswordChangeGateFilter, AuthorizationFilterContext, Task, RequirePermissionAttribute
-
-### Community 356 - "ContractDto"
-Cohesion: 0.10
-Nodes (21): DateTime, ContractDto, ContractId, ContractNo, ContractValue, Currency, EndDate, ProjectId (+13 more)
-
-### Community 357 - "4. Application Roles"
-Cohesion: 0.15
-Nodes (13): 4. Application Roles, Contracts, Document Control, Engineering, Executive / Management, HSE, IT, Maintenance / CMMS (+5 more)
-
-### Community 358 - "SetupStepDto"
-Cohesion: 0.08
-Nodes (25): SetupStatusDto, CompletedCount, IsFullyComplete, PercentComplete, Steps, TotalCount, SetupStepDto, ActionAction (+17 more)
-
-### Community 359 - "AddTransmittalGovernanceAndHoldLifecycle"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddTransmittalGovernanceAndHoldLifecycle
-
-### Community 360 - "4. Application Roles"
-Cohesion: 0.15
-Nodes (13): 4. Application Roles, Contracts, Document Control, Engineering, Executive / Management, HSE, IT, Maintenance / CMMS (+5 more)
-
-### Community 361 - "EnterpriseFileStorageService"
-Cohesion: 0.18
-Nodes (13): CancellationToken, Stream, Task, IEnterpriseFileStorageService, IStorageProviderClientFactory, CancellationToken, Task, IStorageRouteResolver (+5 more)
-
-### Community 362 - "NotificationLifecycleTests"
-Cohesion: 0.08
-Nodes (30): Bc, ConnectionId, HubCallerContext, IFeatureCollection, IGroupManager, LocalRedirectResult, CancellationToken, ClaimsPrincipal (+22 more)
-
-### Community 363 - "search"
-Cohesion: 0.07
-Nodes (11): Resolve a deprecated in-domain alias, or expose a cross-domain redirect., Main search function with auto-domain detection, search(), _style_search_destination(), TestDiagnosticsContracts, TestSearchDomains, read_rows(), TestStyleTaxonomy (+3 more)
-
-### Community 364 - "BarcodeController"
-Cohesion: 0.28
-Nodes (6): HttpGet, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, BarcodeController
-
-### Community 365 - "Canvas Design System"
-Cohesion: 0.06
-Nodes (35): 1. Visual Communication First, 2. Minimal Text Integration, 3. Expert Craftsmanship, 4. Systematic Patterns, Analog Meditation, Approach, Canvas Boundaries, Canvas Design System (+27 more)
-
-### Community 366 - "VDRImportRowPayload"
-Cohesion: 0.03
-Nodes (65): DateTime, VDRImportBatchDto, FileName, ImportDate, ProjectId, ProjectName, Rows, RowsDuplicate (+57 more)
-
-### Community 367 - "PEMS EDMS — G-28 Audit: MDR Import "Approved" Status Semantics"
-Cohesion: 0.11
-Nodes (18): 1.1 Staging (no authoritative effect yet), 1.2 Commit — the authoritative write path, 1.3 The `Status` mapping function, 1.4 Downstream propagation — the critical chain, 1.5 Answers to the explicit trace questions, 1. Exact Code Trace, 2. Status Semantics, 3. Governance Risk — Explicit Answers (+10 more)
-
-### Community 368 - ".SeedAuthorizationAsync"
-Cohesion: 0.15
-Nodes (22): Items, Task, TotalCount, LetterSearchProvider, DisplayName, EntityType, Task, TotalCount (+14 more)
-
-### Community 369 - ".NewPlan"
-Cohesion: 0.25
-Nodes (11): DateTime, Equipment, Fact, InlineData, MaintenancePlan, MaintenanceStrategy, Plan, Strategy (+3 more)
-
-### Community 370 - ".CreateAsync"
-Cohesion: 0.10
-Nodes (24): Controller, Fact, RedirectToActionResult, Task, ViewResult, SoDPolicyControllerTests, HttpPost, IActionResult (+16 more)
-
-### Community 371 - "ProcurementPackageService"
-Cohesion: 0.13
-Nodes (10): Task, IProcurementPackageService, Task, ProcurementPackageService, HttpGet, HttpPost, IActionResult, Task (+2 more)
-
-### Community 372 - "EquipmentFunctionalLocationAssignmentBatchSummaryDto"
-Cohesion: 0.09
-Nodes (17): DateTime, EquipmentFunctionalLocationAssignmentBatchSummaryDto, AlreadyAssignedCount, ConflictCount, EquipmentFunctionalLocationAssignmentBatchId, ExactCount, FileName, ImportDate (+9 more)
-
-### Community 373 - "MaterialReservation"
-Cohesion: 0.03
-Nodes (73): MaterialReservation, StoreRequisitionLine, DateTime, MaterialReservation, CreatedDate, IsActive, IssuedQuantity, MaintenancePlan (+65 more)
-
-### Community 374 - "ProcurementCommunication"
-Cohesion: 0.09
-Nodes (23): DateTime, ICollection, ProcurementCommunication, ActionStatus, Attachment, AttachmentId, Body, ProcurementCommunicationId (+15 more)
-
-### Community 375 - "AddDocumentTypeCodeLookup"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddDocumentTypeCodeLookup
-
-### Community 376 - "AddVendorDocumentTypologySupport"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddVendorDocumentTypologySupport
-
-### Community 377 - "AddFtpUploadTracking"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddFtpUploadTracking
-
-### Community 378 - "AddManufacturerDataBookModule"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddManufacturerDataBookModule
-
-### Community 379 - "MaterialItem"
-Cohesion: 0.07
-Nodes (27): DateTime, MaterialItem, Category, CategoryId, CreatedDate, Description, Discipline, DisciplineId (+19 more)
-
-### Community 380 - "AddMrsImportMetadataAndSourceDocument"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddMrsImportMetadataAndSourceDocument
-
-### Community 381 - "AddOrgHierarchyPositionAndSoD"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddOrgHierarchyPositionAndSoD
-
-### Community 382 - "PartCatalogueSeeder"
-Cohesion: 0.06
-Nodes (30): Cond, Confirm, Fa, Groups, Kind, Source, PartCatalogueSection, Code (+22 more)
-
-### Community 383 - ".CreateController"
-Cohesion: 0.31
-Nodes (8): Controller, Fact, ForbidResult, InvalidOperationException, RedirectToActionResult, Task, ViewResult, FunctionalLocationImportControllerAuthorizationTests
-
-### Community 384 - "10. SECOND DASHBOARD AREA"
-Cohesion: 0.25
-Nodes (8): 10. SECOND DASHBOARD AREA, Critical Actions, Discipline Performance, Document Status Distribution, Overdue Documents, Project Performance, Recent Workflow Activity, Vendor Performance
-
-### Community 385 - "11. REQUIRED VISUALIZATIONS"
-Cohesion: 0.18
-Nodes (11): 11.10 Management Attention Queue, 11.1 Document Lifecycle Funnel, 11.2 Approval Trend, 11.3 Revision Distribution, 11.4 Rejection Pareto, 11.5 Discipline Performance, 11.6 Discipline Heatmap, 11.7 Workflow Bottleneck (+3 more)
-
-### Community 386 - "44. ترتیب اجرای پروژه"
-Cohesion: 0.18
-Nodes (11): 44. ترتیب اجرای پروژه, Phase 0 — Repository Audit, Phase 1 — Gap Analysis, Phase 2 — Domain Model, Phase 3 — Migration Plan, Phase 4 — Extraction Engine, Phase 5 — Reconciliation Engine, Phase 6 — Revision Engine (+3 more)
-
-### Community 387 - "Material Master Import — Excel Metadata Extraction & Registration"
-Cohesion: 0.18
-Nodes (10): 1. Audit performed before implementation (per directive §14), 2. What was built, 3. A real, pre-existing bug found and fixed (not scope creep — directly required by §3), 4. Real header-schema gaps found and fixed, 5. Deliberately out of scope (documented, not silently skipped), 6. Duplicate / Re-import behavior (§9 — documented as required), 7. Files changed, 8. Verification (all actually executed, not claimed) (+2 more)
-
-### Community 388 - "46. DEFINITION OF DONE"
-Cohesion: 0.17
-Nodes (12): 46. DEFINITION OF DONE, Client, Discipline, Exceptions, Executive, Quality, Schedule, Technical (+4 more)
-
-### Community 389 - "ErrorModel"
-Cohesion: 0.18
-Nodes (7): WebApplication1.Pages, PageModel, ErrorModel, RequestId, ShowRequestId, IndexModel, PrivacyModel
-
-### Community 390 - "WorkflowInstance"
-Cohesion: 0.02
-Nodes (97): IServiceProvider, Task, EngineeringDocumentWorkflowBackfillService, WorkflowInstanceStageCandidateConfiguration, DateTime, WorkflowHistory, ActionDate, ActionType (+89 more)
-
-### Community 391 - "10. SECOND DASHBOARD AREA"
-Cohesion: 0.25
-Nodes (8): 10. SECOND DASHBOARD AREA, Critical Actions, Discipline Performance, Document Status Distribution, Overdue Documents, Project Performance, Recent Workflow Activity, Vendor Performance
-
-### Community 392 - "44. ترتیب اجرای پروژه"
-Cohesion: 0.18
-Nodes (11): 44. ترتیب اجرای پروژه, Phase 0 — Repository Audit, Phase 1 — Gap Analysis, Phase 2 — Domain Model, Phase 3 — Migration Plan, Phase 4 — Extraction Engine, Phase 5 — Reconciliation Engine, Phase 6 — Revision Engine (+3 more)
-
-### Community 393 - "Material Master Import — Excel Metadata Extraction & Registration"
-Cohesion: 0.18
-Nodes (10): 1. Audit performed before implementation (per directive §14), 2. What was built, 3. A real, pre-existing bug found and fixed (not scope creep — directly required by §3), 4. Real header-schema gaps found and fixed, 5. Deliberately out of scope (documented, not silently skipped), 6. Duplicate / Re-import behavior (§9 — documented as required), 7. Files changed, 8. Verification (all actually executed, not claimed) (+2 more)
-
-### Community 394 - "46. DEFINITION OF DONE"
-Cohesion: 0.17
-Nodes (12): 46. DEFINITION OF DONE, Client, Discipline, Exceptions, Executive, Quality, Schedule, Technical (+4 more)
-
-### Community 395 - "1. Findings"
-Cohesion: 0.10
-Nodes (20): 0. Critical context: this is not a greenfield system, 1. Findings, 2. What this audit deliberately did not re-verify this session (explicit, not silent), F-01 — Document numbering is atomic and race-safe [RE-VERIFIED — STRENGTH, supersedes prior P0], F-02 — Document Freeze is now server-enforced [RE-VERIFIED — STRENGTH, supersedes prior P0], F-03 — Pagination is implemented on the document list/register path [RE-VERIFIED — STRENGTH, supersedes prior P1], F-04 — Test coverage on the Engineering module is substantial, not near-zero [RE-VERIFIED — STRENGTH, supersedes prior P0], F-05 — Reverse object traceability exists for Equipment, unconfirmed for Contract/Vendor/MR [PARTIAL, RE-VERIFIED for Equipment only] (+12 more)
-
-### Community 396 - "ProductionOrder"
-Cohesion: 0.03
-Nodes (65): MaterialItem, DateTime, JobPlanRequiredMaterial, CreatedDate, JobPlan, JobPlanId, JobPlanRequiredMaterialId, MaterialItem (+57 more)
-
-### Community 397 - "EmployeeLaborRate"
-Cohesion: 0.11
-Nodes (18): DateTime, Task, IEmployeeLaborRateService, DateTime, EmployeeLaborRate, CreatedDate, Currency, EffectiveFrom (+10 more)
-
-### Community 398 - "AddEnterpriseMaintenanceMasterData"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddEnterpriseMaintenanceMasterData
-
-### Community 399 - "FileSystemStorageProviderClientTests"
-Cohesion: 0.22
-Nodes (9): CancellationToken, Stream, Task, FileSystemStorageProviderClient, Fact, InlineData, Task, Theory (+1 more)
-
-### Community 400 - "ManagerChainResult"
-Cohesion: 0.09
-Nodes (27): CancellationToken, DateTime, DisciplineId, Domain, IReadOnlyList, Task, DepartmentConsistencyStatuses, EmployeeDepartmentConsistencyRow (+19 more)
-
-### Community 401 - "IrnReceiptStatusHistory"
-Cohesion: 0.09
-Nodes (26): DateTime, IrnReceiptStatusHistory, ChangedBy, ChangedById, ChangedDate, FromStatus, IrnReceipt, IrnReceiptId (+18 more)
-
-### Community 402 - "BarcodeIdentity"
-Cohesion: 0.08
-Nodes (24): DateTime, BarcodeIdentity, BarcodeIdentityId, CreatedBy, CreatedById, CreatedDate, DisabledBy, DisabledById (+16 more)
-
-### Community 403 - ".SeedBaselineAsync"
-Cohesion: 0.23
-Nodes (13): fl, Equipment, Fact, FunctionalLocation, material, MaterialItem, orderService, ProductionWorkCenter (+5 more)
-
-### Community 404 - "FunctionalLocationImportBatchDto"
-Cohesion: 0.10
-Nodes (17): DateTime, FunctionalLocationImportBatchDto, ConflictCount, ExistingCount, ExpandedLocationCount, FileName, FunctionalLocationImportBatchId, ImportDate (+9 more)
-
-### Community 405 - "Discipline"
-Cohesion: 0.29
-Nodes (9): Discipline, ctx, disc, Discipline, Fact, Project, repo, Task (+1 more)
-
-### Community 406 - "TableExtractionStaging"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, TableExtractionStaging
-
-### Community 407 - "ReportController"
-Cohesion: 0.23
-Nodes (10): DateTime, Task, IVDRReportService, DateTime, Task, VDRReportService, DateTime, IActionResult (+2 more)
-
-### Community 408 - "Ctx"
-Cohesion: 0.08
-Nodes (30): Controller, Fact, ForbidResult, RedirectToActionResult, Task, ViewResult, Phase8AuthorizationGapTests, Controller (+22 more)
-
-### Community 409 - "OrganizationResolver"
-Cohesion: 0.20
-Nodes (13): CancellationToken, DateTime, DisciplineId, Domain, IReadOnlyList, Task, OrganizationResolver, Fact (+5 more)
-
-### Community 410 - "QualificationAndCertification"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, QualificationAndCertification
-
-### Community 411 - "InstrumentController"
-Cohesion: 0.21
-Nodes (11): Task, IInstrumentService, DateTime, HttpGet, HttpPost, IActionResult, IFormFile, Instrument (+3 more)
-
-### Community 412 - "EquipmentPassportDto"
-Cohesion: 0.04
-Nodes (52): DateTime, ChildEquipmentSummaryDto, EquipmentId, Name, TagNumber, EquipmentPassportDto, Asset, ConditionMonitoring (+44 more)
-
-### Community 413 - "WarehouseAndStock"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, WarehouseAndStock
-
-### Community 414 - "InventoryTransactionAndSpareUsageRetarget"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, InventoryTransactionAndSpareUsageRetarget
-
-### Community 415 - "PartCatalogueAdminController"
-Cohesion: 0.29
-Nodes (10): HttpGet, HttpPost, IActionResult, IFormFile, IStringLocalizer, RequestSizeLimit, Task, ValidateAntiForgeryToken (+2 more)
-
-### Community 416 - "CentralNumberingSequence"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, CentralNumberingSequence
-
-### Community 417 - "StoreRequisitionLifecycleService"
-Cohesion: 0.25
-Nodes (11): IReadOnlyCollection, StoreRequisitionActor, StoreRequisition, EmployeeId, Error, Func, IReadOnlyDictionary, MaterialReservation (+3 more)
-
-### Community 418 - "ShiftHandoverStatusHistory"
-Cohesion: 0.12
-Nodes (16): DateTime, ShiftHandoverStatusHistory, ChangedBy, ChangedById, ChangedDate, FromStatus, Reason, ShiftHandover (+8 more)
-
-### Community 419 - "zt"
-Cohesion: 0.05
-Nodes (22): ae, color(), ee(), ie(), Le(), ne(), oe(), re() (+14 more)
-
-### Community 420 - ".CreateController"
-Cohesion: 0.28
-Nodes (8): Controller, Fact, ForbidResult, JsonResult, RedirectToActionResult, Task, ViewResult, BarcodeControllerAuthorizationTests
-
-### Community 421 - "PermitIsolationPoints"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, PermitIsolationPoints
-
-### Community 422 - "Alarm"
-Cohesion: 0.07
-Nodes (25): DateTime, Alarm, Action, AlarmId, AlarmTag, AlarmType, CreatedDate, Description (+17 more)
-
-### Community 423 - "PermitSimopsAndShiftHandover"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, PermitSimopsAndShiftHandover
-
-### Community 424 - "NotificationDto"
-Cohesion: 0.06
-Nodes (34): NotificationDto, CreatedDate, DismissedDate, IsRead, LinkUrl, Message, NotificationId, RelatedId (+26 more)
-
-### Community 425 - "AddTransmittalNumberingSupport"
-Cohesion: 0.20
-Nodes (6): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddTransmittalNumberingSupport
-
-### Community 426 - "AddContractorDocumentNumberingFields"
-Cohesion: 0.20
-Nodes (6): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddContractorDocumentNumberingFields
-
-### Community 427 - "AddTransmittalNoUniqueIndex"
-Cohesion: 0.20
-Nodes (6): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddTransmittalNoUniqueIndex
-
-### Community 428 - "AddDocumentListPerformanceIndexes"
-Cohesion: 0.20
-Nodes (6): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddDocumentListPerformanceIndexes
-
-### Community 429 - "AddAuditLogPerformanceIndexes"
-Cohesion: 0.20
-Nodes (6): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddAuditLogPerformanceIndexes
-
-### Community 430 - "AssetDetailDto"
-Cohesion: 0.05
-Nodes (42): DateTime, AssetDetailDto, AssetId, AssetNumber, CommissioningDate, CriticalityClass, Description, EquipmentId (+34 more)
-
-### Community 431 - "OrganizationStructureService"
-Cohesion: 0.18
-Nodes (11): Func, HashSet, IEnumerable, Position, Task, Team, OrganizationStructureService, Exception (+3 more)
-
-### Community 432 - ".Seed"
-Cohesion: 0.36
-Nodes (6): ctx, documentId, Fact, service, Task, DocumentCommentServiceTests
-
-### Community 433 - "AddCriticalityAssessmentWorkflow"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddCriticalityAssessmentWorkflow
-
-### Community 434 - "WidenMaintenanceActivityCode"
-Cohesion: 0.20
-Nodes (6): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, WidenMaintenanceActivityCode
-
-### Community 435 - "PEMS Engineering Module — Three-Pass Audit & Gap Matrix"
-Cohesion: 0.20
-Nodes (9): GAP MATRIX (priority-ordered), Hard gaps, PASS 1 — BUSINESS AUDIT: **FAIL**, PASS 2 — EDMS / MDR / EPC WORKFLOW AUDIT: **FAIL**, PASS 3 — SOFTWARE AUDIT: **FAIL**, PEMS Engineering Module — Three-Pass Audit & Gap Matrix, Recommended next step, Strong, genuinely real (not a gap) (+1 more)
-
-### Community 436 - "PEMS Enterprise RBAC-ABAC Authorization — Phase 2 (Org Hierarchy, Position, Scope, SoD) Report"
-Cohesion: 0.20
-Nodes (9): 1. What was built, 2. A real, pre-existing bug found (not fixed — out of scope, documented per this session's standing discipline), 3. Files changed, 4. Verification (all actually executed, not claimed), 5. Definition of Done — Phase 2 accounting, 6. Next steps (unchanged from the Phase 1 plan), Design boundary preserved from Phase 1, PEMS Enterprise RBAC-ABAC Authorization — Phase 2 (Org Hierarchy, Position, Scope, SoD) Report (+1 more)
-
-### Community 437 - "40. KPI DEFINITIONS"
-Cohesion: 0.20
-Nodes (10): 40. KPI DEFINITIONS, Average Approval Time, Average Review Time, Client Response Time, First Pass Approval Rate, Overdue, Pending Approval, Pending IDC (+2 more)
-
-### Community 438 - "ماژول جدید: Official Correspondence (Letter Management)"
-Cohesion: 0.29
-Nodes (7): Entity های جدید (Additive), Migration, UI, ادغام با ماژول‌های دیگر (طبق درخواست), ماژول جدید: Official Correspondence (Letter Management), محرمانگی (Security requirement #8), چه چیزی از قبل استفاده مجدد شد
-
-### Community 439 - "PEMS Engineering Module — Three-Pass Audit & Gap Matrix"
-Cohesion: 0.20
-Nodes (9): GAP MATRIX (priority-ordered), Hard gaps, PASS 1 — BUSINESS AUDIT: **FAIL**, PASS 2 — EDMS / MDR / EPC WORKFLOW AUDIT: **FAIL**, PASS 3 — SOFTWARE AUDIT: **FAIL**, PEMS Engineering Module — Three-Pass Audit & Gap Matrix, Recommended next step, Strong, genuinely real (not a gap) (+1 more)
-
-### Community 440 - "PEMS Enterprise RBAC-ABAC Authorization — Phase 2 (Org Hierarchy, Position, Scope, SoD) Report"
-Cohesion: 0.20
-Nodes (9): 1. What was built, 2. A real, pre-existing bug found (not fixed — out of scope, documented per this session's standing discipline), 3. Files changed, 4. Verification (all actually executed, not claimed), 5. Definition of Done — Phase 2 accounting, 6. Next steps (unchanged from the Phase 1 plan), Design boundary preserved from Phase 1, PEMS Enterprise RBAC-ABAC Authorization — Phase 2 (Org Hierarchy, Position, Scope, SoD) Report (+1 more)
-
-### Community 441 - "40. KPI DEFINITIONS"
-Cohesion: 0.20
-Nodes (10): 40. KPI DEFINITIONS, Average Approval Time, Average Review Time, Client Response Time, First Pass Approval Rate, Overdue, Pending Approval, Pending IDC (+2 more)
-
-### Community 442 - "ماژول جدید: Official Correspondence (Letter Management)"
-Cohesion: 0.29
-Nodes (7): Entity های جدید (Additive), Migration, UI, ادغام با ماژول‌های دیگر (طبق درخواست), ماژول جدید: Official Correspondence (Letter Management), محرمانگی (Security requirement #8), چه چیزی از قبل استفاده مجدد شد
-
-### Community 443 - "OrganizationTeamNodeDto"
-Cohesion: 0.04
-Nodes (50): DateTime, EmployeeAssignmentDto, EmployeeAssignmentId, EmployeeId, EmployeeName, EndDate, IsActive, Notes (+42 more)
-
-### Community 444 - "WorkflowDesignerModel"
-Cohesion: 0.06
-Nodes (34): Name, WorkflowDesignerModel, ActionTypes, Audit, CanEditStructure, ChangeSummary, DefinitionEditable, DefinitionEditableReason (+26 more)
-
-### Community 445 - ".StageFromExcelAsync"
-Cohesion: 0.35
-Nodes (7): Stream, Equipment, Fact, FunctionalLocation, Stream, Task, EquipmentFunctionalLocationAssignmentServiceTests
-
-### Community 446 - "WorkflowPlatformContracts.cs"
-Cohesion: 0.08
-Nodes (30): ConcurrentDictionary, IEnumerable, IWorkflowActionRegistry, IWorkflowInstanceControl, IWorkflowVersionValidator, WorkflowActionDescriptor, WorkflowActionKind, SideEffect (+22 more)
-
-### Community 447 - "IEquipmentClassificationService"
-Cohesion: 0.13
-Nodes (14): Task, IEquipmentClassCoverageService, Task, IEquipmentClassificationService, HttpPost, IActionResult, Task, ValidateAntiForgeryToken (+6 more)
-
-### Community 448 - "CalibrationHistory"
-Cohesion: 0.10
-Nodes (19): DateTime, CalibrationHistory, AsFound, AsLeft, CalibrationDate, CalibrationHistoryId, CalibrationType, CertificateNo (+11 more)
-
-### Community 449 - "CredentialProtector"
-Cohesion: 0.15
-Nodes (12): IDataProtector, ICredentialProtector, Type, CredentialProtector, StorageProviderClientFactory, Exception, Fact, CredentialProtectorTests (+4 more)
-
-### Community 450 - "IntakeQueueItemDto"
-Cohesion: 0.17
-Nodes (12): DateTime, IntakeQueueItemDto, AIConfidence, AIStatus, AttachmentId, FileName, IntakeStage, PredictedCategory (+4 more)
-
-### Community 451 - "InstrumentPassportSummaryDto"
+### Community 240 - "InstrumentPassportSummaryDto"
 Cohesion: 0.08
 Nodes (26): InstrumentPassportSummaryDto, CableNumber, CalibrationInterval, CalibrationStatus, CurrentStatus, ExProtection, HazardousArea, InstrumentId (+18 more)
 
-### Community 452 - "PredictiveMaintenanceModelDto"
+### Community 241 - "DateTime"
+Cohesion: 0.01
+Nodes (9): ChatMessageDto, Content, CreatedDate, Role, AIConfidenceSettings, AIConfidenceSettingsId, HighThreshold, MediumThreshold (+1 more)
+
+### Community 242 - "DocumentIntelligenceDetailDto"
+Cohesion: 0.06
+Nodes (37): AIDocumentClassificationDto, AIDocumentClassificationId, AttachmentId, ConfidenceScore, DocumentId, PredictedDisciplineCode, PredictedDocumentType, PredictedIssuePurpose (+29 more)
+
+### Community 243 - "GlobalSearchResponseDto"
+Cohesion: 0.12
+Nodes (15): GlobalSearchGroupDto, EntityType, Items, TotalCount, GlobalSearchResponseDto, EntityType, HasMore, Items (+7 more)
+
+### Community 244 - "Letter"
+Cohesion: 0.03
+Nodes (68): Letter, ApprovalRequired, ApprovedById, ApprovedDate, ArchivedDate, Attachments, Body, Category (+60 more)
+
+### Community 245 - "TaskActor"
 Cohesion: 0.11
-Nodes (19): PredictiveMaintenanceModelDto, Algorithm, Description, PredictiveMaintenanceModelId, ResultCount, TargetName, TrainingDataStatus, ValidationStatus (+11 more)
+Nodes (6): TaskActor, IsSystemAdmin, TmResult, ITaskManagerService, IWorkSpaceService, WorkSpaceService
 
-### Community 453 - "EvaluationProfile"
-Cohesion: 0.06
-Nodes (39): EvaluationProfile, DateTime, EvaluationLimit, CreatedDate, EvaluationLimitId, EvaluationProfile, EvaluationProfileId, HighInclusive (+31 more)
-
-### Community 454 - "ShiftHandoverController"
-Cohesion: 0.20
-Nodes (11): DateTime, Id, Task, IShiftHandoverService, DateTime, HttpGet, HttpPost, IActionResult (+3 more)
-
-### Community 455 - "spacing"
-Cohesion: 0.06
-Nodes (34): $type, $value, $type, $value, $type, $value, $type, $value (+26 more)
-
-### Community 456 - "CmmsReportDto"
-Cohesion: 0.10
-Nodes (19): Month, CmmsReportDto, AvgCompletionDays, ByPriority, ByType, CompletedCount, CriticalCount, InProgressCount (+11 more)
-
-### Community 457 - ".A"
-Cohesion: 0.22
-Nodes (11): Fx, MapActions, Fact, InlineData, Task, Theory, Fx, Actions (+3 more)
-
-### Community 458 - "search_stack"
-Cohesion: 0.10
-Nodes (10): _exact_stack_identifier(), _project_row(), Resolve a standalone API identifier even when its BM25 IDF is low., Search stack-specific guidelines, search_stack(), _valid_max_results(), _rows(), TestNativeDesktopStackFreshness (+2 more)
-
-### Community 459 - "ApplicationUser"
-Cohesion: 0.07
-Nodes (25): ClaimsIdentity, IdentityUser, IHostEnvironment, DateTime, ApplicationUser, CreatedDate, DisciplineId, EmployeeId (+17 more)
-
-### Community 460 - "PEMS Operational Data, Product Management, Packaging & Period-Reporting Architecture — Audit"
-Cohesion: 0.07
-Nodes (28): 10.1 Direct answers to the task's specific questions, 10.2 Comparing the three design options the task asks about, 10.3 Concrete, minimal, additive recommendation (not implemented in this pass), 10. Batch, Quality, and Inventory Traceability Gap (deep dive — new evidence this pass), 11. Approval, Correction, and Auditability, 12. Reuse / Extend / Create Matrix, 13. Risks and Double-Counting Scenarios, 14. Migration-Safe Implementation Roadmap (+20 more)
-
-### Community 461 - "PEMS Workflow Platform — Architecture Audit (no implementation)"
+### Community 246 - "PredictiveMaintenanceResult"
 Cohesion: 0.08
-Nodes (24): A1. Workflows that already run on the central platform (7 seeded definitions), A2. Workflows implemented outside the platform (hand-coded lifecycles), A. Complete Workflow Inventory, B1. Engineering Document (platform-backed), B2. Work Request (NOT platform-backed), B3. Work Order, Letter, Transmittal, MR, others, B3a. Cross-cutting facts about the execution path, B. Workflow Execution Map (traced) (+16 more)
+Nodes (25): PredictiveMaintenanceModel, Algorithm, CreatedDate, Description, IsActive, PredictiveMaintenanceModelId, Results, TargetName (+17 more)
 
-### Community 462 - ".CommitBatchAsync"
+### Community 248 - "OverlayComponentsTests"
+Cohesion: 0.20
+Nodes (8): BreadcrumbOptions, Items, Label, Skin, Crumb, Href, Label, OverlayComponentsTests
+
+### Community 249 - "WorkflowDefinitionService"
+Cohesion: 0.07
+Nodes (13): WorkflowBindingBackfillSeeder, WorkOrderLifecycleWorkflowSeeder, WorkRequestWorkflowSeeder, PartCatalogueWorkflow, PemsWorkflowReferenceCatalog, WorkflowConditionEvaluatorTests, WorkflowBindingService, Clause (+5 more)
+
+### Community 250 - "EquipmentDatasheet"
+Cohesion: 0.13
+Nodes (15): EquipmentDatasheet, CreatedDate, DatasheetId, DesignPressure, DesignTemperature, DocumentNumber, Equipment, EquipmentId (+7 more)
+
+### Community 251 - "OrganizationResolver"
+Cohesion: 0.09
+Nodes (21): DepartmentConsistencyStatuses, EmployeeDepartmentConsistencyRow, IOrganizationConsistencyService, IOrganizationResolver, LegacyPositionRow, LegacyPositionStatuses, ManagerChainResult, Detail (+13 more)
+
+### Community 252 - "FormDefinition"
+Cohesion: 0.16
+Nodes (9): RichTextFieldTests, FormDefinition, Action, Fields, Id, SubmitLabel, Title, WarnOnLeave (+1 more)
+
+### Community 253 - "RelationshipGapItemDto"
+Cohesion: 0.09
+Nodes (23): BulkSuggestedLinkItemDto, EquipmentId, EquipmentTagNumber, MatchedOnRawValue, TargetId, TargetLabel, TargetType, RelationshipGapItemDto (+15 more)
+
+### Community 254 - "MaterialStock"
+Cohesion: 0.08
+Nodes (24): MaterialStock, AvailableQuantity, CreatedDate, IsActive, IsLowStock, IsOutOfStock, LastUpdated, MaterialItem (+16 more)
+
+### Community 255 - "EngineeringReportDto"
+Cohesion: 0.12
+Nodes (15): EngineeringReportDto, ApprovedCount, AvgDaysToApprove, ByDiscipline, ByProject, ByStatus, IssuedCount, OverdueCount (+7 more)
+
+### Community 256 - "LetterPrintModel"
+Cohesion: 0.07
+Nodes (30): LetterSenderBlockDto, DepartmentId, DepartmentName, Email, EmployeeId, FullName, Phone, SignaturePath (+22 more)
+
+### Community 257 - "BarcodeLabelContent"
+Cohesion: 0.15
+Nodes (9): BarcodeLabelContent, Code, MetaLine, SubtitleLine, Symbology, TitleLine, IBarcodeRenderingService, BarcodeRenderingService (+1 more)
+
+### Community 258 - "EquipmentClassificationAndFailureTaxonomyTests.SeedFullBaselineAsync"
+Cohesion: 0.03
+Nodes (61): BackfillResultDto, AutoClassifiedCount, SuggestionsCreatedCount, ClassificationDashboardDto, ByConfidence, ByEquipmentClass, BySource, ClassifiedCount (+53 more)
+
+### Community 259 - "List<"
+Cohesion: 0.01
+Nodes (81): IDocumentSearchAIService, DocumentSearchRequest, Direction, Discipline, DocumentType, EquipmentTag, Status, DocumentSearchAIService (+73 more)
+
+### Community 260 - "BreakGlassOptions"
+Cohesion: 0.14
+Nodes (9): BreakGlassOptions, MachineFingerprint, ManagementNetworks, RequestFolder, VendorPublicKey, VendorRecoveryEnabled, WindowMinutes, BreakGlassRules (+1 more)
+
+### Community 261 - "PEMS.Licensing.Formats"
+Cohesion: 0.08
+Nodes (21): PEMS.Web.Licensing, PEMS.Licensing, PEMS.Licensing.Seal, PEMS.Persistence.Licensing, PEMS.Licensing.Evaluation, PEMS.Licensing.Formats, PEMS.Tests.Licensing, PemsVendorTool.Core (+13 more)
+
+### Community 262 - "LetterComposeInput"
+Cohesion: 0.04
+Nodes (60): LetterComposeRules, EmployeeDirectoryItem, DepartmentName, Email, EmployeeId, FullName, IsExternal, PersonnelCode (+52 more)
+
+### Community 263 - "Task"
+Cohesion: 0.04
+Nodes (40): Page, Overdue, Size, MyApprovalItemDto, AssignedDate, BusinessObjectId, BusinessObjectType, DueDate (+32 more)
+
+### Community 264 - "clean"
+Cohesion: 0.21
+Nodes (11): clean(), dependency_findings(), stage(), visit(), description(), export(), issue_of(), labels() (+3 more)
+
+### Community 265 - "ProductionOrderService"
+Cohesion: 0.14
+Nodes (5): ProductionOrderService, ProductionRunService, FakeNumberingService, FakeNumberingService, ProductionOrderServiceTests
+
+### Community 266 - "MDRImportBatchDto"
+Cohesion: 0.08
+Nodes (24): MDRImportBatchDto, FileName, HeaderWarnings, ImportDate, MDRImportBatchId, ProjectId, ProjectName, Rows (+16 more)
+
+### Community 267 - "PemsSearchBox"
+Cohesion: 0.28
+Nodes (3): debounce(), initAll(), PemsSearchBox
+
+### Community 268 - "HelpArticle"
+Cohesion: 0.04
+Nodes (47): HelpArticle, ArticleType, Category, Code, CreatedDate, DisplayOrder, HelpArticleId, HelpCategoryId (+39 more)
+
+### Community 269 - "EnterpriseFileStorageService.SaveAsync"
+Cohesion: 0.13
+Nodes (11): EnterpriseStorageResultDto, FileSizeBytes, RelativePath, SavedAt, Sha256, StorageProviderCode, StorageProviderId, IEnterpriseFileStorageService (+3 more)
+
+### Community 270 - "TaskItemDto"
+Cohesion: 0.10
+Nodes (21): TaskItemDto, AssignedByName, AssignedToEmployeeName, CompletedDate, CompletionNote, CreatedDate, Description, DueDate (+13 more)
+
+### Community 271 - "CorrespondentParty"
+Cohesion: 0.09
+Nodes (21): CorrespondentParty, Code, CorrespondentPartyId, CreatedDate, IsActive, IsProvisional, Name, PartyType (+13 more)
+
+### Community 272 - "ProcurementDemand"
+Cohesion: 0.07
+Nodes (26): ProcurementDemand, DecidedAt, DecidedByEmployeeId, DecidedByUserName, DecisionReason, Description, MaterialItem, MaterialItemId (+18 more)
+
+### Community 273 - "BkChartPagesTests"
+Cohesion: 0.05
+Nodes (40): CostByEquipmentItem, Cost, EquipmentId, TagNumber, CostByGroupItem, Cost, GroupName, CostKpiDto (+32 more)
+
+### Community 274 - "LetterUserState"
+Cohesion: 0.15
+Nodes (13): LetterUserState, ApplicationUserId, ArchivedDate, IsArchived, IsPurged, IsTrashed, Letter, LetterId (+5 more)
+
+### Community 275 - ".NewEnvAsync"
+Cohesion: 0.09
+Nodes (16): PartCatalogueApproverAssignment, ApproverAssignmentId, Employee, EmployeeId, IsActive, StepKey, PartCatalogueApproverAssignmentConfiguration, PartCatalogueWorkflowSeeder (+8 more)
+
+### Community 277 - "Warehouse"
+Cohesion: 0.17
+Nodes (11): Warehouse, Code, CreatedDate, Description, IsActive, Locations, Name, WarehouseId (+3 more)
+
+### Community 278 - "Type"
+Cohesion: 0.14
+Nodes (6): DynamicComponent, OnlyTheseControllers, IPemsComponentRegistry, Keys, PemsComponentRegistry, Keys
+
+### Community 279 - ".BuildDraftAsync"
+Cohesion: 0.05
+Nodes (11): WorkflowActorResolutionRuntimeTests, WorkflowBindingTests, WorkflowConfigAuditTests, WorkflowReadModelTests, WorkflowRuntimeHardeningTests, WorkflowLifecycleTests, WorkflowValidatorTests, Built (+3 more)
+
+### Community 280 - "LetterService.SearchAsync"
+Cohesion: 0.22
+Nodes (8): LetterStar, ApplicationUserId, CreatedDate, Letter, LetterId, LetterStarId, LetterStarConfiguration, LetterGridPaginationTests
+
+### Community 281 - "DelayRootCauseAnalysisDto"
+Cohesion: 0.12
+Nodes (16): DelayRootCauseAnalysisDto, AverageDelayDays, ByDiscipline, ByStage, ByVendor, NarrativeSummary, TotalDelayedDocuments, RecurringNcrPatternDto (+8 more)
+
+### Community 282 - "PEMS.Application.PartCatalogue"
+Cohesion: 0.11
+Nodes (3): PEMS.Tests.PartCatalogue, PEMS.Application.PartCatalogue, PEMS.Web.Routing
+
+### Community 283 - "RolePermissionAdminServiceTests.SeedAsync"
+Cohesion: 0.21
+Nodes (7): PermissionToggleRequest, Enable, PermissionName, RolePermissionAdminServiceTests, SetPermissionAccessRequest, Changes, TargetRole
+
+### Community 284 - "WorkItemQuery"
+Cohesion: 0.14
+Nodes (13): WorkItemQuery, Assignee, Descending, IncludeArchived, Page, PageSize, Priority, Sort (+5 more)
+
+### Community 285 - "OperationsReportServiceTests.SeedRunningRunAsync"
+Cohesion: 0.22
+Nodes (9): PeriodType, CustomRange, Day, Month, Week, IOperationsReportService, OperationsReportService, FakeNumberingService (+1 more)
+
+### Community 286 - "VDRReportDto"
+Cohesion: 0.15
+Nodes (11): VDRReportDto, ByReviewCategory, ByVendor, ByWorkflowStatus, ClosedCount, OverdueCount, PendingResubmissionCount, SubmissionsByMonth (+3 more)
+
+### Community 287 - "VDRDashboardDto"
+Cohesion: 0.10
+Nodes (16): VDRDashboardDto, ByReviewCategory, ByWorkflowStatus, ClosedItems, OnTimePercentage, OverdueItems, PendingResubmissionItems, SlaOverdueItems (+8 more)
+
+### Community 288 - "ProgressOptions"
+Cohesion: 0.03
+Nodes (57): AccordionItemOptions, BodyCssClass, ButtonCssClass, ParentId, Target, AccordionOptions, CssClass, Id (+49 more)
+
+### Community 289 - "ProductionOutput"
+Cohesion: 0.10
+Nodes (19): ProductionOutput, Employee, EmployeeId, InventoryTransaction, InventoryTransactionId, MaterialItem, MaterialItemId, Notes (+11 more)
+
+### Community 290 - "ProductionDowntimeEvent"
+Cohesion: 0.07
+Nodes (30): ProductionDowntimeEvent, CauseCategory, CreatedDate, Description, EndTime, Equipment, EquipmentId, ProductionDowntimeEventId (+22 more)
+
+### Community 291 - "TraceIdTests"
+Cohesion: 0.12
+Nodes (5): CapturingSink, Events, TraceIdTests, PemsTrace, ProblemTraceIdFilter
+
+### Community 292 - "ProductionBatch"
+Cohesion: 0.09
+Nodes (23): ProductionBatch, BatchNumber, ConsumedAsSourceIn, CreatedDate, MaterialItem, MaterialItemId, Notes, Outputs (+15 more)
+
+### Community 294 - "MapActions"
+Cohesion: 0.18
+Nodes (5): MapActions, Grants, Seeded, StoreRequisitionReservationConcurrencyTests, StoreRequisitionRetryStrategyTests
+
+### Community 295 - "TenderControllerP0Tests.CreateAsync"
+Cohesion: 0.16
+Nodes (9): DocumentWorkflowControllerApprovalAuthorizationTests, Arrange, TenderControllerP0Tests, FakeCurrentUserService, FullName, IsAuthenticated, Roles, UserId (+1 more)
+
+### Community 296 - "LetterRoutingRule"
+Cohesion: 0.10
+Nodes (21): LetterRoutingRule, ApplyTagId, CreatedDate, IsActive, LastMatchedDate, LetterRoutingRuleId, MatchCategory, MatchCount (+13 more)
+
+### Community 297 - "LetterRecipient"
+Cohesion: 0.11
+Nodes (16): LetterReferralRules, LetterRecipient, CreatedDate, Department, DepartmentId, Employee, EmployeeId, ExternalName (+8 more)
+
+### Community 298 - "MaintenanceHistoryImportBatchSummaryDto"
+Cohesion: 0.04
+Nodes (46): MaintenanceHistoryImportBatchDto, Rows, MaintenanceHistoryImportBatchSummaryDto, ConflictCount, DuplicateCount, FileName, ImportDate, ImportedByName (+38 more)
+
+### Community 299 - "Fact"
+Cohesion: 0.03
+Nodes (22): OpenApiDocumentTests, ContractApprovalAuthorityRuleServiceTests, Phase8AuthorizationGapTests, PurchaseOrderControllerAuthorizationTests, TenderControllerAuthorizationTests, TenderServiceTests, CartableSqlTranslationTests, ConditionMonitoringServiceTests (+14 more)
+
+### Community 300 - "ReferralWebTests"
+Cohesion: 0.06
+Nodes (17): ReferralWebTests, User, FullName, IsAuthenticated, Roles, UserId, UserName, Env (+9 more)
+
+### Community 301 - "GasTestListDto"
+Cohesion: 0.07
+Nodes (31): GasReadingDto, Parameter, Result, Unit, Value, GasReadingInputDto, Parameter, Unit (+23 more)
+
+### Community 302 - "ExecutiveDashboardControllerTests.NewRig"
+Cohesion: 0.19
+Nodes (3): ExecutiveDashboardControllerTests, ResxLocalizer, Rig
+
+### Community 303 - "WorkflowAdminActor"
+Cohesion: 0.06
+Nodes (38): WorkflowAdminActor, WorkflowAdminResult, Error, Id, IsConflict, IsForbidden, RowVersion, Success (+30 more)
+
+### Community 304 - "TenderAwardHardeningTests.ClosedTenderWithBidAsync"
 Cohesion: 0.25
-Nodes (6): FunctionalLocationImportCommitResultDto, Conflicts, Created, Rejected, Skipped, Updated
+Nodes (3): Arrange, FailOnNthSave, TenderAwardHardeningTests
+
+### Community 305 - "DatabaseUpdateRunDto"
+Cohesion: 0.17
+Nodes (12): DatabaseUpdateRunDto, BackupFile, DurationSeconds, Error, FromMigration, MigrationsApplied, Mode, PerformedBy (+4 more)
+
+### Community 308 - "AuditLog"
+Cohesion: 0.17
+Nodes (13): AuditLog, Action, AuditLogId, ChangedFieldsSummary, EntityKeyValue, EntityName, IsAIAssisted, Timestamp (+5 more)
+
+### Community 309 - "MaterialRequisitionQuotation"
+Cohesion: 0.10
+Nodes (20): MaterialRequisitionQuotation, ApprovalStatus, CommercialEvaluation, CreatedDate, Currency, InquiryDate, IsActive, MR (+12 more)
+
+### Community 310 - "ConfirmDialogOptions"
+Cohesion: 0.09
+Nodes (22): Tone, Danger, Dark, Info, Light, Neutral, Primary, Success (+14 more)
+
+### Community 311 - "AIReliabilityInsightDto"
+Cohesion: 0.10
+Nodes (20): AIReliabilityInsightDto, AIReliabilityInsightId, Confidence, EquipmentClassId, EquipmentClassName, EquipmentId, EquipmentTagNumber, GeneratedDate (+12 more)
+
+### Community 312 - "ProductionTargetService"
+Cohesion: 0.29
+Nodes (3): IProductionTargetService, ProductionTargetService, ProductionTargetServiceTests
+
+### Community 313 - "IncomingCorrespondenceDtos.cs"
+Cohesion: 0.10
+Nodes (20): LinkSearchItemDto, LinkType, Number, TargetId, Title, PartyContractDto, ContractId, ContractNo (+12 more)
+
+### Community 314 - "PredictiveMaintenanceModelDto"
+Cohesion: 0.12
+Nodes (15): PredictiveMaintenanceModelDto, Algorithm, Description, PredictiveMaintenanceModelId, ResultCount, TargetName, TrainingDataStatus, ValidationStatus (+7 more)
+
+### Community 315 - "IrnReceipt"
+Cohesion: 0.10
+Nodes (20): IrnReceipt, CreatedDate, IrnNumber, IrnReceiptId, IsActive, Lines, MrsImportBatch, MrsImportBatchId (+12 more)
+
+### Community 316 - "re"
+Cohesion: 0.25
+Nodes (8): changed_files(), filter_for(), git(), main(), names_for(), plan(), sql_preflight(), test_classes()
+
+### Community 318 - "HomeController"
+Cohesion: 0.05
+Nodes (16): INavigationCountService, IWebAuthnService, NavigationCountService, WebAuthnService, AccountController, CultureController, HomeController, NavigationBadgeController (+8 more)
+
+### Community 319 - "HelpVisualRenderDto"
+Cohesion: 0.10
+Nodes (22): HelpVisualRenderDto, AccessibilityDescription, Caption, Edges, HelpVisualId, LanguageCode, Legend, Nodes (+14 more)
+
+### Community 320 - "WorkItemComment"
+Cohesion: 0.10
+Nodes (20): WorkItemComment, AuthorEmployeeId, AuthorName, AuthorUserId, Body, CreatedDate, IsDeleted, TaskItem (+12 more)
+
+### Community 321 - "CredentialProtector"
+Cohesion: 0.26
+Nodes (4): CredentialProtector, StorageProviderClientFactory, CredentialProtectorTests, StorageProviderClientFactoryTests
+
+### Community 322 - "UiRegistryDriftTests"
+Cohesion: 0.08
+Nodes (14): PemsComponentAttribute, Category, Icon, Key, FacadeKind, Component, Part, PemsFacadeAttribute (+6 more)
+
+### Community 323 - "EngineeringRelationship"
+Cohesion: 0.18
+Nodes (11): EngineeringRelationship, Confidence, CreatedDate, EngineeringRelationshipId, IsAIProposed, RelationshipType, ReviewStatus, SourceId (+3 more)
+
+### Community 324 - "SidebarNode"
+Cohesion: 0.14
+Nodes (15): DynamicSidebarBuilder, SidebarNode, BadgeKey, BadgeTone, Children, Href, Icon, IsActive (+7 more)
+
+### Community 325 - "ClassIntelligenceProfileDto"
+Cohesion: 0.09
+Nodes (22): ClassIntelligenceProfileDto, ApprovedFMEACount, ApprovedRCMCount, AverageAvailabilityPercent, AverageMTBFHours, AverageMTTRHours, BadActorCount, ClassifiedDirectlyCount (+14 more)
+
+### Community 326 - "MaintenanceHistoryImportService"
+Cohesion: 0.20
+Nodes (5): EquipmentLookupEntry, Description, EquipmentId, MaintenanceHistoryImportService, MaintenanceHistoryImportServiceTests
+
+### Community 327 - "PartCatalogueDtos.cs"
+Cohesion: 0.04
+Nodes (55): PcAdminApprover, PcAdminCommodityResponsible, PcAdminFinding, PcAdminGroupMap, PcAdminOverview, CommodityResponsibles, Counts, Findings (+47 more)
+
+### Community 328 - "SecurityEventDto"
+Cohesion: 0.12
+Nodes (14): RecoveryOutcome, AdminsNotified, SecurityEventId, SecurityEventDto, ActorUserName, EventType, FailureReason, Forwarded (+6 more)
+
+### Community 329 - "ExtractedTableRow"
+Cohesion: 0.08
+Nodes (23): ExtractedTableRow, CableNo, DcsTagNo, Description, InstrumentType, IoAddress, IoCard, IoChannel (+15 more)
+
+### Community 330 - "OrganizationPositionRow"
+Cohesion: 0.10
+Nodes (20): OrganizationPositionRow, AssignmentId, ChildCount, DepartmentId, DepartmentName, Description, EndDate, HolderEmployeeId (+12 more)
+
+### Community 331 - "EffectivePermissionDto"
+Cohesion: 0.12
+Nodes (15): EffectivePermissionDto, ActionName, Allowed, Detail, IsDestructive, PermissionName, ResourceName, SoDExposureDto (+7 more)
+
+### Community 332 - "CustomerInstall"
+Cohesion: 0.07
+Nodes (23): ActivationFlowTests, CustomerInstall, Db, Dir, Events, File, Manager, Seal (+15 more)
+
+### Community 333 - "BidNegotiation"
+Cohesion: 0.10
+Nodes (20): BidNegotiation, ApprovedBy, ApprovedById, ApprovedDate, Bid, BidId, BidNegotiationId, CommercialChanges (+12 more)
+
+### Community 334 - "DocumentAttachmentDto"
+Cohesion: 0.11
+Nodes (18): DocumentAttachmentDto, AIKeywords, AIStatus, AISummary, AttachmentId, DocumentRevisionId, FileExtension, FileHash (+10 more)
+
+### Community 335 - "Notification"
+Cohesion: 0.14
+Nodes (13): Notification, CreatedDate, DismissedDate, IsRead, LinkUrl, Message, NotificationId, ReadDate (+5 more)
+
+### Community 336 - "FakeSignals"
+Cohesion: 0.06
+Nodes (22): ISignalSource, Platform, Virtualization, RawSignal, FingerprintComparer, FingerprintMatch, FingerprintResult, Degraded (+14 more)
+
+### Community 337 - "ConditionReading"
+Cohesion: 0.11
+Nodes (18): ConditionReading, ConditionMonitoringPoint, ConditionMonitoringPointId, ConditionReadingId, CreatedDate, EvaluationProfileId, EvaluationProfileVersion, EvaluationStatus (+10 more)
+
+### Community 339 - "ProductionInput"
+Cohesion: 0.11
+Nodes (18): ProductionInput, Employee, EmployeeId, InventoryTransaction, InventoryTransactionId, MaterialItem, MaterialItemId, Notes (+10 more)
+
+### Community 340 - "HelpVisual"
+Cohesion: 0.10
+Nodes (20): HelpVisual, AccessibilityDescriptionEn, AccessibilityDescriptionFa, Article, CaptionEn, CaptionFa, CreatedDate, DefinitionJson (+12 more)
+
+### Community 341 - "RcmFmeaTests.SeedFullBaselineAsync"
+Cohesion: 0.13
+Nodes (11): IRcmOperationalBridgeService, FailureCauseSeeder, FailureConsequenceSeeder, FailureEffectSeeder, FailureModeSeeder, FMEAService, RcmOperationalBridgeService, RCMService (+3 more)
+
+### Community 342 - "ProductionRun"
+Cohesion: 0.08
+Nodes (26): ProductionRun, CancellationReason, CreatedDate, EndDate, Equipment, EquipmentId, Events, HoldReason (+18 more)
+
+### Community 343 - "WorkOrderCalendarItemDto"
+Cohesion: 0.06
+Nodes (34): CalendarFilterOptionDto, Id, Name, MaintenanceCalendarResultDto, Items, RangeEnd, RangeStart, Unscheduled (+26 more)
+
+### Community 344 - "area-chart.tsx"
+Cohesion: 0.07
+Nodes (62): AreaChart(), AreaChartProps, ChartInner(), ChartInnerProps, DEFAULT_MARGIN, extractAreaConfigs(), AreaChartLoading(), AreaChartLoadingProps (+54 more)
+
+### Community 345 - "VDRListItemDto"
+Cohesion: 0.09
+Nodes (20): VDRListItemDto, DisciplineName, DocumentDescription, DocumentNumber, DocumentTypeCode, IsOverdue, LatestReviewCategory, LatestRevisionNo (+12 more)
+
+### Community 346 - "Jira"
+Cohesion: 0.14
+Nodes (5): default_transport(), issues_from_csv(), Jira, TrackerError, FakeJira
+
+### Community 347 - "WorkOrderTask"
+Cohesion: 0.08
+Nodes (15): WorkOrderTask, CompletedBy, CompletedDate, CreatedDate, Description, IsCompleted, TaskNumber, Title (+7 more)
+
+### Community 348 - "LetterDelegationDto"
+Cohesion: 0.13
+Nodes (14): LetterDelegationRules, Span, LetterDelegationDto, DelegateName, DelegatePosition, DelegateUserId, DelegatorName, DelegatorUserId (+6 more)
+
+### Community 349 - "AlertOptions"
+Cohesion: 0.10
+Nodes (20): AlertOptions, Attributes, CopyLabel, CssClass, DismissLabel, Message, Skin, Title (+12 more)
+
+### Community 350 - "WorkflowPlatformContracts.cs"
+Cohesion: 0.06
+Nodes (38): IWorkflowActorResolutionHook, IWorkflowBindingService, IWorkflowDefinitionService, IWorkflowEventSink, IWorkflowInstanceControl, IWorkflowReadModelService, IWorkflowReferenceCatalog, IWorkflowVersionValidator (+30 more)
+
+### Community 351 - "ConversationMessageDto"
+Cohesion: 0.11
+Nodes (18): ConversationMessageDto, AttachmentsCount, Body, CcSummary, CreatedDate, IsCurrent, Kind, LetterDate (+10 more)
+
+### Community 352 - "ManufacturerDataBookDto"
+Cohesion: 0.09
+Nodes (22): ManufacturerDataBookDto, DocumentsPartA, DocumentsPartB, DocumentsPartC, EquipmentId, EquipmentTagNumber, HardCopyCount, HardCopyShippedDate (+14 more)
+
+### Community 353 - "IServiceProvider"
+Cohesion: 0.03
+Nodes (51): ConditionPriorityMappingSeeder, DepartmentSeeder, DisciplineSeeder, EngineeringDocumentWorkflowSeeder, EquipmentClassSeeder, ExecutionGateSeeder, FailureCauseMechanismSeeder, FailureMechanismSeeder (+43 more)
+
+### Community 354 - "CartableCountsDto"
+Cohesion: 0.13
+Nodes (14): CartableCountsDto, All, Archive, Delegated, Drafts, Inbox, InboxUnread, Sent (+6 more)
+
+### Community 355 - "NavigationMenuService"
+Cohesion: 0.27
+Nodes (3): NavigationMenuResult, NavigationMenuService, DynamicSidebarSqlTests
+
+### Community 356 - "IncomingRegistrationResult"
+Cohesion: 0.25
+Nodes (7): IncomingRegistrationResult, DuplicateLetterId, DuplicateLetterNumber, Issues, LetterId, LetterNumber, Success
+
+### Community 357 - "VendorCreateHardeningTests.Create"
+Cohesion: 0.16
+Nodes (3): IVendorQualificationService, VendorQualificationService, VendorCreateHardeningTests
+
+### Community 358 - "LetterReferral"
+Cohesion: 0.04
+Nodes (41): LetterTemplatePlaceholders, All, ILetterReminderService, LetterReminderResult, Failed, ReferralReminders, ResponseReminders, SkippedDuplicates (+33 more)
+
+### Community 359 - "EvaluationProfile"
+Cohesion: 0.05
+Nodes (47): ConditionMonitoringPoint, AlarmThresholdHigh, AlarmThresholdLow, ConditionMonitoringPointId, CreatedDate, Description, Equipment, EquipmentId (+39 more)
+
+### Community 360 - "DisciplineController"
+Cohesion: 0.20
+Nodes (3): IDisciplineWorkspaceService, DisciplineWorkspaceService, DisciplineController
+
+### Community 361 - "NavigationMenuController"
+Cohesion: 0.21
+Nodes (3): INavigationMenuService, NavigationMenuController, IsFa
+
+### Community 362 - "pems-docker.sh"
+Cohesion: 0.26
+Nodes (29): caddy_ok(), cmd_adopt_env(), cmd_boot_check(), cmd_build(), cmd_db_apply(), cmd_db_backup(), cmd_deploy(), cmd_export_cipher() (+21 more)
+
+### Community 363 - "cn"
+Cohesion: 0.09
+Nodes (43): ChartLoadingLabelProps, LegendContext, LegendContextValue, legendCssVars, LegendItemContext, LegendItemContextValue, LegendItemData, LegendItemProvider() (+35 more)
+
+### Community 364 - "TenderContractCreatorEventControllerTests.CreateAsync"
+Cohesion: 0.28
+Nodes (4): Actor, Arrange, FailOnNthSave, TenderContractCreatorEventControllerTests
+
+### Community 365 - "TaskManagerViewRenderTests.SeedAsync"
+Cohesion: 0.22
+Nodes (10): WorkSpaceInput, Description, Id, IsActive, Key, Name, NameFa, OwnerDepartmentId (+2 more)
+
+### Community 366 - "VDRImportRowPayload"
+Cohesion: 0.04
+Nodes (52): VDRImportBatchDto, FileName, ImportDate, ProjectId, ProjectName, Rows, RowsDuplicate, RowsError (+44 more)
+
+### Community 367 - "ColumnDescriptor"
+Cohesion: 0.05
+Nodes (38): ColumnAlignment, Center, End, Start, ColumnDescriptor, Alignment, FalseText, Header (+30 more)
+
+### Community 368 - "MaintenancePlanService.GetListAsync"
+Cohesion: 0.37
+Nodes (3): MaintenancePlanService, MaintenancePlanServiceLiveDbTests, MaintenancePlanServiceTests
+
+### Community 369 - "PemsWorkflowContractTests"
+Cohesion: 0.12
+Nodes (7): PemsWorkflowContracts, PemsWorkflowContractTests, IWorkflowModuleContractRegistry, WorkflowModuleContract, WorkflowStageRequirement, WorkflowTransitionRequirement, WorkflowModuleContractRegistry
+
+### Community 370 - "RoleAssignment"
+Cohesion: 0.07
+Nodes (26): RoleAssignment, AssignmentType, CreatedDate, DelegatedByUserId, EffectiveFrom, EffectiveTo, IsActive, Reason (+18 more)
+
+### Community 372 - "UserAuditLogRowVm"
+Cohesion: 0.29
+Nodes (7): UserAuditLogRowVm, ActionName, Decision, Reason, ResourceId, ResourceName, Timestamp
+
+### Community 373 - "MaterialReservation"
+Cohesion: 0.04
+Nodes (45): MaterialReservation, CreatedDate, IsActive, IssuedQuantity, MaintenancePlan, MaintenancePlanId, MaterialItem, MaterialItemId (+37 more)
+
+### Community 374 - "IncomingFileInput"
+Cohesion: 0.33
+Nodes (6): IncomingFileInput, Content, ContentType, FileName, Length, Role
+
+### Community 375 - "LetterTimelineEventDto"
+Cohesion: 0.15
+Nodes (9): LetterHistoryFilter, LetterTimelineEventDto, ActorEmployeeId, ActorName, Color, Description, EventDate, EventType (+1 more)
+
+### Community 376 - "PartCatalogueFormDto"
+Cohesion: 0.05
+Nodes (41): PartCatalogueFormDto, AssetType, Attributes, ChangesMatchInventory, CommodityGroup1Id, CommodityGroup2Id, CurrencyId, DocumentNo (+33 more)
+
+### Community 377 - "LetterComposeControllerTests"
+Cohesion: 0.10
+Nodes (12): ConfigurationBuilder, LetterComplianceService, RichTextSanitizerService, FakeUser, FullName, IsAuthenticated, Roles, UserId (+4 more)
+
+### Community 379 - "PurchaseOrderDto"
+Cohesion: 0.14
+Nodes (13): PurchaseOrderDto, ContractId, ContractNo, Description, PoId, PoNumber, ProjectId, ProjectName (+5 more)
+
+### Community 382 - "PartCatalogueRequest"
+Cohesion: 0.03
+Nodes (78): PartCatalogueProductFamily, Code, Description, IsActive, ProductFamilyId, PartCatalogueRequest, Approvals, AssetType (+70 more)
+
+### Community 384 - "StoreRequisitionClosureGateTests.NewAsync"
+Cohesion: 0.24
+Nodes (4): Fx, Db, Svc, StoreRequisitionClosureGateTests
+
+### Community 385 - "DisposableSqlDatabase"
+Cohesion: 0.16
+Nodes (5): WorkRequestNumberingSqlTests, DisposableSqlDatabase, ConnectionString, Name, ServerName
+
+### Community 386 - "EquipmentCriticality"
+Cohesion: 0.15
+Nodes (13): EquipmentCriticality, CreatedDate, CriticalityClass, Description, EnvironmentImpact, Equipment, EquipmentCriticalityId, EquipmentId (+5 more)
+
+### Community 389 - "LoginViewModel"
+Cohesion: 0.33
+Nodes (5): LoginViewModel, Password, RememberMe, ReturnUrl, UserName
+
+### Community 391 - "PemsNumericModelBinder"
+Cohesion: 0.15
+Nodes (4): MvcOptionsExtensions, PemsDigits, PemsNumericModelBinder, PemsNumericModelBinderProvider
+
+### Community 392 - "WorkSpaceDto"
+Cohesion: 0.13
+Nodes (13): WorkSpaceDto, Description, Id, IsActive, IsLead, IsMember, Key, MemberCount (+5 more)
+
+### Community 393 - "FunctionalLocationImportBatch"
+Cohesion: 0.11
+Nodes (16): FunctionalLocationImportRowPayload, Area, Code, IsAreaParentRow, Name, ParentAreaName, SourceAreaCodeRaw, SourceAreaNameRaw (+8 more)
+
+### Community 394 - "ReportingPeriod.Resolve"
+Cohesion: 0.20
+Nodes (3): Range, ReportingPeriod, ReportingPeriodTests
+
+### Community 395 - "EngineeringDocument"
+Cohesion: 0.05
+Nodes (37): EngineeringDocumentDefinitions, EngineeringDocument, ApprovedBy, ApprovedByEmployee, ApprovedById, ApprovedDate, Attachments, CheckedBy (+29 more)
+
+### Community 396 - "ReplenishmentRunRequest"
+Cohesion: 0.26
+Nodes (7): ReplenishmentRunRequest, ReplenishmentSqlFixture, Connection, DbName, ReplenishmentSqlTests, FakeNetDemand, Results
+
+### Community 397 - "MOC"
+Cohesion: 0.05
+Nodes (39): MOC, ApprovedById, ApprovedDate, Attachments, ChangeType, ClosedById, ClosedDate, CreatedDate (+31 more)
+
+### Community 398 - "AccessDecision"
+Cohesion: 0.10
+Nodes (21): AccessDecision, Allowed, Detail, MatchedRoleName, MatchedScopeType, MatchedScopeValue, Reason, AccessDecisionReason (+13 more)
+
+### Community 399 - "FtpStorageProviderClient"
+Cohesion: 0.16
+Nodes (4): IStorageProviderClient, FtpStorageProviderClient, SftpStorageProviderClient, RemoteStorageProviderClientTests
+
+### Community 400 - "CriticalityFailureMaintenanceRowDto"
+Cohesion: 0.15
+Nodes (13): CriticalityFailureMaintenanceRowDto, CriticalityClass, DistinctEquipmentClassCount, EquipmentClassesWithApprovedRcmCount, EquipmentCount, FailureCount, Findings, PmCompliancePercent (+5 more)
+
+### Community 402 - "SetupStepDto"
+Cohesion: 0.11
+Nodes (19): SetupStatusDto, CompletedCount, IsFullyComplete, PercentComplete, Steps, TotalCount, SetupStepDto, ActionAction (+11 more)
+
+### Community 406 - "Asset"
+Cohesion: 0.13
+Nodes (15): Asset, AssetId, AssetNumber, CommissioningDate, CreatedDate, Description, Equipment, EquipmentId (+7 more)
+
+### Community 407 - "TesseractOcrService"
+Cohesion: 0.09
+Nodes (12): IOcrService, OcrOptions, Languages, TessDataPath, TesseractOcrService, DocumentTextExtractorFactory, IDocumentTextExtractorFactory, ExcelTextExtractor (+4 more)
+
+### Community 408 - "InvalidOperationException"
+Cohesion: 0.06
+Nodes (8): ProcurementPackageCloseoutSafetyTests, ProcurementPackageInspectionGateTests, DocumentHoldTests, TransmittalGovernanceTests, HelpStandardReferenceServiceTests, HelpVisualServiceTests, WorkflowBindingAmbiguousException, WorkflowConcurrencyConflictException
+
+### Community 409 - "pattern-audit.py"
+Cohesion: 0.32
+Nodes (8): classify(), estimate_class(), load_review(), main(), wave_of(), wave_table(), write_md(), write_review()
+
+### Community 410 - "IrnDispositionRecord"
+Cohesion: 0.13
+Nodes (15): IrnDispositionRecord, CreatedDate, DispositionedBy, DispositionedById, DispositionedDate, IrnDispositionRecordId, IrnReceipt, IrnReceiptId (+7 more)
+
+### Community 411 - "IReadOnlyCollection"
+Cohesion: 0.18
+Nodes (7): CartableOpResult, Affected, ErrorKey, Id, Success, ILetterCartableService, LetterCartableService
+
+### Community 412 - "EquipmentPassportDto"
+Cohesion: 0.04
+Nodes (51): ChildEquipmentSummaryDto, EquipmentId, Name, TagNumber, EquipmentPassportDto, Asset, ConditionMonitoring, Documents (+43 more)
+
+### Community 413 - "WorkOrderDisciplineFinding"
+Cohesion: 0.13
+Nodes (14): WorkOrderDisciplineFinding, CycleNumber, Decision, Discipline, DisciplineId, FailureCauseCode, FailureModeCode, Findings (+6 more)
+
+### Community 416 - "LetterVersion"
+Cohesion: 0.18
+Nodes (11): LetterVersion, Body, Letter, LetterId, LetterVersionId, Reason, SavedByUserId, SavedDate (+3 more)
+
+### Community 417 - "StoreRequisitionLifecycleService"
+Cohesion: 0.19
+Nodes (5): IStoreRequisitionLifecycleService, StoreRequisitionActions, StoreRequisitionActor, StoreRequisition, StoreRequisitionLifecycleService
+
+### Community 418 - "Transmittal"
+Cohesion: 0.03
+Nodes (65): Transmittal, CancelledBy, CancelledById, CancelledDate, CancelledReason, CreatedDate, Description, From (+57 more)
+
+### Community 419 - "LetterTestWorld.Services"
+Cohesion: 0.10
+Nodes (5): LetterApprovalChainTests, LetterComposePartyTests, LetterComposeServiceTests, LetterReplyComposeTests, LetterTestWorld
+
+### Community 420 - "RolePermissionDto"
+Cohesion: 0.13
+Nodes (14): RolePermissionDto, CanApprove, CanCreate, CanDelete, CanEdit, CanFreeze, CanHold, CanManualNumber (+6 more)
+
+### Community 422 - "EmployeeCertification"
+Cohesion: 0.14
+Nodes (14): EmployeeCertification, CertificateNumber, Certification, CertificationId, CreatedDate, Employee, EmployeeCertificationId, EmployeeId (+6 more)
+
+### Community 423 - "IrnReceiptService"
+Cohesion: 0.36
+Nodes (3): IrnReceiptService, IrnDispositionConcurrencyRealSqlTests, StockRowIntegrityFlowTests
+
+### Community 424 - "DatabaseUpdateServiceSqlTests.Empty_database_installs_then_updates_after_new_migrations_appear"
+Cohesion: 0.26
+Nodes (5): DatabaseInitializationOptions, CreateIfMissing, MigrateOnStartup, DatabaseInitializer, DatabaseUpdateServiceSqlTests
+
+### Community 426 - "WorkflowVersionImmutabilityGuard.Check"
+Cohesion: 0.33
+Nodes (3): WorkflowConfigAuditActions, WorkflowVersionStatus, WorkflowVersionImmutabilityGuard
+
+### Community 427 - "OCRProcessingAttachmentListDto"
+Cohesion: 0.18
+Nodes (10): OCRProcessingAttachmentListDto, AIError, AIStatus, AISummary, AttachmentId, DocumentNo, FileExtension, FileName (+2 more)
+
+### Community 428 - "AIAnalysisResult"
+Cohesion: 0.17
+Nodes (12): AIAnalysisResult, Confidence, DocumentTypePrediction, ErrorMessage, ExtractedData, ExtractedTableData, ExtractedTags, Keywords (+4 more)
+
+### Community 430 - "CrewMember"
+Cohesion: 0.07
+Nodes (25): CrewMember, CreatedDate, Crew, CrewId, CrewMemberId, Employee, EmployeeId, IsActive (+17 more)
+
+### Community 432 - "LicenseEventEntry"
+Cohesion: 0.23
+Nodes (5): EventChain, FileEventSink, ILicenseEventSink, LicenseEventEntry, DbEventSink
+
+### Community 433 - "PEMS_Backlog_Roadmap_48d3eaf8.md"
+Cohesion: 0.14
+Nodes (13): Sheet: Backlog, Sheet: Capability Checklist, Sheet: Instructions, Sheet: Lessons, Sheet: Licensing Design, Sheet: Old to New Map, Sheet: Overview, Sheet: Read Me (+5 more)
+
+### Community 435 - "PurchaseOrderApprovalService"
+Cohesion: 0.23
+Nodes (4): IPurchaseOrderApprovalService, PoActor, PoResult, PurchaseOrderApprovalService
+
+### Community 436 - "CartableWebTests"
+Cohesion: 0.07
+Nodes (19): LetterUserSettingsRules, Settings, ConfirmTrash, Density, FrozenColumns, HiddenColumns, MarkReadOnOpen, OpenPreviewPane (+11 more)
+
+### Community 437 - "MrsImportRowMetadata"
+Cohesion: 0.18
+Nodes (10): MrsImportRowMetadata, CanonicalField, ColumnIndex, CreatedDate, MrsImportRowId, MrsImportRowMetadataId, OriginalHeader, Row (+2 more)
+
+### Community 438 - "Vendor"
+Cohesion: 0.02
+Nodes (93): ManufacturerDataBook, CreatedDate, Documents, Equipment, EquipmentId, HardCopyCount, HardCopyShippedDate, IndexOfContentsDueDate (+85 more)
+
+### Community 439 - "StatusPage.cshtml"
+Cohesion: 0.18
+Nodes (8): ErrorViewModel, PEMS.Web.Models.StatusPageViewModel, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource
+
+### Community 440 - "ControlTagHelperTests"
+Cohesion: 0.05
+Nodes (32): PemsButtonTagHelper, As, Css, Disabled, Outline, Size, Tone, PemsInputTagHelper (+24 more)
+
+### Community 441 - "SearchAccessRule"
+Cohesion: 0.12
+Nodes (14): SearchAccessKind, AnyUser, Permission, Roles, SearchAccessRule, Action, AnyOfRoles, Kind (+6 more)
+
+### Community 442 - "sparkline.tsx"
+Cohesion: 0.06
+Nodes (62): AnimatedNumber, AreaSparklineImpl(), AreaSparklineProps, BarPaths(), BarSparkline, BarSparklineImpl(), BarSparklineProps, DATA_TRANSITION_EASE (+54 more)
+
+### Community 443 - "OrganizationTeamNodeDto"
+Cohesion: 0.04
+Nodes (48): EmployeeAssignmentDto, EmployeeAssignmentId, EmployeeId, EmployeeName, EndDate, IsActive, Notes, PositionId (+40 more)
+
+### Community 445 - ".StageFromExcelAsync"
+Cohesion: 0.18
+Nodes (11): EquipmentFunctionalLocationAssignmentService, EquipmentLookupEntry, Description, EquipmentId, FunctionalLocationId, FunctionalLocationLookupEntry, Area, FunctionalLocationId (+3 more)
+
+### Community 446 - "PartCatalogueSchemaContractTests"
+Cohesion: 0.27
+Nodes (3): CapturingInterceptor, Commands, PartCatalogueSchemaContractTests
+
+### Community 447 - "QuickSetupAuthorizationTests.CreateInfra"
+Cohesion: 0.38
+Nodes (4): ISetupService, FakeEquipmentPdfScanService, QuickSetupAuthorizationTests, QuickSetupController
+
+### Community 449 - "JsonSerializerOptions"
+Cohesion: 0.08
+Nodes (15): AIJsonExtractor, ComponentManifest, Category, Component, Icon, Key, ManifestVersion, NameKey (+7 more)
+
+### Community 450 - "PMTemplate"
+Cohesion: 0.04
+Nodes (55): MaintenanceStrategyType, Code, CreatedDate, Description, DisplayOrder, IsActive, IsSystemDefault, MaintenanceStrategyTypeId (+47 more)
+
+### Community 451 - "TeamMember"
+Cohesion: 0.15
+Nodes (13): TeamMember, CreatedDate, Employee, EmployeeId, IsActive, JoinedDate, LeftDate, Role (+5 more)
+
+### Community 452 - "TableExtractionRowInput"
+Cohesion: 0.10
+Nodes (19): TableExtractionRowInput, CableNo, DcsTagNo, Description, IoAddress, IoCard, IoChannel, JunctionBox (+11 more)
+
+### Community 455 - "WorkRequestService.ConvertToWorkOrderAsync"
+Cohesion: 0.13
+Nodes (13): WorkOrderStatusHistory, ChangedBy, ChangedById, ChangedDate, FromStatus, Reason, ToStatus, WorkOrder (+5 more)
+
+### Community 456 - "PcEditViewModel"
+Cohesion: 0.14
+Nodes (14): PcEditViewModel, Currencies, Details, Errors, Group1, Group2, IsChange, PlanningMethods (+6 more)
+
+### Community 457 - "chart-tooltip.tsx"
+Cohesion: 0.07
+Nodes (55): ChartConfigContext, ChartConfigProviderProps, ChartConfigValue, DEFAULT_CHART_CONFIG, resolveTooltipBoxMotion(), SpringConfig, useChartConfig(), formatBandRange() (+47 more)
+
+### Community 458 - "AuthorizationAuditLog"
+Cohesion: 0.13
+Nodes (14): AuthorizationAuditLog, ActionName, AuthorizationAuditLogId, CorrelationId, Decision, IpAddress, Reason, ResourceId (+6 more)
+
+### Community 459 - "Permit"
+Cohesion: 0.02
+Nodes (81): ExecutionGateDecision, ActorEmployee, ActorEmployeeId, BlockingReasonsSummary, DecisionDate, EmergencyReason, ExecutionGateDecisionId, FromStatus (+73 more)
+
+### Community 460 - "MaintenanceStrategyHistory"
+Cohesion: 0.13
+Nodes (15): MaintenanceStrategyHistory, Action, ActorEmployeeId, ActorName, ChangesSummary, Comment, FromStatus, MaintenanceStrategy (+7 more)
+
+### Community 461 - "DccRegisterIncomingTests"
+Cohesion: 0.06
+Nodes (29): DccRegisterIncomingTests, ResxLocalizer, Rig, IncomingRegisterRequest, Category, CcEmployeeIds, ConfidentialityLevel, ConfirmDuplicate (+21 more)
+
+### Community 462 - "bar.tsx"
+Cohesion: 0.05
+Nodes (61): Background(), BackgroundPatternPreset, BackgroundProps, clampFadeLength(), fadeMaskStops(), AnimatedBar(), AnimatedBarProps, BarAnimationType (+53 more)
 
 ### Community 463 - "PEMS.Application.DTOs"
-Cohesion: 0.02
-Nodes (5): PEMS.Application.Interfaces, PEMS.Application.DTOs, PEMS.Persistence.Services.SearchProviders, PEMS.Persistence.Context, PEMS.Shared.Search
-
-### Community 464 - "EquipmentImportController"
-Cohesion: 0.14
-Nodes (15): created, skipped, Stream, Task, updated, IEquipmentImportService, Task, IEquipmentPdfScanService (+7 more)
+Cohesion: 0.01
+Nodes (9): PEMS.Application.Interfaces, PEMS.Application.DTOs, PEMS.Persistence.Services.SearchProviders, PEMS.Persistence.Context, PEMS.Shared.Search, PEMS.Application.Numbering, FailureOption, ContractEditorEvents (+1 more)
 
 ### Community 465 - "pems-data-grid.js"
 Cohesion: 0.42
 Nodes (9): applyStoredWidths(), initColumnResize(), onPointerDown(), onPointerMove(), onPointerUp(), loadWidths(), resetColumns(), saveWidths() (+1 more)
 
-### Community 466 - "راهنمای توسعه‌ی کامل «Engineering Management» و «AI Engineering Intelligence»"
-Cohesion: 0.22
-Nodes (8): AI Engineering Intelligence (کامل، آفلاین با Ollama), Engineering Management (کامل), Migration (Additive - هیچ داده‌ای پاک نمی‌شود), راهنمای توسعه‌ی کامل «Engineering Management» و «AI Engineering Intelligence», نکات مهم پیاده‌سازی, پیش‌نیاز اجرای AI (بدون تغییر نسبت به قبل), پیشنهادهایی که خودم اضافه کردم, چه چیزهایی اضافه شد
+### Community 466 - "EquipmentClassReliabilityDto"
+Cohesion: 0.15
+Nodes (13): EquipmentClassReliabilityDto, AverageAvailabilityPercent, AverageMTBFHours, AverageMTTRHours, Code, EquipmentClassId, EquipmentPopulation, EquipmentWithFailureHistory (+5 more)
 
-### Community 467 - "راهنمای فاز Framework جدید PEMS.Web"
-Cohesion: 0.22
-Nodes (8): تغییرات کلیدی, راهنمای فاز Framework جدید PEMS.Web, ۱) نصب پکیج, ۲) ساخت Migration جدید (Additive - چیزی حذف نمی‌شود), ۳) اجرای برنامه و ورود, ۴) ساختار منو و دسترسی نقش‌ها, ۵) چه چیزی الان کار می‌کند و چه چیزی «به‌زودی» است, ۶) نکات امنیتی برای Production
+### Community 467 - "RoleListItemViewModel"
+Cohesion: 0.18
+Nodes (11): RoleListItemViewModel, Category, Description, DisplayName, Domain, Id, IsSystemRole, Name (+3 more)
 
-### Community 468 - "33. Implementation Order"
-Cohesion: 0.22
-Nodes (9): 33. Implementation Order, Phase 0 — Repository Audit, Phase 1 — Organization/Labor Foundation, Phase 2 — Skills, Phase 3 — Qualification, Phase 4 — Work Execution, Phase 5 — Asset Integration, Phase 6 — Reliability / Inspection / Shutdown (+1 more)
+### Community 468 - "IrnReceiptStatusHistory"
+Cohesion: 0.17
+Nodes (11): IrnReceiptStatusHistory, ChangedBy, ChangedById, ChangedDate, FromStatus, IrnReceipt, IrnReceiptId, IrnReceiptStatusHistoryId (+3 more)
 
-### Community 469 - "45. Definition of Done"
-Cohesion: 0.22
-Nodes (9): 45. Definition of Done, Test 1, Test 2, Test 3, Test 4, Test 5, Test 6, Test 7 (+1 more)
+### Community 470 - "ProductionPostingIdempotencyTests.SeedReleasedOutputAsync"
+Cohesion: 0.27
+Nodes (3): WarehouseId, Numbering, ProductionPostingIdempotencyTests
 
-### Community 470 - "PEMS Enterprise RBAC-ABAC Authorization — Phase 1 (Foundation) Report"
+### Community 472 - "ThreadMessageDto"
 Cohesion: 0.22
-Nodes (8): 1. Audit performed before implementation (directive §24), 2. What was built, 3. Files changed, 4. Verification (all actually executed, not claimed), 5. Definition of Done — Phase 1 accounting, 6. Next steps (not started, per the approved phased plan), Deliberately not built in Phase 1 (documented, not silently skipped), PEMS Enterprise RBAC-ABAC Authorization — Phase 1 (Foundation) Report
+Nodes (8): ThreadMessageDto, Body, LetterDate, LetterId, LetterNumber, RecipientsSummary, SenderOrRegisteredByName, Subject
 
-### Community 471 - ".claude/Role/Permit Authentication, Authority & Competency Rules.MD"
-Cohesion: 0.22
-Nodes (8): 1. Purpose, 2. Rule SEC-AUTH-001 — Strong Authentication for Permit Approval, 3. Rule SEC-AUTH-002 — No Biometric Data Storage, 4. Rule PERMIT-AUTH-002 — Permit Authority & Competency, 5. Approver Eligibility Model, 6. Permit Man Rule, Mandatory principle, Supported authentication
-
-### Community 472 - "45. IMPLEMENTATION PHASES"
-Cohesion: 0.22
-Nodes (9): 45. IMPLEMENTATION PHASES, E-05A — Data Contract, E-05B — Dashboard Query Layer, E-05C — Executive Cockpit, E-05D — Discipline / Workflow Analytics, E-05E — Vendor / Client / Revision Analytics, E-05F — Drill-down, E-05G — UX / RTL / Responsive / Accessibility (+1 more)
-
-### Community 473 - "TagDto"
-Cohesion: 0.13
-Nodes (14): TagDto, Color, LetterCount, Name, TagId, Task, ITagService, Task (+6 more)
+### Community 473 - "EquipmentImportService"
+Cohesion: 0.08
+Nodes (23): EquipmentImportRowDto, DisciplineCodeRaw, EquipmentImportRowId, IncludeInCommit, IsUpdate, Name, Payload, RowNumber (+15 more)
 
 ### Community 474 - "PEMS.Web.Services"
 Cohesion: 0.22
 Nodes (5): PEMS.Web.Services, DocumentService, EquipmentService, ReportService, TagService
 
-### Community 475 - "راهنمای توسعه‌ی کامل «Engineering Management» و «AI Engineering Intelligence»"
-Cohesion: 0.22
-Nodes (8): AI Engineering Intelligence (کامل، آفلاین با Ollama), Engineering Management (کامل), Migration (Additive - هیچ داده‌ای پاک نمی‌شود), راهنمای توسعه‌ی کامل «Engineering Management» و «AI Engineering Intelligence», نکات مهم پیاده‌سازی, پیش‌نیاز اجرای AI (بدون تغییر نسبت به قبل), پیشنهادهایی که خودم اضافه کردم, چه چیزهایی اضافه شد
-
-### Community 476 - "راهنمای فاز Framework جدید PEMS.Web"
-Cohesion: 0.22
-Nodes (8): تغییرات کلیدی, راهنمای فاز Framework جدید PEMS.Web, ۱) نصب پکیج, ۲) ساخت Migration جدید (Additive - چیزی حذف نمی‌شود), ۳) اجرای برنامه و ورود, ۴) ساختار منو و دسترسی نقش‌ها, ۵) چه چیزی الان کار می‌کند و چه چیزی «به‌زودی» است, ۶) نکات امنیتی برای Production
-
-### Community 477 - "33. Implementation Order"
-Cohesion: 0.22
-Nodes (9): 33. Implementation Order, Phase 0 — Repository Audit, Phase 1 — Organization/Labor Foundation, Phase 2 — Skills, Phase 3 — Qualification, Phase 4 — Work Execution, Phase 5 — Asset Integration, Phase 6 — Reliability / Inspection / Shutdown (+1 more)
-
-### Community 478 - "45. Definition of Done"
-Cohesion: 0.22
-Nodes (9): 45. Definition of Done, Test 1, Test 2, Test 3, Test 4, Test 5, Test 6, Test 7 (+1 more)
-
-### Community 479 - "PEMS Enterprise RBAC-ABAC Authorization — Phase 1 (Foundation) Report"
-Cohesion: 0.22
-Nodes (8): 1. Audit performed before implementation (directive §24), 2. What was built, 3. Files changed, 4. Verification (all actually executed, not claimed), 5. Definition of Done — Phase 1 accounting, 6. Next steps (not started, per the approved phased plan), Deliberately not built in Phase 1 (documented, not silently skipped), PEMS Enterprise RBAC-ABAC Authorization — Phase 1 (Foundation) Report
-
-### Community 480 - ".github/Role/Permit Authentication, Authority & Competency Rules.MD"
-Cohesion: 0.22
-Nodes (8): 1. Purpose, 2. Rule SEC-AUTH-001 — Strong Authentication for Permit Approval, 3. Rule SEC-AUTH-002 — No Biometric Data Storage, 4. Rule PERMIT-AUTH-002 — Permit Authority & Competency, 5. Approver Eligibility Model, 6. Permit Man Rule, Mandatory principle, Supported authentication
-
-### Community 481 - "45. IMPLEMENTATION PHASES"
-Cohesion: 0.22
-Nodes (9): 45. IMPLEMENTATION PHASES, E-05A — Data Contract, E-05B — Dashboard Query Layer, E-05C — Executive Cockpit, E-05D — Discipline / Workflow Analytics, E-05E — Vendor / Client / Revision Analytics, E-05F — Drill-down, E-05G — UX / RTL / Responsive / Accessibility (+1 more)
-
-### Community 482 - "7. ARCHITECTURAL CHANGE GATE"
-Cohesion: 0.22
-Nodes (9): 7. ARCHITECTURAL CHANGE GATE, Alternatives, Current State, Impact, Migration Risk, Problem, Proposed State, Root Cause (+1 more)
-
-### Community 483 - "MDRImportBatch"
-Cohesion: 0.06
-Nodes (31): DateTime, ICollection, MDRImportBatch, CommittedDate, FileName, HeaderWarningsJson, ImportDate, ImportedById (+23 more)
-
-### Community 484 - "NullTempDataProvider"
-Cohesion: 0.31
-Nodes (5): HttpContext, ITempDataProvider, IDictionary, ControllerTempDataExtensions, NullTempDataProvider
-
-### Community 485 - "PEMS Operations & Production — Phase 1 Implementation Report"
-Cohesion: 0.07
-Nodes (28): 10. RBAC / SoD Integration, 11. AuditLog Integration, 12. UI Changes, 13. Inventory Integration Summary, 14. Equipment/Functional Location Integration, 15. BarcodeIdentity Integration, 16. Test Results, 17. Standards Alignment (Phase 1 subset) (+20 more)
-
-### Community 486 - "RelationshipGapItemDto"
-Cohesion: 0.08
-Nodes (23): BulkSuggestedLinkItemDto, EquipmentId, EquipmentTagNumber, MatchedOnRawValue, TargetId, TargetLabel, TargetType, RelationshipGapItemDto (+15 more)
-
-### Community 487 - ".CreateController"
-Cohesion: 0.25
-Nodes (9): Controller, Fact, ForbidResult, RedirectToActionResult, Task, ViewResult, FakeNumberingService, FakePMGenerationService (+1 more)
-
-### Community 488 - "AddEquipmentClassificationFailureTaxonomyAndPMTemplates"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddEquipmentClassificationFailureTaxonomyAndPMTemplates
-
-### Community 489 - "EquipmentFunctionalLocationAssignmentRow"
-Cohesion: 0.07
-Nodes (26): DateTime, ICollection, EquipmentFunctionalLocationAssignmentBatch, EquipmentFunctionalLocationAssignmentBatchId, FileName, ImportDate, ImportedBy, ImportedById (+18 more)
-
-### Community 490 - "EquipmentFunctionalLocationAssignmentRowDto"
-Cohesion: 0.08
-Nodes (25): EquipmentFunctionalLocationAssignmentBatchDto, Rows, EquipmentFunctionalLocationAssignmentRowDto, CommittedAssignment, CurrentFunctionalLocationBreadcrumb, EquipmentDescription, EquipmentFunctionalLocationAssignmentRowId, EquipmentTag (+17 more)
-
-### Community 491 - ".CreateDraftDocument"
-Cohesion: 0.27
-Nodes (5): Exception, Fact, Task, UnauthorizedAccessException, EngineeringWorkflowTests
-
-### Community 492 - "ProductionRunDto"
-Cohesion: 0.10
-Nodes (21): ProductionRunDto, EndDate, EquipmentTagNumber, Events, HoldReason, Inputs, Losses, MaterialCode (+13 more)
-
-### Community 493 - "MechanicalEquipment"
-Cohesion: 0.04
-Nodes (48): DateTime, MechanicalEquipment, CreatedDate, Description, DesignPressure, DesignTemperature, Equipment, EquipmentId (+40 more)
-
-### Community 494 - "GlobalSearchResults"
-Cohesion: 0.11
-Nodes (19): IActionResult, Task, GlobalSearchController, GlobalSearchItem, Id, SubTitle, Title, Url (+11 more)
-
-### Community 495 - "Form & Input Components"
-Cohesion: 0.06
-Nodes (32): Accordion, Alert, Alert Dialog, Avatar, Badge, Button, Card, Checkbox (+24 more)
-
-### Community 496 - "Tailwind CSS Responsive Design"
-Cohesion: 0.06
-Nodes (32): 1. Mobile-First Design, 2. Consistent Breakpoint Usage, 3. Test at Breakpoint Boundaries, 4. Use Container for Content Width, 5. Progressive Enhancement, 6. Avoid Too Many Breakpoints, Best Practices, Breakpoint System (+24 more)
-
-### Community 497 - "RelationshipExplorationDto"
-Cohesion: 0.08
-Nodes (26): RelationshipExplorationDto, Bids, ContractNTPs, Contracts, Documents, Equipment, InspectionTestPlans, KickoffMeetings (+18 more)
-
-### Community 498 - "PEMS Workflow Platform — Phase 2: Work Request Migration + Dynamic Workflow UI"
-Cohesion: 0.11
-Nodes (17): 10. Dynamic Reliability Review proof, 11. Database changes, 12. Tests, 13. Modified existing tests, 14. Remaining limitations, 15. Rollback, 16. Recommended next candidate, 1. Executive summary (+9 more)
-
-### Community 500 - "7. ARCHITECTURAL CHANGE GATE"
-Cohesion: 0.22
-Nodes (9): 7. ARCHITECTURAL CHANGE GATE, Alternatives, Current State, Impact, Migration Risk, Problem, Proposed State, Root Cause (+1 more)
-
-### Community 501 - "F — Material Coding (Appendix 4): SOURCE-BLOCKED"
-Cohesion: 0.25
-Nodes (7): Confirmed: no fabricated/uncertain seed data exists, F — Material Coding (Appendix 4): SOURCE-BLOCKED, What is required to close F, What IS safe today, What this covers, What was NOT done (and why), Why it is blocked
-
-### Community 502 - "2. Non-Negotiable Rules"
-Cohesion: 0.25
-Nodes (8): 2. Non-Negotiable Rules, AI, Department vs Discipline, Discipline vs Maintenance Group, Employee Master, Maintenance Group vs Team, Skill vs Qualification vs Certification, Team vs Crew
-
-### Community 503 - "23. Engineering Document Intelligence برای همه Disciplineها"
-Cohesion: 0.25
-Nodes (8): 23. Engineering Document Intelligence برای همه Disciplineها, Civil / Structural, Electrical, HSE / Process Safety, Instrumentation, Mechanical, Piping, Process
-
-### Community 504 - "42. TESTING"
-Cohesion: 0.25
-Nodes (8): 42. TESTING, Authorization tests, Drill-down tests, Empty state, Error state, Filter tests, KPI tests, Metric correctness
-
-### Community 505 - "62. FINAL ACCEPTANCE TEST"
-Cohesion: 0.25
-Nodes (8): 62. FINAL ACCEPTANCE TEST, Scenario 1, Scenario 2, Scenario 3, Scenario 4, Scenario 5, Scenario 6, Scenario 7
-
-### Community 506 - "F — Material Coding (Appendix 4): SOURCE-BLOCKED"
-Cohesion: 0.25
-Nodes (7): Confirmed: no fabricated/uncertain seed data exists, F — Material Coding (Appendix 4): SOURCE-BLOCKED, What is required to close F, What IS safe today, What this covers, What was NOT done (and why), Why it is blocked
-
-### Community 507 - "2. Non-Negotiable Rules"
-Cohesion: 0.25
-Nodes (8): 2. Non-Negotiable Rules, AI, Department vs Discipline, Discipline vs Maintenance Group, Employee Master, Maintenance Group vs Team, Skill vs Qualification vs Certification, Team vs Crew
-
-### Community 508 - "23. Engineering Document Intelligence برای همه Disciplineها"
-Cohesion: 0.25
-Nodes (8): 23. Engineering Document Intelligence برای همه Disciplineها, Civil / Structural, Electrical, HSE / Process Safety, Instrumentation, Mechanical, Piping, Process
-
-### Community 509 - "42. TESTING"
-Cohesion: 0.25
-Nodes (8): 42. TESTING, Authorization tests, Drill-down tests, Empty state, Error state, Filter tests, KPI tests, Metric correctness
-
-### Community 510 - "62. FINAL ACCEPTANCE TEST"
-Cohesion: 0.25
-Nodes (8): 62. FINAL ACCEPTANCE TEST, Scenario 1, Scenario 2, Scenario 3, Scenario 4, Scenario 5, Scenario 6, Scenario 7
-
-### Community 511 - "24. TEST DESIGN"
-Cohesion: 0.22
-Nodes (9): 24. TEST DESIGN, Authorization, Concurrency, Database, Happy Path, Regression, Scope, Validation (+1 more)
-
-### Community 512 - ".BuildModel"
-Cohesion: 0.22
-Nodes (7): ModelSnapshot, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, PEMSDbContextModelSnapshot
-
-### Community 513 - ".HasActionAsync"
-Cohesion: 0.34
-Nodes (9): IEnumerable, DateTime, Dictionary, HttpGet, HttpPost, IActionResult, Task, ValidateAntiForgeryToken (+1 more)
-
-### Community 514 - "TechnicalQueryListItemDto"
-Cohesion: 0.17
-Nodes (11): DateTime, TechnicalQueryListItemDto, DisciplineName, IsOverdue, Priority, QueryNumber, QueryType, RequiredResponseDate (+3 more)
-
-### Community 515 - "BaseEntity"
-Cohesion: 0.02
-Nodes (100): BaseEntity, CreatedBy, ModifiedBy, RowVersion, TenantId, DateTime, ICollection, EquipmentClass (+92 more)
-
-### Community 516 - ".SeedRunningRunAsync"
-Cohesion: 0.09
-Nodes (31): DateTime, OperationsReportSummaryDto, AcceptedQuantity, BlockedQuantity, PendingQcQuantity, PeriodEnd, PeriodStart, RejectedQuantity (+23 more)
-
-### Community 517 - "FunctionalLocationImportRow"
+### Community 475 - "FunctionalLocationImportRow"
 Cohesion: 0.13
 Nodes (14): FunctionalLocationImportRow, Action, Batch, CreatedFunctionalLocationId, FunctionalLocationImportBatchId, FunctionalLocationImportRowId, IncludeInCommit, IsUpdate (+6 more)
 
-### Community 518 - "Project"
-Cohesion: 0.10
-Nodes (25): DateTime, ProjectDto, ClientName, CreatedDate, DocumentsCount, EndDate, IsActive, Location (+17 more)
+### Community 476 - "IOPoint"
+Cohesion: 0.13
+Nodes (15): IOPoint, Address, Channel, CreatedDate, Description, Instrument, InstrumentId, IOPointId (+7 more)
 
-### Community 519 - "MaterialStockService"
-Cohesion: 0.07
-Nodes (38): BatchInventoryBalanceRowDto, Balance, BatchNumber, MaterialCode, MaterialItemId, ProductionBatchId, QualityStatus, StorageLocationCode (+30 more)
-
-### Community 520 - "Equipment"
-Cohesion: 0.04
-Nodes (61): EquipmentService, Equipment, DateTime, EquipmentCriticality, CreatedDate, CriticalityClass, Description, EnvironmentImpact (+53 more)
-
-### Community 521 - ".ImportAsync"
-Cohesion: 0.08
-Nodes (32): CancellationToken, Stream, Task, IOrganizationImportService, OrganizationImportResult, AssignmentsCreated, AssignmentsUpdated, Committed (+24 more)
-
-### Community 522 - "manifest.json"
-Cohesion: 0.25
-Nodes (7): background_color, display, icons, name, short_name, start_url, theme_color
-
-### Community 523 - "EquipmentDashboardDto"
-Cohesion: 0.10
-Nodes (19): EquipmentType, Equipment, Status, Task, EquipmentDashboardDto, ActiveCount, ByDiscipline, ByStatus (+11 more)
-
-### Community 524 - "24. TEST DESIGN"
+### Community 477 - "VendorTokenStatus"
 Cohesion: 0.22
-Nodes (9): 24. TEST DESIGN, Authorization, Concurrency, Database, Happy Path, Regression, Scope, Validation (+1 more)
+Nodes (9): VendorTokenStatus, BadSignature, Disabled, Expired, LifetimeTooLong, Malformed, NotYetValid, Valid (+1 more)
 
-### Community 525 - ".CreateService"
-Cohesion: 0.36
-Nodes (6): DateTime, Fact, InlineData, Task, Theory, WorkRequestGridPaginationTests
-
-### Community 526 - "25. UI"
-Cohesion: 0.29
-Nodes (7): 25. UI, Inventory Dashboard, Material Master, Material Requests, Stock, Transactions, Warehouse
-
-### Community 527 - "26. Required Automated Security Tests"
-Cohesion: 0.29
-Nodes (7): 26. Required Automated Security Tests, CMMS, Direct API attack, Engineering, Inventory, Scope, Separation of Duties
-
-### Community 528 - ".claude/Role/PEMS-UI-01-Focused-Enterprise-UX-Audit.md"
-Cohesion: 0.29
-Nodes (6): 1. Objective, 2. Expert Perspective, 3.1 Global Layout & Navigation, 3. Scope, 4. Role-Based Workspace / My Work, PEMS — UI-01 Focused Enterprise UX Audit
-
-### Community 529 - "25. ROLE-BASED DASHBOARD"
-Cohesion: 0.29
-Nodes (7): 25. ROLE-BASED DASHBOARD, Discipline Lead, Document Controller, Engineering Manager, Engineering Reviewer, Executive, Project Manager
-
-### Community 530 - "ادیتور متن غنی برای بدنه‌ی نامه (نسخه‌ی کوچک‌شده‌ی Word)"
-Cohesion: 0.25
-Nodes (8): Migration, ادیتور متن غنی برای بدنه‌ی نامه (نسخه‌ی کوچک‌شده‌ی Word), امنیت (نکته‌ی مهم), امکانات (طبق درخواست "تمام امکانات نامه‌نگاری مدرن"), ساخته شده به‌صورت یک پارشیال مشترک قابل‌استفاده‌ی مجدد, محدودیت شفاف: PDF Export, ویرایش بعد از ایجاد, چرا Quill.js (نه CKEditor)
-
-### Community 531 - "MaintenancePlan"
-Cohesion: 0.07
-Nodes (28): ApplicableCriticality, MaintenanceTypeCode, DateTime, MaintenancePlan, CreatedDate, Description, Equipment, EquipmentId (+20 more)
-
-### Community 532 - "25. UI"
-Cohesion: 0.29
-Nodes (7): 25. UI, Inventory Dashboard, Material Master, Material Requests, Stock, Transactions, Warehouse
-
-### Community 533 - "26. Required Automated Security Tests"
-Cohesion: 0.29
-Nodes (7): 26. Required Automated Security Tests, CMMS, Direct API attack, Engineering, Inventory, Scope, Separation of Duties
-
-### Community 534 - ".github/Role/PEMS-UI-01-Focused-Enterprise-UX-Audit.md"
-Cohesion: 0.29
-Nodes (6): 1. Objective, 2. Expert Perspective, 3.1 Global Layout & Navigation, 3. Scope, 4. Role-Based Workspace / My Work, PEMS — UI-01 Focused Enterprise UX Audit
-
-### Community 535 - "25. ROLE-BASED DASHBOARD"
-Cohesion: 0.29
-Nodes (7): 25. ROLE-BASED DASHBOARD, Discipline Lead, Document Controller, Engineering Manager, Engineering Reviewer, Executive, Project Manager
-
-### Community 536 - "ادیتور متن غنی برای بدنه‌ی نامه (نسخه‌ی کوچک‌شده‌ی Word)"
-Cohesion: 0.25
-Nodes (8): Migration, ادیتور متن غنی برای بدنه‌ی نامه (نسخه‌ی کوچک‌شده‌ی Word), امنیت (نکته‌ی مهم), امکانات (طبق درخواست "تمام امکانات نامه‌نگاری مدرن"), ساخته شده به‌صورت یک پارشیال مشترک قابل‌استفاده‌ی مجدد, محدودیت شفاف: PDF Export, ویرایش بعد از ایجاد, چرا Quill.js (نه CKEditor)
-
-### Community 537 - "BidNegotiation"
-Cohesion: 0.10
-Nodes (21): DateTime, BidNegotiation, ApprovedBy, ApprovedById, ApprovedDate, Bid, BidId, BidNegotiationId (+13 more)
-
-### Community 538 - ".CreateController"
-Cohesion: 0.24
-Nodes (8): CurrentUser, Fact, ForbidResult, NotFoundResult, RedirectToActionResult, Task, ViewResult, ReliabilityAuthorizationTests
-
-### Community 539 - "IStorageProviderClient"
-Cohesion: 0.47
-Nodes (4): CancellationToken, Stream, Task, IStorageProviderClient
-
-### Community 540 - "PEMS Packaging — Configurability Architecture Decisions (M-1 … M-5)"
-Cohesion: 0.04
-Nodes (47): 0.1 Three different kinds of decision — never conflated, 0.2 Status of the decisions in this record, 0.3 Classification of everything M-1…M-5 touch, 0. How to read this document, 1. Summary of Status, 2. Pre-implementation design record and Phase 3A consequence, 3. Inviolable rules carried over (unchanged by this record), 4. Sign-off (architecture record) (+39 more)
-
-### Community 541 - "VDRImportBatch"
+### Community 479 - "TenderInvitationTests.EnvAsync"
 Cohesion: 0.06
-Nodes (30): DateTime, ICollection, VDRImportBatch, CommittedDate, FileName, ImportDate, ImportedById, Project (+22 more)
+Nodes (28): EmailMessage, IEmailSender, IsEnabled, ITenderInvitationService, EmailEnabled, TenderInvitationDispatchDto, TenderInvitationQueueResult, TenderInvitationTemplate (+20 more)
 
-### Community 542 - "AddMaintenanceIntelligenceAndRcmFeedback"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddMaintenanceIntelligenceAndRcmFeedback
+### Community 480 - "NavigationMenuItemDefinition"
+Cohesion: 0.57
+Nodes (3): NavigationMenuItemDefinition, NavigationMenuDefaults, All
 
-### Community 543 - "secrets1"
-Cohesion: 0.29
-Nodes (6): dependencies, secrets1, connectionId, resourceId, secretStore, type
+### Community 481 - "ReplenishmentController"
+Cohesion: 0.25
+Nodes (5): ReplenishmentController, ProtectedActionOutcome, Allowed, Denied, DeniedBySoD
 
-### Community 544 - "_Pagination.cshtml"
-Cohesion: 0.33
-Nodes (5): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Web.ViewModels.PaginationViewModel, SharedResource, System.Globalization
+### Community 482 - "MaterialSourceImportDto"
+Cohesion: 0.25
+Nodes (7): MaterialSourceImportDto, ImportDate, MrsImportBatchId, RawMrsNo, RawPoNo, RawSupplier, SourceFileName
 
-### Community 545 - "30. Testing"
-Cohesion: 0.29
-Nodes (7): 30. Testing, Import, Material, Reorder, Reservation, Stock, Work Order
+### Community 483 - "RoutingRule"
+Cohesion: 0.25
+Nodes (8): RoutingRule, AllowAutoRouting, CreatedDate, Description, DocumentCategory, IsActive, RoutingRuleId, TargetModule
 
-### Community 546 - "32. خروجی‌های اجباری قبل از Coding"
-Cohesion: 0.33
-Nodes (6): 32. خروجی‌های اجباری قبل از Coding, A. Current State Audit, B. MRS Data Audit, C. Target Architecture, D. Migration Plan, E. Implementation Plan
+### Community 484 - "ApiServiceCollectionExtensions.AddPemsApi"
+Cohesion: 0.06
+Nodes (11): ApiPlumbingTests, AllowAllAuthorization, Allow, PermissionPolicyProvider, PermissionRequirement, Action, Module, ApiProblemDetails (+3 more)
 
-### Community 547 - "2. Baseline Principles"
-Cohesion: 0.33
-Nodes (5): 1. Purpose, 2.1 No Rewrite, 2.2 Domain First, 2.3 Service-Level Enforcement, 2. Baseline Principles
+### Community 485 - "NavigationMenuCustomLinkInput"
+Cohesion: 0.14
+Nodes (13): NavigationMenuCustomLinkInput, Action, Area, Controller, Icon, ParentKey, RequiredPermission, TitleEn (+5 more)
 
-### Community 548 - "25. DISCIPLINE SCOPING"
-Cohesion: 0.33
-Nodes (6): 25. DISCIPLINE SCOPING, Discipline Engineer, Discipline Supervisor, Document Controller, Engineering Manager, System Admin
+### Community 486 - "MechanicalEquipmentListDto"
+Cohesion: 0.14
+Nodes (13): MechanicalEquipmentDashboardDto, RotatingCount, StaticCount, TotalCount, UnclassifiedCount, MechanicalEquipmentListDto, EquipmentId, EquipmentType (+5 more)
 
-### Community 549 - "31. Dashboards"
-Cohesion: 0.33
-Nodes (6): 31. Dashboards, HSE Dashboard, Maintenance Dashboard, Operations Dashboard, Planner Dashboard, Production Dashboard
+### Community 487 - "NetDemandIssueCode"
+Cohesion: 0.06
+Nodes (31): NetDemandIssueCode, AmbiguousOverlapWithStoreRequisition, AmbiguousReservationAttribution, CancelledOrIneligibleLifecycle, ConflictingDuplicateSourceLine, DirectPurchaseNotStockDemand, DuplicateSourceLineIgnored, InactiveMaterial (+23 more)
 
-### Community 550 - "3. Operational Roles"
-Cohesion: 0.33
-Nodes (6): 3.1 Work Supervisor, 3.2 Senior Shift / Shift Supervisor, 3.3 Senior Maintenance Engineer, 3.4 Planner, 3.5 Senior Production Engineer, 3. Operational Roles
+### Community 489 - "EquipmentFunctionalLocationAssignmentRow"
+Cohesion: 0.12
+Nodes (16): EquipmentFunctionalLocationAssignmentRow, Batch, CommittedAssignment, EquipmentFunctionalLocationAssignmentBatchId, EquipmentFunctionalLocationAssignmentRowId, IncludeInCommit, PayloadJson, PreviousFunctionalLocationId (+8 more)
 
-### Community 551 - "12. ROLE-AWARE DASHBOARD"
-Cohesion: 0.33
-Nodes (6): 12.1 Engineer, 12.2 Senior Engineer, 12.3 Discipline Manager, 12.4 Engineering Manager, 12.5 Executive / GM, 12. ROLE-AWARE DASHBOARD
+### Community 490 - "EquipmentFunctionalLocationAssignmentRowDto"
+Cohesion: 0.05
+Nodes (38): EquipmentFunctionalLocationAssignmentBatchDto, Rows, EquipmentFunctionalLocationAssignmentBatchSummaryDto, AlreadyAssignedCount, ConflictCount, EquipmentFunctionalLocationAssignmentBatchId, ExactCount, FileName (+30 more)
 
-### Community 552 - "22. Security Rules"
-Cohesion: 0.33
-Nodes (6): 22. Security Rules, Deny by default, Least privilege, No privilege inheritance from management title, Technical administration ≠ business authority, UI security ≠ backend security
+### Community 491 - "PEMSDbContext.SaveChanges"
+Cohesion: 0.08
+Nodes (14): MaintenanceGroup, ContractControllerAuthorizationTests, MaintenanceMasterDataOrderingTests, MaterialItemReceiveStockAuthorizationTests, EngineeringWorkflowTestBase, Ctx, DisciplineElec, DisciplineMech (+6 more)
 
-### Community 553 - "9. UI Authorization Validation"
-Cohesion: 0.33
-Nodes (6): 1. Navigation, 2. Visibility, 3. UI Enforcement, 4. Server Enforcement, 5. Audit, 9. UI Authorization Validation
-
-### Community 554 - "22. CONTRACTOR PERFORMANCE"
-Cohesion: 0.29
-Nodes (7): 22. CONTRACTOR PERFORMANCE, Contract Administration, Cost, HSE, Quality, Responsiveness, Schedule
-
-### Community 555 - "دسته ۱ از بازبینی معماری سه‌گانه (Business Analyst / Architect / Engineering Consultant)"
-Cohesion: 0.29
-Nodes (7): Automatic Document Numbering + Manual Override با مجوز, MDR/VDR/Transmittal - یک ماژول واحد از نظر ناوبری, Migration, Multi-Discipline Filter + Saved Filters + Quick Filters, باقی‌مانده از این بازبینی, دسته ۱ از بازبینی معماری سه‌گانه (Business Analyst / Architect / Engineering Consultant), ریشه‌ی واقعی "Discipline Filter Bug" پیدا و رفع شد
-
-### Community 556 - "به‌روزرسانی بزرگ: Enterprise Document Core (یکپارچه‌سازی کامل، طبق PEMS Development Specification)"
-Cohesion: 0.33
-Nodes (6): Migration (به‌خاطر تغییر ساختاری جدول‌ها، حتماً طبق راهنمای ریست کامل Migration که قبلاً دادم عمل کنید), باقی‌مانده و محدودیت‌های شفاف, به‌روزرسانی بزرگ: Enterprise Document Core (یکپارچه‌سازی کامل، طبق PEMS Development Specification), طراحی ایمن (هیچ کدی که قبلاً کار می‌کرد خراب نشد), فیلدهای جدید MDR در UI, چه چیزی تغییر کرد
-
-### Community 557 - "به‌روزرسانی: Background Jobs (Hangfire) + Structured Logging (Serilog)"
-Cohesion: 0.33
-Nodes (6): Migration / نصب, Serilog, باقی‌مانده از سند, به‌روزرسانی: Background Jobs (Hangfire) + Structured Logging (Serilog), راه‌حل: Hangfire, مشکل واقعی که رفع شد
-
-### Community 558 - "بازطراحی بزرگ: AI Intake Queue + Intelligent Routing (طبق AI Engineering Intelligence Redesign)"
-Cohesion: 0.29
-Nodes (7): Migration, Routing داده‌محور, بازطراحی بزرگ: AI Intake Queue + Intelligent Routing (طبق AI Engineering Intelligence Redesign), جریان جدید کامل, رفع باگ اصلی, محدودیت شفاف این نسخه, مسیرهای UI جدید
-
-### Community 559 - "گام ۱: اعمال اصلاحات فیلترینگ (طبق اولویت Critical گزارش ممیزی)"
-Cohesion: 0.29
-Nodes (7): Migration, آنچه هنوز باقی مانده (طبق اولویت High/Medium گزارش، برای فاز بعدی), اضافه‌ها, گام ۱: اعمال اصلاحات فیلترینگ (طبق اولویت Critical گزارش ممیزی), ۶.۱ — جستجوی سراسری واقعی شد, ۶.۳ — ریسک گم‌شدن بی‌صدای داده رفع شد, ۶.۵ — محرمانگی نامه‌ها حالا واقعاً اعمال می‌شود
-
-### Community 560 - "تحلیل تطبیق PEMS با «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE»"
-Cohesion: 0.33
-Nodes (5): تحلیل تطبیق PEMS با «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE», ۱. جمع‌بندی مدیریتی, ۲. جدول یافته‌ها (بر اساس شدت), ۳. جزئیات فنی کلیدی (رفرنس‌های کد), ۴. پیشنهاد گام بعدی
-
-### Community 561 - "WorkRequestController"
+### Community 493 - "NavigationVisibilityRowDescription"
 Cohesion: 0.22
-Nodes (9): Id, Task, IWorkRequestService, HttpGet, HttpPost, IActionResult, Task, ValidateAntiForgeryToken (+1 more)
+Nodes (9): NavigationVisibilityRowDescription, DefaultSource, DefaultVisible, EffectiveVisible, HasOverride, ItemKey, ModuleKey, OverrideVisible (+1 more)
+
+### Community 494 - "CriticalityAssessmentEvidence"
+Cohesion: 0.18
+Nodes (11): CriticalityAssessmentEvidence, CreatedBy, CreatedDate, CriticalityAssessment, CriticalityAssessmentEvidenceId, CriticalityAssessmentId, Description, Reference (+3 more)
+
+### Community 495 - "NavigationMenuItemEditInput"
+Cohesion: 0.14
+Nodes (14): NavigationMenuItemEditInput, BadgeKey, Icon, IsActive, Key, ParentKey, RowVersion, TitleEn (+6 more)
+
+### Community 496 - "EquipmentImportRow"
+Cohesion: 0.17
+Nodes (11): EquipmentImportRow, Batch, CreatedEquipmentId, EquipmentImportBatchId, EquipmentImportRowId, IncludeInCommit, IsUpdate, PayloadJson (+3 more)
+
+### Community 497 - "IPurchaseOrderApprovalService.cs"
+Cohesion: 0.36
+Nodes (5): PoApprovalView, ResponsibleNotSet, PoLineView, ProcurementOptions, CatalogueOnlyLines
+
+### Community 498 - "band.tsx"
+Cohesion: 0.08
+Nodes (44): Band(), BandFillType, BandProps, BandStrokeProps, FadeMaskStops(), bandAreaPath(), bandDataSignature(), bandEdgePath() (+36 more)
+
+### Community 501 - "PartCatalogueRequestApproval"
+Cohesion: 0.04
+Nodes (50): PartCatalogueActions, PartCatalogueAssetTypes, PartCatalogueRequestApproval, Action, ActionDate, Actor, ActorEmployeeId, Comment (+42 more)
+
+### Community 502 - "LetterDelegation"
+Cohesion: 0.18
+Nodes (11): LetterDelegation, CreatedDate, DelegateUserId, DelegatorUserId, FromDate, IsActive, LetterDelegationId, Note (+3 more)
+
+### Community 503 - "Valve"
+Cohesion: 0.14
+Nodes (14): Valve, ActuatorType, CreatedDate, Description, FailPosition, IsActive, LineNumber, Manufacturer (+6 more)
+
+### Community 505 - "RecordingSink"
+Cohesion: 0.38
+Nodes (3): ThrowingSink, RecordingSink, Events
+
+### Community 507 - "TrackerTests"
+Cohesion: 0.16
+Nodes (8): cmd_tracker_check(), hygiene_findings(), index_issues(), plan_id_of(), reconcile(), tracker_findings(), issue(), TrackerTests
+
+### Community 508 - "NavigationMenuAdminRow"
+Cohesion: 0.25
+Nodes (8): NavigationMenuAdminRow, Depth, IsFirst, IsLast, Item, NoPermissionSignal, Route, Title
+
+### Community 509 - "IFunctionalLocationService"
+Cohesion: 0.05
+Nodes (17): IAssetService, EquipmentDashboardDto, ActiveCount, ByDiscipline, ByStatus, ByType, InactiveCount, TotalCount (+9 more)
+
+### Community 511 - "EquipmentNozzle"
+Cohesion: 0.15
+Nodes (13): EquipmentNozzle, CreatedDate, Description, Equipment, EquipmentId, EquipmentNozzleId, IsActive, NozzleTag (+5 more)
+
+### Community 513 - "MRDto"
+Cohesion: 0.06
+Nodes (38): MRDto, CreatedDate, Description, DisciplineId, DisciplineName, EquipmentTagNumber, Items, MRId (+30 more)
+
+### Community 514 - "TypedModel"
+Cohesion: 0.18
+Nodes (10): TypedModel, Big, Day, Due, OptionalCount, OptionalPrice, OptionalRatio, Price (+2 more)
+
+### Community 515 - "RcmCodes"
+Cohesion: 0.08
+Nodes (15): AssignmentStatus, Consequence, Criticality, Frequency, HistoryAction, MeterType, OverrideStatus, Priority (+7 more)
+
+### Community 517 - "gauge.tsx"
+Cohesion: 0.06
+Nodes (66): chartCenterContainerClassName, chartCenterLabelClassName, chartCenterValueClassName, ChartStatFlow(), ChartStatFlowFormat, ChartStatFlowProps, defaultChartStatFlowFormat, formatStatValue() (+58 more)
+
+### Community 518 - "ProjectDto"
+Cohesion: 0.15
+Nodes (12): ProjectDto, ClientName, CreatedDate, DocumentsCount, EndDate, IsActive, Location, ProjectCode (+4 more)
+
+### Community 519 - "DocumentSearchResult"
+Cohesion: 0.33
+Nodes (6): DocumentSearchResult, DocumentId, DocumentNumber, Reason, SimilarityScore, Title
+
+### Community 520 - "IrnReceiptLine"
+Cohesion: 0.07
+Nodes (29): IrnReceiptLine, AcceptedQuantity, CreatedDate, HasOpenHold, HoldAcceptedQuantity, HoldQuantity, HoldRejectedQuantity, HoldResolutionNotes (+21 more)
+
+### Community 521 - "IrnReceipt/Index.cshtml"
+Cohesion: 0.33
+Nodes (5): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.IrnReceiptListDto>, Microsoft.Extensions.Localization, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 522 - "ExecutiveKpiTests"
+Cohesion: 0.12
+Nodes (7): KpiCatalog, KpiDefinition, KpiDirections, KpiSections, KpiStatusCalculator, KpiTargetService, ExecutiveKpiTests
+
+### Community 523 - "PemsKpiTileTagHelper"
+Cohesion: 0.18
+Nodes (10): PemsKpiTileTagHelper, Color, Compact, Hint, Href, Icon, Label, Model (+2 more)
+
+### Community 525 - "InstrumentService"
+Cohesion: 0.20
+Nodes (6): InstrumentDashboardDto, DueSoonCount, OverdueCount, TotalCount, InstrumentService, InstrumentServiceLiveDbTests
+
+### Community 526 - "IntakeQueueItemDto"
+Cohesion: 0.18
+Nodes (11): IntakeQueueItemDto, AIConfidence, AIStatus, AttachmentId, FileName, IntakeStage, PredictedCategory, ProjectName (+3 more)
+
+### Community 527 - "AuthorizationAudit/Index.cshtml"
+Cohesion: 0.33
+Nodes (5): PEMS.Application.DTOs.PagedResult<PEMS.Domain.Entities.AuthorizationAuditLog>, Microsoft.Extensions.Localization, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 528 - "pems-date.js"
+Cohesion: 0.35
+Nodes (12): doy(), fallback(), hiddenOf(), jalaliToIso(), message(), pad(), pairs(), parseTyped() (+4 more)
+
+### Community 529 - "StageDiagramItem"
+Cohesion: 0.18
+Nodes (12): StageDiagramItem, IconCssClass, Label, RoleLabel, State, StageDiagramViewModel, Stages, StageItemState (+4 more)
+
+### Community 530 - "PmComplianceDto"
+Cohesion: 0.18
+Nodes (11): PmComplianceDto, CancelledCount, CompletedLateCount, CompliancePercent, CompliantCount, DataStatus, DataStatusReason, InsufficientDataCount (+3 more)
+
+### Community 531 - "BarcodePanelViewModel"
+Cohesion: 0.40
+Nodes (5): BarcodePanelViewModel, ActiveBarcode, CanManage, TargetId, TargetType
+
+### Community 532 - "InstrumentListDto"
+Cohesion: 0.17
+Nodes (12): InstrumentListDto, CalibrationStatus, EquipmentId, InstrumentId, InstrumentType, LastCalibrationDate, LoopNumber, Manufacturer (+4 more)
+
+### Community 533 - "MDBDocumentDto"
+Cohesion: 0.18
+Nodes (9): MDBDocumentDto, DocumentId, DocumentNo, DvdVolumeNo, IsNotApplicable, MDBDocumentId, Notes, Part (+1 more)
+
+### Community 534 - "EquipmentSearchProvider"
+Cohesion: 0.19
+Nodes (8): EquipmentSearchProvider, Access, DisplayName, EntityType, VdrItemSearchProvider, Access, DisplayName, EntityType
+
+### Community 535 - "ui:badge"
+Cohesion: 0.01
+Nodes (213): List<PEMS.Application.DTOs.ClassActivationBacklogItemDto>, List<PEMS.Application.DTOs.ConditionReadingImportBatchSummaryDto>, List<PEMS.Application.DTOs.FunctionalLocationImportBatchDto>, List<PEMS.Application.DTOs.MaintenanceHistoryImportBatchSummaryDto>, List<PEMS.Application.DTOs.PredictiveMaintenanceModelDto>, List<PEMS.Application.DTOs.WorkItemListItemDto>, List<PEMS.Application.DTOs.WorkOrderCalendarItemDto>, PEMS.Application.DTOs.BoardDto (+205 more)
+
+### Community 536 - "PcResponsibilityInput"
+Cohesion: 0.18
+Nodes (11): PcResponsibilityInput, Id, IsActive, Kind, ManagerLevel, PositionIds, RequiredAction, RoleName (+3 more)
+
+### Community 537 - "FailureHistoryItemDto"
+Cohesion: 0.18
+Nodes (11): FailureHistoryItemDto, CorrectiveAction, DowntimeHours, FailureCause, FailureDate, FailureEffect, FailureMode, FailureRecordId (+3 more)
+
+### Community 538 - "ForbidResult"
+Cohesion: 0.03
+Nodes (16): AIPipelineAuthorizationTests, FakeDocumentAIIngestionService, FakeTableExtractionImportService, BarcodeControllerAuthorizationTests, CmmsOperationsNavigationExposureTests, CmmsReadinessControllerAuthorizationTests, CriticalityAssessmentControllerAuthorizationTests, EquipmentFunctionalLocationAssignmentControllerAuthorizationTests (+8 more)
+
+### Community 539 - "BreakGlassServiceTests"
+Cohesion: 0.12
+Nodes (9): VendorRecoveryTokenRules, VendorTokenPayload, IRecoveryEventService, BreakGlassService, RequestFilePath, VendorTokenAccepted, BreakGlassServiceTests, RequestFile (+1 more)
+
+### Community 540 - "TransmittalItemDto"
+Cohesion: 0.18
+Nodes (11): TransmittalItemDto, DocumentId, DocumentNo, DocumentRevisionId, DocumentTitle, Remarks, RevisionNo, SnapshotFileHash (+3 more)
+
+### Community 541 - "Check"
+Cohesion: 0.50
+Nodes (4): Check, Matches, Missing, Stale
+
+### Community 542 - "MaintenancePlan/Create.cshtml"
+Cohesion: 0.15
+Nodes (8): PEMS.Web.ViewModels.PlanFormViewModel, System.Globalization, System.Globalization, Microsoft.Extensions.Localization, PEMS.Domain.Common, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 543 - "CauseEffect"
+Cohesion: 0.18
+Nodes (11): CauseEffect, ActionType, Alarm, AlarmId, Cause, CauseEffectId, CreatedDate, Description (+3 more)
+
+### Community 544 - "system_text_regularexpressions"
+Cohesion: 0.02
+Nodes (38): PEMS.UI.Manifest, PEMS.Tests.Definitions, PEMS.Domain.Entities.Definitions, PEMS.Infrastructure.Email, PEMS.Tests.Deployment, PEMS.UI.Abstractions, PEMS.Web.BackgroundJobs, PEMS.Application.Definitions (+30 more)
+
+### Community 545 - "PartyThreadItemDto"
+Cohesion: 0.10
+Nodes (21): PartyThreadDto, AwaitingThem, AwaitingUs, Items, LastContact, Name, PartyId, PartyType (+13 more)
+
+### Community 546 - "init"
+Cohesion: 0.08
+Nodes (50): debounce(), fileKind(), formatBytes(), init(), addFiles(), buildFormData(), channelValue(), clearErrors() (+42 more)
+
+### Community 548 - "Letter/Index.cshtml"
+Cohesion: 0.29
+Nodes (6): LetterTagNodeDto, Microsoft.Extensions.Localization, PEMS.Application.Common, PEMS.Application.DTOs, PEMS.Web.Resources, SharedResource
+
+### Community 549 - "RelatedTransmittalDto"
+Cohesion: 0.14
+Nodes (13): RelatedTransmittalDto, Purpose, RevisionNoAtTransmittal, SentDate, Status, TransmittalDate, TransmittalId, TransmittalNo (+5 more)
+
+### Community 550 - "ControlLoop"
+Cohesion: 0.18
+Nodes (11): ControlLoop, ControllerSystem, ControllerType, CreatedDate, Description, Instrument, InstrumentId, IsActive (+3 more)
+
+### Community 551 - "Panel"
+Cohesion: 0.18
+Nodes (11): Panel, CreatedDate, Description, IPRating, IsActive, Location, Manufacturer, PanelId (+3 more)
+
+### Community 554 - "SoDPolicyControllerTests.CreateAsync"
+Cohesion: 0.29
+Nodes (6): SoDPolicyControllerTests, SoDPolicyFormVm, AllPermissions, Description, PermissionAId, PermissionBId
+
+### Community 555 - "Vendor/Create.cshtml"
+Cohesion: 0.40
+Nodes (4): Microsoft.Extensions.Localization, PEMS.Domain.Entities.Vendor, PEMS.Web.Resources, SharedResource
+
+### Community 558 - "ExistingFlSnapshot"
+Cohesion: 0.50
+Nodes (4): ExistingFlSnapshot, Area, Code, Name
+
+### Community 559 - "Instrument/Passport.cshtml"
+Cohesion: 0.20
+Nodes (9): Alarm, CalibrationHistory, CauseEffect, IOPoint, Microsoft.Extensions.Localization, PEMS.Domain.Entities, PEMS.Domain.Entities.Instrument, PEMS.Web.Resources (+1 more)
+
+### Community 560 - "ChartComponentTests.Run"
+Cohesion: 0.36
+Nodes (4): ChartOptions, Spec, PemsChartTagHelper, Spec
 
 ### Community 562 - "EmployeeListItemDto"
+Cohesion: 0.10
+Nodes (20): EmployeeListItemDto, DepartmentId, DepartmentName, DisciplineId, DisciplineName, Email, EmployeeId, FirstName (+12 more)
+
+### Community 563 - "LetterTagNodeDto"
+Cohesion: 0.20
+Nodes (10): LetterTagNodeDto, CanEdit, Color, Depth, IsPersonal, LetterCount, Name, ParentTagId (+2 more)
+
+### Community 564 - "StorageHealthResultDto"
+Cohesion: 0.10
+Nodes (18): StorageHealthResultDto, Message, OverallStatus, Steps, StorageHealthStepResultDto, Detail, Pass, Step (+10 more)
+
+### Community 565 - "Payloads.cs"
+Cohesion: 0.13
+Nodes (19): SignalHasher, BindingInfo, CustomerInfo, DeploymentInfo, FingerprintInfo, GrantInfo, InstallInfo, LicenceCustomer (+11 more)
+
+### Community 567 - "IrnReceiptListDto"
+Cohesion: 0.20
+Nodes (9): IrnReceiptListDto, IrnNumber, IrnReceiptId, LineCount, ReceivedByName, ReceivingDate, Status, VendorName (+1 more)
+
+### Community 568 - "Fx"
+Cohesion: 0.22
+Nodes (4): Fx, Actions, Db, Svc
+
+### Community 570 - "RcmFmea/ClassDetail.cshtml"
+Cohesion: 0.05
+Nodes (32): FailureMode, FMEAAnalysisDto, FunctionalFailure, FunctionalRequirement, MaintenanceStrategyType, PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.NotificationDto>, Microsoft.Extensions.Localization, PEMS.Web.Resources (+24 more)
+
+### Community 572 - "DatabaseUpdateStatusDto"
+Cohesion: 0.08
+Nodes (28): DatabaseSetupClassifier, DatabaseSetupState, DatabaseNewerThanApplication, FirstRun, UnmanagedSchema, Unreachable, UpdateAvailable, UpToDate (+20 more)
+
+### Community 573 - "PartCatalogueReportServiceTests"
 Cohesion: 0.09
-Nodes (21): DateTime, EmployeeListItemDto, DepartmentId, DepartmentName, DisciplineId, DisciplineName, Email, EmployeeId (+13 more)
+Nodes (25): PartCatalogueReportFilter, EmployeeId, EquipmentId, From, Period, RequestType, SectionId, Status (+17 more)
 
-### Community 563 - "30. Testing"
-Cohesion: 0.29
-Nodes (7): 30. Testing, Import, Material, Reorder, Reservation, Stock, Work Order
+### Community 574 - "LetterTemplateDto"
+Cohesion: 0.09
+Nodes (12): LetterResponseRules, LetterTemplateDto, Body, ConfidentialityLevel, IsActive, LetterTemplateId, LetterType, Name (+4 more)
 
-### Community 564 - "32. خروجی‌های اجباری قبل از Coding"
-Cohesion: 0.33
-Nodes (6): 32. خروجی‌های اجباری قبل از Coding, A. Current State Audit, B. MRS Data Audit, C. Target Architecture, D. Migration Plan, E. Implementation Plan
+### Community 575 - "DefinitionTestWorld.NewService"
+Cohesion: 0.10
+Nodes (14): CreateDefinition, DefinitionLimits, MaxInstancesPerPage, MaxJsonDepth, MaxPayloadBytes, DefinitionRef, DefinitionServiceTests, DefinitionTestWorld (+6 more)
 
-### Community 565 - "2. Baseline Principles"
-Cohesion: 0.33
-Nodes (5): 1. Purpose, 2.1 No Rewrite, 2.2 Domain First, 2.3 Service-Level Enforcement, 2. Baseline Principles
+### Community 576 - "TaskManagerDtos.cs"
+Cohesion: 0.03
+Nodes (66): AssigneeResolutionDto, Candidates, State, BacklogDto, BacklogItems, SprintPanels, View, BoardColumnDto (+58 more)
 
-### Community 566 - "25. DISCIPLINE SCOPING"
-Cohesion: 0.33
-Nodes (6): 25. DISCIPLINE SCOPING, Discipline Engineer, Discipline Supervisor, Document Controller, Engineering Manager, System Admin
-
-### Community 567 - "31. Dashboards"
-Cohesion: 0.33
-Nodes (6): 31. Dashboards, HSE Dashboard, Maintenance Dashboard, Operations Dashboard, Planner Dashboard, Production Dashboard
-
-### Community 568 - "3. Operational Roles"
-Cohesion: 0.33
-Nodes (6): 3.1 Work Supervisor, 3.2 Senior Shift / Shift Supervisor, 3.3 Senior Maintenance Engineer, 3.4 Planner, 3.5 Senior Production Engineer, 3. Operational Roles
-
-### Community 569 - "22. Security Rules"
-Cohesion: 0.33
-Nodes (6): 22. Security Rules, Deny by default, Least privilege, No privilege inheritance from management title, Technical administration ≠ business authority, UI security ≠ backend security
-
-### Community 570 - "9. UI Authorization Validation"
-Cohesion: 0.33
-Nodes (6): 1. Navigation, 2. Visibility, 3. UI Enforcement, 4. Server Enforcement, 5. Audit, 9. UI Authorization Validation
-
-### Community 571 - "22. CONTRACTOR PERFORMANCE"
-Cohesion: 0.29
-Nodes (7): 22. CONTRACTOR PERFORMANCE, Contract Administration, Cost, HSE, Quality, Responsiveness, Schedule
-
-### Community 572 - "دسته ۱ از بازبینی معماری سه‌گانه (Business Analyst / Architect / Engineering Consultant)"
-Cohesion: 0.29
-Nodes (7): Automatic Document Numbering + Manual Override با مجوز, MDR/VDR/Transmittal - یک ماژول واحد از نظر ناوبری, Migration, Multi-Discipline Filter + Saved Filters + Quick Filters, باقی‌مانده از این بازبینی, دسته ۱ از بازبینی معماری سه‌گانه (Business Analyst / Architect / Engineering Consultant), ریشه‌ی واقعی "Discipline Filter Bug" پیدا و رفع شد
-
-### Community 573 - "به‌روزرسانی بزرگ: Enterprise Document Core (یکپارچه‌سازی کامل، طبق PEMS Development Specification)"
-Cohesion: 0.33
-Nodes (6): Migration (به‌خاطر تغییر ساختاری جدول‌ها، حتماً طبق راهنمای ریست کامل Migration که قبلاً دادم عمل کنید), باقی‌مانده و محدودیت‌های شفاف, به‌روزرسانی بزرگ: Enterprise Document Core (یکپارچه‌سازی کامل، طبق PEMS Development Specification), طراحی ایمن (هیچ کدی که قبلاً کار می‌کرد خراب نشد), فیلدهای جدید MDR در UI, چه چیزی تغییر کرد
-
-### Community 574 - "به‌روزرسانی: Background Jobs (Hangfire) + Structured Logging (Serilog)"
-Cohesion: 0.33
-Nodes (6): Migration / نصب, Serilog, باقی‌مانده از سند, به‌روزرسانی: Background Jobs (Hangfire) + Structured Logging (Serilog), راه‌حل: Hangfire, مشکل واقعی که رفع شد
-
-### Community 575 - "بازطراحی بزرگ: AI Intake Queue + Intelligent Routing (طبق AI Engineering Intelligence Redesign)"
-Cohesion: 0.29
-Nodes (7): Migration, Routing داده‌محور, بازطراحی بزرگ: AI Intake Queue + Intelligent Routing (طبق AI Engineering Intelligence Redesign), جریان جدید کامل, رفع باگ اصلی, محدودیت شفاف این نسخه, مسیرهای UI جدید
-
-### Community 576 - "گام ۱: اعمال اصلاحات فیلترینگ (طبق اولویت Critical گزارش ممیزی)"
-Cohesion: 0.29
-Nodes (7): Migration, آنچه هنوز باقی مانده (طبق اولویت High/Medium گزارش، برای فاز بعدی), اضافه‌ها, گام ۱: اعمال اصلاحات فیلترینگ (طبق اولویت Critical گزارش ممیزی), ۶.۱ — جستجوی سراسری واقعی شد, ۶.۳ — ریسک گم‌شدن بی‌صدای داده رفع شد, ۶.۵ — محرمانگی نامه‌ها حالا واقعاً اعمال می‌شود
-
-### Community 577 - "تحلیل تطبیق PEMS با «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE»"
-Cohesion: 0.33
-Nodes (5): تحلیل تطبیق PEMS با «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE», ۱. جمع‌بندی مدیریتی, ۲. جدول یافته‌ها (بر اساس شدت), ۳. جزئیات فنی کلیدی (رفرنس‌های کد), ۴. پیشنهاد گام بعدی
-
-### Community 578 - "5. ARCHITECTURE INVENTORY"
-Cohesion: 0.33
-Nodes (6): 5. ARCHITECTURE INVENTORY, Application, Cross-Cutting, Domain, Infrastructure, Presentation
-
-### Community 579 - "IFileStorageService"
-Cohesion: 0.12
-Nodes (16): Stream, Task, IFileStorageService, Allowed, HttpGet, HttpPost, IActionResult, IFormFile (+8 more)
+### Community 579 - "NavigationMenuItem"
+Cohesion: 0.08
+Nodes (25): NavigationMenuItem, Action, ActiveArea, Area, BadgeKey, Controller, CreatedDate, ExternalPath (+17 more)
 
 ### Community 580 - "HashingStream"
-Cohesion: 0.09
-Nodes (14): IncrementalHash, Memory, CancellationToken, ValueTask, HashingStream, BytesRead, CanRead, CanSeek (+6 more)
+Cohesion: 0.12
+Nodes (7): HashingStream, BytesRead, CanRead, CanSeek, CanWrite, Length, Position
 
-### Community 581 - "Phase 4 — Help Increment 3C — Reliability Analytics Deep Audit — Final Report"
+### Community 581 - "pems-template.js"
+Cohesion: 0.28
+Nodes (4): ADR-0013, clone(), find(), fragment()
+
+### Community 582 - "EmployeeLaborRate"
 Cohesion: 0.06
-Nodes (31): 10. Standards & Terminology Review, 11. Test Coverage Additions (Increment 3C), 12. Help Content Outcome Decision: Outcome B (Targeted Correction), 13. Verification — Build, 14. Verification — Tests, 15. Verification — Live Database & HTTP, 16. Final Status, 1. Executive Summary (+23 more)
-
-### Community 582 - ".CreateService"
-Cohesion: 0.33
-Nodes (7): DateTime, Equipment, Fact, InlineData, Task, Theory, InspectionGridPaginationTests
+Nodes (22): LaborRateMissingException, EmployeeId, RateType, EmployeeLaborRate, CreatedDate, Currency, EffectiveFrom, EffectiveTo (+14 more)
 
 ### Community 583 - "MaintenanceHistoryImportRow"
-Cohesion: 0.07
-Nodes (25): DateTime, ICollection, MaintenanceHistoryImportBatch, FileName, ImportDate, ImportedBy, ImportedById, MaintenanceHistoryImportBatchId (+17 more)
+Cohesion: 0.08
+Nodes (23): MaintenanceHistoryImportBatch, FileName, ImportDate, ImportedBy, ImportedById, MaintenanceHistoryImportBatchId, Rows, Status (+15 more)
 
 ### Community 584 - "Cable"
-Cohesion: 0.06
-Nodes (29): DateTime, Cable, CableId, CableNumber, CableTray, CableType, CoreNumber, CreatedDate (+21 more)
+Cohesion: 0.07
+Nodes (27): Cable, CableId, CableNumber, CableTray, CableType, CoreNumber, CreatedDate, Description (+19 more)
 
-### Community 585 - ".CreateService"
-Cohesion: 0.28
-Nodes (5): Fact, InlineData, Task, Theory, MaterialRequisitionServiceTests
+### Community 585 - "MaterialRequisitionServiceTests.CreateService"
+Cohesion: 0.19
+Nodes (3): MaterialRequisitionService, MaterialRequisitionMrNumberConcurrencyTests, MaterialRequisitionServiceTests
 
-### Community 586 - "Typography Specifications"
-Cohesion: 0.06
-Nodes (30): Accessibility, Base System, Best Practices, Clean & Modern, Common Font Pairings, Contrast Requirements, CSS Implementation, Editorial (+22 more)
+### Community 586 - "RepeatFailureGroupDto"
+Cohesion: 0.22
+Nodes (9): RepeatFailureGroupDto, EquipmentId, FailureModeKey, FirstOccurrence, LastOccurrence, OccurrenceCount, OccurrenceDates, TagNumber (+1 more)
 
-### Community 587 - ".UploadPhoto"
-Cohesion: 0.38
-Nodes (7): HttpPost, IActionResult, IFormFile, RequestSizeLimit, Task, ValidateAntiForgeryToken, MyProfileController
+### Community 587 - "StoreRequisitionListDto"
+Cohesion: 0.22
+Nodes (8): StoreRequisitionListDto, Purpose, RequestedByName, RequestedDate, RequisitionNumber, Status, StoreRequisitionId, WarehouseCode
 
 ### Community 588 - "webauthn.js"
 Cohesion: 0.67
 Nodes (5): base64urlToBuffer(), bufferToBase64url(), pemsPerformStepUp(), pemsRegisterPasskey(), pemsSubmitWithStepUp()
 
-### Community 589 - "5. ARCHITECTURE INVENTORY"
-Cohesion: 0.33
-Nodes (6): 5. ARCHITECTURE INVENTORY, Application, Cross-Cutting, Domain, Infrastructure, Presentation
+### Community 589 - "TransmittalRecipientDto"
+Cohesion: 0.22
+Nodes (9): TransmittalRecipientDto, AcknowledgedAt, AcknowledgedByName, AcknowledgementNote, Name, Organization, RecipientType, ResponseRequired (+1 more)
 
-### Community 590 - "45. ARCHITECTURAL DECISION FRAMEWORK"
-Cohesion: 0.40
-Nodes (5): 45. ARCHITECTURAL DECISION FRAMEWORK, EXTEND, KEEP, NEW, REFACTOR
+### Community 591 - "RelatedListComponentTests"
+Cohesion: 0.06
+Nodes (32): RelatedListComponentTests, PemsList, PemsRelated, PemsRelatedAddTagHelper, Action, ParentName, ParentValue, SubmitLabel (+24 more)
 
-### Community 591 - "4. STATUS VS ACTION VS COMMENT STATUS"
-Cohesion: 0.40
-Nodes (5): 4. STATUS VS ACTION VS COMMENT STATUS, Action, Comment Status, Issue Purpose, Status
+### Community 592 - "EngineeringDocuments/Details.cshtml"
+Cohesion: 0.02
+Nodes (86): PEMS.Application.DTOs.ContractDto, PEMS.Application.DTOs.EquipmentPassportDto, PEMS.Application.DTOs.JobPlanDetailDto, PEMS.Application.DTOs.PermitDetailDto, PEMS.Application.DTOs.PurchaseOrderDto, PEMS.Application.DTOs.TransmittalDto, PEMS.Application.DTOs.VendorDto, PEMS.Application.DTOs.WorkItemDetailDto (+78 more)
 
-### Community 592 - "34. Testing"
-Cohesion: 0.40
-Nodes (5): 34. Testing, Application, Build, Database, Regression
+### Community 593 - "Views/Shared/_Layout.cshtml"
+Cohesion: 0.20
+Nodes (6): Microsoft.Extensions.Localization, PEMS.Application.Interfaces, PEMS.Web.Resources, PEMS.Web.Security, SharedResource, System.Globalization
 
-### Community 593 - "24. Severity"
-Cohesion: 0.40
-Nodes (5): 24. Severity, CRITICAL, HIGH, LOW, MEDIUM
+### Community 594 - "PartCatalogueManufacturer"
+Cohesion: 0.25
+Nodes (8): PartCatalogueManufacturer, IsActive, IsLocal, IsWrong, ManufacturerId, Name, NormalizedName, PartCatalogueManufacturerConfiguration
 
-### Community 594 - "35. PETROCHEMICAL-SPECIFIC CONTRACT VIEWS"
-Cohesion: 0.40
-Nodes (5): 35. PETROCHEMICAL-SPECIFIC CONTRACT VIEWS, EPC Contracts, Maintenance Contracts, Shutdown Contracts, Technical Vendor Contracts
+### Community 596 - "ProductionDowntimeEventDto"
+Cohesion: 0.04
+Nodes (52): BatchInventoryBalanceRowDto, Balance, BatchNumber, MaterialCode, MaterialItemId, ProductionBatchId, QualityStatus, StorageLocationCode (+44 more)
 
-### Community 595 - "دسته ۲ از بازبینی معماری سه‌گانه"
-Cohesion: 0.33
-Nodes (6): Bulk Operations (پیشنهاد تکمیلی), Migration, Personalized Dashboard (بند ۲), Revision استاندارد + Audit Trail (بند ۷ و ۱۲), دسته ۲ از بازبینی معماری سه‌گانه, محدودیت شفاف این دسته
+### Community 597 - "WorkItemCreateInput"
+Cohesion: 0.07
+Nodes (35): WorkItemCreateInput, AssigneeEmployeeId, Description, DueDate, ParentId, Priority, SprintId, StartDate (+27 more)
 
-### Community 596 - "Reports + Meeting Management + امضای الکترونیکی سبک"
-Cohesion: 0.33
-Nodes (6): Meeting Management (جلسات), Migration, Reports + Meeting Management + امضای الکترونیکی سبک, Reports (گزارش‌ها), امضای الکترونیکی سبک (نه PKI واقعی), جمع‌بندی نهایی نسبت به نمونه‌ی مرجع (Pargar/Fonix)
+### Community 598 - "RoutingRuleDto"
+Cohesion: 0.18
+Nodes (10): AIConfidenceSettingsDto, HighThreshold, MediumThreshold, RoutingRuleDto, AllowAutoRouting, Description, DocumentCategory, IsActive (+2 more)
 
-### Community 597 - "دسته ۳ (اولویت اول): Bilingual Platform واقعی (انگلیسی/فارسی + RTL خودکار)"
-Cohesion: 0.33
-Nodes (6): Migration, RTL خودکار, ترجمه‌ی واقعی (Resource-based، نه فقط زیرساخت خالی), دسته ۳ (اولویت اول): Bilingual Platform واقعی (انگلیسی/فارسی + RTL خودکار), زیرساخت, محدودیت‌های شفاف (طبق تصمیم آگاهانه‌ی مدیریت ریسک)
-
-### Community 598 - "این نشست: رفع باگ Chat Assistant (بدون پاسخ) + بهینه‌سازی برای سخت‌افزار ضعیف"
-Cohesion: 0.40
-Nodes (5): این نشست: رفع باگ Chat Assistant (بدون پاسخ) + بهینه‌سازی برای سخت‌افزار ضعیف, باقی‌مانده (تصمیم با شماست), باگ واقعی رفع‌شده, بهینه‌سازی برای سخت‌افزار ضعیف (طبق گزارش واقعی کاربر), پیشنهاد بعدی (هنوز اجرا نشده - منتظر تایید شما)
-
-### Community 599 - "رفع باگ جدی: DbUpdateConcurrencyException هنگام ویرایش مدرک + بازطراحی کامل Edit"
-Cohesion: 0.33
-Nodes (6): Migration, بازطراحی کامل Edit (طبق درخواست شما), باقی‌مانده: بررسی سایر Entity های دارای RowVersion, رفع (الگوی درست، نه حذف Concurrency Protection), رفع باگ جدی: DbUpdateConcurrencyException هنگام ویرایش مدرک + بازطراحی کامل Edit, ریشه‌ی واقعی باگ
-
-### Community 600 - "به‌روزرسانی: دو استاندارد کم‌ریسک از PEMS Architecture & Development Bible v1.0"
-Cohesion: 0.33
-Nodes (6): Migration, باقی‌مانده از سند (تصمیمات استراتژیک، منتظر تایید صریح شما), به‌روزرسانی: دو استاندارد کم‌ریسک از PEMS Architecture & Development Bible v1.0, چیزی خراب نشد, ۱) `BaseEntity` استاندارد (Volume V), ۲) جداسازی `IEntityTypeConfiguration<T>` (Volume V, XI)
-
-### Community 601 - "بررسی و افزودن: Docker / docker-compose / CI (طبق Bible Volume X)"
-Cohesion: 0.40
-Nodes (5): بررسی و افزودن: Docker / docker-compose / CI (طبق Bible Volume X), نحوه‌ی اجرا (روی سیستم خودتان، بعد از نصب Docker Desktop), نکته‌ی مهم قبل از هرچیز, چرا این و نه بقیه‌ی موارد سند, چیزی که واقعاً جدید اضافه شد: Docker
-
-### Community 602 - "UnitTest1.cs"
-Cohesion: 0.40
-Nodes (3): PEMS.Tests, Fact, UnitTest1
+### Community 601 - "IPemsLocale"
+Cohesion: 0.04
+Nodes (19): BootstrapClass, BootstrapColor, With, ConfirmClass, PemsButton, PemsButton, IsChecked, PemsButton (+11 more)
 
 ### Community 603 - "PEMS.Web.Repositories"
 Cohesion: 0.40
@@ -4138,3881 +3107,1125 @@ Nodes (3): PEMS.Web.Repositories, EquipmentRepository, IEquipmentRepository
 Cohesion: 0.40
 Nodes (3): PEMS.Web.DATA, ApplicationDbContext, SeedData
 
-### Community 605 - "j"
-Cohesion: 0.09
-Nodes (6): b(), j, m(), v, X, z
+### Community 605 - "DateHidden"
+Cohesion: 0.22
+Nodes (9): DateHidden, Disabled, Form, Id, Name, Value, DateOptions, Attributes (+1 more)
 
-### Community 606 - "45. ARCHITECTURAL DECISION FRAMEWORK"
-Cohesion: 0.40
-Nodes (5): 45. ARCHITECTURAL DECISION FRAMEWORK, EXTEND, KEEP, NEW, REFACTOR
+### Community 606 - "PoLineSupply.Compute"
+Cohesion: 0.14
+Nodes (9): IIncomingSupplyProvider, IncomingSupplySnapshot, PoLineReceipt, PoLineSupply, PoLineSupplyBuckets, Incoming, FixedIncoming, NetDemandIncomingSupplyTests (+1 more)
 
-### Community 607 - "4. STATUS VS ACTION VS COMMENT STATUS"
-Cohesion: 0.40
-Nodes (5): 4. STATUS VS ACTION VS COMMENT STATUS, Action, Comment Status, Issue Purpose, Status
+### Community 607 - "e1ce37e4-5b57-41c4-80c9-4669c2b3c40f_d08ecd0a.md"
+Cohesion: 0.25
+Nodes (7): Sheet: Bagging, Sheet: Chemical, Sheet: Grease, Sheet: MAX&MIN Pivot oil, Sheet: Oil, Sheet: original data base, Sheet: Safety
 
-### Community 608 - "34. Testing"
-Cohesion: 0.40
-Nodes (5): 34. Testing, Application, Build, Database, Regression
+### Community 609 - "SignalClass"
+Cohesion: 0.32
+Nodes (6): SignalCatalog, SignalClass, S1, S2, S3, SignalSpec
 
-### Community 609 - "24. Severity"
-Cohesion: 0.40
-Nodes (5): 24. Severity, CRITICAL, HIGH, LOW, MEDIUM
+### Community 611 - "BadgeOptions"
+Cohesion: 0.05
+Nodes (29): BadgeOptions, Attributes, CssClass, Label, Skin, Tone, SpinnerOptions, Attributes (+21 more)
 
-### Community 610 - "35. PETROCHEMICAL-SPECIFIC CONTRACT VIEWS"
-Cohesion: 0.40
-Nodes (5): 35. PETROCHEMICAL-SPECIFIC CONTRACT VIEWS, EPC Contracts, Maintenance Contracts, Shutdown Contracts, Technical Vendor Contracts
+### Community 613 - "MaintenanceStrategyListDto"
+Cohesion: 0.06
+Nodes (40): MaintenanceStrategyListDto, AssignedTagCount, ConsequenceCategory, EquipmentClassCode, EquipmentClassId, EquipmentClassName, EquipmentId, EquipmentTagNumber (+32 more)
 
-### Community 611 - "دسته ۲ از بازبینی معماری سه‌گانه"
-Cohesion: 0.33
-Nodes (6): Bulk Operations (پیشنهاد تکمیلی), Migration, Personalized Dashboard (بند ۲), Revision استاندارد + Audit Trail (بند ۷ و ۱۲), دسته ۲ از بازبینی معماری سه‌گانه, محدودیت شفاف این دسته
+### Community 614 - "WorkItemDetailDto"
+Cohesion: 0.04
+Nodes (51): WorkItemCommentDto, AuthorName, Body, CanDelete, CreatedDate, Id, IsDeleted, WorkItemDetailDto (+43 more)
 
-### Community 612 - "Reports + Meeting Management + امضای الکترونیکی سبک"
-Cohesion: 0.33
-Nodes (6): Meeting Management (جلسات), Migration, Reports + Meeting Management + امضای الکترونیکی سبک, Reports (گزارش‌ها), امضای الکترونیکی سبک (نه PKI واقعی), جمع‌بندی نهایی نسبت به نمونه‌ی مرجع (Pargar/Fonix)
+### Community 615 - "PreProcurementServiceTests.NewAsync"
+Cohesion: 0.17
+Nodes (7): Env, Db, Perms, Replenishment, Runtime, Service, PreProcurementServiceTests
 
-### Community 613 - "دسته ۳ (اولویت اول): Bilingual Platform واقعی (انگلیسی/فارسی + RTL خودکار)"
-Cohesion: 0.33
-Nodes (6): Migration, RTL خودکار, ترجمه‌ی واقعی (Resource-based، نه فقط زیرساخت خالی), دسته ۳ (اولویت اول): Bilingual Platform واقعی (انگلیسی/فارسی + RTL خودکار), زیرساخت, محدودیت‌های شفاف (طبق تصمیم آگاهانه‌ی مدیریت ریسک)
-
-### Community 614 - "این نشست: رفع باگ Chat Assistant (بدون پاسخ) + بهینه‌سازی برای سخت‌افزار ضعیف"
-Cohesion: 0.40
-Nodes (5): این نشست: رفع باگ Chat Assistant (بدون پاسخ) + بهینه‌سازی برای سخت‌افزار ضعیف, باقی‌مانده (تصمیم با شماست), باگ واقعی رفع‌شده, بهینه‌سازی برای سخت‌افزار ضعیف (طبق گزارش واقعی کاربر), پیشنهاد بعدی (هنوز اجرا نشده - منتظر تایید شما)
-
-### Community 615 - "رفع باگ جدی: DbUpdateConcurrencyException هنگام ویرایش مدرک + بازطراحی کامل Edit"
-Cohesion: 0.33
-Nodes (6): Migration, بازطراحی کامل Edit (طبق درخواست شما), باقی‌مانده: بررسی سایر Entity های دارای RowVersion, رفع (الگوی درست، نه حذف Concurrency Protection), رفع باگ جدی: DbUpdateConcurrencyException هنگام ویرایش مدرک + بازطراحی کامل Edit, ریشه‌ی واقعی باگ
-
-### Community 616 - "به‌روزرسانی: دو استاندارد کم‌ریسک از PEMS Architecture & Development Bible v1.0"
-Cohesion: 0.33
-Nodes (6): Migration, باقی‌مانده از سند (تصمیمات استراتژیک، منتظر تایید صریح شما), به‌روزرسانی: دو استاندارد کم‌ریسک از PEMS Architecture & Development Bible v1.0, چیزی خراب نشد, ۱) `BaseEntity` استاندارد (Volume V), ۲) جداسازی `IEntityTypeConfiguration<T>` (Volume V, XI)
-
-### Community 617 - "بررسی و افزودن: Docker / docker-compose / CI (طبق Bible Volume X)"
-Cohesion: 0.40
-Nodes (5): بررسی و افزودن: Docker / docker-compose / CI (طبق Bible Volume X), نحوه‌ی اجرا (روی سیستم خودتان، بعد از نصب Docker Desktop), نکته‌ی مهم قبل از هرچیز, چرا این و نه بقیه‌ی موارد سند, چیزی که واقعاً جدید اضافه شد: Docker
+### Community 617 - "PartCatalogueReportDto"
+Cohesion: 0.13
+Nodes (18): PartCatalogueReportDto, Activity, Employees, Equipment, EquipmentOptions, Filter, PeriodEnd, PeriodStart (+10 more)
 
 ### Community 618 - "ExtractedDocumentInfo"
 Cohesion: 0.07
 Nodes (30): ExtractedDocumentInfo, Area, Category, Discipline, DocumentNo, DocumentType, IssuePurpose, ProjectHint (+22 more)
 
-### Community 619 - "IRoleModuleActionService"
-Cohesion: 0.26
-Nodes (9): Task, IIsolationService, Task, IRoleModuleActionService, HttpPost, IActionResult, Task, ValidateAntiForgeryToken (+1 more)
-
-### Community 620 - "UsersController"
-Cohesion: 0.14
-Nodes (17): HttpPost, IActionResult, RoleManager, Task, UserManager, ValidateAntiForgeryToken, UsersController, DateTime (+9 more)
-
-### Community 621 - "secrets1"
-Cohesion: 0.40
-Nodes (4): dependencies, secrets1, connectionId, type
-
-### Community 622 - "EquipmentFunctionalLocationAssignmentService"
-Cohesion: 0.13
-Nodes (17): EquipmentLookupEntry, FunctionalLocationLookupEntry, Dictionary, IXLWorksheet, JsonSerializerOptions, Task, EquipmentFunctionalLocationAssignmentService, EquipmentLookupEntry (+9 more)
-
-### Community 623 - "Vendor"
+### Community 620 - "UserWorkspaceVm"
 Cohesion: 0.08
-Nodes (21): DateTime, VendorDto, ContactEmail, ContactName, ContactPhone, ContractsCount, Country, IsActive (+13 more)
+Nodes (24): UserWorkspaceVm, AllowedCount, DepartmentName, DisciplineName, EffectivePermissions, Email, FullName, HasLinkedEmployee (+16 more)
 
-### Community 624 - "WorkflowStageInput"
-Cohesion: 0.10
-Nodes (20): WorkflowStageInput, ApprovalStrategy, BusinessStatus, Description, EntryCondition, EscalationRole, IsDelegatable, IsEscalatable (+12 more)
+### Community 621 - "Numbering/Index.cshtml"
+Cohesion: 0.25
+Nodes (7): IReadOnlyList<PEMS.Application.Interfaces.NumberingSchemeView>, PEMS.Application.Numbering, Microsoft.Extensions.Localization, PEMS.Domain.Entities, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
 
-### Community 625 - "InspectionListItemDto"
-Cohesion: 0.09
-Nodes (21): InspectionRecordId, DateTime, InspectionListItemDto, ConditionStatus, Description, DueStatus, EquipmentId, InspectionDate (+13 more)
+### Community 623 - "VendorDto"
+Cohesion: 0.07
+Nodes (18): VendorDto, ContactEmail, ContactName, ContactPhone, ContractsCount, Country, IsActive, Name (+10 more)
 
-### Community 626 - "BarcodeLabelContent"
-Cohesion: 0.13
-Nodes (13): BarcodeFormat, BarcodeLabelContent, Code, MetaLine, SubtitleLine, Symbology, TitleLine, IBarcodeRenderingService (+5 more)
+### Community 624 - "LetterNumberSequence"
+Cohesion: 0.29
+Nodes (7): LetterNumberSequence, LastValue, LetterNumberSequenceId, RowVersion, Scope, Year, LetterNumberSequenceConfiguration
 
-### Community 627 - "3. مهم‌ترین تصمیم معماری"
-Cohesion: 0.50
-Nodes (4): 3. مهم‌ترین تصمیم معماری, Inventory Stock, Item / Material Master, SparePart ≠ Inventory Item
+### Community 625 - "IntakeDetailDto"
+Cohesion: 0.07
+Nodes (28): IntakeDetailDto, AIError, AIStatus, AttachmentId, ClassificationId, ConfidenceLevel, ConfidenceScore, FileName (+20 more)
 
-### Community 628 - "43. SEARCH"
-Cohesion: 0.50
-Nodes (4): 43. SEARCH, Exact Search, Semantic Search, Structured Search
-
-### Community 629 - "56. THREE-PASS FINAL QA"
-Cohesion: 0.50
-Nodes (4): 56. THREE-PASS FINAL QA, PASS 1 — BUSINESS, PASS 2 — EDMS / WORKFLOW, PASS 3 — SOFTWARE
-
-### Community 630 - "36. Implementation Priority"
-Cohesion: 0.50
-Nodes (4): 36. Implementation Priority, P0 — Architecture Foundation, P1 — Intelligence, P2 — Experience
-
-### Community 631 - ".claude/Role/PEMS_PROJECT_INTELLIGENCE_REPORT.md"
-Cohesion: 0.50
-Nodes (3): Modules (sorted by evidence coverage, lowest first), Non-negotiable reminders for anyone acting on this report, Summary
-
-### Community 632 - ".claude/Role/PEMS_PROJECT_INTELLIGENCE_SPEC.md"
-Cohesion: 0.50
-Nodes (3): 1. Mission, 2. Non-Negotiable Rules, 3. Graphify
-
-### Community 633 - "29. ALERT CENTER"
-Cohesion: 0.50
-Nodes (4): 29. ALERT CENTER, CRITICAL, HIGH, MEDIUM
-
-### Community 634 - "49. THREE-LAYER INFORMATION ARCHITECTURE"
-Cohesion: 0.50
-Nodes (4): 49. THREE-LAYER INFORMATION ARCHITECTURE, Layer 1 — EXECUTIVE, Layer 2 — CONTROL, Layer 3 — TRANSACTION
-
-### Community 635 - "57. THREE-PASS MANDATORY AUDIT"
-Cohesion: 0.50
-Nodes (4): 57. THREE-PASS MANDATORY AUDIT, PASS 1 — BUSINESS AUDIT, PASS 2 — CONTRACT / COMMERCIAL AUDIT, PASS 3 — SOFTWARE / UX AUDIT
-
-### Community 636 - "سیستم برچسب عمومی (Tags) + وظایف مستقل (Task Actions)"
-Cohesion: 0.40
-Nodes (5): Migration, باقی‌مانده از نمونه‌ی مرجع, برچسب دلخواه (Tags), سیستم برچسب عمومی (Tags) + وظایف مستقل (Task Actions), وظایف مستقل (Task Actions / پیگیری وظایف)
-
-### Community 637 - "TeamMember"
+### Community 627 - "WorkItemListItemDto"
 Cohesion: 0.06
-Nodes (55): Fixture, dept, DateTime, MaintenanceRole, CreatedDate, Discipline, DisciplineId, IsActive (+47 more)
+Nodes (34): WorkItemListItemDto, AssignedByUserId, AssigneeEmployeeId, AssigneeName, CanTransition, CreatedDate, DueDate, Id (+26 more)
 
-### Community 638 - "Valve"
+### Community 628 - "PartCatalogueReport/Index.cshtml"
+Cohesion: 0.25
+Nodes (7): PEMS.Web.Areas.Warehouse.Models.PcReportViewModel, Microsoft.Extensions.Localization, PEMS.Application.DTOs, PEMS.Web.Areas.Warehouse.Models, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 629 - "ui:alert"
+Cohesion: 0.02
+Nodes (73): IEnumerable<string>, List<PEMS.Application.DTOs.AIReliabilityInsightDto>, List<PEMS.Application.DTOs.RcmReviewRecommendationDto>, PEMS.Application.AI.Models.AIAnalysisResult, PEMS.Application.DTOs.BarcodeIdentityDto, PEMS.Application.DTOs.BreakGlassResetResult, PEMS.Application.DTOs.RecoveryCodeRedeemResult, PEMS.Application.DTOs.RecoveryCodeSetResult (+65 more)
+
+### Community 630 - "NavigationBadges.Find"
+Cohesion: 0.33
+Nodes (4): Definition, LetterTemplateSeeder, Definition, NavigationBadges
+
+### Community 631 - "NavigationMenu/Index.cshtml"
+Cohesion: 0.29
+Nodes (6): List<PEMS.Web.Areas.Admin.Models.NavigationMenuAdminRow>, Microsoft.Extensions.Localization, PEMS.Domain.Entities, PEMS.Web.Navigation, PEMS.Web.Resources, SharedResource
+
+### Community 632 - "ui:button-frame"
+Cohesion: 0.01
+Nodes (229): FunctionalLocationPickerItemDto, IReadOnlyList<PEMS.Web.Security.ImportCatalog.ImportEntry>, List<PEMS.Application.DTOs.ConditionMonitoringPointDto>, List<PEMS.Domain.Entities.Crew>, List<PEMS.Domain.Entities.MaintenanceGroup>, PEMS.Application.DTOs.AssetDetailDto, PEMS.Application.DTOs.CriticalityAssessmentDetailDto, PEMS.Application.DTOs.FailureModeEditDto (+221 more)
+
+### Community 633 - "PartCatalogueRequest/Index.cshtml"
+Cohesion: 0.29
+Nodes (6): PcIndexViewModel, Microsoft.Extensions.Localization, PEMS.Web.Areas.Warehouse.Models, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 634 - "OpenOutgoingDto"
+Cohesion: 0.29
+Nodes (7): OpenOutgoingDto, AwaitingReply, Date, LetterId, LetterNumber, ResponseDueDate, Subject
+
+### Community 635 - "SecurityEvents/Index.cshtml"
+Cohesion: 0.29
+Nodes (6): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.SecurityEventDto>, Microsoft.Extensions.Localization, PEMS.Application.Common, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 636 - "TaskItem"
+Cohesion: 0.04
+Nodes (45): TaskItem, AssignedByApplicationUserId, AssignedByName, AssignedToEmployee, AssignedToEmployeeId, CompletedDate, CompletionNote, CreatedDate (+37 more)
+
+### Community 638 - "TableExtractionAttachmentListDto"
+Cohesion: 0.29
+Nodes (6): TableExtractionAttachmentListDto, AIStatus, AttachmentId, FileExtension, FileName, UploadDate
+
+### Community 639 - "WorkOrderChangeLog"
+Cohesion: 0.07
+Nodes (29): Crew, Code, CreatedDate, CrewId, IsActive, Members, Name, WorkOrderId (+21 more)
+
+### Community 641 - "License/Index.cshtml"
+Cohesion: 0.29
+Nodes (6): PEMS.Licensing.Evaluation, PEMS.Licensing.Formats, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource, PEMS.Web.Licensing.LicensePageModel
+
+### Community 642 - "_HelpNodeTree.cshtml"
+Cohesion: 0.29
+Nodes (4): Link, Microsoft.Extensions.Localization, PEMS.Application.DTOs.HelpVisualRenderDto, SharedResource
+
+### Community 643 - "3fd7cedb-e10d-4640-9bab-27bb586dd654_bb19cbe4.md"
+Cohesion: 0.33
+Nodes (5): Sheet: IN, Sheet: Sheet1, Sheet: Sheet2, Sheet: Sheet3, Sheet: Sheet4
+
+### Community 644 - "StorageProviders/Index.cshtml"
+Cohesion: 0.33
+Nodes (5): List<PEMS.Application.DTOs.StorageProviderDto>, Microsoft.Extensions.Localization, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 645 - "StorageRouting/Index.cshtml"
+Cohesion: 0.33
+Nodes (5): List<PEMS.Application.DTOs.StorageRouteDto>, Microsoft.Extensions.Localization, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 646 - "WorkflowManagement/Index.cshtml"
+Cohesion: 0.33
+Nodes (5): List<PEMS.Application.DTOs.WorkflowDefinitionRow>, Microsoft.Extensions.Localization, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 647 - "ContractApprovalAuthority/Index.cshtml"
+Cohesion: 0.33
+Nodes (5): List<PEMS.Domain.Entities.ContractApprovalAuthorityRule>, Microsoft.Extensions.Localization, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 648 - "ui:date"
+Cohesion: 0.03
+Nodes (47): PEMS.Application.DTOs.BacklogDto, PEMS.Application.DTOs.CartableReportDto, PEMS.Application.DTOs.ConditionMonitoringTrendDto, PEMS.Application.DTOs.KpiDashboardDto, PEMS.Domain.Entities.Employee, PEMS.Web.Models.ExecutiveKpiPageViewModel, Microsoft.Extensions.Localization, PEMS.Web.Resources (+39 more)
+
+### Community 649 - "FieldDescriptor"
+Cohesion: 0.07
+Nodes (35): FieldDescriptor, Columns, HelpText, Kind, Label, MaxLength, Name, Options (+27 more)
+
+### Community 650 - "SoDPolicy/Index.cshtml"
+Cohesion: 0.33
+Nodes (5): List<PEMS.Web.Areas.Admin.Models.SoDPolicyListItemVm>, Microsoft.Extensions.Localization, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 651 - "ShiftHandoverDetailDto"
+Cohesion: 0.06
+Nodes (37): ShiftHandoverDetailDto, AcknowledgedDate, CompletedDate, HandoverDate, IncomingEmployeeId, IncomingName, Items, Notes (+29 more)
+
+### Community 652 - "PartCatalogueAdmin/Index.cshtml"
+Cohesion: 0.33
+Nodes (5): PcAdminViewModel, Microsoft.Extensions.Localization, PEMS.Web.Areas.Warehouse.Models, PEMS.Web.Resources, SharedResource
+
+### Community 653 - "DatabaseUpdate/Index.cshtml"
+Cohesion: 0.33
+Nodes (5): PEMS.Application.DTOs.DatabaseUpdateStatusDto, Microsoft.Extensions.Localization, PEMS.Application.DTOs, PEMS.Web.Resources, SharedResource
+
+### Community 654 - "InventoryTransaction/Index.cshtml"
+Cohesion: 0.33
+Nodes (5): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.InventoryTransactionRowDto>, Microsoft.Extensions.Localization, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 655 - "check_commit_keys.py"
+Cohesion: 0.25
+Nodes (8): check(), git_commits(), is_bot(), is_exempt_commit(), keys_in(), main(), parse_log(), LogAndMainTests
+
+### Community 656 - "StoreRequisition/Index.cshtml"
+Cohesion: 0.33
+Nodes (5): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.StoreRequisitionListDto>, Microsoft.Extensions.Localization, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 657 - "ReliabilityDto.cs"
+Cohesion: 0.33
+Nodes (5): ReliabilityTrendPointDto, FailureCount, PeriodLabel, PeriodStart, TotalDowntimeHours
+
+### Community 658 - "SavedFilterDto"
+Cohesion: 0.33
+Nodes (5): SavedFilterDto, IsDefault, Name, QueryString, SavedFilterId
+
+### Community 659 - "PartCatalogueRequest/Details.cshtml"
+Cohesion: 0.33
+Nodes (5): PEMS.Application.Interfaces.PartCatalogueDetailsDto, Microsoft.Extensions.Localization, PEMS.Web.Areas.Warehouse.Models, PEMS.Web.Resources, SharedResource
+
+### Community 660 - "IrnReceipt/Details.cshtml"
+Cohesion: 0.33
+Nodes (5): PEMS.Domain.Entities.IrnReceipt, Microsoft.Extensions.Localization, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 662 - "Env"
+Cohesion: 0.33
+Nodes (6): Env, Db, Orders, Perms, Runtime, Service
+
+### Community 665 - "MaintenanceStrategy/Index.cshtml"
+Cohesion: 0.33
+Nodes (5): Microsoft.Extensions.Localization, PEMS.Domain.Common, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 666 - "RedirectToActionResult"
+Cohesion: 0.05
+Nodes (11): FakeNumberingService, MaintenancePlanControllerAuthorizationTests, ProcurementPackageControllerAuthorizationTests, ThrowingFtpUploadService, IsConfigured, VDRControllerAuthorizationTests, ThrowingVendorRiskService, VendorControllerAuthorizationTests (+3 more)
+
+### Community 668 - "_CreateModal.cshtml"
+Cohesion: 0.33
+Nodes (5): Microsoft.Extensions.Localization, PEMS.Application.DTOs.WorkSpaceViewDto, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 669 - "maintenancestrategy-edit.js"
+Cohesion: 0.53
+Nodes (4): label(), loadModes(), renderCauses(), renderModes()
+
+### Community 670 - "pems-permission-matrix.js"
 Cohesion: 0.12
-Nodes (15): DateTime, Valve, ActuatorType, CreatedDate, Description, FailPosition, IsActive, LineNumber (+7 more)
+Nodes (32): boot(), init(), refresh(), signature(), inlineHost(), isRemote(), messageDiv(), remoteOptions() (+24 more)
 
-### Community 639 - "ClassificationDashboardDto"
-Cohesion: 0.08
-Nodes (23): ClassificationDashboardDto, ByConfidence, ByEquipmentClass, BySource, ClassifiedCount, CoveragePercent, PendingReviewCount, PendingSuggestionsByConfidence (+15 more)
+### Community 671 - "myprofile-index.js"
+Cohesion: 0.47
+Nodes (3): getPos(), move(), start()
 
-### Community 640 - "3. مهم‌ترین تصمیم معماری"
-Cohesion: 0.50
-Nodes (4): 3. مهم‌ترین تصمیم معماری, Inventory Stock, Item / Material Master, SparePart ≠ Inventory Item
-
-### Community 641 - "43. SEARCH"
-Cohesion: 0.50
-Nodes (4): 43. SEARCH, Exact Search, Semantic Search, Structured Search
-
-### Community 642 - "56. THREE-PASS FINAL QA"
-Cohesion: 0.50
-Nodes (4): 56. THREE-PASS FINAL QA, PASS 1 — BUSINESS, PASS 2 — EDMS / WORKFLOW, PASS 3 — SOFTWARE
-
-### Community 643 - "36. Implementation Priority"
-Cohesion: 0.50
-Nodes (4): 36. Implementation Priority, P0 — Architecture Foundation, P1 — Intelligence, P2 — Experience
-
-### Community 644 - ".github/Role/PEMS_PROJECT_INTELLIGENCE_REPORT.md"
-Cohesion: 0.50
-Nodes (3): Modules (sorted by evidence coverage, lowest first), Non-negotiable reminders for anyone acting on this report, Summary
-
-### Community 645 - ".github/Role/PEMS_PROJECT_INTELLIGENCE_SPEC.md"
-Cohesion: 0.50
-Nodes (3): 1. Mission, 2. Non-Negotiable Rules, 3. Graphify
-
-### Community 646 - "29. ALERT CENTER"
-Cohesion: 0.50
-Nodes (4): 29. ALERT CENTER, CRITICAL, HIGH, MEDIUM
-
-### Community 647 - "49. THREE-LAYER INFORMATION ARCHITECTURE"
-Cohesion: 0.50
-Nodes (4): 49. THREE-LAYER INFORMATION ARCHITECTURE, Layer 1 — EXECUTIVE, Layer 2 — CONTROL, Layer 3 — TRANSACTION
-
-### Community 648 - "57. THREE-PASS MANDATORY AUDIT"
-Cohesion: 0.50
-Nodes (4): 57. THREE-PASS MANDATORY AUDIT, PASS 1 — BUSINESS AUDIT, PASS 2 — CONTRACT / COMMERCIAL AUDIT, PASS 3 — SOFTWARE / UX AUDIT
-
-### Community 649 - "سیستم برچسب عمومی (Tags) + وظایف مستقل (Task Actions)"
+### Community 673 - "StandardMatrix.cshtml"
 Cohesion: 0.40
-Nodes (5): Migration, باقی‌مانده از نمونه‌ی مرجع, برچسب دلخواه (Tags), سیستم برچسب عمومی (Tags) + وظایف مستقل (Task Actions), وظایف مستقل (Task Actions / پیگیری وظایف)
+Nodes (4): IReadOnlyList<PEMS.Application.DTOs.HelpStandardReferenceMatrixRowDto>, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource
 
-### Community 650 - "QuickSetup/Index.cshtml"
+### Community 674 - "Diagnostics.cshtml"
 Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.SetupStatusDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+Nodes (4): IReadOnlyList<PEMS.Application.Organization.OrganizationIssue>, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource
 
-### Community 651 - "IOllamaService"
-Cohesion: 0.10
-Nodes (16): Task, IOllamaService, OllamaGenerateOptions, JsonMode, MaxResponseTokens, Model, Temperature, Task (+8 more)
-
-### Community 652 - ".SeedFullBaselineAsync"
-Cohesion: 0.09
-Nodes (23): ActivityDef, IServiceProvider, Task, IServiceProvider, Task, IServiceProvider, Task, ActivityDef (+15 more)
-
-### Community 653 - ".AddLaborEntryAsync"
-Cohesion: 0.23
-Nodes (9): DateTime, OvertimeRate, RegularRate, Task, IWorkOrderLaborService, DateTime, RegularRate, Task (+1 more)
-
-### Community 654 - "PEMS_PROJECT_INTELLIGENCE_REPORT.md"
-Cohesion: 0.50
-Nodes (3): Modules (sorted by evidence coverage, lowest first), Non-negotiable reminders for anyone acting on this report, Summary
-
-### Community 655 - "51. FINAL EXECUTION COMMAND"
-Cohesion: 0.67
-Nodes (3): 51. FINAL EXECUTION COMMAND, Execute ONLY the audit phase now., IMPORTANT
-
-### Community 656 - "8. Permit Issuer and Permit Receiver"
-Cohesion: 0.67
-Nodes (3): 8. Permit Issuer and Permit Receiver, Permit Issuer, Permit Receiver
-
-### Community 657 - "3. Engineering Domain Boundary"
-Cohesion: 0.67
-Nodes (3): 3. Engineering Domain Boundary, Document Management, Engineering Intelligence
-
-### Community 658 - "4. Separate Business Lifecycle from AI Lifecycle"
-Cohesion: 0.67
-Nodes (3): 4. Separate Business Lifecycle from AI Lifecycle, AI Processing Lifecycle, Document Lifecycle
-
-### Community 659 - "Master Audit, Architecture & Implementation Directive"
-Cohesion: 0.67
-Nodes (3): Inspired by Engineering Document Intelligence Patterns — Tagsight Benchmark, Master Audit, Architecture & Implementation Directive, PEMS — Engineering Intelligence
-
-### Community 660 - "1. Required Authorization Architecture"
-Cohesion: 0.67
-Nodes (3): 1. Required Authorization Architecture, RBAC, Scope/Attribute-Based Authorization
-
-### Community 661 - "PEMS Enterprise Organization, Role & Permission Management"
-Cohesion: 0.67
-Nodes (3): Objective, PEMS Enterprise Organization, Role & Permission Management, Real Organizational Hierarchy + RBAC + Scope-Based Authorization
-
-### Community 662 - "2. Testing Philosophy"
-Cohesion: 0.67
-Nodes (3): 2. Testing Philosophy, Negative Authorization Test, Positive Authorization Test
-
-### Community 663 - "23. MILESTONES"
-Cohesion: 0.67
-Nodes (3): 23. MILESTONES, Missed Milestones, Upcoming Milestones
-
-### Community 664 - "4. EXECUTIVE DASHBOARD — FIRST SCREEN"
-Cohesion: 0.67
-Nodes (3): 4. EXECUTIVE DASHBOARD — FIRST SCREEN, A. Contract Portfolio Summary, B. Financial Control
-
-### Community 665 - "Enterprise Petrochemical Contract Management Dashboard"
-Cohesion: 0.67
-Nodes (3): Architecture, UX, KPI, Workflow & Implementation Specification, Enterprise Petrochemical Contract Management Dashboard, PEMS — CONTRACT MANAGEMENT
-
-### Community 666 - ".CreateService"
-Cohesion: 0.42
-Nodes (4): DateTime, Fact, Task, CmmsOperationsServiceTests
-
-### Community 667 - ".SeedAsync"
-Cohesion: 0.44
-Nodes (3): Fact, Task, HelpContentSeederTests
-
-### Community 668 - "CriticalityAssessment/Details.cshtml"
+### Community 675 - "_NotificationDropdown.cshtml"
 Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.CriticalityAssessmentDetailDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+Nodes (4): List<PEMS.Application.DTOs.NotificationDto>, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource
 
-### Community 669 - "VendorController"
-Cohesion: 0.19
-Nodes (11): Task, IVendorService, DateTime, HttpGet, HttpPost, IActionResult, PEMSDbContext, Task (+3 more)
+### Community 676 - "_ResolutionPreview.cshtml"
+Cohesion: 0.40
+Nodes (4): PEMS.Application.ActorResolution.ActorResolutionResult, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource
 
-### Community 670 - "51. FINAL EXECUTION COMMAND"
-Cohesion: 0.67
-Nodes (3): 51. FINAL EXECUTION COMMAND, Execute ONLY the audit phase now., IMPORTANT
+### Community 677 - "Reliability/ClassDetail.cshtml"
+Cohesion: 0.40
+Nodes (4): PEMS.Application.DTOs.EquipmentClassReliabilityDto, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource
 
-### Community 671 - "8. Permit Issuer and Permit Receiver"
-Cohesion: 0.67
-Nodes (3): 8. Permit Issuer and Permit Receiver, Permit Issuer, Permit Receiver
+### Community 678 - "EngineeringDocumentDetailQueryTests.GetByIdAsync_UsesAsSplitQuery_IssuesMultipleRoundTrips_NotOneCartesianJoin"
+Cohesion: 0.18
+Nodes (4): CapturingLogger, CapturingLoggerProvider, EngineeringDocumentDetailQueryTests, NullScope
 
-### Community 672 - "3. Engineering Domain Boundary"
-Cohesion: 0.67
-Nodes (3): 3. Engineering Domain Boundary, Document Management, Engineering Intelligence
+### Community 679 - "VisualCreate.cshtml"
+Cohesion: 0.40
+Nodes (4): PEMS.Application.DTOs.HelpVisualAdminEditDto, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource
 
-### Community 673 - "4. Separate Business Lifecycle from AI Lifecycle"
-Cohesion: 0.67
-Nodes (3): 4. Separate Business Lifecycle from AI Lifecycle, AI Processing Lifecycle, Document Lifecycle
+### Community 680 - "MrsImport/Review.cshtml"
+Cohesion: 0.40
+Nodes (4): PEMS.Application.DTOs.MrsImportBatchDetailDto, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource
 
-### Community 674 - "Master Audit, Architecture & Implementation Directive"
-Cohesion: 0.67
-Nodes (3): Inspired by Engineering Document Intelligence Patterns — Tagsight Benchmark, Master Audit, Architecture & Implementation Directive, PEMS — Engineering Intelligence
+### Community 681 - "StorageProviders/_Form.cshtml"
+Cohesion: 0.40
+Nodes (4): PEMS.Application.DTOs.StorageProviderUpsertRequest, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource
 
-### Community 675 - "1. Required Authorization Architecture"
-Cohesion: 0.67
-Nodes (3): 1. Required Authorization Architecture, RBAC, Scope/Attribute-Based Authorization
-
-### Community 676 - "PEMS Enterprise Organization, Role & Permission Management"
-Cohesion: 0.67
-Nodes (3): Objective, PEMS Enterprise Organization, Role & Permission Management, Real Organizational Hierarchy + RBAC + Scope-Based Authorization
-
-### Community 677 - "2. Testing Philosophy"
-Cohesion: 0.67
-Nodes (3): 2. Testing Philosophy, Negative Authorization Test, Positive Authorization Test
-
-### Community 678 - "23. MILESTONES"
-Cohesion: 0.67
-Nodes (3): 23. MILESTONES, Missed Milestones, Upcoming Milestones
-
-### Community 679 - "4. EXECUTIVE DASHBOARD — FIRST SCREEN"
-Cohesion: 0.67
-Nodes (3): 4. EXECUTIVE DASHBOARD — FIRST SCREEN, A. Contract Portfolio Summary, B. Financial Control
-
-### Community 680 - "Enterprise Petrochemical Contract Management Dashboard"
-Cohesion: 0.67
-Nodes (3): Architecture, UX, KPI, Workflow & Implementation Specification, Enterprise Petrochemical Contract Management Dashboard, PEMS — CONTRACT MANAGEMENT
-
-### Community 681 - "EngineeringDocumentListFilter"
-Cohesion: 0.15
-Nodes (14): EngineeringDocumentListFilter, Area, DisciplineId, MinRevisionCount, Page, PageSize, ProjectId, Search (+6 more)
-
-### Community 682 - "DocumentAttachmentDto"
-Cohesion: 0.10
-Nodes (19): DateTime, DocumentAttachmentDto, AIKeywords, AIStatus, AISummary, AttachmentId, DocumentRevisionId, FileExtension (+11 more)
+### Community 682 - "WorkflowManagement/Details.cshtml"
+Cohesion: 0.40
+Nodes (4): PEMS.Application.DTOs.WorkflowDefinitionDetails, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource
 
 ### Community 683 - "DocumentRevisionDto"
-Cohesion: 0.06
-Nodes (31): DateTime, DocumentRevisionDto, AIRevisionSummary, ApprovedBy, ChangeDescription, CheckedBy, ClientReviewComment, ClientReviewDate (+23 more)
+Cohesion: 0.07
+Nodes (26): DocumentRevisionDto, AIRevisionSummary, ApprovedBy, ChangeDescription, CheckedBy, ClientReviewComment, ClientReviewDate, ClientReviewStatus (+18 more)
 
 ### Community 684 - "ProductionOrderDto"
+Cohesion: 0.05
+Nodes (37): ProductionOrderDto, ActualFinishDate, ActualStartDate, CancellationReason, CreatedBy, CreatedDate, EquipmentId, EquipmentTagNumber (+29 more)
+
+### Community 685 - "Replenishment/Details.cshtml"
+Cohesion: 0.40
+Nodes (4): PEMS.Application.Replenishment.ReplenishmentDetails, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource
+
+### Community 686 - "NavigationVisibilityUserVm"
+Cohesion: 0.40
+Nodes (5): NavigationVisibilityUserVm, AllUsers, RoleNames, SelectedUserId, Tree
+
+### Community 687 - "Authorization/Simulate.cshtml"
+Cohesion: 0.40
+Nodes (4): PEMS.Web.Areas.Admin.Models.SimulateFormVm, Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource
+
+### Community 688 - "Help/Edit.cshtml"
+Cohesion: 0.40
+Nodes (4): Microsoft.Extensions.Localization, PEMS.Application.DTOs.HelpArticleAdminEditDto, PEMS.Web.Resources, SharedResource
+
+### Community 689 - "_HelpArticleForm.cshtml"
+Cohesion: 0.40
+Nodes (4): Microsoft.Extensions.Localization, PEMS.Application.DTOs.HelpArticleAdminEditDto, PEMS.Web.Resources, SharedResource
+
+### Community 690 - "Admin/Views/Help/Index.cshtml"
+Cohesion: 0.40
+Nodes (4): Microsoft.Extensions.Localization, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 691 - "LetterAdvancedFilter"
+Cohesion: 0.08
+Nodes (21): LetterAdvancedFilter, Confidentiality, Folder, HasAttachments, HasReferrals, IsEmpty, OverdueReferralOnly, OverdueResponseOnly (+13 more)
+
+### Community 692 - "EngineeringDocuments/Index.cshtml"
+Cohesion: 0.40
+Nodes (4): Microsoft.Extensions.Localization, PEMS.Web.Helpers, PEMS.Web.Resources, SharedResource
+
+### Community 693 - "Preview.cshtml"
+Cohesion: 0.40
+Nodes (4): Microsoft.Extensions.Localization, PEMS.Application.DTOs.LetterTemplateDto, PEMS.Web.Resources, SharedResource
+
+### Community 694 - "chatassistant-index.js"
+Cohesion: 0.40
+Nodes (3): chatWindow, form, input
+
+### Community 695 - "Home/Index.cshtml"
 Cohesion: 0.07
-Nodes (27): ProductionOrderDto, ActualFinishDate, ActualStartDate, CancellationReason, CreatedBy, CreatedDate, EquipmentId, EquipmentTagNumber (+19 more)
+Nodes (23): PEMS.Application.DTOs.ClassificationDashboardDto, PEMS.Application.DTOs.LetterWorkspaceDashboardDto, PEMS.Application.DTOs.SetupStatusDto, BarCssFor, Number, System.Globalization, Share, PEMS.Web.Models.EngineeringDashboardViewModel (+15 more)
 
-### Community 685 - "WORKFLOW_PLATFORM_PHASE4_WORKFLOW_ADMINISTRATION.md"
-Cohesion: 0.08
-Nodes (25): 10. Transition management, 11. Visual designer, 12. Validation, 13. Publishing, 14. Binding, 15. Version pinning, 16. Concurrency, 17. Audit (+17 more)
-
-### Community 686 - ".CreateService"
-Cohesion: 0.36
-Nodes (6): DateTime, Fact, InlineData, Task, Theory, IntakeGridPaginationTests
-
-### Community 687 - "CriticalityAssessment/Dashboard.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.CriticalityDashboardDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 688 - "_RichTextEditorScripts.cshtml"
-Cohesion: 0.33
-Nodes (5): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource, string, System.Globalization
-
-### Community 689 - "MCP Tool Priority"
-Cohesion: 0.29
-Nodes (6): Available Zaemit tools, graphify, MCP Tool Priority, When to use Pencil tools, When to use Zaemit tools, Zaemit Visual Editor - AI Tool Instructions
-
-### Community 707 - "CriticalityAssessment/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.CriticalityAssessmentListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 727 - "Reliability/Index.cshtml"
-Cohesion: 0.22
-Nodes (8): BadActorDto, EquipmentClassReliabilityDto, FailureParetoItemDto, IStringLocalizer, List<PEMS.Application.DTOs.EquipmentReliabilityDto>, Microsoft.Extensions.Localization, ReliabilityTrendPointDto, SharedResource
-
-### Community 728 - "JobPlan/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.JobPlanListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 729 - "MDB/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.ManufacturerDataBookDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 730 - "MrsImport/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.MrsImportBatchSummaryDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 731 - "ShiftHandover/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.ShiftHandoverListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 732 - "Crew/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Domain.Entities.Crew>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 733 - "MaintenanceMasterData/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Domain.Entities.MaintenanceGroup>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 734 - "InventoryMasterData/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Domain.Entities.Warehouse>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 735 - "Asset/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.AssetDetailDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 736 - "Equipment/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.EquipmentPassportDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 737 - "Reliability/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.EquipmentReliabilityDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 738 - "JobPlan/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.JobPlanDetailDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 739 - "Kpi/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.KpiDashboardDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 740 - "MDB/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.ManufacturerDataBookDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 741 - "MaterialItem/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.MaterialItemDetailDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 742 - "MrsImport/Review.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.MrsImportBatchDetailDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 743 - "Asset/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.AssetListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 744 - "FunctionalLocation/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.FunctionalLocationListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 745 - "Inspection/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.InspectionListItemDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 746 - "Instrument/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.InstrumentListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 747 - "InventoryTransaction/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.InventoryTransactionRowDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 748 - "MaterialItem/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MaterialItemListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 749 - "MaterialRequisition/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MRDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 750 - "Quotations.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MRQDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 751 - "Permit/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.PermitListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 752 - "StoreRequisition/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.StoreRequisitionListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 753 - "TableExtraction/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.TableExtractionAttachmentListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 754 - "WorkRequest/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.WorkRequestListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 755 - "ShiftHandover/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.ShiftHandoverDetailDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 756 - "ReliabilityDataQualityDto"
-Cohesion: 0.08
-Nodes (25): ReliabilityDataQualityDto, CompletedOrClosedWorkOrders, CriticalityCoveragePercent, EquipmentReliabilityCoveragePercent, EquipmentWithCriticality, EquipmentWithFailureHistory, EquipmentWithMaintenancePlan, EquipmentWithMaintenanceStrategy (+17 more)
-
-### Community 757 - "ProjectIntelligence/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Web.Areas.Admin.Models.ProjectIntelligenceReport, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 758 - "_RoleCheckboxes.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Web.Areas.Admin.Models.UserFormViewModel, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 759 - "Instrument/Edit.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Domain.Entities.Instrument, SharedResource
-
-### Community 760 - "TestTailwindConfigGenerator"
-Cohesion: 0.06
-Nodes (16): Test adding colors multiple times., Test adding full color palette., Test adding custom breakpoints., Test TailwindConfigGenerator class., Test that adding same plugin twice doesn't duplicate., Test plugin recommendations for Next.js., Test initialization with default settings., Test generating JavaScript configuration. (+8 more)
-
-### Community 761 - "MaintenanceStrategyListDto"
-Cohesion: 0.12
-Nodes (15): MaintenanceStrategyListDto, ConsequenceCategory, EquipmentId, EquipmentTagNumber, FailureModeCode, Justification, MaintenanceStrategyId, StrategyType (+7 more)
-
-### Community 762 - "TableExtraction/Review.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Domain.Entities.TableExtractionBatch, SharedResource
-
-### Community 763 - "Transmittal/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Application.DTOs.TransmittalDto, SharedResource
-
-### Community 764 - "Vendor/Edit.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Domain.Entities.Vendor, SharedResource
-
-### Community 765 - "CriticalityAssessment/Create.cshtml"
+### Community 696 - "TechnicalClassResolutionStatus"
 Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+Nodes (4): TechnicalClassResolutionStatus, Ambiguous, None, Resolved
 
-### Community 770 - "PermitApprovalAuditRecord"
-Cohesion: 0.06
-Nodes (34): Permit, DateTime, Guid, PermitApprovalAuditRecord, Action, ApprovalStage, AreaScope, AuditCorrelationId (+26 more)
+### Community 697 - "MyProfile/Index.cshtml"
+Cohesion: 0.50
+Nodes (3): Microsoft.Extensions.Localization, PEMS.Web.Resources, SharedResource
 
-### Community 771 - "WorkOrderListDto"
-Cohesion: 0.11
-Nodes (18): DateTime, WorkOrderDashboardDto, CompletedCount, CriticalOpenCount, InProgressCount, OpenCount, WorkOrderListDto, AssignedEmployeeName (+10 more)
-
-### Community 777 - "MeetingDto"
+### Community 761 - "VDRImportBatch"
 Cohesion: 0.07
-Nodes (35): DateTime, MeetingAttendeeDto, Attended, DisplayName, IsRequired, MeetingAttendeeId, MeetingDetailDto, ActionItems (+27 more)
+Nodes (29): VDRImportBatch, CommittedDate, FileName, ImportDate, ImportedById, Project, ProjectId, Rows (+21 more)
 
-### Community 778 - "Discipline"
-Cohesion: 0.11
-Nodes (18): Number, Org, Description, DateTime, Discipline, Code, CreatedDate, Description (+10 more)
-
-### Community 779 - "ExtractedTableRow"
+### Community 765 - "MaintenancePlanListDto"
 Cohesion: 0.08
-Nodes (24): Dictionary, ExtractedTableRow, CableNo, DcsTagNo, Description, InstrumentType, IoAddress, IoCard (+16 more)
+Nodes (25): MaintenancePlanListDto, CriticalityClass, EquipmentClassName, EquipmentId, EquipmentName, EquipmentTagNumber, FailureModeName, FailureModeNameFa (+17 more)
 
-### Community 780 - "PEMS EDMS — Phase 4 Final Report"
-Cohesion: 0.14
-Nodes (13): 10. Remaining Gap Matrix, 11. Post-Implementation Verification Pass, 1. Phase 4 Verdict, 2. Repository Baseline, 3. Audit Findings, 4. Phase 4 Implemented Scope, 5. Explicitly NOT Implemented, 6. Database Verification (+5 more)
+### Community 766 - "AdminResetViewModel"
+Cohesion: 0.40
+Nodes (4): AdminResetViewModel, FullName, Id, UserName
 
-### Community 781 - "ProductionRunController"
-Cohesion: 0.33
-Nodes (6): HttpGet, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, ProductionRunController
-
-### Community 782 - "Logo Usage Rules"
-Cohesion: 0.07
-Nodes (28): Absolute Don'ts, Approved Backgrounds, Before Using Logo, Clear Space, Co-branding, Color Rules, Color Usage, Color Variants (+20 more)
-
-### Community 783 - "PEMS EDMS — Phase 3 Final Report: Transmittal Historical Integrity & Acknowledgement"
-Cohesion: 0.15
-Nodes (12): Auditability, Commit Recommendation, Database, Historical Integrity, Implemented, PEMS EDMS — Phase 3 Final Report: Transmittal Historical Integrity & Acknowledgement, Phase 3 Verdict, Remaining Findings (+4 more)
-
-### Community 784 - ".SearchAsync"
+### Community 770 - "ReliabilitySimulationDto"
 Cohesion: 0.12
-Nodes (15): Task, IKnowledgeBaseService, DisciplineId, IQueryable, IsRestricted, Task, EngineeringDocumentDisciplineScope, Task (+7 more)
+Nodes (16): ReliabilitySimulationDto, DataStatus, EquipmentId, InputBeta, InputEta, InputMTTRHours, Iterations, MeanAvailabilityPercent (+8 more)
 
-### Community 785 - "EquipmentImportBatch"
+### Community 777 - "NavigationUserModuleNode"
+Cohesion: 0.13
+Nodes (16): NavigationUserItemNode, Capability, DisplayLocalizationKey, ItemKey, Visible, NavigationUserModuleNode, DisplayLocalizationKey, HasDrillDown (+8 more)
+
+### Community 778 - "MaintenanceStrategyAssignment"
+Cohesion: 0.09
+Nodes (20): MaintenanceStrategyAssignment, AssignedByEmployeeId, AssignedDate, CreatedDate, Equipment, EquipmentId, IsActive, MaintenanceStrategy (+12 more)
+
+### Community 780 - "x-axis.tsx"
+Cohesion: 0.12
+Nodes (28): BarXAxisInner, BarXAxisLabel(), BarXAxisLabelProps, BarXAxisProps, ChartLabelCount, resolveResponsiveChartLabelCount(), ResponsiveChartLabelCount, allIndexLayouts() (+20 more)
+
+### Community 784 - "CancellationToken"
 Cohesion: 0.08
-Nodes (23): DateTime, ICollection, EquipmentImportBatch, EquipmentImportBatchId, FileName, ImportDate, ImportedBy, ImportedById (+15 more)
+Nodes (23): DisciplineDetail, DisciplineErrorKeys, DisciplineOpResult, DisciplinePageResult, DisciplineQuery, DisciplineRow, DisciplineWrite, IDisciplineMasterService (+15 more)
 
-### Community 786 - "HomeController"
-Cohesion: 0.11
-Nodes (16): Func, IActionResult, ILogger, ResponseCache, Task, HomeController, ErrorViewModel, RequestId (+8 more)
+### Community 785 - "WorkRequest"
+Cohesion: 0.03
+Nodes (57): WorkRequest, ApprovedBy, ApprovedById, ApprovedDate, Asset, AssetId, CreatedDate, Description (+49 more)
 
-### Community 787 - "Component Specifications"
-Cohesion: 0.07
-Nodes (28): Alert, Anatomy, Anatomy, Anatomy, Anatomy, Anatomy, Badge, Button (+20 more)
-
-### Community 788 - "GasTest"
-Cohesion: 0.10
-Nodes (21): DateTime, GasTest, CreatedDate, Equipment, EquipmentId, FunctionalLocation, FunctionalLocationId, GasTestId (+13 more)
-
-### Community 789 - "DESIGN.md"
-Cohesion: 0.15
-Nodes (12): Brand & Style, Buttons, Colors, Components, Data Tables, Elevation & Depth, Form Inputs, KPI Cards (+4 more)
+### Community 786 - "IReadOnlyList"
+Cohesion: 0.02
+Nodes (60): ExecutionGateResultDto, AdvisoryNotes, Checks, Result, IContractWorkflowService, IExecutionGateService, IGasTestService, IIrnReceiptService (+52 more)
 
 ### Community 790 - "PEMS.Infrastructure"
-Cohesion: 0.18
-Nodes (11): Microsoft.Extensions.Caching.Memory (10.0.10), Microsoft.Extensions.Caching.StackExchangeRedis (10.0.10), SSH.NET (2026.0.0), PEMS.Infrastructure, net10.0, FluentFTP (54.2.0), Microsoft.AspNetCore.DataProtection (10.0.10), Microsoft.EntityFrameworkCore (10.0.10) (+3 more)
-
-### Community 791 - "shadcn/ui Accessibility Patterns"
-Cohesion: 0.07
-Nodes (28): Accordion, Alert, ARIA Labels, Checkbox and Radio, Color Contrast, Command Palette Navigation, Component-Specific Patterns, Dialog/Modal Navigation (+20 more)
-
-### Community 792 - "IOPoint"
-Cohesion: 0.06
-Nodes (29): Instrument, DateTime, ControlLoop, ControllerSystem, ControllerType, CreatedDate, Description, Instrument (+21 more)
-
-### Community 793 - "ClientReviewTests"
-Cohesion: 0.31
-Nodes (8): Exception, Fact, InlineData, Letter, Task, Theory, UnauthorizedAccessException, ClientReviewTests
-
-### Community 794 - ".SeedAsync"
-Cohesion: 0.35
-Nodes (7): ctx, doc, Fact, InvalidOperationException, svc, Task, DocumentHoldTests
-
-### Community 795 - "html-token-validator.py"
-Cohesion: 0.13
-Nodes (24): get_context(), is_allowed_exception(), is_allowed_rgba(), is_inside_block(), load_css_variables(), main(), print_result(), print_summary() (+16 more)
-
-### Community 796 - "ProductionBatchDto"
-Cohesion: 0.11
-Nodes (18): ProductionBatchDto, BatchNumber, MaterialCode, MaterialDescription, MaterialItemId, Notes, OrderNumber, ProducedDate (+10 more)
-
-### Community 797 - "EquipmentReliabilityDto"
-Cohesion: 0.03
-Nodes (62): DateTime, BadActorDto, CriticalityClass, EquipmentClassName, EquipmentId, FailureCount, MaintenanceCount, MTBFHours (+54 more)
-
-### Community 798 - "PartCatalogueFormDto"
-Cohesion: 0.02
-Nodes (82): DateTime, PartCatalogueFormDto, AssetType, Attributes, ChangesMatchInventory, CommodityGroup1Id, CommodityGroup2Id, CurrencyId (+74 more)
-
-### Community 799 - "DocumentUploadController"
-Cohesion: 0.23
-Nodes (9): HttpGet, HttpPost, IActionResult, IFormFile, ILogger, IServiceScopeFactory, Task, ValidateAntiForgeryToken (+1 more)
-
-### Community 800 - ".SeedAsync"
-Cohesion: 0.33
-Nodes (5): CauseCode, MechanismCode, IServiceProvider, Task, FailureCauseMechanismSeeder
+Cohesion: 0.17
+Nodes (12): MailKit (4.18.2), Microsoft.Extensions.Caching.Memory (10.0.10), Microsoft.Extensions.Caching.StackExchangeRedis (10.0.10), SSH.NET (2026.0.0), PEMS.Infrastructure, net10.0, FluentFTP (54.2.0), Microsoft.AspNetCore.DataProtection (10.0.10) (+4 more)
 
 ### Community 801 - "PEMS.Persistence.csproj"
 Cohesion: 0.15
 Nodes (12): Fido2.AspNet (4.0.1), HtmlSanitizer (9.1.973), Microsoft.AspNetCore.Identity.EntityFrameworkCore (10.0.10), Microsoft.Extensions.Configuration.FileExtensions (10.0.10), ZXing.Net (0.16.11), net10.0, FluentFTP (54.2.0), Microsoft.EntityFrameworkCore.SqlServer (10.0.10) (+4 more)
 
-### Community 802 - "Tender"
-Cohesion: 0.08
-Nodes (26): DateTime, ICollection, Tender, AwardedBid, AwardedBidId, AwardedBy, AwardedById, AwardedDate (+18 more)
-
-### Community 803 - ".SeedClassAsync"
-Cohesion: 0.44
-Nodes (4): ClassId, Fact, Task, EquipmentReadinessServiceTests
-
-### Community 804 - ".GetPassportAsync"
-Cohesion: 0.13
-Nodes (15): DateTime, RelationshipNodeDto, DelayDays, IsAIProposed, IsConfirmed, Label, NodeId, NodeType (+7 more)
+### Community 803 - "UploadGuard.CheckAsync"
+Cohesion: 0.09
+Nodes (14): IUploadGuard, MalwareScanModes, UploadCheckResult, UploadErrors, UploadGuard, FileType, UploadPolicy, UploadProfile (+6 more)
 
 ### Community 805 - "NavigationModuleNode"
-Cohesion: 0.08
-Nodes (35): NavigationVisibilityRowDescription, DefaultSource, DefaultVisible, EffectiveVisible, HasOverride, ItemKey, ModuleKey, OverrideVisible (+27 more)
-
-### Community 806 - "radius"
 Cohesion: 0.10
-Nodes (28): $type, $value, lg, sm, $type, $value, $type, $value (+20 more)
+Nodes (24): NavigationItemNode, AnyRoleVisible, Capability, DisplayLocalizationKey, ItemKey, RoleAccess, NavigationModuleNode, DisplayLocalizationKey (+16 more)
 
-### Community 807 - "AddRcmFmeaDecisionIntelligence"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddRcmFmeaDecisionIntelligence
-
-### Community 808 - "EquipmentImportBatchDto"
-Cohesion: 0.06
-Nodes (40): DateTime, EquipmentImportBatchDto, EquipmentImportBatchId, FileName, ImportDate, ProjectId, ProjectName, Rows (+32 more)
-
-### Community 809 - "Wave6BP1UniqueConstraints"
-Cohesion: 0.20
-Nodes (6): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, Wave6BP1UniqueConstraints
-
-### Community 810 - "MaintenanceHistory"
-Cohesion: 0.12
-Nodes (16): DateTime, MaintenanceHistory, ActionTaken, Cost, CreatedDate, Description, DurationHours, Equipment (+8 more)
-
-### Community 811 - ".SeedDocumentWithTwoRevisions"
-Cohesion: 0.32
-Nodes (7): Doc, DocumentRevision, Fact, Task, RevisionFileBindingTests, Rev1, Rev2
+### Community 808 - "ProcurementPackage"
+Cohesion: 0.04
+Nodes (53): Meeting, Agenda, Attendees, Contract, ContractId, CreatedDate, IsActive, Location (+45 more)
 
 ### Community 812 - "PEMS.AI"
-Cohesion: 0.20
-Nodes (10): ClosedXML (0.104.1), DocumentFormat.OpenXml (3.5.1), Microsoft.Extensions.Configuration.Abstractions (10.0.10), Microsoft.Extensions.Logging.Abstractions (10.0.10), Microsoft.Extensions.Options (10.0.10), PdfPig (0.1.10), Tesseract (5.2.0), PEMS.AI (+2 more)
+Cohesion: 0.13
+Nodes (16): ClosedXML (0.104.1), DocumentFormat.OpenXml (3.5.1), Microsoft.Extensions.Configuration.Abstractions (10.0.10), Microsoft.Extensions.Logging.Abstractions (10.0.10), Microsoft.Extensions.Options (10.0.10), PdfPig (0.1.10), PEMS.AI, net10.0 (+8 more)
 
-### Community 813 - "PEMS Operations Phase 2A — Foundational Hardening Report"
-Cohesion: 0.08
-Nodes (25): 10. Reporting Foundation, 11. Migration Details, 12. Existing Data Preservation, 13. RBAC/SoD Impact, 14. Audit Logging Impact, 15. Tests Executed, 16. Full Regression Results, 17. Remaining Architectural Risks (+17 more)
+### Community 814 - "ApiListQuery"
+Cohesion: 0.29
+Nodes (6): ApiListQuery, Filters, Page, PageSize, Q, Sort
 
-### Community 814 - "PEMS Operations Phase 2C — Production Safety Correction & Business Decision Baseline"
-Cohesion: 0.07
-Nodes (27): 10. Regression Results, 11. Existing Data and Migration Impact, 12. Quantity Semantics Decision Baseline, 13. Product Master Decision Baseline, 14. Packaging Boundary Decision Baseline, 15. Package / Handling Unit / Pallet Decision Baseline, 16. Batch Genealogy Decision Baseline, 17. Quality and Release Decision Baseline (+19 more)
-
-### Community 815 - "InventoryTransaction"
-Cohesion: 0.08
-Nodes (29): DateTime, InventoryTransaction, Employee, EmployeeId, InventoryTransactionId, MaterialItemId, MaterialReservationId, ProductionBatchId (+21 more)
-
-### Community 816 - "EquipmentClassification/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.ClassificationDashboardDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 817 - "PEMS Shared Resource Workspace — Conceptual Design Specification"
-Cohesion: 0.08
-Nodes (24): Engineering Document, Equipment, PEMS Shared Resource Workspace — Conceptual Design Specification, Permit, VDR, Work Order, مدل ورودی (کلاس C# ساده، نه Entity/DTO دامنه), ۱. آناتومی Workspace (+16 more)
-
-### Community 818 - "ManufacturerDataBookService"
-Cohesion: 0.25
-Nodes (3): DateTime, Task, ManufacturerDataBookService
-
-### Community 819 - "HelpStandardReference"
-Cohesion: 0.11
-Nodes (18): DateTime, HelpStandardReference, ApplicabilityStatus, Article, CreatedDate, EditionOrYear, EvidencePath, HelpArticleId (+10 more)
-
-### Community 820 - "2. Technical Design Principles (Skills)"
-Cohesion: 0.20
-Nodes (9): 1. Core Identity & Visual Language, 2. Technical Design Principles (Skills), 3. Persistent Design Tokens, 4. Current Progress State, A. Dual-Language Engineering (EN/FA), B. Industrial Data Density, C. Technical Process Mapping, D. System Governance & Admin (+1 more)
-
-### Community 821 - "55. TEST MATRIX"
-Cohesion: 0.22
-Nodes (9): 55. TEST MATRIX, Client Review, Comments, Discipline, Document Creation, Freeze, IDC, Revision (+1 more)
-
-### Community 822 - "55. TEST MATRIX"
-Cohesion: 0.22
-Nodes (9): 55. TEST MATRIX, Client Review, Comments, Discipline, Document Creation, Freeze, IDC, Revision (+1 more)
-
-### Community 823 - "53. FINAL RESPONSE FORMAT"
-Cohesion: 0.22
-Nodes (9): 53. FINAL RESPONSE FORMAT, Architecture, Database, Files Changed, Next Steps, Result, Risks, Security (+1 more)
+### Community 819 - "PurchaseOrderLine"
+Cohesion: 0.06
+Nodes (32): PurchaseOrderLine, BidId, CommodityGroup, CommodityGroupId, Description, FreeTextReason, InspectionReleasedAt, InspectionReleasedByUserName (+24 more)
 
 ### Community 824 - "PEMS.Web"
-Cohesion: 0.22
-Nodes (9): Hangfire.AspNetCore (1.8.14), Hangfire.SqlServer (1.8.14), Microsoft.EntityFrameworkCore.Design (10.0.10), Serilog.AspNetCore (9.0.0), Serilog.Sinks.File (6.0.0), PEMS.Web, net10.0, QuestPDF (2025.7.0) (+1 more)
-
-### Community 825 - "PEMS_OPERATIONS_PACKAGING_FINAL_ARCHITECTURE_SAFETY_REVIEW.md"
-Cohesion: 0.05
-Nodes (37): Architecture Duplication, Architecture Owner Decisions Still Required (E), Audit, BG.1 Source facts, BG.2 What a SystemAdmin could do today (once `PackagingPolicy` exists), and with the required changes, BG.3 Required (implementation requirement, PR-4), BG.4 Residual risk (classification **E** — architecture owner must accept or reject), Break-Glass (+29 more)
-
-### Community 826 - "TaskItem"
-Cohesion: 0.05
-Nodes (46): DateTime, TaskItemDto, AssignedByName, AssignedToEmployeeName, CompletedDate, CompletionNote, CreatedDate, Description (+38 more)
-
-### Community 827 - ".CreateController"
-Cohesion: 0.39
-Nodes (6): DateTime, Fact, InlineData, Task, Theory, OCRProcessingGridPaginationTests
-
-### Community 828 - "Task"
-Cohesion: 0.11
-Nodes (16): created, CurrentUser, Fact, ForbidResult, Permissions, RedirectToActionResult, skipped, Stream (+8 more)
-
-### Community 829 - "Migration"
-Cohesion: 0.09
-Nodes (13): Migration, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, MaintenanceSpareUsageReturnedQuantity, DateTime, MigrationBuilder (+5 more)
-
-### Community 830 - "WebAuthnCredential"
-Cohesion: 0.11
-Nodes (18): Id, DateTime, LastUsedDate, Nickname, DateTime, WebAuthnCredential, AAGUID, CreatedDate (+10 more)
-
-### Community 831 - "IntakeService"
 Cohesion: 0.20
-Nodes (8): Task, IRoutingRuleService, entityId, ILogger, module, Stream, Task, IntakeService
+Nodes (10): Hangfire.AspNetCore (1.8.14), Hangfire.SqlServer (1.8.14), Microsoft.AspNetCore.OpenApi (10.0.10), Serilog.AspNetCore (9.0.0), Serilog.Sinks.File (6.0.0), PEMS.Web, net10.0, Microsoft.EntityFrameworkCore.Design (10.0.10) (+2 more)
 
-### Community 832 - "NavigationUserModuleNode"
-Cohesion: 0.11
-Nodes (18): HashSet, NavigationVisibilitySnapshot, NavigationUserItemNode, Capability, DisplayLocalizationKey, ItemKey, Visible, NavigationUserModuleNode (+10 more)
+### Community 827 - "MaintenanceBacklogItemDto"
+Cohesion: 0.13
+Nodes (14): MaintenanceBacklogItemDto, AgeDays, AssignedEmployeeName, AssignedTeamName, CreatedDate, DueDate, EquipmentDescription, EquipmentTagNumber (+6 more)
 
-### Community 833 - "PEMS Enterprise Utility - Global Onboarding Strategy (Minimalist)"
-Cohesion: 0.22
-Nodes (8): 1. Engineering (VDR & Drawing Control), 2. Assets & Maintenance, 3. Safety (HSE & RCA), 4. Human Capital & Security, 5. Utilities & Energy, 6. Emergency Response, 7. Procurement (MRO), PEMS Enterprise Utility - Global Onboarding Strategy (Minimalist)
+### Community 828 - "ICurrentUserService"
+Cohesion: 0.03
+Nodes (43): EquipmentImportBatchDto, EquipmentImportBatchId, FileName, ImportDate, ProjectId, ProjectName, Rows, Status (+35 more)
 
-### Community 834 - "53. FINAL RESPONSE FORMAT"
-Cohesion: 0.22
-Nodes (9): 53. FINAL RESPONSE FORMAT, Architecture, Database, Files Changed, Next Steps, Result, Risks, Security (+1 more)
+### Community 830 - "DocumentAttachment"
+Cohesion: 0.03
+Nodes (81): DocumentAttachment, AIConfidence, AIError, AIKeywords, AIProcessedDate, AIStatus, AISummary, AITags (+73 more)
 
-### Community 835 - "Meeting"
-Cohesion: 0.06
-Nodes (33): DateTime, ICollection, Meeting, Agenda, Attendees, Contract, ContractId, CreatedDate (+25 more)
+### Community 838 - "UsableStockService"
+Cohesion: 0.30
+Nodes (4): Env, Db, Svc, UsableStockServiceTests
 
-### Community 836 - "ModulePermissionInput"
+### Community 843 - "PEMS.Web/Program.cs"
 Cohesion: 0.07
-Nodes (31): ModulePermissionInput, CanApprove, CanCreate, CanDelete, CanEdit, CanFreeze, CanHold, CanManualNumber (+23 more)
+Nodes (14): PEMS.AI.Services, PEMS.Application.AI.Search.Interfaces, PEMS.Application.AI.OCR, PEMS.Application.AI.Parser, PEMS.Application.AI.Search.Services, PEMS.Application.AI.Search.Models, PEMS.Application.AI.Services, PEMS.AI.Models (+6 more)
 
-### Community 837 - "EffectivePermissionDto"
+### Community 847 - "DocumentWorkflowService"
+Cohesion: 0.22
+Nodes (3): DocumentWorkflowService, EngineeringWorkflowHistorySqlServerDiagnosticTests, FirstPassApprovalPrototypeTests
+
+### Community 849 - "ErrorMapperTests"
+Cohesion: 0.07
+Nodes (27): DocumentFrozenException, ConflictException, ForbiddenException, NotFoundException, PemsErrorKind, Conflict, Forbidden, NotFound (+19 more)
+
+### Community 853 - "MaterialRequisitionItem"
 Cohesion: 0.12
-Nodes (18): EffectivePermissionDto, ActionName, Allowed, Detail, IsDestructive, PermissionName, ResourceName, SoDExposureDto (+10 more)
+Nodes (17): MaterialRequisitionItem, IsCatalogued, ItemDescription, MaterialItem, MaterialItemId, MR, MRId, MRItemId (+9 more)
 
-### Community 838 - "WorkflowConfigAudit"
+### Community 854 - "PurchaseOrderReceivingServiceTests.NewAsync"
+Cohesion: 0.18
+Nodes (9): IrnPoLineInput, StockKey, Env, Db, Irn, Perms, Runtime, Service (+1 more)
+
+### Community 855 - "ExtractedTableData"
 Cohesion: 0.09
-Nodes (26): DbContext, entries, WorkflowConfigAuditConfiguration, DateTime, WorkflowConfigAudit, Action, ActorName, ActorUserId (+18 more)
-
-### Community 839 - "WorkflowStageEditModel"
-Cohesion: 0.15
-Nodes (17): WorkflowStageEditModel, ApprovalStrategy, BusinessStatus, Description, IsMandatory, MinimumApprovalCount, Name, NameFa (+9 more)
-
-### Community 840 - "OrganizationPositionRow"
-Cohesion: 0.11
-Nodes (19): OrganizationPositionRow, AssignmentId, ChildCount, DepartmentId, DepartmentName, EndDate, HolderEmployeeId, HolderIsPrimary (+11 more)
-
-### Community 841 - "Users/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 843 - "PEMS.Application.Exceptions"
-Cohesion: 0.21
-Nodes (3): PEMS.Infrastructure.FileStorage, PEMS.Application.Exceptions, PEMS.Tests.FileStorage
-
-### Community 844 - "30. CONTRACT MANAGEMENT KPI PANEL"
-Cohesion: 0.29
-Nodes (7): 30. CONTRACT MANAGEMENT KPI PANEL, Claims, Compliance, Contractor, Financial, Portfolio, Schedule
-
-### Community 845 - "PartCatalogueRequestController"
-Cohesion: 0.20
-Nodes (14): HttpGet, HttpPost, IActionResult, IFormFile, IStringLocalizer, RequestSizeLimit, Task, ValidateAntiForgeryToken (+6 more)
-
-### Community 846 - "30. CONTRACT MANAGEMENT KPI PANEL"
-Cohesion: 0.29
-Nodes (7): 30. CONTRACT MANAGEMENT KPI PANEL, Claims, Compliance, Contractor, Financial, Portfolio, Schedule
-
-### Community 847 - "RedisCacheService"
-Cohesion: 0.38
-Nodes (5): IDistributedCache, Func, Task, TimeSpan, RedisCacheService
-
-### Community 848 - "quill.min.js"
-Cohesion: 0.44
-Nodes (23): a(), b(), c(), d(), e(), f(), f(), g() (+15 more)
-
-### Community 849 - "HelpVisual"
-Cohesion: 0.10
-Nodes (20): DateTime, HelpVisual, AccessibilityDescriptionEn, AccessibilityDescriptionFa, Article, CaptionEn, CaptionFa, CreatedDate (+12 more)
-
-### Community 851 - "AIConfidenceSettings"
-Cohesion: 0.29
-Nodes (6): DateTime, AIConfidenceSettings, AIConfidenceSettingsId, HighThreshold, MediumThreshold, ModifiedDate
-
-### Community 852 - "EquipmentClassificationSuggestion"
-Cohesion: 0.11
-Nodes (17): DateTime, EquipmentClassificationSuggestion, Confidence, CreatedDate, Equipment, EquipmentClassificationSuggestionId, EquipmentId, Reason (+9 more)
-
-### Community 853 - "FunctionalLocationListDto"
-Cohesion: 0.11
-Nodes (17): FunctionalLocationListDto, Area, AssetCount, Code, EquipmentCount, FunctionalLocationId, IsActive, Name (+9 more)
-
-### Community 854 - "IFileStorageService — Design Only (Not Wired Into the App)"
-Cohesion: 0.33
-Nodes (5): IFileStorageService — Design Only (Not Wired Into the App), Interface, LocalFileStorageProvider (drop-in replacement for today's ad-hoc per-controller code), Migration path once approved, The one change this design requires that IS a real fix (flagged, not applied here)
-
-### Community 855 - "AIAnalysisResult"
-Cohesion: 0.09
-Nodes (20): PEMS.Application.AI.Prompt, Task, IDocumentAIService, AIAnalysisResult, Confidence, DocumentTypePrediction, ErrorMessage, ExtractedData (+12 more)
-
-### Community 856 - "ChangePassword.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+Nodes (17): PEMS.Application.AI.Models, ExtractedTableData, DocumentInfo, RowCount, Rows, Summary, Warnings, ExtractedTableDocumentInfo (+9 more)
 
 ### Community 857 - "ProcurementReportDto"
-Cohesion: 0.11
-Nodes (19): Discipline, Month, Vendor, ProcurementReportDto, ByContractStatus, ByDiscipline, ByStatus, ByVendor (+11 more)
-
-### Community 858 - "Login.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 859 - "MaintenanceHistoryImportBatchSummaryDto"
-Cohesion: 0.14
-Nodes (13): DateTime, MaintenanceHistoryImportBatchSummaryDto, ConflictCount, DuplicateCount, FileName, ImportDate, ImportedByName, MaintenanceHistoryImportBatchId (+5 more)
-
-### Community 860 - "PEMS Operations Phase 2E — Packaging Business Governance and Performance Baseline"
 Cohesion: 0.06
-Nodes (34): 10. Quality Governance, 11. Inventory Governance, 12. Financial Governance, 13. HSE Governance, 14. Security Governance, 15. Maintenance Governance, 16. Engineering Governance, 17. Operations Governance (+26 more)
+Nodes (32): ProcurementPipelineRowDto, BidStatus, CommercialEvaluationStatus, ContractNo, ContractStatus, ContractValue, KickoffStatus, NtpStatus (+24 more)
 
-### Community 861 - ".AuthorizeSensitiveActionAsync"
-Cohesion: 0.21
-Nodes (11): IReadOnlyList, Task, IPermitAuthorityService, IReadOnlyList, Task, PermitAuthorityService, HttpPost, IActionResult (+3 more)
-
-### Community 862 - "ChatAssistant/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 863 - "ITenderService"
-Cohesion: 0.26
-Nodes (8): BidId, ContractId, DateTime, Error, NegotiationId, Success, Task, ITenderService
-
-### Community 864 - ".CreateService"
-Cohesion: 0.19
-Nodes (14): MaintenanceTask, Description, EstimatedDurationMinutes, IsActive, JobPlan, JobPlanId, MaintenanceTaskId, TaskNumber (+6 more)
-
-### Community 865 - "Contract/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Application.DTOs.ContractDto, SharedResource
-
-### Community 866 - "Contract/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 867 - ".CreateService"
-Cohesion: 0.27
-Nodes (8): HttpClient, OllamaService, ConfigurationBuilder, ctx, Fact, svc, Task, HelpAiExplainerServiceTests
-
-### Community 868 - "SimulateFormVm"
+### Community 861 - "ClassActivationBacklogItemDto"
 Cohesion: 0.05
-Nodes (52): HttpPost, IActionResult, RoleManager, Task, UserManager, ValidateAntiForgeryToken, AuthorizationController, DateTime (+44 more)
+Nodes (42): ClassActivationBacklogItemDto, ClassifiedIntoThisClassCount, Code, CriticalityReadyCount, EquipmentClassId, EquipmentCount, ExecutionReadyCount, HasDefensibleBasis (+34 more)
+
+### Community 863 - "StrategyInputDto"
+Cohesion: 0.05
+Nodes (44): OpResult, Errors, Id, InfoCode, Success, StrategyActor, StrategyInputDto, AlarmThreshold (+36 more)
+
+### Community 868 - "EffectiveUserVm"
+Cohesion: 0.07
+Nodes (28): EffectivePermissionRowVm, ActionName, Allowed, Detail, IsDestructive, PermissionName, ResourceName, ScopeType (+20 more)
 
 ### Community 869 - "WorkOrderActor"
-Cohesion: 0.07
-Nodes (38): IDbContextTransaction, DateTime, IReadOnlyList, WorkOrderActor, WorkOrderCreateRequest, Description, DueDate, EquipmentId (+30 more)
+Cohesion: 0.10
+Nodes (9): Error, Success, Count, WorkOrderActor, IWorkOrderLifecycleService, IWorkOrderReleaseGateService, WorkOrder, FailureCatalogMatch (+1 more)
 
-### Community 870 - "Department/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 871 - "StorageRouteUpsertRequest"
+Cohesion: 0.22
+Nodes (10): StorageRouteUpsertRequest, DocumentType, IsDefault, IsEnabled, Module, Priority, RelativeRootPath, StorageProviderId (+2 more)
 
-### Community 871 - ".CreateIsolatedSqlServerOrThrow"
-Cohesion: 0.62
-Nodes (3): Fact, Task, LetterConcurrencyTests
+### Community 873 - "MeetingDto"
+Cohesion: 0.10
+Nodes (21): MeetingAttendeeDto, Attended, DisplayName, IsRequired, MeetingAttendeeId, MeetingDetailDto, ActionItems, Agenda (+13 more)
 
-### Community 872 - "DocumentWorkflowDto"
-Cohesion: 0.11
-Nodes (18): DateTime, DocumentWorkflowDto, ActionBy, ActionDate, ActionType, Comment, DocumentNo, FromStatus (+10 more)
-
-### Community 873 - ".SeedRunWithOutputAsync"
-Cohesion: 0.25
-Nodes (10): batchId, Fact, material, MaterialItem, runId, runService, Task, Warehouse (+2 more)
-
-### Community 874 - "PEMS Operations — Packaging Program Final Audit Report (Phase 2G → 3I)"
-Cohesion: 0.06
-Nodes (33): 15. Business Decisions, 16. Technical Decisions, 17. Role Mapping (live database: 20 roles), 18. Architecture Changes — none., 19. Database Changes — none. Live DB read via `SELECT` only (roles, grants, tables)., 1. Executive Summary, 20. Migration Safety — no migration created or applied; head unchanged; nothing to inspect., 21. Quality Governance (+25 more)
-
-### Community 875 - "AuthorizationAuditLog"
-Cohesion: 0.11
-Nodes (17): DateTime, Guid, AuthorizationAuditLog, ActionName, AuthorizationAuditLogId, CorrelationId, Decision, IpAddress (+9 more)
-
-### Community 876 - ".CreateController"
-Cohesion: 0.26
-Nodes (9): Controller, Fact, ForbidResult, Perm, RedirectToActionResult, Runtime, Task, FakeNumberingService (+1 more)
-
-### Community 877 - "Employee/Details.cshtml"
-Cohesion: 0.33
-Nodes (5): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Domain.Entities.Employee, SharedResource, System.Globalization
-
-### Community 878 - "PermitDetailDto"
-Cohesion: 0.06
-Nodes (33): DateTime, PermitDetailDto, CancellationReason, ClosedDate, CreatedDate, Description, EquipmentId, EquipmentTagNumber (+25 more)
-
-### Community 879 - "Asset"
-Cohesion: 0.12
-Nodes (16): DateTime, Asset, AssetId, AssetNumber, CommissioningDate, CreatedDate, Description, Equipment (+8 more)
-
-### Community 880 - "TransmittalRecipient"
-Cohesion: 0.12
-Nodes (16): DateTime, TransmittalRecipient, AcknowledgedAt, AcknowledgedBy, AcknowledgedById, AcknowledgementNote, CreatedDate, IsActive (+8 more)
-
-### Community 881 - "EngineeringDocuments/Create.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Domain.Entities.EngineeringDocument, SharedResource
-
-### Community 882 - "EmployeeAssignment"
-Cohesion: 0.12
-Nodes (24): DateTime, EmployeeAssignment, AssignmentType, CreatedDate, Employee, EmployeeAssignmentId, EmployeeId, EndDate (+16 more)
-
-### Community 883 - "tn"
-Cohesion: 0.08
-Nodes (5): Cs, nn(), os(), sn, tn
-
-### Community 884 - "UploadAttachment.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 885 - "Equipment/Create.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 886 - "ExtractedTableDocumentInfo"
-Cohesion: 0.12
-Nodes (16): ExtractedTableData, DocumentInfo, RowCount, Rows, Summary, Warnings, ExtractedTableDocumentInfo, Area (+8 more)
-
-### Community 887 - "OrganizationChartNodeDto"
-Cohesion: 0.12
-Nodes (17): OrganizationChartNodeDto, AssignmentFrom, AssignmentTo, ChildCount, DepartmentName, EmployeeName, HolderIsPrimary, Id (+9 more)
-
-### Community 888 - "EquipmentImport/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 889 - "EquipmentImport/Review.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 890 - "PEMS Operations — Packaging Master Program: Final Audit Report"
-Cohesion: 0.06
-Nodes (31): 10. SoD, 11. Quality Governance, 12. Inventory Governance, 13. Financial Governance, 14. HSE Governance, 15. Security Governance, 16. Maintenance Governance, 17. Engineering Governance (+23 more)
-
-### Community 891 - "EquipmentDatasheet"
-Cohesion: 0.12
-Nodes (16): DateTime, EquipmentDatasheet, CreatedDate, DatasheetId, DesignPressure, DesignTemperature, DocumentNumber, Equipment (+8 more)
-
-### Community 892 - "JobPlanController"
-Cohesion: 0.44
-Nodes (5): HttpPost, IActionResult, Task, ValidateAntiForgeryToken, JobPlanController
-
-### Community 894 - "InspectionService"
-Cohesion: 0.17
-Nodes (10): InspectionRecord, DateTime, InspectionRecord, InspectionRecordId, Task, InspectionService, Fact, ITestOutputHelper (+2 more)
-
-### Community 895 - "Intake/Review.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 896 - "IrnDispositionRecord"
-Cohesion: 0.11
-Nodes (19): DateTime, IrnDispositionRecord, CreatedDate, DispositionedBy, DispositionedById, DispositionedDate, IrnDispositionRecordId, IrnReceipt (+11 more)
-
-### Community 897 - "KnowledgeBase/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 898 - ".SearchAsync"
-Cohesion: 0.15
-Nodes (12): Equipment, Items, Task, TotalCount, EquipmentSearchProvider, DisplayName, EntityType, Task (+4 more)
-
-### Community 899 - "Letter/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.LetterDetailDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 900 - "Letter/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.LetterDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 901 - ".CreateService"
-Cohesion: 0.35
-Nodes (6): DateTime, Fact, InlineData, Task, Theory, TaskGridPaginationTests
-
-### Community 902 - ".CreateService"
-Cohesion: 0.31
-Nodes (8): Equipment, Fact, InlineData, MaintenanceStrategy, Strategy, Task, Theory, MaintenanceStrategyServiceTests
-
-### Community 904 - "ProcurementPackage"
-Cohesion: 0.08
-Nodes (24): DateTime, ICollection, ProcurementPackage, Approvals, ClosedDate, Communications, CreatedDate, CriticalityClass (+16 more)
-
-### Community 905 - ".Seed"
-Cohesion: 0.25
-Nodes (9): ctx, Fact, InlineData, LineId, svc, Task, Theory, IrnDispositionServiceTests (+1 more)
-
-### Community 906 - "MaintenanceStrategy/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 907 - ".Seed"
-Cohesion: 0.23
-Nodes (11): ItemCode, ctx, Description, Fact, InlineData, IReadOnlyList, MemoryStream, svc (+3 more)
-
-### Community 908 - "MaterialRequisition/Details.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 909 - "MDB/Create.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 910 - "DocumentHold"
-Cohesion: 0.12
-Nodes (15): DateTime, DocumentHold, Document, DocumentHoldId, DocumentId, HoldByEmployee, HoldByEmployeeId, HoldDate (+7 more)
-
-### Community 911 - "TenderService"
-Cohesion: 0.34
-Nodes (6): DateTime, Error, NegotiationId, Success, Task, TenderService
-
-### Community 913 - "Meeting/Details.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 914 - "Meeting/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 915 - "MOC/Details.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 917 - ".OnModelCreating"
+### Community 878 - "Project"
 Cohesion: 0.02
-Nodes (84): DateTime, AIExtractedSpecification, Attachment, AttachmentId, Confidence, CreatedDate, ExtractedSpecificationId, FieldName (+76 more)
+Nodes (91): Discipline, Code, CreatedDate, Description, DisciplineId, ImportAliases, IsActive, Name (+83 more)
 
-### Community 918 - "Notification/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.NotificationDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 919 - "_NotificationDropdown.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.NotificationDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 920 - "MDBController"
-Cohesion: 0.34
-Nodes (7): DateTime, HttpGet, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, MDBController
-
-### Community 921 - "ExecutionGateDecision"
-Cohesion: 0.06
-Nodes (37): DateTime, ExecutionGateCheckDto, Detail, Name, Passed, ExecutionGateDecisionDto, ActorName, BlockingReasonsSummary (+29 more)
-
-### Community 922 - "ConditionReadingImportRow"
+### Community 880 - "LicenseFailure"
 Cohesion: 0.07
-Nodes (27): DateTime, ICollection, ConditionReadingImportBatch, ConditionReadingImportBatchId, FileName, ImportDate, ImportedBy, ImportedById (+19 more)
+Nodes (28): LicenseFailure, BadEncoding, BadSignature, DeploymentNotAllowed, Expired, FingerprintInvalid, InstallMismatch, KeyRetired (+20 more)
 
-### Community 923 - ".CreateService"
-Cohesion: 0.41
-Nodes (3): Fact, Task, SetupServiceTests
+### Community 883 - "pems-cartable-settings.js"
+Cohesion: 0.18
+Nodes (30): body(), button(), clear(), dayText(), field(), input(), isoDay(), note() (+22 more)
 
-### Community 924 - "Workflow Platform — Phase 3: Work Order Audit"
-Cohesion: 0.13
-Nodes (14): A. Executive summary, B. Before / after architecture, C. State-machine audit (current), D. Authorization matrix (current, from code + `PEMSDB`), E. Concurrency results (measured now, throw-away SQL Server, forced barrier before first `SaveChanges`), F. Maintenance-organization audit (charter §8), G. Work Request → Work Order responsibility chain (actual behavior), H. Hard-coded workflow logic inventory (+6 more)
+### Community 886 - "MechanicalEquipmentPassportSummaryDto"
+Cohesion: 0.10
+Nodes (20): MechanicalEquipmentPassportSummaryDto, CodeStandard, DesignPressure, DesignTemperature, DriverType, EquipmentType, FlowRate, Head (+12 more)
 
-### Community 925 - "ProcurementPackage/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 892 - "PreProcurementService"
+Cohesion: 0.11
+Nodes (12): IMaterialRequisitionService, IPreProcurementService, IProcurementPipeline, NewRequisitionInput, PreProcurementActor, PreProcurementResult, ProcurementDemandDetails, ProcurementDemandRow (+4 more)
 
-### Community 926 - "PEMS — Final Procurement-to-Contract Ownership, Traceability, UI Alignment & Closure Audit"
-Cohesion: 0.14
-Nodes (13): 10. Test Results, 11. Remaining Gaps (final classification), 1. What Changed (only actual changes), 2. Ownership Model (exact hierarchy), 3. Ownership Matrix, 4. Lifecycle Matrix, 5. Traceability Matrix, 6. Security Matrix (+5 more)
+### Community 894 - "ProductionOrder"
+Cohesion: 0.05
+Nodes (39): ProductionEvent, Details, Employee, EmployeeId, EventDate, EventType, ProductionEventId, ProductionOrder (+31 more)
 
-### Community 927 - "Projects/Edit.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 928 - ".NewAsync"
-Cohesion: 0.29
-Nodes (8): Fact, InlineData, Task, Theory, Fx, Db, Svc, StoreRequisitionClosureGateTests
-
-### Community 929 - "ContractNTP"
+### Community 897 - "PartCataloguePrintModel"
 Cohesion: 0.07
-Nodes (31): Tender, DateTime, ContractNTP, Attachment, AttachmentId, Contract, ContractId, ContractNTPId (+23 more)
+Nodes (29): PartCataloguePrintModel, Attributes, CommodityGroup1, EquipmentDocNo, EquipmentSerial, InstalledQuantity, IsChange, IsCritical (+21 more)
 
-### Community 930 - "LoginViewModel"
+### Community 898 - "audit.mjs"
+Cohesion: 0.19
+Nodes (18): add(), auditUser(), byKind, creds, findings, ONLY, popupChecks(), sleep() (+10 more)
+
+### Community 901 - "HttpContextCurrentUser"
 Cohesion: 0.13
-Nodes (12): PEMS.Web.Models.Account, ChangePasswordViewModel, ConfirmPassword, CurrentPassword, NewPassword, ForgotPasswordViewModel, Email, LoginViewModel (+4 more)
+Nodes (14): HttpContextCurrentUser, FullName, IsAuthenticated, Roles, User, UserId, UserName, CurrentUserService (+6 more)
 
-### Community 931 - "ItpDetails.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 906 - "AIExtractedTag"
+Cohesion: 0.05
+Nodes (42): AIExtractedTag, Area, Attachment, AttachmentId, Confidence, CreatedDate, CreatedTag, CreatedTagId (+34 more)
 
-### Community 932 - "ItpIndex.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 911 - "NavigationMenuItemDto"
+Cohesion: 0.09
+Nodes (23): NavigationMenuItemDto, Action, ActiveArea, Area, BadgeKey, Controller, ExternalPath, ExtraActiveControllers (+15 more)
 
-### Community 933 - "PEMS Workflow Platform — Phase 1 Hardening"
+### Community 914 - "ProductionRunDto"
+Cohesion: 0.04
+Nodes (59): ProductionEventDto, Details, EmployeeName, EventDate, EventType, ProductionEventId, ProductionInputDto, EmployeeName (+51 more)
+
+### Community 915 - "CmmsReportDto"
 Cohesion: 0.13
-Nodes (14): 10. UI read model and available actions, 11. SLA, escalation, notifications — what is *not* implemented, 12. Database migration (`20260919230148_WorkflowPlatformPhase1Hardening`), 13. Migration strategy for future modules (not started), 1. Lifecycle, 2. Versioning and immutability, 3. Publish rules, 4. Binding (+6 more)
+Nodes (14): CmmsReportDto, AvgCompletionDays, ByPriority, ByType, CompletedCount, CriticalCount, InProgressCount, OpenCount (+6 more)
+
+### Community 916 - "RecoveryTestWorld"
+Cohesion: 0.15
+Nodes (12): AdminRecoveryCodeServiceTests, RecoveryTestWorld, Clock, Ctx, DbName, Events, Notes, Sp (+4 more)
+
+### Community 917 - "Department"
+Cohesion: 0.17
+Nodes (10): Department, Code, CreatedDate, DepartmentId, Description, IsActive, Name, OrganizationDomain (+2 more)
+
+### Community 922 - "ICollection"
+Cohesion: 0.02
+Nodes (87): ConditionReadingImportBatch, ConditionReadingImportBatchId, FileName, ImportDate, ImportedBy, ImportedById, Rows, Status (+79 more)
+
+### Community 923 - "BreakGlassViewModel"
+Cohesion: 0.07
+Nodes (29): BreakGlassAdminDto, FullName, UserId, UserName, BreakGlassResetResult, ExpiresAtUtc, Status, Succeeded (+21 more)
+
+### Community 926 - "PurchaseOrderApprovalServiceTests.NewAsync"
+Cohesion: 0.25
+Nodes (3): PoAuthorityRuleInput, PoLineInput, PurchaseOrderApprovalServiceTests
+
+### Community 927 - "MaintenanceEffectivenessDto"
+Cohesion: 0.11
+Nodes (18): MaintenanceEffectivenessDto, CorrectiveWorkloadPercent, CurrentPeriodAverageMTTRHours, CurrentPeriodDowntimeHours, CurrentPeriodFailureCount, CurrentPeriodStart, DowntimeTrend, EmergencyWorkloadPercent (+10 more)
+
+### Community 933 - "FunctionalRequirement"
+Cohesion: 0.07
+Nodes (27): FunctionalFailure, Code, CreatedDate, Description, FailureDefinition, FunctionalFailureId, FunctionalRequirement, FunctionalRequirementId (+19 more)
 
 ### Community 934 - "ConditionReadingImportBatchSummaryDto"
-Cohesion: 0.07
-Nodes (31): DateTime, ConditionReadingImportBatchDto, Rows, ConditionReadingImportBatchSummaryDto, ConditionReadingImportBatchId, ConflictCount, DuplicateCount, FileName (+23 more)
-
-### Community 935 - "MaterialRequisitionController"
-Cohesion: 0.33
-Nodes (7): DateTime, HttpGet, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, MaterialRequisitionController
-
-### Community 936 - ".generate"
-Cohesion: 0.16
-Nodes (8): _filter_anti_patterns_for_mode(), Drop "avoid dark mode" advice once dark mode is the resolved answer., Execute searches across multiple domains., Extract results list from search result dict., Generate complete design system recommendation. variance/motion/density are…, Bucket a 1-10 dial value into its tier config. Returns None if value is None., _resolve_dial(), TestAntiPatternGating
-
-### Community 937 - "BulkSuggestions.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 938 - ".CreateController"
-Cohesion: 0.36
-Nodes (7): Controller, Fact, ForbidResult, RedirectToActionResult, Task, ViewResult, FunctionalLocationControllerAuthorizationTests
-
-### Community 939 - "VDRSubmission"
 Cohesion: 0.06
-Nodes (31): DateTime, VDRSubmission, Attachment, AttachmentId, ClientCommentDate, ClientCommentSheetNo, ClientTransmittal, ClientTransmittalId (+23 more)
+Nodes (36): ConditionReadingImportBatchDto, Rows, ConditionReadingImportBatchSummaryDto, ConditionReadingImportBatchId, ConflictCount, DuplicateCount, FileName, ImportDate (+28 more)
 
-### Community 940 - ".SeedAsync"
-Cohesion: 0.38
-Nodes (5): ctx, Fact, resolver, Task, NavigationVisibilityHierarchyTests
-
-### Community 941 - ".CreateService"
-Cohesion: 0.34
-Nodes (7): Asset, Equipment, Fact, InlineData, Task, Theory, AssetServiceGridTests
-
-### Community 942 - "OrganizationController"
-Cohesion: 0.14
-Nodes (17): OrganizationIssue, IReadOnlyList, IOrganizationValidationService, OrganizationImportRowResult, OrganizationIssue, OrganizationIssueCodes, CancellationToken, IReadOnlyList (+9 more)
-
-### Community 943 - "Procurement.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 944 - "Vdr.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 945 - ".SeedAsync"
-Cohesion: 0.40
-Nodes (4): IServiceProvider, Regex, Task, NumberingBackfillSeeder
-
-### Community 946 - "AssetListDto"
-Cohesion: 0.15
-Nodes (13): AssetListDto, AssetId, AssetNumber, CommissioningDate, CriticalityClass, EquipmentId, EquipmentName, EquipmentTagNumber (+5 more)
-
-### Community 947 - "UserWorkspaceVm"
-Cohesion: 0.07
-Nodes (30): DateTime, UserAuditLogRowVm, ActionName, Decision, Reason, ResourceId, ResourceName, Timestamp (+22 more)
-
-### Community 948 - "NavigationVisibilityOverride"
-Cohesion: 0.13
-Nodes (14): DateTime, NavigationVisibilityOverride, CreatedBy, CreatedDate, IsVisible, ItemKey, ModifiedBy, ModifiedDate (+6 more)
-
-### Community 951 - ".CreateController"
-Cohesion: 0.27
-Nodes (9): Controller, Fact, RedirectToActionResult, Task, Vendor, ViewResult, ThrowingVendorRiskService, VendorControllerAuthorizationTests (+1 more)
-
-### Community 953 - "ShiftHandover/Create.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 954 - "VDRImportServiceVendorResolutionTests"
-Cohesion: 0.35
-Nodes (6): DbContextOptions, Fact, JsonSerializerOptions, Project, Task, VDRImportServiceVendorResolutionTests
-
-### Community 955 - "Work Request Concurrency Gate"
-Cohesion: 0.14
-Nodes (13): 10. Regression results, 11. Remaining limitations, 12. Final acceptance status, 1. Objective, 2. Existing Submit architecture (before this gate), 3. Race analysis, 4. Test methodology, 5. Database behavior (+5 more)
-
-### Community 956 - "TenderController"
-Cohesion: 0.32
-Nodes (7): DateTime, HttpGet, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, TenderController
-
-### Community 957 - "IManufacturerDataBookService"
-Cohesion: 0.27
-Nodes (3): DateTime, Task, IManufacturerDataBookService
-
-### Community 958 - "ImportCenterNavigationTests"
+### Community 938 - "ProcurementCommunicationDto"
 Cohesion: 0.06
-Nodes (33): Assembly, HttpPostAttribute, ImportEntry, LaunchMode, Action, ClaimsPrincipal, Dictionary, Fact (+25 more)
+Nodes (37): ProcurementApprovalDto, ApprovalDate, ApproverName, Comment, Decision, ProcurementApprovalId, ProcurementCommunicationDto, ActionStatus (+29 more)
 
-### Community 959 - "ProductionWorkCenter"
-Cohesion: 0.15
-Nodes (13): FunctionalLocation, DateTime, ProductionWorkCenter, Code, CreatedDate, Description, Equipment, EquipmentId (+5 more)
-
-### Community 960 - "Transmittal/Create.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 961 - "Transmittal/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.TransmittalDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 962 - "PEMS.Web.Resources"
-Cohesion: 0.02
-Nodes (78): PEMS.Web.Resources, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource, IStringLocalizer, SharedResource, IStringLocalizer, Microsoft.Extensions.Localization (+70 more)
-
-### Community 963 - "PART A — Normative Requirements"
-Cohesion: 0.07
-Nodes (28): A10. Capability readiness, A11. Runtime resolution and caching, A12. UI, explainability, reporting, A13. Migration and defaults, A14. Company Independence Test, A15. Mandatory pre-code review, A16. Acceptance criteria, A1. Core rule (+20 more)
-
-### Community 964 - "PurchaseOrder"
+### Community 939 - "WorkOrderListDto"
 Cohesion: 0.11
-Nodes (18): DateTime, ICollection, PurchaseOrder, Contract, ContractId, CreatedDate, Currency, Description (+10 more)
+Nodes (17): WorkOrderDashboardDto, CompletedCount, CriticalOpenCount, InProgressCount, OpenCount, WorkOrderListDto, AssignedEmployeeName, AssignedTeamName (+9 more)
 
-### Community 965 - "ProductionRun"
+### Community 940 - "MrsImportService"
+Cohesion: 0.14
+Nodes (5): MrsImportService, MrsImportCommitConcurrencyTests, MaxTracked, MrsImportCommitTrackingTests, MrsImportDescriptionLengthRealSqlTests
+
+### Community 941 - "EquipmentDto"
+Cohesion: 0.08
+Nodes (26): EquipmentDto, Area, ChildEquipmentCount, ChildEquipments, CriticalityClass, Description, DisciplineId, DisciplineName (+18 more)
+
+### Community 949 - "letter-compose.js"
+Cohesion: 0.15
+Nodes (29): addFileRow(), addRecipient(), allRecipientCount(), applyResult(), buildInput(), clearIssues(), handleFiles(), humanOk() (+21 more)
+
+### Community 956 - ".NewAsync"
+Cohesion: 0.23
+Nodes (6): StockRowLookup, IsAmbiguous, Env, Db, Svc, StockRowIntegrityTests
+
+### Community 962 - "ui:list-grid"
 Cohesion: 0.02
-Nodes (125): ProductionBatch, DateTime, ICollection, ProductionBatch, BatchNumber, ConsumedAsSourceIn, CreatedDate, MaterialItem (+117 more)
+Nodes (245): IEnumerable<PEMS.Application.DTOs.PurchaseOrderDto>, IEnumerable<PEMS.Domain.Entities.Tender>, IReadOnlyList<PEMS.Application.Interfaces.ProcurementDemandRow>, List<PEMS.Application.DTOs.EquipmentFunctionalLocationAssignmentBatchSummaryDto>, List<PEMS.Application.DTOs.FailureModeOptionDto>, List<PEMS.Application.DTOs.LetterTemplateDto>, List<PEMS.Application.DTOs.ShiftHandoverListDto>, List<PEMS.Domain.Entities.Finding> (+237 more)
 
-### Community 966 - "Vendor/Create.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Domain.Entities.Vendor, SharedResource
-
-### Community 967 - "Vendor/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Application.DTOs.VendorDto, SharedResource
-
-### Community 968 - "Vendor/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.VendorDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 970 - "ITextExtractor"
-Cohesion: 0.07
-Nodes (18): IEnumerable, DocumentTextExtractorFactory, IDocumentTextExtractorFactory, Task, ExcelTextExtractor, ExtractedDocumentText, FullText, HasContent (+10 more)
-
-### Community 971 - ".CreateController"
-Cohesion: 0.33
-Nodes (8): Contract, Controller, Fact, ForbidResult, RedirectToActionResult, Runtime, Task, ContractControllerAuthorizationTests
-
-### Community 972 - "PipeSpecification"
-Cohesion: 0.15
-Nodes (12): DateTime, PipeSpecification, CreatedDate, Description, DesignPressure, DesignTemperature, IsActive, Material (+4 more)
-
-### Community 973 - "ed"
-Cohesion: 0.15
-Nodes (7): ad(), cd(), ed, fd(), sd(), ud(), yd()
+### Community 964 - "NumberingService"
+Cohesion: 0.14
+Nodes (5): Config, NumberingService, NumberingServiceTests, IrnNumberingRealSqlTests, NumberingSchemeSqlTests
 
 ### Community 975 - "notifications-hub.js"
 Cohesion: 0.60
 Nodes (4): post(), refreshCount(), setBadge(), token()
 
-### Community 979 - "این نشست: تکمیل CMMS (Maintenance Strategy/Plan، Work Order، Spare Parts)"
-Cohesion: 0.33
-Nodes (6): Migration, این نشست: تکمیل CMMS (Maintenance Strategy/Plan، Work Order، Spare Parts), تصمیم آگاهانه, ساخته شد, محدودیت شفاف, یافته‌ی مهم قبل از شروع
-
-### Community 987 - "گام ۱ از سند Engineering Intelligence Redesign: Procurement Package (یکپارچه‌سازی MR + MRQ)"
-Cohesion: 0.33
-Nodes (6): Migration, UI, سازگاری با گذشته (چیزی خراب نشد), چه چیزی ساخته شد, گام بعدی, گام ۱ از سند Engineering Intelligence Redesign: Procurement Package (یکپارچه‌سازی MR + MRQ)
-
-### Community 988 - "بازطراحی بنیادین UI/UX"
-Cohesion: 0.33
-Nodes (6): Migration, بازطراحی بنیادین UI/UX, محدودیت شفاف, ۱) سایدبار کشویی شد, ۲) جدول‌های بلند, ۳) بازطراحی کامل Engineering Documents (به سلیقه‌ی خودم، الهام از EDMS های رقیب مثل AVEVA/Aconex/Poupack)
-
-### Community 989 - "این نشست: تکمیل CMMS (Maintenance Strategy/Plan، Work Order، Spare Parts)"
-Cohesion: 0.33
-Nodes (6): Migration, این نشست: تکمیل CMMS (Maintenance Strategy/Plan، Work Order، Spare Parts), تصمیم آگاهانه, ساخته شد, محدودیت شفاف, یافته‌ی مهم قبل از شروع
-
-### Community 990 - "گام ۱ از سند Engineering Intelligence Redesign: Procurement Package (یکپارچه‌سازی MR + MRQ)"
-Cohesion: 0.33
-Nodes (6): Migration, UI, سازگاری با گذشته (چیزی خراب نشد), چه چیزی ساخته شد, گام بعدی, گام ۱ از سند Engineering Intelligence Redesign: Procurement Package (یکپارچه‌سازی MR + MRQ)
-
-### Community 991 - "بازطراحی بنیادین UI/UX"
-Cohesion: 0.33
-Nodes (6): Migration, بازطراحی بنیادین UI/UX, محدودیت شفاف, ۱) سایدبار کشویی شد, ۲) جدول‌های بلند, ۳) بازطراحی کامل Engineering Documents (به سلیقه‌ی خودم، الهام از EDMS های رقیب مثل AVEVA/Aconex/Poupack)
+### Community 990 - "IDisposable"
+Cohesion: 0.18
+Nodes (6): PasswordHistoryBypass, IsActive, Scope, VendorSigner, KeyId, PublicKey
 
 ### Community 992 - "LoadTestSeed.csproj"
-Cohesion: 0.33
-Nodes (5): Microsoft.Extensions.DependencyInjection (10.0.10), net10.0, Microsoft.AspNetCore.DataProtection (10.0.10), Microsoft.Extensions.Configuration.Json (10.0.10), Microsoft.NET.Sdk
+Cohesion: 0.22
+Nodes (7): net10.0, Microsoft.NET.Sdk, net10.0, Microsoft.AspNetCore.DataProtection (10.0.10), Microsoft.Extensions.Configuration.Json (10.0.10), Microsoft.Extensions.DependencyInjection (10.0.10), Microsoft.NET.Sdk
 
 ### Community 993 - "PEMS.slnx"
-Cohesion: 0.29
-Nodes (6): PEMS.Domain, net10.0, Microsoft.NET.Sdk, PEMS.Shared, net10.0, Microsoft.NET.Sdk
+Cohesion: 0.14
+Nodes (17): LateApexEarlySpeed.Json.Schema (4.2.2), Microsoft.AspNetCore.TestHost (10.0.10), PEMS.UI.Abstractions, net10.0, Microsoft.NET.Sdk, PEMS.UI, net10.0, Microsoft.NET.Sdk.Razor (+9 more)
 
-### Community 994 - "gray"
-Cohesion: 0.08
-Nodes (27): $type, $value, $type, $value, $type, $value, $type, $value (+19 more)
-
-### Community 995 - "input"
-Cohesion: 0.10
-Nodes (27): $type, $value, $type, $value, bg, radius, bg, border (+19 more)
-
-### Community 996 - "فاز بعدی: AI Relationship Engine + ارتقای Chat Assistant"
-Cohesion: 0.40
-Nodes (5): AI Relationship Engine, Migration, ارتقای Chat Assistant (RAG سبک), فاز بعدی: AI Relationship Engine + ارتقای Chat Assistant, محدودیت شفاف
-
-### Community 997 - "تکمیل نهایی این نشست"
-Cohesion: 0.40
-Nodes (5): Comment Sheet / Reply Sheet استاندارد صنعت EPC, Migration نهایی, تکمیل نهایی این نشست, جلوگیری از شماره‌ی تکراری رویژن, گزارش‌گیری VDR و Engineering Documents
-
-### Community 998 - "این نشست: سه ویژگی Enterprise + اصلاحات واقعی"
-Cohesion: 0.40
-Nodes (5): Migration نهایی این نشست, Toast Notifications + SignalR + PDF Pin Comments, این نشست: سه ویژگی Enterprise + اصلاحات واقعی, رفع باگ‌های واقعی گزارش‌شده, یکپارچه‌سازی سرویس کامنت
-
-### Community 999 - "PEMS.Web.Models"
+### Community 996 - "DashboardEngineeringDto"
 Cohesion: 0.04
-Nodes (27): PEMS.Web.Models, PEMS.Web.Helpers, PEMS.Web.Areas.Warehouse.Models, PEMS.Application.DTOs.WorkRequestDetailDto, IXLWorksheet, ExcelExportHelper, LetterStatusBadge, Document (+19 more)
+Nodes (59): DashboardBucketDto, Key, Value, DashboardCompletenessDto, WithClientResponsePercent, WithDisciplinePercent, WithIssuedRevisionPercent, WithPlannedDatePercent (+51 more)
 
-### Community 1000 - "فاز بعدی: AI Relationship Engine + ارتقای Chat Assistant"
+### Community 997 - "SecurityEvent"
+Cohesion: 0.08
+Nodes (24): AdminRecoveryCode, AdminRecoveryCodeId, BatchId, CodeHash, CreatedAtUtc, RevokedAtUtc, Salt, UsedAtUtc (+16 more)
+
+### Community 1001 - "AdminResetResult"
+Cohesion: 0.11
+Nodes (15): AdminAccountRules, AdminResetResult, ExpiresAtUtc, Status, Succeeded, TargetUserName, TemporaryPassword, AdminResetStatus (+7 more)
+
+### Community 1002 - "ExecutiveKpiPageViewModel"
+Cohesion: 0.14
+Nodes (14): KpiTargetDto, Direction, IsCustom, Key, Section, Target, Unit, Warn (+6 more)
+
+### Community 1003 - "PEMS.WorkflowPlatform"
 Cohesion: 0.40
-Nodes (5): AI Relationship Engine, Migration, ارتقای Chat Assistant (RAG سبک), فاز بعدی: AI Relationship Engine + ارتقای Chat Assistant, محدودیت شفاف
+Nodes (5): Microsoft.EntityFrameworkCore.Relational (10.0.10), PEMS.WorkflowPlatform, net10.0, Microsoft.EntityFrameworkCore (10.0.10), Microsoft.NET.Sdk
 
-### Community 1001 - "تکمیل نهایی این نشست"
-Cohesion: 0.40
-Nodes (5): Comment Sheet / Reply Sheet استاندارد صنعت EPC, Migration نهایی, تکمیل نهایی این نشست, جلوگیری از شماره‌ی تکراری رویژن, گزارش‌گیری VDR و Engineering Documents
-
-### Community 1002 - "این نشست: سه ویژگی Enterprise + اصلاحات واقعی"
-Cohesion: 0.40
-Nodes (5): Migration نهایی این نشست, Toast Notifications + SignalR + PDF Pin Comments, این نشست: سه ویژگی Enterprise + اصلاحات واقعی, رفع باگ‌های واقعی گزارش‌شده, یکپارچه‌سازی سرویس کامنت
-
-### Community 1003 - "PEMS.Application"
-Cohesion: 0.25
-Nodes (8): Microsoft.EntityFrameworkCore.Relational (10.0.10), PEMS.Application, net10.0, Microsoft.NET.Sdk, PEMS.WorkflowPlatform, net10.0, Microsoft.EntityFrameworkCore (10.0.10), Microsoft.NET.Sdk
-
-### Community 1004 - "NavigationVisibilityOverrideDto"
+### Community 1006 - "FakePermissionService"
 Cohesion: 0.13
-Nodes (17): DateTime, NavigationVisibilityOverrideDto, IsVisible, ItemKey, ModifiedBy, ModifiedDate, ModuleKey, NavigationVisibilityOverrideId (+9 more)
+Nodes (15): IGlobalSearchService, GlobalSearchService, CommandPaletteAccessTests, KeyLocalizer, SpyProvider, Access, Calls, DisplayName (+7 more)
 
-### Community 1005 - "PEMS Letter Details — Controlled Lifecycle & Gmail-Inspired UX — Final Report"
-Cohesion: 0.14
-Nodes (13): 10. Build Result, 11. Regression Check, 12. Remaining Findings / Explicitly Not Done, 1. Repository Findings (Phase 1 Audit), 2. Problems Found (Summary), 3. Architecture Changes, 4. Final Lifecycle (Outgoing letters), 5. Final Authorization Rules (+5 more)
-
-### Community 1006 - "InspectionChecklist"
-Cohesion: 0.17
-Nodes (11): DateTime, InspectionChecklist, CreatedDate, InspectionChecklistId, InspectionRecord, InspectionRecordId, IsPassed, ItemName (+3 more)
-
-### Community 1007 - "PEMS Enterprise Utility - Final System Documentation & Hand-off"
-Cohesion: 0.40
-Nodes (4): 1. Core Module Ecosystem, 2. Technical Standards, 3. Final Assets Created, PEMS Enterprise Utility - Final System Documentation & Hand-off
-
-### Community 1008 - "PASS 1 — BUSINESS / PETROCHEMICAL ENGINEERING AUDIT"
-Cohesion: 0.50
-Nodes (4): Discipline Performance, Engineering Progress, PASS 1 — BUSINESS / PETROCHEMICAL ENGINEERING AUDIT, Portfolio
-
-### Community 1009 - "بررسی کامل چرخه‌ی مدرک مهندسی (از ثبت تا صدور) + دیدن فقط دیسیپلین خودی"
-Cohesion: 0.50
-Nodes (4): Migration, Popup به‌جای صفحه‌ی جدا (طبق درخواست، با یک تصمیم آگاهانه), باگ‌های واقعی پیدا و رفع‌شده, بررسی کامل چرخه‌ی مدرک مهندسی (از ثبت تا صدور) + دیدن فقط دیسیپلین خودی
-
-### Community 1010 - "رفع: Dashboard با وضعیت واقعی مدارک هماهنگ نبود"
-Cohesion: 0.50
-Nodes (4): Migration, رفع, رفع: Dashboard با وضعیت واقعی مدارک هماهنگ نبود, ریشه‌ی واقعی
-
-### Community 1011 - "به‌روزرسانی: Security پایه (Audit Log + Permission Matrix)"
-Cohesion: 0.50
-Nodes (4): Migration, باقی‌مانده, به‌روزرسانی: Security پایه (Audit Log + Permission Matrix), محدودیت‌های شفاف این بخش
-
-### Community 1012 - "به‌روزرسانی بزرگ: Semantic Search / RAG واقعی (طبق Volume VIII - Bible)"
-Cohesion: 0.50
-Nodes (4): Migration, به‌روزرسانی بزرگ: Semantic Search / RAG واقعی (طبق Volume VIII - Bible), محدودیت شفاف, نکته‌ی مهم عملیاتی
-
-### Community 1013 - "PASS 1 — BUSINESS / PETROCHEMICAL ENGINEERING AUDIT"
-Cohesion: 0.50
-Nodes (4): Discipline Performance, Engineering Progress, PASS 1 — BUSINESS / PETROCHEMICAL ENGINEERING AUDIT, Portfolio
-
-### Community 1014 - "بررسی کامل چرخه‌ی مدرک مهندسی (از ثبت تا صدور) + دیدن فقط دیسیپلین خودی"
-Cohesion: 0.50
-Nodes (4): Migration, Popup به‌جای صفحه‌ی جدا (طبق درخواست، با یک تصمیم آگاهانه), باگ‌های واقعی پیدا و رفع‌شده, بررسی کامل چرخه‌ی مدرک مهندسی (از ثبت تا صدور) + دیدن فقط دیسیپلین خودی
-
-### Community 1015 - "رفع: Dashboard با وضعیت واقعی مدارک هماهنگ نبود"
-Cohesion: 0.50
-Nodes (4): Migration, رفع, رفع: Dashboard با وضعیت واقعی مدارک هماهنگ نبود, ریشه‌ی واقعی
-
-### Community 1016 - "به‌روزرسانی: Security پایه (Audit Log + Permission Matrix)"
-Cohesion: 0.50
-Nodes (4): Migration, باقی‌مانده, به‌روزرسانی: Security پایه (Audit Log + Permission Matrix), محدودیت‌های شفاف این بخش
-
-### Community 1017 - "به‌روزرسانی بزرگ: Semantic Search / RAG واقعی (طبق Volume VIII - Bible)"
-Cohesion: 0.50
-Nodes (4): Migration, به‌روزرسانی بزرگ: Semantic Search / RAG واقعی (طبق Volume VIII - Bible), محدودیت شفاف, نکته‌ی مهم عملیاتی
-
-### Community 1018 - "StorageHealthResultDto"
-Cohesion: 0.08
-Nodes (25): DateTime, EnterpriseStorageResultDto, FileSizeBytes, RelativePath, SavedAt, Sha256, StorageProviderCode, StorageProviderId (+17 more)
-
-### Community 1019 - "Dark Mode (بخشی قابل‌تحویل از Design System، بند ۸)"
-Cohesion: 0.67
-Nodes (3): Dark Mode (بخشی قابل‌تحویل از Design System، بند ۸), Migration, محدودیت شفاف
-
-### Community 1020 - "بازطراحی Correspondence بر اساس نمونه‌ی واقعی (کارتابل Fonix/PARGAR)"
-Cohesion: 0.67
-Nodes (3): Migration, بازطراحی Correspondence بر اساس نمونه‌ی واقعی (کارتابل Fonix/PARGAR), چیزی که عمداً کپی نشد
-
-### Community 1021 - "Dark Mode (بخشی قابل‌تحویل از Design System، بند ۸)"
-Cohesion: 0.67
-Nodes (3): Dark Mode (بخشی قابل‌تحویل از Design System، بند ۸), Migration, محدودیت شفاف
-
-### Community 1022 - "بازطراحی Correspondence بر اساس نمونه‌ی واقعی (کارتابل Fonix/PARGAR)"
-Cohesion: 0.67
-Nodes (3): Migration, بازطراحی Correspondence بر اساس نمونه‌ی واقعی (کارتابل Fonix/PARGAR), چیزی که عمداً کپی نشد
-
-### Community 1028 - "CmmsOperationsDashboardDto"
-Cohesion: 0.03
-Nodes (58): DateTime, CmmsOperationsDashboardDto, GeneratedAt, MaintenanceTypeBreakdown, PmCompliance, WorkOrderAssigned, WorkOrderCancelled, WorkOrderClosed (+50 more)
-
-### Community 1029 - ".AddOrReactivateAsync"
-Cohesion: 0.25
-Nodes (6): DateTime, Task, IEmployeeSkillService, DateTime, Task, EmployeeSkillService
-
-### Community 1030 - "IDocumentCommentService"
-Cohesion: 0.21
-Nodes (6): DateTime, Task, IDocumentCommentService, DateTime, Task, DocumentCommentService
-
-### Community 1031 - "AddReliabilityAnalyticsIndexes"
-Cohesion: 0.20
-Nodes (6): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddReliabilityAnalyticsIndexes
-
-### Community 1032 - ".CreateIssuedDocumentWithRevision00"
-Cohesion: 0.31
-Nodes (8): doc, DocumentRevision, Exception, Fact, Letter, Task, RevisionScopedClientReviewTests, rev00
-
-### Community 1033 - "TesseractOcrService"
-Cohesion: 0.09
-Nodes (16): PEMS.Application.AI.OCR, IDisposable, Task, IOcrService, OcrOptions, Languages, TessDataPath, ILogger (+8 more)
-
-### Community 1034 - "Coverage.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.MaintenanceIntelligenceCoverageSummaryDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1035 - "DocumentHoldDto"
-Cohesion: 0.17
-Nodes (11): DateTime, DocumentHoldDto, DocumentHoldId, HoldByName, HoldDate, IsOpen, Reason, ReleaseByName (+3 more)
-
-### Community 1036 - ".SeedAsync"
-Cohesion: 0.37
-Nodes (7): ctx, Fact, InvalidOperationException, Project, svc, Task, TransmittalGovernanceTests
-
-### Community 1037 - "PEMS EDMS — Phase 2 Lifecycle Audit"
-Cohesion: 0.14
-Nodes (13): 0. Phase 1 State Check (mandatory pre-check), 1. Status Ownership (§6.1), 2. Existing Controlled Transition Engine (§9 — already substantially implemented), 3. Findings, 4. §6.2 Lifecycle Concept Classification (evidence-based), 5. Comment Register (§12) — audited for completeness, found materially more mature than assumed, 6. Authorization & Audit (§13/§20) — spot-checked, not rebuilt, 7. Out of Scope This Phase (explicitly deferred, not silently skipped) (+5 more)
-
-### Community 1038 - "_"
-Cohesion: 0.09
-Nodes (9): _, a, c, f, h, i, n, T (+1 more)
-
-### Community 1039 - "RcmFmea/ClassDetail.cshtml"
-Cohesion: 0.18
-Nodes (10): FailureMode, FMEAAnalysisDto, FunctionalFailure, FunctionalRequirement, IStringLocalizer, MaintenanceStrategyType, Microsoft.Extensions.Localization, PMTemplate (+2 more)
-
-### Community 1040 - "PEMS Supply Chain & Procurement Chain — Baseline Audit (Phase 0 + Phase 1)"
-Cohesion: 0.12
-Nodes (15): 10. Not inspected in this pass (to be done before the related phase), 11. Risk register (short), 12. Implementation log, 13. PHASE 6.5 — PRODUCTION SAFETY & AUTHORIZATION GATE / FINAL CLOSURE GATE, 1. Executive summary, 2. Baseline checks, 3. Dev DB row counts (read-only), 4. Terminology map (Phase 1) (+7 more)
-
-### Community 1041 - ".Seed"
-Cohesion: 0.33
-Nodes (7): ctx, Fact, InlineData, svc, Task, Theory, IrnReceiptServiceTests
-
-### Community 1042 - ".CreateSqlServerOrThrow"
-Cohesion: 0.08
-Nodes (26): Fact, ITestOutputHelper, Task, GlobalGridHardeningWaveC1LiveDbTests, DbUpdateException, Fact, Task, DocumentNumberUniquenessTests (+18 more)
-
-### Community 1043 - ".CreateController"
-Cohesion: 0.36
-Nodes (7): Controller, Fact, ForbidResult, RedirectToActionResult, Task, ViewResult, TaskControllerAuthorizationTests
-
-### Community 1044 - "PEMS Resource Header — VDR Pilot Design Specification"
-Cohesion: 0.09
-Nodes (21): 10. Extensibility Rules, 11. Phase 2C-4B Implementation Plan (specification only — not executed in this phase), 1. Naming (precedent-derived, not invented), 2. Contract (derived from VDR's actual header markup, not a template), 3. Rendering Boundary — Exactly What Moves, 4. Authorization Boundary, 5. Workflow Boundary, 6. Localization / RTL (+13 more)
-
-### Community 1045 - "UserDashboardWidgetDto"
-Cohesion: 0.12
-Nodes (16): Key, UserDashboardWidgetDto, DisplayName, DisplayOrder, IsVisible, Size, WidgetKey, Task (+8 more)
-
-### Community 1046 - "Intelligence.cshtml"
-Cohesion: 0.29
-Nodes (6): CriticalityFailureMaintenanceRowDto, CriticalityMatrixRowDto, IStringLocalizer, Microsoft.Extensions.Localization, RepeatFailureGroupDto, SharedResource
-
-### Community 1047 - "RcmFeedback.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.RcmReviewRecommendationDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1048 - "AIExtractionController"
-Cohesion: 0.09
-Nodes (23): DateTime, OCRProcessingAttachmentListDto, AIError, AIStatus, AISummary, AttachmentId, DocumentNo, FileExtension (+15 more)
-
-### Community 1049 - "RcmFmea/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.RcmFmeaCoverageMatrixDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1050 - "Contract"
-Cohesion: 0.02
-Nodes (114): DateTime, ICollection, Contract, ApprovedBy, ApprovedById, ApprovedDate, CompletedDate, ContractId (+106 more)
-
-### Community 1051 - "ReviewQueue.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.ReviewQueuePageDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1052 - "RoutingRulesController"
-Cohesion: 0.46
-Nodes (5): HttpPost, IActionResult, Task, ValidateAntiForgeryToken, RoutingRulesController
-
-### Community 1053 - "Phase 3 — Complete Acceptance, Localization and Language Purity"
-Cohesion: 0.14
-Nodes (14): 227-Page Coverage, Blocked Pages, Build Result / Test Result / Graphify Result / Commit Status, Dashboard / Form / Table / Search Review, English LTR / Persian RTL Results, Executive Summary, Interaction QA, Language Purity Results (rendered DOM, 191 page files per language) (+6 more)
-
-### Community 1054 - ".CreateRepo"
-Cohesion: 0.49
-Nodes (4): DateTime, Fact, Task, EngineeringDocumentPagedListTests
-
-### Community 1055 - ".SeedAsync"
-Cohesion: 0.33
-Nodes (7): ctx, doc, Exception, Fact, svc, Task, AIWorkflowStageAuthorityBoundaryTests
-
-### Community 1056 - "IEntityTypeConfiguration"
-Cohesion: 0.02
-Nodes (80): PEMS.Persistence.Configurations, IEntityTypeConfiguration, Tag, MOC, TechnicalQuery, PurchaseOrder, DateTime, KnowledgeBaseEntry (+72 more)
-
-### Community 1057 - "AddEnterpriseFileStorageManagement"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddEnterpriseFileStorageManagement
-
-### Community 1058 - "ReviewQueueItemDto"
-Cohesion: 0.09
-Nodes (22): DateTime, ReviewQueueItemDto, Confidence, CreatedDate, DisciplineName, EquipmentId, EquipmentName, EquipmentType (+14 more)
-
-### Community 1059 - "PEMS Engineering Documents — Portal UX Specification"
-Cohesion: 0.10
-Nodes (20): 10. Favorites (flagged for confirmation — see audit §O/§P), 11. Recent (flagged for confirmation — see audit §O/§P), 12. Search, 13. Breadcrumb, 14. User Preferences (flagged for confirmation — see audit §O/§P), 15. Dashboard Integration, 16. RTL / LTR, 17. Responsive Behavior (+12 more)
-
-### Community 1060 - "ConditionReadingImportService"
-Cohesion: 0.25
-Nodes (5): Dictionary, IXLWorksheet, JsonSerializerOptions, Task, ConditionReadingImportService
-
-### Community 1061 - "Workflow Platform — Phase 4 Admin Audit (Workflow Administration & Visual Designer)"
+### Community 1011 - "PartCatalogueSettingsDto"
 Cohesion: 0.15
-Nodes (12): A. What the Workflow Platform can already do, B. Administrative services that already exist (all registered in DI in `Program.cs`), C. What can be safely exposed to an admin UI, D. Gaps (what is missing), Decisions needed before coding, E. Database changes actually necessary, F. Permissions available to protect the area, G. Reusable UI components (+4 more)
+Nodes (12): PartCatalogueSettingsDto, IsPersisted, ModifiedBy, ModifiedDate, PartNoFormat, PartNoGenerationMethod, RowVersion, PcAdminViewModel (+4 more)
 
-### Community 1062 - "IsolationStatusHistory"
-Cohesion: 0.17
-Nodes (11): DateTime, IsolationStatusHistory, ChangedBy, ChangedById, ChangedDate, FromStatus, IsolationPoint, IsolationPointId (+3 more)
+### Community 1018 - "DashboardProcurementDto"
+Cohesion: 0.13
+Nodes (15): DashboardCurrencyValueDto, Count, Currency, Value, DashboardProcurementDto, Bids, Contracts, MaterialRequisitions (+7 more)
 
-### Community 1063 - "UserFormViewModel"
-Cohesion: 0.08
-Nodes (24): Display, NavigationVisibilityUserVm, AllUsers, RoleNames, SelectedUserId, Tree, Id, UserFormViewModel (+16 more)
-
-### Community 1064 - "En"
-Cohesion: 0.05
-Nodes (10): ce(), de, dt(), En, he(), init(), ls, qs() (+2 more)
-
-### Community 1065 - "MaterialCategory"
-Cohesion: 0.17
-Nodes (12): DateTime, ICollection, MaterialCategory, Children, Code, CreatedDate, Description, IsActive (+4 more)
-
-### Community 1066 - "DisciplineTask"
-Cohesion: 0.12
-Nodes (15): DateTime, DisciplineTask, CompletedDate, CreatedDate, Description, Discipline, DisciplineId, DisciplineTaskId (+7 more)
-
-### Community 1067 - "Reliability/ClassDetail.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.EquipmentClassReliabilityDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1068 - "DataQuality.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.ReliabilityDataQualityDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1069 - "CrewController"
-Cohesion: 0.12
-Nodes (15): CrewId, Error, Success, Task, ICrewService, CrewId, Error, Success (+7 more)
-
-### Community 1070 - "FunctionalLocationImportBatch"
-Cohesion: 0.08
-Nodes (23): AreaName, ExistingFlSnapshot, FunctionalLocationImportRowPayload, Area, Code, IsAreaParentRow, Name, ParentAreaName (+15 more)
-
-### Community 1071 - "AddDocumentRevisionFileBinding"
-Cohesion: 0.20
-Nodes (6): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddDocumentRevisionFileBinding
-
-### Community 1072 - "PEMS CMMS — Source Data Readiness & Migration Mapping"
-Cohesion: 0.10
-Nodes (19): 10. Data Quality Findings, 11. Required Business Decisions, 12. Migration Priority, 13. Ready / Pending / Blocked Matrix, 14. Recommended Next Implementation Slice, 15. Limitations, 16. Evidence and Verification Method, 1. Executive Summary (+11 more)
-
-### Community 1073 - "ProcurementApproval"
-Cohesion: 0.18
-Nodes (10): DateTime, ProcurementApproval, ApprovalDate, ApproverName, Comment, Decision, ProcurementApprovalId, ProcurementPackage (+2 more)
-
-### Community 1074 - "PARTIALLY"
-Cohesion: 0.10
-Nodes (19): Anti-Patterns Explicitly Rejected for This Phase's Recommendation, Candidate Matrix, Candidate Ranking, Deferred Items, Detailed Findings, Engineering Documents — Runner-up, Equipment — Explicitly Rejected (Not Merely Deferred), Executive Summary (+11 more)
-
-### Community 1075 - ".SeedAsync"
-Cohesion: 0.48
-Nodes (5): accessControl, ctx, Fact, Task, EngineeringDocumentSelfApprovalTests
-
-### Community 1076 - ".CreateController"
-Cohesion: 0.31
-Nodes (8): Controller, Fact, ForbidResult, InvalidOperationException, RedirectToActionResult, Task, ViewResult, EquipmentFunctionalLocationAssignmentControllerAuthorizationTests
-
-### Community 1077 - "Reliability/Dashboard.cshtml"
-Cohesion: 0.18
-Nodes (10): BadActorDto, CriticalityFailureMaintenanceRowDto, CriticalityMatrixRowDto, EquipmentClassReliabilityDto, FailureParetoItemDto, IStringLocalizer, List<PEMS.Application.DTOs.EquipmentReliabilityDto>, Microsoft.Extensions.Localization (+2 more)
-
-### Community 1078 - "AddTransmittalHistoricalSnapshotAndAcknowledgement"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddTransmittalHistoricalSnapshotAndAcknowledgement
-
-### Community 1079 - ".CreateServiceAsync"
-Cohesion: 0.53
-Nodes (4): DateTime, Fact, Task, RamWeibullServiceTests
-
-### Community 1080 - "PEMS — Enterprise Barcode System"
-Cohesion: 0.11
-Nodes (18): 10. Authorization (§20), 11. Audit, 12. UI (§21), 13. Database changes, 14. API design (§29), 15. Future Mobile / Offline compatibility (§23), 16. Test coverage, 17. Known limitations (+10 more)
-
-### Community 1081 - ".StageFromExcelAsync"
-Cohesion: 0.38
-Nodes (6): Stream, ConditionMonitoringPoint, Fact, Stream, Task, ConditionReadingImportServiceTests
-
-### Community 1082 - "PEMS Phase 2C-3 — Safe Extraction of Shared Stage Diagram"
-Cohesion: 0.11
-Nodes (18): PEMS Phase 2C-3 — Safe Extraction of Shared Stage Diagram, فیلدهایی که عمداً حذف شدند, مصرف‌کنندگان (محل واقعی فراخوانی، تأیید با `grep` مستقیم), چرا این فیلدها و نه بیشتر, ۱. پیاده‌سازی‌های موجود (بازخوانی کامل، نه از حافظه‌ی ممیزی قبلی), ۱۰. نتایج Build و رگرسیون, ۱۱. محدودیت‌های شناخته‌شده, ۱۲. فایل‌های تغییریافته (+10 more)
-
-### Community 1083 - "Backlog.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MaintenanceBacklogItemDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1084 - "RoutingRule"
-Cohesion: 0.20
-Nodes (9): DateTime, RoutingRule, AllowAutoRouting, CreatedDate, Description, DocumentCategory, IsActive, RoutingRuleId (+1 more)
-
-### Community 1085 - "CmmsOperations/Dashboard.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Application.DTOs.CmmsOperationsDashboardDto, SharedResource
-
-### Community 1086 - "PEMS Portal UX — Azure-Inspired Audit"
-Cohesion: 0.11
-Nodes (18): A. Existing Shell, B. Existing Navigation, C. Existing Home/Dashboard, D. Existing User Preferences, E. Existing Tasks, F. Existing Notifications, G. Existing Search, H. Existing Help (+10 more)
-
-### Community 1087 - "PEMS — Warehouse and Inventory Barcode Integration"
-Cohesion: 0.11
-Nodes (18): 10. Lifecycle, 11. Database changes, 12. API changes, 13. UI changes, 14. Authorization changes, 15. Audit events, 16. Tests, 17. Known limitations (+10 more)
-
-### Community 1088 - "PEMS Operations Phase 2B — Business Semantics & Packaging Design Gate"
-Cohesion: 0.07
-Nodes (26): 10. Daily Operations Design Analysis, 11. Inventory Receipt Boundary Analysis, 12. Barcode and Traceability Analysis, 13. Reuse / Extend / New Architecture Matrix, 14. Business Decision Register, 15. Blocking Risks, 16. Recommended Implementation Roadmap, 17. Explicitly Deferred Scope (+18 more)
-
-### Community 1089 - "WorkflowBindingImpact"
+### Community 1019 - "HelpVisualDefinition"
 Cohesion: 0.14
-Nodes (14): WorkflowBindingImpact, BindingId, CurrentVersion, Definition, DefinitionId, RunningByVersion, RunningInstances, TargetVersion (+6 more)
+Nodes (17): HelpVisualDefinition, Edges, Nodes, HelpVisualEdgeDto, FromNodeId, Kind, LabelEn, LabelFa (+9 more)
 
-### Community 1090 - "OrganizationChartTests"
-Cohesion: 0.50
-Nodes (3): Fact, Task, OrganizationChartTests
-
-### Community 1091 - "AiInsights.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.AIReliabilityInsightDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1092 - "PEMS EDMS — Implementation Roadmap"
-Cohesion: 0.22
-Nodes (8): Actual Execution Log (updated as phases complete), PEMS EDMS — Implementation Roadmap, Phase 1 — Revision-File Binding & Integrity (addresses G-06, G-07), Phase 2 — Review/Approval Separation & Comment Traceability (addresses G-09, G-10), Phase 3 — MDR Completeness Investigation & Reporting (addresses G-11, G-17, G-18, G-19), Phase 4 — Vendor Handover, Engineering Object Traceability, Retention (addresses G-05, G-13, G-14), Phase 5 — AI Provenance Verification & Extension (addresses G-15, gated behind Phases 1-4), Sequencing rationale
-
-### Community 1093 - "ClassIntelligence.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Application.DTOs.ClassIntelligenceProfileDto, SharedResource
-
-### Community 1094 - "EquipmentProfile.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Application.DTOs.EquipmentIntelligenceProfileDto, SharedResource
-
-### Community 1096 - "PEMS Operations Phase 2D — Packaging Decision & Specification Audit Report"
-Cohesion: 0.07
-Nodes (26): 10. Genealogy & Traceability Model, 11. Split/Merge Model, 12. HandlingUnit / Pallet Model, 13. Quality Model for Packages, 14. Permission & SoD Model, 15. Inventory Integration Model, 16. Inventory Quality Gate for Packaging, 17. Barcode Integration Model (+18 more)
-
-### Community 1097 - "ProductionOrderController"
-Cohesion: 0.35
-Nodes (7): DateTime, HttpGet, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, ProductionOrderController
-
-### Community 1098 - "LetterReferralDto"
+### Community 1022 - "PaginationModel"
 Cohesion: 0.10
-Nodes (20): LetterReferralDto, DueDate, Instructions, IsOverdue, IsRead, LetterId, LetterReferralId, ReadDate (+12 more)
+Nodes (19): PaginationModel, AllowedPageSizes, BaseUrl, ExistingQueryString, GridKey, Page, PageSize, TotalCount (+11 more)
 
-### Community 1099 - "ExistingFlSnapshot"
-Cohesion: 0.50
-Nodes (4): ExistingFlSnapshot, Area, Code, Name
+### Community 1029 - "PemsDbContextFactory.CreateSqlServerOrThrow"
+Cohesion: 0.28
+Nodes (3): GlobalGridHardeningWaveC1LiveDbTests, DocumentNumberUniquenessTests, TechnicalQueryAndMOCPagedListTests
 
-### Community 1100 - "su"
-Cohesion: 0.24
-Nodes (4): ku(), Mu(), pu(), su()
+### Community 1033 - "ConditionMonitoringPointDto"
+Cohesion: 0.09
+Nodes (23): ConditionMonitoringPassportSummaryDto, HasCbmStrategy, NextDueDate, OpenFindingCount, PointCount, Points, ConditionMonitoringPointDto, AlarmThresholdHigh (+15 more)
 
-### Community 1101 - "DataGridPageSizeTests"
-Cohesion: 0.25
-Nodes (5): PEMS.Tests.Common, Fact, InlineData, Theory, DataGridPageSizeTests
-
-### Community 1102 - ".Resolve"
-Cohesion: 0.15
-Nodes (14): DateTime, DayOfWeek, PeriodType, CustomRange, Day, Month, Week, Range (+6 more)
-
-### Community 1103 - "IrnReceiptLine"
+### Community 1035 - "DocumentWorkflowDto"
 Cohesion: 0.11
-Nodes (18): DateTime, IrnReceiptLine, AcceptedQuantity, CreatedDate, HoldQuantity, IrnReceipt, IrnReceiptId, IrnReceiptLineId (+10 more)
+Nodes (17): DocumentWorkflowDto, ActionBy, ActionDate, ActionType, Comment, DocumentNo, FromStatus, ToStatus (+9 more)
 
-### Community 1104 - "FunctionalLocationImport/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.FunctionalLocationImportBatchDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1105 - "FunctionalLocationImport/Review.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.FunctionalLocationImportBatchDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1106 - "SimopsInteractionRule"
-Cohesion: 0.17
-Nodes (11): DateTime, SimopsInteractionRule, CreatedDate, IsActive, PermitTypeA, PermitTypeB, Severity, SimopsInteractionRuleId (+3 more)
-
-### Community 1107 - "EngineeringWorkflowTestBase"
-Cohesion: 0.29
-Nodes (6): EngineeringWorkflowTestBase, DisciplineElec, DisciplineMech, Letters, TestProject, WorkflowService
-
-### Community 1108 - "Asset Approval Checklist"
-Cohesion: 0.08
-Nodes (25): Accessibility, Archival, Asset Approval Checklist, Automation Support, Color Compliance, Common Issues & Fixes, Content Accessibility, Content Quality (+17 more)
-
-### Community 1110 - "MDBDocumentDto"
-Cohesion: 0.18
-Nodes (9): MDBDocumentDto, DocumentId, DocumentNo, DvdVolumeNo, IsNotApplicable, MDBDocumentId, Notes, Part (+1 more)
-
-### Community 1111 - "SimopsController"
-Cohesion: 0.35
-Nodes (8): Ok, EmployeeId, Error, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, SimopsController
-
-### Community 1112 - "PEMS EDMS — Phase 2 Lifecycle Design"
-Cohesion: 0.20
-Nodes (9): 1. Target Model, 2. Transition Rule Added, 3. Migration Strategy, 4. Authorization — unchanged, 5. Audit — unchanged mechanism, more precise data, 6. UI Change, 7. Explicitly Deferred (with reason, not silently dropped), 8. Rollback (+1 more)
-
-### Community 1113 - ".SeedReservedAsync"
-Cohesion: 0.24
-Nodes (9): HashSet, IEnumerable, MapActions, Grants, Fact, Task, Seeded, StoreRequisitionReservationConcurrencyTests (+1 more)
-
-### Community 1114 - "WorkflowPlatformPhase2StageBusinessMapping"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, WorkflowPlatformPhase2StageBusinessMapping
-
-### Community 1115 - ".CreateController"
-Cohesion: 0.31
-Nodes (8): Controller, Fact, ForbidResult, InvalidOperationException, RedirectToActionResult, Task, ViewResult, MaintenanceHistoryImportControllerAuthorizationTests
-
-### Community 1116 - "WorkflowPlatformPhase1Hardening"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, WorkflowPlatformPhase1Hardening
-
-### Community 1117 - "IIntakeService"
-Cohesion: 0.15
-Nodes (10): entityId, module, Stream, Task, IIntakeService, HttpPost, IActionResult, Task (+2 more)
-
-### Community 1118 - "HelpArticleTranslation"
-Cohesion: 0.20
-Nodes (10): HelpArticleTranslation, Article, Content, HelpArticleId, HelpArticleTranslationId, LanguageCode, SearchKeywords, Summary (+2 more)
-
-### Community 1119 - ".CreateController"
-Cohesion: 0.42
-Nodes (6): Controller, Fact, ForbidResult, RedirectToActionResult, Task, TenderControllerAuthorizationTests
-
-### Community 1120 - "IVendorRiskService"
-Cohesion: 0.31
-Nodes (4): Task, IVendorRiskService, Task, VendorRiskService
-
-### Community 1121 - "HangfireDashboardAuthFilter.cs"
-Cohesion: 0.40
-Nodes (3): DashboardContext, IDashboardAuthorizationFilter, HangfireDashboardAuthFilter
-
-### Community 1122 - ".CommitBatchAsync"
-Cohesion: 0.10
-Nodes (20): Date, MaintenanceHistoryImportCommitResultDto, Conflicts, Created, Skipped, Unresolved, ValidationErrors, Action (+12 more)
-
-### Community 1123 - "Logo AI Prompt Engineering"
-Cohesion: 0.08
-Nodes (25): Common Pitfalls, Core Prompt Structure, Detailed Brief, Eco/Sustainable, Effective Keywords by Style, Fashion Brand, Healthcare, Industry-Specific Prompts (+17 more)
-
-### Community 1124 - ".Seed"
-Cohesion: 0.29
-Nodes (8): ctx, Fact, InlineData, MemoryStream, svc, Task, Theory, MrsImportBatchCapacityTests
-
-### Community 1125 - "StorageProviders/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.StorageProviderDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1126 - "StorageRouting/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.StorageRouteDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1129 - "StorageProviders/_Form.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Application.DTOs.StorageProviderUpsertRequest, SharedResource
-
-### Community 1132 - "StorageRouting/_Form.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Application.DTOs.StorageRouteUpsertRequest, SharedResource
-
-### Community 1133 - "1. Phase 1 — Repository Audit (no modifications during this phase)"
-Cohesion: 0.12
-Nodes (16): 1. Phase 1 — Repository Audit (no modifications during this phase), 2.1 Why "just keep it always-on" doesn't work on the free grant, 2.2 Recommendation, 2. Phase 2 — Hosting Compatibility Audit (evidence-based, via live web search September 2026), 3.1 Isolation guarantee (§2, §8), 3.2 UAT User Matrix (using the repository's real, existing roles — §11), 3.3 Configuration that must change per-environment (no secrets, just environment-specific values), 3. Phase 3 — Proposed UAT Architecture (+8 more)
-
-### Community 1134 - "Organization Architecture Review (pre-import)"
-Cohesion: 0.20
-Nodes (9): 1. Architecture (separation of concepts), 2. Department, 3. Positions (60 proposed, all vacant), 4. Employee model (verified), 5. Workflow / Department consumers (audited), 6. Data cleanup (proposal only - nothing deleted), 7. Import contract (change only after authorization), 8. Recommendation (+1 more)
-
-### Community 1135 - "color"
-Cohesion: 0.12
-Nodes (26): $type, $value, $type, $value, $type, $value, 500, 600 (+18 more)
-
-### Community 1136 - "MOCListItemDto"
-Cohesion: 0.22
-Nodes (8): MOCListItemDto, ChangeType, DisciplineName, MOCId, MOCNumber, RiskLevel, Status, Title
-
-### Community 1137 - "EngineeringNumberingAndFreeze"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, EngineeringNumberingAndFreeze
-
-### Community 1138 - ".isRequired"
-Cohesion: 0.15
-Nodes (3): E, tt, w
-
-### Community 1139 - "PipingComponent"
-Cohesion: 0.14
-Nodes (13): DateTime, PipingComponent, ComponentType, CreatedDate, Description, IsActive, LineNumber, Material (+5 more)
-
-### Community 1140 - "AddFunctionalLocationImport"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddFunctionalLocationImport
-
-### Community 1141 - "HelpVisualAdminEditDto"
-Cohesion: 0.05
-Nodes (44): HelpVisualAdminEditDto, AccessibilityDescriptionEn, AccessibilityDescriptionFa, CaptionEn, CaptionFa, DisplayOrder, HelpArticleId, HelpVisualId (+36 more)
-
-### Community 1142 - "WorkflowInstanceRunningUniquePerEntity"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, WorkflowInstanceRunningUniquePerEntity
-
-### Community 1143 - "WorkOrderGovernanceOrigin"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, WorkOrderGovernanceOrigin
-
-### Community 1144 - ".CreateService"
-Cohesion: 0.08
-Nodes (33): DateTime, InstrumentDashboardDto, DueSoonCount, OverdueCount, TotalCount, InstrumentListDto, CalibrationStatus, EquipmentId (+25 more)
-
-### Community 1145 - "AddProductionCore"
-Cohesion: 0.15
-Nodes (9): DateTime, MigrationBuilder, TimeSpan, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan (+1 more)
-
-### Community 1146 - "CurrentUserService"
-Cohesion: 0.20
-Nodes (10): IHttpContextAccessor, ClaimsPrincipal, IReadOnlyList, CurrentUserService, FullName, IsAuthenticated, Roles, User (+2 more)
-
-### Community 1147 - ".SaveChangesAsync"
-Cohesion: 0.08
-Nodes (19): CancellationToken, Task, DateTime, Error, IReadOnlyList, MeetingId, NtpId, RevisionId (+11 more)
-
-### Community 1148 - "ResourceHeaderViewModel"
+### Community 1044 - "ResourceHeaderViewModel"
 Cohesion: 0.14
 Nodes (16): ResourceHeaderBadge, Text, Tone, ResourceHeaderTone, Danger, Info, Neutral, Success (+8 more)
 
-### Community 1149 - "EquipmentReadinessRowDto"
-Cohesion: 0.18
-Nodes (11): EquipmentReadinessRowDto, Classification, Criticality, EquipmentClassName, EquipmentId, ExecutionReady, JobPlan, PmPlan (+3 more)
-
-### Community 1150 - "PEMS CMMS — Data Migration & Controlled Data Onboarding"
-Cohesion: 0.12
-Nodes (15): 10. Performance and scale, 11. Existing data protection, 12. Test coverage, 13. Known limitations (explicit, not hidden), 14. Files changed, 1. Repository-first audit findings, 2. Why MaintenanceHistory, and why only one entity, 3. Implemented flow (+7 more)
-
-### Community 1151 - "PEMS.Persistence.Seed"
+### Community 1065 - "RichTextEditorTexts.Json"
 Cohesion: 0.03
-Nodes (8): PEMS.Tests.Search, PEMS.Persistence.Identity, PEMS.Web.Areas.Admin.Models, PEMS.Persistence.Seed, PEMS.Web.Areas.Admin.Controllers, PEMS.Tests.Authorization, Dictionary, SystemRoles
+Nodes (28): LetterComposeActor, ILetterDelegationService, ILetterPersonalReminderService, ILetterReportService, ILetterRoutingRuleService, ILetterTagTreeService, ILetterUserSettingsService, ILetterComposeService (+20 more)
 
-### Community 1152 - "KnowledgeBaseSearchResultDto"
-Cohesion: 0.20
-Nodes (6): KnowledgeBaseSearchResultDto, Content, SimilarityScore, SourceId, SourceType, Task
+### Community 1066 - "ImportCenterNavigationTests"
+Cohesion: 0.09
+Nodes (10): ImportCenterNavigationTests, PageHeaderCallersTests, Category, ImportCatalog, ImportEntry, LaunchMode, Dialog, Page (+2 more)
 
-### Community 1153 - ".CreateService"
-Cohesion: 0.32
-Nodes (8): ctx, Fact, InlineData, InvalidOperationException, svc, Task, Theory, HelpStandardReferenceServiceTests
+### Community 1073 - "PEMSDbContext.OnModelCreating"
+Cohesion: 0.01
+Nodes (145): DocumentTypeCode, Code, CreatedDate, DocumentTypeCodeId, ImportAliases, IsActive, Name, DocumentWorkflow (+137 more)
 
-### Community 1154 - "PEMS Phase 2A — Global Search Security, EDMS Command Bar, Pending My Action Foundation"
-Cohesion: 0.12
-Nodes (15): A. Search Security Findings, B. All 19 Providers (final disposition), C. Authorization Model Used, D. Project Scoping Model, Deferred Items (explicitly, per the brief's own §22 instruction), E. Changes Per Provider, F. Command Bar Refactoring — STOP, not built (see §27 of the brief), G. Pending My Action Architecture (+7 more)
-
-### Community 1155 - "PEMS Phase 2C-1 — Navigation Integrity and Shift Handover Exposure"
-Cohesion: 0.12
-Nodes (15): PEMS Phase 2C-1 — Navigation Integrity and Shift Handover Exposure, ۱. ممیزی الزامی مخزن (قبل از هر تغییر), ۱۰. تست‌ها و نتیجه‌ی Build/رگرسیون, ۱۱. سایر یافته‌های ناوبری در همان ناحیه (کشف‌شده، عمداً دست‌نخورده), ۱۲. تأیید عدم تغییر Schema/داده, ۱۳. Commit/Push, ۱۴. خلاصه‌ی تکمیل فاز, ۲. تأیید مسیرها و اکشن‌های `ShiftHandoverController` (+7 more)
-
-### Community 1156 - "CmmsOperationalReadinessDto"
-Cohesion: 0.17
-Nodes (11): CmmsOperationalReadinessDto, ClassifiedEquipment, CriticalityReadyEquipment, ExecutionReadyEquipment, JobPlanReadyEquipment, PmPlanReadyEquipment, SafetyReadyEquipment, StrategyReadyEquipment (+3 more)
-
-### Community 1157 - "DepartmentController"
-Cohesion: 0.33
-Nodes (7): HttpPost, IActionResult, IFormFile, Task, ValidateAntiForgeryToken, DepartmentController, Department
-
-### Community 1158 - "PermissionService"
-Cohesion: 0.17
-Nodes (13): IEnumerable, Task, PermissionService, Controller, Fact, ForbidResult, NotFoundResult, Task (+5 more)
-
-### Community 1159 - "PEMS — Organization Hierarchy & Workflow Actor Resolution: Phase 0 Audit"
-Cohesion: 0.11
-Nodes (17): 10. Risks / rollback, 11. STOP — decisions required before Phase 1, 1. Executive summary / root cause, 2. AUDIT 1 — Organization / data model, 3. AUDIT 2 — Authorization / workflow, 4. AUDIT 3 — Real Part Catalogue end to end, 5. Reconciliation, 6. Reusable components (do not rebuild) (+9 more)
-
-### Community 1160 - "Color Palette Management"
-Cohesion: 0.08
-Nodes (24): Accessibility Requirements, Brand Compliance Validation, Checking Contrast, Color Documentation Format, Color Extraction, Color Palette Examples, Color Palette Management, Color System Structure (+16 more)
-
-### Community 1161 - "AddOperationsFoundationPhase2A"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddOperationsFoundationPhase2A
-
-### Community 1162 - "PEMS UAT Deployment Runbook (self-service, Azure Container Apps + Azure SQL Database)"
+### Community 1074 - "ExecutionGateDecisionDto"
 Cohesion: 0.13
-Nodes (14): PEMS UAT Deployment Runbook (self-service, Azure Container Apps + Azure SQL Database), Rollback, Step 0 — Commit the UAT-enabling changes, Step 10 — Create the 9 UAT users (reuses the existing Admin UI, no new mechanism), Step 1 — Install the Azure CLI and sign in, Step 2 — Create a resource group for UAT, Step 3 — Create the UAT Azure SQL Database (free offer), Step 4 — Apply EF Core migrations to the new UAT database (+6 more)
+Nodes (14): ExecutionGateCheckDto, Category, Detail, Name, Passed, ExecutionGateDecisionDto, ActorName, BlockingReasonsSummary (+6 more)
 
-### Community 1163 - "MaterialRequisitionItem"
-Cohesion: 0.20
-Nodes (9): MaterialRequisitionItem, ItemDescription, MR, MRId, MRItemId, PartNumber, Quantity, Remarks (+1 more)
+### Community 1080 - "LetterComposeViewModel"
+Cohesion: 0.07
+Nodes (30): ApproverOptionDto, Department, FullName, Group, ManagerLevel, Position, UserId, ComposeAttachmentItem (+22 more)
 
-### Community 1164 - "QualificationCertificationDiscipline"
-Cohesion: 0.22
-Nodes (5): MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, QualificationCertificationDiscipline
-
-### Community 1165 - "CIP Deliverable Guide"
-Cohesion: 0.08
-Nodes (24): Apparel, Business Card, Car/Sedan, CIP Deliverable Guide, Core Identity, Digital Assets, Email Signature, Envelope (+16 more)
-
-### Community 1166 - "AssetArchitectureRebuild"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, AssetArchitectureRebuild
-
-### Community 1167 - "BM25"
+### Community 1081 - "ConditionReadingImportService"
 Cohesion: 0.11
-Nodes (19): BM25, detect_domain(), _load_csv(), Load CSV and return list of dicts, Core search function using BM25, Auto-detect the most relevant domain from query, Main search function with auto-domain detection, Search across all domains and combine results (+11 more)
+Nodes (19): ConditionReadingImportRowPayload, EquipmentTagRaw, NotesRaw, PointTagRaw, ReadingDateRaw, SourceRaw, ValueRaw, ConditionReadingImportService (+11 more)
 
-### Community 1168 - "Task"
-Cohesion: 0.20
-Nodes (7): Dictionary, IXLWorksheet, Task, EquipmentLookupEntry, Description, EquipmentId, RawRow
-
-### Community 1169 - "States and Variants"
-Cohesion: 0.08
-Nodes (24): Accessibility, Accessibility Requirements, ARIA States, Color Contrast, Color Variants, Disabled States, Error Messages, Error States (+16 more)
-
-### Community 1170 - "EquipmentFunctionalLocationAssignmentController"
-Cohesion: 0.35
-Nodes (7): HttpGet, HttpPost, IActionResult, IFormFile, Task, ValidateAntiForgeryToken, EquipmentFunctionalLocationAssignmentController
-
-### Community 1171 - "PEMS CMMS — Equipment ↔ Functional Location Assignment & Import"
+### Community 1089 - "WorkflowActionRegistry"
 Cohesion: 0.14
-Nodes (13): A. Baseline, B. معماری موجود که مجدداً استفاده شد (نه اختراع‌شده), C. جریان کاری تخصیص (Assignment Workflow), D. قواعد تطبیق (Matching Rules) - فقط قطعی، بدون Fuzzy/AI, E. قواعد تعارض و محافظت از تخصیص موجود, EQUIPMENT ↔ FUNCTIONAL LOCATION ASSIGNMENT STATUS, F. مجوز, G. یکپارچگی داده (Data Integrity) (+5 more)
+Nodes (9): Perm, WorkOrderWorkflow, IWorkflowActionRegistry, WorkflowActionDescriptor, WorkflowActionKind, Outcome, SideEffect, Name (+1 more)
 
-### Community 1172 - "PEMS — CMMS/Vendor Base Authorization Wiring"
-Cohesion: 0.14
-Nodes (13): Equipment (ماژول `"Equipment"`), PEMS — CMMS/Vendor Base Authorization Wiring, VDR (`PermissionService.SeedDefaultsAsync`، ماژول `"VDR"`), Vendors (ماژول `"Vendors"`), نتیجه‌ی رگرسیون کامل, ۱. دامنه‌ی تصمیم‌گیری‌شده (طبق تأیید صریح کاربر), ۲. یافته‌ی اصلی (قبل از این فاز), ۳. ماتریس مجوز اعمال‌شده (از داده‌ی Seed موجود، بدون اختراع سیاست جدید) (+5 more)
-
-### Community 1173 - "PEMS Phase 2B — Portal Information Architecture + Contextual Help Audit"
-Cohesion: 0.14
-Nodes (13): PEMS Phase 2B — Portal Information Architecture + Contextual Help Audit, کنترلرهای خارج از سایدبار (۷ مورد) - طبقه‌بندی‌شده به‌جای فرض «همه یک گپ‌اند», ۱. فهرست کامل ماژول‌ها (Complete Module Inventory), ۱۰. الگوهای قابل‌استفاده‌ی مجدد و تکراری (تکمیلی بر بخش M/N ممیزی فاز ۱), ۱۱. خلاصه‌ی نهایی (طبق ساختار درخواستی), ۲. درخت ناوبری فعلی (Current Navigation Tree), ۳. ناوبری سراسری در برابر ناوبری سرویس در برابر ناوبری منبع, ۴. معماری اطلاعات مدارک مهندسی (Engineering Documents IA) (+5 more)
-
-### Community 1174 - ".SeedAsync"
-Cohesion: 0.14
-Nodes (16): AddRoleActions, DateTime, RoleModuleAction, Action, CreatedDate, RoleModuleActionId, RoleName, Action (+8 more)
-
-### Community 1175 - "HelpController"
-Cohesion: 0.26
-Nodes (7): HttpGet, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, HelpController, CurrentLanguage
-
-### Community 1176 - "IVdrWorkflowService"
+### Community 1096 - "y-axis.tsx"
 Cohesion: 0.15
-Nodes (11): DateTime, IReadOnlyList, Task, IVdrWorkflowService, VdrReviewStatusItemDto, DisciplineId, DisciplineName, Status (+3 more)
+Nodes (19): clampRectToPlot(), computeReferenceAreaRect(), ComputeReferenceAreaRectOptions, isFullyInsidePlot(), ReferenceAreaIfOverflow, ReferenceAreaRect, resolveReferenceDataRange(), resolveXPixel() (+11 more)
 
-### Community 1177 - "BidEvaluation"
-Cohesion: 0.14
-Nodes (14): DateTime, BidEvaluation, Bid, BidEvaluationId, BidId, Comment, Decision, DisciplineRole (+6 more)
-
-### Community 1178 - ".CreateServiceAsync"
-Cohesion: 0.55
-Nodes (3): Fact, Task, ConditionMonitoringServiceTests
-
-### Community 1179 - "PEMS Operations/CMMS Navigation Boundary Correction — Report"
-Cohesion: 0.20
-Nodes (9): 1. Files Changed, 2. Before/After Navigation Structure, 3. Controller Section Changes, 4. Permission Compatibility Decision, 5. Confirmation: No Domain/Application Dependency on CMMS Introduced, 6. Build Result, 7. Test Result, 8. Remaining Architectural Risks (+1 more)
-
-### Community 1180 - "MaintenanceHistoryImportController"
-Cohesion: 0.21
-Nodes (10): Stream, Task, IMaintenanceHistoryImportService, HttpGet, HttpPost, IActionResult, IFormFile, Task (+2 more)
-
-### Community 1181 - "PEMS Phase 2C-4B — Safe VDR Resource Header Pilot (Implementation)"
-Cohesion: 0.15
-Nodes (12): A. Baseline, B. Audit Basis, C. Files Changed, D. Contract (as actually implemented), Deviation from `docs/design/PEMS_RESOURCE_HEADER_PILOT_SPEC.md`, E. Behavioral Preservation, F. Verification, G. Diff Scope (+4 more)
-
-### Community 1182 - "PEMS Contextual Help Architecture (Design — Not Implemented)"
-Cohesion: 0.15
-Nodes (12): PEMS Contextual Help Architecture (Design — Not Implemented), مدل داده‌ی پیشنهادی (فقط طراحی - STOP قبل از پیاده‌سازی), ۱. اصل راهنما, ۱۰. پیش‌نیاز پیاده‌سازی (وقتی این طرح تأیید شد), ۲. معماری Contextual Help (پیشنهادی), ۳. قاعده‌ی Tooltip در برابر Help Article, ۴. تفاوت با `KnowledgeBaseController` (رفع ابهام نام‌گذاری), ۵. مدل دوزبانه‌ی Help (+4 more)
-
-### Community 1183 - "FINAL SUMMARY"
-Cohesion: 0.20
-Nodes (10): FINAL SUMMARY, Major architectural risks, Recommended implementation order, Required decisions before implementation, Standards compliance, What already exists, What can be reused, What genuinely needs to be created (+2 more)
-
-### Community 1184 - ".SeedAsync"
-Cohesion: 0.40
-Nodes (5): IServiceProvider, Task, Art, Cat, HelpContentSeeder
-
-### Community 1185 - ".CreateService"
-Cohesion: 0.49
-Nodes (3): Fact, Task, EnterpriseFileStorageServiceTests
-
-### Community 1186 - "StageDiagramItem"
-Cohesion: 0.18
-Nodes (12): StageDiagramItem, IconCssClass, Label, RoleLabel, State, StageDiagramViewModel, Stages, StageItemState (+4 more)
-
-### Community 1187 - "PEMS — Bulk Define Maintenance Strategy: Scope & Location/Equipment Resolution"
-Cohesion: 0.17
-Nodes (11): 10. Files changed, 1. What changed, 2. Supported scope types and how each resolves, 3. Filter combination rule, 4. Duplicate / overlap resolution, 5. Assignment / conflict / authorization behavior (unchanged, reused), 6. Audit, 7. Database / schema (+3 more)
-
-### Community 1188 - "AddEquipmentFunctionalLocationAssignment"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddEquipmentFunctionalLocationAssignment
-
-### Community 1189 - "AddMaintenanceHistoryImport"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddMaintenanceHistoryImport
-
-### Community 1190 - "InspectionController"
-Cohesion: 0.38
-Nodes (6): DateTime, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, InspectionController
-
-### Community 1191 - "PEMS Authorization Architecture Baseline — Phase 1-5 — 2026-09-29.md"
-Cohesion: 0.10
-Nodes (20): 12. Position Architecture, 13. RoleAssignment, 15. Workflow Architecture, 17. Localization Baseline, 19. Playwright Baseline, 20. Playwright Test Infrastructure Finding, 21. Database Baseline, 22. Architecture Constraints (+12 more)
-
-### Community 1192 - "ul"
-Cohesion: 0.20
-Nodes (8): cl(), fl(), ll(), ol(), e(), ql(), sl(), ul()
-
-### Community 1193 - "Panel"
-Cohesion: 0.15
-Nodes (12): DateTime, Panel, CreatedDate, Description, IPRating, IsActive, Location, Manufacturer (+4 more)
-
-### Community 1194 - "UI Styling Skill"
-Cohesion: 0.08
-Nodes (24): Accessibility Patterns, Alternative: Tailwind-Only Setup, Best Practices, Common Patterns, Component Layer: shadcn/ui, Component Library Guide, Component + Styling Setup, Core Stack (+16 more)
-
-### Community 1195 - "EngineeringDocumentsUiTests"
-Cohesion: 0.20
-Nodes (5): Fact, InlineData, Theory, EngineeringDocumentsUiTests, DocumentStatusBadge
-
-### Community 1196 - "CrewAndCrewMember"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, CrewAndCrewMember
-
-### Community 1197 - ".CreateAsync"
-Cohesion: 0.34
-Nodes (6): Fact, PackageId, Task, TenderServiceTests, QualifiedVendorId, UnqualifiedVendorId
-
-### Community 1198 - "RoutingRuleDto"
-Cohesion: 0.17
-Nodes (10): AIConfidenceSettingsDto, HighThreshold, MediumThreshold, RoutingRuleDto, AllowAutoRouting, Description, DocumentCategory, IsActive (+2 more)
-
-### Community 1199 - "StoreRequisitionController"
-Cohesion: 0.21
-Nodes (13): Error, IReadOnlyDictionary, Success, Task, IStoreRequisitionLifecycleService, StoreRequisitionActions, Dictionary, HashSet (+5 more)
-
-### Community 1200 - ".SeedAsync"
-Cohesion: 0.40
-Nodes (6): ctx, Fact, Project, svc, Task, TransmittalRelatedDocumentQueryTests
-
-### Community 1201 - "PEMS_Organization_Structure_Proposal_a9ee3f48.md"
-Cohesion: 0.22
-Nodes (8): Sheet: 1 Proposed Organization, Sheet: 2 Department Mapping, Sheet: 3 Review Required, Sheet: 4 Existing Position Conflicts, Sheet: 5 Summary, Sheet: 6 Target Structure, Sheet: 7 Cleanup Proposal, Sheet: 8 Cleanup Dependencies
-
-### Community 1202 - ".CreateService"
-Cohesion: 0.35
-Nodes (6): ctx, Fact, InvalidOperationException, svc, Task, HelpServiceTests
-
-### Community 1203 - "PEMS Correspondence Workspace — Gmail-Inspired UX Redesign — Final Report"
-Cohesion: 0.20
-Nodes (9): A. Audit Findings, B. Design Changes, C. Backend Changes, D. Database Changes, E. UX Validation, F. Test Results, G. Remaining Findings, H. Data Safety Confirmation (+1 more)
-
-### Community 1204 - "PEMS — Equipment ↔ Functional Location Assignment: Final Integrity Verification"
-Cohesion: 0.20
-Nodes (9): 1. نتیجه, 2. Migration, 3. یکپارچگی داده (Data Integrity Smoke Test), 4. مجوز, 5. Audit, 6. Performance Sanity, 7. تست‌های موجود, 8. تصمیم نهایی (+1 more)
-
-### Community 1205 - "PEMS Phase 2C-4C — Final Resource Header Closure Audit"
-Cohesion: 0.20
-Nodes (9): 1. Executive Decision, 2. Evidence Used, 3. Engineering Documents Compatibility, 4. Final Boundary, 5. Explicit Non-Goals (Confirmed Still True), 6. Deferred Findings, 7. Recommendation, PEMS Phase 2C-4C — Final Resource Header Closure Audit (+1 more)
-
-### Community 1206 - "PEMS Portal Information Architecture (Future-State Design — Not Implemented)"
-Cohesion: 0.20
-Nodes (9): PEMS Portal Information Architecture (Future-State Design — Not Implemented), نقاط تلاقی واقعی (فقط در UI/Query، نه در Schema), چرا این‌ها جدول جدا هستند، نه یک «UserActivity» عمومی, ۱. رابطه‌ی آینده‌ی Help، Search، Tasks، Favorites، Recent و UserPreference, ۲. معماری آینده‌ی پیشنهادی پورتال PEMS, ۳. جزئیات لایه‌ی Global Nav آینده, ۴. جدول تصمیم‌گیری Schema, ۵. اولویت پیاده‌سازی و توصیه‌ی فاز ۲C (+1 more)
-
-### Community 1207 - "PEMS — Package Procurement Contract Finalization — Implementation Progress"
-Cohesion: 0.13
-Nodes (14): Final Hardening Pass (post-closure-report), Known Exceptions / Deferred Decisions, PEMS — Package Procurement Contract Finalization — Implementation Progress, Phase 0 — Baseline and Pre-flight, Phase 1 — Domain and Data Foundation, Phase 2 — Workflow and Security / SoD, Phase 3 — Tender / RFQ / Bid / Evaluation, Phase 4 — Contract Finalization (partial) (+6 more)
-
-### Community 1208 - "Workflow"
-Cohesion: 0.08
-Nodes (23): Art Direction Styles (Reuse from Banner), Color & Contrast, Design Best Practices, HTML Design Rules, HTML Template Structure, Option A: Chrome Headless CLI (Recommended — zero dependencies), Option B: chrome-devtools skill, Option C: Playwright script (+15 more)
-
-### Community 1209 - "InstrumentInheritFromEquipment"
-Cohesion: 0.22
-Nodes (5): MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, InstrumentInheritFromEquipment
-
-### Community 1210 - ".CreateService"
-Cohesion: 0.37
-Nodes (6): ctx, Fact, InvalidOperationException, svc, Task, HelpVisualServiceTests
-
-### Community 1211 - "GasParameterLimit"
-Cohesion: 0.10
-Nodes (20): DateTime, GasParameterLimit, CreatedDate, GasParameterLimitId, IsActive, MaxValue, MinValue, Parameter (+12 more)
-
-### Community 1212 - "Design System"
+### Community 1099 - "CriticalityAssessmentDetailDto"
 Cohesion: 0.09
-Nodes (22): Best Practices, Chart.js Integration, Command, Component Spec Pattern, Contextual Decision Flow, Decision System CSVs, Design System, Integration (+14 more)
+Nodes (22): CriticalityAssessmentDetailDto, ApprovedAt, ApprovedBy, AssessmentDate, CalculatedMaxScore, CriticalityAssessmentId, EnvironmentScore, EquipmentClassName (+14 more)
 
-### Community 1213 - "Tailwind CSS Customization"
-Cohesion: 0.09
-Nodes (22): @apply Directive, Best Practices, Color Customization, Complete Tailwind Config, Configuration Examples, Content Configuration, Custom Color Palette, Custom Font Sizes (+14 more)
-
-### Community 1214 - "HelpWorkflowDiagramService"
-Cohesion: 0.16
-Nodes (16): Name, Category, Module, IReadOnlyList, Task, IHelpWorkflowDiagramService, Dictionary, IReadOnlyList (+8 more)
-
-### Community 1215 - "AssetSummaryDto"
-Cohesion: 0.22
-Nodes (9): AssetSummaryDto, AssetId, AssetNumber, CommissioningDate, CriticalityClass, FunctionalLocation, FunctionalLocationBreadcrumb, MaintenanceClass (+1 more)
-
-### Community 1216 - ".CommitBatchAsync"
-Cohesion: 0.28
-Nodes (6): EquipmentFunctionalLocationAssignmentCommitResultDto, Assigned, Conflicts, Skipped, Unresolved, ValidationErrors
-
-### Community 1217 - "TailwindConfigGenerator"
-Cohesion: 0.10
-Nodes (12): main(), Add custom font families. Args: fonts: Dict of font_type: [font_names] e.g.,…, Add custom spacing values. Args: spacing: Dict of name: value e.g., {'18':…, Add custom breakpoints. Args: breakpoints: Dict of name: width e.g., {'3xl':…, Add plugin requirements. Args: plugins: List of plugin names e.g.,…, Get plugin recommendations based on configuration. Returns: List of recommended…, Generate Tailwind CSS configuration files., Validate configuration. Returns: Tuple of (valid, message) (+4 more)
-
-### Community 1218 - "1. Deep Audit Report"
-Cohesion: 0.09
-Nodes (21): 10. Final Implementation Report, 1.10 Existing tests, 1.11 Shared workflow infrastructure, 1.1 Document domain model, 1.2 IDC / discipline review model, 1.3 The core bug — state-machine / transition logic, 1.4 Comments / Comment Sheet, 1.5 Revision model (+13 more)
-
-### Community 1219 - ".SeedAllAsync"
-Cohesion: 0.34
-Nodes (5): Fact, InlineData, Task, Theory, HelpKnowledgeSeederTests
-
-### Community 1221 - "ResolveResult"
+### Community 1109 - "ExecutiveDashboardServiceTests.NewContext"
 Cohesion: 0.25
-Nodes (8): ResolveResult, EquipmentId, FunctionalLocationId, IncludeInCommit, Message, PreviousFunctionalLocationId, Status, ValidationStatus
+Nodes (4): IVDRReportService, VDRReportService, ExecutiveDashboardServiceTests, ThrowingVdr
 
-### Community 1222 - "BM25"
-Cohesion: 0.12
-Nodes (8): BM25, BM25 ranking algorithm for text search, Lowercase, normalize synonyms, split, remove punctuation, filter stopwords, Build BM25 index from documents, Score all documents against query, All indexed terms, for suggestion/typo-recovery purposes., TestBm25CoreBehavior, TestTokenizer
+### Community 1112 - "pems-user-permissions.js"
+Cohesion: 0.24
+Nodes (21): allRows(), applyResponse(), batch(), isAllowed(), isEditable(), placeRow(), post(), renderRow() (+13 more)
 
-### Community 1223 - "ProductionOutputDto"
-Cohesion: 0.15
-Nodes (13): ProductionOutputDto, BatchNumber, EmployeeName, MaterialCode, MaterialItemId, Notes, OutputClassification, PostedToInventory (+5 more)
+### Community 1122 - "SkeletonComponentTests"
+Cohesion: 0.13
+Nodes (8): SkeletonComponentTests, PemsSkeletonMarkup, PemsSkeletonTagHelper, Cols, Kind, Label, Lines, Rows
 
-### Community 1224 - "DocumentIdcReferral"
-Cohesion: 0.15
-Nodes (12): DateTime, DocumentIdcReferral, Comment, CreatedById, CreatedDate, Discipline, DisciplineId, DocumentId (+4 more)
-
-### Community 1225 - "WorkflowAdminDefinitionNameFaVersionRowVersion"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, WorkflowAdminDefinitionNameFaVersionRowVersion
-
-### Community 1226 - "MDBDocument"
-Cohesion: 0.15
-Nodes (13): DateTime, MDBDocument, CreatedDate, Document, DocumentId, DvdVolumeNo, IsNotApplicable, MDB (+5 more)
-
-### Community 1227 - "Success"
-Cohesion: 0.04
-Nodes (46): Error, Success, PointId, Task, IConditionMonitoringService, DateTime, Id, Task (+38 more)
-
-### Community 1228 - "Operations.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.OperationsReportSummaryDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1229 - "ProductionOrder/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.ProductionOrderListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1230 - "BatchDetails.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.ProductionBatchDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1231 - "Production/Dashboard.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.ProductionDashboardDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1232 - "ProductionOrder/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.ProductionOrderDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1233 - "ProductionRun/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.ProductionRunDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1234 - "FileSecurityHttpTests"
-Cohesion: 0.18
-Nodes (9): PEMS.Tests.Security, IClassFixture, Fact, InlineData, Task, Theory, FileSecurityHttpTests, Program (+1 more)
-
-### Community 1235 - "PipingLine"
-Cohesion: 0.12
-Nodes (15): DateTime, PipingLine, CreatedDate, Description, DesignPressure, DesignTemperature, Fluid, FromEquipment (+7 more)
-
-### Community 1236 - "Routing by Task Type"
-Cohesion: 0.10
-Nodes (19): Banner Design Tasks, Brand Identity Tasks, Component Creation, Corporate Identity Program Tasks, Design Routing Guide, Design System Migration, Icon Design Tasks, Implementation Tasks (+11 more)
-
-### Community 1237 - "EquipmentFunctionalLocationAssignment/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.EquipmentFunctionalLocationAssignmentBatchSummaryDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1238 - "MaintenanceHistoryImport/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.MaintenanceHistoryImportBatchSummaryDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1240 - "EquipmentFunctionalLocationAssignment/Review.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.EquipmentFunctionalLocationAssignmentBatchDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1241 - "MaintenanceHistoryImport/Review.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.MaintenanceHistoryImportBatchDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1242 - "_BarcodePanel.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Web.Models.BarcodePanelViewModel, SharedResource
-
-### Community 1245 - "BulkGenerate.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1246 - "RCMService"
+### Community 1136 - "Instrument"
 Cohesion: 0.05
-Nodes (45): ApplyRcmDecisionResultDto, Error, MaintenancePlanId, MaintenancePlanWasReused, MaintenanceStrategyId, MaintenanceStrategyWasReused, Success, DateTime (+37 more)
+Nodes (43): Instrument, Accuracy, AlarmSetpoint, BarrierRelay, CableNumber, CalibrationInterval, Communication, CreatedDate (+35 more)
 
-### Community 1247 - "ResolveError.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1248 - "generate-slide.py"
+### Community 1138 - "PemsTreeItemTagHelper"
 Cohesion: 0.15
-Nodes (19): _e(), generate_chart_slide(), generate_cta_slide(), generate_deck(), generate_metrics_slide(), generate_problem_slide(), generate_solution_slide(), generate_testimonial_slide() (+11 more)
+Nodes (11): TreeViewComponentTests, PemsTreeContext, ToggleLabel, PemsTreeItemTagHelper, Count, Current, Expanded, Href (+3 more)
 
-### Community 1249 - "fontSize"
+### Community 1139 - "PipingComponent"
+Cohesion: 0.17
+Nodes (12): PipingComponent, ComponentType, CreatedDate, Description, IsActive, LineNumber, Material, PipingComponentId (+4 more)
+
+### Community 1148 - "VdrDetailsLayoutTests.RenderAsync"
+Cohesion: 0.19
+Nodes (7): FakeUser, FullName, IsAuthenticated, Roles, UserId, UserName, VdrDetailsLayoutTests
+
+### Community 1150 - "MaintenanceHistory"
+Cohesion: 0.13
+Nodes (15): MaintenanceHistory, ActionTaken, Cost, CreatedDate, Description, DurationHours, Equipment, EquipmentId (+7 more)
+
+### Community 1154 - "ReplenishmentAvailabilityGateTests"
+Cohesion: 0.08
+Nodes (7): ActionProbe, Counters, GateHost, Client, Ctx, ServiceCalls, ReplenishmentAvailabilityGateTests
+
+### Community 1156 - "pems-errors.js"
+Cohesion: 0.22
+Nodes (18): RFC-9457, antiforgery(), area(), copy(), done(), el(), isUnsafe(), json() (+10 more)
+
+### Community 1159 - "CommodityGroupResponsible"
+Cohesion: 0.05
+Nodes (36): ActorResponsibilityKinds, ActorResponsibilityScopes, ActorSelectionStrategies, CommodityGroupResponsible, CommodityGroup, CommodityGroupId, CommodityGroupResponsibleId, CreatedDate (+28 more)
+
+### Community 1163 - "ApiConformanceTests"
 Cohesion: 0.11
-Nodes (20): $type, $value, $type, $value, $type, $value, $type, $value (+12 more)
+Nodes (7): ApiConformanceHost, Client, Disciplines, Permissions, ApiConformanceTests, Operation, Url
 
-### Community 1250 - "shadcn/ui Theming & Customization"
-Cohesion: 0.10
-Nodes (19): Base Color Presets, Best Practices, Color Customization, Color Format, Component Customization, CSS Variable System, Customize Styles, Customize Variants (+11 more)
+### Community 1167 - "rest_inventory.py"
+Cohesion: 0.23
+Nodes (9): kebab(), main(), match_brace(), members(), plural(), propose(), scan_file(), skip_literal() (+1 more)
 
-### Community 1251 - "Asset Organization Guide"
-Cohesion: 0.11
-Nodes (18): Asset Entry (manifest.json), Asset Organization Guide, By Campaign, By Status, By Type, Cleanup Workflow, Components, Directory Structure (+10 more)
+### Community 1173 - "RecoveryEventService"
+Cohesion: 0.21
+Nodes (6): RecoveryEventRules, RecoveryEventTypes, RecoveryFailureReasons, RecoveryMethods, RecoveryResults, RecoveryEventService
 
-### Community 1252 - "Primary Color Meanings"
-Cohesion: 0.11
-Nodes (18): Accessibility Considerations, Analogous, Black, Blue, Color Combinations by Industry, Color Harmony Types, Complementary, Green (+10 more)
-
-### Community 1253 - "Core Logo Types"
-Cohesion: 0.11
-Nodes (18): 1. Wordmark (Logotype), 2. Lettermark (Monogram), 3. Pictorial Mark (Brand Mark), 4. Abstract Mark, 5. Mascot, 6. Emblem, 7. Combination Mark, Aesthetic Styles (+10 more)
-
-### Community 1254 - "MechanicalEquipmentPassportSummaryDto"
-Cohesion: 0.10
-Nodes (20): MechanicalEquipmentPassportSummaryDto, CodeStandard, DesignPressure, DesignTemperature, DriverType, EquipmentType, FlowRate, Head (+12 more)
-
-### Community 1255 - "AIReliabilityInsight"
+### Community 1179 - "LetterRoutingRuleDto"
 Cohesion: 0.09
-Nodes (27): FakeOllamaService, Ollama, DateTime, AIReliabilityInsight, AIReliabilityInsightId, Confidence, CreatedDate, EquipmentClassId (+19 more)
+Nodes (24): LetterRoutingRuleDto, ApplyTagId, ApplyTagName, IsActive, LastMatchedDate, LetterRoutingRuleId, MatchCategory, MatchCount (+16 more)
 
-### Community 1256 - "Brand Consistency Checklist"
-Cohesion: 0.11
-Nodes (17): Audit Frequency, Brand Consistency Checklist, Channel Audit, Collateral, Colors, Common Issues, Email, Imagery (+9 more)
+### Community 1182 - "ILogger"
+Cohesion: 0.02
+Nodes (39): IDocumentAIService, IOllamaService, OllamaGenerateOptions, JsonMode, MaxResponseTokens, Model, Temperature, ExtractedDocumentText (+31 more)
 
-### Community 1257 - "CIP Mockup Prompt Engineering"
-Cohesion: 0.11
-Nodes (17): Apparel (Polo/T-Shirt), Base Prompt Structure, Business Card, CIP Mockup Prompt Engineering, Context Modifiers, Corporate Minimal, Deliverable-Specific Modifiers, Letterhead (+9 more)
+### Community 1183 - "KpiTileComponentTests"
+Cohesion: 0.13
+Nodes (9): KpiTileComponentTests, KpiCardViewModel, ColorClass, Count, DisplayCount, Hint, IconClass, Title (+1 more)
 
-### Community 1258 - "Color Semantics"
-Cohesion: 0.11
-Nodes (17): Accent, Applying Semantic Tokens, Background & Foreground, Border & Ring, Color Semantics, Dark Mode Overrides, Destructive, Interactive States (+9 more)
-
-### Community 1259 - "fetch-background.py"
+### Community 1187 - "init"
 Cohesion: 0.17
-Nodes (17): generate_css_for_background(), get_background_image(), get_curated_images(), get_overlay_css(), get_pexels_search_url(), load_backgrounds_config(), load_brand_colors(), main() (+9 more)
+Nodes (16): clockText(), defaultReminderValue(), frozenColumnCount(), frozenOffsets(), init(), applyFrozen(), applySide(), closePane() (+8 more)
 
-### Community 1260 - "button"
+### Community 1192 - "FakeUrl"
+Cohesion: 0.09
+Nodes (7): LocalOnlyUrlHelper, ActionContext, FakeUrl, ActionContext, Helper, ActionContext, LetterComposeTestExtensions
+
+### Community 1203 - "EnvFiles.Load"
+Cohesion: 0.22
+Nodes (3): PEMSDbContextFactory, EnvFiles, EnvFileSet
+
+### Community 1206 - "WorkflowStageInput"
+Cohesion: 0.10
+Nodes (20): WorkflowStageInput, ApprovalStrategy, BusinessStatus, Description, EntryCondition, EscalationRole, IsDelegatable, IsEscalatable (+12 more)
+
+### Community 1218 - "DocumentWorkflowHistoryItemDto"
 Cohesion: 0.12
-Nodes (18): fg, font-size, hover-bg, padding-x, padding-y, button, $type, $value (+10 more)
+Nodes (15): DocumentWorkflowHistoryItemDto, ActionDate, ActionType, ActorName, Comment, Decision, FromStageName, ToStageName (+7 more)
 
-### Community 1261 - "VendorDocumentTypologyCode"
-Cohesion: 0.17
-Nodes (10): DateTime, VendorDocumentTypologyCode, Category, Code, CreatedDate, Description, IsActive, VendorDocumentTypologyCodeId (+2 more)
+### Community 1224 - "FunctionalLocationService"
+Cohesion: 0.11
+Nodes (19): FunctionalLocationListDto, Area, AssetCount, Code, EquipmentCount, FunctionalLocationId, IsActive, Name (+11 more)
 
-### Community 1262 - ".CreateController"
-Cohesion: 0.58
-Nodes (3): Fact, Task, MaintenanceMasterDataOrderingTests
+### Community 1226 - "Controller"
+Cohesion: 0.02
+Nodes (42): RecoveryCodeRedeemRequest, IAdminRecoveryCodeService, IBreakGlassService, IIncomingCorrespondenceService, ILetterNumberingService, INumberingSchemeService, DocumentTypes, IOrganizationImportService (+34 more)
+
+### Community 1227 - "Task"
+Cohesion: 0.01
+Nodes (69): DocumentIntelligenceDashboardDto, ByStage, OpenComments, PendingClassificationReview, PendingTagLinkReview, TotalDocuments, IConditionMonitoringService, IConditionReadingImportService (+61 more)
+
+### Community 1234 - "EngineeringDocumentDetailsLayoutTests.RenderAsync"
+Cohesion: 0.21
+Nodes (7): EngineeringDocumentDetailsLayoutTests, FakeUser, FullName, IsAuthenticated, Roles, UserId, UserName
+
+### Community 1246 - "TestAccountProvisioner.csproj"
+Cohesion: 0.40
+Nodes (4): net10.0, Microsoft.AspNetCore.DataProtection (10.0.10), Microsoft.Extensions.DependencyInjection (10.0.10), Microsoft.NET.Sdk
+
+### Community 1261 - "BadActorDto"
+Cohesion: 0.13
+Nodes (15): BadActorDto, CriticalityClass, EquipmentClassName, EquipmentId, FailureCount, MaintenanceCount, MTBFHours, MTTRHours (+7 more)
 
 ### Community 1263 - "pems-org-position-chart.js"
-Cohesion: 0.44
-Nodes (7): build(), esc(), hideState(), nodeHtml(), select(), showDetails(), showState()
-
-### Community 1264 - "TestThresholdGate"
-Cohesion: 0.13
-Nodes (3): TestFixtureValidation, TestMetricMath, TestThresholdGate
-
-### Community 1265 - ".RecordDispositionAsync"
-Cohesion: 0.22
-Nodes (10): Accepted, DispositionRecordId, Error, Hold, IReadOnlyList, LineId, Rejected, Success (+2 more)
-
-### Community 1266 - "AddBarcodeIdentity"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, AddBarcodeIdentity
-
-### Community 1267 - "Design Principles"
-Cohesion: 0.12
-Nodes (15): 22 Art Direction Styles, Banner Sizes & Art Direction Styles Reference, Complete Banner Sizes, CTA Rules, Design Principles, Pinterest Research Queries, Print, Print Specs (+7 more)
-
-### Community 1268 - "Design Principles"
-Cohesion: 0.12
-Nodes (15): 22 Art Direction Styles, Banner Sizes & Art Direction Styles Reference, Complete Banner Sizes, CTA Rules, Design Principles, Pinterest Research Queries, Print, Print Specs (+7 more)
-
-### Community 1269 - "icon/generate.py"
-Cohesion: 0.20
-Nodes (15): apply_color(), apply_viewbox_size(), extract_svgs(), generate_batch(), generate_icon(), generate_sizes(), load_env(), main() (+7 more)
-
-### Community 1270 - "ShadcnInstaller"
-Cohesion: 0.04
-Nodes (39): main(), Path, Add all available shadcn/ui components. Args: overwrite: If True, overwrite…, Handle shadcn/ui component installation., List installed components. Returns: Tuple of (success, message with component…, Initialize installer. Args: project_root: Project root directory (default:…, Check if shadcn is initialized in project. Returns: True if components.json…, Get list of already installed components. Returns: List of installed component… (+31 more)
-
-### Community 1272 - "PEMS Operations Phase 2D — Packaging Business Decision Register"
-Cohesion: 0.12
-Nodes (15): D10. Repacking — does an already-packaged, already-labeled product ever get opened and repackaged? — DEFERRED unless needed immediately, D11. How much natural loss/variance is acceptable during packaging, and should the system flag anything outside that range? — DECISION REQUIRED (can be answered later, but flag now), D12. Rounding — DEFERRED, low priority, D1. What exactly is a "Package"? — DECISION REQUIRED, D2. Can one package ever contain more than one product? — DECISION REQUIRED, D3. Can a package be made from more than one production batch (blending)? — DECISION REQUIRED, D4. How do we weigh a package — and what number goes on the label? — DECISION REQUIRED (highest priority), D5. What happens when we split one package into two, or combine two into one? — DECISION REQUIRED (+7 more)
-
-### Community 1273 - "OllamaRequest"
-Cohesion: 0.10
-Nodes (17): OllamaEmbeddingRequest, Model, Prompt, OllamaEmbeddingResponse, Embedding, OllamaRequest, Format, Model (+9 more)
+Cohesion: 0.33
+Nodes (7): build(), hideState(), nodeHtml(), select(), showDetails(), showState(), tpl()
 
 ### Community 1274 - "pems-org-chart.js"
-Cohesion: 0.27
-Nodes (19): applyZoom(), buildGroupNode(), buildPositionNode(), buildTeamNode(), buildToggle(), clearSelection(), esc(), groupKindLabel() (+11 more)
-
-### Community 1275 - ".CreateService"
-Cohesion: 0.38
-Nodes (6): MemberData, Fact, Task, Theory, PermissionSeedHardeningTests, TheoryData
-
-### Community 1276 - "PEMS — Enterprise Role Catalog: Audit, Gap Analysis & Decision Record"
-Cohesion: 0.11
-Nodes (18): 0. Regression gate (cleared before the audit), 1. Existing role inventory (19 roles, 4 users), 2. Authorization surface (summary; per-module detail below), 3. Gap analysis & role classification, 4. Proposed new roles — full decision record, 5. Cross-domain (privilege) check, 6. Traced chain (Role → Permission → Policy → Workflow → Scope → Navigation → SoD → Audit), 7. Approval-gate checklist (all satisfied before implementation) (+10 more)
-
-### Community 1277 - "CIP Design Reference"
-Cohesion: 0.13
-Nodes (14): CIP Brief (Start Here), CIP Design Reference, Commands, Deliverable Categories, Design Styles, Detailed References, Generate Mockups, HTML Presentation Features (+6 more)
-
-### Community 1278 - "Icon Design Reference"
-Cohesion: 0.13
-Nodes (14): Available Styles, CLI Options, Commands, Generate Batch Variations, Generate Multiple Sizes, Generate Single Icon, Icon Categories, Icon Design Reference (+6 more)
-
-### Community 1279 - "Copywriting Formulas"
-Cohesion: 0.13
-Nodes (14): AIDA (Attention-Interest-Desire-Action), Before-After-Bridge, Contrast Patterns, Copywriting Formulas, Core Formulas, Cost of Inaction, FAB (Features-Advantages-Benefits), Formula-to-Slide Mapping (+6 more)
-
-### Community 1280 - "Copywriting Formulas"
-Cohesion: 0.13
-Nodes (14): AIDA (Attention-Interest-Desire-Action), Before-After-Bridge, Contrast Patterns, Copywriting Formulas, Core Formulas, Cost of Inaction, FAB (Features-Advantages-Benefits), Formula-to-Slide Mapping (+6 more)
-
-### Community 1281 - "detect_domain"
-Cohesion: 0.23
-Nodes (3): detect_domain(), Auto-detect the most relevant domain from query. Matches are weighted by…, TestDomainDetection
-
-### Community 1282 - "ProductionInputDto"
-Cohesion: 0.17
-Nodes (12): ProductionInputDto, EmployeeName, MaterialCode, MaterialItemId, Notes, PostedToInventory, ProductionInputId, Quantity (+4 more)
-
-### Community 1283 - "StoreRequisitionLineTraceability"
 Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, StoreRequisitionLineTraceability
+Nodes (29): addOption(), applyZoom(), buildGroupNode(), buildPositionNode(), buildTeamNode(), buildToggle(), clearSelection(), detail() (+21 more)
 
-### Community 1284 - "Banner Design - Multi-Format Creative Banner System"
-Cohesion: 0.14
-Nodes (13): Art Direction Styles (Top 10), Banner Design - Multi-Format Creative Banner System, Banner Size Quick Reference, Design Rules, Prerequisites, Security, Step 1: Gather Requirements (AskUserQuestion), Step 2: Research & Art Direction (+5 more)
+### Community 1276 - "NavigationVisibilityOverride"
+Cohesion: 0.15
+Nodes (12): NavigationVisibilityOverride, CreatedBy, CreatedDate, IsVisible, ItemKey, ModifiedBy, ModifiedDate, ModuleKey (+4 more)
 
-### Community 1285 - "Messaging Framework"
-Cohesion: 0.14
-Nodes (13): Core Statements, Elevator Pitches, Framework Structure, Message Architecture, Message by Audience, Message Testing, Messaging Framework, Mission Statement (+5 more)
+### Community 1282 - "init"
+Cohesion: 0.29
+Nodes (3): init(), note(), render()
 
-### Community 1286 - "Brand Voice Framework"
-Cohesion: 0.14
-Nodes (13): Brand Voice Framework, Character Spectrum, Emotion Spectrum, Language Spectrum, Step 1: Define Personality Traits, Step 2: Create Voice Chart, Step 3: Context Adaptation, Tone Spectrum (+5 more)
+### Community 1292 - "LetterDto"
+Cohesion: 0.03
+Nodes (69): LetterDto, ApprovalRequired, ApprovedByName, ApprovedDate, ArchivedDate, AttachmentsCount, Category, ClosedDate (+61 more)
 
-### Community 1287 - "extract-colors.cjs"
-Cohesion: 0.22
-Nodes (11): calculateCompliance(), colorDistance(), displayPalette(), extractHexColors(), findNearestBrandColor(), fs, generateImageMagickCommand(), hexToRgb() (+3 more)
-
-### Community 1288 - "validate-asset.cjs"
-Cohesion: 0.25
-Nodes (13): checkManifest(), formatBytes(), formatOutput(), fs, main(), parseFilename(), path, RULES (+5 more)
-
-### Community 1289 - "Layout Patterns"
-Cohesion: 0.14
-Nodes (13): Card Styles, Component Variants, CSS Structures, Feature Grid (3 columns), Layout Decision Flow, Layout Patterns, Layout Selection by Use Case, Metric Styles (+5 more)
-
-### Community 1290 - "Tailwind Integration"
-Cohesion: 0.14
-Nodes (13): Animation Tokens, Base Layer, Button Example, Component Classes, CSS Variables Setup, Dark Mode Toggle, HSL Format Benefits, shadcn/ui Alignment (+5 more)
-
-### Community 1291 - "Layout Patterns"
-Cohesion: 0.14
-Nodes (13): Card Styles, Component Variants, CSS Structures, Feature Grid (3 columns), Layout Decision Flow, Layout Patterns, Layout Selection by Use Case, Metric Styles (+5 more)
-
-### Community 1292 - "ConditionMonitoringFoundationStatusDto"
+### Community 1301 - "OllamaEmbeddingRequest"
 Cohesion: 0.33
-Nodes (6): ConditionMonitoringFoundationStatusDto, FoundationStatus, LiveTelemetryStatus, MonitoringPointCount, ReadingCount, SupportedVariableTypes
-
-### Community 1293 - "ProductionOrderListDto"
-Cohesion: 0.17
-Nodes (12): ProductionOrderListDto, MaterialCode, MaterialDescription, OrderNumber, PlannedFinishDate, PlannedQuantity, PlannedStartDate, ProductionOrderId (+4 more)
-
-### Community 1294 - "a"
-Cohesion: 0.31
-Nodes (9): a(), bs(), Df(), dl(), ds(), gs(), ps(), Us() (+1 more)
-
-### Community 1295 - "AIExtractedTag"
-Cohesion: 0.06
-Nodes (30): DateTime, AIExtractedTag, Area, Attachment, AttachmentId, Confidence, CreatedDate, CreatedTag (+22 more)
-
-### Community 1296 - "IrnReceiptController"
-Cohesion: 0.42
-Nodes (6): DateTime, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, IrnReceiptController
-
-### Community 1297 - "update.md"
-Cohesion: 0.15
-Nodes (12): Color Presets, Examples, Files Modified, Important, Overview, Skills Used, Step 1: Gather Brand Input, Step 2: Update Brand Guidelines (+4 more)
-
-### Community 1298 - "Logo Design Reference"
-Cohesion: 0.15
-Nodes (12): Available Styles, Color Psychology, Commands, Design Brief (Start Here), Detailed References, Generate Logo, Industry Defaults, Logo Design Reference (+4 more)
-
-### Community 1299 - "Token Architecture"
-Cohesion: 0.15
-Nodes (12): Categories, Dark Mode, File Organization, Layer 1: Primitive Tokens, Layer 2: Semantic Tokens, Layer 3: Component Tokens, Layer Overview, Migration from Flat Tokens (+4 more)
-
-### Community 1300 - "wa"
-Cohesion: 0.25
-Nodes (8): ca(), Qo(), ua(), wa(), d(), g(), p(), s()
-
-### Community 1301 - "Employee/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1302 - "AddEmployeeProfileFields"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddEmployeeProfileFields
-
-### Community 1303 - "AddIdcReferralOutcomeTracking"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddIdcReferralOutcomeTracking
-
-### Community 1304 - "AddBilingualHelpKnowledgeSystem"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddBilingualHelpKnowledgeSystem
-
-### Community 1305 - "AddHelpVisualDocumentation"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddHelpVisualDocumentation
-
-### Community 1306 - "AddHelpStandardReferences"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddHelpStandardReferences
-
-### Community 1307 - ".SeedAllAsync"
-Cohesion: 0.55
-Nodes (3): Fact, Task, HelpVisualSeederTests
-
-### Community 1308 - "Primitive Tokens"
-Cohesion: 0.17
-Nodes (11): Border Radius, Color Scales, Gray Scale, Motion / Duration, Primary Colors (Blue), Primitive Tokens, Shadows, Spacing Scale (+3 more)
-
-### Community 1309 - "validate-tokens.cjs"
-Cohesion: 0.24
-Nodes (11): extensions, formatReport(), fs, getFiles(), main(), parseArgs(), path, patterns (+3 more)
-
-### Community 1310 - "design-tokens-starter.json"
-Cohesion: 0.17
-Nodes (11): $type, $value, dark, semantic, $schema, $type, $value, semantic (+3 more)
+Nodes (5): OllamaEmbeddingRequest, Model, Prompt, OllamaEmbeddingResponse, Embedding
 
 ### Community 1311 - "FakeClients"
-Cohesion: 0.20
-Nodes (11): Args, IClientProxy, Method, Dictionary, IReadOnlyList, FakeClients, All, Groups (+3 more)
+Cohesion: 0.21
+Nodes (5): FakeClients, All, Groups, RecordingProxy, Calls
 
-### Community 1312 - "3. Genuine gaps (the only things that should actually be built)"
-Cohesion: 0.11
-Nodes (17): 0. Headline finding, 1. Concept-by-concept mapping: this prompt's vocabulary → what already exists, 2. Equipment Passport — current state vs. this prompt's §05/§26 ask, 3.1 — No reusable parameter catalog independent of a point, 3.2 — No equipment-class-driven measurement-point templates (§09, §17), 3.3 — `ConditionReading` does not FK to a specific `Instrument`, 3.4 — No `CBMInspectionEvent` wrapper around a batch of measurements, 3.5 — No per-reading `OperatingCondition` (+9 more)
-
-### Community 1313 - ".generate_config_string"
-Cohesion: 0.20
-Nodes (6): Generate configuration file content. Returns: Configuration file as string, Generate TypeScript configuration., Generate JavaScript configuration., Format plugins array for config. Validates each plugin name against a strict…, Add indentation to JSON string., Write configuration to file. Returns: Tuple of (success, message)
-
-### Community 1314 - "Classification A — User-Facing Page candidates (future Help increments)"
-Cohesion: 0.17
-Nodes (11): Administration (29), Classification A — User-Facing Page candidates (future Help increments), Classification F — Duplicate/Redirect cases, Classification H — Needs Review (ambiguous cases), CMMS (43), Counts by Classification, Engineering (86), Help (4) (+3 more)
-
-### Community 1315 - "StoreRequisitionTraceabilityIdempotency"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, StoreRequisitionTraceabilityIdempotency
-
-### Community 1316 - "RevalidateStoreRequisitionConstraints"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, RevalidateStoreRequisitionConstraints
-
-### Community 1317 - "Core Visual Elements"
-Cohesion: 0.18
-Nodes (10): Color Palette, Colors, Core Visual Elements, Logo, Logo, Quick Checks, Typography, Typography (+2 more)
-
-### Community 1318 - "inject-brand-context.cjs"
+### Community 1312 - "TemporaryPasswordGenerator.Generate"
 Cohesion: 0.31
-Nodes (10): extractColorsFromTable(), extractCoreAttributes(), extractHexColors(), extractImageStyle(), extractTypography(), extractVoice(), fs, generatePromptAddition() (+2 more)
+Nodes (3): PEMS.Shared.Security, TemporaryPasswordGenerator, TemporaryPasswordGeneratorTests
 
-### Community 1319 - "CIP Design Style Guide"
-Cohesion: 0.18
-Nodes (10): Bold Dynamic, CIP Design Style Guide, Classic Traditional, Color Psychology, Corporate Minimal, Fresh Modern, Luxury Premium, Modern Tech (+2 more)
+### Community 1322 - "init"
+Cohesion: 0.21
+Nodes (14): actionFor(), clampIndex(), init(), archiveRow(), checkbox(), clearSelection(), current(), fire() (+6 more)
 
-### Community 1320 - "embed-tokens.cjs"
-Cohesion: 0.18
-Nodes (8): args, fs, minimal, MINIMAL_TOKENS, path, projectRoot, tokensPath, wrapStyle
-
-### Community 1321 - "up"
-Cohesion: 0.31
-Nodes (9): cp(), dp(), fp(), hp(), lp(), pp(), sp(), up() (+1 more)
-
-### Community 1322 - "test_tailwind_config_gen.py"
+### Community 1348 - "pems-rte.js"
 Cohesion: 0.22
-Nodes (8): Tests for tailwind_config_gen.py, Reduce a generated TS/JS config to a bare assignable object so it can be handed…, Regression guard for the missing-comma bug between the ``theme`` block and…, The property preceding ``plugins`` must end with a comma (pure-Python check, so…, The emitted config parses as valid JS via ``node --check``., _strip_to_object(), TestGeneratedConfigIsValidJs, parametrize
+Nodes (14): build(), sync(), init(), isEmpty(), labelOf(), libPath(), loadQuill(), nameToolbar() (+6 more)
 
-### Community 1323 - "Quick Reference"
+### Community 1353 - "TechnicalQueryListItemDto"
 Cohesion: 0.18
-Nodes (11): 10. Charts & Data (LOW), 1. Accessibility (CRITICAL), 2. Touch & Interaction (CRITICAL), 3. Performance (HIGH), 4. Style Selection (HIGH), 5. Layout & Responsive (HIGH), 6. Typography & Color (MEDIUM), 7. Animation (MEDIUM) (+3 more)
-
-### Community 1324 - "Employee Details — Stitch UI Redesign: Implementation Notes"
-Cohesion: 0.18
-Nodes (10): Backend changes, Database changes, Employee Details — Stitch UI Redesign: Implementation Notes, Existing components reused, Known limitations, Localization, New components introduced, Permissions (+2 more)
-
-### Community 1325 - ".SetCulture"
-Cohesion: 0.25
-Nodes (6): AllowAnonymous, HashSet, HttpGet, IActionResult, ResponseCache, CultureController
-
-### Community 1326 - "Barcode/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1327 - "iu"
-Cohesion: 0.25
-Nodes (7): cu(), iu(), i(), u(), Ka(), ou(), uu()
-
-### Community 1328 - "Phase 2 — True Page-by-Page Redesign"
-Cohesion: 0.25
-Nodes (8): Backend / Infrastructure Issues Discovered (not changed), Coverage (see `PEMS_PAGE_INVENTORY.md` for the per-page table), Offline dependencies (external runtime assets), Phase 2 — True Page-by-Page Redesign, Remaining, RTL / LTR, responsive, interaction results, Visual QA: real findings, What was done in Phase 2
-
-### Community 1329 - "._base_config"
-Cohesion: 0.22
-Nodes (6): Any, Path, Initialize generator. Args: typescript: If True, generate .ts config, else .js…, Determine default output path., Create base configuration structure., Get default content paths for framework.
-
-### Community 1330 - "MaintenanceGroupAndSkills"
-Cohesion: 0.22
-Nodes (5): MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, MaintenanceGroupAndSkills
-
-### Community 1331 - "Brand"
-Cohesion: 0.20
-Nodes (9): Brand, Brand Sync Workflow, Quick Start, References, Routing, Scripts, Subcommands, Templates (+1 more)
-
-### Community 1332 - "Slide Strategies"
-Cohesion: 0.20
-Nodes (9): Common Structures, Duarte Sparkline Pattern, Matching Strategy to Context, Product Demo (6 slides), Sales Pitch (9 slides), Search Commands, Slide Strategies, Strategy Selection (+1 more)
-
-### Community 1333 - "logo/generate.py"
-Cohesion: 0.29
-Nodes (9): enhance_prompt(), generate_batch(), generate_logo(), load_env(), main(), Enhance the logo prompt with style and industry modifiers, Generate a logo using Gemini models with image generation Args: aspect_ratio:…, Generate multiple logo variants with different styles (+1 more)
-
-### Community 1334 - "Component Tokens"
-Cohesion: 0.20
-Nodes (9): Alert Tokens, Badge Tokens, Button Tokens, Card Tokens, Component Tokens, Dialog/Modal Tokens, Input Tokens, Table Tokens (+1 more)
-
-### Community 1335 - "generate-tokens.cjs"
-Cohesion: 0.36
-Nodes (9): flattenTokens(), fs, generateCSS(), generateTailwind(), main(), parseArgs(), path, resolveReference() (+1 more)
-
-### Community 1336 - "duration"
-Cohesion: 0.20
-Nodes (10): fast, normal, slow, $type, $value, $type, $value, duration (+2 more)
-
-### Community 1337 - "Slide Strategies"
-Cohesion: 0.20
-Nodes (9): Common Structures, Duarte Sparkline Pattern, Matching Strategy to Context, Product Demo (6 slides), Sales Pitch (9 slides), Search Commands, Slide Strategies, Strategy Selection (+1 more)
-
-### Community 1338 - "PEMS_OPERATIONS_PACKAGING_FINAL_BUSINESS_BASELINE.md"
-Cohesion: 0.11
-Nodes (17): 13. D12 — Financial Treatment, 14. Mandatory Phase 3 Gates, 15. Phase 3C Additional Gate, 16. Quality Governance Principle, 17. Inventory Governance Principle, 18. Barcode Governance Principle, 19. Workflow Governance Principle, 1. Purpose (+9 more)
-
-### Community 1339 - "PEMS Operations Phase 2F — Final Business Decision Baseline"
-Cohesion: 0.11
-Nodes (17): 10. Conclusion, 1. Phase 2F Gate Result, 2. Decision Vocabulary, 3. Decision Matrix — D1 to D12, 4. The Six Gate Decisions in Detail, 5. Secondary Decisions and New Items, 6. Stakeholder Governance vs the Real RBAC Model (new finding), 7. Quality Authority (preserved) (+9 more)
-
-### Community 1340 - "PEMS Operations Phase 2G — Executive Decision and Role Mapping Workbook"
-Cohesion: 0.11
-Nodes (17): 10. D7–D12 (shorter form), 11. E-2 to E-5, 12.1 What PEMS actually has (verified in code), 12.2 Mapping matrix, 12.3 Findings from the RBAC audit (documented, not fixed — outside Packaging scope), 12. E-5 — Role Mapping (from the real RBAC implementation), 13. What each owner must do, 1. Evidence Baseline (verified this phase) (+9 more)
-
-### Community 1341 - "OrganizationPositionHierarchy"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, OrganizationPositionHierarchy
-
-### Community 1342 - ".CreateService"
-Cohesion: 0.50
-Nodes (3): Fact, Task, FunctionalLocationDescendantResolutionTests
-
-### Community 1343 - "PEMS Workspace Design System (`pems-workspace.css`, `.vs-*`)"
-Cohesion: 0.29
-Nodes (7): CMMS Integration — Digital Equipment Passport (`Equipment/Details`), Engineering Documents redesign — known gaps (documented, not changed), Page Address / Route Visibility (global rule), PEMS Workspace Design System (`pems-workspace.css`, `.vs-*`), Phase 2 additions, Phase 3 additions, Unified industrial layer (site-wide) — `pems-workspace.css` + `pems-ui.js`
-
-### Community 1345 - "OrganizationAssignmentEmployeeIndex"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, OrganizationAssignmentEmployeeIndex
-
-### Community 1346 - "sync-brand-to-tokens.cjs"
-Cohesion: 0.33
-Nodes (8): adjustBrightness(), { execFileSync }, extractColorsFromMarkdown(), fs, generateColorScale(), main(), path, updateDesignTokens()
-
-### Community 1347 - "_run"
-Cohesion: 0.28
-Nodes (8): Path, Regression tests for validate-tokens.cjs. The validator used to skip any line…, A hardcoded hex on the same line as a var() token is still a violation., A line that references only tokens produces no false positives., _run(), test_flags_hardcoded_hex_sharing_line_with_token(), test_token_only_line_reports_no_violation(), CompletedProcess
-
-### Community 1348 - "Engineering Documents (EDMS) — enterprise capability audit"
-Cohesion: 0.22
-Nodes (8): A–E classification of findings, B14 Implemented improvements, B15 Deferred (see C and E above), B2. Industry benchmark (capabilities only — no vendor ranking, no UI copying), B3–B6 List, search, export, revisions (evidence), B7–B12 Status, workflow, review, transmittal, distribution, reporting (evidence), Engineering Documents (EDMS) — enterprise capability audit, Sources
-
-### Community 1349 - "MemoryCacheService"
-Cohesion: 0.38
-Nodes (5): Func, IMemoryCache, Task, TimeSpan, MemoryCacheService
-
-### Community 1350 - "Home/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1351 - "PEMS Operations Phase 3 — Packaging Architecture Freeze Package"
-Cohesion: 0.11
-Nodes (17): 10. KPI Readiness (Phase 2E catalog — 56 metrics, corrected count), 11. Exclusions (frozen when active), 12. Implementation-Ready Work Plan (executed only after activation), 13. Activation Procedure, 14. Status Log, 15. Configurability (part of the freeze), 1. Verified Ground Truth (frozen regardless of Packaging decisions), 2. Decision-Dependency Map (+9 more)
-
-### Community 1352 - "RichTextSanitizerService"
-Cohesion: 0.33
-Nodes (3): HtmlSanitizer, IRichTextSanitizerService, RichTextSanitizerService
-
-### Community 1353 - ".SeedAsync"
-Cohesion: 0.29
-Nodes (6): ILoggerFactory, IServiceProvider, RoleManager, Task, UserManager, IdentitySeeder
-
-### Community 1354 - "UI/UX Pro Max - Design Intelligence"
-Cohesion: 0.25
-Nodes (7): How to Use, Primary Use Cases, Recommended, Rule Categories by Priority, Skip, UI/UX Pro Max - Design Intelligence, When to Apply
-
-### Community 1355 - "PEMS — Import Center (single source of truth for "where is every Import?")"
-Cohesion: 0.25
-Nodes (7): A. Complete Import inventory (11), B/C. Sidebar audit and consolidation mapping, E. Permissions model, Known pre-existing gaps (recorded, intentionally not changed), PEMS — Import Center (single source of truth for "where is every Import?"), Reviewed and deliberately NOT Imports, Update — Import Center is now the ONLY initiation point
-
-### Community 1356 - "Enterprise Actor Resolution & Supply-Chain (Part Catalogue) Workflow — architecture baseline"
-Cohesion: 0.20
-Nodes (9): 1. Principle, 2. Concepts (kept separate), 3. Diagnostic states, 4. Determinism and history, 5. Engine changes (additive, backward compatible), 6. Part Catalogue migration, 7. Known limits / decisions, 8. Organization hierarchy as the only manager source (Phase 1) (+1 more)
-
-### Community 1357 - "IrnReceiptListDto"
-Cohesion: 0.18
-Nodes (10): DateTime, IrnReceiptListDto, IrnNumber, IrnReceiptId, LineCount, ReceivedByName, ReceivingDate, Status (+2 more)
-
-### Community 1358 - "MaintenancePlan/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1359 - "MyProfile/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1360 - "HelpAdminAuthorizationTests"
-Cohesion: 0.48
-Nodes (3): AuthorizeAttribute, Fact, HelpAdminAuthorizationTests
-
-### Community 1361 - "Slides Reference"
-Cohesion: 0.29
-Nodes (6): Key Features, Knowledge Base, Slides Reference, Usage, When to Use, Workflow
-
-### Community 1362 - "HTML Slide Template"
-Cohesion: 0.29
-Nodes (6): Animation Classes, Background Images, Base Structure, Chart.js Integration, CSS Variables Reference, HTML Slide Template
-
-### Community 1363 - "HTML Slide Template"
-Cohesion: 0.29
-Nodes (6): Animation Classes, Background Images, Base Structure, Chart.js Integration, CSS Variables Reference, HTML Slide Template
-
-### Community 1364 - "Query Contract"
-Cohesion: 0.29
-Nodes (7): Query Contract, Step 1: Analyze User Requirements, Step 2: Generate Design System (new projects/pages), Step 2b: Persist Design System (Master + Overrides Pattern), Step 2c: Design Dials (optional), Step 3: Supplement with Detailed Searches (as needed), Step 4: Stack Guidelines
-
-### Community 1365 - "Phase 4 — Article Count Reconciliation (Increment 3A.1)"
-Cohesion: 0.29
-Nodes (6): Corrected arithmetic, Corrected statement for all future Phase 4 reporting, Machine-generated inventory, Phase 4 — Article Count Reconciliation (Increment 3A.1), Root cause (confirmed against live data and seeder source), The discrepancy
-
-### Community 1366 - "Permit/Details.cshtml"
-Cohesion: 0.33
-Nodes (5): PEMS.Application.DTOs.PermitDetailDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource, WorkflowHistoryDto
-
-### Community 1367 - ".SetQualificationAsync"
-Cohesion: 0.17
-Nodes (10): DateTime, Error, Success, Task, IVendorQualificationService, DateTime, Error, Success (+2 more)
-
-### Community 1368 - "EquipmentDto"
-Cohesion: 0.08
-Nodes (26): EquipmentDto, Area, ChildEquipmentCount, ChildEquipments, CriticalityClass, Description, DisciplineId, DisciplineName (+18 more)
-
-### Community 1369 - "Slides"
-Cohesion: 0.33
-Nodes (5): References (Knowledge Base), Routing, Slides, Subcommands, When to Use
-
-### Community 1370 - "Pre-Delivery Checklist"
-Cohesion: 0.33
-Nodes (6): Accessibility, Interaction, Layout, Light/Dark Mode, Pre-Delivery Checklist, Visual Quality
-
-### Community 1371 - "Prerequisites"
-Cohesion: 0.33
-Nodes (6): Available Domains, Available Stacks, How to Use This Skill, Output Formats, Prerequisites, Search Reference
-
-### Community 1372 - "Brand Guidelines Template"
-Cohesion: 0.40
-Nodes (4): Brand Guidelines Template, Document Structure, Extractable Fields, Usage
-
-### Community 1373 - "Common Rules for Professional UI"
-Cohesion: 0.40
-Nodes (5): Common Rules for Professional UI, Icons & Visual Elements, Interaction (App), Layout & Spacing, Light/Dark Mode Contrast
-
-### Community 1374 - "Example Workflow"
-Cohesion: 0.40
-Nodes (5): Example Workflow, Step 1: Analyze Requirements, Step 2: Generate Design System, Step 3: Supplement with Detailed Searches (as needed), Step 4: Stack Guidelines
-
-### Community 1375 - "PEMS — Site-wide UI/UX unification: final report"
-Cohesion: 0.10
-Nodes (21): 10. RTL / LTR findings, 11. Responsive findings, 12. Accessibility findings, 13. Interaction QA (real Chrome, EN + FA), 14. Visual QA, 15. Before / after (rendered audit, 163 pages), 16. Remaining issues (honest), 17. Backend issues discovered, intentionally not changed (+13 more)
-
-### Community 1376 - "ImportCenter/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): IReadOnlyList<PEMS.Web.Security.ImportCatalog.ImportEntry>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1377 - "EngineeringDocuments/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.EngineeringDocumentDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1378 - "VDR/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.VDRListItemDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1379 - "AuditLog/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Domain.Entities.AuditLog>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1380 - "EngineeringDashboard/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Web.Models.EngineeringDashboardViewModel, SharedResource
-
-### Community 1381 - "ProductionOrder/Create.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1382 - "Tips for Better Results"
-Cohesion: 0.50
-Nodes (4): Common Sticking Points, Pre-Delivery Checklist, Query Strategy, Tips for Better Results
-
-### Community 1383 - ".SearchAsync"
-Cohesion: 0.29
-Nodes (6): Items, Task, TotalCount, PartCatalogueRequestSearchProvider, DisplayName, EntityType
-
-### Community 1384 - "TechnicalQuery/Details.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1387 - "FakeHubContext"
-Cohesion: 0.17
-Nodes (12): Hub, IHubClients, IHubContext, FakeHubContext, Clients, FakeClients, Groups, Task (+4 more)
-
-### Community 1388 - "EngineeringRelationship"
-Cohesion: 0.15
-Nodes (12): DateTime, EngineeringRelationship, Confidence, CreatedDate, EngineeringRelationshipId, IsAIProposed, RelationshipType, ReviewStatus (+4 more)
-
-### Community 1394 - "VDRDashboardDto"
-Cohesion: 0.12
-Nodes (17): Dictionary, VDRDashboardDto, ByReviewCategory, ByWorkflowStatus, ClosedItems, OnTimePercentage, OverdueItems, PendingResubmissionItems (+9 more)
-
-### Community 1395 - "MechanicalEquipmentController"
-Cohesion: 0.09
-Nodes (26): MechanicalEquipmentDashboardDto, RotatingCount, StaticCount, TotalCount, UnclassifiedCount, MechanicalEquipmentListDto, EquipmentId, EquipmentType (+18 more)
-
-### Community 1396 - "ProductionDashboardDto"
-Cohesion: 0.18
-Nodes (11): ProductionDashboardDto, ActiveOrderCount, ActiveOrders, ActiveRunCount, HeldRunCount, RecentBatches, RecentLosses, ReleasedOrderCount (+3 more)
-
-### Community 1397 - "AddIrnReceiving"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddIrnReceiving
-
-### Community 1398 - "MaintenancePlanController"
-Cohesion: 0.27
-Nodes (9): Task, IPMGenerationService, DateTime, HttpGet, HttpPost, IActionResult, Task, ValidateAntiForgeryToken (+1 more)
-
-### Community 1399 - "AddIrnDisposition"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddIrnDisposition
-
-### Community 1400 - ".Create"
-Cohesion: 0.42
-Nodes (6): DateTime, HttpPost, IActionResult, Task, ValidateAntiForgeryToken, GasTestController
-
-### Community 1401 - "AddProcurementContractFinalization"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddProcurementContractFinalization
-
-### Community 1403 - "AddContractApprovalMatrix"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddContractApprovalMatrix
-
-### Community 1406 - "AddContractCompletionLifecycle"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddContractCompletionLifecycle
-
-### Community 1410 - "AddProcurementClarificationHardening"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddProcurementClarificationHardening
-
-### Community 1412 - "Ag"
-Cohesion: 0.29
-Nodes (5): Ag(), Jr(), Sg(), Xr(), Yr()
-
-### Community 1413 - "WorkflowBindingRow"
-Cohesion: 0.18
-Nodes (11): WorkflowBindingRow, BindingId, Context, DefinitionId, DefinitionName, Editable, EntityType, IsActive (+3 more)
-
-### Community 1415 - "ProcurementCommunicationResponse"
-Cohesion: 0.20
-Nodes (10): DateTime, ProcurementCommunicationResponse, IsActive, ProcurementCommunication, ProcurementCommunicationId, ProcurementCommunicationResponseId, RespondedByName, ResponseDate (+2 more)
-
-### Community 1416 - "Bindings.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.WorkflowBindingRow>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1417 - "StandardMatrix.cshtml"
-Cohesion: 0.40
-Nodes (4): IReadOnlyList<PEMS.Application.DTOs.HelpStandardReferenceMatrixRowDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1418 - "History.cshtml"
-Cohesion: 0.40
-Nodes (4): IReadOnlyList<PEMS.Domain.Entities.AuditLog>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1419 - "StandardCreate.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.HelpStandardReferenceAdminEditDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1420 - "VisualCreate.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.HelpVisualAdminEditDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1421 - "CmmsReadiness/ClassDetail.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.EquipmentReadinessRowDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1422 - "SkillsAndRequiredSkills"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, SkillsAndRequiredSkills
-
-### Community 1423 - "WorkflowManagement/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.WorkflowDefinitionRow>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1424 - "WorkflowManagement/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.WorkflowDefinitionDetails, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1425 - "Help/Create.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Application.DTOs.HelpArticleAdminEditDto, SharedResource
-
-### Community 1426 - "Help/Edit.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Application.DTOs.HelpArticleAdminEditDto, SharedResource
-
-### Community 1427 - "_HelpArticleForm.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Application.DTOs.HelpArticleAdminEditDto, SharedResource
-
-### Community 1433 - "FindingController"
-Cohesion: 0.47
-Nodes (5): HttpPost, IActionResult, Task, ValidateAntiForgeryToken, FindingController
-
-### Community 1434 - "EquipmentAssetFoundation"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, EquipmentAssetFoundation
-
-### Community 1435 - "CmmsReadiness/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.ClassActivationBacklogItemDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+Nodes (10): TechnicalQueryListItemDto, DisciplineName, IsOverdue, Priority, QueryNumber, QueryType, RequiredResponseDate, Status (+2 more)
+
+### Community 1400 - "ExecutiveDashboardDto"
+Cohesion: 0.07
+Nodes (28): DashboardAttentionDto, Count, Key, Module, Severity, DashboardCorrespondenceDto, Incoming, Outgoing (+20 more)
+
+### Community 1404 - "RolePermission"
+Cohesion: 0.06
+Nodes (33): PermissionCellChange, Action, Enabled, ModuleName, PermissionMatrixEditResult, ConfiguredModules, Error, Modules (+25 more)
+
+### Community 1407 - "init"
+Cohesion: 0.26
+Nodes (15): el(), filterLocal(), format(), init(), addGroup(), close(), go(), loadActions() (+7 more)
 
 ### Community 1436 - "pems-ui.js"
-Cohesion: 0.42
-Nodes (8): enhanceBadges(), humanize(), iconName(), nameFormControls(), nameIconOnlyControls(), run(), toneOf(), wrapTables()
+Cohesion: 0.24
+Nodes (16): configureDropdowns(), enhance(), enhanceBadges(), flush(), humanize(), iconName(), init(), nameFormControls() (+8 more)
 
-### Community 1437 - "ConditionMonitoring.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.ConditionMonitoringPointDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1441 - "pems-tree.js"
+Cohesion: 0.31
+Nodes (12): focusItem(), group(), init(), remember(), initAll(), isOpen(), linkOf(), read() (+4 more)
 
-### Community 1438 - "PredictiveMaintenance.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.PredictiveMaintenanceModelDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1439 - "EnterpriseActorResolution"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, EnterpriseActorResolution
-
-### Community 1440 - "Ram.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.RamAnalysisDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1442 - "Denied.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource, string
-
-### Community 1443 - "WidenMaterialItemDescriptionToUnbounded"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, WidenMaterialItemDescriptionToUnbounded
-
-### Community 1445 - "Passport.cshtml"
-Cohesion: 0.22
-Nodes (8): Alarm, CalibrationHistory, CauseEffect, IOPoint, IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Domain.Entities.Instrument, SharedResource
-
-### Community 1446 - "AddTenderContractLink"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddTenderContractLink
-
-### Community 1447 - "ConditionPriorityMapping"
+### Community 1473 - "DatabaseUpgradePathSqlTests.Database_of_a_supported_release_upgrades_to_the_fresh_install_schema_and_keeps_its_data"
 Cohesion: 0.13
-Nodes (14): Priority, DateTime, ConditionPriorityMapping, Condition, ConditionPriorityMappingId, CreatedDate, IsActive, IsSystemDefault (+6 more)
+Nodes (7): DatabaseUpgradePathSqlTests, FreshInstall, Master, Name, Schema, SqlSchemaSnapshot, ThrowawaySqlServer
 
-### Community 1448 - "AIExtraction/Review.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1477 - "ResolveResult"
+Cohesion: 0.25
+Nodes (8): ResolveResult, DuplicateOfId, EquipmentId, IncludeInCommit, Message, Status, ValidationStatus, WorkOrderId
 
-### Community 1453 - "Analyze.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.AI.Models.AIAnalysisResult, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1481 - "IEntityTypeConfiguration"
+Cohesion: 0.01
+Nodes (144): WorkflowActorResponsibilityPosition, Position, PositionId, Priority, Responsibility, WorkflowActorResponsibilityId, WorkflowActorResponsibilityPositionId, ConditionPriorityMapping (+136 more)
 
-### Community 1454 - "JobPlanAndMaintenanceTask"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, JobPlanAndMaintenanceTask
+### Community 1482 - "SimulateFormVm"
+Cohesion: 0.13
+Nodes (15): SimulateFormVm, ActionName, AllPermissionNames, AllUsers, ResourceId, ResourceName, Result, UserId (+7 more)
 
-### Community 1455 - "BindingImpact.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1456 - "Designer.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1457 - "AddItpPackageContractScope"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddItpPackageContractScope
-
-### Community 1458 - "Equipment/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1460 - "PermitGasTesting"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, PermitGasTesting
-
-### Community 1461 - "Team/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1462 - "LetterControlledLifecycle"
-Cohesion: 0.18
-Nodes (7): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, LetterControlledLifecycle
-
-### Community 1463 - "ProductionRunListDto"
-Cohesion: 0.20
-Nodes (10): ProductionRunListDto, EndDate, OrderNumber, ProductionOrderId, ProductionRunId, RunNumber, StartDate, Status (+2 more)
-
-### Community 1464 - "StandardReference"
-Cohesion: 0.12
-Nodes (17): DateTime, StandardReference, Category, Code, CreatedDate, Description, EffectiveFrom, EffectiveTo (+9 more)
-
-### Community 1465 - "RawRow"
-Cohesion: 0.17
-Nodes (12): RawRow, ActionTakenRaw, CostRaw, DateRaw, DescriptionRaw, DurationHoursRaw, FindingRaw, ParsedDate (+4 more)
-
-### Community 1466 - ".CreateController"
-Cohesion: 0.20
-Nodes (12): DateTime, Error, Fact, ForbidResult, Id, InlineData, Success, Task (+4 more)
-
-### Community 1467 - "EquipmentReadinessService"
-Cohesion: 0.21
-Nodes (8): Task, IEquipmentReadinessService, Dictionary, IQueryable, Task, EquipmentReadinessService, IActionResult, Task
-
-### Community 1468 - "RequiredSkillPlannedHours"
+### Community 1483 - "MOCListItemDto"
 Cohesion: 0.22
-Nodes (5): MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, RequiredSkillPlannedHours
+Nodes (8): MOCListItemDto, ChangeType, DisciplineName, MOCId, MOCNumber, RiskLevel, Status, Title
 
-### Community 1469 - "AddWorkOrderContractorCost"
-Cohesion: 0.22
-Nodes (5): MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, AddWorkOrderContractorCost
-
-### Community 1470 - ".CreateAsync"
-Cohesion: 0.47
-Nodes (5): Fact, InvalidOperationException, PackageId, Task, ProcurementPackageInspectionGateTests
-
-### Community 1472 - "Chart.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1473 - "ForgotPassword.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1474 - "ScanResult.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1475 - "Letter/Create.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1476 - ".CreateService"
-Cohesion: 0.58
-Nodes (3): Fact, Task, EngineeringDocumentsPermissionSeedIntegrityTests
-
-### Community 1477 - "NcrDetails.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1478 - "AddContractApprovalRulePriority"
+### Community 1484 - "test-pems-docker.sh"
 Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddContractApprovalRulePriority
+Nodes (16): boot_ready(), check(), FAKE_FILESTORE_FILES, FAKE_FREE_KB, FAKE_LOG_BAD, FAKE_PORT_BIND, FAKE_RESTART_COUNT, FAKE_RESTART_POLICY (+8 more)
 
-### Community 1479 - "PEMS Packaging — Final Business Decision Pack"
+### Community 1492 - "projection-utils.ts"
 Cohesion: 0.12
-Nodes (15): 10. D7 — Quality Release Authority, 11. E-4 — Packaging Permission Module, 12. E-5 — Role Mapping (14 organizational roles → 20 live roles), 13. Decisions That Do Not Block Phase 3A (defaults exist), 14. What Management Must Decide, and When Phase 3A Can Start, 1. One-Page Summary, 2. Current State (verified against code and the live database), 3. Definitive Live Role Baseline (20 roles) (+7 more)
+Nodes (28): ProjectionLineConfig, ProjectionLineConfigProps, ProjectionLineEndMarkerProps, ProjectionLine(), ProjectionLineProps, ProjectionStrokeStyle, renderProjectionStroke(), resolveVisibleEndX() (+20 more)
 
-### Community 1480 - "GapReport.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1498 - "IActionResult"
+Cohesion: 0.01
+Nodes (39): IReliabilitySimulationService, SpikeController, RowCount, ContractApprovalAuthorityController, NavigationVisibilityController, OrganizationController, InventoryMasterDataController, PartCatalogueAdminController (+31 more)
 
-### Community 1481 - "PMTemplate"
+### Community 1501 - "Regex"
+Cohesion: 0.22
+Nodes (3): NumberingPattern, ProtectedImageStore, DocumentNumberMatcher
+
+### Community 1514 - "PartCatalogueCommodityGroup"
 Cohesion: 0.03
-Nodes (71): StandardReference, MaintenanceActivity, DateTime, ICollection, MaintenanceActivity, ApplicableEquipmentClasses, ApplicableStandardReferences, ApplicableStrategyTypes (+63 more)
+Nodes (68): PartCatalogueCommodityGroup, Code, CommodityGroupId, Description, IsActive, NeedsConfirmation, PartCatalogueCommodityGroupChild, ChildGroup (+60 more)
 
-### Community 1482 - "ProductionDtos.cs"
+### Community 1517 - "initLookup"
+Cohesion: 0.18
+Nodes (16): applyLocal(), applyNew(), debounce(), fire(), getJson(), initLookup(), clearValue(), close() (+8 more)
+
+### Community 1526 - "FunctionalLocationImportBatchDto"
+Cohesion: 0.06
+Nodes (33): FunctionalLocationImportBatchDto, ConflictCount, ExistingCount, ExpandedLocationCount, FileName, FunctionalLocationImportBatchId, ImportDate, ImportedByName (+25 more)
+
+### Community 1529 - "BarcodeResolutionResultDto"
+Cohesion: 0.12
+Nodes (15): BarcodeResolutionResultDto, BarcodeIdentityId, ErrorCode, ErrorMessage, Status, Success, TargetId, TargetType (+7 more)
+
+### Community 1533 - "pems-jalali.js"
 Cohesion: 0.25
-Nodes (7): ProductionReconciliationDto, Difference, IsComparable, Note, TotalInputQuantity, TotalLossQuantity, TotalOutputQuantity
+Nodes (15): addDaysIso(), daysInMonth(), div(), formatIso(), formatJalali(), isLeap(), isoToJalali(), jalaliToIso() (+7 more)
 
-### Community 1483 - "FakePermissionService"
-Cohesion: 0.25
-Nodes (7): Action, HashSet, IEnumerable, Task, FakePermissionService, AllowAll, Denied
+### Community 1534 - ".CreateAsync"
+Cohesion: 0.09
+Nodes (17): WorkOrderCompletionData, ContractorCost, ContractorName, CorrectiveAction, DowntimeHours, FailureCauseCode, FailureEffect, FailureModeCode (+9 more)
 
-### Community 1484 - "ProductionLossDto"
-Cohesion: 0.25
-Nodes (8): ProductionLossDto, EmployeeName, LossCategory, Notes, ProductionLossId, Quantity, TransactionDate, UomCode
+### Community 1539 - "AssetListDto"
+Cohesion: 0.15
+Nodes (13): AssetListDto, AssetId, AssetNumber, CommissioningDate, CriticalityClass, EquipmentId, EquipmentName, EquipmentTagNumber (+5 more)
 
-### Community 1485 - "MaterialMaster"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, MaterialMaster
-
-### Community 1486 - "ReservationRequisitionAndMrsImport"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, ReservationRequisitionAndMrsImport
-
-### Community 1487 - "CoreEmployeePersonnelTypeAndPermit"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, CoreEmployeePersonnelTypeAndPermit
-
-### Community 1488 - "9. PHASE 6.5 — FINAL CLOSURE GATE (2026-10-08)"
-Cohesion: 0.10
-Nodes (20): 1. Verdict, 2. Violation audit (dev database, read-only), 3. Constraint trust, 4. What was verified in code (not assumed), 5. Findings fixed in this phase, 6. Known limits / unresolved risks (not blockers for the code gate), 7. Help coverage required for this slice (documentation only; Help itself not built), 8. Regression (+12 more)
-
-### Community 1489 - "Engineering.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1490 - ".SeedAsync"
-Cohesion: 0.50
-Nodes (3): IServiceProvider, Task, DepartmentSeeder
-
-### Community 1492 - "PEMS Navigation Visibility Architecture Baseline — Phase 6"
-Cohesion: 0.13
-Nodes (14): 1. The core distinction (read this first), 2. What existed before this phase (audit findings), 3.1 Schema (one table, additive only), 3.2 Resolution logic — `NavigationVisibilityResolver` (`PEMS.Web/Security/`), 3.3 Scope decision: full item-level drill-down for one module only, 3.4 Item→resource mapping (`NavigationCatalog.CmmsIntegrationItemResourceMap`), 3. What this phase added — the minimum additive layer, 4. Admin surfaces (+6 more)
-
-### Community 1493 - "PEMS Packaging — Configurability Architecture Audit"
-Cohesion: 0.13
-Nodes (14): 10. Safety review 2026-09-25 — supersedes the PASS wording in §2 and §9 where it conflicts, 1. Method, 2. Checklist (guide §32), 3. Findings, 4. Company Independence Test (design result), 5. Not Verified (cannot be, yet), 6. Implementation-Surface Validation, 7. What Is Required Next (+6 more)
-
-### Community 1494 - "PEMS Packaging — Final Decision Workshop Report"
-Cohesion: 0.13
-Nodes (14): 10. Exact Management Decisions Required, 11. Implementation-Surface Validation (run after all documents were written), 12. Files, 13. Addendum 2026-09-25 — Architecture decisions M-1…M-5, 1. Current State, 2. Decisions Requiring Approval, 3. Technical Recommendations (kept separate; none is an approval), 4. Actual Role Baseline (live database) (+6 more)
-
-### Community 1495 - ".CreateAsync"
-Cohesion: 0.54
-Nodes (4): Service, Fact, Task, ProcurementReportServiceTests
-
-### Community 1496 - "PEMS_OPERATIONS_PACKAGING_POLICY_INFRASTRUCTURE_TECHNICAL_DESIGN.md"
-Cohesion: 0.13
-Nodes (14): 21. Sign-off (architecture record), Architecture Decision Summary, Audit, Executive Summary, Failure Modes, Future Multi-Tenancy Impact, Open Questions, Packaging Integration Boundary (+6 more)
-
-### Community 1497 - "7. Role Responsibilities (detail)"
-Cohesion: 0.13
-Nodes (15): 7.10 Packaging Manager, 7.11 Laboratory Manager, 7.12 HSE Manager, 7.13 Security Manager, 7.14 Warehouse Manager, 7.1 Complex / Site Manager, 7.2 Maintenance Manager, 7.3 Finance Manager (+7 more)
-
-### Community 1498 - ".SeedAsync"
-Cohesion: 0.50
-Nodes (3): IServiceProvider, Task, OperationsOrganizationSeeder
-
-### Community 1499 - ".SeedAsync"
-Cohesion: 0.50
-Nodes (3): IServiceProvider, Task, QCDisciplineSeeder
-
-### Community 1500 - "WorkRequestAndWorkOrderLifecycle"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, WorkRequestAndWorkOrderLifecycle
-
-### Community 1501 - ".FindBestMatch"
-Cohesion: 0.32
-Nodes (4): Func, IReadOnlyList, Regex, DocumentNumberMatcher
-
-### Community 1502 - "PermitExecutionGate"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, PermitExecutionGate
-
-### Community 1503 - ".CommitBatchAsync"
-Cohesion: 0.10
-Nodes (19): ConditionReadingImportCommitResultDto, Conflicts, Created, Unresolved, ValidationErrors, ConditionReadingImportRowPayload, EquipmentTagRaw, NotesRaw (+11 more)
-
-### Community 1504 - "DocumentTypeCode"
+### Community 1551 - "SiteWideUiSystemTests"
 Cohesion: 0.11
-Nodes (14): Task, IDocumentNumberingService, DateTime, DocumentTypeCode, Code, CreatedDate, DocumentTypeCodeId, ImportAliases (+6 more)
+Nodes (4): EngineeringDocumentsUiTests, LanguagePurityTests, SiteWideUiSystemTests, DocumentStatusBadge
 
-### Community 1505 - "Roles/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1506 - "Discipline/Details.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1507 - ".Normalize_MapsToAllowedTheme_OrFallsBackToLight"
-Cohesion: 0.25
-Nodes (5): InlineData, Theory, HttpGet, IActionResult, ThemeController
-
-### Community 1508 - "PurchaseOrder/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): IEnumerable<PEMS.Application.DTOs.PurchaseOrderDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1509 - "Tender/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): IEnumerable<PEMS.Domain.Entities.Tender>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1510 - "ContractApprovalAuthority/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Domain.Entities.ContractApprovalAuthorityRule>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1511 - "IrnReceipt/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.IrnReceiptListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1512 - "Discipline/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1513 - "MrsImportController"
-Cohesion: 0.42
-Nodes (6): HttpPost, IActionResult, IFormFile, Task, ValidateAntiForgeryToken, MrsImportController
-
-### Community 1514 - "Report/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1515 - "TechnicalQuery/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1516 - "PurchaseOrder/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Application.DTOs.PurchaseOrderDto, SharedResource
-
-### Community 1517 - "pems-part-catalogue.js"
-Cohesion: 0.21
-Nodes (10): applyLocal(), applyNew(), debounce(), fire(), getJson(), initLookup(), close(), pick() (+2 more)
-
-### Community 1518 - "Tender/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Domain.Entities.Tender, SharedResource
-
-### Community 1519 - "Part Catalogue Request module (Warehouse) — implementation report"
-Cohesion: 0.20
-Nodes (9): 1. Moved routes (old → new, HTTP 301, GET/HEAD only, query string preserved), 2. Kept where they were (with reasons), 3. Migrations, 4. Decisions / deviations from the spec (flagged), 5. Flowchart steps I am unsure about (flagged `NeedsConfirmation`, editable in Admin), 6. "Needs confirmation" mappings, 7. Verification performed, 8. Known limitations (+1 more)
-
-### Community 1520 - "PEMS Operations Phase 2E — Packaging Business Governance Audit Report"
-Cohesion: 0.14
-Nodes (13): 10. Documents Produced by This Phase, 11. Unrelated Pre-existing Repository Change — Not Resolved in Phase 2E, 12. Final Recommendation, 1. Executive Summary, 2. Documents Audited (Phase 2D inputs), 3. Method, 4. Architecture Re-Verification — Claim by Claim, 5. Contradiction Found — Repository Process State (Documentation Discrepancy) (+5 more)
-
-### Community 1521 - "MaintenanceHistoryImportRowPayload"
-Cohesion: 0.20
-Nodes (10): MaintenanceHistoryImportRowPayload, ActionTakenRaw, CostRaw, DescriptionRaw, DurationHoursRaw, EquipmentTagRaw, ExecutionDateRaw, FindingRaw (+2 more)
-
-### Community 1522 - "DashboardSettings/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1523 - "DocumentWorkflow/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1524 - "EngineeringDocumentIntelligence/Review.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1525 - "ThreadMessageDto"
-Cohesion: 0.20
-Nodes (9): DateTime, ThreadMessageDto, Body, LetterDate, LetterId, LetterNumber, RecipientsSummary, SenderOrRegisteredByName (+1 more)
-
-### Community 1526 - "FunctionalLocationImportRowDto"
-Cohesion: 0.14
-Nodes (14): FunctionalLocationImportRowDto, Action, Code, FunctionalLocationImportRowId, IncludeInCommit, IsUpdate, Name, ParentAreaName (+6 more)
-
-### Community 1527 - "MyReferrals.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1528 - "DateTime"
-Cohesion: 0.29
-Nodes (7): DateTime, ProductionEventDto, Details, EmployeeName, EventDate, EventType, ProductionEventId
-
-### Community 1529 - "PurchaseOrder/Create.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1530 - "Phase4_Reliability"
-Cohesion: 0.22
-Nodes (5): MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, Phase4_Reliability
-
-### Community 1531 - "Tender/Create.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1532 - "AddInspectionMeasurementFields"
-Cohesion: 0.22
-Nodes (5): MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, AddInspectionMeasurementFields
-
-### Community 1533 - "DocumentRevisions/Create.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1534 - "Task"
-Cohesion: 0.08
-Nodes (28): WorkOrderCompletionData, ContractorCost, ContractorName, CorrectiveAction, DowntimeHours, FailureCauseCode, FailureEffect, FailureModeCode (+20 more)
-
-### Community 1535 - ".CreateController"
-Cohesion: 0.26
-Nodes (8): Fact, ForbidResult, InlineData, Task, Theory, ViewResult, CmmsOperationsNavigationExposureTests, SpyCmmsOperationsService
-
-### Community 1536 - "ConditionReadingImportController"
-Cohesion: 0.21
-Nodes (10): Stream, Task, IConditionReadingImportService, HttpGet, HttpPost, IActionResult, IFormFile, Task (+2 more)
-
-### Community 1537 - "Intake/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1538 - "ProcurementPackage/Details.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1539 - "ProductionRun/Create.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1540 - "MaintenanceStrategy"
-Cohesion: 0.38
-Nodes (4): MaintenanceStrategy, MaintenanceStrategyTypeLinkConfiguration, EntityTypeBuilder, MaintenanceStrategyCMConfiguration
-
-### Community 1542 - "StorageException"
-Cohesion: 0.22
-Nodes (11): StorageErrorCodes, StorageException, Code, CancellationToken, Stream, Task, SftpStorageProviderClient, Fact (+3 more)
-
-### Community 1543 - "AddDynamicMaintenanceOrganization"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddDynamicMaintenanceOrganization
-
-### Community 1544 - "AddWorkOrderScheduling"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddWorkOrderScheduling
-
-### Community 1545 - "AddNavigationVisibilityOverride"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, AddNavigationVisibilityOverride
-
-### Community 1546 - "Phase1_MechanicalPassport_CM_EvaluationProfile_Finding"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, Phase1_MechanicalPassport_CM_EvaluationProfile_Finding
-
-### Community 1547 - "Phase9_ConditionReadingImport"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, Phase9_ConditionReadingImport
-
-### Community 1548 - "Phase2_ConditionPriorityMapping"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, Phase2_ConditionPriorityMapping
-
-### Community 1549 - "Notification_DismissedDate"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, Notification_DismissedDate
-
-### Community 1550 - "PartCatalogue_Schema"
-Cohesion: 0.17
-Nodes (8): DateTime, MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, PartCatalogue_Schema
-
-### Community 1552 - "InventoryMasterDataController"
-Cohesion: 0.49
-Nodes (5): HttpPost, IActionResult, Task, ValidateAntiForgeryToken, InventoryMasterDataController
-
-### Community 1553 - "Packaging Business Sign-Off"
-Cohesion: 0.17
-Nodes (11): D1, D2, D3, D4, D5, D6, D7, E-4 (+3 more)
-
-### Community 1558 - "Phase3_MechanicalEquipmentPassport_UniqueIndexes"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, Phase3_MechanicalEquipmentPassport_UniqueIndexes
-
-### Community 1559 - "Phase4_MaintenanceStrategy_CBM_ConditionMonitoringLink"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, Phase4_MaintenanceStrategy_CBM_ConditionMonitoringLink
-
-### Community 1560 - "Phase3_ConditionReadingInstrumentLink"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, Phase3_ConditionReadingInstrumentLink
-
-### Community 1561 - "RoleCatalogMetadata"
-Cohesion: 0.18
-Nodes (7): MigrationBuilder, DateTime, DateTimeOffset, Guid, ModelBuilder, TimeSpan, RoleCatalogMetadata
-
-### Community 1562 - "VDRListItemDto"
-Cohesion: 0.18
-Nodes (10): VDRListItemDto, DocumentDescription, DocumentNumber, DocumentTypeCode, IsOverdue, LatestReviewCategory, LatestRevisionNo, VDRItemId (+2 more)
-
-### Community 1564 - "InstrumentPassportAndCalibrationHistory"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, InstrumentPassportAndCalibrationHistory
-
-### Community 1565 - "MaintenanceGroupLayer"
-Cohesion: 0.20
-Nodes (6): DateTime, MigrationBuilder, DateTime, DateTimeOffset, ModelBuilder, MaintenanceGroupLayer
-
-### Community 1566 - "WorkOrderSchedulingTests"
-Cohesion: 0.47
-Nodes (3): Fact, Task, WorkOrderSchedulingTests
-
-### Community 1567 - "LanguagePurityTests"
-Cohesion: 0.38
-Nodes (4): Dictionary, Fact, Regex, LanguagePurityTests
-
-### Community 1569 - "PEMS.WorkflowPlatform.Interfaces"
-Cohesion: 0.07
-Nodes (15): PEMS.Tests.PartCatalogue, PEMS.Tests.Workflow, PEMS.Persistence.Workflow, PEMS.WorkflowPlatform.Dtos, PEMS.Application.PartCatalogue, PEMS.WorkflowPlatform.Services, PEMS.Web.Routing, PEMS.Application.ActorResolution (+7 more)
-
-### Community 1570 - "PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring — Production Readiness Report"
-Cohesion: 0.20
-Nodes (9): 1. What was built (phase by phase), 2. Hard rules — compliance check, 3. What was NOT fabricated — spot-checked, 4. Verification methodology (be precise about what this is and isn't), 5. Regression results, 6. Permission wiring — a real gap found and fixed, 7. Known gaps — explicitly not done, not concealed, 8. Final verdict (+1 more)
-
-### Community 1571 - "Business Question"
-Cohesion: 0.20
-Nodes (10): 10. D7 — Quality Release Authority, BUSINESS DECISION, Business Question, Candidate Models, Current Finding, D7-A — Laboratory / QA Authority, D7-B — Existing QAManager Represents Laboratory Authority, D7-C — Dedicated Packaging Quality Role (+2 more)
-
-### Community 1572 - "Candidate Options"
-Cohesion: 0.20
-Nodes (10): 4. Decision Register, BUSINESS DECISION, Business Question, Candidate Options, D1-A — Filled Product Unit, D1-B — Generic Packaging Unit, D1-C — Logistics / Handling Unit, D1-D — Layered Model (+2 more)
-
-### Community 1573 - "Business Question"
-Cohesion: 0.20
-Nodes (10): 7. D4 — Gross / Tare / Net, BUSINESS DECISION, Business Question, D4-A, D4-B, D4-C, D4-D, Options (+2 more)
-
-### Community 1574 - "Business Question"
-Cohesion: 0.20
-Nodes (10): 9. D6 — Bulk vs Packaged Product Identity, BUSINESS DECISION, Business Question, Current Technical Evidence, D6-A — Same MaterialItem, D6-B — Separate MaterialItems, D6-C — Parent / Child Product Model, D6-D — Transformation / State Model (+2 more)
-
-### Community 1575 - "4. Packaging (new — depends entirely on Phase 3 entities)"
-Cohesion: 0.20
-Nodes (10): 4. Packaging (new — depends entirely on Phase 3 entities), KPI-PKG-01 — Packaging Attainment %, KPI-PKG-02 — Packaging Yield %, PI-PKG-01 — Package Count, PI-PKG-02 — Average Package Net Quantity, PI-PKG-03 — Packaging Cycle Time, PI-PKG-04 — Packaging Line Utilization %, PI-PKG-05 — Rework Rate % *(deferred data source — see §9)* (+2 more)
-
-### Community 1576 - "PEMS Operations Phase 2E — Packaging Executive Decision Pack"
-Cohesion: 0.20
-Nodes (9): Decision 1 — What exactly is a "Package"?, Decision 2 — Can one package ever hold more than one product?, Decision 3 — Can a package be made by blending more than one production batch?, Decision 4 — How do we weigh a package, and what number goes on the label? (Highest priority), Decision 5 — What happens when one package is split into two, or two are combined into one?, Decision 6 — Does packaging ever turn bulk material into a different, distinct product?, PEMS Operations Phase 2E — Packaging Executive Decision Pack, Sign-off (+1 more)
-
-### Community 1577 - "LocalOnlyUrlHelper"
-Cohesion: 0.20
-Nodes (5): IUrlHelper, LocalOnlyUrlHelper, ActionContext, UrlActionContext, UrlRouteContext
-
-### Community 1578 - "StoreRequisitionStatuses"
-Cohesion: 0.29
-Nodes (4): Dictionary, IReadOnlyList, MaterialReservationStatuses, StoreRequisitionStatuses
-
-### Community 1579 - "Diagnostics.cshtml"
-Cohesion: 0.40
-Nodes (4): IReadOnlyList<PEMS.Application.Organization.OrganizationIssue>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1580 - "StoreRequisitionListDto"
-Cohesion: 0.20
-Nodes (9): DateTime, StoreRequisitionListDto, Purpose, RequestedByName, RequestedDate, RequisitionNumber, Status, StoreRequisitionId (+1 more)
-
-### Community 1581 - "Organization/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.Organization.OrganizationPositionRow>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1582 - "EngineeringDocumentService"
-Cohesion: 0.07
-Nodes (16): DocumentRegisterFilterOptionsDto, Disciplines, Projects, Statuses, Items, Task, TotalMatching, IEngineeringDocumentRepository (+8 more)
-
-### Community 1583 - "23. Security Principles"
-Cohesion: 0.22
-Nodes (9): 23. Security Principles, Auditability, Default Deny, Explicit Grant, Least Privilege, Scope Awareness, Server-Side Enforcement, SoD (+1 more)
-
-### Community 1584 - "Business Question"
-Cohesion: 0.22
-Nodes (9): 5. D2 — Mixed Product Package, BUSINESS DECISION, Business Question, D2-A — Single Product, D2-B — Mixed Product, D2-C — Primary Product + Controlled Components, Options, Packaging Material Decision (+1 more)
-
-### Community 1585 - "6. Maintenance"
-Cohesion: 0.22
-Nodes (9): 6. Maintenance, KPI-MNT-01 — Equipment Availability %, KPI-MNT-02 — MTBF, KPI-MNT-03 — MTTR, KRI-MNT-01 — Maintenance Backlog (age-weighted), PI-MNT-01 — Planned Maintenance Compliance %, PI-MNT-02 — Bad Actor Contribution %, RI-MNT-01 — Breakdown Rate (+1 more)
-
-### Community 1586 - ".AddWorkingDays"
-Cohesion: 0.33
-Nodes (4): DateTime, WorkingDayCalculator, Fact, WorkingDayCalculatorTests
-
-### Community 1587 - ".Resolve"
-Cohesion: 0.29
-Nodes (4): Dictionary, MrsMetadataCanonicalMap, InlineData, Theory
-
-### Community 1588 - "PMGenerationResultDto"
-Cohesion: 0.40
-Nodes (4): PMGenerationResultDto, GeneratedWorkOrderNumbers, PlansSkippedAlreadyHasOpenWorkOrder, WorkOrdersGenerated
-
-### Community 1589 - "RawRow"
-Cohesion: 0.22
-Nodes (9): RawRow, DateRaw, EquipmentTagRaw, NotesRaw, ParsedDate, PointTagRaw, SourceRaw, SourceRowNumber (+1 more)
-
-### Community 1591 - "PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring — Phase 0 Audit"
-Cohesion: 0.25
-Nodes (7): 0. Headline finding, 1. Architecture map — REUSE / EXTEND / NEW, 2. What "Mechanical Equipment Passport" (§8) actually requires, 3. What "Condition Monitoring" (§27–§32) actually requires, 4. Risk register, 5. Phase 0 verdict, PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring — Phase 0 Audit
-
-### Community 1592 - "PEMS Packaging — Final Decision Readiness Audit"
-Cohesion: 0.25
-Nodes (7): 1. Classification by Area, 2. What Was Verified This Phase, 3. Findings, 4. Exactly What Is Required Before Phase 3A Can Begin, 5. Limits of This Audit, 6. Implementation-Surface Validation, PEMS Packaging — Final Decision Readiness Audit
-
-### Community 1593 - "PEMS Operations Phase 2G — Executive Decision Readiness Audit Report"
-Cohesion: 0.25
-Nodes (7): 1. Method, 2. Baseline Record, 3. Readiness of Each Decision for Owner Review, 4. Findings, 5. Role Mapping Verdict, 6. Conclusion, PEMS Operations Phase 2G — Executive Decision Readiness Audit Report
-
-### Community 1594 - "Business Question"
-Cohesion: 0.25
-Nodes (8): 6. D3 — Multi-Batch Package, BUSINESS DECISION, Business Question, D3-A — Single Batch, D3-B — Multiple Batches, D3-C — Primary Batch + Secondary Genealogy, Options, Technical Recommendation
-
-### Community 1595 - "5. Quality"
-Cohesion: 0.25
-Nodes (8): 5. Quality, KPI-QUA-01 — First-Pass Quality Rate %, KPI-QUA-02 — Quality Release Cycle Time, KRI-QUA-01 — Out-of-Specification (OOS) Rate %, PI-QUA-01 — Retest Rate %, RI-QUA-01 — Rejection Rate %, RI-QUA-02 — Blocked Product Rate %, RI-QUA-03 — Quality Deviation Rate
-
-### Community 1596 - "7. Inventory"
-Cohesion: 0.25
-Nodes (8): 7. Inventory, KPI-INV-01 — Inventory Accuracy %, KRI-INV-01 — Inventory Variance Value (Unexplained), KRI-INV-02 — Traceability Completeness %, PI-INV-01 — Released-Stock %, PI-INV-02 — Stock Reconciliation Completion %, PI-INV-03 — Inventory Posting Latency, RI-INV-01 — Blocked-Stock %
-
-### Community 1597 - "e1ce37e4-5b57-41c4-80c9-4669c2b3c40f_d08ecd0a.md"
-Cohesion: 0.25
-Nodes (7): Sheet: Bagging, Sheet: Chemical, Sheet: Grease, Sheet: MAX&MIN Pivot oil, Sheet: Oil, Sheet: original data base, Sheet: Safety
-
-### Community 1598 - "Result.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.Organization.OrganizationImportResult, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1601 - "11. Phase 4 — Administrative Authorization Surface"
-Cohesion: 0.29
-Nodes (7): 11. Phase 4 — Administrative Authorization Surface, Authorization Audit Viewer, Effective Permissions, Permission Matrix, Permission Simulator, Role provisioning, SoD Policy Administration
-
-### Community 1603 - "Options"
-Cohesion: 0.29
-Nodes (7): 11. E-4 — Packaging Permission Model, BUSINESS DECISION, E4-A — Reuse Production Permissions, E4-B — Dedicated Packaging Permission Module, E4-C — Hybrid, Options, Technical Recommendation
-
-### Community 1604 - "PEMS Operations Phase 2E — KPI / PI / RI / KRI Catalog"
-Cohesion: 0.29
-Nodes (6): 0. How to read this catalog, 12. Consolidation Notes (Section 37/36 compliance), 13. Summary Counts, 1. Metric Hierarchy, 2. Data Lineage — the authoritative chain every metric must trace to, PEMS Operations Phase 2E — KPI / PI / RI / KRI Catalog
-
-### Community 1605 - "8. Finance"
-Cohesion: 0.29
-Nodes (7): 8. Finance, KPI-FIN-01 — Packaging Cost per Unit, KPI-FIN-02 — Packaging Cost per Ton/Kg, KRI-FIN-01 — Large/Unusual Inventory Adjustment Value, PI-FIN-01 — Cost of Quality, RI-FIN-01 — Production Loss Cost, RI-FIN-02 — Packaging Loss Cost
-
-### Community 1606 - "9. HSE"
-Cohesion: 0.29
-Nodes (7): 9. HSE, KPI-HSE-01 — Recordable Incident Rate, KPI-HSE-02 — Stop-Work Events, KRI-HSE-01 — Open HSE Action Aging, PI-HSE-01 — Unsafe Condition Closure Time, RI-HSE-01 — Near-Miss Count, RI-HSE-02 — Packaging-Related Incidents/Near-Misses
-
-### Community 1607 - "PEMS Operations Phase 2G — Business Sign-off Baseline"
-Cohesion: 0.29
-Nodes (6): Architecture decisions (NOT business approvals; not read by the gate), Change Log, Decision Register, How the program re-evaluates the gate, Named-person fields (to be filled by the business), PEMS Operations Phase 2G — Business Sign-off Baseline
-
-### Community 1608 - "PEMS Operations Phase 2H — Architecture Activation Record"
-Cohesion: 0.29
-Nodes (6): 1. Freeze Status, 2. Activation Criteria, 3. Activation Procedure (unchanged from the freeze document §13), 4. Architecture Reuse Confirmed (pre-activation check), 5. Record, PEMS Operations Phase 2H — Architecture Activation Record
-
-### Community 1609 - "PEMS Operations Phase 2H — Final Decision Closure"
-Cohesion: 0.29
-Nodes (6): 1. Gate Evaluation (re-run this phase), 2. Phase 3 Sub-phase Gate, 3. Independent-Work Evaluation (the "continue what is not blocked" rule), 4. Technical Decisions Made (allowed because existing architecture determines them), 5. What Happens When Approvals Arrive, PEMS Operations Phase 2H — Final Decision Closure
-
-### Community 1610 - "PEMS Phase 3 — Packaging Activation Checklist"
-Cohesion: 0.29
-Nodes (6): A. Business gates (mandatory), B. Technical gates (mandatory), C. Standing preconditions (already true today — re-verify at activation), D. Later-phase gates (do not block 3A), E. On activation, PEMS Phase 3 — Packaging Activation Checklist
-
-### Community 1611 - "SkillSeeder"
-Cohesion: 0.40
-Nodes (4): DisciplineCode, IServiceProvider, Task, SkillSeeder
-
-### Community 1612 - "NavigationVisibilityResolver"
+### Community 1585 - "MaterialItemListDto"
 Cohesion: 0.13
-Nodes (16): HttpPost, IActionResult, RoleManager, Task, UserManager, ValidateAntiForgeryToken, NavigationVisibilityController, Func (+8 more)
+Nodes (15): MaterialItemListDto, CategoryName, Description, DisciplineName, IsActive, IsCritical, IsLowStock, IsStockItem (+7 more)
 
-### Community 1614 - "16. Work Order Security Invariants"
-Cohesion: 0.33
-Nodes (6): 16. Work Order Security Invariants, Actual Labor, Operations Issue / Release, Organization, Separation of Duties, Start Work
+### Community 1591 - "LetterComplianceReportDto"
+Cohesion: 0.06
+Nodes (32): LetterVersionDto, Body, Reason, SavedByName, SavedDate, Subject, VersionNo, ILetterComplianceService (+24 more)
 
-### Community 1615 - "27. Mandatory Audit Questions for Future Work"
-Cohesion: 0.33
-Nodes (6): 27. Mandatory Audit Questions for Future Work, Architecture, Runtime, Security, Testing, UI
+### Community 1592 - "DatabaseUpdateRun"
+Cohesion: 0.14
+Nodes (14): DatabaseUpdateRun, BackupFile, CompletedAtUtc, DatabaseUpdateRunId, Error, FromMigration, MigrationsApplied, Mode (+6 more)
 
-### Community 1616 - "PEMS Operations Phase 2H — Decision Closure Audit Report"
-Cohesion: 0.33
-Nodes (5): 1. What Was Checked, 2. Findings, 3. Limitations of This Audit, 4. Exit Status, PEMS Operations Phase 2H — Decision Closure Audit Report
+### Community 1593 - "BkChartSpec"
+Cohesion: 0.08
+Nodes (15): ChartComponentTests, BkChartSpec, AriaLabel, CenterLabel, Colors, Decimals, EmptyText, Kind (+7 more)
 
-### Community 1617 - "TI-1 Policy Infrastructure"
-Cohesion: 0.33
-Nodes (6): Boundary enforcement, Decision (ACCEPTED, design), Logical contracts (names indicative), TI-1 Policy Infrastructure, What it owns / does not own, Why two tables, not five
-
-### Community 1618 - "TI-3 Approval Role Mapping"
-Cohesion: 0.33
-Nodes (6): Decision (ACCEPTED, design), Mandatory safeguards (derived from repository findings), Not done / not invented, Options evaluated, Requirement, TI-3 Approval Role Mapping
-
-### Community 1619 - "Logical Data Model"
-Cohesion: 0.33
-Nodes (6): Deliberately absent, Logical Data Model, `PackagingPolicyValues` (domain-owned; not infrastructure), `PolicyDefinition` (infrastructure), `PolicyVersion` (infrastructure), Transactional references (added in later phases)
-
-### Community 1620 - "10. Security"
-Cohesion: 0.33
-Nodes (6): 10. Security, KRI-SEC-01 — Unauthorized Movement Events, KRI-SEC-02 — Suspicious Inventory Adjustment Events, PI-SEC-01 — Shipment Discrepancy Rate *(forward-looking — Shipment is out of scope)*, RI-SEC-01 — Barcode Replacement Rate, RI-SEC-02 — Access Violation Count
-
-### Community 1621 - "3fd7cedb-e10d-4640-9bab-27bb586dd654_bb19cbe4.md"
-Cohesion: 0.33
-Nodes (5): Sheet: IN, Sheet: Sheet1, Sheet: Sheet2, Sheet: Sheet3, Sheet: Sheet4
-
-### Community 1622 - "9c5fe8ca-8e1a-4e40-9b53-52a95ba0f811_c9f9e316.md"
-Cohesion: 0.33
-Nodes (5): Sheet: IN, Sheet: Sheet1, Sheet: Sheet2, Sheet: Sheet3, Sheet: Sheet4
-
-### Community 1623 - "IFtpUploadService"
-Cohesion: 0.33
-Nodes (4): Stream, Task, IFtpUploadService, IsConfigured
-
-### Community 1625 - "PEMS Authorization Architecture Baseline"
-Cohesion: 0.40
-Nodes (5): 1. Baseline Status, Baseline Date: 2026-09-29, Final Evidence, PEMS Authorization Architecture Baseline, Phase 1–5 Completion Baseline
-
-### Community 1626 - "Business Decision"
-Cohesion: 0.40
-Nodes (5): 8. D5 — Split / Merge / Repack, Acknowledgement, Business Decision, Future Requirements, Initial Implementation
-
-### Community 1627 - "TI-4 Scope Precedence"
-Cohesion: 0.40
-Nodes (5): Overlap and "effective dates overlap" cases, Precedence and rules, Scope context (input of a resolution), TI-4 Scope Precedence, What PEMS actually has (evidence)
-
-### Community 1628 - "11. Process / Engineering"
-Cohesion: 0.40
-Nodes (5): 11. Process / Engineering, KPI-PRC-01 — Technical Deviation Closure Time, PI-PRC-01 — Parameter Excursion Count, RI-PRC-01 — Process Deviation Rate, RI-PRC-02 — Root-Cause Recurrence Rate
-
-### Community 1629 - "3. Production (existing scope — context for Packaging metrics, not new)"
-Cohesion: 0.40
-Nodes (5): 3. Production (existing scope — context for Packaging metrics, not new), KPI-PRD-01 — Production Attainment %, KPI-PRD-02 — Production Yield %, PI-PRD-01 — Production Throughput, RI-PRD-01 — Production Loss %
-
-### Community 1630 - "ConditionReadingImport/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.ConditionReadingImportBatchSummaryDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1631 - "MyWork.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Application.DTOs.WorkOrderCalendarItemDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1632 - "Finding/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Domain.Entities.Finding>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1633 - "SoDPolicy/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Web.Areas.Admin.Models.SoDPolicyListItemVm>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1634 - "NavigationVisibility/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): List<PEMS.Web.Security.NavigationModuleNode>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1635 - "PartCatalogueAdmin/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PcAdminViewModel, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1636 - "PartCatalogueRequest/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PcIndexViewModel, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1638 - "CBMDashboard.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.CbmDashboardDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1639 - "Trend.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.ConditionMonitoringTrendDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1640 - "ConditionReadingImport/Review.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.ConditionReadingImportBatchDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1641 - "MaintenanceCalendar/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.MaintenanceCalendarResultDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1642 - "TeamDetails.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.OrganizationTeamNodeDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1643 - "MechanicalEquipment/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MechanicalEquipmentListDto>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1644 - "AuthorizationAudit/Index.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.DTOs.PagedResult<PEMS.Domain.Entities.AuthorizationAuditLog>, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1645 - "OrganizationImport/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1646 - "Users/Create.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1647 - "PartCatalogueRequest/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.Interfaces.PartCatalogueDetailsDto, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1648 - "ResolveResult"
+### Community 1599 - "RcmRealSqlTests.cs"
 Cohesion: 0.29
-Nodes (7): ResolveResult, DuplicateOfId, IncludeInCommit, Message, PointId, Status, ValidationStatus
+Nodes (3): PEMS.Persistence.DataMigrations, RcmDataMigrationSql, UpStatements
 
-### Community 1649 - "EffectiveRole.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Web.Areas.Admin.Models.EffectiveRoleVm, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1604 - "CriticalityDashboardDto"
+Cohesion: 0.14
+Nodes (13): CriticalityDashboardDto, Approved, Assessed, Draft, FrameworkVersion, PublishedCriticalityA, PublishedCriticalityB, PublishedCriticalityC (+5 more)
 
-### Community 1650 - "Authorization/EffectiveUser.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Web.Areas.Admin.Models.EffectiveUserVm, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1605 - "MaterialStockRowDto"
+Cohesion: 0.14
+Nodes (14): MaterialStockRowDto, AvailableQuantity, IsLowStock, IsOutOfStock, MaterialStockId, MaximumQuantity, MinimumQuantity, OnHandQuantity (+6 more)
 
-### Community 1651 - "NavigationVisibility/EffectiveUser.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Web.Areas.Admin.Models.NavigationVisibilityUserVm, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1612 - "ApplyRcmDecisionResultDto"
+Cohesion: 0.25
+Nodes (7): ApplyRcmDecisionResultDto, Error, MaintenancePlanId, MaintenancePlanWasReused, MaintenanceStrategyId, MaintenanceStrategyWasReused, Success
 
-### Community 1652 - "Authorization/Simulate.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Web.Areas.Admin.Models.SimulateFormVm, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1637 - "NumberingScheme"
+Cohesion: 0.09
+Nodes (20): DocumentNumberField, NumberingSchemeInput, NumberingSchemeView, NumberingContext, NumberingScheme, AllowManualEntry, Calendar, CreatedDate (+12 more)
 
-### Community 1653 - "SoDPolicy/Create.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Web.Areas.Admin.Models.SoDPolicyFormVm, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1654 - "Users/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Web.Areas.Admin.Models.UserWorkspaceVm, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1655 - "IrnReceipt/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Domain.Entities.IrnReceipt, SharedResource
-
-### Community 1656 - "PartCatalogueRequest/Edit.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PcEditViewModel, SharedResource
-
-### Community 1657 - "StoreRequisition/Details.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Domain.Entities.StoreRequisition, SharedResource
-
-### Community 1658 - "MechanicalEquipment/Edit.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Domain.Entities.MechanicalEquipment, SharedResource
-
-### Community 1659 - "MechanicalEquipment/Passport.cshtml"
-Cohesion: 0.40
-Nodes (4): IStringLocalizer, Microsoft.Extensions.Localization, PEMS.Domain.Entities.MechanicalEquipment, SharedResource
+### Community 1648 - "Skill"
+Cohesion: 0.05
+Nodes (39): EmployeeSkill, CertifiedDate, CreatedDate, Employee, EmployeeId, EmployeeSkillId, IsActive, ProficiencyLevel (+31 more)
 
 ### Community 1660 - "pems-maintenance-calendar.js"
 Cohesion: 0.60
 Nodes (3): antiForgeryToken(), reschedule(), showError()
 
-### Community 1661 - "Policy Resolution Model"
-Cohesion: 0.50
-Nodes (4): Caching (design constraints), Contract (logical), Explanation example, Policy Resolution Model
+### Community 1715 - "ProductionBatchDto"
+Cohesion: 0.04
+Nodes (49): ProductionBatchDto, BatchNumber, MaterialCode, MaterialDescription, MaterialItemId, Notes, OrderNumber, ProducedDate (+41 more)
 
-### Community 1662 - "TI-2 Policy Value Representation"
-Cohesion: 0.50
-Nodes (4): Decision (ACCEPTED, design), Evaluated options, Residual technical detail (3A design freeze, not decided here), TI-2 Policy Value Representation
+### Community 1724 - "init"
+Cohesion: 0.28
+Nodes (12): applyColumns(), archiveReasonValid(), format(), init(), checkedIds(), refresh(), syncToggles(), parseHidden() (+4 more)
 
-### Community 1663 - "Users/Edit.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1730 - "MaintenanceStrategyController"
+Cohesion: 0.20
+Nodes (4): NotFound, IStrategyCoverageService, IMaintenanceStrategyService, MaintenanceStrategyController
 
-### Community 1664 - "RoutingRules/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1735 - "deploy.ps1"
+Cohesion: 0.44
+Nodes (8): Confirm-Host(), Copy-ToRemote(), Fail(), Invoke-Remote(), Row(), Sync-Kit(), Test-LocalAndSsh(), Write-Step()
 
-### Community 1665 - "DocumentRegister/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1761 - "pems-skeleton.js"
+Cohesion: 0.52
+Nodes (6): bar(), clamp(), defaultLabel(), esc(), html(), show()
 
-### Community 1666 - "Admin/Views/Help/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1765 - "InventoryTransactionRowDto"
+Cohesion: 0.12
+Nodes (14): InventoryTransactionRowDto, EmployeeName, InventoryTransactionId, MaterialCode, MaterialDescription, Quantity, Reason, ReferenceId (+6 more)
 
-### Community 1667 - "Inventory/Index.cshtml"
+### Community 1769 - "PemsLinuxProbe.csproj"
 Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+Nodes (3): net10.0, Tesseract (5.2.0), Microsoft.NET.Sdk
 
-### Community 1669 - "DocumentRevisions/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1772 - "AdminBaseDataListPagesTests.Logs_FilterRowsMoveIntoTheDropdown_AndEachActiveFilterIsAChip"
+Cohesion: 0.15
+Nodes (12): AdminBaseDataListPagesTests, AuthorizationAuditController, SecurityEventsController, UserListItemViewModel, Email, FullName, Id, IsActive (+4 more)
 
-### Community 1671 - "NcrIndex.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1808 - "EquipmentFunctionalLocationAssignmentRowPayload"
+Cohesion: 0.12
+Nodes (14): EquipmentFunctionalLocationAssignmentRowPayload, AreaRaw, EquipmentTagRaw, FunctionalLocationCodeRaw, PlantRaw, UnitRaw, ResolveResult, EquipmentId (+6 more)
 
-### Community 1672 - "Cmms.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1822 - "AssetSummaryDto"
+Cohesion: 0.22
+Nodes (9): AssetSummaryDto, AssetId, AssetNumber, CommissioningDate, CriticalityClass, FunctionalLocation, FunctionalLocationBreadcrumb, MaintenanceClass (+1 more)
 
-### Community 1673 - "GlobalSearch/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1824 - "CartableRulesTests"
+Cohesion: 0.11
+Nodes (13): LetterFolders, LetterRoutingCondition, IsEmpty, LetterRoutingFacts, LetterRoutingRuleEvaluator, Node, TagTreeRules, TagTreeOpResult (+5 more)
 
-### Community 1674 - "OrganizationChart.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1846 - "TenderApprovalSeparation"
+Cohesion: 0.33
+Nodes (5): TenderApprovalSeparation, Allowed, AllowedBySystemAdminExemption, DeniedCreator, DeniedUnverifiable
 
-### Community 1675 - "AISearch/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+### Community 1848 - "ApplicationUser"
+Cohesion: 0.04
+Nodes (54): PasswordHistoryEntry, PasswordHash, PasswordHistoryEntryId, ReplacedAtUtc, UserId, PasswordHistoryEntryConfiguration, ApplicationUser, CreatedDate (+46 more)
 
-### Community 1676 - "14. SoD Architecture"
+### Community 1849 - "MaintenancePlanController"
+Cohesion: 0.15
+Nodes (4): IFailureModeCatalogService, IMaintenancePlanService, FailureModeCatalogController, MaintenancePlanController
+
+### Community 1866 - "pems-list.js"
+Cohesion: 0.26
+Nodes (8): boot(), initBulk(), ticked(), update(), initGrid(), initKpis(), initResetColumns(), initSearch()
+
+### Community 1868 - "SoDPolicyListItemVm"
+Cohesion: 0.33
+Nodes (6): SoDPolicyListItemVm, Description, Id, IsActive, PermissionA, PermissionB
+
+### Community 1870 - "filter"
+Cohesion: 0.32
+Nodes (10): format(), init(), expand(), filter(), hide(), label(), restore(), units() (+2 more)
+
+### Community 1877 - "CriticalityAssessmentListDto"
+Cohesion: 0.10
+Nodes (19): CriticalityAssessmentEvidenceDto, CreatedBy, CreatedDate, CriticalityAssessmentEvidenceId, Description, Reference, SourceIdentifier, SourceType (+11 more)
+
+### Community 1885 - "PEMS.Licensing.csproj"
+Cohesion: 0.20
+Nodes (8): Microsoft.Data.Sqlite (10.0.12), System.Management (10.0.12), net10.0, BouncyCastle.Cryptography (2.6.2), Microsoft.NET.Sdk, net10.0, BouncyCastle.Cryptography (2.6.2), Microsoft.NET.Sdk.Web
+
+### Community 1887 - "ConditionMonitoringTrendDto"
+Cohesion: 0.07
+Nodes (28): CbmDashboardOverdueRowDto, DaysOverdue, EquipmentId, EquipmentTagNumber, NextDueDate, Tag, VariableType, ConditionMonitoringFoundationStatusDto (+20 more)
+
+### Community 1889 - "RolePermissionChangeResult"
+Cohesion: 0.22
+Nodes (9): PermissionChangeReasons, PermissionToggleResult, Applied, PermissionName, Reason, RolePermissionChangeResult, AffectedRoles, AppliedCount (+1 more)
+
+### Community 1903 - "DefinitionReference"
+Cohesion: 0.25
+Nodes (8): DefinitionReference, DefinitionReferenceId, FromVersion, FromVersionId, Role, ToKey, ToKind, DefinitionReferenceConfiguration
+
+### Community 1905 - "RazorViewRenderer.RenderAsync"
+Cohesion: 0.05
+Nodes (15): PermissionViewRenderTests, ExecutiveKpiPageTests, LetterPhase2ViewTests, FakeReminders, Calls, FakeTemplates, Items, FakeUser (+7 more)
+
+### Community 1906 - "pems-confirm.js"
+Cohesion: 0.27
+Nodes (4): ask(), build(), el(), text()
+
+### Community 1907 - "HelpNodeTreeItem"
+Cohesion: 0.22
+Nodes (7): HelpVisualTreeBuilder, HelpNodeTreeItem, Children, IconCssClass, IncomingEdgeLabel, IsRoot, Label
+
+### Community 1908 - "pems-org-chart-logic.js"
+Cohesion: 0.36
+Nodes (8): filterOptions(), filterTree(), normalize(), pruneGroup(), pruneTeam(), summarize(), walkGroups(), walkTeams()
+
+### Community 1936 - "pems-overlay.js"
+Cohesion: 0.43
+Nodes (4): init(), initDialog(), initMenu(), initTabs()
+
+### Community 1938 - "wireCombobox"
+Cohesion: 0.48
+Nodes (7): searchDirectory(), wireCombobox(), choose(), close(), render(), run(), setActive()
+
+### Community 1951 - "Ledger.cshtml"
+Cohesion: 0.33
+Nodes (5): LedgerModel, LedgerRow, EffectiveStatus, OnGet, OnPostRevoke
+
+### Community 2094 - "smoke-test.sh"
+Cohesion: 0.70
+Nodes (4): check(), code_of(), retry_code(), smoke-test.sh script
+
+### Community 2095 - "test-migration-chain.sh"
+Cohesion: 0.90
+Nodes (4): assert_nothing_pending(), fail(), test-migration-chain.sh script, update_to()
+
+### Community 2463 - "backup-database.sh"
 Cohesion: 0.67
-Nodes (3): 14. SoD Architecture, Generic authorization SoD, Work Order-specific SoD
-
-### Community 1677 - "18. Testing Baseline"
-Cohesion: 0.67
-Nodes (3): 18. Testing Baseline, Focused Tests, Full Regression
-
-### Community 1678 - "24. Deferred Hardening Items"
-Cohesion: 0.67
-Nodes (3): 24.1 Codebase-Wide Direct HTTP Attack Suite, 24.2 RoleModuleAction Administration, 24. Deferred Hardening Items
-
-### Community 1679 - "4. Core Sources of Authority"
-Cohesion: 0.67
-Nodes (3): 4.1 Runtime Authorization, 4.2 Runtime Permission Grants, 4. Core Sources of Authority
-
-### Community 1680 - "12. E-5 — Organizational Role Mapping"
-Cohesion: 0.67
-Nodes (3): 12. E-5 — Organizational Role Mapping, BUSINESS DECISION, Mandatory Rule
-
-### Community 1681 - "Current PEMS Findings"
-Cohesion: 0.67
-Nodes (3): Current PEMS Findings, F.1 Candidate inventory (reuse assessment), F.2 Corrections to earlier statements
-
-### Community 1701 - "MOC/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1702 - "Performance/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1703 - "Projects/Create.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1704 - "EngineeringDocuments/Edit.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1705 - "BulkCreate.cshtml"
-Cohesion: 0.50
-Nodes (3): FunctionalLocationPickerItemDto, IStringLocalizer, SharedResource
-
-### Community 1706 - "_ResolutionPreview.cshtml"
-Cohesion: 0.40
-Nodes (4): PEMS.Application.ActorResolution.ActorResolutionResult, IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1707 - "MDRImport/Review.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1708 - "Projects/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1709 - "_PageHeader.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1710 - "Tag/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1711 - "PermissionMatrix/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1712 - "VDRImport/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1713 - "WorkRequest/Create.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1714 - "EngineeringDocumentIntelligence/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1717 - "OCRProcessing/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
-
-### Community 1719 - "Relationship/Index.cshtml"
-Cohesion: 0.50
-Nodes (3): IStringLocalizer, Microsoft.Extensions.Localization, SharedResource
+Nodes (3): field(), backup-database.sh script, SQLCMDPASSWORD
 
 ## Knowledge Gaps
-- **15453 isolated node(s):** `fs`, `path`, `fs`, `path`, `fs` (+15448 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 19152 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **114 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **13769 isolated node(s):** `UserId`, `UserName`, `FullName`, `IsAuthenticated`, `Roles` (+13764 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 15272 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **234 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `PEMSDbContext` connect `PEMSDbContext` to `.CreateService`, `DocumentHoldService`, `GlobalSearchResultItemDto`, `HelpArticleAdminEditDto`, `DisciplineWorkspaceDto`, `EmployeeSkill`, `.SeedFullBaselineAsync`, `EngineeringRevisionQualityDto`, `Task`, `.CreateInfra`, `EmployeeCertification`, `SparePart`, `CrewMember`, `.CreateInMemory`, `WorkOrderLabor`, `RoutingRuleService`, `ActorResolutionResult`, `RamAnalysisDto`, `.CreateInfra`, `EngineeringDocumentsController`, `MrsImportRow`, `WorkOrder`, `PartCatalogueRequest`, `CriticalityAssessment`, `Task`, `WorkRequestConcurrencyGateTests`, `WorkOrderController`, `.CreateController`, `.CreateController`, `ReliabilityIntelligenceService`, `ManufacturerDataBook`, `HelpStandardReferenceAdminEditDto`, `LetterController`, `WorkRequestWorkflowTests`, `MDRImportController`, `WorkOrder`, `HelpController`, `Controller`, `.CreateController`, `Transmittal`, `.CreateController`, `TableExtractionRow`, `DocumentSearchRequest`, `DocumentRegisterFilter`, `VDRImportController`, `.ChainAsync`, `OrganizationHierarchyService`, `VDRController`, `DocumentAttachment`, `IrnReceipt`, `.SeedBaselineAsync`, `PermitListDto`, `AccessControlService`, `Code`, `.CreateController`, `AccessControlRequest`, `ContractController`, `ShiftHandover`, `WorkOrderConcurrencyGateTests`, `EmployeeController`, `TableExtractionController`, `FunctionalLocationImportService`, `SimopsConflict`, `TechnicalQueryService`, `MOCController`, `CriticalityAssessmentService`, `StorageProviderDto`, `MrsImportRowDto`, `Task`, `DocumentComment`, `MDRImportService`, `Employee`, `FilesControllerAccessTests`, `ConditionMonitoringPoint`, `FMEAItem`, `PurchaseOrderDto`, `.SeedFullBaselineAsync`, `ISearchableEntityProvider`, `.CreateController`, `QCController`, `StorageProvider`, `TechnicalQueryController`, `FunctionalLocationImportController`, `.CreateAsync`, `TransmittalService`, `VDRItem`, `PagedResult`, `.SeedFullBaselineAsync`, `.ExecuteActionAsync`, `DocumentWorkflow`, `DocumentRegisterController`, `PcActor`, `.CreateController`, `.CreateController`, `ProductionDowntimeEvent`, `RolePermissionGrant`, `INumberingService`, `FailureRecord`, `.NewItem`, `.CreateController`, `WorkflowAuthorizationContext`, `MaterialItemController`, `VDRService`, `CorrespondenceReportDto`, `.SeedAsync`, `DocumentWorkflowController`, `.RunPagedQuery`, `.SeedFromLegacyAsync`, `DocumentIntelligenceDetailDto`, `PredictiveMaintenanceResult`, `.CreateController`, `WorkflowStage`, `WorkflowActor`, `StorageRouteUpsertRequest`, `IsolationPoint`, `NumberingService`, `.SeedAsync`, `EngineeringReportDto`, `.CreateInfra`, `List<`, `RolePermission`, `.CreateController`, `WorkRequestStatusHistory`, `.RunIndex`, `ProductionOrderService`, `ICurrentUserContext`, `HelpArticle`, `ChatAssistantService`, `MaintenanceKpiDto`, `MaintenancePlanListDto`, `.NewEnvAsync`, `BarcodeService`, `MOCService`, `LetterStar`, `DelayRootCauseAnalysisDto`, `.Seed`, `.SeedDocumentWithRevisionAAsync`, `NonConformanceReport`, `EngineeringDocument`, `Bid`, `GasTestListDto`, `WorkflowAdministrationService`, `ProcurementPipelineRowDto`, `VdrWorkflowService`, `AuditLog`, `.CreateService`, `MaterialStock`, `AIReliabilityInsightDto`, `ProductionTargetDto`, `StorageRoute`, `TeamController`, `HelpVisualDefinition`, `AIDocumentClassification`, `FunctionalLocationService`, `RoleListItemViewModel`, `ReliabilityController`, `MaintenanceHistoryImportService`, `RcmFmeaController`, `IFunctionalLocationService`, `.HasPermissionAsync`, `IWebAuthnService`, `RcmReviewRecommendation`, `.CreateInfra`, `MaterialRequisition`, `WorkOrderCalendarItemDto`, `WorkOrderTask`, `RelationshipService`, `Finding`, `ContractDto`, `SetupStepDto`, `EnterpriseFileStorageService`, `NotificationLifecycleTests`, `BarcodeController`, `VDRImportRowPayload`, `.SeedAuthorizationAsync`, `.NewPlan`, `.CreateAsync`, `ProcurementPackageService`, `MaterialReservation`, `ProcurementCommunication`, `PartCatalogueSeeder`, `.CreateController`, `WorkflowInstance`, `ProductionOrder`, `EmployeeLaborRate`, `ManagerChainResult`, `IrnReceiptStatusHistory`, `BarcodeIdentity`, `.SeedBaselineAsync`, `Discipline`, `ReportController`, `Ctx`, `OrganizationResolver`, `InstrumentController`, `StoreRequisitionLifecycleService`, `ShiftHandoverStatusHistory`, `.CreateController`, `Alarm`, `NotificationDto`, `OrganizationStructureService`, `.Seed`, `.StageFromExcelAsync`, `CalibrationHistory`, `PredictiveMaintenanceModelDto`, `EvaluationProfile`, `ShiftHandoverController`, `CmmsReportDto`, `.A`, `ApplicationUser`, `EquipmentImportController`, `TagDto`, `MDRImportBatch`, `.CreateController`, `EquipmentFunctionalLocationAssignmentRow`, `MechanicalEquipment`, `GlobalSearchResults`, `.HasActionAsync`, `.SeedRunningRunAsync`, `FunctionalLocationImportRow`, `Project`, `MaterialStockService`, `Equipment`, `.ImportAsync`, `.CreateService`, `MaintenancePlan`, `BidNegotiation`, `.CreateController`, `VDRImportBatch`, `WorkRequestController`, `IFileStorageService`, `.CreateService`, `MaintenanceHistoryImportRow`, `Cable`, `.CreateService`, `.UploadPhoto`, `IRoleModuleActionService`, `UsersController`, `EquipmentFunctionalLocationAssignmentService`, `Vendor`, `TeamMember`, `Valve`, `IOllamaService`, `.SeedFullBaselineAsync`, `.AddLaborEntryAsync`, `.CreateService`, `.SeedAsync`, `EngineeringDocumentListFilter`, `DocumentRevisionDto`, `.CreateService`, `MaintenanceStrategyListDto`, `PermitApprovalAuditRecord`, `MeetingDto`, `ProductionRunController`, `.SearchAsync`, `EquipmentImportBatch`, `HomeController`, `IOPoint`, `.SeedAsync`, `DocumentUploadController`, `.SeedAsync`, `.SeedClassAsync`, `EquipmentImportBatchDto`, `MaintenanceHistory`, `.SeedDocumentWithTwoRevisions`, `InventoryTransaction`, `ManufacturerDataBookService`, `HelpStandardReference`, `TaskItem`, `.CreateController`, `Task`, `WebAuthnCredential`, `IntakeService`, `Meeting`, `ModulePermissionInput`, `EffectivePermissionDto`, `WorkflowConfigAudit`, `WorkflowStageEditModel`, `HelpVisual`, `EquipmentClassificationSuggestion`, `.AuthorizeSensitiveActionAsync`, `.CreateService`, `.CreateService`, `SimulateFormVm`, `WorkOrderActor`, `.CreateIsolatedSqlServerOrThrow`, `.SeedRunWithOutputAsync`, `AuthorizationAuditLog`, `.CreateController`, `Asset`, `TransmittalRecipient`, `EmployeeAssignment`, `EquipmentDatasheet`, `JobPlanController`, `InspectionService`, `IrnDispositionRecord`, `.SearchAsync`, `.CreateService`, `.CreateService`, `.Seed`, `.Seed`, `DocumentHold`, `TenderService`, `.OnModelCreating`, `MDBController`, `ExecutionGateDecision`, `ConditionReadingImportRow`, `.CreateService`, `.NewAsync`, `ContractNTP`, `MaterialRequisitionController`, `.CreateController`, `.SeedAsync`, `.CreateService`, `.SeedAsync`, `NavigationVisibilityOverride`, `VDRImportServiceVendorResolutionTests`, `TenderController`, `ProductionWorkCenter`, `ProductionRun`, `.CreateController`, `PipeSpecification`, `NavigationVisibilityOverrideDto`, `InspectionChecklist`, `CmmsOperationsDashboardDto`, `.AddOrReactivateAsync`, `IDocumentCommentService`, `.SeedAsync`, `.Seed`, `.CreateSqlServerOrThrow`, `.CreateController`, `UserDashboardWidgetDto`, `AIExtractionController`, `Contract`, `.CreateRepo`, `.SeedAsync`, `IEntityTypeConfiguration`, `ConditionReadingImportService`, `IsolationStatusHistory`, `MaterialCategory`, `DisciplineTask`, `CrewController`, `FunctionalLocationImportBatch`, `ProcurementApproval`, `.SeedAsync`, `.CreateController`, `.CreateServiceAsync`, `.StageFromExcelAsync`, `RoutingRule`, `OrganizationChartTests`, `ProductionOrderController`, `LetterReferralDto`, `IrnReceiptLine`, `SimopsInteractionRule`, `EngineeringWorkflowTestBase`, `SimopsController`, `.SeedReservedAsync`, `.CreateController`, `IIntakeService`, `HelpArticleTranslation`, `.CreateController`, `IVendorRiskService`, `.Seed`, `PipingComponent`, `HelpVisualAdminEditDto`, `.CreateService`, `.SaveChangesAsync`, `.CreateService`, `DepartmentController`, `PermissionService`, `MaterialRequisitionItem`, `EquipmentFunctionalLocationAssignmentController`, `.SeedAsync`, `BidEvaluation`, `.CreateServiceAsync`, `MaintenanceHistoryImportController`, `.SeedAsync`, `.CreateService`, `InspectionController`, `Panel`, `.CreateAsync`, `StoreRequisitionController`, `.SeedAsync`, `.CreateService`, `.CreateService`, `GasParameterLimit`, `HelpWorkflowDiagramService`, `.SeedAllAsync`, `DocumentIdcReferral`, `MDBDocument`, `Success`, `PipingLine`, `RCMService`, `AIReliabilityInsight`, `VendorDocumentTypologyCode`, `.CreateController`, `.CreateService`, `AIExtractedTag`, `IrnReceiptController`, `.SeedAllAsync`, `.CreateService`, `.SetQualificationAsync`, `.SearchAsync`, `EngineeringRelationship`, `MechanicalEquipmentController`, `MaintenancePlanController`, `.Create`, `ProcurementCommunicationResponse`, `FindingController`, `ConditionPriorityMapping`, `PEMSDbContextFactory`, `EquipmentReadinessService`, `.CreateAsync`, `.CreateService`, `PMTemplate`, `.SeedAsync`, `.CreateAsync`, `.SeedAsync`, `.SeedAsync`, `DocumentTypeCode`, `MrsImportController`, `Task`, `ConditionReadingImportController`, `MaintenanceStrategy`, `InventoryMasterDataController`, `PEMS.WorkflowPlatform.Interfaces`, `SkillSeeder`?**
-  _High betweenness centrality (0.200) - this node is a cross-community bridge._
-- **Why does `List<` connect `List<` to `ConditionReadingImportController`, `PEMSDbContext`, `DocumentHoldService`, `IDocumentCommentService`, `HelpArticleAdminEditDto`, `MaterialStockService`, `Project`, `GlobalSearchResultItemDto`, `EquipmentDashboardDto`, `.ImportAsync`, `DisciplineWorkspaceDto`, `.SeedAsync`, `EngineeringRevisionQualityDto`, `.CreateInfra`, `UserDashboardWidgetDto`, `.CreateInMemory`, `ActorResolutionResult`, `ReviewQueueItemDto`, `RamAnalysisDto`, `ConditionReadingImportService`, `.CreateInfra`, `EngineeringDocumentsController`, `UserFormViewModel`, `EngineeringDocumentService`, `TransmittalDto`, `PMGenerationResultDto`, `VDRItemDto`, `EngineeringDocumentDto`, `MDRImportRowPayload`, `ProjectIntelligenceModule`, `WorkRequestDetailDto`, `WorkflowBindingImpact`, `Task`, `WorkOrderController`, `LetterReferralDto`, `.CreateController`, `NavigationVisibilityResolver`, `ReliabilityIntelligenceService`, `ShiftHandoverDetailDto`, `LetterDto`, `WorkflowRuntimeViewModel`, `WorkflowInstanceDto`, `HelpStandardReferenceAdminEditDto`, `MRDto`, `CriticalityAssessmentDetailDto`, `LetterController`, `WorkRequestWorkflowTests`, `MDRImportController`, `WorkOrder`, `Controller`, `.CommitBatchAsync`, `DocumentSearchRequest`, `BarcodeIdentityDto`, `ExtractedDocumentInfo`, `DocumentRegisterFilter`, `IRoleModuleActionService`, `VDRImportController`, `OrganizationHierarchyService`, `EquipmentFunctionalLocationAssignmentService`, `Vendor`, `InspectionListItemDto`, `BarcodeLabelContent`, `.ChainAsync`, `UsersController`, `HelpVisualAdminEditDto`, `.SeedBaselineAsync`, `PermitListDto`, `VDRController`, `EquipmentClassCoverageDto`, `AccessControlService`, `.SaveChangesAsync`, `RelationshipController`, `ResourceHeaderViewModel`, `ClassificationDashboardDto`, `KnowledgeBaseSearchResultDto`, `.ExecuteActionAsync`, `WorkflowDefinitionRow`, `PermissionService`, `ShiftHandover`, `EquipmentIntelligenceProfileDto`, `IOllamaService`, `MaterialItemDetailDto`, `EngineeringDocumentIntelligenceController`, `FMEAItemDto`, `Task`, `EmployeeController`, `TableExtractionController`, `IsolationPointListDto`, `IVdrWorkflowService`, `EquipmentClassRcmFmeaReadinessDto`, `ConditionMonitoringPointDto`, `VendorController`, `StorageProviderDto`, `MrsImportRowDto`, `.SeedAsync`, `StageDiagramItem`, `MDRImportService`, `ProductionOrderDto`, `PurchaseOrderDto`, `RoutingRuleDto`, `.SeedFullBaselineAsync`, `.CreateController`, `.CreateAsync`, `TransmittalService`, `PagedResult`, `CbmDashboardDto`, `PartCatalogueDetailsDto`, `MaintenanceEffectivenessDto`, `INotificationService`, `DocumentWorkflow`, `DocumentRegisterController`, `PcActor`, `Success`, `PartCatalogueRulesAndRoutingTests`, `EquipmentMaintenanceIntelligenceDto`, `INumberingService`, `FailureRecord`, `RCMService`, `WorkflowAuthorizationContext`, `VDRService`, `RcmReviewRecommendationDto`, `CorrespondenceReportDto`, `.SeedAsync`, `SimopsConflictListDto`, `.CreateController`, `.RunPagedQuery`, `DashboardViewModel`, `DocumentIntelligenceDetailDto`, `GlobalSearchResponseDto`, `StorageRouteUpsertRequest`, `EngineeringReportDto`, `ProcurementPackageDto`, `MeetingDto`, `ICurrentUserContext`, `ConditionMonitoringFoundationStatusDto`, `ChatAssistantService`, `MaintenanceKpiDto`, `.SearchAsync`, `.NewEnvAsync`, `GasTest`, `BarcodeService`, `HomeController`, `DelayRootCauseAnalysisDto`, `.SeedDocumentWithRevisionAAsync`, `EquipmentReliabilityDto`, `PartCatalogueFormDto`, `VDRReportDto`, `FakeClients`, `DocumentUploadController`, `.GetPassportAsync`, `NavigationModuleNode`, `EquipmentImportBatchDto`, `WorkflowGraphNode`, `EngineeringDocument`, `GasTestListDto`, `WorkflowAdminActor`, `WorkflowAdministrationService`, `ManufacturerDataBookService`, `WorkflowManagementController`, `AIReliabilityInsightDto`, `ProductionTargetDto`, `TaskItem`, `Task`, `TeamController`, `WebAuthnCredential`, `HelpVisualDefinition`, `ClassActivationBacklogItemDto`, `NavigationUserModuleNode`, `FunctionalLocationService`, `DeterministicTableExtractor`, `ReliabilityController`, `EffectivePermissionDto`, `PcAdminOverview`, `RcmFmeaController`, `IFunctionalLocationService`, `Task`, `WorkflowConfigAudit`, `ClassIntelligenceProfileDto`, `WorkflowConditionEvaluator`, `FunctionalLocationListDto`, `AIAnalysisResult`, `EquipmentDto`, `WorkOrderCalendarItemDto`, `ProcurementReportDto`, `MaintenanceHistoryImportBatchSummaryDto`, `RelationshipService`, `ManufacturerDataBookDto`, `FakeLetterService`, `ContractDto`, `WorkOrderActor`, `SetupStepDto`, `.SearchAsync`, `SimulateFormVm`, `NotificationLifecycleTests`, `BarcodeController`, `PermitDetailDto`, `VDRImportRowPayload`, `.SeedAuthorizationAsync`, `VDRDashboardDto`, `ProcurementPackageService`, `ProductionDashboardDto`, `EquipmentFunctionalLocationAssignmentBatchSummaryDto`, `ExtractedTableDocumentInfo`, `EmployeeAssignment`, `.CreateAsync`, `.Create`, `InspectionService`, `.SearchAsync`, `WorkflowInstance`, `EmployeeLaborRate`, `ManagerChainResult`, `FunctionalLocationImportBatchDto`, `ExecutionGateDecision`, `EquipmentPassportDto`, `.NewAsync`, `ShiftHandoverStatusHistory`, `MaterialRequisitionController`, `NotificationDto`, `.SeedAsync`, `AssetDetailDto`, `OrganizationStructureService`, `UserWorkspaceVm`, `.CreateController`, `.CreateController`, `OrganizationTeamNodeDto`, `WorkflowDesignerModel`, `EquipmentReadinessService`, `IManufacturerDataBookService`, `ImportCenterNavigationTests`, `WorkflowPlatformContracts.cs`, `PEMS.Web.Resources`, `PredictiveMaintenanceModelDto`, `EvaluationProfile`, `ShiftHandoverController`, `CmmsReportDto`, `ITextExtractor`, `FakePermissionService`, `EquipmentImportController`, `TagDto`, `.CommitBatchAsync`, `RelationshipGapItemDto`, `MrsImportController`, `ProductionRunDto`, `NavigationVisibilityOverrideDto`, `GlobalSearchResults`, `RelationshipExplorationDto`, `StorageHealthResultDto`?**
-  _High betweenness centrality (0.144) - this node is a cross-community bridge._
-- **Why does `PEMS.Persistence.Context` connect `PEMS.Application.DTOs` to `.BuildModel`, `PEMS.Persistence.Services`, `PEMS.Web.Controllers`, `AddReliabilityAnalyticsIndexes`, `AddDynamicMaintenanceOrganization`, `AddWorkOrderScheduling`, `AddNavigationVisibilityOverride`, `Phase1_MechanicalPassport_CM_EvaluationProfile_Finding`, `Phase9_ConditionReadingImport`, `Phase2_ConditionPriorityMapping`, `Notification_DismissedDate`, `PartCatalogue_Schema`, `Phase3_MechanicalEquipmentPassport_UniqueIndexes`, `Phase4_MaintenanceStrategy_CBM_ConditionMonitoringLink`, `Phase3_ConditionReadingInstrumentLink`, `RoleCatalogMetadata`, `InstrumentPassportAndCalibrationHistory`, `MaintenanceGroupLayer`, `AddMaintenanceIntelligenceAndRcmFeedback`, `PEMS.WorkflowPlatform.Interfaces`, `AddEnterpriseFileStorageManagement`, `AddDocumentRevisionFileBinding`, `AddTransmittalHistoricalSnapshotAndAcknowledgement`, `WorkflowPlatformPhase2StageBusinessMapping`, `WorkflowPlatformPhase1Hardening`, `DocumentSearchRequest`, `EngineeringNumberingAndFreeze`, `AddFunctionalLocationImport`, `WorkflowInstanceRunningUniquePerEntity`, `WorkOrderGovernanceOrigin`, `AddProductionCore`, `PEMS.Persistence.Seed`, `PEMS.Domain.Entities`, `AddOperationsFoundationPhase2A`, `QualificationCertificationDiscipline`, `AssetArchitectureRebuild`, `AddEquipmentFunctionalLocationAssignment`, `AddMaintenanceHistoryImport`, `CrewAndCrewMember`, `InstrumentInheritFromEquipment`, `WorkflowAdminDefinitionNameFaVersionRowVersion`, `PEMS.Application.AI.Parser`, `AddBarcodeIdentity`, `StoreRequisitionLineTraceability`, `AddEmployeeProfileFields`, `AddIdcReferralOutcomeTracking`, `AddBilingualHelpKnowledgeSystem`, `AddHelpVisualDocumentation`, `AddHelpStandardReferences`, `StoreRequisitionTraceabilityIdempotency`, `RevalidateStoreRequisitionConstraints`, `AddRcmFmeaDecisionIntelligence`, `Wave6BP1UniqueConstraints`, `MaintenanceGroupAndSkills`, `Migration`, `OrganizationPositionHierarchy`, `OrganizationAssignmentEmployeeIndex`, `PEMS.Application.Exceptions`, `PEMS.Persistence.Migrations`, `PermitAuthenticationAuthorityCompetency`, `AddAccessControlCoreModel`, `.CreateService`, `AddTransmittalGovernanceAndHoldLifecycle`, `AddIrnReceiving`, `AddDocumentTypeCodeLookup`, `AddVendorDocumentTypologySupport`, `AddFtpUploadTracking`, `AddManufacturerDataBookModule`, `AddIrnDisposition`, `AddMrsImportMetadataAndSourceDocument`, `AddOrgHierarchyPositionAndSoD`, `AddProcurementContractFinalization`, `AddContractApprovalMatrix`, `AddContractCompletionLifecycle`, `AddProcurementClarificationHardening`, `SkillsAndRequiredSkills`, `AddEnterpriseMaintenanceMasterData`, `TableExtractionStaging`, `QualificationAndCertification`, `EquipmentAssetFoundation`, `WarehouseAndStock`, `InventoryTransactionAndSpareUsageRetarget`, `EnterpriseActorResolution`, `CentralNumberingSequence`, `WidenMaterialItemDescriptionToUnbounded`, `PermitIsolationPoints`, `AddTenderContractLink`, `PermitSimopsAndShiftHandover`, `AddTransmittalNumberingSupport`, `AddContractorDocumentNumberingFields`, `AddTransmittalNoUniqueIndex`, `AddDocumentListPerformanceIndexes`, `AddAuditLogPerformanceIndexes`, `JobPlanAndMaintenanceTask`, `AddCriticalityAssessmentWorkflow`, `WidenMaintenanceActivityCode`, `PEMSDbContextFactory`, `PermitGasTesting`, `AddItpPackageContractScope`, `LetterControlledLifecycle`, `RequiredSkillPlannedHours`, `AddWorkOrderContractorCost`, `AddContractApprovalRulePriority`, `MaterialMaster`, `ReservationRequisitionAndMrsImport`, `CoreEmployeePersonnelTypeAndPermit`, `WorkRequestAndWorkOrderLifecycle`, `PermitExecutionGate`, `PEMS.Web.Models`, `AddEquipmentClassificationFailureTaxonomyAndPMTemplates`, `Phase4_Reliability`, `AddInspectionMeasurementFields`?**
-  _High betweenness centrality (0.070) - this node is a cross-community bridge._
-- **What connects `fs`, `path`, `fs` to the rest of the system?**
-  _15453 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Why does `PEMSDbContext` connect `PEMSDbContext` to `LetterService`, `PEMS.Persistence.Identity`, `GlobalSearchResultItemDto`, `HelpArticleAdminEditDto`, `JobPlan`, `Tender`, `ProcurementApprovalBreakGlassTests.CreateSeededDbAsync`, `.SeedFullBaselineAsync`, `Dictionary`, `.CreateInfra`, `PemsDbContextFactory.CreateInMemory`, `SparePart`, `HashSet`, `StorageProviderUpsertRequest`, `MaterialItem`, `ReplenishmentRecommendation`, `Equipment`, `ContractCreationAtomicitySqlTests`, `PcActor`, `PartCatalogueService`, `MrsImportRow`, `WorkSpace`, `INotificationService`, `PermitGridPaginationTests.CreateController`, `WoSection`, `ICurrentUserContext`, `StrategyImportController`, `MaintenanceSpareUsage`, `FailureModeEditDto`, `CriticalityAssessment`, `EngineeringDocumentListFilter`, `VDRItem`, `.Actor`, `FakeCurrentUserContext`, `TenderService`, `ValueTask`, `StoreRequisitionLifecycleServiceTests.A`, `Document`, `WorkRequestConcurrencyGateTests`, `ProcurementCommunication`, `EquipmentCriticalityGridPaginationTests.CreateController`, `IEnumerable`, `SimopsConflict`, `PurchaseOrder`, `StrategyDetailDto`, `EnterpriseActorResolver`, `ReliabilityIntelligenceService`, `AdminRecoveryCodeService.RedeemAsync`, `INumberingService`, `Employee`, `IFormFile`, `.CreateService`, `WorkOrderController`, `WorkRequestWorkflowTests`, `MDRImportRow`, `PagedResult`, `GasTest`, `NavigationVisibilityTests.SeedAsync`, `TableExtractionRow`, `WorkflowInstance`, `ManualContractCreationSqlTests`, `DocumentRegisterFilter`, `Position`, `EmployeeQualification`, `OrganizationHierarchyService`, `VDRSubmission`, `BarcodeIdentity`, `ReplenishmentRecommendationService`, `Contract`, `ProductionDowntimeServiceTests.SeedBaselineAsync`, `TaskManagerService`, `WorkflowBinding`, `DefinitionService`, `FakeWorkflowRuntime`, `MDRImportService`, `CartableServicesTests`, `FMEAItem`, `WorkRequestCreateRequest`, `PartCatalogueRequestAttribute`, `WorkOrderConcurrencyGateTests`, `LetterApprovalStep`, `ProductionTarget`, `ShiftHandoverController`, `Action`, `FunctionalLocationImportService`, `CriticalityAssessmentService`, `EquipmentClassRcmFmeaReadinessDto`, `NotificationLifecycleTests`, `MaintenanceStrategy`, `IsolationPoint`, `EquipmentClass`, `.NewAsync`, `Alarm`, `NetDemandCollectorTests`, `ApiConformanceHost.StartAsync`, `PcReportEquipmentPartRow`, `.SeedAsync`, `EngineeringDocumentRepository.GetPagedAsync`, `Func`, `StorageProvider`, `.CreateAsync`, `CartableSettingsServicesTests.Contacts_SearchAndGroups`, `DocumentComment`, `ConditionReadingImportRow`, `ReplenishmentControllerAuthorizationTests.CreateAsync`, `FunctionalLocation`, `BaseEntity`, `NetDemandScope`, `ContractService`, `AdminAccountServiceTests`, `InventoryTransaction`, `LetterTestWorld.NewContext`, `InspectionTestPlan`, `ExecutiveDashboardRequest`, `EngineeringDocumentsController`, `ElectricalEquipment`, `Theory`, `MaterialRequisition`, `NetDemandServiceTests.NewAsync`, `FailureRecord`, `PartCatalogueDuplicateDetectionTests`, `WorkOrderAuthorizationHook.AuthorizeAsync`, `Team`, `Env`, `LetterTag`, `IQueryable`, `CorrespondenceReportDto`, `RelationshipExplorationDto`, `RcmReviewRecommendation`, `Sprint`, `Task`, `DateTime`, `Letter`, `TaskActor`, `PredictiveMaintenanceResult`, `InspectionService.GetPagedFleetAsync`, `WorkflowDefinitionService`, `EquipmentDatasheet`, `OrganizationResolver`, `MaterialStock`, `EngineeringReportDto`, `EquipmentClassificationAndFailureTaxonomyTests.SeedFullBaselineAsync`, `List<`, `LetterComposeInput`, `ProductionOrderService`, `HelpArticle`, `EnterpriseFileStorageService.SaveAsync`, `TaskItemDto`, `CorrespondentParty`, `ProcurementDemand`, `BkChartPagesTests`, `LetterUserState`, `.NewEnvAsync`, `BarcodeService`, `Warehouse`, `.BuildDraftAsync`, `LetterService.SearchAsync`, `RolePermissionAdminServiceTests.SeedAsync`, `OperationsReportServiceTests.SeedRunningRunAsync`, `ProductionOutput`, `ProductionDowntimeEvent`, `ProductionBatch`, `MaterialRequisitionGridPaginationTests.CreateController`, `MapActions`, `TenderControllerP0Tests.CreateAsync`, `LetterRoutingRule`, `LetterRecipient`, `Fact`, `GasTestListDto`, `ExecutiveDashboardControllerTests.NewRig`, `WorkflowAdminActor`, `TenderAwardHardeningTests.ClosedTenderWithBidAsync`, `MrsImportDescriptionLengthTests.Seed`, `AuditLog`, `MaterialRequisitionQuotation`, `ProductionTargetService`, `IrnReceipt`, `TeamController`, `HomeController`, `WorkItemComment`, `EngineeringRelationship`, `MaintenanceHistoryImportService`, `BidNegotiation`, `Notification`, `ConditionReading`, `ProductionInput`, `HelpVisual`, `RcmFmeaTests.SeedFullBaselineAsync`, `ProductionRun`, `WorkOrderTask`, `IServiceProvider`, `CartableCountsDto`, `NavigationMenuService`, `VendorCreateHardeningTests.Create`, `LetterReferral`, `EvaluationProfile`, `DisciplineController`, `TenderContractCreatorEventControllerTests.CreateAsync`, `TaskManagerViewRenderTests.SeedAsync`, `MaintenancePlanService.GetListAsync`, `PemsWorkflowContractTests`, `RoleAssignment`, `HelpKnowledgeSeederTests.SeedAllAsync`, `MaterialReservation`, `LetterComposeControllerTests`, `JobPlanService.GetListAsync`, `SetupService.GetStatusAsync`, `PartCatalogueRequest`, `StoreRequisitionClosureGateTests.NewAsync`, `DisposableSqlDatabase`, `EquipmentCriticality`, `VDRImportServiceVendorResolutionTests`, `IncomingCorrespondenceRulesTests`, `FunctionalLocationImportBatch`, `EngineeringDocument`, `ReplenishmentRunRequest`, `MOC`, `AccessDecision`, `.SeedBaselineAsync`, `IrnDispositionServiceTests.Seed`, `Asset`, `InvalidOperationException`, `IrnDispositionRecord`, `IReadOnlyCollection`, `WorkOrderDisciplineFinding`, `MrsImportMetadataTests`, `LetterVersion`, `StoreRequisitionLifecycleService`, `Transmittal`, `LetterTestWorld.Services`, `EmployeeCertification`, `IrnReceiptService`, `DatabaseUpdateServiceSqlTests.Empty_database_installs_then_updates_after_new_migrations_appear`, `ContractResubmitAndApprovalTests.CreateAsync`, `Phase7IntelligenceTests`, `CrewMember`, `OrganizationStructureService`, `LicenseEventEntry`, `PurchaseOrderApprovalService`, `CartableWebTests`, `MrsImportRowMetadata`, `Vendor`, `IrnReceiptServiceTests.Seed`, `.StageFromExcelAsync`, `PartCatalogueSchemaContractTests`, `QuickSetupAuthorizationTests.CreateInfra`, `PMTemplate`, `TeamMember`, `ReliabilityIntelligenceService.GetCriticalityFailureMaintenanceMatrixAsync`, `WorkRequestService.ConvertToWorkOrderAsync`, `AuthorizationAuditLog`, `Permit`, `MaintenanceStrategyHistory`, `DccRegisterIncomingTests`, `MrsImportBatchCapacityTests.Seed`, `IrnReceiptStatusHistory`, `TableExtractionGridPaginationTests.CreateController`, `ProductionPostingIdempotencyTests.SeedReleasedOutputAsync`, `StoreRequisitionGridPaginationTests.CreateController`, `EquipmentImportService`, `FunctionalLocationImportRow`, `IOPoint`, `TenderInvitationTests.EnvAsync`, `ReplenishmentController`, `RoutingRule`, `PemsDbContextFactory.CreateIsolatedSqlServerOrThrow`, `EquipmentFunctionalLocationAssignmentRow`, `PEMSDbContext.SaveChanges`, `CriticalityAssessmentEvidence`, `EquipmentImportRow`, `PartCatalogueRequestApproval`, `LetterDelegation`, `Valve`, `AssetService.GetListAsync`, `DatabaseUpdateService`, `IFunctionalLocationService`, `EquipmentNozzle`, `OCRProcessingGridPaginationTests.CreateController`, `IrnReceiptLine`, `ExecutiveKpiTests`, `WorkOrderGridPaginationTests.CreateController`, `InstrumentService`, `EquipmentSearchProvider`, `ForbidResult`, `BreakGlassServiceTests`, `CauseEffect`, `VDRImportService`, `ControlLoop`, `Panel`, `IntakeService.GetQueueAsync`, `SoDPolicyControllerTests.CreateAsync`, `AdminUsersGridPaginationTests.RunPagedQuery`, `Fx`, `PartCatalogueReportServiceTests`, `LetterTemplateDto`, `DefinitionTestWorld.NewService`, `DocumentHoldService`, `PartCatalogueSettingsServiceTests.New`, `NavigationMenuItem`, `EmployeeLaborRate`, `MaintenanceHistoryImportRow`, `Cable`, `MaterialRequisitionServiceTests.CreateService`, `ManualContractCreationTests.BuildAsync`, `PartCatalogueManufacturer`, `WorkItemCreateInput`, `EngineeringDocumentRepository`, `PoLineSupply.Compute`, `MaintenanceStrategyListDto`, `PreProcurementServiceTests.NewAsync`, `IAsyncLifetime`, `PositionManagementUiTests`, `InspectionService`, `VendorDto`, `LetterNumberSequence`, `EngineeringDocumentFreezeTests.SeedAsync`, `TaskItem`, `.BuildAsync`, `WorkOrderChangeLog`, `TransmittalRelatedDocumentQueryTests.SeedAsync`, `Env`, `RedirectToActionResult`, `.SeedAsync`, `EngineeringDocumentDetailQueryTests.GetByIdAsync_UsesAsSplitQuery_IssuesMultipleRoundTrips_NotOneCartesianJoin`, `LetterAdvancedFilter`, `VDRImportBatch`, `MaintenanceStrategyAssignment`, `CancellationToken`, `WorkRequest`, `IReadOnlyList`, `ProcurementPackage`, `.NewItem`, `PurchaseOrderLine`, `InventoryTransactionService.GetLedgerAsync`, `ICurrentUserService`, `DocumentAttachment`, `UsableStockService`, `DocumentWorkflowService`, `MaterialRequisitionItem`, `PurchaseOrderReceivingServiceTests.NewAsync`, `ProcurementReportDto`, `.BuildAsync`, `ClassActivationBacklogItemDto`, `StrategyInputDto`, `WorkOrderActor`, `StorageRouteUpsertRequest`, `Project`, `PreProcurementService`, `ProductionOrder`, `AIExtractedTag`, `CmmsReportDto`, `RecoveryTestWorld`, `ICollection`, `PurchaseOrderApprovalServiceTests.NewAsync`, `FunctionalRequirement`, `MrsImportService`, `HelpWorkflowDiagramService`, `.NewAsync`, `NumberingService`, `SecurityEvent`, `HelpVisualDefinition`, `PemsDbContextFactory.CreateSqlServerOrThrow`, `RecoveryEventServiceTests`, `.CreateService`, `RichTextEditorTexts.Json`, `PEMSDbContext.OnModelCreating`, `ConditionReadingImportService`, `ExecutiveDashboardServiceTests.NewContext`, `Instrument`, `PipingComponent`, `InstrumentService.GetListAsync`, `IncomingCorrespondenceServiceTests.NewRig`, `MaintenanceHistory`, `ReplenishmentAvailabilityGateTests`, `CommodityGroupResponsible`, `RecoveryEventService`, `LetterRoutingRuleDto`, `ILogger`, `PurchaseOrderController`, `HelpServiceTests.CreateService`, `EnvFiles.Load`, `FunctionalLocationService`, `Controller`, `Task`, `NavigationVisibilityOverride`, `RolePermission`, `DatabaseUpgradePathSqlTests.Database_of_a_supported_release_upgrades_to_the_fresh_install_schema_and_keeps_its_data`, `IEntityTypeConfiguration`, `IActionResult`, `PartCatalogueCommodityGroup`, `.CreateAsync`, `DatabaseUpdateRun`, `NumberingScheme`, `Skill`, `MaintenanceStrategyController`, `InventoryTransactionRowDto`, `AdminBaseDataListPagesTests.Logs_FilterRowsMoveIntoTheDropdown_AndEachActiveFilterIsAChip`, `EquipmentServiceGridTests.CreateService`, `CartableRulesTests`, `ApplicationUser`, `MaintenancePlanController`, `DefinitionReference`, `RazorViewRenderer.RenderAsync`?**
+  _High betweenness centrality (0.125) - this node is a cross-community bridge._
+- **Are the 31 inferred relationships involving `PEMSDbContext` (e.g. with `WorkflowAdministrationConcurrencyTests.InitializeAsync()` and `WorkflowAdministrationConcurrencyTests.Stale_add_remove_validate_and_publish_are_all_rejected_consistently()`) actually correct?**
+  _`PEMSDbContext` has 31 INFERRED edges - model-reasoned connections that need verification._
+- **What connects `UserId`, `UserName`, `FullName` to the rest of the system?**
+  _13769 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `PEMSDbContext` be split into smaller, more focused modules?**
-  _Cohesion score 0.0067545268530945415 - nodes in this community are weakly interconnected._
-- **Should `PEMS.Persistence.Services` be split into smaller, more focused modules?**
-  _Cohesion score 0.03142301361663923 - nodes in this community are weakly interconnected._
-- **Should `PEMS.Web.Controllers` be split into smaller, more focused modules?**
-  _Cohesion score 0.03319333423655331 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.005762297192892093 - nodes in this community are weakly interconnected._
+- **Why does `List<` connect `List<` to `PEMSDbContext`, `MRDto`, `LetterService`, `GlobalSearchResultItemDto`, `HelpArticleAdminEditDto`, `IStringLocalizer`, `ConditionMonitoringPointDto`, `DisciplineWorkspaceDto`, `.SeedFullBaselineAsync`, `EngineeringDocumentDto`, `.CreateInfra`, `StageDiagramItem`, `PemsDbContextFactory.CreateInMemory`, `WorkflowDefinitionRow`, `EquipmentSearchProvider`, `ResourceHeaderViewModel`, `ui:badge`, `HashSet`, `Equipment`, `FakeLetterService`, `WorkflowRuntimeViewModel`, `ActorResolutionResult`, `RcmRulesTests`, `PartyThreadItemDto`, `IXLWorksheet`, `PcActor`, `VDRImportService`, `PartCatalogueService`, `ContractCreationAtomicitySqlTests`, `RichTextEditorTexts.Json`, `FakeDisciplineService`, `BlockComponentsTests.Run`, `INotificationService`, `SoDPolicyControllerTests.CreateAsync`, `WoSection`, `IncomingRegistrationInput`, `PEMSDbContext.OnModelCreating`, `ICurrentUserContext`, `TransmittalDto`, `StorageHealthResultDto`, `StrategyImportController`, `VDRItemDto`, `LetterComplianceReportDto`, `FailureModeEditDto`, `Payloads.cs`, `EngineeringDocumentListFilter`, `ConditionReadingImportService`, `DatabaseUpdateStatusDto`, `AdminUsersGridPaginationTests.RunPagedQuery`, `WorkRequestDetailDto`, `LetterTemplateDto`, `TaskManagerDtos.cs`, `FakeCurrentUserContext`, `TenderService`, `ProjectIntelligenceModule`, `DocumentControlListPagesTests`, `TaskManagerController`, `EmployeeLaborRate`, `IEnumerable`, `RepeatFailureGroupDto`, `CriticalityAssessmentDetailDto`, `StrategyDetailDto`, `EnterpriseActorResolver`, `MaterialRequisitionServiceTests.CreateService`, `ReliabilityIntelligenceService`, `AdminRecoveryCodeService.RedeemAsync`, `ManualContractCreationTests.BuildAsync`, `CartableReportDto`, `ThemeContrastTests`, `PartCatalogueListItemDto`, `FakeWorkflowRuntime`, `EngineeringDocumentRepository`, `HelpStandardReferenceAdminEditDto`, `IFormFile`, `WorkOrderController`, `PoLineSupply.Compute`, `LetterReferralDto`, `PagedResult`, `.Calc`, `TechnicalClassMatcherTests`, `GasTest`, `NavigationVisibilityTests.SeedAsync`, `WorkItemDetailDto`, `MaintenanceStrategyListDto`, `WorkflowInstance`, `PartCatalogueReportDto`, `ExtractedDocumentInfo`, `DocumentRegisterFilter`, `Position`, `ManualContractCreationSqlTests`, `OrganizationHierarchyService`, `VendorDto`, `UserWorkspaceVm`, `ReplenishmentRecommendationService`, `ui:alert`, `ProductionDowntimeServiceTests.SeedBaselineAsync`, `TaskManagerService`, `ui:button-frame`, `EquipmentClassCoverageDto`, `EngineeringDashboardViewModel`, `FMEAItemDto`, `WorkflowDesignerModel`, `MDRImportService`, `ReplenishmentAvailabilityGateTests`, `WorkflowGraphNode`, `LicenseVerifier.VerifyBinding`, `ShiftHandoverDetailDto`, `MaterialItemDetailDto`, `ApiConformanceTests`, `ShiftHandoverController`, `JobPlanDetailDto`, `IsolationPointListDto`, `Action`, `LetterWorkspaceDashboardDto`, `PermitDetailDto`, `LetterRoutingRuleDto`, `EquipmentClassRcmFmeaReadinessDto`, `NotificationLifecycleTests`, `ILogger`, `AssetDetailDto`, `MrsImportRowDto`, `BarcodeIdentityDto`, `StorageProvidersController`, `EngineeringDocumentDetailQueryTests.GetByIdAsync_UsesAsSplitQuery_IssuesMultipleRoundTrips_NotOneCartesianJoin`, `ProductionOrderDto`, `NavigationVisibilityUserVm`, `PurchaseOrderController`, `PcReportEquipmentPartRow`, `ProductionBatchDto`, `LetterAdvancedFilter`, `LicenseManager.ApplyLicenceAsync`, `DeterministicTableExtractor`, `DefinitionsApiController`, `RepresentativeDataFiller`, `RCMAnalysisDto`, `CartableSettingsServicesTests.Contacts_SearchAndGroups`, `CbmDashboardDto`, `PartCatalogueDetailsDto`, `EquipmentIntelligenceProfileDto`, `FunctionalLocation`, `CriticalityMatrixRowDto`, `MaintenanceStrategyController`, `FunctionalLocationService`, `NetDemandScope`, `Controller`, `Task`, `BarcodeService.BulkGenerateAsync`, `InventoryTransaction`, `PartCatalogueRulesAndRoutingTests`, `ApiPolicyGateTests.Actions`, `PlanInputDto`, `EngineeringDocumentDetailsLayoutTests.RenderAsync`, `ExecutiveDashboardRequest`, `EngineeringDocumentsController`, `EquipmentMaintenanceIntelligenceDto`, `EquipmentReliabilityDto`, `FailureRecord`, `PartCatalogueDuplicateDetectionTests`, `DateTimeOffset`, `Env`, `IQueryable`, `RcmReviewRecommendationDto`, `CorrespondenceReportDto`, `RelationshipExplorationDto`, `SimopsConflictListDto`, `AdminBaseDataListPagesTests.Logs_FilterRowsMoveIntoTheDropdown_AndEachActiveFilterIsAChip`, `BadActorDto`, `DashboardViewModel`, `DynamicSidebarTests`, `DocumentIntelligenceDetailDto`, `GlobalSearchResponseDto`, `WorkflowDefinitionService`, `OrganizationResolver`, `RelationshipGapItemDto`, `MaterialStock`, `EngineeringReportDto`, `LetterPrintModel`, `BarcodeLabelContent`, `EquipmentClassificationAndFailureTaxonomyTests.SeedFullBaselineAsync`, `LetterComposeInput`, `Task`, `NavigationUserModuleNode`, `MDRImportBatchDto`, `LetterDto`, `HelpArticle`, `TaskItemDto`, `CancellationToken`, `BkChartPagesTests`, `IReadOnlyList`, `EquipmentFunctionalLocationAssignmentRowPayload`, `DelayRootCauseAnalysisDto`, `RolePermissionAdminServiceTests.SeedAsync`, `VDRReportDto`, `VDRDashboardDto`, `CartableRulesTests`, `FakeClients`, `TraceIdTests`, `NavigationModuleNode`, `MaintenanceHistoryImportBatchSummaryDto`, `ReferralWebTests`, `GasTestListDto`, `WorkflowAdminActor`, `WorkflowManagementController`, `ProductionTargetService`, `IncomingCorrespondenceDtos.cs`, `MaintenancePlanController`, `ApplicationUser`, `ICurrentUserService`, `TeamController`, `HomeController`, `HelpVisualRenderDto`, `DocumentAttachment`, `LetterComposeViewModel`, `UiRegistryDriftTests`, `SidebarNode`, `ClassIntelligenceProfileDto`, `MaintenanceHistoryImportService`, `PartCatalogueDtos.cs`, `BkChartSpec`, `RcmFmeaTests.SeedFullBaselineAsync`, `ExtractedTableData`, `WorkOrderCalendarItemDto`, `ProcurementReportDto`, `LetterDelegationDto`, `ClassActivationBacklogItemDto`, `WorkflowPlatformContracts.cs`, `ConditionMonitoringTrendDto`, `ManufacturerDataBookDto`, `StrategyInputDto`, `RolePermissionChangeResult`, `ConversationMessageDto`, `IncomingRegistrationResult`, `WorkOrderActor`, `IServiceProvider`, `EvaluationProfile`, `DisciplineController`, `MeetingDto`, `StorageRouteUpsertRequest`, `EffectiveUserVm`, `TenderContractCreatorEventControllerTests.CreateAsync`, `VDRImportRowPayload`, `RazorViewRenderer.RenderAsync`, `HelpNodeTreeItem`, `LetterTimelineEventDto`, `PartCatalogueFormDto`, `ExecutiveDashboardDto`, `RolePermission`, `PreProcurementService`, `SetupService.GetStatusAsync`, `PurchaseOrderCreationPathTests`, `StoreRequisitionClosureGateTests.NewAsync`, `PartCataloguePrintModel`, `IncomingCorrespondenceRulesTests`, `WorkSpaceDto`, `ReplenishmentRunRequest`, `AccessDecision`, `CriticalityFailureMaintenanceRowDto`, `ProductionRunDto`, `CmmsReportDto`, `SetupStepDto`, `InvalidOperationException`, `IReadOnlyCollection`, `EquipmentPassportDto`, `LetterTestWorld.Services`, `ProcurementCommunicationDto`, `WorkflowVersionImmutabilityGuard.Check`, `AIAnalysisResult`, `EquipmentDto`, `MrsImportService`, `OrganizationStructureService`, `Phase7IntelligenceTests`, `PurchaseOrderApprovalService`, `CartableWebTests`, `OrganizationTeamNodeDto`, `.StageFromExcelAsync`, `PartCatalogueSchemaContractTests`, `JsonSerializerOptions`, `ReliabilityIntelligenceService.GetCriticalityFailureMaintenanceMatrixAsync`, `PcEditViewModel`, `SimulateFormVm`, `DccRegisterIncomingTests`, `IActionResult`, `NavigationRuleEvaluator`, `TenderInvitationTests.EnvAsync`, `NavigationMenuItemDefinition`, `DashboardEngineeringDto`, `NavigationMenuCustomLinkInput`, `EquipmentFunctionalLocationAssignmentRowDto`, `PEMSDbContext.SaveChanges`, `ExecutiveKpiPageViewModel`, `RecordingSink`, `FakePermissionService`, `NavigationMenuItemEditInput`, `NavigationVisibilityRowDescription`, `DatabaseUpdateService`, `PartCatalogueSettingsDto`, `FunctionalLocationImportBatchDto`, `LoginPageLocalizationTests`, `BarcodeResolutionResultDto`, `DashboardProcurementDto`, `HelpVisualDefinition`, `IFunctionalLocationService`?**
+  _High betweenness centrality (0.099) - this node is a cross-community bridge._
+- **Should `LetterService` be split into smaller, more focused modules?**
+  _Cohesion score 0.06101231190150479 - nodes in this community are weakly interconnected._
+- **Why does `PEMS.Domain.Entities` connect `PEMS.Domain.Entities` to `PEMS.Persistence.Services`, `microsoft_aspnetcore_mvc`, `PEMS.Persistence.Identity`, `CommodityGroupResponsible`, `FunctionalLocationImportBatch`, `microsoft_entityframeworkcore`, `HelpArticle`, `Dictionary`, `WorkRequest`, `Department`, `ICollection`, `PEMS.Web.Models`, `MaterialItem`, `ReplenishmentRecommendation`, `WorkOrderDisciplineFinding`, `PEMS.Application.PartCatalogue`, `system_text_regularexpressions`, `ProductionOutput`, `MrsImportRow`, `WorkSpace`, `PermitGridPaginationTests.CreateController`, `PEMSDbContext.OnModelCreating`, `MrsImportRowMetadata`, `VDRItem`, `ConditionReadingImportRow`, `ui:list-grid`, `Document`, `MaintenanceHistoryImportRow`, `WorkRequestService.ConvertToWorkOrderAsync`, `AuthorizationAuditLog`, `Permit`, `SimopsConflict`, `InventoryTransaction`, `PEMS.Web/Program.cs`, `PEMS.Application.DTOs`, `ProductionInput`, `IrnReceiptStatusHistory`, `Employee`, `FunctionalLocationImportRow`, `WorkOrderTask`, `PoLineSupply.Compute`, `StoreRequisitionStatuses`, `GasTest`, `EquipmentFunctionalLocationAssignmentRow`, `PartCatalogueCommodityGroup`, `Position`, `Project`, `EquipmentImportRow`, `Skill`, `BarcodeIdentity`, `RoleAssignment`, `PartCatalogueRequestApproval`, `NavigationVisibilityOverride`, `ProductionOrder`?**
+  _High betweenness centrality (0.034) - this node is a cross-community bridge._

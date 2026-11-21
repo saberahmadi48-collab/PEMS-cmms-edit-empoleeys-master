@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "database-update-apply",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Apply database update",
+    "fa": "اعمال به‌روزرسانی پایگاه داده"
+  },
+  "description": {
+    "en": "Apply the pending database updates",
+    "fa": "اعمال به‌روزرسانی‌های در انتظار پایگاه داده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DatabaseUpdate",
+      "action": "Apply",
+      "args": {
+        "trigger": "literal:Admin",
+        "performedBy": "context:userName"
+      },
+      "require": {
+        "backupConfirmed": {
+          "en": "Confirm that a database backup has been taken before applying.",
+          "fa": "پیش از اعمال، تأیید کنید که از پایگاه داده نسخه‌ی پشتیبان گرفته شده است."
+        }
+      },
+      "precondition": {
+        "model": "Licence",
+        "action": "BuildEntitled"
+      }
+    },
+    "redirect": "/p/database-update"
+  }
+}

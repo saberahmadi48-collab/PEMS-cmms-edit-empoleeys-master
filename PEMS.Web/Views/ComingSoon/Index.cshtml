@@ -6,21 +6,21 @@
     string? sectionName = ViewBag.Section as string;
 }
 
-<div class="content-card text-center py-5">
-    <div style="font-size:46px; color:#d98c2b;">
-        <i class="bi bi-cone-striped"></i>
+<pems-content-card css="text-center py-5">
+    <div class="pems-s-105f47a5">
+        <pems-icon name="bi-cone-striped" />
     </div>
 
-    <p class="text-muted">
+    <pems-text class="text-muted">
         این ماژول در فاز بعدی توسعه (تکمیل ماژول‌های Engineering) پیاده‌سازی می‌شود.
         @if (!string.IsNullOrEmpty(sectionName))
         {
             <br />
             <span>بخش: @sectionName</span>
         }
-    </p>
+    </pems-text>
 
-    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm mt-2">
-        <i class="bi bi-arrow-right"></i> @Localizer["بازگشت به داشبورد"]
-    </a>
-</div>
+    <pems-button tone="neutral" size="small" outline="true" css="mt-2" as="a" asp-controller="Home" asp-action="Index">
+        <pems-icon name="bi-arrow-right" /> @Localizer["بازگشت به داشبورد"]
+    </pems-button>
+</pems-content-card>

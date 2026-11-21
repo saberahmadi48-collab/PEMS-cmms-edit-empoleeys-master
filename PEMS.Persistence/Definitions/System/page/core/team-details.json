@@ -1,0 +1,714 @@
+{
+  "kind": "page",
+  "key": "team-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Team",
+    "fa": "تیم"
+  },
+  "description": {
+    "en": "One team: members, sub-teams and shifts, positions and the assignment history (page definition)",
+    "fa": "یک تیم: اعضا، زیرتیم‌ها و شیفت‌ها، سمت‌ها و تاریخچه تخصیص (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "team-details",
+    "permission": "Team.View",
+    "regions": {
+      "content": [
+        {
+          "id": "t-name",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Team",
+              "fa": "تیم"
+            },
+            "icon": "bi-people"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/team-profile?f.teamId={{params.teamId|url}}",
+              "first": true,
+              "map": {
+                "value": "name"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-code",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Code",
+              "fa": "کد"
+            },
+            "icon": "bi-hash"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/team-profile?f.teamId={{params.teamId|url}}",
+              "first": true,
+              "map": {
+                "value": "code"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-kind",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Kind",
+              "fa": "نوع"
+            },
+            "icon": "bi-diagram-3"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/team-profile?f.teamId={{params.teamId|url}}",
+              "first": true,
+              "map": {
+                "value": "kind"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-discipline",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Discipline",
+              "fa": "دیسیپلین"
+            },
+            "icon": "bi-gear"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/team-profile?f.teamId={{params.teamId|url}}",
+              "first": true,
+              "map": {
+                "value": "discipline"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-supervisor",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Supervisor",
+              "fa": "سرپرست"
+            },
+            "icon": "bi-person-badge"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/team-profile?f.teamId={{params.teamId|url}}",
+              "first": true,
+              "map": {
+                "value": "supervisor"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-members",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Members",
+              "fa": "اعضا"
+            },
+            "icon": "bi-person-check"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/team-profile?f.teamId={{params.teamId|url}}",
+              "first": true,
+              "map": {
+                "value": "members"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-positions",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Positions",
+              "fa": "سمت‌ها"
+            },
+            "icon": "bi-briefcase"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/team-profile?f.teamId={{params.teamId|url}}",
+              "first": true,
+              "map": {
+                "value": "positions"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-vacant",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Vacant positions",
+              "fa": "سمت‌های خالی"
+            },
+            "icon": "bi-person-dash"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/team-profile?f.teamId={{params.teamId|url}}",
+              "first": true,
+              "map": {
+                "value": "vacantPositions"
+              }
+            }
+          }
+        },
+        {
+          "id": "back",
+          "component": "content-blocks",
+          "options": {
+            "id": "back",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/teams",
+                "text": {
+                  "en": "Back to the teams",
+                  "fa": "بازگشت به تیم‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "chart",
+          "component": "content-blocks",
+          "options": {
+            "id": "chart",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/Team/OrganizationChart",
+                "text": {
+                  "en": "Organization chart",
+                  "fa": "نمودار سازمانی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-members",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-members",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Members",
+                  "fa": "اعضا"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "add-member",
+          "component": "content-blocks",
+          "options": {
+            "id": "add-member",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/team-member-add?teamId={{params.teamId|url}}",
+                "text": {
+                  "en": "Add a member",
+                  "fa": "افزودن عضو"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "members",
+          "component": "data-grid",
+          "options": {
+            "id": "members",
+            "url": "/d/team-members?f.teamId={{params.teamId|url}}",
+            "idField": "teamMemberId",
+            "columns": [
+              {
+                "key": "employee",
+                "header": {
+                  "en": "Employee",
+                  "fa": "کارمند"
+                },
+                "width": 220
+              },
+              {
+                "key": "role",
+                "header": {
+                  "en": "Role",
+                  "fa": "نقش"
+                },
+                "width": 180
+              },
+              {
+                "key": "joined",
+                "header": {
+                  "en": "Joined",
+                  "fa": "عضویت"
+                },
+                "width": 120
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 240,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "move",
+                    "label": {
+                      "en": "Move",
+                      "fa": "انتقال"
+                    },
+                    "url": "/f/team-member-move?employeeId={raw.employeeId}&fromTeamId={{params.teamId|url}}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/a/team-member-remove",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Remove this member from the team?",
+                      "fa": "این عضو از تیم خارج شود؟"
+                    }
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 260
+          }
+        },
+        {
+          "id": "h-nodes",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-nodes",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Sub-teams and shifts",
+                  "fa": "زیرتیم‌ها و شیفت‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "add-node",
+          "component": "content-blocks",
+          "options": {
+            "id": "add-node",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/team-sub-create?parentTeamId={{params.teamId|url}}",
+                "text": {
+                  "en": "Create a sub-team or shift",
+                  "fa": "ساخت زیرتیم یا شیفت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "nodes",
+          "component": "data-grid",
+          "options": {
+            "id": "nodes",
+            "url": "/d/team-sub-nodes?f.teamId={{params.teamId|url}}",
+            "idField": "teamId",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 110
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 200
+              },
+              {
+                "key": "kind",
+                "header": {
+                  "en": "Kind",
+                  "fa": "نوع"
+                },
+                "width": 100
+              },
+              {
+                "key": "supervisor",
+                "header": {
+                  "en": "Supervisor",
+                  "fa": "سرپرست"
+                },
+                "width": 180
+              },
+              {
+                "key": "members",
+                "header": {
+                  "en": "Members",
+                  "fa": "اعضا"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "positions",
+                "header": {
+                  "en": "Positions",
+                  "fa": "سمت‌ها"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "vacantPositions",
+                "header": {
+                  "en": "Vacant",
+                  "fa": "خالی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 340,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/team-details?teamId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "move",
+                    "label": {
+                      "en": "Move",
+                      "fa": "جابه‌جایی"
+                    },
+                    "url": "/f/team-node-move?teamId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "deactivate",
+                    "label": {
+                      "en": "Deactivate",
+                      "fa": "غیرفعال"
+                    },
+                    "url": "/a/team-node-deactivate",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Deactivate this node?",
+                      "fa": "این گره غیرفعال شود؟"
+                    }
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 260
+          }
+        },
+        {
+          "id": "h-positions",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-positions",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Positions",
+                  "fa": "سمت‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "add-position",
+          "component": "content-blocks",
+          "options": {
+            "id": "add-position",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/team-position-create?teamId={{params.teamId|url}}",
+                "text": {
+                  "en": "Create a position",
+                  "fa": "ساخت سمت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "positions",
+          "component": "data-grid",
+          "options": {
+            "id": "positions",
+            "url": "/d/team-positions?f.teamId={{params.teamId|url}}",
+            "idField": "positionId",
+            "columns": [
+              {
+                "key": "title",
+                "header": {
+                  "en": "Position",
+                  "fa": "سمت"
+                },
+                "width": 220
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "width": 220
+              },
+              {
+                "key": "sortOrder",
+                "header": {
+                  "en": "Order",
+                  "fa": "ترتیب"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "occupant",
+                "header": {
+                  "en": "Occupant",
+                  "fa": "متصدی"
+                },
+                "width": 180
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              },
+              {
+                "key": "since",
+                "header": {
+                  "en": "Since",
+                  "fa": "از"
+                },
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 520,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "assign",
+                    "label": {
+                      "en": "Assign",
+                      "fa": "تخصیص"
+                    },
+                    "url": "/f/team-position-assign?positionId={id}&returnTeamId={{params.teamId|url}}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "vacate",
+                    "label": {
+                      "en": "Vacate",
+                      "fa": "خالی"
+                    },
+                    "url": "/a/team-position-vacate",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Make this position vacant?",
+                      "fa": "این سمت خالی شود؟"
+                    }
+                  },
+                  {
+                    "key": "move-employee",
+                    "label": {
+                      "en": "Move employee",
+                      "fa": "جابه‌جایی کارمند"
+                    },
+                    "url": "/f/team-position-move-employee?fromPositionId={id}&returnTeamId={{params.teamId|url}}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/team-position-update?positionId={id}&returnTeamId={{params.teamId|url}}&title={raw.title}&sortOrder={raw.sortOrder}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "move",
+                    "label": {
+                      "en": "Move",
+                      "fa": "جابه‌جایی"
+                    },
+                    "url": "/f/team-position-move?positionId={id}&returnTeamId={{params.teamId|url}}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "deactivate",
+                    "label": {
+                      "en": "Deactivate",
+                      "fa": "غیرفعال"
+                    },
+                    "url": "/a/team-position-deactivate",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Deactivate this position?",
+                      "fa": "این سمت غیرفعال شود؟"
+                    }
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 320
+          }
+        },
+        {
+          "id": "h-history",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-history",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Assignment history",
+                  "fa": "تاریخچه تخصیص"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "history",
+          "component": "data-grid",
+          "options": {
+            "id": "history",
+            "url": "/d/team-assignment-history?f.teamId={{params.teamId|url}}",
+            "idField": "started",
+            "columns": [
+              {
+                "key": "position",
+                "header": {
+                  "en": "Position",
+                  "fa": "سمت"
+                },
+                "width": 200
+              },
+              {
+                "key": "employee",
+                "header": {
+                  "en": "Employee",
+                  "fa": "کارمند"
+                },
+                "width": 200
+              },
+              {
+                "key": "started",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 120
+              },
+              {
+                "key": "ended",
+                "header": {
+                  "en": "To",
+                  "fa": "تا"
+                },
+                "width": 120
+              },
+              {
+                "key": "notes",
+                "header": {
+                  "en": "Notes",
+                  "fa": "یادداشت"
+                },
+                "width": 280
+              }
+            ],
+            "pageSize": 10,
+            "height": 260
+          }
+        }
+      ]
+    }
+  }
+}

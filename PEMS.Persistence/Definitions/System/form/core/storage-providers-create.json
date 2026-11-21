@@ -1,0 +1,182 @@
+{
+  "kind": "form",
+  "key": "storage-providers-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create storage provider",
+    "fa": "ایجاد ارائه‌دهنده‌ی ذخیره‌سازی"
+  },
+  "description": {
+    "en": "Create a new storage provider",
+    "fa": "ایجاد ارائه‌دهنده‌ی ذخیره‌سازی جدید"
+  },
+  "payload": {
+    "id": "storage-providers-create",
+    "title": {
+      "en": "New storage provider",
+      "fa": "ارائه‌دهنده‌ی ذخیره‌سازی جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "storage-providers-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 200,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "code",
+        "label": {
+          "en": "Code (unique, used in routing)",
+          "fa": "کد (یکتا، برای مسیریابی)"
+        },
+        "kind": "text",
+        "maxLength": 50,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Code (unique, used in routing) is required.",
+            "fa": "کد (یکتا، برای مسیریابی) الزامی است."
+          }
+        }
+      },
+      {
+        "name": "providerType",
+        "label": {
+          "en": "Provider type",
+          "fa": "نوع ارائه‌دهنده"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Local",
+            "label": {
+              "en": "Local",
+              "fa": "Local"
+            }
+          },
+          {
+            "value": "NetworkShare",
+            "label": {
+              "en": "NetworkShare",
+              "fa": "NetworkShare"
+            }
+          },
+          {
+            "value": "Ftp",
+            "label": {
+              "en": "Ftp",
+              "fa": "Ftp"
+            }
+          },
+          {
+            "value": "Sftp",
+            "label": {
+              "en": "Sftp",
+              "fa": "Sftp"
+            }
+          }
+        ],
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Provider type is required.",
+            "fa": "نوع ارائه‌دهنده الزامی است."
+          }
+        }
+      },
+      {
+        "name": "host",
+        "label": {
+          "en": "Host",
+          "fa": "میزبان"
+        },
+        "kind": "text",
+        "maxLength": 300,
+        "visible": "values.providerType in ['NetworkShare', 'Ftp', 'Sftp']"
+      },
+      {
+        "name": "port",
+        "label": {
+          "en": "Port",
+          "fa": "درگاه"
+        },
+        "kind": "number",
+        "min": 1,
+        "max": 65535,
+        "visible": "values.providerType in ['Ftp', 'Sftp']"
+      },
+      {
+        "name": "username",
+        "label": {
+          "en": "User name",
+          "fa": "نام کاربری"
+        },
+        "kind": "text",
+        "maxLength": 200,
+        "visible": "values.providerType in ['NetworkShare', 'Ftp', 'Sftp']"
+      },
+      {
+        "name": "password",
+        "label": {
+          "en": "Password (blank keeps the current one)",
+          "fa": "گذرواژه (خالی = بدون تغییر)"
+        },
+        "kind": "password",
+        "visible": "values.providerType in ['NetworkShare', 'Ftp', 'Sftp']"
+      },
+      {
+        "name": "rootPath",
+        "label": {
+          "en": "Root path (local folder, UNC path or server-side root)",
+          "fa": "مسیر ریشه (پوشه‌ی محلی، مسیر UNC یا ریشه‌ی سرور)"
+        },
+        "kind": "text",
+        "maxLength": 500,
+        "span": 2,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Root path (local folder, UNC path or server-side root) is required.",
+            "fa": "مسیر ریشه (پوشه‌ی محلی، مسیر UNC یا ریشه‌ی سرور) الزامی است."
+          }
+        }
+      },
+      {
+        "name": "baseUrl",
+        "label": {
+          "en": "Base URL (optional)",
+          "fa": "نشانی پایه (اختیاری)"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "useSsl",
+        "label": {
+          "en": "Use SSL/TLS",
+          "fa": "استفاده از SSL/TLS"
+        },
+        "kind": "switch",
+        "visible": "values.providerType == 'Ftp'"
+      }
+    ]
+  }
+}

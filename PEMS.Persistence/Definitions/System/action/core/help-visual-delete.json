@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "help-visual-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete a visual",
+    "fa": "حذف تصویر"
+  },
+  "description": {
+    "en": "Delete a visual",
+    "fa": "حذف تصویر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "DeleteVisual",
+      "args": {
+        "visualId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Visual deleted.",
+      "fa": "تصویر حذف شد."
+    },
+    "redirect": "/p/help-admin"
+  }
+}

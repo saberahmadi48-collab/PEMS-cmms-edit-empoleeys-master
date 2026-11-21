@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "procurement-package-closeout",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close out the package",
+    "fa": "بستن بسته"
+  },
+  "description": {
+    "en": "Close out the package",
+    "fa": "بستن بسته"
+  },
+  "payload": {
+    "id": "procurement-package-closeout",
+    "title": {
+      "en": "Close out the package",
+      "fa": "بستن بسته"
+    },
+    "submitLabel": {
+      "en": "Close out",
+      "fa": "بستن"
+    },
+    "actionKey": "procurement-package-closeout",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "packageId",
+        "label": {
+          "en": "Package id",
+          "fa": "شناسه‌ی بسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

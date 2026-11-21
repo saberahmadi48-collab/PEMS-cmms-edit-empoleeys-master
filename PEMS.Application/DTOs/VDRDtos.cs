@@ -32,6 +32,12 @@ public class VDRItemDto
     public bool IsOverdue { get; set; }
     public int? DelayDays { get; set; }
 
+    // SCRUM-559: the More actions menu (soft delete and hold live on the Document base)
+    public bool IsActive { get; set; } = true;
+    public bool IsOnHold { get; set; }
+    public string? HoldReason { get; set; }
+    public DateTime? HoldDate { get; set; }
+
     public List<VDRSubmissionDto> Submissions { get; set; } = new();
 }
 

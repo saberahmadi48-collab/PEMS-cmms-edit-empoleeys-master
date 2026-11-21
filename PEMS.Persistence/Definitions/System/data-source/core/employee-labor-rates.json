@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "employee-labor-rates",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employee labor rates",
+    "fa": "نرخ دستمزد کارمند"
+  },
+  "description": {
+    "en": "Employee labor rates",
+    "fa": "نرخ دستمزد کارمند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Employee",
+      "action": "LaborRates",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

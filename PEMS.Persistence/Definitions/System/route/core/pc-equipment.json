@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-equipment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup Equipment (old address)",
+    "fa": "Part Catalogue lookup Equipment (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue lookup Equipment (old address)",
+    "fa": "Part Catalogue lookup Equipment (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueLookup/Equipment",
+    "target": "/x/pc-equipment",
+    "permanent": false
+  }
+}

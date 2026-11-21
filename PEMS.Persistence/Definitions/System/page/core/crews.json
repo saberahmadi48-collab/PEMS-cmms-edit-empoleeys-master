@@ -1,0 +1,192 @@
+{
+  "kind": "page",
+  "key": "crews",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Crews",
+    "fa": "گروه‌های کاری"
+  },
+  "description": {
+    "en": "Crews and their active members (page definition)",
+    "fa": "گروه‌های کاری و اعضای فعال (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "crews",
+    "regions": {
+      "content": [
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/crew-create",
+                "text": {
+                  "en": "New crew",
+                  "fa": "گروه جدید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "crews",
+          "component": "data-grid",
+          "options": {
+            "id": "crews",
+            "url": "/d/crew-list",
+            "idField": "crewId",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 120
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 220
+              },
+              {
+                "key": "workOrder",
+                "header": {
+                  "en": "Work order",
+                  "fa": "دستورکار"
+                },
+                "width": 140
+              },
+              {
+                "key": "memberCount",
+                "header": {
+                  "en": "Members",
+                  "fa": "اعضا"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "members",
+                "header": {
+                  "en": "Active members",
+                  "fa": "اعضای فعال"
+                },
+                "width": 420
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "add",
+                    "label": {
+                      "en": "Add a member",
+                      "fa": "افزودن عضو"
+                    },
+                    "url": "/f/crew-add-member?crewId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 420
+          }
+        },
+        {
+          "id": "h-members",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-members",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Members",
+                  "fa": "اعضا"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "members",
+          "component": "data-grid",
+          "options": {
+            "id": "members",
+            "url": "/d/crew-members",
+            "idField": "crewMemberId",
+            "columns": [
+              {
+                "key": "crew",
+                "header": {
+                  "en": "Crew",
+                  "fa": "گروه"
+                },
+                "width": 200
+              },
+              {
+                "key": "employee",
+                "header": {
+                  "en": "Person",
+                  "fa": "فرد"
+                },
+                "width": 220
+              },
+              {
+                "key": "role",
+                "header": {
+                  "en": "Role",
+                  "fa": "نقش"
+                },
+                "width": 160
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "خروج"
+                    },
+                    "url": "/f/crew-remove-member?crewMemberId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 420
+          }
+        }
+      ]
+    },
+    "permission": "Crew.View"
+  }
+}

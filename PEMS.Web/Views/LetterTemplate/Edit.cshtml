@@ -1,0 +1,87 @@
+@model PEMS.Application.DTOs.LetterTemplateDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    string? error = ViewBag.Error;
+}
+
+<pems-content-card css="pems-s-3f7efa5f">
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <pems-alert tone="danger"><pems-icon name="bi-exclamation-triangle" aria-hidden="true" /> @error</pems-alert>
+    }
+    <pems-text class="text-muted small">@Localizer["LtT_PrefillNote"]</pems-text>
+
+    <details class="small mb-3">
+        <summary>@Localizer["LtT_PlaceholdersTitle"]</summary>
+        <pems-text class="text-muted mt-2 mb-1">@Localizer["LtT_PlaceholdersHelp"]</pems-text>
+        <pems-bullet-list class="mb-1">
+            @foreach (var token in PEMS.Application.Common.LetterTemplatePlaceholders.General)
+            {
+                <pems-bullet><code dir="ltr">{{@token}}</code> - @Localizer["LtT_Token_" + token]</pems-bullet>
+            }
+        </pems-bullet-list>
+        <pems-text class="text-muted mb-1">@Localizer["LtT_PlaceholdersReply"]</pems-text>
+        <pems-bullet-list class="mb-0">
+            @foreach (var token in PEMS.Application.Common.LetterTemplatePlaceholders.Reply)
+            {
+                <pems-bullet><code dir="ltr">{{@token}}</code> - @Localizer["LtT_Token_" + token]</pems-bullet>
+            }
+        </pems-bullet-list>
+    </details>
+
+    <pems-form asp-action="Save" method="post">
+        <input type="hidden" name="LetterTemplateId" value="@Model.LetterTemplateId" />
+
+        <pems-row gap="3">
+            <pems-col md="8">
+                <pems-label for="tplName">@Localizer["LtT_Name"]</pems-label>
+                <pems-input name="Name" id="tplName" value="@Model.Name" maxlength="150" required />
+            </pems-col>
+            <pems-col md="4">
+                <pems-label for="tplType">@Localizer["Type"]</pems-label>
+                <pems-select name="LetterType" id="tplType">
+                    <option value="" selected="@(Model.LetterType == null)">@Localizer["LtT_AllTypes"]</option>
+                    @foreach (var type in new[] { "Incoming", "Outgoing", "Internal" })
+                    {
+                        <option value="@type" selected="@(Model.LetterType == type)">@type</option>
+                    }
+                </pems-select>
+            </pems-col>
+            <pems-col span="12">
+                <pems-label for="tplSubject">@Localizer["Lt_Subject"]</pems-label>
+                <pems-input name="Subject" id="tplSubject" value="@Model.Subject" maxlength="300" required />
+            </pems-col>
+            <pems-col span="12">
+                <pems-label for="tplBodyEditor">@Localizer["Lt_Body"]</pems-label>
+                <pems-textarea name="Body" id="tplBodyEditor" rows="8">@Model.Body</pems-textarea>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label for="tplPriority">@Localizer["Lt_Priority"]</pems-label>
+                <pems-select name="Priority" id="tplPriority">
+                    @foreach (var p in new[] { "Normal", "Low", "High", "Urgent" })
+                    {
+                        <option value="@p" selected="@(Model.Priority == p)">@Localizer["Lt_P_" + p]</option>
+                    }
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label for="tplConf">@Localizer["Lt_Confidentiality"]</pems-label>
+                <pems-select name="ConfidentialityLevel" id="tplConf">
+                    @foreach (var c in new[] { "Internal", "Public", "Confidential", "Restricted", "HighlyConfidential" })
+                    {
+                        <option value="@c" selected="@(Model.ConfidentialityLevel == c)">@c</option>
+                    }
+                </pems-select>
+            </pems-col>
+        </pems-row>
+
+        <pems-action-bar css="mt-4">
+            <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>
+
+@await Html.PartialAsync("_RichTextEditorScripts", "tplBodyEditor")

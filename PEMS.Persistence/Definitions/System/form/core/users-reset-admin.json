@@ -1,0 +1,38 @@
+{
+  "kind": "form",
+  "key": "users-reset-admin",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reset administrator account",
+    "fa": "ریست حساب مدیر"
+  },
+  "description": {
+    "en": "Reset administrator account",
+    "fa": "ریست حساب مدیر"
+  },
+  "payload": {
+    "id": "users-reset-admin",
+    "title": {
+      "en": "Reset administrator account",
+      "fa": "ریست حساب مدیر"
+    },
+    "submitLabel": {
+      "en": "Reset account",
+      "fa": "ریست حساب"
+    },
+    "actionKey": "users-reset-admin",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "confirm",
+        "label": {
+          "en": "I understand: this issues a one-time temporary password, forces a password change, resets MFA and signs the account out everywhere. It cannot be undone.",
+          "fa": "متوجه‌ام: یک رمز موقت یک‌بارنمایش صادر می‌شود، تغییر رمز اجباری می‌شود، MFA ریست می‌شود و حساب از همه‌جا خارج می‌شود. برگشت‌پذیر نیست."
+        },
+        "kind": "switch"
+      }
+    ]
+  }
+}

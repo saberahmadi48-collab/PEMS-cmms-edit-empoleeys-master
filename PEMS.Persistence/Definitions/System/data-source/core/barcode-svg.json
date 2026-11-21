@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "barcode-svg",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode image (SVG)",
+    "fa": "تصویر بارکد (SVG)"
+  },
+  "description": {
+    "en": "Barcode image (SVG)",
+    "fa": "تصویر بارکد (SVG)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Barcode",
+      "action": "Svg",
+      "args": {
+        "id": "param:id"
+      },
+      "disposition": "inline"
+    }
+  }
+}

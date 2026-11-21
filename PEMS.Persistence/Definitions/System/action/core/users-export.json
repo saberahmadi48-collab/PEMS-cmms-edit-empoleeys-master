@@ -1,0 +1,25 @@
+{
+  "kind": "action",
+  "key": "users-export",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Export users",
+    "fa": "خروجی کاربران"
+  },
+  "description": {
+    "en": "Export users",
+    "fa": "خروجی کاربران"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Users",
+      "action": "Export",
+      "args": {
+        "onlyActive": "field:onlyActive"
+      }
+    }
+  }
+}

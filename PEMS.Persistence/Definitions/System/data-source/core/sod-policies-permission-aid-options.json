@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "sod-policies-permission-aid-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permission A options",
+    "fa": "گزینه‌های مجوز اول"
+  },
+  "description": {
+    "en": "Choices for permission a",
+    "fa": "گزینه‌ها برای مجوز اول"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "entity-options",
+    "parameters": {
+      "entity": "Permission",
+      "value": "PermissionId",
+      "label": "Name",
+      "active": "IsActive"
+    }
+  }
+}

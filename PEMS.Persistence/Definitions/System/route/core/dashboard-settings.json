@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "dashboard-settings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Customize dashboard (old address)",
+    "fa": "سفارشی‌سازی داشبورد (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Customize dashboard (old address)",
+    "fa": "سفارشی‌سازی داشبورد (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "DashboardSettings/{*rest}",
+    "target": "/p/dashboard-settings",
+    "permanent": false
+  }
+}

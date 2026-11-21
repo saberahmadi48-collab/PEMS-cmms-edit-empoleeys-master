@@ -4,191 +4,174 @@
 @inject IStringLocalizer<SharedResource> Localizer
 
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center">
+<pems-content-card css="mb-3">
+    <pems-flex justify="between" align="center">
         <div>
-            <h5 class="mb-0">@Model.DocumentNo &mdash; @Model.Title</h5>
-            <span class="badge bg-info text-dark mt-1">Stage: @Model.AIWorkflowStage</span>
-            <span class="badge bg-secondary mt-1">Status: @Model.Status</span>
+            <pems-heading level="5" class="mb-0">@Model.DocumentNo &mdash; @Model.Title</pems-heading>
+            <pems-badge tone="info" css="mt-1">Stage: @Model.AIWorkflowStage</pems-badge>
+            <pems-badge tone="neutral" css="mt-1">Status: @Model.Status</pems-badge>
             @if (!string.IsNullOrWhiteSpace(Model.AIProcessingStatus))
             {
                 @* طبق بخش ۴ سند: جدا از Stage/Status - آیا خودِ پردازش AI موفق بود یا نه *@
                 var aiBadge = Model.AIProcessingStatus switch
                 {
-                    "Completed" => "bg-success",
-                    "Failed" => "bg-danger",
-                    "Processing" => "bg-warning text-dark",
-                    _ => "bg-secondary"
+                    "Completed" => "success",
+                    "Failed" => "danger",
+                    "Processing" => "warning",
+                    _ => "neutral"
                 };
-                <span class="badge @aiBadge mt-1">AI: @Model.AIProcessingStatus</span>
+                <pems-badge tone="@aiBadge" css="mt-1">AI: @Model.AIProcessingStatus</pems-badge>
             }
         </div>
-        <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.DocumentId" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-file-earmark-text"></i> Open Document
-        </a>
-    </div>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@Model.DocumentId">
+            <pems-icon name="bi-file-earmark-text" /> Open Document
+        </pems-button>
+    </pems-flex>
 
-    <div class="d-flex flex-wrap gap-2 mt-3">
+    <pems-flex wrap="true" gap="2" css="mt-3">
         @{
             var stages = new[] { "UnderReview", "CommentOpen", "Revision", "Approved", "KnowledgeBase" };
         }
         @foreach (var s in stages)
         {
-            <form asp-action="AdvanceStage" method="post" class="d-inline">
+            <pems-form asp-action="AdvanceStage" method="post" class="d-inline">
                 <input type="hidden" name="documentId" value="@Model.DocumentId" />
                 <input type="hidden" name="newStage" value="@s" />
-                <button type="submit" class="btn btn-sm @(s == Model.AIWorkflowStage ? "btn-pems-solid" : "btn-outline-secondary")">@s</button>
-            </form>
+                <pems-button tone="none" size="small" css="@(s == Model.AIWorkflowStage ? "btn-pems-solid" : "btn-outline-secondary")" type="submit">@s</pems-button>
+            </pems-form>
         }
-    </div>
-</div>
+    </pems-flex>
+</pems-content-card>
 
-<div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-robot"></i> AI Classification Suggestions</h6>
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-robot" /> AI Classification Suggestions</pems-heading>
 
     @foreach (var c in Model.Classifications)
     {
         <div class="border rounded p-3 mb-2">
-            <div class="d-flex justify-content-between">
+            <pems-flex justify="between">
                 <strong>Confidence: @((c.ConfidenceScore).ToString("P0"))</strong>
                 @{
-                    var cb = c.ReviewStatus switch { "Approved" => "bg-success", "Rejected" => "bg-danger", _ => "bg-secondary" };
+                    var cb = c.ReviewStatus switch { "Approved" => "success", "Rejected" => "danger", _ => "neutral" };
                 }
-                <span class="badge @cb">@c.ReviewStatus</span>
-            </div>
+                <pems-badge tone="@cb">@c.ReviewStatus</pems-badge>
+            </pems-flex>
 
             @if (c.ReviewStatus == "Draft")
             {
-                <form asp-action="ApproveClassification" method="post" class="row g-2 mt-2">
+                <pems-form asp-action="ApproveClassification" method="post"><pems-row gap="2" css="mt-2">
                     <input type="hidden" name="documentId" value="@Model.DocumentId" />
                     <input type="hidden" name="classificationId" value="@c.AIDocumentClassificationId" />
 
-                    <div class="col-md-6 form-check">
-                        <input class="form-check-input" type="checkbox" name="applyDiscipline" value="true" checked id="d_@c.AIDocumentClassificationId" />
+                    <pems-col md="6" css="form-check">
+                        <pems-input kind="check" type="checkbox" name="applyDiscipline" value="true" checked id="d_@c.AIDocumentClassificationId" />
                         <label class="form-check-label" for="d_@c.AIDocumentClassificationId">Discipline: <strong>@c.PredictedDisciplineCode</strong></label>
-                    </div>
-                    <div class="col-md-6 form-check">
-                        <input class="form-check-input" type="checkbox" name="applyVendor" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedVendorName))" id="v_@c.AIDocumentClassificationId" />
+                    </pems-col>
+                    <pems-col md="6" css="form-check">
+                        <pems-input type="checkbox" name="applyVendor" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedVendorName))" id="v_@c.AIDocumentClassificationId" kind="check" />
                         <label class="form-check-label" for="v_@c.AIDocumentClassificationId">Vendor: <strong>@(c.PredictedVendorName ?? "-")</strong></label>
-                    </div>
-                    <div class="col-md-6 form-check">
-                        <input class="form-check-input" type="checkbox" name="applyMR" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedMRNumber))" id="mr_@c.AIDocumentClassificationId" />
+                    </pems-col>
+                    <pems-col md="6" css="form-check">
+                        <pems-input type="checkbox" name="applyMR" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedMRNumber))" id="mr_@c.AIDocumentClassificationId" kind="check" />
                         <label class="form-check-label" for="mr_@c.AIDocumentClassificationId">Related MR: <strong>@(c.PredictedMRNumber ?? "-")</strong></label>
-                    </div>
-                    <div class="col-md-6 form-check">
-                        <input class="form-check-input" type="checkbox" name="applyRevision" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedRevisionNo))" id="r_@c.AIDocumentClassificationId" />
+                    </pems-col>
+                    <pems-col md="6" css="form-check">
+                        <pems-input type="checkbox" name="applyRevision" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedRevisionNo))" id="r_@c.AIDocumentClassificationId" kind="check" />
                         <label class="form-check-label" for="r_@c.AIDocumentClassificationId">Revision: <strong>@(c.PredictedRevisionNo ?? "-")</strong></label>
-                    </div>
-                    <div class="col-md-6 form-check">
-                        <input class="form-check-input" type="checkbox" name="applyIssuePurpose" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedIssuePurpose))" id="ip_@c.AIDocumentClassificationId" />
+                    </pems-col>
+                    <pems-col md="6" css="form-check">
+                        <pems-input type="checkbox" name="applyIssuePurpose" value="true" checked="@(!string.IsNullOrEmpty(c.PredictedIssuePurpose))" id="ip_@c.AIDocumentClassificationId" kind="check" />
                         <label class="form-check-label" for="ip_@c.AIDocumentClassificationId">Issue Purpose: <strong>@(c.PredictedIssuePurpose ?? "-")</strong></label>
-                    </div>
-                    <div class="col-md-6"><span class="text-muted small">Document Type: <strong>@c.PredictedDocumentType</strong> (always applied)</span></div>
+                    </pems-col>
+                    <pems-col md="6"><span class="text-muted small">Document Type: <strong>@c.PredictedDocumentType</strong> (always applied)</span></pems-col>
 
-                    <div class="col-12 mt-2">
-                        <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-check-lg"></i> Approve &amp; Apply</button>
-                    </div>
-                </form>
+                    <pems-col span="12" css="mt-2">
+                        <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> Approve &amp; Apply</pems-button>
+                    </pems-col>
+                </pems-row></pems-form>
 
-                <form asp-action="RejectClassification" method="post" class="mt-1">
+                <pems-form asp-action="RejectClassification" method="post" class="mt-1">
                     <input type="hidden" name="documentId" value="@Model.DocumentId" />
                     <input type="hidden" name="classificationId" value="@c.AIDocumentClassificationId" />
-                    <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Reject"]</button>
-                </form>
+                    <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
+                </pems-form>
             }
         </div>
     }
-    @if (!Model.Classifications.Any()) { <p class="text-muted">No AI classification suggestions yet.</p> }
-</div>
+    @if (!Model.Classifications.Any()) { <pems-text class="text-muted">No AI classification suggestions yet.</pems-text> }
+</pems-content-card>
 
-<div class="content-card mb-3">
-    <h6 class="mb-3"><i class="bi bi-tags"></i> Related Equipment Tags (AVEVA-style multi-tag linking)</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead><tr><th>@Localizer["Tag Number"]</th><th>@Localizer["Source"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-        <tbody>
-            @foreach (var t in Model.TagLinks)
-            {
-                <tr>
-                    <td>@t.TagNumber</td>
-                    <td>@(t.IsAIProposed ? "AI Proposed" : "Manual")</td>
-                    <td>
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-tags" /> Related Equipment Tags (AVEVA-style multi-tag linking)</pems-heading>
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
+    @{
+        var rows_29 = Model.TagLinks;
+        var cell_29_2 = DataCell.Template(rows_29, @<text>@{ var t = item; }
                         @{
-                            var tb = t.ReviewStatus switch { "Approved" => "bg-success", "Rejected" => "bg-danger", _ => "bg-secondary" };
+                            var tb = t.ReviewStatus switch { "Approved" => "success", "Rejected" => "danger", _ => "neutral" };
                         }
-                        <span class="badge @tb">@t.ReviewStatus</span>
-                    </td>
-                    <td>
+                        <pems-badge tone="@tb">@t.ReviewStatus</pems-badge>
+                    </text>);
+        var cell_29_3 = DataCell.Template(rows_29, @<text>@{ var t = item; }
                         @if (t.IsAIProposed && t.ReviewStatus == "Draft")
                         {
-                            <form asp-action="ApproveTagLink" method="post" class="d-inline">
+                            <pems-form asp-action="ApproveTagLink" method="post" class="d-inline">
                                 <input type="hidden" name="documentId" value="@Model.DocumentId" />
                                 <input type="hidden" name="tagLinkId" value="@t.EngineeringDocumentTagLinkId" />
-                                <button class="btn btn-sm btn-success">@Localizer["Approve"]</button>
-                            </form>
-                            <form asp-action="RejectTagLink" method="post" class="d-inline">
+                                <pems-button tone="success" size="small">@Localizer["Approve"]</pems-button>
+                            </pems-form>
+                            <pems-form asp-action="RejectTagLink" method="post" class="d-inline">
                                 <input type="hidden" name="documentId" value="@Model.DocumentId" />
                                 <input type="hidden" name="tagLinkId" value="@t.EngineeringDocumentTagLinkId" />
-                                <button class="btn btn-sm btn-outline-danger">@Localizer["Reject"]</button>
-                            </form>
+                                <pems-button tone="danger" size="small" outline="true">@Localizer["Reject"]</pems-button>
+                            </pems-form>
                         }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.TagLinks.Any()) { <p class="text-muted">No equipment tags detected or linked yet.</p> }
-</div>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_29, c_ => c_.Add(((Localizer["Tag Number"])?.ToString() ?? ""), t => (object?)(t.TagNumber)).Add(((Localizer["Source"])?.ToString() ?? ""), t => (object?)((t.IsAIProposed ? "AI Proposed" : "Manual"))).Add(((Localizer["Status"])?.ToString() ?? ""), t => (object?)cell_29_2(t)).Add("", t => (object?)cell_29_3(t))))" />
+    </pems-table-scroll>
+    @if (!Model.TagLinks.Any()) { <pems-text class="text-muted">No equipment tags detected or linked yet.</pems-text> }
+</pems-content-card>
 
-<div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-chat-dots"></i> Comment Management</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead><tr><th>@Localizer["Comment"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Date"]</th><th>@Localizer["Action Status"]</th><th>@Localizer["Response"]</th></tr></thead>
-        <tbody>
-            @foreach (var c in Model.Comments)
-            {
-                <tr>
-                    <td>@c.CommentText</td>
-                    <td>@c.RaisedByName</td>
-                    <td>@c.RaisedDate.ToString("yyyy-MM-dd")</td>
-                    <td>
+<pems-content-card>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-chat-dots" /> Comment Management</pems-heading>
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
+    @{
+        var rows_30 = Model.Comments;
+        var cell_30_3 = DataCell.Template(rows_30, @<text>@{ var c = item; }
                         @{
-                            var ab = c.ActionStatus switch { "Closed" => "bg-success", "Verified" => "bg-info text-dark", "ResponsePending" => "bg-warning text-dark", "NoActionRequired" => "bg-secondary", _ => "bg-danger" };
+                            var ab = c.ActionStatus switch { "Closed" => "success", "Verified" => "info", "ResponsePending" => "warning", "NoActionRequired" => "neutral", _ => "danger" };
                         }
-                        <span class="badge @ab">@c.ActionStatus</span>
-                        <form asp-action="SetCommentAction" method="post" class="d-inline">
+                        <pems-badge tone="@ab">@c.ActionStatus</pems-badge>
+                        <pems-form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="documentId" value="@Model.DocumentId" />
                             <input type="hidden" name="commentId" value="@c.EngineeringDocumentCommentId" />
-                            <select name="actionStatus" class="form-select form-select-sm mt-1" style="width:160px;" onchange="this.form.submit()">
+                            <pems-select class="pems-w-160" scale="small" css="mt-1" name="actionStatus" data-pems-change="submit-form">
                                 @foreach (var s in new[] { "OpenComment", "ResponsePending", "Verified", "Closed", "NoActionRequired" })
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
-                            </select>
-                        </form>
-                    </td>
-                    <td class="small">
+                            </pems-select>
+                        </pems-form>
+                    </text>);
+        var cell_30_4 = DataCell.Template(rows_30, @<text>@{ var c = item; }
                         @c.ResponseText
                         @if (string.IsNullOrEmpty(c.ResponseText))
                         {
-                            <form asp-action="RecordCommentResponse" method="post" class="d-flex gap-1 mt-1">
+                            <pems-form class="mt-1" asp-action="RecordCommentResponse" method="post"><pems-flex gap="1">
                                 <input type="hidden" name="documentId" value="@Model.DocumentId" />
                                 <input type="hidden" name="commentId" value="@c.EngineeringDocumentCommentId" />
-                                <input name="responseText" class="form-control form-control-sm" placeholder="@Localizer["Response..."]" />
-                                <button class="btn btn-sm btn-outline-primary">@Localizer["Save"]</button>
-                            </form>
+                                <pems-input scale="small" name="responseText" placeholder="@Localizer["Response..."]" />
+                                <pems-button tone="primary" size="small" outline="true">@Localizer["Save"]</pems-button>
+                            </pems-flex></pems-form>
                         }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Comments.Any()) { <p class="text-muted">No comments yet.</p> }
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_30, c_ => c_.Add(((Localizer["Comment"])?.ToString() ?? ""), c => (object?)(c.CommentText)).Add(((Localizer["Raised By"])?.ToString() ?? ""), c => (object?)(c.RaisedByName)).Add(((Localizer["Date"])?.ToString() ?? ""), c => (object?)((PemsDates.Date(c.RaisedDate)))).Add(((Localizer["Action Status"])?.ToString() ?? ""), c => (object?)cell_30_3(c)).Add(((Localizer["Response"])?.ToString() ?? ""), c => (object?)cell_30_4(c), css: "small")))" />
+    </pems-table-scroll>
+    @if (!Model.Comments.Any()) { <pems-text class="text-muted">No comments yet.</pems-text> }
 
-    <form asp-action="AddComment" method="post" class="row g-2 mt-2">
+    <pems-form asp-action="AddComment" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="documentId" value="@Model.DocumentId" />
-        <div class="col-md-9"><input name="commentText" class="form-control form-control-sm" placeholder="New comment..." required /></div>
-        <div class="col-md-3"><button class="btn btn-sm btn-pems-solid w-100">@Localizer["Add Comment"]</button></div>
-    </form>
-</div>
+        <pems-col md="9"><pems-input scale="small" name="commentText" placeholder="New comment..." required /></pems-col>
+        <pems-col md="3"><pems-button tone="primary" size="small" css="w-100">@Localizer["Add Comment"]</pems-button></pems-col>
+    </pems-row></pems-form>
+</pems-content-card>

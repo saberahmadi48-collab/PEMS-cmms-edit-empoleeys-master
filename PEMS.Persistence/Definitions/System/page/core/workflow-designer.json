@@ -1,0 +1,370 @@
+{
+  "kind": "page",
+  "key": "workflow-designer",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Workflow designer",
+    "fa": "طراح گردش‌کار"
+  },
+  "description": {
+    "en": "The stages and transitions of one version (page definition)",
+    "fa": "مراحل و گذارهای یک نسخه (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "workflow-designer",
+    "regions": {
+      "header": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the list",
+              "fa": "بازگشت به فهرست"
+            },
+            "tone": "neutral",
+            "href": "/p/workflow-management"
+          }
+        },
+        {
+          "id": "addstage",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Add a stage",
+              "fa": "افزودن مرحله"
+            },
+            "tone": "primary",
+            "href": "/f/workflow-stage-add/{{params.id|url}}"
+          }
+        },
+        {
+          "id": "addtransition",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Add a transition",
+              "fa": "افزودن گذار"
+            },
+            "tone": "primary",
+            "href": "/f/workflow-transition-add/{{params.id|url}}"
+          }
+        }
+      ],
+      "content": [
+        {
+          "id": "version",
+          "component": "record-view",
+          "options": {
+            "id": "version",
+            "fields": [
+              {
+                "key": "definitionName",
+                "label": {
+                  "en": "Workflow",
+                  "fa": "گردش‌کار"
+                }
+              },
+              {
+                "key": "versionNumber",
+                "label": {
+                  "en": "Version",
+                  "fa": "نسخه"
+                },
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "canEditStructure",
+                "label": {
+                  "en": "Structure editable",
+                  "fa": "ساختار قابل ویرایش"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "runningInstances",
+                "label": {
+                  "en": "Running instances",
+                  "fa": "نمونه‌های در حال اجرا"
+                },
+                "type": "number"
+              },
+              {
+                "key": "lastEditor",
+                "label": {
+                  "en": "Last editor",
+                  "fa": "آخرین ویرایشگر"
+                }
+              },
+              {
+                "key": "changeSummary",
+                "label": {
+                  "en": "Summary",
+                  "fa": "خلاصه"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/workflow-version-record",
+              "idField": "versionId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "stages",
+          "component": "data-grid",
+          "options": {
+            "id": "stages",
+            "url": "/d/workflow-stages-rows?f.versionId=eq:{{params.id|url}}",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "stageOrder",
+                "header": {
+                  "en": "Order",
+                  "fa": "ترتیب"
+                },
+                "width": 80,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "stageId",
+                "header": {
+                  "en": "Id",
+                  "fa": "شناسه"
+                },
+                "width": 80,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 220,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "stageType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "responsibleRole",
+                "header": {
+                  "en": "Responsible",
+                  "fa": "مسئول"
+                },
+                "width": 220,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "approvalStrategy",
+                "header": {
+                  "en": "Approval",
+                  "fa": "تأیید"
+                },
+                "width": 180,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "isMandatory",
+                "header": {
+                  "en": "Mandatory",
+                  "fa": "الزامی"
+                },
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 520,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/workflow-stage-edit/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "delete",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/a/workflow-stage-delete",
+                    "method": "post",
+                    "tone": "danger",
+                    "confirm": {
+                      "en": "Remove this stage and its transitions?",
+                      "fa": "این مرحله و گذارهایش حذف شود؟"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "transitions",
+          "component": "data-grid",
+          "options": {
+            "id": "transitions",
+            "url": "/d/workflow-transitions-rows?f.versionId=eq:{{params.id|url}}",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "transitionId",
+                "header": {
+                  "en": "Id",
+                  "fa": "شناسه"
+                },
+                "width": 80,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "fromStageId",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 80,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "toStageId",
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                },
+                "width": 80,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "actionType",
+                "header": {
+                  "en": "Action",
+                  "fa": "کنش"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "label",
+                "header": {
+                  "en": "Label",
+                  "fa": "برچسب"
+                },
+                "width": 200,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "requiredPermission",
+                "header": {
+                  "en": "Permission",
+                  "fa": "مجوز"
+                },
+                "width": 200,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 520,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/workflow-transition-edit/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "delete",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/a/workflow-transition-delete",
+                    "method": "post",
+                    "tone": "danger",
+                    "confirm": {
+                      "en": "Remove this transition?",
+                      "fa": "این گذار حذف شود؟"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,315 @@
+{
+  "kind": "page",
+  "key": "vendor-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor",
+    "fa": "فروشنده"
+  },
+  "description": {
+    "en": "One vendor with risk and qualification history (page definition)",
+    "fa": "یک فروشنده با ریسک و تاریخچه‌ی صلاحیت (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "vendor-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "vendor-record",
+            "fields": [
+              {
+                "key": "name",
+                "label": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "wide": true
+              },
+              {
+                "key": "vendorCode",
+                "label": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "mono": true
+              },
+              {
+                "key": "country",
+                "label": {
+                  "en": "Country",
+                  "fa": "کشور"
+                }
+              },
+              {
+                "key": "contactName",
+                "label": {
+                  "en": "Contact",
+                  "fa": "رابط"
+                }
+              },
+              {
+                "key": "contactEmail",
+                "label": {
+                  "en": "Email",
+                  "fa": "ایمیل"
+                }
+              },
+              {
+                "key": "contactPhone",
+                "label": {
+                  "en": "Phone",
+                  "fa": "تلفن"
+                }
+              },
+              {
+                "key": "riskLevel",
+                "label": {
+                  "en": "Risk",
+                  "fa": "ریسک"
+                }
+              },
+              {
+                "key": "riskScore",
+                "label": {
+                  "en": "Risk score",
+                  "fa": "امتیاز ریسک"
+                },
+                "type": "number"
+              },
+              {
+                "key": "riskAssessedDate",
+                "label": {
+                  "en": "Risk assessed",
+                  "fa": "ارزیابی ریسک"
+                },
+                "type": "date"
+              },
+              {
+                "key": "isActive",
+                "label": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "contracts",
+                "label": {
+                  "en": "Contracts",
+                  "fa": "قراردادها"
+                },
+                "type": "number"
+              },
+              {
+                "key": "vdrItems",
+                "label": {
+                  "en": "VDR items",
+                  "fa": "اقلام VDR"
+                },
+                "type": "number"
+              },
+              {
+                "key": "overdueVdrItems",
+                "label": {
+                  "en": "Overdue VDR items",
+                  "fa": "اقلام VDR معوق"
+                },
+                "type": "number"
+              },
+              {
+                "key": "qualificationStatus",
+                "label": {
+                  "en": "Qualification",
+                  "fa": "صلاحیت"
+                }
+              },
+              {
+                "key": "qualificationCategory",
+                "label": {
+                  "en": "Qualification category",
+                  "fa": "دسته‌ی صلاحیت"
+                }
+              },
+              {
+                "key": "qualificationEffective",
+                "label": {
+                  "en": "Effective",
+                  "fa": "شروع اعتبار"
+                },
+                "type": "date"
+              },
+              {
+                "key": "qualificationExpiry",
+                "label": {
+                  "en": "Expires",
+                  "fa": "انقضا"
+                },
+                "type": "date"
+              },
+              {
+                "key": "qualificationEvidence",
+                "label": {
+                  "en": "Evidence",
+                  "fa": "مدرک"
+                },
+                "wide": true
+              },
+              {
+                "key": "qualificationNotes",
+                "label": {
+                  "en": "Notes",
+                  "fa": "یادداشت"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/vendor-detail",
+              "idField": "vendorId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/vendor-edit/{{params.id}}",
+                "text": {
+                  "en": "Edit",
+                  "fa": "ویرایش"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/vendor-qualification?id={{params.id}}",
+                "text": {
+                  "en": "Set the qualification",
+                  "fa": "ثبت صلاحیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/vendor-recalculate-risk?id={{params.id}}",
+                "text": {
+                  "en": "Recalculate the risk",
+                  "fa": "محاسبه‌ی مجدد ریسک"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/vendors",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "history",
+          "component": "def:related-table",
+          "options": {
+            "id": "qualification-history",
+            "title": {
+              "en": "Qualification history",
+              "fa": "تاریخچه‌ی صلاحیت"
+            },
+            "url": "/d/vendor-qualification-history?f.id={{params.id|url}}",
+            "idField": "index",
+            "columns": [
+              {
+                "key": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 150,
+                "type": "date"
+              },
+              {
+                "key": "from",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 130
+              },
+              {
+                "key": "to",
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                },
+                "width": 130
+              },
+              {
+                "key": "category",
+                "header": {
+                  "en": "Category",
+                  "fa": "دسته"
+                },
+                "width": 120
+              },
+              {
+                "key": "effective",
+                "header": {
+                  "en": "Effective",
+                  "fa": "شروع"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "expiry",
+                "header": {
+                  "en": "Expires",
+                  "fa": "انقضا"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "evidence",
+                "header": {
+                  "en": "Evidence",
+                  "fa": "مدرک"
+                },
+                "width": 200
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 240
+              },
+              {
+                "key": "by",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 150
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Vendors.View"
+  }
+}

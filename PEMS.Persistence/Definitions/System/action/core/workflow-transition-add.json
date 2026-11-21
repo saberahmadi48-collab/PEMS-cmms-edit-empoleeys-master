@@ -1,0 +1,42 @@
+{
+  "kind": "action",
+  "key": "workflow-transition-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a transition",
+    "fa": "افزودن گذار"
+  },
+  "description": {
+    "en": "Add a transition",
+    "fa": "افزودن گذار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "SaveTransition",
+      "args": {
+        "versionId": "field:id",
+        "transition": {
+          "FromStageId": "field:fromStageId",
+          "ToStageId": "field:toStageId",
+          "ActionType": "field:actionType",
+          "Label": "field:label",
+          "LabelFa": "field:labelFa",
+          "RequiredPermission": "field:requiredPermission",
+          "ConditionExpression": "field:conditionExpression",
+          "Priority": "field:priority",
+          "ForbidInitiator": "field:forbidInitiator",
+          "TransitionId": "literal:0"
+        }
+      }
+    },
+    "success": {
+      "en": "Transition added.",
+      "fa": "گذار افزوده شد."
+    },
+    "redirect": "/p/workflow-management"
+  }
+}

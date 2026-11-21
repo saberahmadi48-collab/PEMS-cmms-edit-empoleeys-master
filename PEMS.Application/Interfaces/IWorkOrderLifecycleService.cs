@@ -9,6 +9,8 @@ namespace PEMS.Application.Interfaces;
 /// </summary>
 public interface IWorkOrderLifecycleService
 {
+    /// <summary>Floor "WorkOrder.Edit"; an action definition adds the permission of its step (Hold/Resume: none more, Cancel/Reject: WorkOrder.Approve). The service validates the transition.</summary>
+    [PEMS.Application.Common.PemsOperation("WorkOrder", "AdvanceStatus", "WorkOrder.Edit")]
     Task<(bool Success, string? Error)> AdvanceStatusAsync(
         int workOrderId, string nextStatus, string? reason, int? changedByEmployeeId,
         int? assignedTeamId, int? assignedEmployeeId,
@@ -22,15 +24,19 @@ public interface IWorkOrderLifecycleService
     Task<(bool Success, string? Error, int? Id)> CreateGovernedAsync(WorkOrderCreateRequest request, WorkOrderActor actor);
 
     /// <summary>اجرای اکشن گردش‌کار. مجوز/سازمان/دیسیپلین/SoD سمت‌سرور از Runtime و هوک Work Order؛ قواعد دامنه اینجا.</summary>
+    [PEMS.Application.Common.PemsOperation("WorkOrder", "WorkflowAction", "WorkOrder.View")]
     Task<(bool Success, string? Error)> ExecuteWorkflowActionAsync(int workOrderId, string actionType, string? comment, WorkOrderActor actor, WorkOrderCompletionData? completion = null);
 
     /// <summary>دیسیپلین مسئول نگهداری (فقط برنامه‌ریزی نگهداری، فقط پیش از صدور). دیسیپلین مبدأ هرگز تغییر نمی‌کند.</summary>
+    [PEMS.Application.Common.PemsOperation("WorkOrder", "SetPlanning", "WorkOrder.View")]
     Task<(bool Success, string? Error)> SetPlanningAsync(int workOrderId, int responsibleDisciplineId, WorkOrderActor actor);
 
     /// <summary>تخصیص مجری (تیم/کارمند) توسط سرگروه/معاون همان دیسیپلین مسئول.</summary>
+    [PEMS.Application.Common.PemsOperation("WorkOrder", "AssignExecutor", "WorkOrder.View")]
     Task<(bool Success, string? Error)> AssignExecutorAsync(int workOrderId, int? teamId, int? employeeId, WorkOrderActor actor);
 
     /// <summary>زمان‌بندی برنامه‌ریزی‌شده (PlannedStart/PlannedFinish) برای تقویم نگهداری - همان مرحله/مجوز/اسکوپ دیسیپلینِ AssignExecutorAsync.</summary>
+    [PEMS.Application.Common.PemsOperation("WorkOrder", "Schedule", "WorkOrder.View")]
     Task<(bool Success, string? Error)> ScheduleWorkOrderAsync(int workOrderId, DateTime plannedStart, DateTime plannedFinish, WorkOrderActor actor);
 
     /// <summary>مدل خواندنی مرکزی؛ null برای Work Order Legacy (بدون Instance چرخه‌عمر).</summary>
@@ -44,4 +50,11 @@ public interface IWorkOrderLifecycleService
 
     /// <summary>آیا Work Order تحت چرخه‌عمر حاکمیتی است (Instance دارد).</summary>
     Task<bool> IsGovernedAsync(int workOrderId);
+
+    /// <summary>
+    /// بازگشایی رسمی Work Order بسته‌شده (H28): مجوز جدا (WorkOrder.Reopen)، دلیل الزامی، ممیزی کامل (WorkOrderStatusHistory + WorkflowHistory + WorkOrderChangeLog).
+    /// Work Order حاکمیتی به مرحله‌ی «تأیید دیسیپلین مبدأ» (وضعیت Completed) برمی‌گردد تا اصلاح ساعت‌کار/قطعات (با دلیل و ممیزی) و تأیید و تصویب نهایی دوباره انجام شود.
+    /// </summary>
+    [PEMS.Application.Common.PemsOperation("WorkOrder", "Reopen", "WorkOrder.Reopen")]
+    Task<(bool Success, string? Error)> ReopenAsync(int workOrderId, string? reason, WorkOrderActor actor, string? userName = null, int? userId = null, string? ipAddress = null);
 }

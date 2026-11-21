@@ -1,0 +1,50 @@
+{
+  "kind": "layout",
+  "key": "list-page",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "fa": "صفحه فهرست",
+    "en": "List page"
+  },
+  "description": {
+    "fa": "فهرست رکوردها با نوار ابزار، فیلترها و جدول",
+    "en": "A record list with toolbar, filters and table"
+  },
+  "payload": {
+    "root": {
+      "tag": "div",
+      "css": "lp-page",
+      "children": [
+        {
+          "region": "messages"
+        },
+        {
+          "region": "header"
+        },
+        {
+          "tag": "section",
+          "css": "lp-panel",
+          "children": [
+            {
+              "region": "toolbar"
+            },
+            {
+              "region": "kpis"
+            },
+            {
+              "region": "filters"
+            },
+            {
+              "region": "content",
+              "required": true
+            },
+            {
+              "region": "footer"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

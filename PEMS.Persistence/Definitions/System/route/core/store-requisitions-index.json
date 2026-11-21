@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "store-requisitions-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Store requisitions (index) (old address)",
+    "fa": "Store requisitions (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Store requisitions (index) (old address)",
+    "fa": "Store requisitions (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/StoreRequisition/Index",
+    "target": "/p/store-requisitions",
+    "permanent": false
+  }
+}

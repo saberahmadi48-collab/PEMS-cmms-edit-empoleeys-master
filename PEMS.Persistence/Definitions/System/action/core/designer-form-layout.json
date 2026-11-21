@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "designer-form-layout",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Form layout",
+    "fa": "چیدمان فرم"
+  },
+  "description": {
+    "en": "Form layout",
+    "fa": "چیدمان فرم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The layout was changed in the draft.",
+      "fa": "چیدمان در پیش‌نویس تغییر کرد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "SetFormLayout",
+      "args": {
+        "reference": "field:ref",
+        "columns": "field:columns",
+        "warnOnLeave": "field:warnOnLeave",
+        "submitEn": "field:submitEn",
+        "submitFa": "field:submitFa",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

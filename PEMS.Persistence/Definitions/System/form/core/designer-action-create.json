@@ -1,0 +1,143 @@
+{
+  "kind": "form",
+  "key": "designer-action-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create an action from an operation",
+    "fa": "ایجاد کنش از یک عملیات"
+  },
+  "description": {
+    "en": "Create an action from an operation",
+    "fa": "ایجاد کنش از یک عملیات"
+  },
+  "payload": {
+    "id": "designer-action-create",
+    "title": {
+      "en": "Create an action from an operation",
+      "fa": "ایجاد کنش از یک عملیات"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "designer-create-action",
+    "permission": "Definitions.Create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "key",
+        "label": {
+          "en": "Action key",
+          "fa": "کلید کنش"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Action key is required.",
+            "fa": "کلید کنش الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "appKey",
+        "label": {
+          "en": "App",
+          "fa": "برنامه"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "model",
+        "label": {
+          "en": "Operation model",
+          "fa": "مدل عملیات"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Operation model is required.",
+            "fa": "مدل عملیات الزامی است."
+          }
+        },
+        "maxLength": 100,
+        "placeholder": {
+          "en": "see the operation list",
+          "fa": "فهرست عملیات را ببینید"
+        }
+      },
+      {
+        "name": "action",
+        "label": {
+          "en": "Operation action",
+          "fa": "کنش عملیات"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Operation action is required.",
+            "fa": "کنش عملیات الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "args",
+        "label": {
+          "en": "Arguments (JSON: name to field:x, literal:x or context:x)",
+          "fa": "آرگومان‌ها (JSON)"
+        },
+        "kind": "textArea",
+        "maxLength": 100000,
+        "span": 2
+      },
+      {
+        "name": "successEn",
+        "label": {
+          "en": "Success message (English)",
+          "fa": "پیام موفقیت (انگلیسی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Success message (English) is required.",
+            "fa": "پیام موفقیت (انگلیسی) الزامی است."
+          }
+        },
+        "maxLength": 300
+      },
+      {
+        "name": "successFa",
+        "label": {
+          "en": "Success message (Persian)",
+          "fa": "پیام موفقیت (فارسی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Success message (Persian) is required.",
+            "fa": "پیام موفقیت (فارسی) الزامی است."
+          }
+        },
+        "maxLength": 300
+      },
+      {
+        "name": "redirect",
+        "label": {
+          "en": "Redirect after success",
+          "fa": "مسیر پس از موفقیت"
+        },
+        "kind": "text",
+        "maxLength": 300
+      }
+    ]
+  }
+}

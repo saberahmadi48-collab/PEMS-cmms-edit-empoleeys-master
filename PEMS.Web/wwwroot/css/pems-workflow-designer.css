@@ -1,0 +1,18 @@
+/* Moved verbatim from the <style> block of PEMS.Web/Areas/Admin/Views/WorkflowManagement/Designer.cshtml (SCRUM-347). */
+.wf-canvas { overflow: auto; border: 1px solid var(--pems-surface-border, #dee2e6); border-radius: 8px; background: var(--pems-surface, #fff); }
+.wf-canvas svg { display: block; max-width: none; }
+.wf-canvas a { text-decoration: none; }
+.wf-node rect { fill: var(--bs-body-bg, #fff); stroke: #6c7a8d; stroke-width: 1.2; rx: 6; }
+.wf-node:hover rect, .wf-node:focus rect { stroke: #0d6efd; stroke-width: 2; }
+.wf-node.sel rect { stroke: #0d6efd; stroke-width: 2.6; fill: var(--bs-primary-bg-subtle, #eef4ff); }
+.wf-node.start rect { stroke: #198754; }
+.wf-node text { font-size: 12.5px; fill: var(--bs-body-color, #1f2d3d); pointer-events: none; }
+.wf-node .sub { font-size: 10.5px; fill: #6c7a8d; }
+.wf-edge path { fill: none; stroke: #6c7a8d; stroke-width: 1.6; }
+.wf-edge.back path { stroke: #d98c2b; stroke-dasharray: 5 3; }
+.wf-edge.terminal path { stroke: #b23b3b; }
+.wf-edge.start path { stroke: #198754; }
+.wf-edge text { font-size: 10.5px; fill: var(--bs-secondary-color, #44515f); paint-order: stroke; stroke: var(--bs-body-bg, #fff); stroke-width: 3px; }
+.wf-edge:hover path, .wf-edge.sel path { stroke: #0d6efd; stroke-width: 2.8; }
+.wf-edge.sel text { fill: #0d6efd; font-weight: 600; }
+.wf-panel label { font-size: .78rem; }

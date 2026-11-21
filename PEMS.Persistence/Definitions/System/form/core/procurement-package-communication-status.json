@@ -1,0 +1,74 @@
+{
+  "kind": "form",
+  "key": "procurement-package-communication-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set the status of a clarification",
+    "fa": "تعیین وضعیت شفاف‌سازی"
+  },
+  "description": {
+    "en": "Set the status of a clarification",
+    "fa": "تعیین وضعیت شفاف‌سازی"
+  },
+  "payload": {
+    "id": "procurement-package-communication-status",
+    "title": {
+      "en": "Set the status of a clarification",
+      "fa": "تعیین وضعیت شفاف‌سازی"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "procurement-package-communication-status",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "packageId",
+        "label": {
+          "en": "Package id",
+          "fa": "شناسه‌ی بسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "communicationId",
+        "label": {
+          "en": "Clarification id",
+          "fa": "شناسه‌ی شفاف‌سازی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "actionStatus",
+        "label": {
+          "en": "Status (Open, Responded, Closed)",
+          "fa": "وضعیت (Open, Responded, Closed)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

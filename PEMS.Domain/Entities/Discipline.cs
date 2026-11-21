@@ -1,4 +1,4 @@
-﻿namespace PEMS.Domain.Entities;
+namespace PEMS.Domain.Entities;
 
 public class Discipline
 {
@@ -25,4 +25,8 @@ public class Discipline
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedDate { get; set; }
+
+    /// <summary>Concurrency token for the REST API (ETag / If-Match, SCRUM-435).</summary>
+    [System.ComponentModel.DataAnnotations.Timestamp]
+    public byte[]? RowVersion { get; set; }
 }

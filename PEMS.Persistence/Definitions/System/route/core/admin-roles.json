@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-roles",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Roles (old address)",
+    "fa": "نقش‌ها (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Roles (old address)",
+    "fa": "نقش‌ها (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/Roles/{*rest}",
+    "target": "/p/roles",
+    "permanent": false
+  }
+}

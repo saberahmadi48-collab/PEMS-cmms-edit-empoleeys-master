@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "work-order-remove-required-skill",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove required skill",
+    "fa": "حذف مهارت موردنیاز"
+  },
+  "description": {
+    "en": "Remove required skill",
+    "fa": "حذف مهارت موردنیاز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderSkill",
+      "action": "Remove",
+      "sectionGuard": {
+        "section": "RequiredSkills",
+        "action": "Remove",
+        "workOrderId": "field:workOrderId",
+        "recordRef": "field:requiredSkillId",
+        "beforeFromResult": true
+      },
+      "args": {
+        "requiredSkillId": "field:requiredSkillId",
+        "workOrderId": "field:workOrderId"
+      }
+    },
+    "success": {
+      "en": "The required skill was removed.",
+      "fa": "مهارت موردنیاز حذف شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

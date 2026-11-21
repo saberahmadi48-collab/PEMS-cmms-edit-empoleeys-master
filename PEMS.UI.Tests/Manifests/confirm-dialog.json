@@ -1,0 +1,161 @@
+{
+  "key": "confirm-dialog",
+  "component": "PEMS.UI.Components.PemsConfirmDialog",
+  "category": "overlays",
+  "icon": "bi-question-circle",
+  "nameKey": "component.confirm-dialog",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "skin": {
+        "enum": [
+          "bootstrap",
+          "pems"
+        ]
+      },
+      "id": {
+        "type": "string"
+      },
+      "action": {
+        "type": "string"
+      },
+      "title": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "message": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "confirmLabel": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "cancelLabel": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "tone": {
+        "enum": [
+          "neutral",
+          "primary",
+          "danger",
+          "success",
+          "warning",
+          "info",
+          "light",
+          "dark"
+        ]
+      },
+      "reasonLabel": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "reasonName": {
+        "type": "string"
+      },
+      "requestToken": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "requestTokenName": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "id",
+      "action",
+      "title",
+      "message",
+      "confirmLabel",
+      "cancelLabel"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "ConfirmDialogOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "c1",
+    "action": "/x/cancel",
+    "title": {
+      "en": "Cancel order",
+      "fa": "لغو سفارش"
+    },
+    "message": {
+      "en": "Are you sure?",
+      "fa": "مطمئن هستید؟"
+    },
+    "confirmLabel": {
+      "en": "Yes",
+      "fa": "بله"
+    },
+    "cancelLabel": {
+      "en": "No",
+      "fa": "خیر"
+    },
+    "reasonLabel": {
+      "en": "Reason",
+      "fa": "دلیل"
+    }
+  }
+}

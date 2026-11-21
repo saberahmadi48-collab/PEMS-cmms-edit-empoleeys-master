@@ -1,0 +1,38 @@
+{
+  "kind": "form",
+  "key": "database-update-apply",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Apply database update",
+    "fa": "اعمال به‌روزرسانی پایگاه داده"
+  },
+  "description": {
+    "en": "Apply the pending database updates",
+    "fa": "اعمال به‌روزرسانی‌های در انتظار پایگاه داده"
+  },
+  "payload": {
+    "id": "database-update-apply",
+    "title": {
+      "en": "Apply database update",
+      "fa": "اعمال به‌روزرسانی پایگاه داده"
+    },
+    "submitLabel": {
+      "en": "Apply",
+      "fa": "اعمال"
+    },
+    "actionKey": "database-update-apply",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "backupConfirmed",
+        "label": {
+          "en": "I confirm that a database backup has been taken",
+          "fa": "تأیید می‌کنم که از پایگاه داده نسخه‌ی پشتیبان گرفته شده است"
+        },
+        "kind": "switch"
+      }
+    ]
+  }
+}

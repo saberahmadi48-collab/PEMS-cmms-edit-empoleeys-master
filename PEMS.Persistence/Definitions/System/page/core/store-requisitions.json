@@ -1,0 +1,216 @@
+{
+  "kind": "page",
+  "key": "store-requisitions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Store Requisitions",
+    "fa": "درخواست‌های انبار"
+  },
+  "description": {
+    "en": "Internal stock requests: Draft, Submitted, Approved, Reserved, Issued, Closed (page definition)",
+    "fa": "درخواست‌های داخلی برداشت از انبار: پیش‌نویس تا بسته (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "store-requisitions",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "sr-filters",
+            "resetUrl": "/p/store-requisitions",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Draft",
+                    "label": {
+                      "en": "Draft",
+                      "fa": "پیش‌نویس"
+                    }
+                  },
+                  {
+                    "value": "Submitted",
+                    "label": {
+                      "en": "Submitted",
+                      "fa": "ارسال‌شده"
+                    }
+                  },
+                  {
+                    "value": "Approved",
+                    "label": {
+                      "en": "Approved",
+                      "fa": "تأییدشده"
+                    }
+                  },
+                  {
+                    "value": "Reserved",
+                    "label": {
+                      "en": "Reserved",
+                      "fa": "رزروشده"
+                    }
+                  },
+                  {
+                    "value": "PartiallyIssued",
+                    "label": {
+                      "en": "PartiallyIssued",
+                      "fa": "تحویل بخشی"
+                    }
+                  },
+                  {
+                    "value": "Issued",
+                    "label": {
+                      "en": "Issued",
+                      "fa": "تحویل‌شده"
+                    }
+                  },
+                  {
+                    "value": "Closed",
+                    "label": {
+                      "en": "Closed",
+                      "fa": "بسته"
+                    }
+                  },
+                  {
+                    "value": "Rejected",
+                    "label": {
+                      "en": "Rejected",
+                      "fa": "ردشده"
+                    }
+                  },
+                  {
+                    "value": "Cancelled",
+                    "label": {
+                      "en": "Cancelled",
+                      "fa": "لغوشده"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/store-requisition-create",
+                "text": {
+                  "en": "New store requisition",
+                  "fa": "درخواست انبار جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/inventory",
+                "text": {
+                  "en": "Inventory dashboard",
+                  "fa": "داشبورد موجودی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "requisitions",
+          "component": "data-grid",
+          "options": {
+            "id": "requisitions",
+            "url": "/d/store-requisitions-grid?f.status={{params.status|url}}",
+            "idField": "storeRequisitionId",
+            "columns": [
+              {
+                "key": "requisitionNumber",
+                "header": {
+                  "en": "Number",
+                  "fa": "شماره"
+                },
+                "width": 160
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 140
+              },
+              {
+                "key": "warehouse",
+                "header": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                },
+                "width": 110
+              },
+              {
+                "key": "requestedBy",
+                "header": {
+                  "en": "Requested by",
+                  "fa": "درخواست‌کننده"
+                },
+                "width": 200
+              },
+              {
+                "key": "requestedDate",
+                "header": {
+                  "en": "Requested",
+                  "fa": "تاریخ"
+                },
+                "width": 150,
+                "type": "date"
+              },
+              {
+                "key": "purpose",
+                "header": {
+                  "en": "Purpose",
+                  "fa": "هدف"
+                },
+                "width": 300
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/store-requisition-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "StoreRequisition.View"
+  }
+}

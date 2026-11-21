@@ -1,0 +1,67 @@
+{
+  "kind": "page",
+  "key": "definition-translations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Missing translations",
+    "fa": "ترجمه‌های ناقص"
+  },
+  "description": {
+    "en": "Every text of a published form, page or menu that has no text in one language, with what a user sees instead",
+    "fa": "هر متنی که یک زبان ندارد"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "definition-translations",
+    "permission": "Definitions.View",
+    "template": "entity-list",
+    "args": {
+      "id": "definition-translations",
+      "url": "/d/definition-translations-grid",
+      "idField": "ref",
+      "columns": [
+        {
+          "key": "kind",
+          "header": {
+            "en": "Kind",
+            "fa": "نوع"
+          },
+          "width": 110
+        },
+        {
+          "key": "key",
+          "header": {
+            "en": "Key",
+            "fa": "کلید"
+          },
+          "width": 240
+        },
+        {
+          "key": "path",
+          "header": {
+            "en": "Where",
+            "fa": "محل"
+          },
+          "width": 320
+        },
+        {
+          "key": "missing",
+          "header": {
+            "en": "Missing language",
+            "fa": "زبان ناقص"
+          },
+          "width": 130
+        },
+        {
+          "key": "shown",
+          "header": {
+            "en": "Shown instead",
+            "fa": "متن جایگزین"
+          },
+          "width": 260
+        }
+      ]
+    }
+  }
+}

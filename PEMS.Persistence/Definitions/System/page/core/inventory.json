@@ -1,0 +1,351 @@
+{
+  "kind": "page",
+  "key": "inventory",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Inventory Dashboard",
+    "fa": "داشبورد موجودی"
+  },
+  "description": {
+    "en": "Stock totals, low stock and the latest transactions (page definition)",
+    "fa": "جمع‌های موجودی، کم‌موجودی‌ها و آخرین تراکنش‌ها (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "inventory",
+    "regions": {
+      "content": [
+        {
+          "id": "t-materials",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Total materials",
+              "fa": "کل مواد"
+            },
+            "icon": "bi-box-seam"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/inventory-summary",
+              "first": true,
+              "map": {
+                "value": "materials"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-stock",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Stock items",
+              "fa": "اقلام انباری"
+            },
+            "icon": "bi-boxes"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/inventory-summary",
+              "first": true,
+              "map": {
+                "value": "stockItems"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-critical",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Critical",
+              "fa": "بحرانی"
+            },
+            "icon": "bi-exclamation-triangle",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/inventory-summary",
+              "first": true,
+              "map": {
+                "value": "critical"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-out",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Out of stock",
+              "fa": "تمام‌شده"
+            },
+            "icon": "bi-x-octagon",
+            "tone": "danger"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/inventory-summary",
+              "first": true,
+              "map": {
+                "value": "outOfStock"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-warehouses",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Warehouses",
+              "fa": "انبارها"
+            },
+            "icon": "bi-building"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/inventory-summary",
+              "first": true,
+              "map": {
+                "value": "warehouses"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-reservations",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Active reservations",
+              "fa": "رزروهای فعال"
+            },
+            "icon": "bi-bookmark-check"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/inventory-summary",
+              "first": true,
+              "map": {
+                "value": "reservations"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-pending-sr",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Open store requisitions",
+              "fa": "درخواست‌های انبار باز"
+            },
+            "icon": "bi-clipboard-check"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/inventory-summary",
+              "first": true,
+              "map": {
+                "value": "pendingRequisitions"
+              }
+            }
+          }
+        },
+        {
+          "id": "go",
+          "component": "content-blocks",
+          "options": {
+            "id": "go",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/material-items",
+                "text": {
+                  "en": "Material master",
+                  "fa": "اقلام مواد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/warehouses",
+                "text": {
+                  "en": "Master data",
+                  "fa": "اطلاعات پایه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/inventory-ledger",
+                "text": {
+                  "en": "Transaction ledger",
+                  "fa": "دفتر کل تراکنش‌ها"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/store-requisitions",
+                "text": {
+                  "en": "Store requisitions",
+                  "fa": "درخواست‌های انبار"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-low",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-low",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Low stock",
+                  "fa": "کم‌موجودی"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "low-stock",
+          "component": "data-grid",
+          "options": {
+            "id": "low-stock",
+            "url": "/d/inventory-low-stock",
+            "idField": "materialStockId",
+            "columns": [
+              {
+                "key": "warehouse",
+                "header": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                },
+                "width": 140
+              },
+              {
+                "key": "onHand",
+                "header": {
+                  "en": "On hand",
+                  "fa": "موجودی"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "available",
+                "header": {
+                  "en": "Available",
+                  "fa": "در دسترس"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "reorderPoint",
+                "header": {
+                  "en": "Reorder point",
+                  "fa": "نقطه سفارش"
+                },
+                "width": 140,
+                "type": "number"
+              }
+            ],
+            "pageSize": 10,
+            "height": 320
+          }
+        },
+        {
+          "id": "h-recent",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-recent",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Recent transactions",
+                  "fa": "تراکنش‌های اخیر"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "recent",
+          "component": "data-grid",
+          "options": {
+            "id": "recent",
+            "url": "/d/inventory-recent-transactions",
+            "idField": "inventoryTransactionId",
+            "columns": [
+              {
+                "key": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 160,
+                "type": "date"
+              },
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 300
+              },
+              {
+                "key": "type",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "warehouse",
+                "header": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                },
+                "width": 110
+              },
+              {
+                "key": "quantity",
+                "header": {
+                  "en": "Qty",
+                  "fa": "تعداد"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "reference",
+                "header": {
+                  "en": "Reference",
+                  "fa": "مرجع"
+                },
+                "width": 160
+              }
+            ],
+            "pageSize": 15,
+            "height": 420
+          }
+        }
+      ]
+    },
+    "permission": "MaterialItem.View"
+  }
+}

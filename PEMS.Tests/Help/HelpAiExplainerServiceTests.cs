@@ -22,7 +22,11 @@ public class HelpAiExplainerServiceTests
         // همان HttpClient/Config واقعی OllamaService - بدون Mock. آدرس پیش‌فرض
         // (localhost:11434) در این محیط توسعه واقعاً بدون پاسخ است (تایید‌شده با curl)
         var httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:11434/") };
-        var config = new ConfigurationBuilder().Build();
+        var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?>
+        {
+            ["Ollama:Model"] = "test-model",
+            ["Ollama:EmbeddingModel"] = "test-embedding-model"
+        }).Build();
         var ollama = new OllamaService(httpClient, config);
 
         var svc = new HelpAiExplainerService(ctx, ollama);

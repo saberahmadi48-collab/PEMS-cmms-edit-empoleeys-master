@@ -1,3 +1,4 @@
+using PEMS.Tests.TestSupport;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -56,17 +57,17 @@ public class LanguagePurityTests
         var letters = new Regex(@"[A-Za-z\u0600-\u06FF]{3,}", RegexOptions.Compiled);
         var total = 0;
         var web = Path.Combine(Root(), "PEMS.Web");
-        foreach (var f in Directory.EnumerateFiles(Path.Combine(web, "Views"), "*.cshtml", SearchOption.AllDirectories)
-                     .Concat(Directory.EnumerateFiles(Path.Combine(web, "Areas"), "*.cshtml", SearchOption.AllDirectories)))
+        foreach (var f in SourceTree.Files(Path.Combine(web, "Views"), "*.cshtml")
+                     .Concat(SourceTree.Files(Path.Combine(web, "Areas"), "*.cshtml")))
         {
-            var t = File.ReadAllText(f);
+            var t = SourceTree.Text(f);
             t = Regex.Replace(t, @"@\*.*?\*@", "", RegexOptions.Singleline);
             t = Regex.Replace(t, @"<script.*?</script>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
             t = Regex.Replace(t, @"<style.*?</style>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
             total += node.Matches(t).Count(m => letters.IsMatch(m.Groups[1].Value) && !m.Groups[1].Value.TrimStart().StartsWith('&'));
             total += attr.Matches(t).Count(m => letters.IsMatch(m.Groups[1].Value));
         }
-        var baseline = int.Parse(File.ReadAllText(Path.Combine(Root(), "docs", "design", "language-purity-baseline.txt")).Trim());
+        var baseline = int.Parse(SourceTree.Text(Path.Combine(Root(), "docs", "design", "language-purity-baseline.txt")).Trim());
         Assert.True(total <= baseline, $"Hard-coded UI strings grew: {total} > baseline {baseline}. Use Localizer[...] (and add a Persian entry) instead of literal text.");
     }
 }

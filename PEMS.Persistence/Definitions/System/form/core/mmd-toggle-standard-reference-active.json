@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "mmd-toggle-standard-reference-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleStandardReferenceActive",
+    "fa": "ToggleStandardReferenceActive"
+  },
+  "description": {
+    "en": "ToggleStandardReferenceActive",
+    "fa": "ToggleStandardReferenceActive"
+  },
+  "payload": {
+    "id": "mmd-toggle-standard-reference-active",
+    "title": {
+      "en": "ToggleStandardReferenceActive",
+      "fa": "ToggleStandardReferenceActive"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-toggle-standard-reference-active",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "id"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

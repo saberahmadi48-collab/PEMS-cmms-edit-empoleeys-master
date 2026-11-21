@@ -253,6 +253,64 @@ public class IrnReceiptService : IIrnReceiptService
         return (true, null);
     }
 
+    // SCRUM-473 / D7: the Warehouse Manager resolves Hold. Same rule as the disposition: only the accepted part becomes stock, in the
+    // same SaveChanges as the resolution (a retry after success finds no open Hold and posts nothing).
+    public async Task<(bool Success, string? Error, int? IrnReceiptId)> ResolveHoldAsync(
+        int irnReceiptLineId, decimal accepted, decimal rejected, string? notes, string? userName, int? actorEmployeeId)
+    {
+        var line = await _context.IrnReceiptLines.Include(l => l.IrnReceipt)
+            .FirstOrDefaultAsync(l => l.IrnReceiptLineId == irnReceiptLineId);
+        if (line?.IrnReceipt == null) return (false, "Rcv_Err_NotFound", null);
+        var receipt = line.IrnReceipt;
+
+        if (receipt.Status != "Closed") return (false, "Rcv_Err_HoldNotClosed", receipt.IrnReceiptId);
+        if (!line.HasOpenHold) return (false, "Rcv_Err_NoOpenHold", receipt.IrnReceiptId);
+        if (accepted < 0 || rejected < 0) return (false, "Rcv_Err_Negative", receipt.IrnReceiptId);
+        if (accepted + rejected != line.HoldQuantity) return (false, "Rcv_Err_HoldSplit", receipt.IrnReceiptId);
+
+        if (accepted > 0)
+        {
+            var (stock, stockError) = await StockRowResolver.GetOrCreateAsync(_context, line.MaterialItemId, receipt.WarehouseId, line.StorageLocationId);
+            if (stock == null) return (false, stockError, receipt.IrnReceiptId);
+
+            stock.OnHandQuantity += accepted;
+            stock.LastUpdated = DateTime.Now;
+            await _context.InventoryTransactions.AddAsync(new InventoryTransaction
+            {
+                MaterialItemId = line.MaterialItemId,
+                WarehouseId = receipt.WarehouseId,
+                StorageLocationId = line.StorageLocationId,
+                TransactionType = "Acceptance",
+                Quantity = accepted,
+                UomId = line.UomId,
+                ReferenceType = "IrnReceipt",
+                ReferenceId = receipt.IrnReceiptId,
+                EmployeeId = actorEmployeeId,
+                TransactionDate = DateTime.Now,
+                Reason = $"IRN {receipt.IrnNumber} - hold released"
+            });
+        }
+
+        line.HoldAcceptedQuantity = accepted;
+        line.HoldRejectedQuantity = rejected;
+        line.HoldResolvedAt = DateTime.Now;
+        line.HoldResolvedByUserName = userName;
+        line.HoldResolutionNotes = string.IsNullOrWhiteSpace(notes) ? null : notes.Trim();
+
+        await _context.IrnReceiptStatusHistories.AddAsync(new IrnReceiptStatusHistory
+        {
+            IrnReceiptId = receipt.IrnReceiptId,
+            FromStatus = receipt.Status,
+            ToStatus = receipt.Status,
+            ChangedById = actorEmployeeId,
+            ChangedDate = DateTime.Now,
+            Reason = $"Hold resolved on line {line.IrnReceiptLineId}: accepted {accepted:0.###}, rejected {rejected:0.###}"
+        });
+
+        await _context.SaveChangesAsync();
+        return (true, null, receipt.IrnReceiptId);
+    }
+
     private static string ComputeOverallResult(IEnumerable<IrnReceiptLine> lines)
     {
         var list = lines.ToList();

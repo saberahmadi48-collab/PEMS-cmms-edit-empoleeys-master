@@ -1,0 +1,36 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("info-item", Category = "display", Icon = "bi-list-columns")]
+<div class="@ItemCss" @attributes="Options.Attributes"><dt class="pems-info__label">@Options.Label</dt><dd class="@ValueCss" id="@Options.ValueId">@Value</dd></div>
+@code {
+    [Parameter, EditorRequired] public InfoItemOptions Options { get; set; } = default!;
+    /// <summary>The value markup.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    /// <summary>True when the page wrote no value (the tag helper sees the rendered child); the empty text shows.</summary>
+    [Parameter, PEMS.UI.Rendering.PemsHostSet] public bool Empty { get; set; }
+    private string ItemCss => Options.Wide ? "pems-info__item pems-info__item--wide" : "pems-info__item";
+    private string ValueCss
+    {
+        get
+        {
+            var css = "pems-info__value";
+            if (Options.Mono) css += " pems-info__value--mono";
+            if (Options.Tone == "danger") css += " text-danger";
+            else if (Options.Tone is "warning" or "success") css += " pems-info__value--" + Options.Tone;
+            if (!string.IsNullOrEmpty(Options.ValueClass)) css += " " + Options.ValueClass;
+            return css;
+        }
+    }
+    private RenderFragment Value => b =>
+    {
+        if (Empty || ChildContent is null) b.AddContent(0, Options.EmptyText);
+        else if (Options.Num || Options.Ltr)
+        {
+            b.OpenElement(1, "span");
+            if (Options.Num) b.AddAttribute(2, "class", "pems-info__num");
+            b.AddAttribute(3, "dir", "ltr");
+            b.AddContent(4, ChildContent);
+            b.CloseElement();
+        }
+        else b.AddContent(5, ChildContent);
+    };
+}

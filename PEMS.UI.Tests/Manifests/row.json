@@ -1,0 +1,68 @@
+{
+  "key": "row",
+  "component": "PEMS.UI.Components.PemsRow",
+  "category": "layout",
+  "icon": "bi-layout-three-columns",
+  "nameKey": "component.row",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "gap": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "gapX": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "gapY": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "RowOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "gap": "2"
+  }
+}

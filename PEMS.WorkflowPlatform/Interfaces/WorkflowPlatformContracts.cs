@@ -138,6 +138,13 @@ public interface IWorkflowInstanceControl
 {
     /// <returns>true اگر Instance در حال اجرا بود و لغو شد؛ false اگر Running نبود.</returns>
     Task<bool> CancelInstanceAsync(int workflowInstanceId, int? actorEmployeeId, string? reason, CancellationToken ct = default);
+
+    /// <summary>
+    /// بازگشایی Instance «تکمیل‌شده» (Status=Completed) به یک مرحله‌ی مشخص از همان نسخه (نه Cancelled/Rejected). برای ماژولی که بازگشایی رسمی
+    /// (مجوز جدا + دلیل + ممیزی) دارد، مثل Work Order بسته‌شده. Instance دوباره Running می‌شود، تاریخچه‌ی «Reopen» ثبت می‌شود و شرکت‌کنندگان مرحله‌ی مقصد
+    /// مانند ورود عادی به مرحله ساخته می‌شوند. false اگر Instance Completed نبود یا مرحله به همان نسخه تعلق نداشت. ذخیره با SaveChanges خودِ متد انجام می‌شود.
+    /// </summary>
+    Task<bool> ReopenInstanceAsync(int workflowInstanceId, int toStageId, int? actorEmployeeId, string reason, CancellationToken ct = default);
 }
 
 public interface IWorkflowBindingService

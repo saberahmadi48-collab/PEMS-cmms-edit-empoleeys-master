@@ -1,0 +1,48 @@
+{
+  "kind": "action",
+  "key": "help-article-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a help article",
+    "fa": "ایجاد مقاله‌ی راهنما"
+  },
+  "description": {
+    "en": "Create a help article",
+    "fa": "ایجاد مقاله‌ی راهنما"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "SaveArticle",
+      "args": {
+        "articleId": "literal:0",
+        "dto": {
+          "Code": "field:code",
+          "HelpCategoryId": "field:helpCategoryId",
+          "ArticleType": "field:articleType",
+          "HelpKey": "field:helpKey",
+          "RelevantRoles": "field:relevantRoles",
+          "DisplayOrder": "field:displayOrder",
+          "IsPublished": "field:isPublished",
+          "TitleEn": "field:titleEn",
+          "SummaryEn": "field:summaryEn",
+          "ContentEn": "field:contentEn",
+          "SearchKeywordsEn": "field:searchKeywordsEn",
+          "TitleFa": "field:titleFa",
+          "SummaryFa": "field:summaryFa",
+          "ContentFa": "field:contentFa",
+          "SearchKeywordsFa": "field:searchKeywordsFa"
+        },
+        "relatedArticleIds": "field:relatedArticleIds"
+      }
+    },
+    "success": {
+      "en": "Help article created.",
+      "fa": "مقاله‌ی راهنما ایجاد شد."
+    },
+    "redirect": "/p/help-admin"
+  }
+}

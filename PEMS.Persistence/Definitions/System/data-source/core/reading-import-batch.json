@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "reading-import-batch",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Condition Reading Import batch",
+    "fa": "دسته‌ی ورود قرائت‌های وضعیت"
+  },
+  "description": {
+    "en": "Condition Reading Import batch",
+    "fa": "دسته‌ی ورود قرائت‌های وضعیت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ConditionReadingImport",
+      "action": "Batch",
+      "args": {
+        "batchId": "param:batchId"
+      }
+    }
+  }
+}

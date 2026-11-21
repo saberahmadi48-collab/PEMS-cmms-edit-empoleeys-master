@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "vendor-recalculate-risk",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Recalculate the risk",
+    "fa": "محاسبه‌ی مجدد ریسک"
+  },
+  "description": {
+    "en": "Recalculate the risk",
+    "fa": "محاسبه‌ی مجدد ریسک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Vendor",
+      "action": "RecalculateRisk",
+      "args": {
+        "vendorId": "field:id"
+      }
+    },
+    "success": {
+      "en": "The risk score was recalculated.",
+      "fa": "امتیاز ریسک دوباره محاسبه شد."
+    },
+    "redirect": "/p/vendor-details?id={id}"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "history-import-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance History Import rows",
+    "fa": "ردیف‌های ورود سوابق نگهداری"
+  },
+  "description": {
+    "en": "Maintenance History Import rows",
+    "fa": "ردیف‌های ورود سوابق نگهداری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceHistoryImport",
+      "action": "Rows",
+      "args": {
+        "batchId": "param:batchId",
+        "status": "param:status"
+      }
+    }
+  }
+}

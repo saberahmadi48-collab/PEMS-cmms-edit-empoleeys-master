@@ -91,11 +91,9 @@ public class OrganizationChartTests
     [Fact]
     public void ChartEndpoints_AreSystemAdminOnly_AndReadOnly()
     {
-        var t = typeof(PEMS.Web.Areas.Admin.Controllers.OrganizationController);
-        var auth = (Microsoft.AspNetCore.Authorization.AuthorizeAttribute)Attribute.GetCustomAttribute(t, typeof(Microsoft.AspNetCore.Authorization.AuthorizeAttribute))!;
-        Assert.Equal(PEMS.Persistence.Identity.SystemRoles.SystemAdmin, auth.Roles);
-        foreach (var name in new[] { "Chart", "ChartData" })
-            Assert.NotNull(t.GetMethod(name)!.GetCustomAttributes(typeof(Microsoft.AspNetCore.Mvc.HttpGetAttribute), false).SingleOrDefault());
+        // SCRUM-639: the chart rows are a read operation for SystemAdmin only (no write operation reads or writes through it)
+        var operations = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        Assert.Contains(PEMS.Persistence.Identity.SystemRoles.SystemAdmin, operations.Get("Organization", "ChartRows")!.Roles);
         // JS هرگز چیزی نمی‌نویسد: فقط GET (fetch بدون method/body)
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.Web/wwwroot/js/pems-org-position-chart.js"))) dir = dir.Parent;

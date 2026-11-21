@@ -1,0 +1,104 @@
+{
+  "kind": "form",
+  "key": "po-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New purchase order",
+    "fa": "سفارش خرید جدید"
+  },
+  "description": {
+    "en": "New purchase order",
+    "fa": "سفارش خرید جدید"
+  },
+  "payload": {
+    "id": "po-create",
+    "title": {
+      "en": "New purchase order",
+      "fa": "سفارش خرید جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "po-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "poNumber",
+        "label": {
+          "en": "PO number",
+          "fa": "شماره سفارش"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "po-projects"
+      },
+      {
+        "name": "vendorId",
+        "label": {
+          "en": "Vendor",
+          "fa": "فروشنده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "po-vendors"
+      },
+      {
+        "name": "contractId",
+        "label": {
+          "en": "Contract",
+          "fa": "قرارداد"
+        },
+        "kind": "select",
+        "optionsFrom": "po-contracts"
+      },
+      {
+        "name": "value",
+        "label": {
+          "en": "Value",
+          "fa": "مبلغ"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "textArea",
+        "maxLength": 1000,
+        "span": 2
+      }
+    ]
+  }
+}

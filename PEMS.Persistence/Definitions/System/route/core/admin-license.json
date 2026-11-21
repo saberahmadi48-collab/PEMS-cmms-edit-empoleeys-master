@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-license",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Licence (old address)",
+    "fa": "مجوز (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Licence (old address)",
+    "fa": "مجوز (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/License/{*rest}",
+    "target": "/p/license",
+    "permanent": false
+  }
+}

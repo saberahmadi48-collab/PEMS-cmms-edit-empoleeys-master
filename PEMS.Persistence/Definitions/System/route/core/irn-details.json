@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "irn-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "IRN details (old address)",
+    "fa": "IRN details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "IRN details (old address)",
+    "fa": "IRN details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/IrnReceipt/Details/{id}",
+    "target": "/p/irn-details?id={id}",
+    "permanent": false
+  }
+}

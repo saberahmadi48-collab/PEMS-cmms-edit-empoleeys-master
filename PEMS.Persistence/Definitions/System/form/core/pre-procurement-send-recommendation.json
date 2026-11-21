@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "pre-procurement-send-recommendation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Send a shortage to procurement",
+    "fa": "ارسال کمبود به خرید"
+  },
+  "description": {
+    "en": "Send a shortage to procurement",
+    "fa": "ارسال کمبود به خرید"
+  },
+  "payload": {
+    "id": "pre-procurement-send-recommendation",
+    "title": {
+      "en": "Send a shortage to procurement",
+      "fa": "ارسال کمبود به خرید"
+    },
+    "submitLabel": {
+      "en": "Send",
+      "fa": "ارسال"
+    },
+    "actionKey": "pre-procurement-send-recommendation",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "recommendationId",
+        "label": {
+          "en": "Recommendation id",
+          "fa": "شناسه‌ی توصیه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

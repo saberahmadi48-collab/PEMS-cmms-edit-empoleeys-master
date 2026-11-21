@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "intake-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Review an intake file (old address)",
+    "fa": "Review an intake file (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Review an intake file (old address)",
+    "fa": "Review an intake file (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Intake/Review/{id}",
+    "target": "/p/intake-review?id={id}",
+    "permanent": false
+  }
+}

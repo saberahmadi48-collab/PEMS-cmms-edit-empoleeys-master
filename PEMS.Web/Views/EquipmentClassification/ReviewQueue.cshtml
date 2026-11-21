@@ -1,90 +1,94 @@
 @model PEMS.Application.DTOs.ReviewQueuePageDto
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@using Microsoft.AspNetCore.Mvc.Rendering
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var status = (string)ViewBag.StatusFilter;
     var totalPages = Model.PageSize == 0 ? 1 : (int)Math.Ceiling(Model.TotalCount / (double)Model.PageSize);
+    var statuses = new[] { ("PENDING", "Pending"), ("ACCEPTED", "Accepted"), ("REJECTED", "Rejected") };
 }
 
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
-}
+@section Styles { <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" /> }
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <p class="text-muted small mb-0">
-            هر پیشنهاد فقط MEDIUM/LOW یا AI است (EXACT/HIGH مستقیم اعمال شده‌اند) - تایید یا رد
-            کاملاً روی Equipment.EquipmentClassId اثر دارد و به‌صورت خودکار در Audit Log ثبت می‌شود.
-        </p>
-        <div class="btn-group btn-group-sm">
-            <a asp-action="ReviewQueue" asp-route-status="PENDING" class="btn @(status == "PENDING" ? "btn-pems-solid" : "btn-outline-secondary")">Pending</a>
-            <a asp-action="ReviewQueue" asp-route-status="ACCEPTED" class="btn @(status == "ACCEPTED" ? "btn-pems-solid" : "btn-outline-secondary")">Accepted</a>
-            <a asp-action="ReviewQueue" asp-route-status="REJECTED" class="btn @(status == "REJECTED" ? "btn-pems-solid" : "btn-outline-secondary")">Rejected</a>
-        </div>
-    </div>
-
-    <div class="table-responsive">
-        <table class="table table-enterprise">
-            <thead>
-                <tr>
-                    <th>@Localizer["Tag"]</th><th>@Localizer["Name"]</th><th>@Localizer["Type"]</th><th>@Localizer["Discipline"]</th>
-                    <th>Suggested Class</th><th>@Localizer["Confidence"]</th><th>@Localizer["Source"]</th><th>@Localizer["Reason"]</th>
-                    @if (status == "PENDING") { <th></th> }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Items)
-                {
-                    <tr>
-                        <td><code>@item.TagNumber</code></td>
-                        <td class="small">@item.EquipmentName</td>
-                        <td class="small text-muted">@item.EquipmentType</td>
-                        <td class="small text-muted">@(item.DisciplineName ?? "-")</td>
-                        <td class="small"><span class="badge text-bg-light border">@item.SuggestedEquipmentClassName</span></td>
-                        <td><span class="badge text-bg-warning">@item.Confidence</span></td>
-                        <td class="small text-muted">@item.Source</td>
-                        <td class="small text-muted">@item.Reason</td>
-                        @if (status == "PENDING")
-                        {
-                            <td class="text-end text-nowrap">
-                                <form asp-action="Accept" method="post" class="d-inline">
-                                    <input type="hidden" name="id" value="@item.SuggestionId" />
-                                    <input type="hidden" name="status" value="@status" />
-                                    <input type="hidden" name="page" value="@Model.Page" />
-                                    <button type="submit" class="btn btn-sm btn-outline-success" title="@Localizer["تایید"]"><i class="bi bi-check-lg"></i></button>
-                                </form>
-                                <form asp-action="Reject" method="post" class="d-inline">
-                                    <input type="hidden" name="id" value="@item.SuggestionId" />
-                                    <input type="hidden" name="status" value="@status" />
-                                    <input type="hidden" name="page" value="@Model.Page" />
-                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="رد"><i class="bi bi-x-lg"></i></button>
-                                </form>
-                            </td>
-                        }
-                    </tr>
-                }
-            </tbody>
-        </table>
-        @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["موردی در این وضعیت وجود ندارد."]</p> }
-    </div>
-
-    @if (totalPages > 1)
+@* SCRUM-337: built from the PEMS.UI list-page component; the three status buttons became the status filter (always one of the three, no "all"), the note the heading tooltip, the page-number row the shared pager. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null)
     {
-        <nav>
-            <ul class="pagination pagination-sm justify-content-center">
-                @for (var p = 1; p <= totalPages; p++)
-                {
-                    <li class="page-item @(p == Model.Page ? "active" : "")">
-                        <a class="page-link" asp-action="ReviewQueue" asp-route-status="@status" asp-route-page="@p">@p</a>
-                    </li>
-                }
-            </ul>
-        </nav>
+        <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert>
     }
-</div>
+    @if (TempData["Error"] != null)
+    {
+        <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
+    }
+
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer["Classification Review Queue"]" total="@Model.TotalCount"
+                           heading-title="هر پیشنهاد فقط MEDIUM/LOW یا AI است (EXACT/HIGH مستقیم اعمال شده‌اند) - تایید یا رد کاملاً روی Equipment.EquipmentClassId اثر دارد و به‌صورت خودکار در Audit Log ثبت می‌شود.">
+            <pems-list-tools>
+                <pems-list-filters form-id="ecFilter" action="@Url.Action("ReviewQueue")" count="@(status == "PENDING" ? 0 : 1)" reset-href="@Url.Action("ReviewQueue")">
+                    <pems-list-filter-select id="ecStatus" name="status" label="@Localizer["Status"]" value="@status"
+                                             items="@statuses.Select(s => new SelectListItem(s.Item2, s.Item1))" />
+                </pems-list-filters>
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table empty="@(!Model.Items.Any())" empty-text="@Localizer["موردی در این وضعیت وجود ندارد."]">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["Tag"]</pems-table-header><pems-table-header>@Localizer["Name"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Discipline"]</pems-table-header>
+                        <pems-table-header>Suggested Class</pems-table-header><pems-table-header>@Localizer["Confidence"]</pems-table-header><pems-table-header>@Localizer["Source"]</pems-table-header><pems-table-header>@Localizer["Reason"]</pems-table-header>
+                        @if (status == "PENDING") { <pems-table-header></pems-table-header> }
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var item in Model.Items)
+                    {
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><code>@item.TagNumber</code></pems-table-cell>
+                            <pems-table-cell class="small">@item.EquipmentName</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@item.EquipmentType</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@(item.DisciplineName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small"><pems-badge tone="light">@item.SuggestedEquipmentClassName</pems-badge></pems-table-cell>
+                            <pems-table-cell><pems-badge tone="warning">@item.Confidence</pems-badge></pems-table-cell>
+                            <pems-table-cell class="small text-muted">@item.Source</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@item.Reason</pems-table-cell>
+                            @if (status == "PENDING")
+                            {
+                                <pems-table-cell class="text-end text-nowrap">
+                                    <pems-form asp-action="Accept" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@item.SuggestionId" />
+                                        <input type="hidden" name="status" value="@status" />
+                                        <input type="hidden" name="page" value="@Model.Page" />
+                                        <pems-button tone="success" size="small" outline="true" type="submit" title="@Localizer["تایید"]"><pems-icon name="bi-check-lg" /></pems-button>
+                                    </pems-form>
+                                    <pems-form asp-action="Reject" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@item.SuggestionId" />
+                                        <input type="hidden" name="status" value="@status" />
+                                        <input type="hidden" name="page" value="@Model.Page" />
+                                        <pems-button tone="danger" size="small" outline="true" type="submit" title="رد"><pems-icon name="bi-x-lg" /></pems-button>
+                                    </pems-form>
+                                </pems-table-cell>
+                            }
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = totalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    BaseUrl = Url.Action("ReviewQueue") ?? "",
+                    ExistingQueryString = $"status={Uri.EscapeDataString(status)}"
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }

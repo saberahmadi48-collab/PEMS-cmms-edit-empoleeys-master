@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "employee-vacant-positions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vacant positions",
+    "fa": "سمت‌های خالی"
+  },
+  "description": {
+    "en": "Vacant positions",
+    "fa": "سمت‌های خالی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Employee",
+      "action": "VacantPositions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

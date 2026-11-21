@@ -1,0 +1,76 @@
+{
+  "kind": "form",
+  "key": "pc-admin-update-step",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Update a workflow step",
+    "fa": "ویرایش گام مسیر"
+  },
+  "description": {
+    "en": "Update a workflow step",
+    "fa": "ویرایش گام مسیر"
+  },
+  "payload": {
+    "id": "pc-admin-update-step",
+    "title": {
+      "en": "Update a workflow step",
+      "fa": "ویرایش گام مسیر"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-admin-update-step",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "stepId",
+        "label": {
+          "en": "Step id",
+          "fa": "شناسه‌ی گام"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "order",
+        "label": {
+          "en": "Order",
+          "fa": "ترتیب"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "isActive",
+        "label": {
+          "en": "Active",
+          "fa": "فعال"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "conditionKey",
+        "label": {
+          "en": "Condition",
+          "fa": "شرط"
+        },
+        "kind": "text",
+        "maxLength": 100
+      }
+    ]
+  }
+}

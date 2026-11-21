@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "team-sub-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a sub-team or shift",
+    "fa": "ساخت زیرتیم یا شیفت"
+  },
+  "description": {
+    "en": "Create a sub-team or shift",
+    "fa": "ساخت زیرتیم یا شیفت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "CreateSubTeam",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "maintenanceGroupId": "field:maintenanceGroupId",
+        "code": "field:code",
+        "name": "field:name",
+        "parentTeamId": "field:parentTeamId",
+        "nodeKind": "field:nodeKind",
+        "supervisorEmployeeId": "field:supervisorEmployeeId"
+      }
+    },
+    "success": {
+      "en": "Created.",
+      "fa": "ساخته شد."
+    },
+    "redirect": "/p/team-details?teamId={parentTeamId}"
+  }
+}

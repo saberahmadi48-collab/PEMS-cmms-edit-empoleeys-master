@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "work-order-reopen-task",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reopen a task",
+    "fa": "بازگشایی تسک"
+  },
+  "description": {
+    "en": "Reopen a task",
+    "fa": "بازگشایی تسک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderTask",
+      "action": "Reopen",
+      "args": {
+        "workOrderTaskId": "field:workOrderTaskId",
+        "workOrderId": "field:workOrderId"
+      },
+      "sectionGuard": {
+        "section": "JobPlanTasks",
+        "action": "Edit",
+        "workOrderId": "field:workOrderId",
+        "recordRef": "field:workOrderTaskId"
+      }
+    },
+    "success": {
+      "en": "The task was reopened.",
+      "fa": "تسک بازگشایی شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

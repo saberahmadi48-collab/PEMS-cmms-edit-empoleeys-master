@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "crew-work-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Open work orders",
+    "fa": "دستورکارهای باز"
+  },
+  "description": {
+    "en": "Open work orders",
+    "fa": "دستورکارهای باز"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "CrewAdmin",
+      "action": "WorkOrderChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

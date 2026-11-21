@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "mmd-toggle-certification-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleCertificationActive",
+    "fa": "ToggleCertificationActive"
+  },
+  "description": {
+    "en": "ToggleCertificationActive",
+    "fa": "ToggleCertificationActive"
+  },
+  "payload": {
+    "id": "mmd-toggle-certification-active",
+    "title": {
+      "en": "ToggleCertificationActive",
+      "fa": "ToggleCertificationActive"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-toggle-certification-active",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "id"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

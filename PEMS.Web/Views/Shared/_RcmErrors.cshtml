@@ -1,0 +1,12 @@
+@model IEnumerable<string>
+@if (Model != null && Model.Any())
+{
+    <pems-alert tone="danger" css="small">
+        <pems-bullet-list class="mb-0">
+            @foreach (var e in Model)
+            {
+                <pems-bullet>@e</pems-bullet>
+            }
+        </pems-bullet-list>
+    </pems-alert>
+}

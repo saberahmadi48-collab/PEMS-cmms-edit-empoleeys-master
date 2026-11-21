@@ -3,72 +3,71 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card mb-3">
-    <p class="text-muted mb-0">
+<pems-content-card css="mb-3">
+    <pems-text class="text-muted mb-0">
         ابزار آزمایش پرامپت استخراج جدولی (Wiring Connection Diagram, Instrument Index, Marshalling List,
         I/O List, Loop Drawing) روی فایل‌های آپلودشده. این صفحه مستقل از خط پردازش خودکار AI Intake است و
         هیچ نتیجه‌ای را در پایگاه‌داده ذخیره نمی‌کند - فقط خروجی مدل را برای بررسی نمایش می‌دهد.
-    </p>
-</div>
+    </pems-text>
+</pems-content-card>
 
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('TableExtraction')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:70vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="TableExtraction">
-            <thead>
-                <tr>
-                    <th data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["File"]</th>
-                    <th data-col-key="ext" data-resizable="true" data-min-width="80" data-max-width="140">Extension</th>
-                    <th data-col-key="uploaded" data-resizable="true" data-min-width="120" data-max-width="200">@Localizer["Uploaded"]</th>
-                    <th data-col-key="aiStatus" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["AI Status"]</th>
-                    <th data-col-key="hint" data-resizable="true" data-min-width="200" data-max-width="400" style="min-width:260px;">Document hint (optional)</th>
-                    <th data-col-key="action" data-resizable="false" style="min-width:220px;">@Localizer["Action"]</th>
-                </tr>
-            </thead>
-            <tbody>
+<pems-content-card>
+    <pems-flex justify="end" css="mb-2">
+        <pems-button tone="neutral" size="small" outline="true" type="button" data-pems-click="call" data-pems-fn="PemsDataGrid.resetColumns" data-pems-arg="none" data-pems-args='["TableExtraction"]'>
+            <pems-icon name="bi-arrow-counterclockwise" /> @Localizer["Reset columns"]
+        </pems-button>
+    </pems-flex>
+    <pems-table-scroll css="pems-grid-scroll table-scroll-area pems-s-a7ef6ffc">
+        <pems-table kind="enterprise" css="pems-grid-table" data-grid-key="TableExtraction">
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["File"]</pems-table-header>
+                    <pems-table-header data-col-key="ext" data-resizable="true" data-min-width="80" data-max-width="140">Extension</pems-table-header>
+                    <pems-table-header data-col-key="uploaded" data-resizable="true" data-min-width="120" data-max-width="200">@Localizer["Uploaded"]</pems-table-header>
+                    <pems-table-header data-col-key="aiStatus" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["AI Status"]</pems-table-header>
+                    <pems-table-header class="pems-s-bec7b1d5" data-col-key="hint" data-resizable="true" data-min-width="200" data-max-width="400">Document hint (optional)</pems-table-header>
+                    <pems-table-header class="pems-s-5af557a5" data-col-key="action" data-resizable="false">@Localizer["Action"]</pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
                 @foreach (var attachment in Model.Items)
                 {
-                    <tr>
-                        <td>@attachment.FileName</td>
-                        <td>@attachment.FileExtension</td>
-                        <td class="small text-muted">@attachment.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td>
-                            <span class="badge bg-secondary">@attachment.AIStatus</span>
-                        </td>
-                        <td>
-                            <form asp-action="Analyze" method="post" id="aiForm_@attachment.AttachmentId">
+                    <pems-table-row>
+                        <pems-table-cell>@attachment.FileName</pems-table-cell>
+                        <pems-table-cell>@attachment.FileExtension</pems-table-cell>
+                        <pems-table-cell class="small text-muted">@PemsDates.DateTime(attachment.UploadDate)</pems-table-cell>
+                        <pems-table-cell>
+                            <pems-badge tone="neutral">@attachment.AIStatus</pems-badge>
+                        </pems-table-cell>
+                        <pems-table-cell>
+                            <pems-form asp-action="Analyze" method="post" id="aiForm_@attachment.AttachmentId">
                                 <input type="hidden" name="attachmentId" value="@attachment.AttachmentId" />
-                                <input type="text" name="documentHint" class="form-control form-control-sm"
-                                       placeholder="e.g. Wiring Connection Diagram for JB-12" />
-                            </form>
-                        </td>
-                        <td>
-                            <div class="d-flex gap-2">
-                                <button type="submit" form="aiForm_@attachment.AttachmentId" class="btn btn-sm btn-pems-solid text-nowrap">
-                                    <i class="bi bi-stars"></i> With AI
-                                </button>
-                                <form asp-action="AnalyzeDeterministic" method="post" class="d-inline">
+                                <pems-input scale="small" type="text" name="documentHint" placeholder="e.g. Wiring Connection Diagram for JB-12" />
+                            </pems-form>
+                        </pems-table-cell>
+                        <pems-table-cell>
+                            <pems-flex gap="2">
+                                <pems-button tone="primary" size="small" css="text-nowrap" type="submit" form="aiForm_@attachment.AttachmentId">
+                                    <pems-icon name="bi-stars" /> With AI
+                                </pems-button>
+                                <pems-form asp-action="AnalyzeDeterministic" method="post" class="d-inline">
                                     <input type="hidden" name="attachmentId" value="@attachment.AttachmentId" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary text-nowrap" title="PDF native text only, no LLM call - faster and more precise for real tables">
-                                        <i class="bi bi-grid-3x3"></i> No AI (PDF)
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                                    <pems-button tone="neutral" size="small" outline="true" css="text-nowrap" type="submit" title="PDF native text only, no LLM call - faster and more precise for real tables">
+                                        <pems-icon name="bi-grid-3x3" /> No AI (PDF)
+                                    </pems-button>
+                                </pems-form>
+                            </pems-flex>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
-        </table>
+            </pems-table-body>
+        </pems-table>
 
         @if (!Model.Items.Any())
         {
-            <p class="text-muted text-center py-4">No uploaded attachments yet. Try Document Upload first.</p>
+            <pems-text class="text-muted text-center py-4">No uploaded attachments yet. Try Document Upload first.</pems-text>
         }
-    </div>
+    </pems-table-scroll>
 
     @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
     {
@@ -80,12 +79,8 @@
         BaseUrl = Url.Action("Index") ?? "",
         ExistingQueryString = ""
     })
-</div>
+</pems-content-card>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('TableExtraction');
-        });
-    </script>
+    <script src="~/js/views/tableextraction-index.js" asp-append-version="true"></script>
 }

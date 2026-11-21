@@ -1,0 +1,12 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-filters", Category = "list", Icon = "bi-funnel")]
+<div @attributes="Options.Attributes" class="@ListMarkup.Css("dropdown", Options.CssClass)"><PemsListIconTool Options="@Button">@if (Options.Count > 0){<span class="lp-badge">@Options.Count.ToString(System.Globalization.CultureInfo.InvariantCulture)<span class="visually-hidden">@(" " + Options.ActiveFiltersText)</span></span>}</PemsListIconTool><div class="dropdown-menu dropdown-menu-end lp-filter-pop p-0"><form action="@(Options.Action ?? "")" id="@Options.FormId" method="get"><div class="lp-fp-body">@ChildContent</div><div class="lp-fp-foot"><a class="btn btn-sm btn-link" href="@(Options.ResetHref ?? Options.Action)">@Options.ResetFiltersText</a><button class="btn btn-sm btn-pems-solid" type="submit"><i aria-hidden="true" class="bi bi-funnel"></i>@(" " + Options.ApplyFiltersText)</button></div></form></div></div>
+@code {
+    [Parameter, EditorRequired] public ListFiltersOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private ListIconToolOptions Button => new()
+    {
+        Icon = "bi-funnel", Label = Options.FiltersText,
+        Attributes = new Dictionary<string, string> { ["id"] = Options.FormId + "Btn", ["data-bs-toggle"] = "dropdown", ["data-bs-auto-close"] = "outside", ["aria-expanded"] = "false" }
+    };
+}

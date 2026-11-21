@@ -1,0 +1,47 @@
+@page
+@model CustomersModel
+@{ ViewData["Title"] = "Customers"; }
+<h1>Customers</h1>
+@if (Model.Message is not null) { <p class="warn">@Model.Message</p> }
+<table>
+    <thead><tr><th>Reference</th><th>Name</th><th>Note</th></tr></thead>
+    <tbody>
+    @foreach (var c in Model.Ledger.Customers())
+    {
+        <tr><td><a asp-page="/Ledger" asp-route-customer="@c.CustomerRef">@c.CustomerRef</a></td><td>@c.Name</td><td>@c.Note</td></tr>
+    }
+    </tbody>
+</table>
+<form method="post" class="card">
+    <h2>Add customer</h2>
+    <label for="customerRef">Reference (the value the customer enters in the product, e.g. CUST-0001)</label>
+    <input id="customerRef" name="customerRef" required maxlength="64" />
+    <label for="name">Name</label>
+    <input id="name" name="name" required maxlength="200" />
+    <label for="note">Note (how identity was verified; no personal data)</label>
+    <input id="note" name="note" maxlength="500" />
+    <p><button type="submit">Add</button></p>
+</form>
+@functions {
+    public class CustomersModel : Microsoft.AspNetCore.Mvc.RazorPages.PageModel
+    {
+        public Ledger Ledger { get; }
+        private readonly VendorSettings _settings;
+        private readonly TimeProvider _time;
+        public string? Message { get; private set; }
+
+        public CustomersModel(Ledger ledger, VendorSettings settings, TimeProvider time) { Ledger = ledger; _settings = settings; _time = time; }
+
+        public void OnPost(string customerRef, string name, string? note)
+        {
+            if (Ledger.GetCustomer(customerRef) is not null) { Message = "This reference already exists."; return; }
+            using var c = Ledger.Open();
+            using var t = c.BeginTransaction();
+            var now = _time.GetUtcNow();
+            Ledger.AddCustomer(c, t, new CustomerRow(customerRef.Trim(), name.Trim(), note), now);
+            Ledger.Audit(c, t, _settings.OperatorName, "customer_add", customerRef.Trim(), "name=" + name.Trim(), now);
+            t.Commit();
+            Message = "Added.";
+        }
+    }
+}

@@ -1,0 +1,40 @@
+{
+  "kind": "action",
+  "key": "permit-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New permit",
+    "fa": "مجوز جدید"
+  },
+  "description": {
+    "en": "New permit",
+    "fa": "مجوز جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PermitPage",
+      "action": "Create",
+      "args": {
+        "employeeId": "context:employeeId",
+        "permitType": "field:permitType",
+        "title": "field:title",
+        "priority": "field:priority",
+        "description": "field:description",
+        "equipmentId": "field:equipmentId",
+        "functionalLocationId": "field:functionalLocationId",
+        "workOrderId": "field:workOrderId",
+        "permitReceiverEmployeeId": "field:permitReceiverEmployeeId",
+        "validFrom": "field:validFrom",
+        "validTo": "field:validTo"
+      }
+    },
+    "success": {
+      "en": "The permit was created.",
+      "fa": "Permit ساخته شد."
+    },
+    "redirect": "/p/permits"
+  }
+}

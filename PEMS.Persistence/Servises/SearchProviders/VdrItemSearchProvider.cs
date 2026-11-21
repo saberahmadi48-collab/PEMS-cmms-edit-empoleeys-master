@@ -16,6 +16,8 @@ public class VdrItemSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "VDRItem";
     public string DisplayName => "مدارک وندور (VDR)";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser();
 
     public VdrItemSearchProvider(PEMSDbContext context)
     {
@@ -103,7 +105,7 @@ public class VdrItemSearchProvider : ISearchableEntityProvider
 
     // ==============================================================================
     // محدودیت شناخته‌شده‌ی فاز C: این مسیر Full-Text فقط DocumentNumber/Description/Vendor
-    // رو پوشش می‌ده (چون این‌ها توی اسکریپت EnableFullTextSearch.sql Index شدن) - جستجو با
+    // رو پوشش می‌ده (چون این‌ها توی Migration با نام FullTextSearch Index شدن) - جستجو با
     // Status/Discipline (که رشته‌های کوتاهن و LIKE براشون کافیه) توی این مسیر نیست. یعنی
     // وقتی FTS فعاله، جستجوی «UnderReview» یا «Mechanical» ممکنه نتیجه‌ای نده مگه این‌که
     // توی Description هم اومده باشه. رفعش (ترکیب FTS + LIKE در یک Query) به فاز بعدی موکول شده.
@@ -116,7 +118,7 @@ public class VdrItemSearchProvider : ISearchableEntityProvider
             if (ftsTerm == null) return null;
 
             // نکته: CONTAINS روی Vendor.Name نیاز داره که Vendors هم Full-Text Index داشته
-            // باشه (طبق اسکریپت EnableFullTextSearch.sql) - وگرنه کل Query شکست می‌خوره و
+            // باشه (طبق Migration با نام FullTextSearch) - وگرنه کل Query شکست می‌خوره و
             // به‌درستی به مسیر LIKE برمی‌گرده (نه فقط اون بخش، کل نتیجه - چون یک Query واحده)
             var ftsQuery = _context.VDRItems
                 .Include(x => x.Vendor)

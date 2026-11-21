@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "employee-skill-remove",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a skill",
+    "fa": "حذف مهارت"
+  },
+  "description": {
+    "en": "Remove a skill",
+    "fa": "حذف مهارت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Employee",
+      "action": "RemoveSkill",
+      "args": {
+        "employeeSkillId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Skill removed.",
+      "fa": "مهارت حذف شد."
+    }
+  }
+}

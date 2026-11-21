@@ -1,0 +1,108 @@
+{
+  "kind": "page",
+  "key": "maintenance-groups",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance groups",
+    "fa": "گروه‌های تعمیراتی"
+  },
+  "description": {
+    "en": "Maintenance groups list (page definition)",
+    "fa": "فهرست گروه‌های تعمیراتی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "maintenance-groups",
+    "template": "entity-list",
+    "args": {
+      "id": "maintenance-groups",
+      "url": "/d/maintenance-groups-grid",
+      "idField": "maintenanceGroupId",
+      "viewsKey": "maintenance-groups",
+      "columns": [
+        {
+          "key": "code",
+          "header": {
+            "en": "Code",
+            "fa": "کد"
+          },
+          "width": 140
+        },
+        {
+          "key": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 240
+        },
+        {
+          "key": "discipline",
+          "header": {
+            "en": "Discipline",
+            "fa": "دیسیپلین"
+          },
+          "width": 180
+        },
+        {
+          "key": "description",
+          "header": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "width": 300
+        },
+        {
+          "key": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/maintenance-groups-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "toggle",
+              "label": {
+                "en": "Activate / deactivate",
+                "fa": "فعال / غیرفعال"
+              },
+              "url": "/a/maintenance-groups-toggle",
+              "method": "post",
+              "confirm": {
+                "en": "Change the status?",
+                "fa": "وضعیت تغییر کند؟"
+              }
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/maintenance-groups-create",
+      "newLabel": {
+        "en": "New maintenance group",
+        "fa": "گروه تعمیراتی جدید"
+      }
+    }
+  }
+}

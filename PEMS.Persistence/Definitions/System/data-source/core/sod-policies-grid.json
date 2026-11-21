@@ -1,0 +1,42 @@
+{
+  "kind": "data-source",
+  "key": "sod-policies-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Separation of duties rows",
+    "fa": "ردیف‌های تفکیک وظایف"
+  },
+  "description": {
+    "en": "The rows of the separation of duties grid",
+    "fa": "ردیف‌های جدول تفکیک وظایف"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "SoDPolicy",
+      "fields": [
+        "Description",
+        "IsActive",
+        "PermissionAId",
+        "PermissionBId"
+      ],
+      "search": [],
+      "lookups": [
+        {
+          "name": "permissionA",
+          "entity": "Permission",
+          "foreignKey": "PermissionAId",
+          "label": "Name"
+        },
+        {
+          "name": "permissionB",
+          "entity": "Permission",
+          "foreignKey": "PermissionBId",
+          "label": "Name"
+        }
+      ]
+    }
+  }
+}

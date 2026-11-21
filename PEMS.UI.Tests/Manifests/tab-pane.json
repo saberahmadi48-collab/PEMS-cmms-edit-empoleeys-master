@@ -1,0 +1,58 @@
+{
+  "key": "tab-pane",
+  "component": "PEMS.UI.Components.PemsTabPane",
+  "category": "navigation",
+  "icon": "bi-window",
+  "nameKey": "component.tab-pane",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "fade": {
+        "type": "boolean"
+      },
+      "active": {
+        "type": "boolean"
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "TabPaneOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "fade": true,
+    "active": true,
+    "css": "pt-2"
+  }
+}

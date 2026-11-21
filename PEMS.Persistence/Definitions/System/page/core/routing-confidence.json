@@ -1,0 +1,76 @@
+{
+  "kind": "page",
+  "key": "routing-confidence",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI confidence thresholds",
+    "fa": "آستانه‌های اطمینان هوش مصنوعی"
+  },
+  "description": {
+    "en": "AI confidence thresholds list (page definition)",
+    "fa": "فهرست آستانه‌های اطمینان هوش مصنوعی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "routing-confidence",
+    "template": "entity-list",
+    "args": {
+      "id": "routing-confidence",
+      "url": "/d/routing-confidence-grid",
+      "idField": "aIConfidenceSettingsId",
+      "viewsKey": "routing-confidence",
+      "columns": [
+        {
+          "key": "highThreshold",
+          "header": {
+            "en": "High threshold",
+            "fa": "آستانه‌ی بالا"
+          },
+          "width": 160,
+          "type": "number"
+        },
+        {
+          "key": "mediumThreshold",
+          "header": {
+            "en": "Medium threshold",
+            "fa": "آستانه‌ی متوسط"
+          },
+          "width": 160,
+          "type": "number"
+        },
+        {
+          "key": "modifiedDate",
+          "header": {
+            "en": "Modified",
+            "fa": "آخرین تغییر"
+          },
+          "width": 170,
+          "type": "datetime"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/routing-confidence-edit/{id}",
+              "method": "get"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

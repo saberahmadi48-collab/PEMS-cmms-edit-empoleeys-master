@@ -1,204 +1,210 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.InstrumentListDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var equipmentOptions = (IEnumerable<dynamic>)ViewBag.Equipments;
+    var q = (string?)ViewBag.SearchTerm;
+    var status = (string?)ViewBag.SelectedStatus;
+    var statuses = new[] { "Overdue", "DueSoon", "OK", "Unknown" };
+    var filterCount = string.IsNullOrEmpty(status) ? 0 : 1;
+
+    var qsParts = new List<string>();
+    if (!string.IsNullOrEmpty(status)) qsParts.Add($"status={Uri.EscapeDataString(status)}");
+    if (!string.IsNullOrEmpty(q)) qsParts.Add($"q={Uri.EscapeDataString(q)}");
+
+    string StatusText(string? s) => VdrUi.Loc(Localizer, "In_St_", s);
+    string StatusTone(string? s) => s switch { "Overdue" => "vs-pill--danger", "DueSoon" => "vs-pill--warning", "OK" => "vs-pill--success", _ => "vs-pill--neutral" };
 }
 
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-<div class="content-card mb-3">
-    <div class="row g-3 text-center">
-        <div class="col-md-3"><div class="border rounded p-3"><div class="text-muted small">Total Instruments</div><div class="fs-4 fw-bold">@ViewBag.TotalCount</div></div></div>
-        <div class="col-md-3"><div class="border rounded p-3"><div class="text-muted small">@Localizer["Overdue"]</div><div class="fs-4 fw-bold text-danger">@ViewBag.OverdueCount</div></div></div>
-        <div class="col-md-3"><div class="border rounded p-3"><div class="text-muted small">Due Soon (30d)</div><div class="fs-4 fw-bold text-warning">@ViewBag.DueSoonCount</div></div></div>
-        <div class="col-md-3">
-            <div class="border rounded p-3 d-flex flex-column gap-2 h-100 justify-content-center">
-                <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createInstrumentModal">
-                    <i class="bi bi-plus-lg"></i> @Localizer["New Instrument"]
-                </button>
-                <div class="d-flex gap-2 justify-content-center">
-                    <a asp-action="Export" class="btn btn-outline-secondary btn-sm"><i class="bi bi-download"></i> @Localizer["Export"]</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@* SCRUM-337 W2: built from the PEMS.UI list-page component. The count cards became the KPI row, export and "New
+   instrument" moved into the toolbar; the page keeps its search, calibration-status filter and columns. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-<div class="content-card">
-    <form method="get" class="d-flex flex-wrap gap-2 mb-3">
-        <input type="search" name="q" value="@ViewBag.SearchTerm" class="form-control form-control-sm" style="max-width:260px;" placeholder="Search tag / loop..." />
-        <select name="status" class="form-select form-select-sm" style="max-width:180px;">
-            <option value="">@Localizer["All statuses"]</option>
-            @foreach (var s in new[] { "Overdue", "DueSoon", "OK", "Unknown" })
-            {
-                <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option>
-            }
-        </select>
-        <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-funnel"></i> @Localizer["Filter"]</button>
-        <a asp-action="Index" class="btn btn-sm btn-outline-secondary">@Localizer["Reset"]</a>
-    </form>
+    <pems-list-panel>
 
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('Instrument')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="table-scroll-area pems-grid-scroll" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="Instrument">
-            <thead>
-                <tr>
-                    <th data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Tag"]</th>
-                    <th data-col-key="mfr" data-resizable="true" data-min-width="140" data-max-width="320" style="width:200px">@Localizer["Manufacturer / Model"]</th>
-                    <th data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="180" style="width:110px">@Localizer["Type"]</th>
-                    <th data-col-key="loop" data-resizable="true" data-min-width="80" data-max-width="160" style="width:100px">@Localizer["Loop"]</th>
-                    <th data-col-key="system" data-resizable="true" data-min-width="80" data-max-width="160" style="width:100px">@Localizer["System"]</th>
-                    <th data-col-key="lastCal" data-resizable="true" data-min-width="100" data-max-width="180" style="width:120px">@Localizer["Last Calibration"]</th>
-                    <th data-col-key="nextDue" data-resizable="true" data-min-width="100" data-max-width="180" style="width:120px">@Localizer["Next Due"]</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160" style="width:110px">@Localizer["Status"]</th>
-                    <th data-col-key="actions" data-resizable="false" style="width:90px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var i in Model.Items)
+        <pems-list-toolbar heading="@Localizer["In_Title"]" total="@Model.TotalCount">
+            <pems-list-search id="inSearchForm" action="@Url.Action("Index")" input-id="inQuickSearch" name="q" value="@q"
+                              placeholder="@Localizer["In_SearchPlaceholder"]">
+                @if (!string.IsNullOrEmpty(status)) { <input type="hidden" name="status" value="@status" /> }
+            </pems-list-search>
+
+            <pems-list-tools search-for="inSearchForm">
+                <pems-list-filters form-id="inFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index", new { q })">
+                    <input type="hidden" name="q" value="@q" />
+                    <div>
+                        <label class="lp-lbl" for="inFilterStatus">@Localizer["In_CalStatus"]</label>
+                        <pems-select scale="small" id="inFilterStatus" name="status">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var s in statuses)
+                            { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
+                        </pems-select>
+                    </div>
+                </pems-list-filters>
+                <pems-list-kpi-toggle target="inKpis" storage-key="pems.instrument.kpis" />
+                <pems-list-export href="@Url.Action("Export")" label="@Localizer["In_ExportAll"]" />
+                <pems-list-reset-columns grid-key="Instrument" />
+                <pems-list-new modal="createInstrumentModal" text="@Localizer["In_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-kpis id="inKpis">
+            <span class="vs-chip">@Localizer["Eq_Total"] <strong>@ViewBag.TotalCount</strong></span>
+            <span class="vs-chip @(((int?)ViewBag.OverdueCount ?? 0) > 0 ? "vs-chip--danger" : "")"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Overdue"] <strong>@ViewBag.OverdueCount</strong></span>
+            <span class="vs-chip"><pems-icon name="bi-hourglass-split" aria-hidden="true" /> @Localizer["In_DueSoon30"] <strong>@ViewBag.DueSoonCount</strong></span>
+        </pems-list-kpis>
+
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(q))
+            { <pems-list-chip label="@Localizer["Search"]" value="@q" remove-href="@Url.Action("Index", new { status })" /> }
+            @if (!string.IsNullOrEmpty(status))
+            { <pems-list-chip label="@Localizer["In_CalStatus"]" value="@StatusText(status)" remove-href="@Url.Action("Index", new { q })" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="Instrument" empty="@(!Model.Items.Any())" empty-text="@Localizer["In_Empty"]"
+                             filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-140" data-col-key="tag" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ins_Tag"]</pems-table-header>
+                        <pems-table-header data-col-key="mfr" data-resizable="true" data-min-width="140" data-max-width="320" class="vs-hide-md pems-w-200">@Localizer["Cm_ManufacturerModel"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="type" data-resizable="true" data-min-width="80" data-max-width="180">@Localizer["Cm_Type"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="loop" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["In_Loop"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="system" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["System"]</pems-table-header>
+                        <pems-table-header data-col-key="lastCal" data-resizable="true" data-min-width="100" data-max-width="180" class="vs-hide-md pems-w-120">@Localizer["In_LastCal"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="nextDue" data-resizable="true" data-min-width="100" data-max-width="180">@Localizer["Cm_NextDue"]</pems-table-header>
+                        <pems-table-header class="pems-w-110" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["In_CalStatus"]</pems-table-header>
+                        <pems-table-header class="pems-w-90" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var i in Model.Items)
+                    {
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><pems-link asp-action="Passport" asp-route-id="@i.InstrumentId" class="lp-subject" title="@i.TagNumber">@i.TagNumber</pems-link></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@i.Manufacturer / @i.Model</pems-table-cell>
+                            <pems-table-cell class="small">@i.InstrumentType</pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@i.LoopNumber</span></pems-table-cell>
+                            <pems-table-cell class="small">@i.System</pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md"><span class="vs-num">@(PemsDates.Date(i.LastCalibrationDate) ?? "-")</span></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@(PemsDates.Date(i.NextCalibrationDue) ?? "-")</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @StatusTone(i.CalibrationStatus)">@StatusText(i.CalibrationStatus)</span></pems-table-cell>
+                            <pems-table-cell class="lp-actions">
+                                <pems-link asp-action="Passport" asp-route-id="@i.InstrumentId" class="lp-act lp-act--always" title="@Localizer["In_Passport"]" aria-label="@Localizer["In_Passport"]"><pems-icon name="bi-card-text" aria-hidden="true" /></pems-link>
+                                <pems-link asp-action="Edit" asp-route-id="@i.InstrumentId" class="lp-act lp-act--always" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></pems-link>
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
                 {
-                    var badgeClass = i.CalibrationStatus switch { "Overdue" => "bg-danger", "DueSoon" => "bg-warning text-dark", "OK" => "bg-success", _ => "bg-secondary" };
-                    <tr>
-                        <td><a asp-action="Passport" asp-route-id="@i.InstrumentId">@i.TagNumber</a></td>
-                        <td class="small">@i.Manufacturer / @i.Model</td>
-                        <td>@i.InstrumentType</td>
-                        <td>@i.LoopNumber</td>
-                        <td>@i.System</td>
-                        <td class="small">@(i.LastCalibrationDate?.ToString("yyyy-MM-dd") ?? "-")</td>
-                        <td class="small">@(i.NextCalibrationDue?.ToString("yyyy-MM-dd") ?? "-")</td>
-                        <td><span class="badge @badgeClass">@i.CalibrationStatus</span></td>
-                        <td class="text-end">
-                            <a asp-action="Passport" asp-route-id="@i.InstrumentId" class="btn btn-sm btn-outline-secondary" title="@Localizer["Passport"]"><i class="bi bi-card-text"></i></a>
-                            <a asp-action="Edit" asp-route-id="@i.InstrumentId" class="btn btn-sm btn-outline-secondary" title="@Localizer["Edit"]"><i class="bi bi-pencil"></i></a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No instruments found.</p> }
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "Instrument",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.Join("&", qsParts)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
-    @{
-        var qsParts = new List<string>();
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) qsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
-        if (!string.IsNullOrEmpty((string?)ViewBag.SearchTerm)) qsParts.Add($"q={Uri.EscapeDataString((string)ViewBag.SearchTerm)}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "Instrument",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('Instrument');
-        });
-    </script>
-}
-
-<div class="modal fade" id="createInstrumentModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">@Localizer["New Instrument"]</h6></div>
-                <div class="modal-body">
-                    <p class="text-muted small">
+<pems-modal size="large" id="createInstrumentModal" tabindex="-1">
+            <pems-form asp-action="Create" method="post">
+                <pems-modal-header>@Localizer["In_New"]</pems-modal-header>
+                <pems-modal-body>
+                    <pems-text class="text-muted small">
                         Tag number, manufacturer, model and description come from the Equipment record itself -
                         pick the equipment that <em>is</em> this instrument. Only instrumentation-specific passport fields are entered here.
-                    </p>
-                    <div class="mb-3">
-                        <label class="form-label">@Localizer["Equipment"]</label>
-                        <select name="equipmentId" class="form-select" required>
+                    </pems-text>
+                    <pems-form-group css="mb-3">
+                        <pems-label>@Localizer["Equipment"]</pems-label>
+                        <pems-select name="equipmentId" required>
                             <option value="">@Localizer["-- select equipment --"]</option>
                             @foreach (var e in equipmentOptions)
                             {
                                 <option value="@e.EquipmentId">@e.Label</option>
                             }
-                        </select>
-                        <div class="form-text">Equipment not listed here already has an instrument profile, or doesn't exist yet - create it under Equipment first.</div>
-                    </div>
+                        </pems-select>
+                        <pems-help-text>Equipment not listed here already has an instrument profile, or doesn't exist yet - create it under Equipment first.</pems-help-text>
+                    </pems-form-group>
 
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Instrument Type"]</label>
-                            <input name="instrumentType" class="form-control" placeholder="PT, LT, FT, TT, Control Valve ..." />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Loop Number"]</label>
-                            <input name="loopNumber" class="form-control" />
-                        </div>
-                    </div>
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Instrument Type"]</pems-label>
+                            <pems-input name="instrumentType" placeholder="PT, LT, FT, TT, Control Valve ..." />
+                        </pems-col>
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Loop Number"]</pems-label>
+                            <pems-input name="loopNumber" />
+                        </pems-col>
+                    </pems-row>
 
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["System"]</label>
-                            <input name="system" class="form-control" placeholder="DCS, ESD, F&amp;G, PLC ..." />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Signal Class"]</label>
-                            <input name="signalClass" class="form-control" placeholder="AI, AO, DI, DO ..." />
-                        </div>
-                    </div>
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="6">
+                            <pems-label>@Localizer["System"]</pems-label>
+                            <pems-input name="system" placeholder="DCS, ESD, F&amp;G, PLC ..." />
+                        </pems-col>
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Signal Class"]</pems-label>
+                            <pems-input name="signalClass" placeholder="AI, AO, DI, DO ..." />
+                        </pems-col>
+                    </pems-row>
 
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-3">
-                            <label class="form-label">@Localizer["Range Min"]</label>
-                            <input name="rangeMin" type="number" step="0.01" class="form-control" />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">@Localizer["Range Max"]</label>
-                            <input name="rangeMax" type="number" step="0.01" class="form-control" />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">@Localizer["Unit"]</label>
-                            <input name="unit" class="form-control" />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Signal Type</label>
-                            <input name="signalType" class="form-control" placeholder="4-20mA, HART ..." />
-                        </div>
-                    </div>
+                    <pems-row gap="3" css="mb-3">
+                        <pems-col md="3">
+                            <pems-label>@Localizer["Range Min"]</pems-label>
+                            <pems-input name="rangeMin" type="number" step="0.01" />
+                        </pems-col>
+                        <pems-col md="3">
+                            <pems-label>@Localizer["Range Max"]</pems-label>
+                            <pems-input name="rangeMax" type="number" step="0.01" />
+                        </pems-col>
+                        <pems-col md="3">
+                            <pems-label>@Localizer["Unit"]</pems-label>
+                            <pems-input name="unit" />
+                        </pems-col>
+                        <pems-col md="3">
+                            <pems-label>Signal Type</pems-label>
+                            <pems-input name="signalType" placeholder="4-20mA, HART ..." />
+                        </pems-col>
+                    </pems-row>
 
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Process Variable"]</label>
-                            <input name="processVariable" class="form-control" />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">@Localizer["Accuracy"]</label>
-                            <input name="accuracy" class="form-control" />
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">@Localizer["Calibration Interval (days)"]</label>
-                            <input name="calibrationInterval" type="number" class="form-control" />
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                    <pems-row gap="3">
+                        <pems-col md="6">
+                            <pems-label>@Localizer["Process Variable"]</pems-label>
+                            <pems-input name="processVariable" />
+                        </pems-col>
+                        <pems-col md="3">
+                            <pems-label>@Localizer["Accuracy"]</pems-label>
+                            <pems-input name="accuracy" />
+                        </pems-col>
+                        <pems-col md="3">
+                            <pems-label>@Localizer["Calibration Interval (days)"]</pems-label>
+                            <pems-input name="calibrationInterval" type="number" />
+                        </pems-col>
+                    </pems-row>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

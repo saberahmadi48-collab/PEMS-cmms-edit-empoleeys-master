@@ -1,0 +1,68 @@
+{
+  "kind": "form",
+  "key": "tq-upload-attachment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add an attachment",
+    "fa": "افزودن پیوست"
+  },
+  "description": {
+    "en": "Add an attachment",
+    "fa": "افزودن پیوست"
+  },
+  "payload": {
+    "id": "tq-upload-attachment",
+    "title": {
+      "en": "Add an attachment",
+      "fa": "افزودن پیوست"
+    },
+    "submitLabel": {
+      "en": "Upload",
+      "fa": "بارگذاری"
+    },
+    "actionKey": "tq-upload-attachment",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "technicalQueryId",
+        "label": {
+          "en": "TQ id",
+          "fa": "شناسه‌ی TQ"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "file",
+        "label": {
+          "en": "File",
+          "fa": "فایل"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "fileName",
+        "label": {
+          "en": "File name (with extension)",
+          "fa": "نام فایل (با پسوند)"
+        },
+        "kind": "text",
+        "maxLength": 200
+      }
+    ]
+  }
+}

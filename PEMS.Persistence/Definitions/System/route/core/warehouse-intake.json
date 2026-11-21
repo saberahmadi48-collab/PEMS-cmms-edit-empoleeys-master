@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "warehouse-intake",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Warehouse intake (old address)",
+    "fa": "Warehouse intake (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Warehouse intake (old address)",
+    "fa": "Warehouse intake (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/WarehouseIntake/Details/{id}",
+    "target": "/p/warehouse-intake?id={id}",
+    "permanent": false
+  }
+}

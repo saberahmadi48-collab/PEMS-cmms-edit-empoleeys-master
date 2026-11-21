@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "job-plan-remove-material",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a required material",
+    "fa": "حذف ماده‌ی لازم"
+  },
+  "description": {
+    "en": "Remove a required material",
+    "fa": "حذف ماده‌ی لازم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "JobPlan",
+      "action": "RemoveRequiredMaterial",
+      "args": {
+        "jobPlanRequiredMaterialId": "field:jobPlanRequiredMaterialId"
+      }
+    },
+    "success": {
+      "en": "The material was removed.",
+      "fa": "ماده حذف شد."
+    },
+    "redirect": "/JobPlan/Details/{jobPlanId}"
+  }
+}

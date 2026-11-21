@@ -1,0 +1,65 @@
+/* PEMS.UI searchable select (SCRUM-57): theme tokens on top of the vendored tom-select.bootstrap5 styles. The wrapper keeps the
+   .form-select look of Bootstrap (border, chevron, size, -sm variant); only the colours follow the light/dark themes.
+   Logical properties only (one sheet for RTL and LTR). */
+.ts-wrapper.form-select {
+    background-color: var(--pems-input-bg, var(--pems-surface));
+    color: var(--pems-text);
+    border-color: var(--pems-border-strong, var(--pems-surface-border));
+}
+.ts-wrapper.form-select.focus {
+    border-color: var(--pems-primary);
+    box-shadow: 0 0 0 .2rem var(--pems-focus, rgba(13, 110, 253, .25));
+}
+.ts-wrapper.form-select .ts-control,
+.ts-wrapper.form-select.single.input-active .ts-control {
+    background: transparent;
+    color: var(--pems-text);
+    cursor: pointer;
+}
+.ts-wrapper .ts-control input { color: var(--pems-text); }
+.ts-wrapper .ts-control input::placeholder { color: var(--pems-text-muted); }
+.ts-wrapper.disabled { opacity: .65; }
+
+.ts-dropdown {
+    background: var(--pems-surface);
+    color: var(--pems-text);
+    border: 1px solid var(--pems-surface-border);
+    box-shadow: var(--pems-elev-menu, var(--pems-elev-2, 0 .5rem 1rem rgba(0, 0, 0, .15)));
+    z-index: 1090;   /* above modals (1055) and sticky headers when the list lives in <body> */
+    text-align: start;
+}
+.ts-dropdown .option,
+.ts-dropdown .no-results,
+.ts-dropdown .spinner-text { padding-block: .375rem; padding-inline: .75rem; }
+.ts-dropdown .active { background: var(--pems-surface-hover); color: var(--pems-text); }
+.ts-dropdown .selected { font-weight: 600; }
+.ts-dropdown .no-results,
+.ts-dropdown .spinner-text { color: var(--pems-text-muted); }
+.ts-dropdown .highlight { background: color-mix(in srgb, var(--pems-accent) 30%, transparent); color: inherit; }
+.ts-dropdown-content { max-height: 18rem; }
+/* a narrow column (e.g. the part number of an item row) still gets a readable list */
+.ts-dropdown { min-width: min(22rem, 90vw); }
+
+/* Tree select (SCRUM-513): a button that opens a panel with a search box and a tree read one level at a time. Theme tokens, logical properties only. */
+.pems-tree-select { position: relative; }
+.pems-tree-select__button { text-align: start; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pems-tree-select__panel {
+    position: absolute; inset-inline: 0; z-index: 1090; margin-block-start: .25rem; padding: .5rem;
+    background: var(--pems-surface); color: var(--pems-text); border: 1px solid var(--pems-surface-border);
+    border-radius: .375rem; box-shadow: var(--pems-elev-menu, var(--pems-elev-2, 0 .5rem 1rem rgba(0, 0, 0, .15)));
+}
+.pems-tree-select__panel[hidden] { display: none; }
+.pems-tree-select__tree, .pems-tree-select__group { list-style: none; margin: 0; padding: 0; }
+.pems-tree-select__tree { max-block-size: 18rem; overflow-y: auto; margin-block-start: .5rem; }
+.pems-tree-select__group { padding-inline-start: 1.25rem; }
+.pems-tree-select__item { outline: none; }
+.pems-tree-select__row { display: flex; align-items: baseline; gap: .35rem; padding: .25rem .4rem; border-radius: .25rem; cursor: pointer; }
+.pems-tree-select__row:hover, .pems-tree-select__item:focus > .pems-tree-select__row { background: var(--pems-hover, rgba(127, 127, 127, .15)); }
+.pems-tree-select__item:focus-visible > .pems-tree-select__row { outline: 2px solid var(--pems-primary); outline-offset: -2px; }
+.pems-tree-select__item[aria-selected="true"] > .pems-tree-select__row { font-weight: 600; }
+.pems-tree-select__toggle, .pems-tree-select__spacer { inline-size: 1rem; flex: none; text-align: center; }
+.pems-tree-select__item[aria-expanded] > .pems-tree-select__row > .pems-tree-select__toggle::before { content: "\25B8"; display: inline-block; }
+.pems-tree-select__item[aria-expanded="true"] > .pems-tree-select__row > .pems-tree-select__toggle::before { content: "\25BE"; }
+[dir="rtl"] .pems-tree-select__item[aria-expanded="false"] > .pems-tree-select__row > .pems-tree-select__toggle::before { content: "\25C2"; }
+.pems-tree-select__sub { margin-inline-start: auto; }
+.pems-tree-select__status:empty { display: none; }

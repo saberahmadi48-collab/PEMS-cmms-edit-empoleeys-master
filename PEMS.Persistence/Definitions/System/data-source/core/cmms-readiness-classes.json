@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "cmms-readiness-classes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Class activation backlog",
+    "fa": "بک‌لاگ فعال‌سازی کلاس‌ها"
+  },
+  "description": {
+    "en": "Class activation backlog",
+    "fa": "بک‌لاگ فعال‌سازی کلاس‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CmmsReadiness",
+      "action": "ClassBacklog"
+    }
+  }
+}

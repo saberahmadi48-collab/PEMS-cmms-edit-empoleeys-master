@@ -56,13 +56,12 @@ public class PartCatalogueService : IPartCatalogueService
     private static string PermissionForKind(string kind) =>
         kind == PartCatalogueStepKinds.Approval ? "Approve" : "Review";
 
-    private async Task<bool> CanSeeAllAsync(PcActor a) =>
-        await HasAsync(a, "Admin") || await HasAsync(a, "Review") || await HasAsync(a, "Approve");
+    // SCRUM-478: the visibility rule is shared with the reports (PartCatalogueRequestScope)
+    private PartCatalogueRequestScope Scope => new(_ctx, _actions);
 
-    private async Task<HashSet<string>> MyPoolKeysAsync(int employeeId) =>
-        (await _ctx.PartCatalogueApproverAssignments
-            .Where(x => x.EmployeeId == employeeId && x.IsActive)
-            .Select(x => x.StepKey).ToListAsync()).ToHashSet();
+    private Task<bool> CanSeeAllAsync(PcActor a) => Scope.CanSeeAllAsync(a);
+
+    private Task<HashSet<string>> MyPoolKeysAsync(int employeeId) => Scope.PoolKeysAsync(employeeId);
 
     private static bool Editable(PartCatalogueRequest r) =>
         r.Status == PartCatalogueStatuses.Draft || r.Status == PartCatalogueStatuses.Returned;
@@ -729,17 +728,14 @@ public class PartCatalogueService : IPartCatalogueService
             if (e.Status == PartCatalogueStatuses.Completed || e.Status == PartCatalogueStatuses.Cancelled)
                 return PcResult.Fail("Id", "Pc_Err_NotActionable");
 
-            var byRequester = e.RequesterEmployeeId == actor.EmployeeId;
-            var eligible = running && await IsCandidateAsync(inst!.WorkflowInstanceId, actor.EmployeeId);
-            if (!byRequester && !eligible && !isAdmin) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
-            if (!byRequester && comment == null) return PcResult.Fail("Comment", "Pc_Err_CommentRequired");
+            // لغو فقط توسط درخواست‌دهنده (تصمیم مالک محصول)؛ نه گیرنده‌ی گام جاری و نه Admin.
+            if (e.RequesterEmployeeId != actor.EmployeeId) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
 
             if (running) await _control.CancelInstanceAsync(inst!.WorkflowInstanceId, actor.EmployeeId, comment ?? "Cancelled by requester");
 
             e.Status = PartCatalogueStatuses.Cancelled;
             e.CompletedDate = DateTime.Now;
-            var overrideUsed = !byRequester && !eligible;
-            AddApproval(e, activeKey, overrideUsed ? PartCatalogueActions.AdminOverride : PartCatalogueActions.Cancel, actor, comment, fromStatus, e.Status, overrideUsed ? "Cancel" : null);
+            AddApproval(e, activeKey, PartCatalogueActions.Cancel, actor, comment, fromStatus, e.Status, null);
             await SyncProjectionAsync(e);
             e.CurrentStepKey = null;
         }
@@ -830,22 +826,18 @@ public class PartCatalogueService : IPartCatalogueService
 
         if (rowVersion is { Length: > 0 }) _ctx.Entry(e).Property(x => x.RowVersion).OriginalValue = rowVersion;
 
-        // ---- Cancel: درخواست‌دهنده (Draft/Returned/InApproval) یا گیرنده‌ی گام جاری/مدیر
+        // ---- Cancel: فقط درخواست‌دهنده (Draft/Returned/InApproval/OrgResolution)؛ نه گیرنده‌ی گام جاری و نه Admin
         if (string.Equals(action, "Cancel", StringComparison.OrdinalIgnoreCase))
         {
             if (e.Status == PartCatalogueStatuses.Completed || e.Status == PartCatalogueStatuses.Cancelled)
                 return PcResult.Fail("Id", "Pc_Err_NotActionable");
 
-            var byRequester = e.RequesterEmployeeId == actor.EmployeeId;
-            var eligibleStep = active != null && await IsEligibleAsync(active, actor);
-            if (!byRequester && !eligibleStep && !isAdmin) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
-            if (!byRequester && comment == null) return PcResult.Fail("Comment", "Pc_Err_CommentRequired");
+            if (e.RequesterEmployeeId != actor.EmployeeId) return PcResult.Fail("Id", "Pc_Err_NotAuthorized");
 
             e.Status = PartCatalogueStatuses.Cancelled;
             e.CurrentStepKey = null;
             e.CompletedDate = DateTime.Now;
-            AddApproval(e, active?.StepKey, !byRequester && !eligibleStep ? PartCatalogueActions.AdminOverride : PartCatalogueActions.Cancel,
-                actor, comment, fromStatus, e.Status, !byRequester && !eligibleStep ? "Cancel" : null);
+            AddApproval(e, active?.StepKey, PartCatalogueActions.Cancel, actor, comment, fromStatus, e.Status, null);
         }
         else
         {
@@ -1248,14 +1240,13 @@ public class PartCatalogueService : IPartCatalogueService
 
         if (e.WorkflowInstanceId.HasValue)
         {
-            // مسیر موتور گردش‌کار: فقط کاندیدهای Snapshot (بدون Bypass مدیر برای تأیید/بازگشت؛ مدیر فقط می‌تواند لغو کند)
+            // مسیر موتور گردش‌کار: فقط کاندیدهای Snapshot (بدون Bypass مدیر برای تأیید/بازگشت). لغو فقط برای درخواست‌دهنده است (پایین).
             if (live && !isOwner)
             {
                 var inst = await LatestInstanceAsync(e.PartCatalogueRequestId);
                 var cand = inst != null && await IsCandidateAsync(inst.WorkflowInstanceId, actor.EmployeeId);
                 s.CanApprove = cand;
                 s.CanReturn = cand;
-                s.CanCancel = cand || await HasAsync(actor, "Admin");
                 s.RequiresPartNumber = cand && kinds.TryGetValue(active!.StepKey, out var rk) && rk == PartCatalogueStepKinds.Registration && e.RequestType == PartCatalogueRequestTypes.Add;
             }
             if (isOwner && (Editable(e) || e.Status == PartCatalogueStatuses.InApproval || s.IsOrganizationBlocked)) s.CanCancel = true;
@@ -1268,7 +1259,6 @@ public class PartCatalogueService : IPartCatalogueService
             var admin = await HasAsync(actor, "Admin");
             s.CanApprove = eligible || admin;
             s.CanReturn = eligible || admin;
-            s.CanCancel = eligible || admin;
             s.IsAdminOverride = !eligible && admin;
             s.RequiresPartNumber = live && kinds.TryGetValue(active!.StepKey, out var kind) && kind == PartCatalogueStepKinds.Registration
                                    && e.RequestType == PartCatalogueRequestTypes.Add;
@@ -1328,14 +1318,7 @@ public class PartCatalogueService : IPartCatalogueService
         return new PagedResult<PartCatalogueListItemDto> { Items = items, Page = page, PageSize = size, TotalCount = total };
     }
 
-    private IQueryable<PartCatalogueRequest> ScopedQuery(bool seeAll, PcActor actor, HashSet<string> pool)
-    {
-        var q = _ctx.PartCatalogueRequests.AsNoTracking().Where(r => r.IsActive);
-        if (seeAll) return q;
-        return q.Where(r => r.RequesterEmployeeId == actor.EmployeeId
-                            || (r.WorkflowInstanceId == null && r.Steps.Any(st => st.AssignedEmployeeId == actor.EmployeeId || pool.Contains(st.StepKey)))
-                            || (r.WorkflowInstanceId != null && _ctx.WorkflowInstanceStageCandidates.Any(c => c.EmployeeId == actor.EmployeeId && c.InstanceStage!.WorkflowInstanceId == r.WorkflowInstanceId)));
-    }
+    private IQueryable<PartCatalogueRequest> ScopedQuery(bool seeAll, PcActor actor, HashSet<string> pool) => Scope.Query(seeAll, actor, pool);
 
     public async Task<PartCatalogueSummaryDto> GetSummaryAsync(PcActor actor)
     {

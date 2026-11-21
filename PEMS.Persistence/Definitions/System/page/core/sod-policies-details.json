@@ -1,0 +1,60 @@
+{
+  "kind": "page",
+  "key": "sod-policies-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Separation of duties details",
+    "fa": "جزئیات تفکیک وظایف"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "sod-policies-record",
+      "url": "/d/sod-policies-grid",
+      "idField": "soDPolicyId",
+      "fields": [
+        {
+          "key": "permissionA",
+          "label": {
+            "en": "Permission A",
+            "fa": "مجوز اول"
+          }
+        },
+        {
+          "key": "permissionB",
+          "label": {
+            "en": "Permission B",
+            "fa": "مجوز دوم"
+          }
+        },
+        {
+          "key": "description",
+          "label": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "wide": true
+        },
+        {
+          "key": "isActive",
+          "label": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "type": "bool"
+        }
+      ],
+      "backUrl": "/p/sod-policies",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      }
+    }
+  }
+}

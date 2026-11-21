@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-suppliers",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup: Suppliers",
+    "fa": "جستجوی کاتالوگ قطعه: Suppliers"
+  },
+  "description": {
+    "en": "Part Catalogue lookup: Suppliers",
+    "fa": "جستجوی کاتالوگ قطعه: Suppliers"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueLookup",
+      "action": "Suppliers",
+      "args": {
+        "userRoles": "context:roles",
+        "q": "param:q"
+      },
+      "disposition": "inline"
+    }
+  }
+}

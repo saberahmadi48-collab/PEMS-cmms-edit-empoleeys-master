@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-resolve-technical-class",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup: ResolveTechnicalClass",
+    "fa": "جستجوی کاتالوگ قطعه: ResolveTechnicalClass"
+  },
+  "description": {
+    "en": "Part Catalogue lookup: ResolveTechnicalClass",
+    "fa": "جستجوی کاتالوگ قطعه: ResolveTechnicalClass"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueLookup",
+      "action": "ResolveTechnicalClass",
+      "args": {
+        "userRoles": "context:roles",
+        "text": "param:text"
+      },
+      "disposition": "inline"
+    }
+  }
+}

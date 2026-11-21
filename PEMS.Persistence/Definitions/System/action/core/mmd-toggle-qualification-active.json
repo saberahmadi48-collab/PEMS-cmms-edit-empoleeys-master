@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mmd-toggle-qualification-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleQualificationActive",
+    "fa": "وضعیت صلاحیت به‌روزرسانی شد."
+  },
+  "description": {
+    "en": "ToggleQualificationActive",
+    "fa": "وضعیت صلاحیت به‌روزرسانی شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "ToggleQualificationActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "وضعیت صلاحیت به‌روزرسانی شد.",
+      "fa": "وضعیت صلاحیت به‌روزرسانی شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

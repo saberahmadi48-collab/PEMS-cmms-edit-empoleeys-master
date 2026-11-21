@@ -1,0 +1,34 @@
+{
+  "kind": "data-source",
+  "key": "permission-matrix-roles",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Roles of the permission matrix",
+    "fa": "نقش‌های ماتریس مجوز"
+  },
+  "description": {
+    "en": "The roles whose permissions can be edited",
+    "fa": "نقش‌هایی که مجوزهایشان قابل ویرایش است"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "ApplicationRole",
+      "fields": [
+        "Name",
+        "DisplayName",
+        "Domain",
+        "Category"
+      ],
+      "search": [
+        "Name",
+        "DisplayName"
+      ],
+      "sort": [
+        "Name"
+      ]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "moc-raise",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New MOC (old address)",
+    "fa": "New MOC (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New MOC (old address)",
+    "fa": "New MOC (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MOC/Raise",
+    "target": "/f/moc-raise",
+    "permanent": false
+  }
+}

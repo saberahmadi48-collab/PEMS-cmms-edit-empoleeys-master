@@ -1,0 +1,473 @@
+{
+ "now": "2026-11-16",
+ "roots": [
+  "values",
+  "user",
+  "request"
+ ],
+ "context": {
+  "values": {
+   "status": "Draft",
+   "amount": 150,
+   "qty": 3,
+   "name": "  Ali ",
+   "title": "\u067e\u0645\u067e \u0622\u0628",
+   "items": [
+    {
+     "price": 10
+    },
+    {
+     "price": 20.5
+    }
+   ],
+   "tags": [
+    "a",
+    "b"
+   ],
+   "date": "2026-03-20",
+   "empty": "",
+   "zero": 0,
+   "nothing": null,
+   "flag": true
+  },
+  "user": {
+   "roles": [
+    "Admin",
+    "Planner"
+   ],
+   "name": "hamid"
+  },
+  "request": {
+   "culture": "fa"
+  }
+ },
+ "cases": [
+  {
+   "expr": "values.status == 'Draft'",
+   "expect": true
+  },
+  {
+   "expr": "values.status == \"Final\"",
+   "expect": false
+  },
+  {
+   "expr": "values.amount > 100 and values.qty < 5",
+   "expect": true
+  },
+  {
+   "expr": "values.amount > 100 && values.qty >= 5",
+   "expect": false
+  },
+  {
+   "expr": "not values.flag",
+   "expect": false
+  },
+  {
+   "expr": "!values.flag",
+   "expect": false
+  },
+  {
+   "expr": "not false and false",
+   "expect": false
+  },
+  {
+   "expr": "false or true",
+   "expect": true
+  },
+  {
+   "expr": "values.missing == null",
+   "expect": true
+  },
+  {
+   "expr": "values.missing.deep.deeper",
+   "expect": null
+  },
+  {
+   "expr": "values.nothing",
+   "expect": null
+  },
+  {
+   "expr": "values.amount * 2 + 1",
+   "expect": 301
+  },
+  {
+   "expr": "values.amount / 4",
+   "expect": 37.5
+  },
+  {
+   "expr": "values.amount % 7",
+   "expect": 3
+  },
+  {
+   "expr": "-values.qty",
+   "expect": -3
+  },
+  {
+   "expr": "1 + 2 * 3",
+   "expect": 7
+  },
+  {
+   "expr": "(1 + 2) * 3",
+   "expect": 9
+  },
+  {
+   "expr": "2 - 3 - 1",
+   "expect": -2
+  },
+  {
+   "expr": "values.nothing + 1",
+   "expect": null
+  },
+  {
+   "expr": "values.qty + 'x'",
+   "error": "type"
+  },
+  {
+   "expr": "'a' + 'b'",
+   "expect": "ab"
+  },
+  {
+   "expr": "\"it's\"",
+   "expect": "it's"
+  },
+  {
+   "expr": "'a\\'b'",
+   "expect": "a'b"
+  },
+  {
+   "expr": "values.items[1].price",
+   "expect": 20.5
+  },
+  {
+   "expr": "values.items[5]",
+   "expect": null
+  },
+  {
+   "expr": "values.tags.length",
+   "expect": 2
+  },
+  {
+   "expr": "values.tags[0]",
+   "expect": "a"
+  },
+  {
+   "expr": "len(values.items)",
+   "expect": 2
+  },
+  {
+   "expr": "len(values.name)",
+   "expect": 6
+  },
+  {
+   "expr": "len(null)",
+   "expect": 0
+  },
+  {
+   "expr": "trim(values.name)",
+   "expect": "Ali"
+  },
+  {
+   "expr": "lower('ABC')",
+   "expect": "abc"
+  },
+  {
+   "expr": "upper('abc')",
+   "expect": "ABC"
+  },
+  {
+   "expr": "contains(values.tags, 'b')",
+   "expect": true
+  },
+  {
+   "expr": "contains('hello', 'ell')",
+   "expect": true
+  },
+  {
+   "expr": "'ell' in 'hello'",
+   "expect": true
+  },
+  {
+   "expr": "values.status in ['Draft','Final']",
+   "expect": true
+  },
+  {
+   "expr": "values.status in ['x']",
+   "expect": false
+  },
+  {
+   "expr": "'Admin' in user.roles",
+   "expect": true
+  },
+  {
+   "expr": "startsWith(values.title, '\u067e\u0645\u067e')",
+   "expect": true
+  },
+  {
+   "expr": "endsWith('abc','bc')",
+   "expect": true
+  },
+  {
+   "expr": "isEmpty(values.empty)",
+   "expect": true
+  },
+  {
+   "expr": "isEmpty(values.name)",
+   "expect": false
+  },
+  {
+   "expr": "isEmpty(values.tags)",
+   "expect": false
+  },
+  {
+   "expr": "isEmpty(values.nothing)",
+   "expect": true
+  },
+  {
+   "expr": "isEmpty([])",
+   "expect": true
+  },
+  {
+   "expr": "coalesce(values.nothing, values.zero, 5)",
+   "expect": 0
+  },
+  {
+   "expr": "coalesce(null, null)",
+   "expect": null
+  },
+  {
+   "expr": "if(values.flag, 'yes', 'no')",
+   "expect": "yes"
+  },
+  {
+   "expr": "values.flag ? 1 : 2",
+   "expect": 1
+  },
+  {
+   "expr": "values.nothing ? 1 : 2",
+   "expect": 2
+  },
+  {
+   "expr": "number('\u06f1\u06f2\u06f3')",
+   "expect": 123
+  },
+  {
+   "expr": "number('12.5')",
+   "expect": 12.5
+  },
+  {
+   "expr": "number('abc')",
+   "expect": null
+  },
+  {
+   "expr": "number(7)",
+   "expect": 7
+  },
+  {
+   "expr": "text(12)",
+   "expect": "12"
+  },
+  {
+   "expr": "text(12.5)",
+   "expect": "12.5"
+  },
+  {
+   "expr": "text(true)",
+   "expect": "true"
+  },
+  {
+   "expr": "text(null)",
+   "expect": ""
+  },
+  {
+   "expr": "round(2.5)",
+   "expect": 3
+  },
+  {
+   "expr": "round(-2.5)",
+   "expect": -3
+  },
+  {
+   "expr": "round(3.14159, 2)",
+   "expect": 3.14
+  },
+  {
+   "expr": "round(values.nothing)",
+   "expect": null
+  },
+  {
+   "expr": "abs(-4)",
+   "expect": 4
+  },
+  {
+   "expr": "min(3, 1, 2)",
+   "expect": 1
+  },
+  {
+   "expr": "max(3, 1, 2)",
+   "expect": 3
+  },
+  {
+   "expr": "sum([1,2,3.5])",
+   "expect": 6.5
+  },
+  {
+   "expr": "sum(values.items)",
+   "error": "type"
+  },
+  {
+   "expr": "normalize('  \u0643\u062a\u0627\u0628   \u064a ')",
+   "expect": "\u06a9\u062a\u0627\u0628 \u06cc"
+  },
+  {
+   "expr": "today()",
+   "expect": "2026-11-16"
+  },
+  {
+   "expr": "year('2026-03-20')",
+   "expect": 2026
+  },
+  {
+   "expr": "month(values.date)",
+   "expect": 3
+  },
+  {
+   "expr": "day(values.date)",
+   "expect": 20
+  },
+  {
+   "expr": "addDays('2026-11-16', 15)",
+   "expect": "2026-12-01"
+  },
+  {
+   "expr": "addDays('2026-02-28', 1)",
+   "expect": "2026-03-01"
+  },
+  {
+   "expr": "diffDays('2026-11-16','2026-11-01')",
+   "expect": 15
+  },
+  {
+   "expr": "year('garbage')",
+   "expect": null
+  },
+  {
+   "expr": "jalaliYear('2026-03-20')",
+   "expect": 1404
+  },
+  {
+   "expr": "jalaliMonth('2026-03-20')",
+   "expect": 12
+  },
+  {
+   "expr": "jalaliDay('2026-03-20')",
+   "expect": 29
+  },
+  {
+   "expr": "jalaliYear('2026-03-21')",
+   "expect": 1405
+  },
+  {
+   "expr": "jalaliMonth('2026-03-21')",
+   "expect": 1
+  },
+  {
+   "expr": "jalaliDay('2026-03-21')",
+   "expect": 1
+  },
+  {
+   "expr": "jalaliDay('2025-03-20')",
+   "expect": 30
+  },
+  {
+   "expr": "'a' < 'b'",
+   "expect": true
+  },
+  {
+   "expr": "values.nothing < 3",
+   "expect": false
+  },
+  {
+   "expr": "values.qty < 'x'",
+   "error": "type"
+  },
+  {
+   "expr": "1 == 1",
+   "expect": true
+  },
+  {
+   "expr": "1 == '1'",
+   "expect": false
+  },
+  {
+   "expr": "values.nothing and true",
+   "expect": false
+  },
+  {
+   "expr": "true and values.nothing",
+   "expect": false
+  },
+  {
+   "expr": "values.amount and true",
+   "error": "type"
+  },
+  {
+   "expr": "false and (1/0 > 1)",
+   "expect": false
+  },
+  {
+   "expr": "true or (1/0 > 1)",
+   "expect": true
+  },
+  {
+   "expr": "1/0",
+   "error": "divide-by-zero"
+  },
+  {
+   "expr": "[1,2,3]",
+   "expect": [
+    1,
+    2,
+    3
+   ]
+  },
+  {
+   "expr": "values.tags",
+   "expect": [
+    "a",
+    "b"
+   ]
+  },
+  {
+   "expr": "request.culture == 'fa'",
+   "expect": true
+  },
+  {
+   "expr": "1 +",
+   "error": "syntax"
+  },
+  {
+   "expr": "foo(1)",
+   "error": "unknown-function"
+  },
+  {
+   "expr": "len()",
+   "error": "arity"
+  },
+  {
+   "expr": "other.x",
+   "error": "unknown-variable"
+  },
+  {
+   "expr": "'abc",
+   "error": "syntax"
+  },
+  {
+   "expr": "1 2",
+   "error": "syntax"
+  },
+  {
+   "expr": "a ? b",
+   "error": "syntax"
+  }
+ ]
+}

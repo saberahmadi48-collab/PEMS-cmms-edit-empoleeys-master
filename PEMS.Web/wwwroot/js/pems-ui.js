@@ -35,16 +35,14 @@
             if (b.dataset.pemsIcon) continue;
             b.dataset.pemsIcon = '1';
             if (b.querySelector('i.bi, svg')) continue;
-            if (b.closest('.nav-tabs, .nav-link, .pems-sidebar, .btn, .dropdown-item, .kpi-card')) continue;
+            if (b.closest('[role="tablist"], .nav-link, .pems-sidebar, .btn, .dropdown-item, .kpi-card')) continue;
             if (b.classList.contains('position-absolute')) continue;
             var text = (b.textContent || '').trim();
             if (!text || text.length > 28 || /^[\d.,%+\-/]+$/.test(text)) continue;
             var tone = toneOf(b);
             if (!tone) continue;
-            var ic = document.createElement('i');
-            ic.className = 'bi ' + TONE_ICON[tone];
-            ic.setAttribute('aria-hidden', 'true');
-            ic.dataset.pemsAuto = '1';
+            var ic = window.PemsTemplate.clone('auto-icon');
+            ic.classList.add(TONE_ICON[tone]);
             b.insertBefore(ic, b.firstChild);
         }
     }
@@ -111,9 +109,7 @@
             if (t.closest('.table-responsive, .pems-grid-scroll, .table-scroll-area, .overflow-auto, .overflow-x-auto, .modal, .offcanvas, .pems-scroll')) continue;
             if (t.dataset.pemsWrapped) continue;
             t.dataset.pemsWrapped = '1';
-            var w = document.createElement('div');
-            w.className = 'table-responsive';
-            w.dataset.pemsAuto = '1';
+            var w = window.PemsTemplate.clone('auto-table-wrap');
             t.parentNode.insertBefore(w, t);
             w.appendChild(t);
         }

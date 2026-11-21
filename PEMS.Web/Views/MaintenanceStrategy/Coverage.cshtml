@@ -1,0 +1,52 @@
+@model PEMS.Application.DTOs.StrategyCoverageDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Helpers
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var pct = Model.TotalEquipment == 0 ? 0 : Math.Round(100.0 * Model.CoveredEquipment / Model.TotalEquipment, 1);
+}
+
+<pems-flex justify="between" align="center" css="mb-3">
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-pie-chart" /> @Localizer["Rcm_Coverage"]</pems-heading>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["Rcm_Back"]</pems-button>
+</pems-flex>
+<pems-text class="text-muted small">@Localizer["Rcm_CoverageHint"]</pems-text>
+
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3"><pems-content-card><div class="text-muted small">@Localizer["Rcm_TotalEquipment"]</div><div class="h4 mb-0">@Model.TotalEquipment.ToString("N0")</div></pems-content-card></pems-col>
+    <pems-col md="3"><pems-content-card><div class="text-muted small">@Localizer["Rcm_CoveredEquipment"]</div><div class="h4 mb-0">@Model.CoveredEquipment.ToString("N0") <small class="text-muted">(@pct%)</small></div></pems-content-card></pems-col>
+    <pems-col md="3"><pems-content-card><div class="text-muted small">@Localizer["Rcm_Unrated"]</div><div class="h4 mb-0 @(Model.UnratedEquipment > 0 ? "text-warning" : "")">@Model.UnratedEquipment.ToString("N0")</div></pems-content-card></pems-col>
+    <pems-col md="3"><pems-content-card><div class="text-muted small">@Localizer["Rcm_Unclassified"]</div><div class="h4 mb-0 @(Model.UnclassifiedEquipment > 0 ? "text-warning" : "")">@Model.UnclassifiedEquipment.ToString("N0")</div></pems-content-card></pems-col>
+</pems-row>
+
+@if (Model.UnratedEquipment == Model.TotalEquipment && Model.TotalEquipment > 0)
+{
+    <pems-alert tone="warning" css="small"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Rcm_NoCriticalityData"]</pems-alert>
+}
+
+<pems-row>
+    <pems-col md="5">
+        <pems-content-card css="mb-3">
+            <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_ByCriticality"]</pems-heading>
+            <pems-data-table data="@(DataRows.Of(Model.ByCriticality, c_ => c_.Add(((Localizer["Rcm_Criticality"])?.ToString() ?? ""), r => (object?)(Localizer.Label("Criticality", r.Key)), kind: DataCellKind.Badge, tone: r => ((RcmDisplay.CriticalityBadge(r.Key))?.ToString())).Add(((Localizer["Rcm_Total"])?.ToString() ?? ""), r => (object?)(r.TotalEquipment.ToString("N0"))).Add(((Localizer["Rcm_WithStrategy"])?.ToString() ?? ""), r => (object?)(r.WithApprovedStrategy.ToString("N0"))).Add(((Localizer["Rcm_WithoutStrategy"])?.ToString() ?? ""), r => (object?)(r.WithoutStrategy.ToString("N0"))).Add("%", r => (object?)(r.CoveragePercent))))" enterprise="false" dense="true" css="table-enterprise" />
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="7">
+        <pems-content-card css="mb-3">
+            <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_ByClass"]</pems-heading>
+            <div class="pems-s-5f8400ad">
+            <pems-data-table data="@(DataRows.Of(Model.ByClass, c_ => c_.Add(((Localizer["Rcm_EquipmentClass"])?.ToString() ?? ""), r => (object?)(string.IsNullOrEmpty(r.Key) ? Localizer["Rcm_Unclassified"].Value : r.Key)).Add(((Localizer["Rcm_Total"])?.ToString() ?? ""), r => (object?)(r.TotalEquipment.ToString("N0"))).Add(((Localizer["Rcm_WithStrategy"])?.ToString() ?? ""), r => (object?)(r.WithApprovedStrategy.ToString("N0"))).Add(((Localizer["Rcm_WithoutStrategy"])?.ToString() ?? ""), r => (object?)(r.WithoutStrategy.ToString("N0"))).Add("%", r => (object?)(r.CoveragePercent))))" enterprise="false" dense="true" css="table-enterprise" />
+            </div>
+        </pems-content-card>
+    </pems-col>
+</pems-row>
+
+<pems-content-card>
+    <pems-flex justify="between" align="center" css="mb-2">
+        <pems-heading level="6" class="small fw-bold mb-0">@Localizer["Rcm_CriticalWithoutStrategy"] (@Model.CriticalWithoutStrategyTotal.ToString("N0"))</pems-heading>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ExportUncovered"><pems-icon name="bi-download" /> CSV</pems-button>
+    </pems-flex>
+    <pems-data-table data="@(DataRows.Of(Model.CriticalWithoutStrategy, c_ => c_.Add(((Localizer["Rcm_Tag"])?.ToString() ?? ""), r => (object?)(DataCell.Link(Url.Action("Tag", null, new { equipmentId = r.Equipment.EquipmentId }), r.Equipment.Tag))).Add(((Localizer["Rcm_EquipmentName"])?.ToString() ?? ""), r => (object?)(r.Equipment.Name), css: "small").Add(((Localizer["Rcm_EquipmentClass"])?.ToString() ?? ""), r => (object?)((r.Equipment.EquipmentClassName ?? "-")), css: "small").Add(((Localizer["Rcm_AreaUnit"])?.ToString() ?? ""), r => (object?)((r.Equipment.Area ?? "-")), css: "small")))" dense="true" />
+    @if (!Model.CriticalWithoutStrategy.Any()) { <pems-text class="text-muted small text-center py-2">@Localizer["Rcm_NoUncoveredCritical"]</pems-text> }
+</pems-content-card>

@@ -1,0 +1,33 @@
+{
+  "key": "list-export",
+  "component": "PEMS.UI.Components.PemsListExport",
+  "category": "list",
+  "icon": "bi-file-earmark-excel",
+  "nameKey": "component.list-export",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "href": {
+        "type": "string"
+      },
+      "label": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "ListExportOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "href": "/docs/export",
+    "label": "Export"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "production-batch-submit-qc",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit the batch for QC",
+    "fa": "ارسال بچ برای کنترل کیفیت"
+  },
+  "description": {
+    "en": "Submit the batch for QC",
+    "fa": "ارسال بچ برای کنترل کیفیت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "SubmitBatchForQc",
+      "args": {
+        "productionBatchId": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The batch was submitted for QC.",
+      "fa": "بچ برای بازرسی کیفیت ارسال شد."
+    },
+    "redirect": "/ProductionRun/BatchDetails/{id}"
+  }
+}

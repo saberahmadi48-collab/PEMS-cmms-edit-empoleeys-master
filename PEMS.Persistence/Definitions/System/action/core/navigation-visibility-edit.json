@@ -1,0 +1,41 @@
+{
+  "kind": "action",
+  "key": "navigation-visibility-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save navigation overrides",
+    "fa": "ذخیره‌ی استثناهای ناوبری"
+  },
+  "description": {
+    "en": "Save the overrides of one role",
+    "fa": "ذخیره‌ی استثناهای یک نقش"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "NavigationVisibility",
+      "action": "SetRoleOverrides",
+      "args": {
+        "roleName": "field:id",
+        "cells": "field:cells",
+        "actingUser": "context:userName"
+      },
+      "load": {
+        "operation": {
+          "model": "NavigationVisibility",
+          "action": "OverridesOfRole",
+          "args": {
+            "roleName": "param:id"
+          }
+        }
+      }
+    },
+    "success": {
+      "en": "Overrides saved.",
+      "fa": "استثناها ذخیره شد."
+    },
+    "redirect": "/p/navigation-visibility"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "production-run-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel the run",
+    "fa": "لغو اجرا"
+  },
+  "description": {
+    "en": "Cancel the run",
+    "fa": "لغو اجرا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "Cancel",
+      "args": {
+        "productionRunId": "field:id",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The run was cancelled.",
+      "fa": "اجرا لغو شد."
+    },
+    "redirect": "/ProductionRun/Details/{id}"
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "kind": "page",
+  "key": "findings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Findings",
+    "fa": "یافته‌ها"
+  },
+  "description": {
+    "en": "Condition findings of the equipment with the work request and close commands (page definition)",
+    "fa": "یافته‌های وضعیت تجهیزات با دستورهای درخواست کار و بستن (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "findings",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "finding-filters",
+            "resetUrl": "/p/findings",
+            "fields": [
+              {
+                "name": "equipmentId",
+                "label": {
+                  "en": "Equipment id",
+                  "fa": "شناسه‌ی تجهیز"
+                },
+                "kind": "text",
+                "value": "{{params.equipmentId}}"
+              },
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز"
+                    }
+                  },
+                  {
+                    "value": "Linked",
+                    "label": {
+                      "en": "Linked",
+                      "fa": "متصل"
+                    }
+                  },
+                  {
+                    "value": "Closed",
+                    "label": {
+                      "en": "Closed",
+                      "fa": "بسته"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "findings",
+          "component": "data-grid",
+          "options": {
+            "id": "findings",
+            "url": "/d/finding-list?f.equipmentId={{params.equipmentId|url}}&f.status={{params.status|url}}",
+            "idField": "findingId",
+            "columns": [
+              {
+                "key": "equipment",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 140
+              },
+              {
+                "key": "observedAt",
+                "header": {
+                  "en": "Observed",
+                  "fa": "مشاهده"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "condition",
+                "header": {
+                  "en": "Condition",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "توضیح"
+                },
+                "width": 300
+              },
+              {
+                "key": "recommendedAction",
+                "header": {
+                  "en": "Recommended action",
+                  "fa": "اقدام پیشنهادی"
+                },
+                "width": 240
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 90
+              },
+              {
+                "key": "failureMode",
+                "header": {
+                  "en": "Failure mode",
+                  "fa": "حالت خرابی"
+                },
+                "width": 150
+              },
+              {
+                "key": "failureCause",
+                "header": {
+                  "en": "Cause",
+                  "fa": "علت"
+                },
+                "width": 150
+              },
+              {
+                "key": "source",
+                "header": {
+                  "en": "Source",
+                  "fa": "منبع"
+                },
+                "width": 130
+              },
+              {
+                "key": "workRequestId",
+                "header": {
+                  "en": "Work request",
+                  "fa": "درخواست کار"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 320,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "wr",
+                    "label": {
+                      "en": "Raise work request",
+                      "fa": "ایجاد درخواست کار"
+                    },
+                    "url": "/f/finding-raise-work-request?findingId={id}&equipmentId={raw.equipmentId}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "close",
+                    "label": {
+                      "en": "Close",
+                      "fa": "بستن"
+                    },
+                    "url": "/f/finding-close?id={id}&equipmentId={raw.equipmentId}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Work request",
+                      "fa": "درخواست کار"
+                    },
+                    "url": "/WorkRequest/Details/{raw.workRequestId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "CMFinding.View"
+  }
+}

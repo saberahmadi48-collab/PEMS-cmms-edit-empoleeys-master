@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "help-articles-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help articles",
+    "fa": "مقالات راهنما"
+  },
+  "description": {
+    "en": "Help articles",
+    "fa": "مقالات راهنما"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Help",
+      "action": "Articles",
+      "args": {
+        "culture": "context:culture",
+        "categoryId": "param:categoryId",
+        "q": "param:q"
+      }
+    }
+  }
+}

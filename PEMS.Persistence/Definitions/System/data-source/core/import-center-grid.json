@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "import-center-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import center cards",
+    "fa": "کارت‌های مرکز ایمپورت"
+  },
+  "description": {
+    "en": "Import center cards",
+    "fa": "کارت‌های مرکز ایمپورت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ImportCenter",
+      "action": "Entries",
+      "args": {
+        "userRoles": "context:roles"
+      }
+    }
+  }
+}

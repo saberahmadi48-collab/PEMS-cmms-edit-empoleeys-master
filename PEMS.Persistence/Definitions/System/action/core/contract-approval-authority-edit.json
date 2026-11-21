@@ -1,0 +1,49 @@
+{
+  "kind": "action",
+  "key": "contract-approval-authority-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit approval rule",
+    "fa": "ویرایش قاعده‌ی تأیید"
+  },
+  "description": {
+    "en": "Edit approval rule",
+    "fa": "ویرایش قاعده‌ی تأیید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.update",
+    "parameters": {
+      "entity": "ContractApprovalAuthorityRule",
+      "map": {
+        "minValue": "MinValue",
+        "maxValue": "MaxValue",
+        "criticalityClass": "CriticalityClass",
+        "requiredApproverRole": "RequiredApproverRole",
+        "priority": "Priority",
+        "description": "Description"
+      },
+      "required": [
+        "RequiredApproverRole"
+      ],
+      "unique": [],
+      "validate": {
+        "model": "ContractApprovalRule",
+        "action": "Validate",
+        "args": {
+          "minValue": "field:minValue",
+          "maxValue": "field:maxValue",
+          "criticalityClass": "field:criticalityClass",
+          "requiredApproverRole": "field:requiredApproverRole",
+          "ruleId": "field:id"
+        }
+      }
+    },
+    "success": {
+      "en": "Approval rule saved.",
+      "fa": "قاعده‌ی تأیید ذخیره شد."
+    },
+    "redirect": "/p/contract-approval-authority"
+  }
+}

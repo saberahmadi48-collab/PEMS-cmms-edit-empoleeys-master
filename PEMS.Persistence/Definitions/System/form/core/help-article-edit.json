@@ -1,0 +1,257 @@
+{
+  "kind": "form",
+  "key": "help-article-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a help article",
+    "fa": "ویرایش مقاله‌ی راهنما"
+  },
+  "description": {
+    "en": "Edit a help article",
+    "fa": "ویرایش مقاله‌ی راهنما"
+  },
+  "payload": {
+    "id": "help-article-edit",
+    "title": {
+      "en": "Edit a help article",
+      "fa": "ویرایش مقاله‌ی راهنما"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "help-article-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "required": true,
+        "maxLength": 100
+      },
+      {
+        "name": "helpCategoryId",
+        "label": {
+          "en": "Category",
+          "fa": "دسته"
+        },
+        "kind": "select",
+        "required": true,
+        "optionsFrom": "help-categories"
+      },
+      {
+        "name": "articleType",
+        "label": {
+          "en": "Article type",
+          "fa": "نوع مقاله"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "Module",
+            "label": {
+              "en": "Module",
+              "fa": "Module"
+            }
+          },
+          {
+            "value": "Page",
+            "label": {
+              "en": "Page",
+              "fa": "Page"
+            }
+          },
+          {
+            "value": "Field",
+            "label": {
+              "en": "Field",
+              "fa": "Field"
+            }
+          },
+          {
+            "value": "Action",
+            "label": {
+              "en": "Action",
+              "fa": "Action"
+            }
+          },
+          {
+            "value": "Workflow",
+            "label": {
+              "en": "Workflow",
+              "fa": "Workflow"
+            }
+          },
+          {
+            "value": "Faq",
+            "label": {
+              "en": "Faq",
+              "fa": "Faq"
+            }
+          },
+          {
+            "value": "Glossary",
+            "label": {
+              "en": "Glossary",
+              "fa": "Glossary"
+            }
+          },
+          {
+            "value": "Troubleshooting",
+            "label": {
+              "en": "Troubleshooting",
+              "fa": "Troubleshooting"
+            }
+          },
+          {
+            "value": "RoleGuide",
+            "label": {
+              "en": "RoleGuide",
+              "fa": "RoleGuide"
+            }
+          },
+          {
+            "value": "Concept",
+            "label": {
+              "en": "Concept",
+              "fa": "Concept"
+            }
+          },
+          {
+            "value": "DisciplineGuide",
+            "label": {
+              "en": "DisciplineGuide",
+              "fa": "DisciplineGuide"
+            }
+          }
+        ]
+      },
+      {
+        "name": "helpKey",
+        "label": {
+          "en": "Context help key (optional)",
+          "fa": "کلید راهنمای زمینه"
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "relevantRoles",
+        "label": {
+          "en": "Relevant roles (comma separated, optional)",
+          "fa": "نقش‌های مرتبط"
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "displayOrder",
+        "label": {
+          "en": "Display order",
+          "fa": "ترتیب نمایش"
+        },
+        "kind": "number",
+        "min": 0
+      },
+      {
+        "name": "isPublished",
+        "label": {
+          "en": "Published",
+          "fa": "منتشرشده"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "titleEn",
+        "label": {
+          "en": "Title (English)",
+          "fa": "عنوان (انگلیسی)"
+        },
+        "required": true,
+        "maxLength": 300
+      },
+      {
+        "name": "summaryEn",
+        "label": {
+          "en": "Summary (English)",
+          "fa": "خلاصه (انگلیسی)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "maxLength": 1000,
+        "span": 2
+      },
+      {
+        "name": "contentEn",
+        "label": {
+          "en": "Content (English)",
+          "fa": "محتوا (انگلیسی)"
+        },
+        "kind": "richText",
+        "required": true,
+        "span": 2
+      },
+      {
+        "name": "searchKeywordsEn",
+        "label": {
+          "en": "Search keywords (English)",
+          "fa": "کلیدواژه‌ها (انگلیسی)"
+        },
+        "maxLength": 500,
+        "span": 2
+      },
+      {
+        "name": "titleFa",
+        "label": {
+          "en": "Title (Persian)",
+          "fa": "عنوان (فارسی)"
+        },
+        "required": true,
+        "maxLength": 300
+      },
+      {
+        "name": "summaryFa",
+        "label": {
+          "en": "Summary (Persian)",
+          "fa": "خلاصه (فارسی)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "maxLength": 1000,
+        "span": 2
+      },
+      {
+        "name": "contentFa",
+        "label": {
+          "en": "Content (Persian)",
+          "fa": "محتوا (فارسی)"
+        },
+        "kind": "richText",
+        "required": true,
+        "span": 2
+      },
+      {
+        "name": "searchKeywordsFa",
+        "label": {
+          "en": "Search keywords (Persian)",
+          "fa": "کلیدواژه‌ها (فارسی)"
+        },
+        "maxLength": 500,
+        "span": 2
+      },
+      {
+        "name": "relatedArticleIds",
+        "label": {
+          "en": "Related article ids (comma separated)",
+          "fa": "شناسه‌ی مقاله‌های مرتبط"
+        },
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

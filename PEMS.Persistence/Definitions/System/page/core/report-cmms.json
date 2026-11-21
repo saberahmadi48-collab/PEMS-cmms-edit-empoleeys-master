@@ -1,0 +1,237 @@
+{
+  "kind": "page",
+  "key": "report-cmms",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CMMS / work order report",
+    "fa": "گزارش CMMS و دستورکار"
+  },
+  "description": {
+    "en": "Work orders by month, type, priority and equipment (page definition)",
+    "fa": "دستورکارها به تفکیک ماه، نوع، اولویت و تجهیز (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "report-cmms",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "report-cmms-filters",
+            "resetUrl": "/p/report-cmms",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "Open"
+                    }
+                  },
+                  {
+                    "value": "Assigned",
+                    "label": {
+                      "en": "Assigned",
+                      "fa": "Assigned"
+                    }
+                  },
+                  {
+                    "value": "InProgress",
+                    "label": {
+                      "en": "InProgress",
+                      "fa": "InProgress"
+                    }
+                  },
+                  {
+                    "value": "OnHold",
+                    "label": {
+                      "en": "OnHold",
+                      "fa": "OnHold"
+                    }
+                  },
+                  {
+                    "value": "Completed",
+                    "label": {
+                      "en": "Completed",
+                      "fa": "Completed"
+                    }
+                  },
+                  {
+                    "value": "Closed",
+                    "label": {
+                      "en": "Closed",
+                      "fa": "Closed"
+                    }
+                  },
+                  {
+                    "value": "Cancelled",
+                    "label": {
+                      "en": "Cancelled",
+                      "fa": "Cancelled"
+                    }
+                  },
+                  {
+                    "value": "Rejected",
+                    "label": {
+                      "en": "Rejected",
+                      "fa": "Rejected"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "priority",
+                "label": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "kind": "select",
+                "value": "{{params.priority}}",
+                "options": [
+                  {
+                    "value": "Low",
+                    "label": {
+                      "en": "Low",
+                      "fa": "Low"
+                    }
+                  },
+                  {
+                    "value": "Normal",
+                    "label": {
+                      "en": "Normal",
+                      "fa": "Normal"
+                    }
+                  },
+                  {
+                    "value": "High",
+                    "label": {
+                      "en": "High",
+                      "fa": "High"
+                    }
+                  },
+                  {
+                    "value": "Critical",
+                    "label": {
+                      "en": "Critical",
+                      "fa": "Critical"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "fromDate",
+                "label": {
+                  "en": "From",
+                  "fa": "از تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.fromDate}}"
+              },
+              {
+                "name": "toDate",
+                "label": {
+                  "en": "To",
+                  "fa": "تا تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.toDate}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "chart-volume-by-month",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/report-cmms-chart-volume-by-month?f.status={{params.status|url}}&f.priority={{params.priority|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
+              }
+            ],
+            "kind": "bar",
+            "ariaLabel": {
+              "en": "Volume by month",
+              "fa": "حجم به تفکیک ماه"
+            }
+          }
+        },
+        {
+          "id": "chart-by-priority",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/report-cmms-chart-by-priority?f.status={{params.status|url}}&f.priority={{params.priority|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
+              }
+            ],
+            "kind": "donut",
+            "ariaLabel": {
+              "en": "By priority",
+              "fa": "بر اساس اولویت"
+            }
+          }
+        },
+        {
+          "id": "report-cmms-rows",
+          "component": "data-grid",
+          "options": {
+            "id": "report-cmms-rows",
+            "url": "/d/report-cmms-grid?f.status={{params.status|url}}&f.priority={{params.priority|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "idField": "name",
+            "columns": [
+              {
+                "key": "section",
+                "header": {
+                  "en": "Section",
+                  "fa": "بخش"
+                },
+                "width": 260
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 320
+              },
+              {
+                "key": "value",
+                "header": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                },
+                "width": 220
+              }
+            ],
+            "pageSize": 50,
+            "height": 520
+          }
+        }
+      ]
+    }
+  }
+}

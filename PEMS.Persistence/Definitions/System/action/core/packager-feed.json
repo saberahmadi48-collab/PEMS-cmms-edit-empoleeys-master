@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "packager-feed",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Build a feed package",
+    "fa": "ساخت بسته داده"
+  },
+  "description": {
+    "en": "Build a feed package",
+    "fa": "ساخت بسته داده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Packager",
+      "action": "BuildFeed",
+      "args": {
+        "toVersion": "field:toVersion",
+        "entity": "field:entity",
+        "mode": "field:mode",
+        "rowsJson": "field:rows",
+        "keyFields": "field:keyFields"
+      }
+    }
+  }
+}

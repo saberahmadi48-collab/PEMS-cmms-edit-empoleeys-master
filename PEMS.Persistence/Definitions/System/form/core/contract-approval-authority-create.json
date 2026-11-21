@@ -1,0 +1,92 @@
+{
+  "kind": "form",
+  "key": "contract-approval-authority-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create approval rule",
+    "fa": "ایجاد قاعده‌ی تأیید"
+  },
+  "description": {
+    "en": "Create a new approval rule",
+    "fa": "ایجاد قاعده‌ی تأیید جدید"
+  },
+  "payload": {
+    "id": "contract-approval-authority-create",
+    "title": {
+      "en": "New approval rule",
+      "fa": "قاعده‌ی تأیید جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "contract-approval-authority-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "minValue",
+        "label": {
+          "en": "From value",
+          "fa": "از مبلغ"
+        },
+        "kind": "number",
+        "min": 0
+      },
+      {
+        "name": "maxValue",
+        "label": {
+          "en": "To value",
+          "fa": "تا مبلغ"
+        },
+        "kind": "number",
+        "min": 0
+      },
+      {
+        "name": "criticalityClass",
+        "label": {
+          "en": "Criticality class",
+          "fa": "کلاس بحرانی‌بودن"
+        },
+        "kind": "text",
+        "maxLength": 10
+      },
+      {
+        "name": "requiredApproverRole",
+        "label": {
+          "en": "Approver role",
+          "fa": "نقش تأییدکننده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Approver role is required.",
+            "fa": "نقش تأییدکننده الزامی است."
+          }
+        },
+        "optionsFrom": "contract-approval-authority-required-approver-role-options"
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority (smaller is checked first)",
+          "fa": "اولویت (کوچک‌تر اول بررسی می‌شود)"
+        },
+        "kind": "number",
+        "min": 0
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "finding-create-from-inspection",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Raise a finding from an inspection",
+    "fa": "ثبت یافته از بازرسی"
+  },
+  "description": {
+    "en": "Raise a finding from an inspection",
+    "fa": "ثبت یافته از بازرسی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Finding",
+      "action": "CreateFromInspection",
+      "args": {
+        "description": "field:description",
+        "recommendedAction": "field:recommendedAction",
+        "failureModeId": "field:failureModeId",
+        "failureCauseId": "field:failureCauseId",
+        "inspectionRecordId": "field:inspectionRecordId"
+      }
+    },
+    "success": {
+      "en": "The finding was recorded.",
+      "fa": "یافته ثبت شد."
+    },
+    "redirect": "/p/findings?f.equipmentId={equipmentId}"
+  }
+}

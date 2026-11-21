@@ -1,0 +1,64 @@
+@model PEMS.Web.ViewModels.StrategyImportViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+
+<pems-flex justify="between" align="center" css="mb-3">
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-file-earmark-excel" /> @Localizer["Rcm_Import"]</pems-heading>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="MaintenanceStrategy" asp-action="Index">@Localizer["Rcm_Back"]</pems-button>
+</pems-flex>
+<pems-text class="text-muted small">@Localizer["Rcm_ImportHint"]</pems-text>
+
+<pems-row gap="3" css="mb-3">
+    <pems-col md="6">
+        <pems-content-card>
+            <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_ImportStrategies"]</pems-heading>
+            <pems-form asp-action="Preview" method="post" enctype="multipart/form-data"><pems-flex gap="2">
+                <input type="hidden" name="kind" value="strategies" />
+                <pems-uploader scale="small" name="file" accept=".xlsx" required />
+                <pems-button tone="primary" size="small">@Localizer["Rcm_Validate"]</pems-button>
+            </pems-flex></pems-form>
+            <pems-link asp-action="Template" asp-route-kind="strategies" class="small">@Localizer["Rcm_DownloadTemplate"]</pems-link>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="6">
+        <pems-content-card>
+            <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_ImportAssignments"]</pems-heading>
+            <pems-form asp-action="Preview" method="post" enctype="multipart/form-data"><pems-flex gap="2">
+                <input type="hidden" name="kind" value="assignments" />
+                <pems-uploader scale="small" name="file" accept=".xlsx" required />
+                <pems-button tone="primary" size="small">@Localizer["Rcm_Validate"]</pems-button>
+            </pems-flex></pems-form>
+            <pems-link asp-action="Template" asp-route-kind="assignments" class="small">@Localizer["Rcm_DownloadTemplate"]</pems-link>
+        </pems-content-card>
+    </pems-col>
+</pems-row>
+
+@if (Model.Result != null)
+{
+    var r = Model.Result;
+    <pems-content-card>
+        <pems-flex justify="between" align="center" css="mb-2">
+            <pems-heading level="6" class="small fw-bold mb-0">
+                @(r.Committed ? Localizer["Rcm_ImportCommitted"] : Localizer["Rcm_ImportPreview"]):
+                @Localizer["Rcm_RowsRead"] @r.RowsRead · @Localizer["Rcm_RowsAccepted"] @r.RowsAccepted · @Localizer["Rcm_RowsRejected"] @r.RowsRejected
+            </pems-heading>
+            <pems-flex gap="2">
+                @if (!r.Committed && !string.IsNullOrEmpty(Model.Token) && r.RowsAccepted > 0)
+                {
+                    <pems-form asp-action="Commit" method="post" data-pems-confirm="@Localizer["Rcm_ConfirmImport"]">
+                        <input type="hidden" name="token" value="@Model.Token" /><input type="hidden" name="kind" value="@Model.Kind" />
+                        <pems-button tone="success" size="small"><pems-icon name="bi-check2-all" /> @Localizer["Rcm_CommitValidRows"]</pems-button>
+                    </pems-form>
+                }
+                @if (r.RowsRejected > 0 && !string.IsNullOrEmpty(Model.Token))
+                {
+                    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Errors" asp-route-token="@Model.Token" asp-route-kind="@Model.Kind"><pems-icon name="bi-download" /> @Localizer["Rcm_ErrorReport"]</pems-button>
+                }
+            </pems-flex>
+        </pems-flex>
+        <div class="pems-s-9687cbac">
+        <pems-data-table data="@(DataRows.Of(r.Rows, c_ => c_.Add("#", row => (object?)(row.RowNumber)).Add(((Localizer["Rcm_Reference"])?.ToString() ?? ""), row => (object?)(row.Reference), css: "small").Add(((Localizer["Rcm_Status"])?.ToString() ?? ""), row => (object?)((row.Accepted ? Localizer["Rcm_RowAccepted"].Value : Localizer["Rcm_RowRejected"].Value))).Add(((Localizer["Rcm_Messages"])?.ToString() ?? ""), row => (object?)((string.Join(" | ", Model.Messages.TryGetValue(row.RowNumber, out var m) ? m : new List<string>()))), css: "small"), rowClass: row => (row.Accepted ? "" : "table-danger")))" dense="true" />
+        </div>
+    </pems-content-card>
+}

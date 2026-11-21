@@ -1,0 +1,354 @@
+{
+  "kind": "form",
+  "key": "help-standard-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New standard reference",
+    "fa": "مرجع استاندارد جدید"
+  },
+  "description": {
+    "en": "New standard reference",
+    "fa": "مرجع استاندارد جدید"
+  },
+  "payload": {
+    "id": "help-standard-create",
+    "title": {
+      "en": "New standard reference",
+      "fa": "مرجع استاندارد جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "help-standard-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "identifier",
+        "label": {
+          "en": "Identifier (e.g. ISO 14224)",
+          "fa": "شناسه"
+        },
+        "required": true,
+        "maxLength": 100
+      },
+      {
+        "name": "issuingOrganization",
+        "label": {
+          "en": "Issuing organization",
+          "fa": "سازمان منتشرکننده"
+        },
+        "required": true,
+        "maxLength": 200
+      },
+      {
+        "name": "editionOrYear",
+        "label": {
+          "en": "Edition or year",
+          "fa": "ویرایش یا سال"
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "officialReferenceUrl",
+        "label": {
+          "en": "Official reference URL",
+          "fa": "نشانی مرجع رسمی"
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "relatedModule",
+        "label": {
+          "en": "Related module",
+          "fa": "ماژول مرتبط"
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "applicabilityStatus",
+        "label": {
+          "en": "Applicability",
+          "fa": "کاربردپذیری"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "Applicable",
+            "label": {
+              "en": "Applicable",
+              "fa": "Applicable"
+            }
+          },
+          {
+            "value": "PotentiallyApplicable",
+            "label": {
+              "en": "PotentiallyApplicable",
+              "fa": "PotentiallyApplicable"
+            }
+          },
+          {
+            "value": "ContextDependent",
+            "label": {
+              "en": "ContextDependent",
+              "fa": "ContextDependent"
+            }
+          },
+          {
+            "value": "ReferenceOnly",
+            "label": {
+              "en": "ReferenceOnly",
+              "fa": "ReferenceOnly"
+            }
+          },
+          {
+            "value": "NotVerified",
+            "label": {
+              "en": "NotVerified",
+              "fa": "NotVerified"
+            }
+          },
+          {
+            "value": "NotApplicable",
+            "label": {
+              "en": "NotApplicable",
+              "fa": "NotApplicable"
+            }
+          }
+        ]
+      },
+      {
+        "name": "verificationStatus",
+        "label": {
+          "en": "Verification",
+          "fa": "راستی‌آزمایی"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "OfficialSourceVerified",
+            "label": {
+              "en": "OfficialSourceVerified",
+              "fa": "OfficialSourceVerified"
+            }
+          },
+          {
+            "value": "PublisherMetadataVerified",
+            "label": {
+              "en": "PublisherMetadataVerified",
+              "fa": "PublisherMetadataVerified"
+            }
+          },
+          {
+            "value": "RepositoryMappingVerified",
+            "label": {
+              "en": "RepositoryMappingVerified",
+              "fa": "RepositoryMappingVerified"
+            }
+          },
+          {
+            "value": "ExpertReviewRequired",
+            "label": {
+              "en": "ExpertReviewRequired",
+              "fa": "ExpertReviewRequired"
+            }
+          },
+          {
+            "value": "NotVerified",
+            "label": {
+              "en": "NotVerified",
+              "fa": "NotVerified"
+            }
+          }
+        ]
+      },
+      {
+        "name": "pEMSImplementationStatus",
+        "label": {
+          "en": "PEMS implementation",
+          "fa": "پیاده‌سازی در PEMS"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "NotImplemented",
+            "label": {
+              "en": "NotImplemented",
+              "fa": "NotImplemented"
+            }
+          },
+          {
+            "value": "PartiallyRelated",
+            "label": {
+              "en": "PartiallyRelated",
+              "fa": "PartiallyRelated"
+            }
+          },
+          {
+            "value": "ConceptuallyMapped",
+            "label": {
+              "en": "ConceptuallyMapped",
+              "fa": "ConceptuallyMapped"
+            }
+          },
+          {
+            "value": "ImplementedButNotComplianceVerified",
+            "label": {
+              "en": "ImplementedButNotComplianceVerified",
+              "fa": "ImplementedButNotComplianceVerified"
+            }
+          },
+          {
+            "value": "ComplianceEvidenceAvailable",
+            "label": {
+              "en": "ComplianceEvidenceAvailable",
+              "fa": "ComplianceEvidenceAvailable"
+            }
+          },
+          {
+            "value": "NotApplicable",
+            "label": {
+              "en": "NotApplicable",
+              "fa": "NotApplicable"
+            }
+          },
+          {
+            "value": "NotVerified",
+            "label": {
+              "en": "NotVerified",
+              "fa": "NotVerified"
+            }
+          }
+        ]
+      },
+      {
+        "name": "evidencePath",
+        "label": {
+          "en": "Evidence path",
+          "fa": "مسیر شواهد"
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت‌ها"
+        },
+        "kind": "textArea",
+        "maxLength": 2000,
+        "span": 2
+      },
+      {
+        "name": "code",
+        "label": {
+          "en": "Article code",
+          "fa": "کد مقاله"
+        },
+        "required": true,
+        "maxLength": 100
+      },
+      {
+        "name": "helpCategoryId",
+        "label": {
+          "en": "Category",
+          "fa": "دسته"
+        },
+        "kind": "select",
+        "required": true,
+        "optionsFrom": "help-categories"
+      },
+      {
+        "name": "displayOrder",
+        "label": {
+          "en": "Display order",
+          "fa": "ترتیب"
+        },
+        "kind": "number",
+        "min": 0
+      },
+      {
+        "name": "isPublished",
+        "label": {
+          "en": "Published",
+          "fa": "منتشرشده"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "titleEn",
+        "label": {
+          "en": "Title (English)",
+          "fa": "عنوان (انگلیسی)"
+        },
+        "required": true,
+        "maxLength": 300
+      },
+      {
+        "name": "summaryEn",
+        "label": {
+          "en": "Summary (English)",
+          "fa": "خلاصه (انگلیسی)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "maxLength": 1000,
+        "span": 2
+      },
+      {
+        "name": "contentEn",
+        "label": {
+          "en": "Content (English)",
+          "fa": "محتوا (انگلیسی)"
+        },
+        "kind": "richText",
+        "required": true,
+        "span": 2
+      },
+      {
+        "name": "titleFa",
+        "label": {
+          "en": "Title (Persian)",
+          "fa": "عنوان (فارسی)"
+        },
+        "required": true,
+        "maxLength": 300
+      },
+      {
+        "name": "summaryFa",
+        "label": {
+          "en": "Summary (Persian)",
+          "fa": "خلاصه (فارسی)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "maxLength": 1000,
+        "span": 2
+      },
+      {
+        "name": "contentFa",
+        "label": {
+          "en": "Content (Persian)",
+          "fa": "محتوا (فارسی)"
+        },
+        "kind": "richText",
+        "required": true,
+        "span": 2
+      },
+      {
+        "name": "relatedArticleIds",
+        "label": {
+          "en": "Related article ids (comma separated)",
+          "fa": "شناسه‌ی مقاله‌های مرتبط"
+        },
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

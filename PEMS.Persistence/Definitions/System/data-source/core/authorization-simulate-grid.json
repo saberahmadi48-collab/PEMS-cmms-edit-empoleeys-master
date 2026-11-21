@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "authorization-simulate-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permission simulator",
+    "fa": "شبیه‌ساز مجوز"
+  },
+  "description": {
+    "en": "Permission simulator rows",
+    "fa": "ردیف‌های شبیه‌ساز مجوز"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Authorization",
+      "action": "Simulate",
+      "args": {
+        "userId": "param:userId",
+        "resourceName": "param:resourceName",
+        "actionName": "param:actionName",
+        "resourceId": "param:resourceId"
+      }
+    }
+  }
+}

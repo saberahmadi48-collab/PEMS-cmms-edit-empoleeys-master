@@ -1,0 +1,375 @@
+{
+  "kind": "page",
+  "key": "ai-insights",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering Copilot",
+    "fa": "همیار مهندسی"
+  },
+  "description": {
+    "en": "Recurring NCR patterns and the root cause of document delays (page definition)",
+    "fa": "الگوهای تکراری NCR و تحلیل ریشه‌ای تاخیر مدارک (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "ai-insights",
+    "regions": {
+      "content": [
+        {
+          "id": "intro",
+          "component": "content-blocks",
+          "options": {
+            "id": "intro",
+            "blocks": [
+              {
+                "type": "text",
+                "css": "text-muted small",
+                "text": {
+                  "en": "Every number on this page is calculated from the real data of the system, not assumed. Only the narrative summary below is written with the help of the local AI model (Ollama), without inventing any number.",
+                  "fa": "این صفحه از روی داده‌ی واقعی سیستم ساخته می‌شود؛ هر عدد مستقیم از پایگاه داده محاسبه شده است. فقط خلاصه‌ی روایی پایین با کمک هوش مصنوعی محلی (Ollama) نوشته می‌شود، بدون اینکه هیچ عددی از خودش بسازد."
+                }
+              },
+              {
+                "type": "heading",
+                "level": 5,
+                "text": {
+                  "en": "Recurring NCR patterns: suggest an MOC review",
+                  "fa": "الگوهای تکراری NCR: پیشنهاد بررسی MOC"
+                }
+              },
+              {
+                "type": "text",
+                "css": "text-muted small",
+                "text": {
+                  "en": "Equipment that received at least 3 NCRs in the last 180 days.",
+                  "fa": "تجهیزاتی که در ۱۸۰ روز اخیر حداقل ۳ بار NCR گرفته‌اند."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "ncr-patterns",
+          "component": "data-grid",
+          "options": {
+            "id": "ncr-patterns",
+            "url": "/d/ai-insights-ncr",
+            "idField": "equipmentId",
+            "columns": [
+              {
+                "key": "equipmentTagNumber",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 160
+              },
+              {
+                "key": "equipmentName",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 220
+              },
+              {
+                "key": "ncrCount",
+                "header": {
+                  "en": "NCR count",
+                  "fa": "تعداد NCR"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "ncrNumbers",
+                "header": {
+                  "en": "NCRs",
+                  "fa": "شماره‌های NCR"
+                },
+                "width": 240
+              },
+              {
+                "key": "dominantQcDiscipline",
+                "header": {
+                  "en": "Dominant discipline",
+                  "fa": "دیسیپلین غالب"
+                },
+                "width": 180
+              },
+              {
+                "key": "hasOpenMoc",
+                "header": {
+                  "en": "Open MOC",
+                  "fa": "MOC باز"
+                },
+                "width": 110,
+                "type": "bool"
+              },
+              {
+                "key": "suggestion",
+                "header": {
+                  "en": "Suggestion",
+                  "fa": "پیشنهاد"
+                },
+                "width": 360
+              }
+            ],
+            "pageSize": 20,
+            "height": 300
+          }
+        },
+        {
+          "id": "delay-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "delay-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 5,
+                "text": {
+                  "en": "Root cause of document delays",
+                  "fa": "تحلیل ریشه‌ای تاخیر مدارک"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "delay-total",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Delayed documents",
+              "fa": "کل مدارک با تاخیر"
+            },
+            "icon": "bi-file-earmark-x"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/ai-insights-delay",
+              "first": true,
+              "map": {
+                "value": "totalDelayedDocuments"
+              }
+            }
+          }
+        },
+        {
+          "id": "delay-average",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Average delay (days)",
+              "fa": "میانگین روز تاخیر"
+            },
+            "icon": "bi-hourglass-split",
+            "tone": "danger"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/ai-insights-delay",
+              "first": true,
+              "map": {
+                "value": "averageDelayDays"
+              }
+            }
+          }
+        },
+        {
+          "id": "delay-narrative",
+          "component": "record-view",
+          "options": {
+            "id": "delay-narrative",
+            "fields": [
+              {
+                "key": "narrativeSummary",
+                "label": {
+                  "en": "AI summary",
+                  "fa": "خلاصه‌ی هوش مصنوعی"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/ai-insights-delay",
+              "first": true
+            }
+          }
+        },
+        {
+          "id": "by-discipline-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "by-discipline-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "By discipline",
+                  "fa": "به تفکیک دیسیپلین"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "by-discipline",
+          "component": "data-grid",
+          "options": {
+            "id": "by-discipline",
+            "url": "/d/ai-insights-delay-discipline",
+            "idField": "groupName",
+            "columns": [
+              {
+                "key": "groupName",
+                "header": {
+                  "en": "Group",
+                  "fa": "گروه"
+                },
+                "width": 220
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Documents",
+                  "fa": "مدارک"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "avgDelayDays",
+                "header": {
+                  "en": "Average delay (days)",
+                  "fa": "میانگین تاخیر (روز)"
+                },
+                "width": 160,
+                "type": "number"
+              }
+            ],
+            "pageSize": 20,
+            "height": 240
+          }
+        },
+        {
+          "id": "by-stage-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "by-stage-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "By status",
+                  "fa": "به تفکیک وضعیت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "by-stage",
+          "component": "data-grid",
+          "options": {
+            "id": "by-stage",
+            "url": "/d/ai-insights-delay-stage",
+            "idField": "groupName",
+            "columns": [
+              {
+                "key": "groupName",
+                "header": {
+                  "en": "Group",
+                  "fa": "گروه"
+                },
+                "width": 220
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Documents",
+                  "fa": "مدارک"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "avgDelayDays",
+                "header": {
+                  "en": "Average delay (days)",
+                  "fa": "میانگین تاخیر (روز)"
+                },
+                "width": 160,
+                "type": "number"
+              }
+            ],
+            "pageSize": 20,
+            "height": 240
+          }
+        },
+        {
+          "id": "by-vendor-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "by-vendor-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "By vendor (VDR)",
+                  "fa": "به تفکیک وندور (VDR)"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "by-vendor",
+          "component": "data-grid",
+          "options": {
+            "id": "by-vendor",
+            "url": "/d/ai-insights-delay-vendor",
+            "idField": "groupName",
+            "columns": [
+              {
+                "key": "groupName",
+                "header": {
+                  "en": "Group",
+                  "fa": "گروه"
+                },
+                "width": 220
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Documents",
+                  "fa": "مدارک"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "avgDelayDays",
+                "header": {
+                  "en": "Average delay (days)",
+                  "fa": "میانگین تاخیر (روز)"
+                },
+                "width": 160,
+                "type": "number"
+              }
+            ],
+            "pageSize": 20,
+            "height": 240
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "po-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve the order",
+    "fa": "تأیید سفارش"
+  },
+  "description": {
+    "en": "Approve the order",
+    "fa": "تأیید سفارش"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "Approve",
+      "args": {
+        "poId": "field:id"
+      }
+    },
+    "success": {
+      "en": "The order was approved.",
+      "fa": "سفارش تأیید شد."
+    },
+    "redirect": "/p/purchase-order-details?id={id}"
+  }
+}

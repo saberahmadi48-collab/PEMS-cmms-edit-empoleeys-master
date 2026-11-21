@@ -21,6 +21,31 @@
     // (صرف‌نظر از این‌که Approve/Comment/Reject بوده) - نه فقط تعداد Approve
     var idcApprovedCount = idcStatusForPage.Count(x => x.Status != "Pending");
 
+    // کامنت‌ها و ترنسمیتال‌ها: شمارنده‌ی تب‌ها و کارت‌های خلاصه‌ی Overview به این مقادیر نیاز دارند (قبلاً پایین صفحه تعریف می‌شدند)
+    var engComments = (List<PEMS.Application.DTOs.VDRCommentDto>)(ViewBag.Comments ?? new List<PEMS.Application.DTOs.VDRCommentDto>());
+    var latestPdfAttachment = Model.Attachments
+        .Where(a => a.FileExtension.Equals(".pdf", StringComparison.OrdinalIgnoreCase))
+        .OrderByDescending(a => a.UploadDate)
+        .FirstOrDefault();
+    var commentsClosedCount = engComments.Count(c => c.ActionStatus is "Closed" or "Verified" or "NoActionRequired");
+    var commentsOpenCount = engComments.Count - commentsClosedCount;
+    var relatedTransmittals = (List<PEMS.Application.DTOs.RelatedTransmittalDto>)(ViewBag.RelatedTransmittals ?? new List<PEMS.Application.DTOs.RelatedTransmittalDto>());
+
+    // «مرحله‌ی بعد» زیر نمودار: فقط توضیح است؛ اقدام واقعی همان دکمه‌های بالای صفحه است و سرور خودش مجاز بودن را بررسی می‌کند
+    string? wfNextStep = Model.Status switch
+    {
+        "Draft" => Localizer["Ed_Next_Draft"].Value,
+        "Submitted" => Localizer["Ed_Next_Submitted"].Value,
+        "IDC Review" => string.Format(Localizer["Ed_Next_Idc"].Value, idcStatusForPage.Count(x => x.Status == "Pending")),
+        "Checked" => Localizer["Ed_Next_Checked"].Value,
+        "Approved" => Localizer["Ed_Next_Approved"].Value,
+        "Issued" => string.IsNullOrEmpty(Model.ClientApprovalStatus) ? Localizer["Ed_Next_Issued"].Value : null,
+        "Rejected" or "Revise & Resubmit" => Localizer["Ed_Next_Revise"].Value,
+        _ => null
+    };
+    // لینک «Assign» به صفحه‌ی ویرایش می‌رود (فیلدهای امضا همان‌جا متن آزاد هستند)؛ مدرک منجمد/صادرشده قابل ویرایش نیست
+    var canAssignSignoff = !Model.IsFrozen && Model.Status != "Issued";
+
     // طبق «PEMS Phase 2C-3»: منطق تعیین مرحله عیناً همان منطق قبلی _WorkflowStagesDiagram
     // است - فقط جابه‌جا شده به این‌جا، بدون هیچ تغییر رفتاری. محاسبه یک‌بار انجام می‌شود چون
     // این صفحه دو بار (بالای صفحه + داخل Modal Submit) همین نمودار را نشان می‌دهد.
@@ -74,18 +99,18 @@
     <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
 }
 
-<div class="vs-page">
+<pems-page-shell kind="workspace">
 
 <div class="vs-section">
     <div class="vs-doc-head">
         <div class="vs-doc-identity">
-            <div class="d-flex align-items-center gap-2 flex-wrap">
-                <h1 class="vs-doc-number vs-num">@Model.DocumentNo</h1>
-                <span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(Model.Status)"><i class="bi @DocumentStatusBadge.Icon(Model.Status)" aria-hidden="true"></i> @StatusText(Model.Status)</span>
+            <pems-flex align="center" gap="2" wrap="true">
+                <pems-heading level="1" class="vs-doc-number vs-num">@Model.DocumentNo</pems-heading>
+                <span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(Model.Status)"><pems-icon css="@DocumentStatusBadge.Icon(Model.Status)" aria-hidden="true" /> @StatusText(Model.Status)</span>
                 <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentRev"] <span class="vs-num">@Model.RevisionNo</span></span>
-                @if (Model.IsFrozen) { <span class="vs-pill vs-pill--icon vs-pill--info"><i class="bi bi-snow" aria-hidden="true"></i> @Localizer["Ed_Frozen"]</span> }
-                @if (Model.IsOnHold) { <span class="vs-pill vs-pill--icon vs-pill--warning"><i class="bi bi-pause-circle" aria-hidden="true"></i> @Localizer["Ed_OnHold"]</span> }
-            </div>
+                @if (Model.IsFrozen) { <span class="vs-pill vs-pill--icon vs-pill--info"><pems-icon name="bi-snow" aria-hidden="true" /> @Localizer["Ed_Frozen"]</span> }
+                @if (Model.IsOnHold) { <span class="vs-pill vs-pill--icon vs-pill--warning"><pems-icon name="bi-pause-circle" aria-hidden="true" /> @Localizer["Ed_OnHold"]</span> }
+            </pems-flex>
             <div class="vs-doc-title" title="@Model.Title">@Model.Title</div>
             <div class="vs-doc-meta">@Model.ProjectName &middot; @Model.DisciplineName@(!string.IsNullOrEmpty(Model.Area) ? " · " + Model.Area : "")</div>
         </div>
@@ -95,23 +120,23 @@
                بدون تغییر در Route/Field/بررسی وضعیت سرور. *@
             @if (Model.Status == "Draft")
             {
-                <button type="button" class="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
-                    <i class="bi bi-send"></i> Submit For Review
-                </button>
+                <pems-button plain="true" type="button" css="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
+                    <pems-icon name="bi-send" /> Submit For Review
+                </pems-button>
             }
             else if (Model.Status == "Submitted")
             {
-                <form asp-action="Check" method="post" class="d-inline">
+                <pems-form asp-action="Check" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
-                    <button class="vs-btn vs-btn--primary"><i class="bi bi-clipboard-check"></i> Check</button>
-                </form>
-                <form asp-action="Reject" method="post" class="d-inline">
+                    <pems-button plain="true" css="vs-btn vs-btn--primary"><pems-icon name="bi-clipboard-check" /> Check</pems-button>
+                </pems-form>
+                <pems-form asp-action="Reject" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
-                    <button class="vs-btn vs-btn--dangerline">@Localizer["Reject"]</button>
-                </form>
-                <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#reviseModal">
-                    <i class="bi bi-arrow-repeat"></i> Revise &amp; Resubmit
-                </button>
+                    <pems-button plain="true" css="vs-btn vs-btn--dangerline">@Localizer["Reject"]</pems-button>
+                </pems-form>
+                <pems-button plain="true" type="button" css="vs-btn" data-bs-toggle="modal" data-bs-target="#reviseModal">
+                    <pems-icon name="bi-arrow-repeat" /> Revise &amp; Resubmit
+                </pems-button>
             }
             else if (Model.Status == "IDC Review")
             {
@@ -125,82 +150,82 @@
                        با برچسب مشابه ولی جدا، پایین‌تر ظاهر می‌شود). برچسب‌ها عمداً متفاوت نگه داشته
                        شده‌اند تا با دکمه‌های تصمیم رسمی اشتباه گرفته نشوند. *@
                     <span class="text-muted small me-1">@Localizer["My IDC Review:"]</span>
-                    <form asp-action="IdcRespond" method="post" class="d-inline">
+                    <pems-form asp-action="IdcRespond" method="post" class="d-inline">
                         <input type="hidden" name="id" value="@Model.DocumentId" />
                         <input type="hidden" name="decision" value="Approve" />
-                        <button class="vs-btn vs-btn--primary"><i class="bi bi-check-lg"></i> No Comment</button>
-                    </form>
-                    <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#idcCommentModal">@Localizer["Approve with Comments"]</button>
-                    <button type="button" class="vs-btn vs-btn--dangerline" data-bs-toggle="modal" data-bs-target="#idcRejectModal">@Localizer["Revision Required"]</button>
+                        <pems-button plain="true" css="vs-btn vs-btn--primary"><pems-icon name="bi-check-lg" /> No Comment</pems-button>
+                    </pems-form>
+                    <pems-button plain="true" type="button" css="vs-btn" data-bs-toggle="modal" data-bs-target="#idcCommentModal">@Localizer["Approve with Comments"]</pems-button>
+                    <pems-button plain="true" type="button" css="vs-btn vs-btn--dangerline" data-bs-toggle="modal" data-bs-target="#idcRejectModal">@Localizer["Revision Required"]</pems-button>
                 }
                 else
                 {
-                    <span class="vs-pill vs-pill--icon vs-pill--warning"><i class="bi bi-hourglass-split" aria-hidden="true"></i> منتظر بازبینی دیسیپلین‌های دیگر (IDC)</span>
+                    <span class="vs-pill vs-pill--icon vs-pill--warning"><pems-icon name="bi-hourglass-split" aria-hidden="true" /> منتظر بازبینی دیسیپلین‌های دیگر (IDC)</span>
                 }
             }
             else if (Model.Status == "Checked")
             {
-                <form asp-action="Approve" method="post" class="d-inline">
+                <pems-form asp-action="Approve" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
-                    <button class="vs-btn vs-btn--primary">@Localizer["Approve"]</button>
-                </form>
-                <form asp-action="Reject" method="post" class="d-inline">
+                    <pems-button plain="true" css="vs-btn vs-btn--primary">@Localizer["Approve"]</pems-button>
+                </pems-form>
+                <pems-form asp-action="Reject" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@Model.DocumentId" />
-                    <button class="vs-btn vs-btn--dangerline">@Localizer["Reject"]</button>
-                </form>
-                <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#reviseModal">
-                    <i class="bi bi-arrow-repeat"></i> Revise &amp; Resubmit
-                </button>
+                    <pems-button plain="true" css="vs-btn vs-btn--dangerline">@Localizer["Reject"]</pems-button>
+                </pems-form>
+                <pems-button plain="true" type="button" css="vs-btn" data-bs-toggle="modal" data-bs-target="#reviseModal">
+                    <pems-icon name="bi-arrow-repeat" /> Revise &amp; Resubmit
+                </pems-button>
             }
             else if (Model.Status == "Approved")
             {
-                <button type="button" class="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#issueModal">
-                    <i class="bi bi-send-check"></i> Issue
-                </button>
+                <pems-button plain="true" type="button" css="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#issueModal">
+                    <pems-icon name="bi-send-check" /> Issue
+                </pems-button>
             }
             else if (Model.Status == "Issued")
             {
                 @if (string.IsNullOrEmpty(Model.ClientApprovalStatus))
                 {
-                    <button type="button" class="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#clientResponseModal">
-                        <i class="bi bi-building"></i> Record Client Response
-                    </button>
+                    <pems-button plain="true" type="button" css="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#clientResponseModal">
+                        <pems-icon name="bi-building" /> @Localizer["Record Client Response"]
+                    </pems-button>
                 }
             }
             else if (Model.Status == "Rejected" || Model.Status == "Revise & Resubmit")
             {
-                <button type="button" class="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
-                    <i class="bi bi-arrow-repeat"></i> Resubmit
-                </button>
+                <pems-button plain="true" type="button" css="vs-btn vs-btn--primary" data-bs-toggle="modal" data-bs-target="#submitWorkflowModal">
+                    <pems-icon name="bi-arrow-repeat" /> Resubmit
+                </pems-button>
             }
 
             @* طبق بخش ۲۱ ممیزی UX: اکشن‌های کم‌تکرار این‌جا جمع شدند - نمایش هر آیتم دقیقاً همون
                شرط/مجوزی که قبلاً به‌صورت جداگانه روی صفحه داشت را حفظ می‌کند. *@
             <div class="dropdown">
-                <button class="vs-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <pems-button plain="true" css="vs-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     @Localizer["Ed_MoreActions"]
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><i class="bi bi-pencil"></i> @Localizer["Edit"]</a></li>
+                </pems-button>
+                <pems-dropdown-menu end="true">
+                    <pems-bullet><pems-link class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-link></pems-bullet>
                     @if (Model.Status == "Approved" || Model.Status == "Issued")
                     {
-                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#newRevisionModal"><i class="bi bi-file-earmark-plus"></i> Create New Revision</button></li>
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#newRevisionModal"><pems-icon name="bi-file-earmark-plus" /> @Localizer["Create New Revision"]</pems-button></pems-bullet>
                     }
-                    <li><hr class="dropdown-divider" /></li>
-                    <li>
-                        <form asp-action="AnalyzeRelationships" asp-route-id="@Model.DocumentId" method="post">
-                            <button type="submit" class="dropdown-item"><i class="bi bi-stars"></i> @Localizer["تحلیل روابط (AI)"]</button>
-                        </form>
-                    </li>
+                    <pems-bullet><pems-divider class="dropdown-divider" /></pems-bullet>
+                    <pems-bullet>
+                        <pems-form asp-action="AnalyzeRelationships" asp-route-id="@Model.DocumentId" method="post">
+                            <pems-button plain="true" type="submit" css="dropdown-item"><pems-icon name="bi-stars" /> @Localizer["تحلیل روابط (AI)"]</pems-button>
+                        </pems-form>
+                    </pems-bullet>
                     @if (!Model.IsFrozen && (bool)(ViewBag.CanFreeze ?? false))
                     {
-                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#freezeModal"><i class="bi bi-snow"></i> @Localizer["Freeze"]</button></li>
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#freezeModal"><pems-icon name="bi-snow" /> @Localizer["Freeze"]</pems-button></pems-bullet>
                     }
                     @if (!Model.IsOnHold && !Model.IsFrozen && Model.Status != "Issued" && (bool)(ViewBag.CanHold ?? false))
                     {
-                        <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#holdModal"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</button></li>
+                        <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#holdModal"><pems-icon name="bi-pause-circle" /> @Localizer["Hold"]</pems-button></pems-bullet>
                     }
-                </ul>
+                </pems-dropdown-menu>
             </div>
         </div>
     </div>
@@ -209,38 +234,38 @@
        مسدود می‌کند (نه فقط این بنر)؛ این‌جا فقط نمایش وضعیت + اکشن رفع آن است. *@
     @if (Model.IsFrozen)
     {
-        <div class="alert alert-info d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3 mb-0 py-2">
+        <pems-alert tone="info" css="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3 mb-0 py-2">
             <div class="small">
-                <i class="bi bi-snow"></i> <strong>FROZEN</strong> — Revision @Model.RevisionNo is frozen and cannot be modified.
-                <div class="text-muted">Frozen by @(Model.FrozenByName ?? "-") on @(Model.FrozenDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")@(!string.IsNullOrWhiteSpace(Model.FreezeReason) ? " — " + Model.FreezeReason : "")</div>
+                <pems-icon name="bi-snow" /> <strong>FROZEN</strong> — Revision @Model.RevisionNo is frozen and cannot be modified.
+                <div class="text-muted">Frozen by @(Model.FrozenByName ?? "-") on @(PemsDates.DateTime(Model.FrozenDate) ?? "-")@(!string.IsNullOrWhiteSpace(Model.FreezeReason) ? " — " + Model.FreezeReason : "")</div>
             </div>
             @if ((bool)(ViewBag.CanUnfreeze ?? false))
             {
-                <form asp-action="Unfreeze" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
-                    <input type="text" name="reason" class="form-control form-control-sm" style="max-width:240px;" placeholder="Unfreeze reason (required)" required />
-                    <button type="submit" class="btn btn-outline-dark btn-sm" onclick="return confirm('انجماد این مدرک برداشته شود؟');">
-                        <i class="bi bi-sun"></i> @Localizer["Unfreeze"]
-                    </button>
-                </form>
+                <pems-form asp-action="Unfreeze" asp-route-id="@Model.DocumentId" method="post"><pems-flex wrap="true" gap="2" align="center">
+                    <pems-input class="pems-maxw-240" scale="small" type="text" name="reason" placeholder="Unfreeze reason (required)" required />
+                    <pems-button tone="dark" size="small" outline="true" type="submit" data-pems-confirm="انجماد این مدرک برداشته شود؟">
+                        <pems-icon name="bi-sun" /> @Localizer["Unfreeze"]
+                    </pems-button>
+                </pems-flex></pems-form>
             }
-        </div>
+        </pems-alert>
     }
     @if (Model.IsOnHold)
     {
-        <div class="alert alert-warning d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3 mb-0 py-2">
+        <pems-alert tone="warning" css="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3 mb-0 py-2">
             <div class="small">
-                <i class="bi bi-pause-circle"></i> <strong>ON HOLD</strong> — این مدرک قابل تأیید (Approve) یا صدور (Issue) نیست تا زمانی که Hold رفع شود.
+                <pems-icon name="bi-pause-circle" /> <strong>ON HOLD</strong> — این مدرک قابل تأیید (Approve) یا صدور (Issue) نیست تا زمانی که Hold رفع شود.
             </div>
             @if ((bool)(ViewBag.CanReleaseHold ?? false))
             {
-                <form asp-action="ReleaseHold" asp-route-id="@Model.DocumentId" method="post" class="d-flex flex-wrap gap-2 align-items-center">
-                    <input type="text" name="reason" class="form-control form-control-sm" style="max-width:240px;" placeholder="Release reason (required)" required />
-                    <button type="submit" class="btn btn-outline-dark btn-sm" onclick="return confirm('Hold این مدرک رفع شود؟');">
-                        <i class="bi bi-play-circle"></i> @Localizer["Release Hold"]
-                    </button>
-                </form>
+                <pems-form asp-action="ReleaseHold" asp-route-id="@Model.DocumentId" method="post"><pems-flex wrap="true" gap="2" align="center">
+                    <pems-input class="pems-maxw-240" scale="small" type="text" name="reason" placeholder="Release reason (required)" required />
+                    <pems-button tone="dark" size="small" outline="true" type="submit" data-pems-confirm="Hold این مدرک رفع شود؟">
+                        <pems-icon name="bi-play-circle" /> @Localizer["Release Hold"]
+                    </pems-button>
+                </pems-flex></pems-form>
             }
-        </div>
+        </pems-alert>
     }
 
     @{
@@ -250,22 +275,7 @@
     {
         <details class="mt-2 small">
             <summary class="text-muted">Hold History (@holdHistory.Count)</summary>
-            <table class="table table-sm table-enterprise mt-1">
-                <thead><tr><th>@Localizer["Reason"]</th><th>Held</th><th>By</th><th>Released</th><th>By</th><th>Release Reason</th></tr></thead>
-                <tbody>
-                    @foreach (var h in holdHistory)
-                    {
-                        <tr>
-                            <td>@h.Reason</td>
-                            <td>@h.HoldDate.ToString("yyyy-MM-dd HH:mm")</td>
-                            <td>@h.HoldByName</td>
-                            <td>@(h.ReleaseDate?.ToString("yyyy-MM-dd HH:mm") ?? "-")</td>
-                            <td>@h.ReleaseByName</td>
-                            <td>@h.ReleaseReason</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+            <pems-data-table data="@(DataRows.Of(holdHistory, c_ => c_.Add(((Localizer["Reason"])?.ToString() ?? ""), h => (object?)(h.Reason)).Add("Held", h => (object?)(PemsDates.DateTime(h.HoldDate))).Add("By", h => (object?)(h.HoldByName)).Add("Released", h => (object?)(PemsDates.DateTime(h.ReleaseDate) ?? "-")).Add("By", h => (object?)(h.ReleaseByName)).Add("Release Reason", h => (object?)(h.ReleaseReason))))" enterprise="false" dense="true" css="table-enterprise mt-1" />
         </details>
     }
 
@@ -278,9 +288,9 @@
             <span class="text-muted small">این مدرک P&amp;ID تجهیزات زیر است:</span>
             @foreach (var e in equipmentUsingThisAsPID)
             {
-                <a asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId" class="badge bg-info text-dark text-decoration-none">
-                    <i class="bi bi-gear"></i> @e.TagNumber
-                </a>
+                <pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId" class="text-decoration-none">
+                    <pems-badge tone="info"><pems-icon name="bi-gear" /> @e.TagNumber</pems-badge>
+                </pems-link>
             }
         </div>
     }
@@ -289,180 +299,214 @@
        هم هست تا همیشه معلوم باشه مدرک دقیقاً کجای چرخه‌ست، بدون نیاز به باز کردن مدال. طبق بخش
        ۲۴ ممیزی UX: خلاصه‌ی پیشرفت IDC (بدون نیاز به اسکرول) این‌جا می‌ماند؛ ماتریس کامل هر
        دیسیپلین به تب اختصاصی IDC Review منتقل شد. *@
-    @if (Model.Status != "Draft")
+    @if (!string.IsNullOrEmpty(Model.Status))
     {
-        <hr class="my-2" />
-        <partial name="_PemsStageDiagram" model="wfStageDiagramModel" />
+        <pems-divider class="my-2" />
+        <pems-stage-diagram steps="@wfStageDiagramModel.Steps" />
+
+        @if (wfNextStep != null)
+        {
+            <pems-alert tone="info" css="py-2 mb-2 mt-2 small" role="note">
+                <pems-icon name="bi-signpost-split" aria-hidden="true" /> <strong>@Localizer["Ed_NextStep"]</strong> @wfNextStep
+            </pems-alert>
+        }
 
         @if (Model.Status == "IDC Review" && idcStatusForPage.Any())
         {
             <div class="text-center small text-muted mb-1">
                 IDC progress: <strong>@idcApprovedCount / @idcStatusForPage.Count</strong> disciplines completed
-                &mdash; <a href="#tab-idc" data-bs-toggle="tab" data-bs-target="#tab-idc">view details</a>
+                &mdash; <pems-button plain="true" css="link-primary p-0 border-0 bg-transparent align-baseline" type="button" data-bs-toggle="tab" data-bs-target="#tab-idc">view details</pems-button>
             </div>
         }
     }
 </div>
 
-<ul class="nav nav-tabs mb-3" id="docTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-overview" type="button">
-            <i class="bi bi-info-circle"></i> @Localizer["Ed_TabOverview"]
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-attachments" type="button">
-            <i class="bi bi-paperclip"></i> @Localizer["Ed_TabFiles"] <span class="badge bg-secondary">@(Model.Attachments?.Count ?? 0)</span>
-        </button>
-    </li>
+<pems-nav css="mb-3" id="docTabs" role="tablist">
+    <pems-tab target="tab-overview" active="true">
+            <pems-icon name="bi-info-circle" /> @Localizer["Ed_TabOverview"]
+        </pems-tab>
+    <pems-tab target="tab-attachments">
+            <pems-icon name="bi-paperclip" /> @Localizer["Ed_TabFiles"] <pems-badge tone="neutral">@(Model.Attachments?.Count ?? 0)</pems-badge>
+        </pems-tab>
     @* طبق بخش ۲۵ ممیزی UX: IDC حالا یک تب اختصاصی است، نه فقط چند Badge کوچک توی هدر -
        فقط وقتی داده‌ی IDC واقعاً وجود دارد نمایش داده می‌شود (سند هیچ‌وقت وارد IDC نشده باشد،
        تب اضافه‌ای نیست). *@
     @if (idcStatusForPage.Any())
     {
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-idc" type="button">
-                <i class="bi bi-diagram-3"></i> @Localizer["Ed_TabIdc"] <span class="badge bg-secondary">@idcApprovedCount/@idcStatusForPage.Count</span>
-            </button>
-        </li>
+        <pems-tab target="tab-idc">
+                <pems-icon name="bi-diagram-3" /> @Localizer["Ed_TabIdc"] <pems-badge tone="neutral">@idcApprovedCount/@idcStatusForPage.Count</pems-badge>
+            </pems-tab>
     }
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-revisions" type="button">
-            <i class="bi bi-clock-history"></i> @Localizer["Ed_TabRevisions"] <span class="badge bg-secondary">@(Model.Revisions?.Count ?? 0)</span>
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-workflow" type="button">
-            <i class="bi bi-diagram-2"></i> @Localizer["Ed_TabWorkflow"]
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-correspondence" type="button">
-            <i class="bi bi-envelope-paper"></i> @Localizer["Ed_TabDistribution"]
-            @if (relatedLetters.Any()) { <span class="badge bg-secondary">@relatedLetters.Count</span> }
-        </button>
-    </li>
-</ul>
+    <pems-tab target="tab-revisions">
+            <pems-icon name="bi-clock-history" /> @Localizer["Ed_TabRevisions"] <pems-badge tone="neutral">@(Model.Revisions?.Count ?? 0)</pems-badge>
+        </pems-tab>
+    <pems-tab target="tab-transmittals">
+            <pems-icon name="bi-truck" /> @Localizer["Ed_TabTransmittals"]
+            @if (relatedTransmittals.Any()) { <pems-badge tone="neutral">@relatedTransmittals.Count</pems-badge> }
+        </pems-tab>
+    <pems-tab target="tab-comments">
+            <pems-icon name="bi-chat-square-text" /> @Localizer["Ed_TabComments"]
+            @if (engComments.Any()) { <pems-badge tone="@(commentsOpenCount > 0 ? "danger" : "neutral")">@commentsOpenCount<span class="visually-hidden"> @Localizer["Ed_OpenComments"]</span></pems-badge> }
+        </pems-tab>
+    <pems-tab target="tab-workflow">
+            <pems-icon name="bi-diagram-2" /> @Localizer["Ed_TabWorkflow"]
+        </pems-tab>
+    <pems-tab target="tab-correspondence">
+            <pems-icon name="bi-envelope-paper" /> @Localizer["Ed_TabDistribution"]
+            @if (relatedLetters.Any()) { <pems-badge tone="neutral">@relatedLetters.Count</pems-badge> }
+        </pems-tab>
+</pems-nav>
 
-<div class="tab-content">
+<pems-tab-content>
 
     @* ===================== Overview ===================== *@
-    <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
+    <pems-tab-pane fade="true" active="true" id="tab-overview" role="tabpanel">
+        <pems-row gap="3">
+        <pems-col lg="8">
         <div class="vs-section">
-            <h2 class="vs-section__title"><i class="bi bi-card-list"></i> @Localizer["Ed_SecIdentification"]</h2>
-            <div class="vs-info">
-                <div><p class="vs-info__label">@Localizer["Ed_DocType"]</p><p class="vs-info__value">@Model.DocumentType</p></div>
-                <div><p class="vs-info__label">@Localizer["Ed_Project"]</p><p class="vs-info__value">@Model.ProjectName</p></div>
-                <div><p class="vs-info__label">@Localizer["Ed_Discipline"]</p><p class="vs-info__value">@Model.DisciplineName</p></div>
-                <div><p class="vs-info__label">@Localizer["Ed_Area"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.Area) ? "—" : Model.Area)</p></div>
-                <div><p class="vs-info__label">@Localizer["Ed_Revision"]</p><p class="vs-info__value vs-num">@Model.RevisionNo</p></div>
-                <div><p class="vs-info__label">@Localizer["Ed_CreatedDate"]</p><p class="vs-info__value vs-num">@Model.CreatedDate.ToString("yyyy-MM-dd")</p></div>
-                <div class="vs-info__wide"><p class="vs-info__label">@Localizer["Ed_Description"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.Description) ? "—" : Model.Description)</p></div>
-            </div>
+            <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-card-list" /> @Localizer["Ed_SecIdentification"]</pems-heading>
+            <pems-info-grid>
+                <pems-info-item label="@Localizer["Ed_DocType"]">@Model.DocumentType</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_Project"]">@Model.ProjectName</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_Discipline"]">@Model.DisciplineName</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_Area"]">@(string.IsNullOrEmpty(Model.Area) ? "—" : Model.Area)</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_Revision"]" num>@Model.RevisionNo</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_CreatedDate"]" num>@PemsDates.Date(Model.CreatedDate)</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_Description"]" wide>@(string.IsNullOrEmpty(Model.Description) ? "—" : Model.Description)</pems-info-item>
+            </pems-info-grid>
         </div>
 
         <div class="vs-section">
-            <h2 class="vs-section__title"><i class="bi bi-patch-check"></i> @Localizer["Ed_SecEngineering"]</h2>
-            <div class="vs-info">
-                <div><p class="vs-info__label">@Localizer["Ed_IssuePurpose"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.IssuePurpose) ? "—" : Model.IssuePurpose)</p></div>
-                <div><p class="vs-info__label">@Localizer["Ed_PreparedBy"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.PreparedBy) ? "—" : Model.PreparedBy)</p></div>
-                <div>
-                    <p class="vs-info__label">@Localizer["Ed_CheckedBy"]</p>
-                    <p class="vs-info__value">
-                        @(string.IsNullOrEmpty(Model.CheckedBy) ? "—" : Model.CheckedBy) @(Model.CheckedDate.HasValue ? $"({Model.CheckedDate:yyyy-MM-dd})" : "")
+            <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-patch-check" /> @Localizer["Ed_SecEngineering"]</pems-heading>
+            <pems-info-grid>
+                <pems-info-item label="@Localizer["Ed_IssuePurpose"]">@(string.IsNullOrEmpty(Model.IssuePurpose) ? "—" : Model.IssuePurpose)</pems-info-item>
+                <pems-info-item label="@Localizer["Ed_PreparedBy"]">
+                        @if (string.IsNullOrEmpty(Model.PreparedBy))
+                        {
+                            <span class="text-muted">@Localizer["Ed_NotSet"]</span>
+                            @if (canAssignSignoff) { <text> &middot; <pems-link asp-action="Edit" asp-route-id="@Model.DocumentId">@Localizer["Ed_Assign"]</pems-link></text> }
+                        }
+                        else { @Model.PreparedBy }
+                </pems-info-item>
+                <pems-info-item label="@Localizer["Ed_CheckedBy"]">
+                        @if (string.IsNullOrEmpty(Model.CheckedBy))
+                        {
+                            <span class="text-muted">@Localizer["Ed_NotSet"]</span>
+                            @if (canAssignSignoff) { <text> &middot; <pems-link asp-action="Edit" asp-route-id="@Model.DocumentId">@Localizer["Ed_Assign"]</pems-link></text> }
+                        }
+                        else { @Model.CheckedBy }
+                        @(Model.CheckedDate.HasValue ? $"({Model.CheckedDate:yyyy-MM-dd})" : "")
                         @if (!string.IsNullOrEmpty(Model.CheckedBySignaturePath))
                         {
-                            <img src="@Model.CheckedBySignaturePath" alt="Signature" style="height:32px; vertical-align:middle; margin-inline-start:8px; background:#fff; border:1px solid #eee; border-radius:3px;" />
+                            <img class="pems-signature-small" src="@Model.CheckedBySignaturePath" alt="Signature" />
                         }
-                    </p>
-                </div>
-                <div>
-                    <p class="vs-info__label">@Localizer["Ed_ApprovedBy"]</p>
-                    <p class="vs-info__value">
+                </pems-info-item>
+                <pems-info-item label="@Localizer["Ed_ApprovedBy"]">
                         @(string.IsNullOrEmpty(Model.ApprovedBy) ? "—" : Model.ApprovedBy) @(Model.ApprovedDate.HasValue ? $"({Model.ApprovedDate:yyyy-MM-dd})" : "")
                         @if (!string.IsNullOrEmpty(Model.ApprovedBySignaturePath))
                         {
-                            <img src="@Model.ApprovedBySignaturePath" alt="Signature" style="height:32px; vertical-align:middle; margin-inline-start:8px; background:#fff; border:1px solid #eee; border-radius:3px;" />
+                            <img class="pems-signature-small" src="@Model.ApprovedBySignaturePath" alt="Signature" />
                         }
-                    </p>
-                </div>
-                <div><p class="vs-info__label">@Localizer["Ed_CommentStatus"]</p><p class="vs-info__value">@(string.IsNullOrEmpty(Model.CommentStatus) ? "—" : Model.CommentStatus)</p></div>
+                </pems-info-item>
+                <pems-info-item label="@Localizer["Ed_CommentStatus"]">@(string.IsNullOrEmpty(Model.CommentStatus) ? "—" : Model.CommentStatus)</pems-info-item>
                 @if (!string.IsNullOrEmpty(Model.ClientApprovalStatus))
                 {
-                    <div>
-                        <p class="vs-info__label">@Localizer["Ed_ClientResponse"]</p>
-                        <p class="vs-info__value">
-                            <span class="vs-pill vs-pill--icon @(Model.ClientApprovalStatus == "Approved" ? "vs-pill--success" : Model.ClientApprovalStatus == "Rejected" ? "vs-pill--danger" : "vs-pill--warning")"><i class="bi @(Model.ClientApprovalStatus == "Approved" ? "bi-check-circle" : Model.ClientApprovalStatus == "Rejected" ? "bi-x-circle" : "bi-exclamation-circle")" aria-hidden="true"></i> @Model.ClientApprovalStatus</span>
+                    <pems-info-item label="@Localizer["Ed_ClientResponse"]">
+                            <span class="vs-pill vs-pill--icon @(Model.ClientApprovalStatus == "Approved" ? "vs-pill--success" : Model.ClientApprovalStatus == "Rejected" ? "vs-pill--danger" : "vs-pill--warning")"><pems-icon css="@(Model.ClientApprovalStatus == "Approved" ? "bi-check-circle" : Model.ClientApprovalStatus == "Rejected" ? "bi-x-circle" : "bi-exclamation-circle")" aria-hidden="true" /> @Model.ClientApprovalStatus</span>
                             @if (!string.IsNullOrEmpty(Model.ClientComment)) { <span class="vs-sub">@Model.ClientComment</span> }
-                        </p>
-                    </div>
+                    </pems-info-item>
                 }
-                <div>
-                    <p class="vs-info__label">@Localizer["Ed_RelatedEquipment"]</p>
-                    <p class="vs-info__value">
+                <pems-info-item label="@Localizer["Ed_RelatedEquipment"]">
                         @if (Model.EquipmentId.HasValue)
-                        { <a asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</a> }
+                        { <pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</pems-link> }
                         else { <span class="text-muted">—</span> }
-                    </p>
-                </div>
-                <div>
-                    <p class="vs-info__label">@Localizer["Ed_RelatedContract"]</p>
-                    <p class="vs-info__value">
+                </pems-info-item>
+                <pems-info-item label="@Localizer["Ed_RelatedContract"]">
                         @if (Model.ContractId.HasValue)
-                        { <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.ContractNo</a> }
+                        { <pems-link href="/p/contract-details?id=@Model.ContractId">@Model.ContractNo</pems-link> }
                         else { <span class="text-muted">—</span> }
-                    </p>
-                </div>
-            </div>
+                </pems-info-item>
+            </pems-info-grid>
         </div>
-    </div>
+        </pems-col>
+        <pems-col lg="4">
+            <div class="vs-section">
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-chat-square-text" /> @Localizer["Ed_TabComments"]</pems-heading>
+                <pems-text class="small text-muted mb-2">@string.Format(Localizer["Ed_OpenClosed"].Value, commentsOpenCount, commentsClosedCount)</pems-text>
+                @if (!engComments.Any())
+                {
+                    <pems-text class="small text-muted border rounded p-2 text-center mb-2">@Localizer["Ed_NoCommentsHint"]</pems-text>
+                }
+                <pems-flex wrap="true" gap="2">
+                    <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal"><pems-icon name="bi-plus-lg" aria-hidden="true" /> @Localizer["Add Comment"]</pems-button>
+                    @if (engComments.Any())
+                    {
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="tab" data-bs-target="#tab-comments">@Localizer["Ed_ViewAll"]</pems-button>
+                    }
+                </pems-flex>
+            </div>
+            <div class="vs-section">
+                <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-paperclip" /> @Localizer["Ed_TabFiles"]</pems-heading>
+                <pems-text class="small text-muted mb-2">@((Model.Attachments?.Count ?? 0) == 0 ? Localizer["Ed_NoFilesHint"].Value : string.Format(Localizer["Ed_FilesCount"].Value, Model.Attachments!.Count))</pems-text>
+                <pems-flex wrap="true" gap="2">
+                    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId"><pems-icon name="bi-upload" aria-hidden="true" /> @Localizer["Ed_Upload"]</pems-button>
+                    @if ((Model.Attachments?.Count ?? 0) > 0)
+                    {
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="tab" data-bs-target="#tab-attachments">@Localizer["Ed_ViewAll"]</pems-button>
+                    }
+                </pems-flex>
+            </div>
+        </pems-col>
+        </pems-row>
+    </pems-tab-pane>
 
     @* ===================== Attachments & AI ===================== *@
-    <div class="tab-pane fade" id="tab-attachments" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-attachments" role="tabpanel">
         <div class="vs-section">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="mb-0">@Localizer["Ed_SecFiles"]</h6>
-                <a asp-action="UploadAttachment" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-pems-solid">
-                    <i class="bi bi-upload"></i> @Localizer["Ed_Upload"]
-                </a>
-            </div>
+            <pems-flex justify="between" align="center" css="mb-3">
+                <pems-heading level="6" class="mb-0">@Localizer["Ed_SecFiles"]</pems-heading>
+                <pems-button tone="primary" size="small" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId">
+                    <pems-icon name="bi-upload" /> @Localizer["Ed_Upload"]
+                </pems-button>
+            </pems-flex>
 
             @if (Model.Attachments != null && Model.Attachments.Any())
             {
-                <table class="table table-enterprise">
-                    <thead>
-                        <tr><th>@Localizer["Ed_FileName"]</th><th>@Localizer["Ed_Revision"]</th><th>@Localizer["Ed_Ext"]</th><th>@Localizer["Ed_Size"]</th><th>@Localizer["Ed_AiStatus"]</th><th>@Localizer["Ed_Date"]</th><th class="text-end">@Localizer["Ed_Actions"]</th></tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var file in Model.Attachments)
-                        {
-                            var badgeClass = file.AIStatus switch
+                var rows_11 = Model.Attachments;
+                var cell_11_0 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
                             {
-                                "Completed" => "bg-success",
-                                "Processing" => "bg-info text-dark",
-                                "Pending" => "bg-secondary",
-                                "Failed" => "bg-danger",
-                                _ => "bg-secondary"
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
                             };
                             var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
-                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev;
-                            <tr class="@(fileIsPreviousRev ? "vs-rev-superseded" : "")">
-                                <td>
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }
                                     @file.FileName
                                     @if (!string.IsNullOrEmpty(file.FileHash))
                                     {
-                                        <i class="bi bi-shield-check text-success ms-1" data-bs-toggle="tooltip" title="SHA-256: @file.FileHash"></i>
+                                        <pems-icon name="bi-shield-check" css="text-success ms-1" data-bs-toggle="tooltip" title="SHA-256: @file.FileHash" />
                                     }
-                                </td>
-                                <td>
+                                </text>);
+                var cell_11_1 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }
                                     @if (file.DocumentRevisionId.HasValue)
                                     {
-                                        <span class="badge bg-secondary">@Localizer["Ed_CurrentRev"] @file.RevisionNo</span>
+                                        <pems-badge tone="neutral">@Localizer["Ed_CurrentRev"] @file.RevisionNo</pems-badge>
                                         @if (fileIsCurrentRev) { <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentRevFile"]</span> }
                                         else { <span class="vs-sub">@Localizer["Ed_PreviousRevFile"]</span> }
                                         @if (file.IsOfficial)
                                         {
-                                            <span class="badge bg-success" data-bs-toggle="tooltip" title="Official file for this revision">Official</span>
+                                            <pems-badge tone="success" data-bs-toggle="tooltip" title="Official file for this revision">Official</pems-badge>
                                         }
                                         @if (!string.IsNullOrEmpty(file.FileRole))
                                         {
@@ -473,38 +517,89 @@
                                     {
                                         <span class="text-muted small">@Localizer["Ed_DocLevelFile"]</span>
                                     }
-                                </td>
-                                <td>@file.FileExtension</td>
-                                <td>@(file.FileSize / 1024) KB</td>
-                                <td><span class="badge @badgeClass">@file.AIStatus</span></td>
-                                <td class="small text-muted">@file.UploadDate.ToString("yyyy-MM-dd")</td>
-                                <td class="text-end">
-                                    <div class="d-flex gap-1 justify-content-end flex-wrap">
-                                        <a asp-action="DownloadAttachment" asp-route-id="@file.AttachmentId" class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" title="Download attachment" aria-label="Download @file.FileName"><i class="bi bi-download"></i></a>
+                                </text>);
+                var cell_11_2 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }@file.FileExtension</text>);
+                var cell_11_3 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }@(file.FileSize / 1024) KB</text>);
+                var cell_11_4 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }<pems-badge tone="@badgeClass">@file.AIStatus</pems-badge></text>);
+                var cell_11_5 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }@PemsDates.Date(file.UploadDate)</text>);
+                var cell_11_6 = DataCell.Template(rows_11, @<text>@{ var file = item; var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; }
+                                    <pems-flex gap="1" justify="end" wrap="true">
+                                        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="DownloadAttachment" asp-route-id="@file.AttachmentId" data-bs-toggle="tooltip" title="Download attachment" aria-label="Download @file.FileName"><pems-icon name="bi-download" /></pems-button>
                                         @if (file.AIStatus == "Completed")
                                         {
-                                            <a asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@file.AttachmentId" class="btn btn-sm btn-outline-warning">AI Data</a>
-                                            <a asp-controller="EngineeringDocumentIntelligence" asp-action="Review" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-outline-secondary">Intelligence</a>
+                                            <pems-button tone="warning" size="small" outline="true" as="a" href="@("/p/ai-extraction-review?id=" + file.AttachmentId)">AI Data</pems-button>
+                                            <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocumentIntelligence" asp-action="Review" asp-route-id="@Model.DocumentId">Intelligence</pems-button>
                                         }
-                                        <form asp-controller="OCRProcessing" asp-action="Retry" asp-route-id="@file.AttachmentId" method="post" class="d-inline">
-                                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Re-analyze" aria-label="Re-analyze @file.FileName"><i class="bi bi-arrow-repeat"></i></button>
-                                        </form>
-                                        <form asp-action="DeleteAttachment" asp-route-id="@file.AttachmentId" method="post" class="d-inline" onsubmit="return confirm('Delete file?')">
-                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Delete attachment" aria-label="Delete @file.FileName"><i class="bi bi-trash"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                                        <pems-form asp-controller="OCRProcessing" asp-action="Retry" asp-route-id="@file.AttachmentId" method="post" class="d-inline">
+                                            <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="tooltip" title="Re-analyze" aria-label="Re-analyze @file.FileName"><pems-icon name="bi-arrow-repeat" /></pems-button>
+                                        </pems-form>
+                                        <pems-form asp-action="DeleteAttachment" asp-route-id="@file.AttachmentId" method="post" class="d-inline" data-pems-confirm="Delete file?">
+                                            <pems-button tone="danger" size="small" outline="true" data-bs-toggle="tooltip" title="Delete attachment" aria-label="Delete @file.FileName"><pems-icon name="bi-trash" /></pems-button>
+                                        </pems-form>
+                                    </pems-flex>
+                                </text>);
+                <pems-data-table data="@(DataRows.Of(rows_11, c_ => c_.Add(((Localizer["Ed_FileName"])?.ToString() ?? ""), file => (object?)cell_11_0(file)).Add(((Localizer["Ed_Revision"])?.ToString() ?? ""), file => (object?)cell_11_1(file)).Add(((Localizer["Ed_Ext"])?.ToString() ?? ""), file => (object?)cell_11_2(file)).Add(((Localizer["Ed_Size"])?.ToString() ?? ""), file => (object?)cell_11_3(file)).Add(((Localizer["Ed_AiStatus"])?.ToString() ?? ""), file => (object?)cell_11_4(file)).Add(((Localizer["Ed_Date"])?.ToString() ?? ""), file => (object?)cell_11_5(file), css: "small text-muted").Add(((Localizer["Ed_Actions"])?.ToString() ?? ""), file => (object?)cell_11_6(file), css: "text-end", headerCss: "text-end"), rowClass: file => { var badgeClass = file.AIStatus switch
+                            {
+                                "Completed" => "success",
+                                "Processing" => "info",
+                                "Pending" => "neutral",
+                                "Failed" => "danger",
+                                _ => "neutral"
+                            };
+                            var fileIsCurrentRev = file.DocumentRevisionId.HasValue && file.RevisionNo == Model.RevisionNo;
+                            var fileIsPreviousRev = file.DocumentRevisionId.HasValue && !fileIsCurrentRev; return (fileIsPreviousRev ? "vs-rev-superseded" : ""); }))" />
             }
             else
             {
-                <p class="text-muted text-center py-4">@Localizer["Ed_NoFiles"]</p>
+                <pems-text class="text-muted text-center py-4">@Localizer["Ed_NoFiles"]</pems-text>
             }
         </div>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== IDC Review ===================== *@
     @* طبق «PEMS Engineering IDC Ownership Correction» (بخش ۹ - Originator Actions): این
@@ -515,81 +610,96 @@
        این فقط یک خلاصه‌ی اطلاعاتی است؛ تصمیم رسمی در مرحله‌ی Approval گرفته می‌شود. *@
     @if (idcStatusForPage.Any())
     {
-        <div class="tab-pane fade" id="tab-idc" role="tabpanel">
+        <pems-tab-pane fade="true" id="tab-idc" role="tabpanel">
             <div class="vs-section">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h6 class="mb-0"><i class="bi bi-diagram-3"></i> Inter-Discipline Check (IDC) — Discipline Review Summary</h6>
+                <pems-flex justify="between" align="center" css="mb-3">
+                    <pems-heading level="6" class="mb-0"><pems-icon name="bi-diagram-3" /> Inter-Discipline Check (IDC) — Discipline Review Summary</pems-heading>
                     <span class="text-muted small">@idcApprovedCount / @idcStatusForPage.Count disciplines responded</span>
-                </div>
-                <p class="text-muted small">
-                    <i class="bi bi-info-circle"></i> نتایج زیر صرفاً مشورتی هستند و به‌تنهایی وضعیت رسمی مدرک را
+                </pems-flex>
+                <pems-text class="text-muted small">
+                    <pems-icon name="bi-info-circle" /> نتایج زیر صرفاً مشورتی هستند و به‌تنهایی وضعیت رسمی مدرک را
                     تعیین نمی‌کنند - حتی اگر یک یا چند دیسیپلین «Reject» بدهند. تصمیم نهایی (Approve/Reject/Revise &amp;
                     Resubmit) همیشه توسط سازنده/تأییدکننده‌ی مدرک، با در نظر گرفتن مجموع این نظرات، گرفته می‌شود.
-                </p>
-                <div class="progress mb-3" style="height:8px;" role="progressbar" aria-valuenow="@idcApprovedCount" aria-valuemin="0" aria-valuemax="@idcStatusForPage.Count">
-                    <div class="progress-bar bg-success" style="width:@(idcStatusForPage.Count > 0 ? idcApprovedCount * 100 / idcStatusForPage.Count : 0)%"></div>
-                </div>
-                <table class="table table-enterprise">
-                    <thead><tr><th>@Localizer["Discipline"]</th><th>@Localizer["Status"]</th><th>@Localizer["Comment"]</th><th>Responded By</th><th>Responded Date</th></tr></thead>
-                    <tbody>
-                        @foreach (var idc in idcStatusForPage)
-                        {
-                            var (idcIcon, idcBadge, idcLabel) = idc.Status switch
+                </pems-text>
+                <pems-progress value="@idcApprovedCount" max="@idcStatusForPage.Count" tone="success" height="8px" css="mb-3"></pems-progress>
+                @{
+                    var rows_12 = idcStatusForPage;
+                    var cell_12_0 = DataCell.Template(rows_12, @<text>@{ var idc = item; var (idcIcon, idcBadge, idcLabel) = idc.Status switch
                             {
                                 "Approve" => ("bi-check-circle-fill", "bg-success", "Approved"),
                                 "Comment" => ("bi-chat-left-text-fill", "bg-warning text-dark", "Approved with Comments"),
                                 "Reject" => ("bi-x-circle-fill", "bg-danger", "Revision Required"),
                                 _ => ("bi-hourglass-split", "bg-secondary", "Pending")
-                            };
-                            <tr>
-                                <td>@idc.DisciplineName</td>
-                                <td><span class="badge @idcBadge"><i class="bi @idcIcon"></i> @idcLabel</span></td>
-                                <td class="small">@(idc.Comment ?? "—")</td>
-                                <td class="small">@(idc.RespondedByName ?? "—")</td>
-                                <td class="small">@(idc.RespondedDate?.ToString("yyyy-MM-dd HH:mm") ?? "—")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                            }; }@idc.DisciplineName</text>);
+                    var cell_12_1 = DataCell.Template(rows_12, @<text>@{ var idc = item; var (idcIcon, idcBadge, idcLabel) = idc.Status switch
+                            {
+                                "Approve" => ("bi-check-circle-fill", "bg-success", "Approved"),
+                                "Comment" => ("bi-chat-left-text-fill", "bg-warning text-dark", "Approved with Comments"),
+                                "Reject" => ("bi-x-circle-fill", "bg-danger", "Revision Required"),
+                                _ => ("bi-hourglass-split", "bg-secondary", "Pending")
+                            }; }<pems-badge tone="none" css="@idcBadge"><pems-icon css="@idcIcon" /> @idcLabel</pems-badge></text>);
+                    var cell_12_2 = DataCell.Template(rows_12, @<text>@{ var idc = item; var (idcIcon, idcBadge, idcLabel) = idc.Status switch
+                            {
+                                "Approve" => ("bi-check-circle-fill", "bg-success", "Approved"),
+                                "Comment" => ("bi-chat-left-text-fill", "bg-warning text-dark", "Approved with Comments"),
+                                "Reject" => ("bi-x-circle-fill", "bg-danger", "Revision Required"),
+                                _ => ("bi-hourglass-split", "bg-secondary", "Pending")
+                            }; }@(idc.Comment ?? "—")</text>);
+                    var cell_12_3 = DataCell.Template(rows_12, @<text>@{ var idc = item; var (idcIcon, idcBadge, idcLabel) = idc.Status switch
+                            {
+                                "Approve" => ("bi-check-circle-fill", "bg-success", "Approved"),
+                                "Comment" => ("bi-chat-left-text-fill", "bg-warning text-dark", "Approved with Comments"),
+                                "Reject" => ("bi-x-circle-fill", "bg-danger", "Revision Required"),
+                                _ => ("bi-hourglass-split", "bg-secondary", "Pending")
+                            }; }@(idc.RespondedByName ?? "—")</text>);
+                    var cell_12_4 = DataCell.Template(rows_12, @<text>@{ var idc = item; var (idcIcon, idcBadge, idcLabel) = idc.Status switch
+                            {
+                                "Approve" => ("bi-check-circle-fill", "bg-success", "Approved"),
+                                "Comment" => ("bi-chat-left-text-fill", "bg-warning text-dark", "Approved with Comments"),
+                                "Reject" => ("bi-x-circle-fill", "bg-danger", "Revision Required"),
+                                _ => ("bi-hourglass-split", "bg-secondary", "Pending")
+                            }; }@(PemsDates.DateTime(idc.RespondedDate) ?? "—")</text>);
+                }
+                <pems-data-table data="@(DataRows.Of(rows_12, c_ => c_.Add(((Localizer["Discipline"])?.ToString() ?? ""), idc => (object?)cell_12_0(idc)).Add(((Localizer["Status"])?.ToString() ?? ""), idc => (object?)cell_12_1(idc)).Add(((Localizer["Comment"])?.ToString() ?? ""), idc => (object?)cell_12_2(idc), css: "small").Add("Responded By", idc => (object?)cell_12_3(idc), css: "small").Add("Responded Date", idc => (object?)cell_12_4(idc), css: "small")))" />
                 @if (Model.Status == "IDC Review")
                 {
                     var myDisciplineIdForIdcTab = ViewBag.MyDisciplineId as int?;
                     var myPendingIdcTab = idcStatusForPage.FirstOrDefault(x => x.DisciplineId == myDisciplineIdForIdcTab && x.Status == "Pending");
                     @if (myPendingIdcTab != null)
                     {
-                        <div class="d-flex align-items-center gap-2 mt-3">
+                        <pems-flex align="center" gap="2" css="mt-3">
                             <span class="text-muted small">@Localizer["My IDC Review:"]</span>
-                            <form asp-action="IdcRespond" method="post" class="d-inline">
+                            <pems-form asp-action="IdcRespond" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@Model.DocumentId" />
                                 <input type="hidden" name="decision" value="Approve" />
-                                <button class="vs-btn vs-btn--primary"><i class="bi bi-check-lg"></i> No Comment</button>
-                            </form>
-                            <button type="button" class="vs-btn" data-bs-toggle="modal" data-bs-target="#idcCommentModal">@Localizer["Approve with Comments"]</button>
-                            <button type="button" class="vs-btn vs-btn--dangerline" data-bs-toggle="modal" data-bs-target="#idcRejectModal">@Localizer["Revision Required"]</button>
-                        </div>
+                                <pems-button plain="true" css="vs-btn vs-btn--primary"><pems-icon name="bi-check-lg" /> No Comment</pems-button>
+                            </pems-form>
+                            <pems-button plain="true" type="button" css="vs-btn" data-bs-toggle="modal" data-bs-target="#idcCommentModal">@Localizer["Approve with Comments"]</pems-button>
+                            <pems-button plain="true" type="button" css="vs-btn vs-btn--dangerline" data-bs-toggle="modal" data-bs-target="#idcRejectModal">@Localizer["Revision Required"]</pems-button>
+                        </pems-flex>
                     }
                 }
             </div>
-        </div>
+        </pems-tab-pane>
     }
 
     @* ===================== Revisions ===================== *@
-    <div class="tab-pane fade" id="tab-revisions" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-revisions" role="tabpanel">
         <div class="vs-section">
-            <h6 class="mb-3">@Localizer["Ed_SecRevisionHistory"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["Ed_SecRevisionHistory"]</pems-heading>
             @if (Model.Revisions != null && Model.Revisions.Any())
             {
-                <table class="table table-enterprise">
-                    <thead><tr><th>@Localizer["Ed_RevisionCol"]</th><th>@Localizer["Ed_Status"]</th><th>@Localizer["Ed_ClientReviewCol"]</th><th>@Localizer["Ed_Reason"]</th><th>@Localizer["Ed_CreatedBy"]</th><th>@Localizer["Ed_Reviewer"]</th><th>@Localizer["Ed_ApprovedCol"]</th>
-                        <th>@Localizer["Ed_Created"]</th><th>@Localizer["Ed_IssuedCol"]</th><th>@Localizer["Ed_EffectiveCol"]</th><th>@Localizer["Ed_SupersedesCol"]</th></tr></thead>
-                    <tbody>
+                <pems-table kind="enterprise">
+                    <pems-table-head><pems-table-row><pems-table-header>@Localizer["Ed_RevisionCol"]</pems-table-header><pems-table-header>@Localizer["Ed_Status"]</pems-table-header><pems-table-header>@Localizer["Ed_ClientReviewCol"]</pems-table-header><pems-table-header>@Localizer["Ed_Reason"]</pems-table-header><pems-table-header>@Localizer["Ed_CreatedBy"]</pems-table-header><pems-table-header>@Localizer["Ed_Reviewer"]</pems-table-header><pems-table-header>@Localizer["Ed_ApprovedCol"]</pems-table-header>
+                        <pems-table-header>@Localizer["Ed_Created"]</pems-table-header><pems-table-header>@Localizer["Ed_IssuedCol"]</pems-table-header><pems-table-header>@Localizer["Ed_EffectiveCol"]</pems-table-header><pems-table-header>@Localizer["Ed_SupersedesCol"]</pems-table-header></pems-table-row></pems-table-head>
+                    <pems-table-body>
                         @foreach (var rev in Model.Revisions)
                         {
                             var revIsCurrent = rev.RevisionNo == Model.RevisionNo;
-                            <tr class="@(revIsCurrent ? "vs-rev-current" : "vs-rev-superseded")">
-                                <td><span class="vs-num vs-num--strong">@rev.RevisionNo</span> @if (revIsCurrent) { <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentBadge"]</span> }</td>
-                                <td><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(rev.Status)"><i class="bi @DocumentStatusBadge.Icon(rev.Status)" aria-hidden="true"></i> @StatusText(rev.Status)</span></td>
-                                <td class="small">
+                            <pems-table-row class="@(revIsCurrent ? "vs-rev-current" : "vs-rev-superseded")">
+                                <pems-table-cell><span class="vs-num vs-num--strong">@rev.RevisionNo</span> @if (revIsCurrent) { <span class="vs-pill vs-pill--current">@Localizer["Ed_CurrentBadge"]</span> }</pems-table-cell>
+                                <pems-table-cell><span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(rev.Status)"><pems-icon css="@DocumentStatusBadge.Icon(rev.Status)" aria-hidden="true" /> @StatusText(rev.Status)</span></pems-table-cell>
+                                <pems-table-cell class="small">
                                     @{
                                         var clientBadge = rev.ClientReviewStatus switch
                                         {
@@ -600,42 +710,42 @@
                                     }
                                     @if (clientBadge != null)
                                     {
-                                        <span class="badge @clientBadge" title="@rev.ClientReviewComment">@rev.ClientReviewStatus @(rev.ClientReviewDate.HasValue ? $"({rev.ClientReviewDate:yyyy-MM-dd})" : "")</span>
+                                        <pems-badge tone="none" css="@clientBadge" title="@rev.ClientReviewComment">@rev.ClientReviewStatus @(rev.ClientReviewDate.HasValue ? $"({rev.ClientReviewDate:yyyy-MM-dd})" : "")</pems-badge>
                                     }
                                     else
                                     {
                                         <span class="text-muted">@Localizer["Ed_NotSubmittedToClient"]</span>
                                     }
-                                </td>
-                                <td class="small">@rev.Reason</td>
-                                <td class="small">@(rev.CreatedByName ?? "—")</td>
-                                <td>@rev.ReviewerName</td>
-                                <td>@rev.ApprovedBy</td>
-                                <td class="small text-muted">@rev.CreatedDate.ToString("yyyy-MM-dd")</td>
-                                <td class="small text-muted">@(rev.IssuedDate?.ToString("yyyy-MM-dd"))</td>
-                                <td class="small text-muted">@(rev.EffectiveDate?.ToString("yyyy-MM-dd"))</td>
-                                <td class="small">@rev.SupersededRevisionNo</td>
-                            </tr>
+                                </pems-table-cell>
+                                <pems-table-cell class="small">@rev.Reason</pems-table-cell>
+                                <pems-table-cell class="small">@(rev.CreatedByName ?? "—")</pems-table-cell>
+                                <pems-table-cell>@rev.ReviewerName</pems-table-cell>
+                                <pems-table-cell>@rev.ApprovedBy</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@PemsDates.Date(rev.CreatedDate)</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@(PemsDates.Date(rev.IssuedDate))</pems-table-cell>
+                                <pems-table-cell class="small text-muted">@(PemsDates.Date(rev.EffectiveDate))</pems-table-cell>
+                                <pems-table-cell class="small">@rev.SupersededRevisionNo</pems-table-cell>
+                            </pems-table-row>
                             @if (!string.IsNullOrEmpty(rev.ChangeDescription) || !string.IsNullOrEmpty(rev.AIRevisionSummary) || !string.IsNullOrEmpty(rev.VendorComment))
                             {
-                                <tr class="table-light">
-                                    <td colspan="11" class="small">
+                                <pems-table-row class="table-light">
+                                    <pems-table-cell colspan="11" class="small">
                                         @if (!string.IsNullOrEmpty(rev.ChangeDescription)) { <div><strong>Change:</strong> @rev.ChangeDescription</div> }
-                                        @if (!string.IsNullOrEmpty(rev.VendorComment)) { <div><i class="bi bi-building"></i> <strong>Vendor Comment:</strong> @rev.VendorComment</div> }
-                                        @if (!string.IsNullOrEmpty(rev.AIRevisionSummary)) { <div><i class="bi bi-robot"></i> <strong>AI Summary:</strong> @rev.AIRevisionSummary</div> }
-                                    </td>
-                                </tr>
+                                        @if (!string.IsNullOrEmpty(rev.VendorComment)) { <div><pems-icon name="bi-building" /> <strong>Vendor Comment:</strong> @rev.VendorComment</div> }
+                                        @if (!string.IsNullOrEmpty(rev.AIRevisionSummary)) { <div><pems-icon name="bi-robot" /> <strong>AI Summary:</strong> @rev.AIRevisionSummary</div> }
+                                    </pems-table-cell>
+                                </pems-table-row>
                             }
                         }
-                    </tbody>
-                </table>
+                    </pems-table-body>
+                </pems-table>
             }
             else
             {
-                <p class="text-muted text-center py-4">@Localizer["Ed_NoRevisions"]</p>
+                <pems-text class="text-muted text-center py-4">@Localizer["Ed_NoRevisions"]</pems-text>
             }
         </div>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Workflow History ===================== *@
     @* طبق بخش ۳۳ ممیزی UX: جدول خام قبلی به Timeline تبدیل شد؛ خودِ جدول کامل هم برای Audit
@@ -645,9 +755,9 @@
        ردیف می‌گیرد و هیچ‌کدام از Submit/Check/IDC/Approve/Reject/Issue را ثبت نمی‌کند؛ یعنی
        این تب همیشه (نه فقط بعد از اصلاح مالکیت IDC) عملاً خالی/ناقص بود. حالا از
        WorkflowHistory واقعی (روی همه‌ی Instance های این مدرک، نه فقط چرخه‌ی جاری) می‌خواند. *@
-    <div class="tab-pane fade" id="tab-workflow" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-workflow" role="tabpanel">
         <div class="vs-section">
-            <h6 class="mb-3">@Localizer["Ed_SecWorkflowHistory"]</h6>
+            <pems-heading level="6" class="mb-3">@Localizer["Ed_SecWorkflowHistory"]</pems-heading>
             @if (workflowHistoryForPage.Any())
             {
                 var orderedWorkflow = workflowHistoryForPage.OrderByDescending(x => x.ActionDate).ToList();
@@ -665,20 +775,20 @@
                             _ => "bi-record-circle-fill text-secondary"
                         };
                         <div class="pems-timeline-item">
-                            <div class="pems-timeline-marker"><i class="bi @wfIcon"></i></div>
+                            <div class="pems-timeline-marker"><pems-icon css="@wfIcon" /></div>
                             <div class="pems-timeline-content">
-                                <div class="d-flex justify-content-between flex-wrap gap-2">
+                                <pems-flex justify="between" wrap="true" gap="2">
                                     <div>
-                                        <span class="badge bg-secondary">@item.ActionType</span>
+                                        <pems-badge tone="neutral">@Localizer[item.ActionType]</pems-badge>
                                         <span class="small text-muted ms-1">@(item.FromStageName ?? "—") &rarr; @(item.ToStageName ?? "—")</span>
                                     </div>
-                                    <span class="small text-muted">@item.ActionDate.ToString("yyyy-MM-dd HH:mm")</span>
-                                </div>
+                                    <span class="small text-muted">@PemsDates.DateTime(item.ActionDate)</span>
+                                </pems-flex>
                                 @if (!string.IsNullOrEmpty(item.Comment))
                                 {
                                     <div class="small mt-1">"@item.Comment"</div>
                                 }
-                                <div class="small text-muted mt-1"><i class="bi bi-person"></i> @(item.ActorName ?? "System")</div>
+                                <div class="small text-muted mt-1"><pems-icon name="bi-person" /> @(item.ActorName ?? "System")</div>
                             </div>
                         </div>
                     }
@@ -686,513 +796,77 @@
 
                 <details class="mt-3 small">
                     <summary class="text-muted">Full audit table (@orderedWorkflow.Count)</summary>
-                    <table class="table table-enterprise mt-2">
-                        <thead><tr><th>@Localizer["From"]</th><th>To</th><th>@Localizer["Action"]</th><th>@Localizer["Comment"]</th><th>@Localizer["Date"]</th><th>@Localizer["User"]</th></tr></thead>
-                        <tbody>
-                            @foreach (var item in orderedWorkflow)
-                            {
-                                <tr>
-                                    <td>@(item.FromStageName ?? "—")</td>
-                                    <td>@(item.ToStageName ?? "—")</td>
-                                    <td><span class="badge bg-secondary">@item.ActionType</span></td>
-                                    <td>@item.Comment</td>
-                                    <td class="small text-muted">@item.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                                    <td>@(item.ActorName ?? "System")</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                    <pems-data-table data="@(DataRows.Of(orderedWorkflow, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), item => (object?)(item.FromStageName ?? "—")).Add("To", item => (object?)(item.ToStageName ?? "—")).Add(((Localizer["Action"])?.ToString() ?? ""), item => (object?)Localizer[item.ActionType].Value, kind: DataCellKind.Badge, tone: item => "neutral").Add(((Localizer["Comment"])?.ToString() ?? ""), item => (object?)(item.Comment)).Add(((Localizer["Date"])?.ToString() ?? ""), item => (object?)(PemsDates.DateTime(item.ActionDate)), css: "small text-muted").Add(((Localizer["User"])?.ToString() ?? ""), item => (object?)(item.ActorName ?? "System"))))" css="mt-2" />
                 </details>
             }
             else
             {
-                <p class="text-muted text-center py-4">@Localizer["Ed_NoWorkflow"]</p>
+                <pems-text class="text-muted text-center py-4">@Localizer["Ed_NoWorkflow"]</pems-text>
             }
         </div>
-    </div>
+    </pems-tab-pane>
 
     @* ===================== Correspondence ===================== *@
-    <div class="tab-pane fade" id="tab-correspondence" role="tabpanel">
+    <pems-tab-pane fade="true" id="tab-correspondence" role="tabpanel">
         <div class="vs-section">
-            <h6 class="mb-3"><i class="bi bi-envelope-paper"></i> @Localizer["Ed_SecCorrespondence"]</h6>
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-envelope-paper" /> @Localizer["Ed_SecCorrespondence"]</pems-heading>
             @if (relatedLetters.Any())
             {
-                <table class="table table-enterprise">
-                    <thead><tr><th>@Localizer["Ed_Letters_Type"]</th><th>@Localizer["Ed_LetterNo"]</th><th>@Localizer["Ed_Subject"]</th><th>@Localizer["Ed_Date"]</th><th>@Localizer["Ed_Status"]</th><th></th></tr></thead>
-                    <tbody>
-                        @foreach (var l in relatedLetters)
-                        {
-                            <tr>
-                                <td><span class="badge bg-secondary">@l.LetterType</span></td>
-                                <td>@l.LetterNumber</td>
-                                <td>@l.Subject</td>
-                                <td class="small text-muted">@l.LetterDate.ToString("yyyy-MM-dd")</td>
-                                <td><span class="badge bg-info text-dark">@l.Status</span></td>
-                                <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="View letter" aria-label="View letter @l.LetterNumber"><i class="bi bi-eye"></i></a></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                var rows_31 = relatedLetters;
+                var cell_31_5 = DataCell.Template(rows_31, @<text>@{ var l = item; }<pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId" data-bs-toggle="tooltip" title="View letter" aria-label="View letter @l.LetterNumber"><pems-icon name="bi-eye" /></pems-button></text>);
+                <pems-data-table data="@(DataRows.Of(rows_31, c_ => c_.Add(((Localizer["Ed_Letters_Type"])?.ToString() ?? ""), l => (object?)(DataCell.Badge("neutral", l.LetterType))).Add(((Localizer["Ed_LetterNo"])?.ToString() ?? ""), l => (object?)(l.LetterNumber)).Add(((Localizer["Ed_Subject"])?.ToString() ?? ""), l => (object?)(l.Subject)).Add(((Localizer["Ed_Date"])?.ToString() ?? ""), l => (object?)((PemsDates.Date(l.LetterDate))), css: "small text-muted").Add(((Localizer["Ed_Status"])?.ToString() ?? ""), l => (object?)(DataCell.Badge("info", l.Status))).Add("", l => (object?)cell_31_5(l))))" />
             }
             else
             {
-                <p class="text-muted text-center py-4">@Localizer["Ed_NoCorrespondence"]</p>
+                <pems-text class="text-muted text-center py-4">@Localizer["Ed_NoCorrespondence"]</pems-text>
             }
         </div>
 
+    </pems-tab-pane>
+
+    @* ===================== Transmittals ===================== *@
+    <pems-tab-pane fade="true" id="tab-transmittals" role="tabpanel">
         @* طبق «PEMS Phase 2A — EDMS Foundation» بخش ۲: قبلاً هیچ پیوند متقابلی با Transmittal
            روی این صفحه نبود - Service/Entity موجود، فقط یک بخش خلاصه‌ی جدید *@
         <div class="vs-section">
-            <h6 class="mb-3"><i class="bi bi-truck"></i> @Localizer["Ed_SecTransmittals"]</h6>
-            @{
-                var relatedTransmittals = (List<PEMS.Application.DTOs.RelatedTransmittalDto>)(ViewBag.RelatedTransmittals ?? new List<PEMS.Application.DTOs.RelatedTransmittalDto>());
-            }
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-truck" /> @Localizer["Ed_SecTransmittals"]</pems-heading>
             @if (relatedTransmittals.Any())
             {
-                <table class="table table-enterprise">
-                    <thead><tr><th>@Localizer["Ed_TransmittalNo"]</th><th>@Localizer["Ed_RevSent"]</th><th>@Localizer["Ed_Purpose"]</th><th>@Localizer["Ed_Date"]</th><th>@Localizer["Ed_Status"]</th><th></th></tr></thead>
-                    <tbody>
-                        @foreach (var t in relatedTransmittals)
-                        {
-                            <tr>
-                                <td>@t.TransmittalNo</td>
-                                <td class="small text-muted">@Localizer["Ed_CurrentRev"] <span class="vs-num">@t.RevisionNoAtTransmittal</span></td>
-                                <td>@t.Purpose</td>
-                                <td class="small text-muted">@(t.SentDate?.ToString("yyyy-MM-dd") ?? t.TransmittalDate.ToString("yyyy-MM-dd"))</td>
-                                <td><span class="vs-pill @PEMS.Web.Helpers.VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span></td>
-                                <td><a asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><i class="bi bi-eye"></i></a></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                var rows_32 = relatedTransmittals;
+                var cell_32_4 = DataCell.Template(rows_32, @<text>@{ var t = item; }<span class="vs-pill @PEMS.Web.Helpers.VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span></text>);
+                var cell_32_5 = DataCell.Template(rows_32, @<text>@{ var t = item; }<pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><pems-icon name="bi-eye" /></pems-button></text>);
+                <pems-data-table data="@(DataRows.Of(rows_32, c_ => c_.Add(((Localizer["Ed_TransmittalNo"])?.ToString() ?? ""), t => (object?)(t.TransmittalNo)).Add(((Localizer["Ed_RevSent"])?.ToString() ?? ""), t => (object?)(DataCell.Group(Localizer["Ed_CurrentRev"], " ", DataCell.Span("vs-num", t.RevisionNoAtTransmittal))), css: "small text-muted").Add(((Localizer["Ed_Purpose"])?.ToString() ?? ""), t => (object?)VdrUi.Loc(Localizer, "Transmittal_Purpose_", t.Purpose)).Add(((Localizer["Ed_Date"])?.ToString() ?? ""), t => (object?)((PemsDates.Date(t.SentDate) ?? PemsDates.Date(t.TransmittalDate))), css: "small text-muted").Add(((Localizer["Ed_Status"])?.ToString() ?? ""), t => (object?)cell_32_4(t)).Add("", t => (object?)cell_32_5(t))))" />
             }
             else
             {
-                <p class="text-muted text-center py-4">@Localizer["Ed_NoTransmittals"]</p>
+                <pems-text class="text-muted text-center py-4">@Localizer["Ed_NoTransmittals"]</pems-text>
             }
         </div>
-    </div>
+    </pems-tab-pane>
 
-</div>
-
-@* ==============================================================================
-   پاپ‌آپ Submit/Resubmit با نمایش گرافیکی کل چرخه‌ی گردش‌کار - به‌جای یک دکمه‌ی تکی که
-   مستقیم POST می‌کرد، حالا کاربر قبل از تایید نهایی، کل مسیر و اینکه هر مرحله دست کیه
-   رو می‌بینه.
-   ============================================================================== *@
-<div class="modal fade" id="submitWorkflowModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form asp-action="Submit" method="post">
-                <input type="hidden" name="id" value="@Model.DocumentId" />
-                <div class="modal-header">
-                    <h6 class="modal-title"><i class="bi bi-signpost-split"></i> Engineering Document Approval Workflow</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <partial name="_PemsStageDiagram" model="wfStageDiagramModel" />
-
-                    <hr />
-
-                    <div class="mb-2">
-                        <label class="form-label small fw-bold">
-                            <i class="bi bi-diagram-3"></i> این مدرک نیاز به بازبینی سایر دیسیپلین‌ها (IDC) داره؟
-                        </label>
-                        <div class="text-muted small mb-2">
-                            اگه دیسیپلینی رو انتخاب نکنی، مدرک بعد از Check مستقیم می‌ره مرحله‌ی تایید نهایی (بدون IDC).
-                        </div>
-                        <div class="row">
-                            @{
-                                var allDisciplinesForSubmit = (IEnumerable<PEMS.Domain.Entities.Discipline>)(ViewBag.AllDisciplines ?? new List<PEMS.Domain.Entities.Discipline>());
-                            }
-                            @foreach (var d in allDisciplinesForSubmit.Where(x => x.DisciplineId != Model.DisciplineId))
-                            {
-                                <div class="col-6 col-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="idcDisciplineIds" value="@d.DisciplineId" id="idcDisc_@d.DisciplineId">
-                                        <label class="form-check-label small" for="idcDisc_@d.DisciplineId">@d.Name</label>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                    <button type="submit" class="btn btn-warning btn-sm"><i class="bi bi-send"></i> @Localizer["تایید و ارسال"]</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-@* ==============================================================================
-   پاسخ IDC با کامنت (Comment) یا رد (Reject) - هر دو نیاز به توضیح دارن، برخلاف Approve
-   که یک دکمه‌ی ساده‌ست
-   ============================================================================== *@
-<div class="modal fade" id="idcCommentModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-action="IdcRespond" method="post">
-                <input type="hidden" name="id" value="@Model.DocumentId" />
-                <input type="hidden" name="decision" value="Comment" />
-                <div class="modal-header"><h6 class="modal-title">@Localizer["ثبت کامنت بازبینی IDC (دیسیپلین شما)"]</h6></div>
-                <div class="modal-body">
-                    <p class="text-muted small">این نظر به‌عنوان نتیجه‌ی بازبینی دیسیپلین شما ثبت می‌شود و مستقیماً روی وضعیت رسمی مدرک اثر نمی‌گذارد. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، سازنده/تأییدکننده‌ی مدرک با دیدن مجموع نظرات IDC تصمیم نهایی را می‌گیرد.</p>
-                    <textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                    <button type="submit" class="btn btn-warning btn-sm">@Localizer["ثبت کامنت"]</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="idcRejectModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-action="IdcRespond" method="post">
-                <input type="hidden" name="id" value="@Model.DocumentId" />
-                <input type="hidden" name="decision" value="Reject" />
-                <div class="modal-header"><h6 class="modal-title">@Localizer["اعلام نیاز به اصلاح (دیسیپلین شما)"]</h6></div>
-                <div class="modal-body">
-                    <p class="text-muted small"><strong>این اقدام، مدرک را رد نمی‌کند و آن را به سازنده برنمی‌گرداند.</strong> فقط نتیجه‌ی بازبینی دیسیپلین شما را «نیازمند اصلاح» ثبت می‌کند. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، مدرک برای تصمیم رسمی (تایید / رد / بازگشت برای اصلاح) به سازنده/تأییدکننده می‌رسد - با دیدن نظر شما در کنار سایر نظرات.</p>
-                    <textarea name="comment" class="form-control form-control-sm" rows="3" required></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                    <button type="submit" class="btn btn-danger btn-sm">@Localizer["رد کن"]</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-@* طبق Phase E-04: برخلاف Reject (رد قطعی)، این یعنی "برگردان برای اصلاح - دوباره Submit
-   می‌شود" - سند به وضعیت "Revise & Resubmit" می‌رود که خودش Submit دوباره را مجاز می‌کند. *@
-<div class="modal fade" id="reviseModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-action="ReviseAndResubmit" method="post">
-                <input type="hidden" name="id" value="@Model.DocumentId" />
-                <div class="modal-header"><h6 class="modal-title">@Localizer["برگرداندن برای اصلاح"]</h6></div>
-                <div class="modal-body">
-                    <p class="text-muted small">برخلاف رد قطعی، این یعنی سازنده باید اصلاح کند و دوباره Submit کند - نه رد نهایی.</p>
-                    <textarea name="comment" class="form-control form-control-sm" rows="3" placeholder="@Localizer["توضیح اصلاحات لازم"]" required></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                    <button type="submit" class="btn btn-warning btn-sm">@Localizer["برگردان برای اصلاح"]</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-@* طبق بخش ۲۱/۳۸ ممیزی UX: قبلاً Freeze/Hold یک فرم همیشه‌مرئی روی صفحه بودند - حالا برای
-   انطباق با بقیه‌ی اکشن‌ها به Modal تبدیل شدند (از منوی More باز می‌شوند). Route/Field/بررسی
-   مجوز (ViewBag.CanFreeze/CanHold) کاملاً دست‌نخورده ماندند - فقط محل نمایش تغییر کرده. *@
-@if (!Model.IsFrozen && (bool)(ViewBag.CanFreeze ?? false))
-{
-    <div class="modal fade" id="freezeModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form asp-action="Freeze" asp-route-id="@Model.DocumentId" method="post">
-                    <div class="modal-header"><h6 class="modal-title"><i class="bi bi-snow"></i> Freeze Document</h6></div>
-                    <div class="modal-body">
-                        <p class="text-muted small">این مدرک منجمد (Frozen) شود؟ پس از آن دیگر قابل ویرایش یا رویژن جدید نخواهد بود.</p>
-                        <label class="form-label small">Freeze reason (required)</label>
-                        <input type="text" name="reason" class="form-control form-control-sm" required />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                        <button type="submit" class="btn btn-outline-dark btn-sm"><i class="bi bi-snow"></i> @Localizer["Freeze"]</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-}
-@if (!Model.IsOnHold && !Model.IsFrozen && Model.Status != "Issued" && (bool)(ViewBag.CanHold ?? false))
-{
-    <div class="modal fade" id="holdModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form asp-action="Hold" asp-route-id="@Model.DocumentId" method="post">
-                    <div class="modal-header"><h6 class="modal-title"><i class="bi bi-pause-circle"></i> Hold Document</h6></div>
-                    <div class="modal-body">
-                        <p class="text-muted small">این مدرک در وضعیت Hold قرار بگیرد؟ تا رفع Hold، قابل تأیید (Approve) یا صدور (Issue) نخواهد بود.</p>
-                        <label class="form-label small">Hold reason (required)</label>
-                        <input type="text" name="reason" class="form-control form-control-sm" required />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                        <button type="submit" class="btn btn-outline-dark btn-sm"><i class="bi bi-pause-circle"></i> @Localizer["Hold"]</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-}
-
-
-@* ==============================================================================
-   پاپ‌آپ Issue: انتخاب واحد تحویل. اگر بیرونی (DCC کارفرما/پیمانکار) باشد، نامه‌ی رسمی
-   خروجی اجباری می‌شود؛ برای دو حالت داخلی (DCC خودمان یا واحد دیگر)، ثبت نامه اختیاری است.
-   ============================================================================== *@
-<div class="modal fade" id="issueModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form asp-action="Issue" method="post" id="issueForm">
-                <input type="hidden" name="id" value="@Model.DocumentId" />
-                <div class="modal-header"><h6 class="modal-title"><i class="bi bi-send-check"></i> @Localizer["صدور مدرک - انتخاب واحد تحویل"]</h6></div>
-                <div class="modal-body">
-                    @* طبق Phase E-04: هدف واقعی همین صدور (IFC/IFA/IFI/...) - در لحظه‌ی صدور
-                       ثبت می‌شود، نه مقدار قدیمی فرم Create/Edit *@
-                    <div class="mb-3">
-                        <label class="form-label small">Issue Purpose (IFC / IFA / IFI / ...)</label>
-                        <input type="text" name="issuePurpose" class="form-control form-control-sm" value="@Model.IssuePurpose" placeholder="e.g. Issued For Construction" />
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold">این مدرک به کدوم واحد تحویل داده می‌شه؟</label>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="deliveryUnitType" id="dcc_internal" value="InternalDCC" checked
-                                   onclick="pemsToggleIssueFields()">
-                            <label class="form-check-label small" for="dcc_internal">DCC داخلی (واحد کنترل مدارک خودمون)</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="deliveryUnitType" id="dept_internal" value="InternalDepartment"
-                                   onclick="pemsToggleIssueFields()">
-                            <label class="form-check-label small" for="dept_internal">یک واحد دیگه داخل شرکت</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="deliveryUnitType" id="ext_unit" value="External"
-                                   onclick="pemsToggleIssueFields()">
-                            <label class="form-check-label small" for="ext_unit">نهاد بیرونی (DCC کارفرما / پیمانکار)</label>
-                        </div>
-                    </div>
-
-                    <div class="mb-2" id="issueDeptField" style="display:none;">
-                        <label class="form-label small">@Localizer["واحد داخلی"]</label>
-                        <select name="deliveryDepartmentId" class="form-select form-select-sm">
-                            @{
-                                var allDepartmentsForIssue = (IEnumerable<PEMS.Domain.Entities.Department>)(ViewBag.AllDepartments ?? new List<PEMS.Domain.Entities.Department>());
-                            }
-                            @foreach (var dept in allDepartmentsForIssue)
-                            {
-                                <option value="@dept.DepartmentId">@dept.Name</option>
-                            }
-                        </select>
-                    </div>
-
-                    <div id="issueExternalFields" style="display:none;">
-                        <div class="alert alert-warning py-2 px-3 small">
-                            برای تحویل بیرونی، ثبت نامه‌ی رسمی خروجی الزامی است.
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label small">نام گیرنده (مثلاً DCC کارفرما)</label>
-                            <input type="text" name="externalReceiverName" class="form-control form-control-sm" />
-                        </div>
-                    </div>
-
-                    <div class="mb-2" id="issueLetterNumberField" style="display:none;">
-                        <label class="form-label small">شماره‌ی نامه (اختیاری - خالی بمونه خودکار ساخته می‌شه)</label>
-                        <input type="text" name="letterNumber" class="form-control form-control-sm" />
-                    </div>
-                    <div class="mb-2" id="issueSubjectField" style="display:none;">
-                        <label class="form-label small">@Localizer["موضوع نامه"]</label>
-                        <input type="text" name="letterSubject" class="form-control form-control-sm" value="صدور مدرک @Model.DocumentNo" />
-                    </div>
-                    <div class="mb-2" id="issueBodyField" style="display:none;">
-                        <label class="form-label small">@Localizer["متن نامه (اختیاری)"]</label>
-                        <textarea name="letterBody" class="form-control form-control-sm" rows="2"></textarea>
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label small">توضیح / کامنت صدور (اختیاری)</label>
-                        <textarea name="comment" class="form-control form-control-sm" rows="2"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["انصراف"]</button>
-                    <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-send-check"></i> تایید و صدور</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-    function pemsToggleIssueFields() {
-        var isExternal = document.getElementById('ext_unit').checked;
-        var isDept = document.getElementById('dept_internal').checked;
-
-        document.getElementById('issueDeptField').style.display = isDept ? '' : 'none';
-        document.getElementById('issueExternalFields').style.display = isExternal ? '' : 'none';
-
-        // فیلدهای نامه: برای بیرونی همیشه نشون داده بشه (اجباریه)، برای داخلی هم نشون داده
-        // بشه ولی اختیاریه (سرویس خودش تشخیص می‌ده اگه موضوع خالی بود نامه نسازه)
-        var showLetterFields = isExternal || isDept || document.getElementById('dcc_internal').checked;
-        document.getElementById('issueLetterNumberField').style.display = showLetterFields ? '' : 'none';
-        document.getElementById('issueSubjectField').style.display = showLetterFields ? '' : 'none';
-        document.getElementById('issueBodyField').style.display = showLetterFields ? '' : 'none';
-
-        // اگه بیرونیه، موضوع و گیرنده اجباری بشن
-        var subjectInput = document.querySelector('#issueSubjectField input');
-        var receiverInput = document.querySelector('#issueExternalFields input');
-        if (subjectInput) subjectInput.required = isExternal;
-        if (receiverInput) receiverInput.required = isExternal;
-    }
-
-    pemsToggleIssueFields();
-</script>
-
-
-<div class="modal fade" id="newRevisionModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-action="CreateRevision" method="post">
-                <input type="hidden" name="id" value="@Model.DocumentId" />
-                <div class="modal-header"><h6 class="modal-title">Create New Revision</h6></div>
-                <div class="modal-body">
-                    <div class="mb-2">
-                        <label class="form-label small">@Localizer["Reason"]</label>
-                        <select name="reason" class="form-select form-select-sm">
-                            <option>Design Change</option>
-                            <option>Client Comment</option>
-                            <option>Vendor Update</option>
-                            <option>Internal Review</option>
-                            <option>Regulatory Requirement</option>
-                            <option>@Localizer["Other"]</option>
-                        </select>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label small">Change Description</label>
-                        <textarea name="changeDescription" class="form-control form-control-sm" rows="3" placeholder="What changed in this revision?"></textarea>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label small"><i class="bi bi-building"></i> Vendor Comment</label>
-                        <textarea name="vendorComment" class="form-control form-control-sm" rows="3" placeholder="Paste or summarize the vendor's comment that led to this revision (if applicable)"></textarea>
-                    </div>
-                    @{
-                        var openClouded = ((List<PEMS.Application.DTOs.VDRCommentDto>)ViewBag.Comments)
-                            .Where(x => x.MarksRevisionRequired && !x.TriggeredRevisionId.HasValue).ToList();
-                    }
-                    @if (openClouded.Any())
-                    {
-                        <div class="mb-2">
-                            <label class="form-label small"><i class="bi bi-cloud-fill"></i> Closes Marked-for-Revision comment <span class="text-muted">@Localizer["(optional)"]</span></label>
-                            <select name="triggeringCommentId" class="form-select form-select-sm">
-                                <option value="">@Localizer["-- none --"]</option>
-                                @foreach (var oc in openClouded)
-                                {
-                                    <option value="@oc.VDRCommentId">@oc.CommentNo - @oc.CommentText</option>
-                                }
-                            </select>
-                        </div>
-                    }
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-pems-solid btn-sm">Create Revision</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="clientResponseModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-action="RecordClientResponse" method="post">
-                <input type="hidden" name="id" value="@Model.DocumentId" />
-                <div class="modal-header"><h6 class="modal-title">Record Client Response</h6></div>
-                <div class="modal-body">
-                    <p class="text-muted small">
-                        This is the client's (owner's) response to the issued document, separate from the
-                        internal EPC review that already happened.
-                    </p>
-
-                    @{
-                        var availableIncomingLetters = (IEnumerable<PEMS.Domain.Entities.Letter>)(ViewBag.AvailableIncomingLetters ?? new List<PEMS.Domain.Entities.Letter>());
-                    }
-                    <div class="mb-2">
-                        <label class="form-label small"><i class="bi bi-envelope-open"></i> نامه‌ی وارده (الزامی)</label>
-                        @if (availableIncomingLetters.Any())
-                        {
-                            <select name="incomingLetterId" class="form-select form-select-sm" required>
-                                <option value="">@Localizer["-- انتخاب کنید --"]</option>
-                                @foreach (var l in availableIncomingLetters)
-                                {
-                                    <option value="@l.LetterId">@l.LetterNumber &mdash; @l.Subject (@l.LetterDate.ToString("yyyy-MM-dd"))</option>
-                                }
-                            </select>
-                        }
-                        else
-                        {
-                            <div class="alert alert-warning py-2 px-3 small mb-0">
-                                هیچ نامه‌ی وارده‌ای ثبت نشده. اول باید نامه‌ی رسیده از کارفرما رو توی
-                                ماژول «نامه‌نگاری» به‌عنوان Incoming ثبت کنی، بعد این‌جا انتخابش کن.
-                            </div>
-                        }
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label small">Client Decision</label>
-                        <select name="clientStatus" class="form-select form-select-sm">
-                            <option value="A">A - Approved</option>
-                            <option value="B">B - Approved with Comments</option>
-                            <option value="C">C - Revise &amp; Resubmit</option>
-                            <option value="D">D - Rejected</option>
-                        </select>
-                    </div>
-                    <div class="mb-2">
-                        <label class="form-label small">Client Comment (اختیاری - علاوه بر متن نامه)</label>
-                        <textarea name="clientComment" class="form-control form-control-sm" rows="3"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-pems-solid btn-sm" @(availableIncomingLetters.Any() ? "" : "disabled")>Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-@* طبق درخواست: چرخه‌ی کامنت/ریپلای دقیقاً مثل بخش VDR - همان سرویس مشترک، همان تجربه *@
-@{
-    var engComments = (List<PEMS.Application.DTOs.VDRCommentDto>)ViewBag.Comments;
-    var latestPdfAttachment = Model.Attachments
-        .Where(a => a.FileExtension.Equals(".pdf", StringComparison.OrdinalIgnoreCase))
-        .OrderByDescending(a => a.UploadDate)
-        .FirstOrDefault();
-}
-
+    @* ===================== Comments (Document Viewer + Comment Management) ===================== *@
+    <pems-tab-pane fade="true" id="tab-comments" role="tabpanel">
 @if (latestPdfAttachment != null)
 {
-    <div class="content-card mb-3">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></h6>
-            <div class="d-flex align-items-center gap-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfPrevPage" data-bs-toggle="tooltip" title="@Localizer["Previous page"]" aria-label="@Localizer["Previous page"]"><i class="bi bi-chevron-left"></i></button>
+    <pems-content-card css="mb-3">
+        <pems-flex justify="between" align="center" css="mb-2">
+            <pems-heading level="6" class="mb-0"><pems-icon name="bi-file-earmark-pdf" /> Document Viewer <span class="text-muted small">(click anywhere on the page to pin a comment)</span></pems-heading>
+            <pems-flex align="center" gap="2">
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfPrevPage" data-bs-toggle="tooltip" title="@Localizer["Previous page"]" aria-label="@Localizer["Previous page"]"><pems-icon name="bi-chevron-left" /></pems-button>
                 <span class="small" id="pdfPageLabel">Page - / -</span>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfNextPage" data-bs-toggle="tooltip" title="@Localizer["Next page"]" aria-label="@Localizer["Next page"]"><i class="bi bi-chevron-right"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomOut" data-bs-toggle="tooltip" title="@Localizer["Zoom out"]" aria-label="@Localizer["Zoom out"]"><i class="bi bi-zoom-out"></i></button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="pdfZoomIn" data-bs-toggle="tooltip" title="@Localizer["Zoom in"]" aria-label="@Localizer["Zoom in"]"><i class="bi bi-zoom-in"></i></button>
-            </div>
-        </div>
-        <div id="pdfCanvasWrapper" style="position:relative; border:1px solid var(--pems-surface-border,#dee2e6); overflow:auto; max-height:75vh; text-align:center; cursor:crosshair;">
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfNextPage" data-bs-toggle="tooltip" title="@Localizer["Next page"]" aria-label="@Localizer["Next page"]"><pems-icon name="bi-chevron-right" /></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomOut" data-bs-toggle="tooltip" title="@Localizer["Zoom out"]" aria-label="@Localizer["Zoom out"]"><pems-icon name="bi-zoom-out" /></pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="button" id="pdfZoomIn" data-bs-toggle="tooltip" title="@Localizer["Zoom in"]" aria-label="@Localizer["Zoom in"]"><pems-icon name="bi-zoom-in" /></pems-button>
+            </pems-flex>
+        </pems-flex>
+        <div class="pems-pdf-canvas" id="pdfCanvasWrapper">
             <canvas id="pdfCanvas"></canvas>
         </div>
-    </div>
+    </pems-content-card>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.js"></script>
-    <script>
+    <script type="module" src="~/js/pdfjs-loader.js"></script>
+    <script type="module">
         (function () {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.js';
 
             var pdfUrl = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Url.Action("Download", "Files", new { id = latestPdfAttachment.AttachmentId })));
             var wrapper = document.getElementById('pdfCanvasWrapper');
@@ -1272,26 +946,16 @@
     </script>
 }
 
-<div class="content-card mb-3">
-    <h6 class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></h6>
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3">Comment Management <span class="text-muted small">(Action Status is tracked independently from Review Status)</span></pems-heading>
 
-    <table class="table table-enterprise">
-        <thead><tr><th>No</th><th>@Localizer["Category"]</th><th>Sheet/Zone</th><th>@Localizer["Comment"]</th><th>@Localizer["Raised By"]</th><th>@Localizer["Raised"]</th><th>@Localizer["Action Status"]</th><th>@Localizer["Response"]</th></tr></thead>
-        <tbody>
-            @foreach (var c in engComments)
-            {
-                <tr>
-                    <td><strong>@c.CommentNo</strong></td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(c.Category)) { <span class="badge bg-secondary">@c.Category</span> }
-                        @if (!string.IsNullOrEmpty(c.Severity)) { <span class="badge bg-dark">@c.Severity</span> }
-                    </td>
-                    <td class="small">@c.Sheet @c.Zone</td>
-                    <td class="small">
+    @{
+        var rows_33 = engComments;
+        var cell_33_3 = DataCell.Template(rows_33, @<text>@{ var c = item; }
                         @c.CommentText
                         @if (!string.IsNullOrEmpty(c.AttachmentFilePath))
                         {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.AttachmentFileName</a></div>
+                            <div><pems-link href="@Url.Action("Download", "Files", new { id = c.AttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.AttachmentFileName</pems-link></div>
                         }
                         @if (!string.IsNullOrEmpty(c.RequiredAction))
                         {
@@ -1300,154 +964,462 @@
                         @if (c.MarksRevisionRequired)
                         {
                             <div>
-                                <span class="badge bg-warning text-dark"><i class="bi bi-cloud-fill"></i> Marked for Revision</span>
+                                <pems-badge tone="warning"><pems-icon name="bi-cloud-fill" /> Marked for Revision</pems-badge>
                                 @if (c.TriggeredRevisionId.HasValue)
                                 {
-                                    <span class="badge bg-success">Rev @c.TriggeredRevisionNo created</span>
+                                    <pems-badge tone="success">Rev @c.TriggeredRevisionNo created</pems-badge>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-secondary">no revision yet</span>
+                                    <pems-badge tone="neutral">no revision yet</pems-badge>
                                 }
                             </div>
                         }
-                    </td>
-                    <td>@c.RaisedByName</td>
-                    <td>@c.RaisedDate.ToString("yyyy-MM-dd")</td>
-                    <td>
+                    </text>);
+        var cell_33_6 = DataCell.Template(rows_33, @<text>@{ var c = item; }
                         @{
                             var eab = c.ActionStatus switch
                             {
-                                "Closed" => "bg-success",
-                                "Verified" => "bg-info text-dark",
-                                "VendorResponsePending" => "bg-warning text-dark",
-                                "NoActionRequired" => "bg-secondary",
-                                _ => "bg-danger"
+                                "Closed" => "success",
+                                "Verified" => "info",
+                                "VendorResponsePending" => "warning",
+                                "NoActionRequired" => "neutral",
+                                _ => "danger"
                             };
                         }
-                        <span class="badge @eab">@c.ActionStatus</span>
-                        <form asp-action="SetCommentAction" method="post" class="d-inline">
+                        <pems-badge tone="@eab">@c.ActionStatus</pems-badge>
+                        <pems-form asp-action="SetCommentAction" method="post" class="d-inline">
                             <input type="hidden" name="documentId" value="@Model.DocumentId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                            <select name="actionStatus" class="form-select form-select-sm mt-1" style="width:170px;" onchange="this.form.submit()">
+                            <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" data-pems-change="submit-form">
                                 @foreach (var s in new[] { "OpenComment", "VendorResponsePending", "Verified", "Closed", "NoActionRequired" })
                                 { <option value="@s" selected="@(s == c.ActionStatus)">@s</option> }
-                            </select>
-                        </form>
-                    </td>
-                    <td class="small">
+                            </pems-select>
+                        </pems-form>
+                    </text>);
+        var cell_33_7 = DataCell.Template(rows_33, @<text>@{ var c = item; }
                         @c.ResponseText
                         @if (!string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
-                            <div><a href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><i class="bi bi-paperclip"></i> @c.ReplyAttachmentFileName</a></div>
+                            <div><pems-link href="@Url.Action("Download", "Files", new { id = c.ReplyAttachmentId })" target="_blank"><pems-icon name="bi-paperclip" /> @c.ReplyAttachmentFileName</pems-link></div>
                         }
                         @if (string.IsNullOrEmpty(c.ResponseText) && string.IsNullOrEmpty(c.ReplyAttachmentFilePath))
                         {
-                            <button type="button" class="btn btn-sm btn-outline-primary mt-1" data-bs-toggle="modal" data-bs-target="#engReplyModal_@c.VDRCommentId">
-                                <i class="bi bi-reply"></i> Reply
-                            </button>
+                            <pems-button tone="primary" size="small" outline="true" css="mt-1" type="button" data-bs-toggle="modal" data-bs-target="#engReplyModal" data-fill-commentid="@c.VDRCommentId" data-fill-commentno="@c.CommentNo" data-fill-commenttext="@c.CommentText">
+                                <pems-icon name="bi-reply" /> Reply
+                            </pems-button>
                         }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @if (!engComments.Any()) { <p class="text-muted">No comments recorded yet.</p> }
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_33, c_ => c_.Add("No", c => (object?)(DataCell.Span(null, c.CommentNo).WithTag("strong"))).Add(((Localizer["Category"])?.ToString() ?? ""), c => (object?)(DataCell.Group((!string.IsNullOrEmpty(c.Category) ? (object?)DataCell.Badge("neutral", c.Category) : null), " ", (!string.IsNullOrEmpty(c.Severity) ? (object?)DataCell.Badge("dark", c.Severity) : null)))).Add("Sheet/Zone", c => (object?)(DataCell.Group(c.Sheet, " ", c.Zone)), css: "small").Add(((Localizer["Comment"])?.ToString() ?? ""), c => (object?)cell_33_3(c), css: "small").Add(((Localizer["Raised By"])?.ToString() ?? ""), c => (object?)(c.RaisedByName)).Add(((Localizer["Raised"])?.ToString() ?? ""), c => (object?)((PemsDates.Date(c.RaisedDate)))).Add(((Localizer["Action Status"])?.ToString() ?? ""), c => (object?)cell_33_6(c)).Add(((Localizer["Response"])?.ToString() ?? ""), c => (object?)cell_33_7(c), css: "small")))" />
+    @if (!engComments.Any()) { <pems-text class="text-muted">No comments recorded yet.</pems-text> }
 
-    <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">
-        <i class="bi bi-plus-lg"></i> @Localizer["Add Comment"]
-    </button>
-</div>
+    <pems-button tone="primary" size="small" type="button" data-bs-toggle="modal" data-bs-target="#addEngCommentModal">
+        <pems-icon name="bi-plus-lg" /> @Localizer["Add Comment"]
+    </pems-button>
+</pems-content-card>
+    </pems-tab-pane>
 
-<div class="modal fade" id="addEngCommentModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form asp-action="AddComment" method="post" enctype="multipart/form-data">
+</pems-tab-content>
+
+@* ==============================================================================
+   پاپ‌آپ Submit/Resubmit با نمایش گرافیکی کل چرخه‌ی گردش‌کار - به‌جای یک دکمه‌ی تکی که
+   مستقیم POST می‌کرد، حالا کاربر قبل از تایید نهایی، کل مسیر و اینکه هر مرحله دست کیه
+   رو می‌بینه.
+   ============================================================================== *@
+<pems-modal size="large" id="submitWorkflowModal" tabindex="-1">
+            <pems-form asp-action="Submit" method="post">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <pems-modal-header close="true"><pems-icon name="bi-signpost-split" /> @Localizer["Engineering Document Approval Workflow"]</pems-modal-header>
+                <pems-modal-body>
+                    <pems-stage-diagram steps="@wfStageDiagramModel.Steps" />
+
+                    <pems-divider />
+
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small fw-bold">
+                            <pems-icon name="bi-diagram-3" /> این مدرک نیاز به بازبینی سایر دیسیپلین‌ها (IDC) داره؟
+                        </pems-label>
+                        <div class="text-muted small mb-2">
+                            اگه دیسیپلینی رو انتخاب نکنی، مدرک بعد از Check مستقیم می‌ره مرحله‌ی تایید نهایی (بدون IDC).
+                        </div>
+                        <pems-row>
+                            @{
+                                var allDisciplinesForSubmit = (IEnumerable<PEMS.Domain.Entities.Discipline>)(ViewBag.AllDisciplines ?? new List<PEMS.Domain.Entities.Discipline>());
+                            }
+                            @foreach (var d in allDisciplinesForSubmit.Where(x => x.DisciplineId != Model.DisciplineId))
+                            {
+                                <pems-col span="6" md="4">
+                                    <pems-check-row>
+                                        <pems-input kind="check" type="checkbox" name="idcDisciplineIds" value="@d.DisciplineId" id="idcDisc_@d.DisciplineId" />
+                                        <label class="form-check-label small" for="idcDisc_@d.DisciplineId">@d.Name</label>
+                                    </pems-check-row>
+                                </pems-col>
+                            }
+                        </pems-row>
+                    </pems-form-group>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                    <pems-button tone="warning" size="small" type="submit"><pems-icon name="bi-send" /> @Localizer["تایید و ارسال"]</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
+
+@* ==============================================================================
+   پاسخ IDC با کامنت (Comment) یا رد (Reject) - هر دو نیاز به توضیح دارن، برخلاف Approve
+   که یک دکمه‌ی ساده‌ست
+   ============================================================================== *@
+<pems-modal id="idcCommentModal" tabindex="-1">
+            <pems-form asp-action="IdcRespond" method="post">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <input type="hidden" name="decision" value="Comment" />
+                <pems-modal-header>@Localizer["ثبت کامنت بازبینی IDC (دیسیپلین شما)"]</pems-modal-header>
+                <pems-modal-body>
+                    <pems-text class="text-muted small">این نظر به‌عنوان نتیجه‌ی بازبینی دیسیپلین شما ثبت می‌شود و مستقیماً روی وضعیت رسمی مدرک اثر نمی‌گذارد. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، سازنده/تأییدکننده‌ی مدرک با دیدن مجموع نظرات IDC تصمیم نهایی را می‌گیرد.</pems-text>
+                    <pems-textarea scale="small" name="comment" rows="3" required></pems-textarea>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                    <pems-button tone="warning" size="small" type="submit">@Localizer["ثبت کامنت"]</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
+
+<pems-modal id="idcRejectModal" tabindex="-1">
+            <pems-form asp-action="IdcRespond" method="post">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <input type="hidden" name="decision" value="Reject" />
+                <pems-modal-header>@Localizer["اعلام نیاز به اصلاح (دیسیپلین شما)"]</pems-modal-header>
+                <pems-modal-body>
+                    <pems-text class="text-muted small"><strong>این اقدام، مدرک را رد نمی‌کند و آن را به سازنده برنمی‌گرداند.</strong> فقط نتیجه‌ی بازبینی دیسیپلین شما را «نیازمند اصلاح» ثبت می‌کند. بعد از پاسخ همه‌ی دیسیپلین‌های ارجاع‌شده، مدرک برای تصمیم رسمی (تایید / رد / بازگشت برای اصلاح) به سازنده/تأییدکننده می‌رسد - با دیدن نظر شما در کنار سایر نظرات.</pems-text>
+                    <pems-textarea scale="small" name="comment" rows="3" required></pems-textarea>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                    <pems-button tone="danger" size="small" type="submit">@Localizer["رد کن"]</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
+
+@* طبق Phase E-04: برخلاف Reject (رد قطعی)، این یعنی "برگردان برای اصلاح - دوباره Submit
+   می‌شود" - سند به وضعیت "Revise & Resubmit" می‌رود که خودش Submit دوباره را مجاز می‌کند. *@
+<pems-modal id="reviseModal" tabindex="-1">
+            <pems-form asp-action="ReviseAndResubmit" method="post">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <pems-modal-header>@Localizer["برگرداندن برای اصلاح"]</pems-modal-header>
+                <pems-modal-body>
+                    <pems-text class="text-muted small">برخلاف رد قطعی، این یعنی سازنده باید اصلاح کند و دوباره Submit کند - نه رد نهایی.</pems-text>
+                    <pems-textarea scale="small" name="comment" rows="3" placeholder="@Localizer["توضیح اصلاحات لازم"]" required></pems-textarea>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                    <pems-button tone="warning" size="small" type="submit">@Localizer["برگردان برای اصلاح"]</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
+
+@* طبق بخش ۲۱/۳۸ ممیزی UX: قبلاً Freeze/Hold یک فرم همیشه‌مرئی روی صفحه بودند - حالا برای
+   انطباق با بقیه‌ی اکشن‌ها به Modal تبدیل شدند (از منوی More باز می‌شوند). Route/Field/بررسی
+   مجوز (ViewBag.CanFreeze/CanHold) کاملاً دست‌نخورده ماندند - فقط محل نمایش تغییر کرده. *@
+@if (!Model.IsFrozen && (bool)(ViewBag.CanFreeze ?? false))
+{
+    <pems-modal id="freezeModal" tabindex="-1">
+                <pems-form asp-action="Freeze" asp-route-id="@Model.DocumentId" method="post">
+                    <pems-modal-header><pems-icon name="bi-snow" /> @Localizer["Freeze Document"]</pems-modal-header>
+                    <pems-modal-body>
+                        <pems-text class="text-muted small">این مدرک منجمد (Frozen) شود؟ پس از آن دیگر قابل ویرایش یا رویژن جدید نخواهد بود.</pems-text>
+                        <pems-label css="small">Freeze reason (required)</pems-label>
+                        <pems-input scale="small" type="text" name="reason" required />
+                    </pems-modal-body>
+                    <pems-modal-footer>
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                        <pems-button tone="dark" size="small" outline="true" type="submit"><pems-icon name="bi-snow" /> @Localizer["Freeze"]</pems-button>
+                    </pems-modal-footer>
+                </pems-form>
+            </pems-modal>
+}
+@if (!Model.IsOnHold && !Model.IsFrozen && Model.Status != "Issued" && (bool)(ViewBag.CanHold ?? false))
+{
+    <pems-modal id="holdModal" tabindex="-1">
+                <pems-form asp-action="Hold" asp-route-id="@Model.DocumentId" method="post">
+                    <pems-modal-header><pems-icon name="bi-pause-circle" /> Hold Document</pems-modal-header>
+                    <pems-modal-body>
+                        <pems-text class="text-muted small">این مدرک در وضعیت Hold قرار بگیرد؟ تا رفع Hold، قابل تأیید (Approve) یا صدور (Issue) نخواهد بود.</pems-text>
+                        <pems-label css="small">Hold reason (required)</pems-label>
+                        <pems-input scale="small" type="text" name="reason" required />
+                    </pems-modal-body>
+                    <pems-modal-footer>
+                        <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                        <pems-button tone="dark" size="small" outline="true" type="submit"><pems-icon name="bi-pause-circle" /> @Localizer["Hold"]</pems-button>
+                    </pems-modal-footer>
+                </pems-form>
+            </pems-modal>
+}
+
+
+@* ==============================================================================
+   پاپ‌آپ Issue: انتخاب واحد تحویل. اگر بیرونی (DCC کارفرما/پیمانکار) باشد، نامه‌ی رسمی
+   خروجی اجباری می‌شود؛ برای دو حالت داخلی (DCC خودمان یا واحد دیگر)، ثبت نامه اختیاری است.
+   ============================================================================== *@
+<pems-modal size="large" id="issueModal" tabindex="-1">
+            <pems-form asp-action="Issue" method="post" id="issueForm">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <pems-modal-header><pems-icon name="bi-send-check" /> @Localizer["صدور مدرک - انتخاب واحد تحویل"]</pems-modal-header>
+                <pems-modal-body>
+                    @* طبق Phase E-04: هدف واقعی همین صدور (IFC/IFA/IFI/...) - در لحظه‌ی صدور
+                       ثبت می‌شود، نه مقدار قدیمی فرم Create/Edit *@
+                    <pems-form-group css="mb-3">
+                        <pems-label css="small">Issue Purpose (IFC / IFA / IFI / ...)</pems-label>
+                        <pems-input scale="small" type="text" name="issuePurpose" value="@Model.IssuePurpose" placeholder="e.g. Issued For Construction" />
+                    </pems-form-group>
+
+                    <pems-form-group css="mb-3">
+                        <pems-label css="small fw-bold">این مدرک به کدوم واحد تحویل داده می‌شه؟</pems-label>
+
+                        <pems-check-row>
+                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="dcc_internal" value="InternalDCC" checked data-pems-click="call" data-pems-fn="pemsToggleIssueFields" data-pems-arg="none" />
+                            <label class="form-check-label small" for="dcc_internal">DCC داخلی (واحد کنترل مدارک خودمون)</label>
+                        </pems-check-row>
+                        <pems-check-row>
+                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="dept_internal" value="InternalDepartment" data-pems-click="call" data-pems-fn="pemsToggleIssueFields" data-pems-arg="none" />
+                            <label class="form-check-label small" for="dept_internal">یک واحد دیگه داخل شرکت</label>
+                        </pems-check-row>
+                        <pems-check-row>
+                            <pems-input kind="check" type="radio" name="deliveryUnitType" id="ext_unit" value="External" data-pems-click="call" data-pems-fn="pemsToggleIssueFields" data-pems-arg="none" />
+                            <label class="form-check-label small" for="ext_unit">نهاد بیرونی (DCC کارفرما / پیمانکار)</label>
+                        </pems-check-row>
+                    </pems-form-group>
+
+                    <pems-form-group css="mb-2" id="issueDeptField" hidden>
+                        <pems-label css="small">@Localizer["واحد داخلی"]</pems-label>
+                        <pems-select scale="small" name="deliveryDepartmentId">
+                            @{
+                                var allDepartmentsForIssue = (IEnumerable<PEMS.Domain.Entities.Department>)(ViewBag.AllDepartments ?? new List<PEMS.Domain.Entities.Department>());
+                            }
+                            @foreach (var dept in allDepartmentsForIssue)
+                            {
+                                <option value="@dept.DepartmentId">@dept.Name</option>
+                            }
+                        </pems-select>
+                    </pems-form-group>
+
+                    <div id="issueExternalFields" hidden>
+                        <pems-alert tone="warning" css="py-2 px-3 small">
+                            برای تحویل بیرونی، ثبت نامه‌ی رسمی خروجی الزامی است.
+                        </pems-alert>
+                        <pems-form-group css="mb-2">
+                            <pems-label css="small">نام گیرنده (مثلاً DCC کارفرما)</pems-label>
+                            <pems-input scale="small" type="text" name="externalReceiverName" />
+                        </pems-form-group>
+                    </div>
+
+                    <pems-form-group css="mb-2" id="issueLetterNumberField" hidden>
+                        <pems-label css="small">شماره‌ی نامه (اختیاری - خالی بمونه خودکار ساخته می‌شه)</pems-label>
+                        <pems-input scale="small" type="text" name="letterNumber" />
+                    </pems-form-group>
+                    <pems-form-group css="mb-2" id="issueSubjectField" hidden>
+                        <pems-label css="small">@Localizer["موضوع نامه"]</pems-label>
+                        <pems-input scale="small" type="text" name="letterSubject" value="صدور مدرک @Model.DocumentNo" />
+                    </pems-form-group>
+                    <pems-form-group css="mb-2" id="issueBodyField" hidden>
+                        <pems-label css="small">@Localizer["متن نامه (اختیاری)"]</pems-label>
+                        <pems-textarea scale="small" name="letterBody" rows="2"></pems-textarea>
+                    </pems-form-group>
+
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small">توضیح / کامنت صدور (اختیاری)</pems-label>
+                        <pems-textarea scale="small" name="comment" rows="2"></pems-textarea>
+                    </pems-form-group>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["انصراف"]</pems-button>
+                    <pems-button tone="none" size="small" css="btn-primary" type="submit"><pems-icon name="bi-send-check" /> تایید و صدور</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
+
+<script src="~/js/views/engineeringdocuments-details-1.js" asp-append-version="true"></script>
+
+
+<pems-modal id="newRevisionModal" tabindex="-1">
+            <pems-form asp-action="CreateRevision" method="post">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <pems-modal-header>@Localizer["Create New Revision"]</pems-modal-header>
+                <pems-modal-body>
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small">@Localizer["Reason"]</pems-label>
+                        <pems-select scale="small" name="reason">
+                            <option>Design Change</option>
+                            <option>Client Comment</option>
+                            <option>Vendor Update</option>
+                            <option>Internal Review</option>
+                            <option>Regulatory Requirement</option>
+                            <option>@Localizer["Other"]</option>
+                        </pems-select>
+                    </pems-form-group>
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small">Change Description</pems-label>
+                        <pems-textarea scale="small" name="changeDescription" rows="3" placeholder="What changed in this revision?"></pems-textarea>
+                    </pems-form-group>
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small"><pems-icon name="bi-building" /> Vendor Comment</pems-label>
+                        <pems-textarea scale="small" name="vendorComment" rows="3" placeholder="Paste or summarize the vendor's comment that led to this revision (if applicable)"></pems-textarea>
+                    </pems-form-group>
+                    @{
+                        var openClouded = ((List<PEMS.Application.DTOs.VDRCommentDto>)ViewBag.Comments)
+                            .Where(x => x.MarksRevisionRequired && !x.TriggeredRevisionId.HasValue).ToList();
+                    }
+                    @if (openClouded.Any())
+                    {
+                        <pems-form-group css="mb-2">
+                            <pems-label css="small"><pems-icon name="bi-cloud-fill" /> Closes Marked-for-Revision comment <span class="text-muted">@Localizer["(optional)"]</span></pems-label>
+                            <pems-select scale="small" name="triggeringCommentId">
+                                <option value="">@Localizer["-- None --"]</option>
+                                @foreach (var oc in openClouded)
+                                {
+                                    <option value="@oc.VDRCommentId">@oc.CommentNo - @oc.CommentText</option>
+                                }
+                            </pems-select>
+                        </pems-form-group>
+                    }
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="primary" size="small" type="submit">Create Revision</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
+
+@{
+    var availableIncomingLetters = (IEnumerable<PEMS.Domain.Entities.Letter>)(ViewBag.AvailableIncomingLetters ?? new List<PEMS.Domain.Entities.Letter>());
+                    }
+
+<pems-modal id="clientResponseModal" tabindex="-1">
+            <pems-form asp-action="RecordClientResponse" method="post">
+                <input type="hidden" name="id" value="@Model.DocumentId" />
+                <pems-modal-header>@Localizer["Record Client Response"]</pems-modal-header>
+                <pems-modal-body>
+                    <pems-text class="text-muted small">@Localizer["Ed_ClientResponseIntro"]</pems-text>
+
+
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small"><pems-icon name="bi-envelope-open" /> @Localizer["Ed_IncomingLetterRequired"]</pems-label>
+                        @if (availableIncomingLetters.Any())
+                        {
+                            <pems-select scale="small" name="incomingLetterId" required>
+                                <option value="">@Localizer["-- انتخاب کنید --"]</option>
+                                @foreach (var l in availableIncomingLetters)
+                                {
+                                    <option value="@l.LetterId">@l.LetterNumber &mdash; @l.Subject (@PemsDates.Date(l.LetterDate))</option>
+                                }
+                            </pems-select>
+                        }
+                        else
+                        {
+                            <pems-alert tone="warning" css="py-2 px-3 small mb-0">
+                                @Localizer["Ed_NoIncomingLetter"]
+                            </pems-alert>
+                        }
+                    </pems-form-group>
+
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small">@Localizer["Ed_ClientDecision"]</pems-label>
+                        <pems-select scale="small" name="clientStatus">
+                            <option value="A">A - @Localizer["Approved"]</option>
+                            <option value="B">B - @Localizer["Approved with Comments"]</option>
+                            <option value="C">C - @Localizer["Revise & Resubmit"]</option>
+                            <option value="D">D - @Localizer["Rejected"]</option>
+                        </pems-select>
+                    </pems-form-group>
+                    <pems-form-group css="mb-2">
+                        <pems-label css="small">@Localizer["Ed_ClientComment"]</pems-label>
+                        <pems-textarea scale="small" name="clientComment" rows="3"></pems-textarea>
+                    </pems-form-group>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="primary" size="small" type="submit" disabled="@(!(availableIncomingLetters.Any()))">Save</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
+
+@* طبق درخواست: چرخه‌ی کامنت/ریپلای دقیقاً مثل بخش VDR - همان سرویس مشترک، همان تجربه *@
+<pems-modal size="large" id="addEngCommentModal" tabindex="-1">
+            <pems-form asp-action="AddComment" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="documentId" value="@Model.DocumentId" />
                 <input type="hidden" name="pageNumber" id="engPinPageNumber" value="" />
                 <input type="hidden" name="pinX" id="engPinX" value="" />
                 <input type="hidden" name="pinY" id="engPinY" value="" />
-                <div class="modal-header"><h6 class="modal-title">@Localizer["Add Comment"]</h6></div>
-                <div class="modal-body">
+                <pems-modal-header>@Localizer["Add Comment"]</pems-modal-header>
+                <pems-modal-body>
                     <div id="engPinLocationLabel" class="small text-primary mb-2"></div>
-                    <div class="row g-3">
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Raised By"]</label><input name="raisedByName" class="form-control form-control-sm" /></div>
-                        <div class="col-md-4">
-                            <label class="form-label small">@Localizer["Category"]</label>
-                            <select name="category" class="form-select form-select-sm">
+                    <pems-row gap="3">
+                        <pems-col md="4"><pems-label css="small">@Localizer["Raised By"]</pems-label><pems-input scale="small" name="raisedByName" /></pems-col>
+                        <pems-col md="4">
+                            <pems-label css="small">@Localizer["Category"]</pems-label>
+                            <pems-select scale="small" name="category">
                                 <option value="">@Localizer["-- select --"]</option>
                                 @foreach (var cat in new[] { "Technical", "Safety", "Constructability", "Documentation", "Specification", "Calculation", "Typographical", "Clarification" })
                                 { <option value="@cat">@cat</option> }
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label small">@Localizer["Severity"]</label>
-                            <select name="severity" class="form-select form-select-sm">
+                            </pems-select>
+                        </pems-col>
+                        <pems-col md="4">
+                            <pems-label css="small">@Localizer["Severity"]</pems-label>
+                            <pems-select scale="small" name="severity">
                                 <option value="">@Localizer["-- select --"]</option>
                                 @foreach (var sev in new[] { "Low", "Medium", "High", "Critical" })
                                 { <option value="@sev">@sev</option> }
-                            </select>
-                        </div>
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Sheet"]</label><input name="sheet" class="form-control form-control-sm" /></div>
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Zone"]</label><input name="zone" class="form-control form-control-sm" /></div>
-                        <div class="col-md-4"><label class="form-label small">@Localizer["Reference"]</label><input name="reference" class="form-control form-control-sm" /></div>
-                        <div class="col-12"><label class="form-label small">@Localizer["Comment"]</label><textarea name="commentText" class="form-control form-control-sm" rows="3" required></textarea></div>
-                        <div class="col-md-6"><label class="form-label small">Required Action</label><input name="requiredAction" class="form-control form-control-sm" /></div>
-                        <div class="col-md-6"><label class="form-label small">@Localizer["Due Date"]</label><input name="dueDate" type="date" class="form-control form-control-sm" /></div>
-                        <div class="col-12"><label class="form-label small">Attachment <span class="text-muted">@Localizer["(optional)"]</span></label><input type="file" name="attachment" class="form-control form-control-sm" /></div>
-                        <div class="col-12 form-check">
-                            <input type="checkbox" class="form-check-input" name="marksRevisionRequired" value="true" id="marksRevisionRequired" />
+                            </pems-select>
+                        </pems-col>
+                        <pems-col md="4"><pems-label css="small">@Localizer["Sheet"]</pems-label><pems-input scale="small" name="sheet" /></pems-col>
+                        <pems-col md="4"><pems-label css="small">@Localizer["Zone"]</pems-label><pems-input scale="small" name="zone" /></pems-col>
+                        <pems-col md="4"><pems-label css="small">@Localizer["Reference"]</pems-label><pems-input scale="small" name="reference" /></pems-col>
+                        <pems-col span="12"><pems-label css="small">@Localizer["Comment"]</pems-label><pems-textarea scale="small" name="commentText" rows="3" required></pems-textarea></pems-col>
+                        <pems-col md="6"><pems-label css="small">Required Action</pems-label><pems-input scale="small" name="requiredAction" /></pems-col>
+                        <pems-col md="6"><pems-label css="small">@Localizer["Due Date"]</pems-label><pems-date name="dueDate" scale="small" /></pems-col>
+                        <pems-col span="12"><pems-label css="small">Attachment <span class="text-muted">@Localizer["(optional)"]</span></pems-label><pems-uploader scale="small" name="attachment" /></pems-col>
+                        <pems-col span="12" css="form-check">
+                            <pems-input kind="check" type="checkbox" name="marksRevisionRequired" value="true" id="marksRevisionRequired" />
                             <label class="form-check-label" for="marksRevisionRequired">
                                 Marks this document as needing a new revision (Clouded / Marked-for-Revision)
                             </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">Save Comment</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                        </pems-col>
+                    </pems-row>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" type="submit">Save Comment</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
 
-@foreach (var c in engComments)
+@if (engComments.Any())
 {
-    <div class="modal fade" id="engReplyModal_@c.VDRCommentId" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
+    <pems-modal id="engReplyModal" tabindex="-1">
+                <pems-form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="documentId" value="@Model.DocumentId" />
-                    <input type="hidden" name="commentId" value="@c.VDRCommentId" />
-                    <div class="modal-header"><h6 class="modal-title">Reply to @c.CommentNo</h6></div>
-                    <div class="modal-body">
-                        <p class="small text-muted">@c.CommentText</p>
-                        <div class="mb-2">
-                            <label class="form-label small">Reply <span class="text-muted">(optional if attaching a file)</span></label>
-                            <textarea name="responseText" class="form-control form-control-sm" rows="3"></textarea>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label small">Or attach the Reply Sheet file</label>
-                            <input type="file" name="replyAttachment" class="form-control form-control-sm" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                        <button type="submit" class="btn btn-pems-solid btn-sm">Save Reply</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                    <input type="hidden" name="commentId" value="" />
+                    <pems-modal-header>Reply to <span data-fill-text="commentno"></span></pems-modal-header>
+                    <pems-modal-body>
+                        <pems-text class="small text-muted" data-fill-text="commenttext"></pems-text>
+                        <pems-form-group css="mb-2">
+                            <pems-label css="small">Reply <span class="text-muted">(optional if attaching a file)</span></pems-label>
+                            <pems-textarea scale="small" name="responseText" rows="3"></pems-textarea>
+                        </pems-form-group>
+                        <pems-form-group css="mb-2">
+                            <pems-label css="small">Or attach the Reply Sheet file</pems-label>
+                            <pems-uploader scale="small" name="replyAttachment" />
+                        </pems-form-group>
+                    </pems-modal-body>
+                    <pems-modal-footer>
+                        <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                        <pems-button tone="primary" size="small" type="submit">Save Reply</pems-button>
+                    </pems-modal-footer>
+                </pems-form>
+            </pems-modal>
 }
 
-</div> @* end .vs-page *@
+</pems-page-shell> @* end .vs-page *@
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            window.PemsTooltips.init();
-        });
-    </script>
+    <script src="~/js/views/engineeringdocuments-details-2.js" asp-append-version="true"></script>
 }

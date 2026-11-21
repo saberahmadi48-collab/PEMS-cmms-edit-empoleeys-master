@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "pre-procurement-convert-existing",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add to a Draft requisition",
+    "fa": "افزودن به MR پیش‌نویس"
+  },
+  "description": {
+    "en": "Add to a Draft requisition",
+    "fa": "افزودن به MR پیش‌نویس"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PreProcurement",
+      "action": "Convert",
+      "args": {
+        "procurementDemandId": "field:id",
+        "existingMrId": "field:existingMrId"
+      }
+    },
+    "success": {
+      "en": "The demand was added to the requisition.",
+      "fa": "تقاضا به MR افزوده شد."
+    },
+    "redirect": "/p/pre-procurement-details?id={id}"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "mr-quotations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MR quotations",
+    "fa": "استعلام‌های MR"
+  },
+  "description": {
+    "en": "MR quotations",
+    "fa": "استعلام‌های MR"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaterialRequisition",
+      "action": "Quotations",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

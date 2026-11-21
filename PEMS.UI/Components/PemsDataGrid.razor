@@ -1,0 +1,31 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("data-grid", Category = "data", Icon = "bi-grid-3x3-gap")]
+@using System.Text.Json
+@inject IPemsLocale Locale
+<div @attributes="Options.Attributes" class="@Join("pems-grid", Options.Css, Options.PageClass)" id="@Options.Id" data-pems-grid="" data-config="@Config()"></div>
+@code {
+    [Parameter, EditorRequired] public DataGridOptions Options { get; set; } = default!;
+
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+
+    /// <summary>The configuration the script reads: every text already in the language of the request, nothing else the script has to look up.</summary>
+    private string Config()
+    {
+        var t = Options.Texts ?? GridTexts.Default;
+        string T(PEMS.UI.Abstractions.TranslatableText x) => Locale.Text(x);
+        var config = new
+        {
+            url = Options.Url, idField = Options.IdField, pageSize = Options.PageSize, rowHeight = Options.RowHeight, height = Options.Height, density = Options.Density,
+            selectable = Options.Selectable, exportUrl = Options.ExportUrl, viewsKey = Options.ViewsKey,
+            columns = Options.Columns.Select(c => new { key = c.Key, header = T(c.Header), type = c.Type, width = c.Width, sortable = c.Sortable, filterable = c.Filterable, hidden = c.Hidden, pinned = c.Pinned, align = c.Align, actions = c.Actions.Select(a => new { key = a.Key, label = T(a.Label), url = a.Url, method = a.Method, confirm = a.Confirm is null ? null : T(a.Confirm), tone = a.Tone, showWhen = a.ShowWhen }) }),
+            bulkActions = Options.BulkActions.Select(a => new { key = a.Key, label = T(a.Label), url = a.Url, confirm = a.Confirm is null ? null : T(a.Confirm), tone = a.Tone }),
+            texts = new
+            {
+                search = T(t.Search), columns = T(t.Columns), density = T(t.Density), compact = T(t.Compact), comfortable = T(t.Comfortable), export = T(t.Export), views = T(t.Views),
+                saveView = T(t.SaveView), viewName = T(t.ViewName), loading = T(t.Loading), empty = T(t.Empty), error = T(t.Error), rows = T(t.Rows), selected = T(t.Selected),
+                selectAllMatching = T(t.SelectAllMatching), clearSelection = T(t.ClearSelection), filter = T(t.Filter), delete = T(t.Delete), viewScopeMe = T(t.ViewScopeMe)
+            }
+        };
+        return JsonSerializer.Serialize(config, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });
+    }
+}

@@ -1,0 +1,135 @@
+{
+  "key": "progress",
+  "component": "PEMS.UI.Components.PemsProgress",
+  "category": "feedback",
+  "icon": "bi-bar-chart-steps",
+  "nameKey": "component.progress",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "value": {
+        "type": [
+          "string",
+          "number"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$"
+      },
+      "max": {
+        "type": [
+          "string",
+          "number"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$"
+      },
+      "tone": {
+        "enum": [
+          "neutral",
+          "primary",
+          "danger",
+          "success",
+          "warning",
+          "info",
+          "light",
+          "dark",
+          null
+        ]
+      },
+      "height": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "style": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "label": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "title": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "segments": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "number"
+              ],
+              "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$"
+            },
+            "tone": {
+              "enum": [
+                "neutral",
+                "primary",
+                "danger",
+                "success",
+                "warning",
+                "info",
+                "light",
+                "dark",
+                null
+              ]
+            }
+          },
+          "required": [
+            "value",
+            "tone"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ProgressOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "value": 40,
+    "tone": "success",
+    "height": "8px"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "action",
+  "key": "inspection-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record an inspection",
+    "fa": "ثبت بازرسی"
+  },
+  "description": {
+    "en": "Record an inspection",
+    "fa": "ثبت بازرسی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Inspection",
+      "action": "Create",
+      "args": {
+        "equipmentId": "field:equipmentId",
+        "inspectionType": "field:inspectionType",
+        "inspectionDate": "field:inspectionDate",
+        "inspector": "field:inspector",
+        "measurementValue": "field:measurementValue",
+        "measurementUnit": "field:measurementUnit",
+        "lowerLimit": "field:lowerLimit",
+        "upperLimit": "field:upperLimit",
+        "recommendation": "field:recommendation",
+        "nextInspectionDate": "field:nextInspectionDate",
+        "description": "field:description"
+      },
+      "permission": "Inspection.Create"
+    },
+    "success": {
+      "en": "The inspection was recorded.",
+      "fa": "بازرسی ثبت شد."
+    },
+    "redirect": "/Equipment/Details/{equipmentId}"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "production-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production orders",
+    "fa": "سفارش‌های تولید"
+  },
+  "description": {
+    "en": "Production orders",
+    "fa": "سفارش‌های تولید"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Production",
+      "action": "Orders",
+      "args": {
+        "status": "param:status",
+        "search": "param:search"
+      }
+    }
+  }
+}

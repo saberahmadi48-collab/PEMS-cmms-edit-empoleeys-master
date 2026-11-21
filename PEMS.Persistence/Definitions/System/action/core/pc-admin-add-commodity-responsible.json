@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "pc-admin-add-commodity-responsible",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a commodity responsible",
+    "fa": "افزودن مسئول گروه کالا"
+  },
+  "description": {
+    "en": "Add a commodity responsible",
+    "fa": "افزودن مسئول گروه کالا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "AddCommodityResponsible",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "responsibilityKey": "field:responsibilityKey",
+        "commodityGroupId": "field:commodityGroupId",
+        "positionId": "field:positionId",
+        "responsibleEmployeeId": "field:responsibleEmployeeId",
+        "priority": "field:priority"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/p/pc-admin"
+  }
+}

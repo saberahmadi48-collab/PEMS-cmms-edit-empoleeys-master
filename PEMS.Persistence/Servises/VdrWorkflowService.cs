@@ -116,6 +116,7 @@ public class VdrWorkflowService : IVdrWorkflowService
         if (normalizedDecision != "Approve" && normalizedDecision != "Comment" && normalizedDecision != "Reject")
             throw new Exception("تصمیم نامعتبر است (باید Approve/Comment/Reject باشد).");
 
+        await GetItemOrThrowAsync(vdrItemId);   // SCRUM-559: refuses a held or inactive item
         var instanceId = await GetActiveInstanceIdOrThrowAsync(vdrItemId);
         var actorRoles = new[] { EngineeringDocumentWorkflowSeeder.DisciplineRole(actorDisciplineId) };
 
@@ -292,6 +293,9 @@ public class VdrWorkflowService : IVdrWorkflowService
     {
         var item = await _context.VDRItems.FirstOrDefaultAsync(x => x.DocumentId == vdrItemId);
         if (item == null) throw new Exception("VDR Item یافت نشد.");
+        // SCRUM-559: no review step on a deactivated item or on one that is on hold
+        if (!item.IsActive) throw new Exception("این مدرک VDR غیرفعال شده است - گردش‌کار روی آن ممکن نیست.");
+        if (item.IsOnHold) throw new Exception("این مدرک VDR در وضعیت توقف (Hold) است - اول توقف را رفع کنید.");
         return item;
     }
 

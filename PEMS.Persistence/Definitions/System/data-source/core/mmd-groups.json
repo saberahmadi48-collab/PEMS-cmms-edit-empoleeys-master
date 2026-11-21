@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mmd-groups",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance groups",
+    "fa": "گروه‌های تعمیراتی"
+  },
+  "description": {
+    "en": "Maintenance groups",
+    "fa": "گروه‌های تعمیراتی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "Groups"
+    }
+  }
+}

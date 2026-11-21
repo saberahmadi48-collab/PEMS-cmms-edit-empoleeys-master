@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "po-route",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Route again",
+    "fa": "مسیریابی دوباره"
+  },
+  "description": {
+    "en": "Route again",
+    "fa": "مسیریابی دوباره"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "Route",
+      "args": {
+        "poId": "field:id"
+      }
+    },
+    "success": {
+      "en": "The order was routed again.",
+      "fa": "سفارش دوباره مسیریابی شد."
+    },
+    "redirect": "/p/purchase-order-details?id={id}"
+  }
+}

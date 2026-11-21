@@ -1,0 +1,28 @@
+{
+  "kind": "action",
+  "key": "packager-update",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Build an update package",
+    "fa": "ساخت بسته به‌روزرسانی"
+  },
+  "description": {
+    "en": "Build an update package",
+    "fa": "ساخت بسته به‌روزرسانی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Packager",
+      "action": "BuildUpdate",
+      "args": {
+        "fromVersion": "field:fromVersion",
+        "toVersion": "field:toVersion",
+        "schemaLevel": "field:schemaLevel",
+        "definitionRefs": "field:definitions"
+      }
+    }
+  }
+}

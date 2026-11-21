@@ -14,6 +14,7 @@ public interface IPurchaseOrderService
     /// PO های قدیمی/واردشده که از قبل Issued هستند دست نمی‌خورند (خطا می‌دهد).
     /// مجوز و SoD در لایه‌ی Controller بررسی می‌شود.
     /// </summary>
+    [PEMS.Application.Common.PemsOperation("PurchaseOrder", "Issue", "PurchaseOrder.Approve")]
     Task IssueAsync(int poId);
 
     /// <summary>

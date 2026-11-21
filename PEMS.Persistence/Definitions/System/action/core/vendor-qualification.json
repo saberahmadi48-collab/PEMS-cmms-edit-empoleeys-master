@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "vendor-qualification",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set the qualification",
+    "fa": "ثبت صلاحیت"
+  },
+  "description": {
+    "en": "Set the qualification",
+    "fa": "ثبت صلاحیت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Vendor",
+      "action": "SetQualification",
+      "args": {
+        "vendorId": "field:id",
+        "newStatus": "field:newStatus",
+        "category": "field:category",
+        "effectiveDate": "field:effectiveDate",
+        "expiryDate": "field:expiryDate",
+        "evidenceReference": "field:evidenceReference",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The qualification was saved.",
+      "fa": "صلاحیت ثبت شد."
+    },
+    "redirect": "/p/vendor-details?id={id}"
+  }
+}

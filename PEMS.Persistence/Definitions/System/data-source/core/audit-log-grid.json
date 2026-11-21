@@ -1,0 +1,40 @@
+{
+  "kind": "data-source",
+  "key": "audit-log-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Audit log rows",
+    "fa": "ردیف‌های گزارش ممیزی"
+  },
+  "description": {
+    "en": "The rows of the audit log grid",
+    "fa": "ردیف‌های جدول گزارش ممیزی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "AuditLog",
+      "fields": [
+        "AuditLogId",
+        "Timestamp",
+        "EntityName",
+        "EntityKeyValue",
+        "Action",
+        "ChangedFieldsSummary",
+        "UserName",
+        "IsAIAssisted"
+      ],
+      "search": [
+        "EntityName",
+        "EntityKeyValue",
+        "UserName"
+      ],
+      "sort": [
+        "-Timestamp",
+        "-AuditLogId"
+      ]
+    }
+  }
+}

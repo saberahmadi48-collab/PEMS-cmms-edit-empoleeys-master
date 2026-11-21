@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.DTOs;
+using PEMS.Application.Exceptions;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Common;
 using PEMS.Domain.Entities;
@@ -198,10 +199,10 @@ public class TransmittalService : ITransmittalService
         bool responseRequired, List<TransmittalRecipientInput> recipients)
     {
         if (string.IsNullOrWhiteSpace(transmittalNo))
-            throw new InvalidOperationException("شماره‌ی ترانسمیتال الزامی است.");
+            throw new PemsException(PemsErrorKind.Validation, "transmittal-code-required", "Transmittal code is required.");
 
         if (await _context.Transmittals.AnyAsync(x => x.TransmittalNo == transmittalNo))
-            throw new InvalidOperationException($"شماره‌ی ترانسمیتال '{transmittalNo}' قبلاً استفاده شده - شماره‌ی تکراری مجاز نیست.");
+            throw new ConflictException("transmittal-code-duplicate", $"Transmittal code '{transmittalNo}' already exists.");
 
         // طبق بخش M (تعامل Hold با Transmittal): مدرکی که هنوز Hold است نباید توزیع رسمی شود -
         // این بررسی در لحظه‌ی Create (نه فقط Send) انجام می‌شود چون کاربر باید همین‌جا بفهمد.
@@ -211,8 +212,8 @@ public class TransmittalService : ITransmittalService
             .ToListAsync();
 
         if (heldDocs.Count > 0)
-            throw new InvalidOperationException(
-                $"این مدارک هنوز در وضعیت Hold هستند و نمی‌توانند در ترانسمیتال قرار بگیرند: {string.Join(", ", heldDocs)}");
+            throw new ConflictException("transmittal-documents-held",
+                $"Documents on hold cannot be transmitted: {string.Join(", ", heldDocs)}");
 
         var transmittal = new Transmittal
         {
@@ -292,7 +293,7 @@ public class TransmittalService : ITransmittalService
             // طبق بخش G (بند ۲۲ - Numbering Regression): پنجره‌ی Race بین AnyAsync بالا و این
             // SaveChanges - اگر دو درخواست هم‌زمان با همین شماره برسند، ایندکس Unique سطح
             // دیتابیس (TransmittalConfiguration) دومی را رد می‌کند؛ این‌جا فقط پیام دوستانه می‌دهیم.
-            throw new InvalidOperationException($"شماره‌ی ترانسمیتال '{transmittalNo}' هم‌زمان توسط درخواست دیگری ثبت شد - شماره‌ی دیگری انتخاب کنید.");
+            throw new ConflictException("transmittal-code-duplicate", $"Transmittal code '{transmittalNo}' already exists.", ex);
         }
 
         return transmittal.TransmittalId;

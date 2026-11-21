@@ -1,0 +1,70 @@
+{
+  "kind": "form",
+  "key": "crew-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New crew",
+    "fa": "گروه جدید"
+  },
+  "description": {
+    "en": "New crew",
+    "fa": "گروه جدید"
+  },
+  "payload": {
+    "id": "crew-create",
+    "title": {
+      "en": "New crew",
+      "fa": "گروه جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "crew-create",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "workOrderId",
+        "label": {
+          "en": "Work order (optional)",
+          "fa": "دستورکار (اختیاری)"
+        },
+        "kind": "select",
+        "optionsFrom": "crew-work-orders"
+      }
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "action",
+  "key": "users-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create user",
+    "fa": "ایجاد کاربر"
+  },
+  "description": {
+    "en": "Create user",
+    "fa": "ایجاد کاربر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Users",
+      "action": "Create",
+      "args": {
+        "input": {
+          "Id": "literal:0",
+          "UserName": "field:userName",
+          "Email": "field:email",
+          "FullName": "field:fullName",
+          "Password": "field:password",
+          "IsActive": "field:isActive",
+          "Roles": "field:roles",
+          "ExistingEmployeeId": "field:existingEmployeeId",
+          "DepartmentId": "field:departmentId",
+          "DisciplineId": "field:disciplineId",
+          "PositionId": "field:positionId"
+        }
+      }
+    },
+    "success": {
+      "en": "User created successfully.",
+      "fa": "کاربر با موفقیت ایجاد شد."
+    },
+    "redirect": "/p/users"
+  }
+}

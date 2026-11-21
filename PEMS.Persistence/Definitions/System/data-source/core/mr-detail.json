@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "mr-detail",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material requisition",
+    "fa": "درخواست مواد"
+  },
+  "description": {
+    "en": "Material requisition",
+    "fa": "درخواست مواد"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaterialRequisition",
+      "action": "Detail",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

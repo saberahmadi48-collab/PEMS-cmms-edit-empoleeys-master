@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-report-sections",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Sections",
+    "fa": "بخش‌ها"
+  },
+  "description": {
+    "en": "Sections",
+    "fa": "بخش‌ها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PartCatalogueReport",
+      "action": "Sections",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "userRoles": "context:roles"
+      }
+    }
+  }
+}

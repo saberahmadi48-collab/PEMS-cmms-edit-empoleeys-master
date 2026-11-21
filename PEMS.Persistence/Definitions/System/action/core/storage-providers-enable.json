@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "storage-providers-enable",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Enable",
+    "fa": "فعال‌سازی"
+  },
+  "description": {
+    "en": "Enable",
+    "fa": "فعال‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StorageProvider",
+      "action": "SetEnabled",
+      "args": {
+        "id": "field:id",
+        "enabled": "literal:true",
+        "modifiedBy": "context:userName"
+      }
+    },
+    "success": {
+      "en": "Provider enabled.",
+      "fa": "ارائه‌دهنده فعال شد."
+    },
+    "redirect": "/p/storage-providers"
+  }
+}

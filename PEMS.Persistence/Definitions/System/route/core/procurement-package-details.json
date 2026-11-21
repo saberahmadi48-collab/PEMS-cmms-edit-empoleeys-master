@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "procurement-package-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement package details (old address)",
+    "fa": "Procurement package details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Procurement package details (old address)",
+    "fa": "Procurement package details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ProcurementPackage/Details/{id}",
+    "target": "/p/procurement-package-details?id={id}",
+    "permanent": false
+  }
+}

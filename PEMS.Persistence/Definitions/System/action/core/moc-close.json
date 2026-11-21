@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "moc-close",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close MOC",
+    "fa": "Close MOC"
+  },
+  "description": {
+    "en": "Close MOC",
+    "fa": "Close MOC"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MOC",
+      "action": "Close",
+      "args": {
+        "mocId": "field:mocId",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "The MOC was closed.",
+      "fa": "MOC بسته شد."
+    },
+    "redirect": "/MOC/Details/{mocId}"
+  }
+}

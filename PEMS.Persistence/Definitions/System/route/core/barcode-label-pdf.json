@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "barcode-label-pdf",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode label (old address)",
+    "fa": "Barcode label (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Barcode label (old address)",
+    "fa": "Barcode label (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Barcode/LabelPdf/{id}",
+    "target": "/x/barcode-label-pdf?id={id}",
+    "permanent": false
+  }
+}

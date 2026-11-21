@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "organization-readiness-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Organization readiness",
+    "fa": "Organization readiness"
+  },
+  "description": {
+    "en": "Organization readiness rows",
+    "fa": "Organization readiness rows"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Organization",
+      "action": "Readiness"
+    }
+  }
+}

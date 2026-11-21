@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mmd-evaluation-profiles",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Evaluation profiles",
+    "fa": "پروفایل‌های ارزیابی"
+  },
+  "description": {
+    "en": "Evaluation profiles",
+    "fa": "پروفایل‌های ارزیابی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "EvaluationProfiles"
+    }
+  }
+}

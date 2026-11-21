@@ -42,7 +42,7 @@ Companion to `WORKSPACE_DESIGN_SYSTEM.md`. That document says *what components l
 * Identifiers, dates and codes use `.vs-num` (LTR isolation).
 
 ## 8. Shared components
-* Reuse: `.vs-*` workspace classes, `_PageHeader` (one `<h1>` per page: **page content must not render a second `<h1>`** — use `<h2>`+), `_Pagination`, `_KpiCard`, the portal lookup, `pems-ui.js` enhancements.
+* Reuse: `.vs-*` workspace classes, `_PageHeader` (one `<h1>` per page: **page content must not render a second `<h1>`** — use `<h2>`+), `_Pagination`, `<pems-kpi-tile>` (the `_KpiCard` partial is retired, SCRUM-337), the portal lookup, `pems-ui.js` enhancements.
 * New pages must not copy a legacy pattern. If a pattern is missing, add it to the shared layer and document it here.
 
 ## 9. Required browser regression checks (`tools/UiAudit`)

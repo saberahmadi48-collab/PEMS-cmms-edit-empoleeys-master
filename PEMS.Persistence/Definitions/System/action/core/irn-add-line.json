@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "irn-add-line",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a line",
+    "fa": "افزودن قلم"
+  },
+  "description": {
+    "en": "Add a line",
+    "fa": "افزودن قلم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Irn",
+      "action": "AddLine",
+      "args": {
+        "irnReceiptId": "field:irnReceiptId",
+        "materialItemId": "field:materialItemId",
+        "receivedQuantity": "field:receivedQuantity"
+      }
+    },
+    "success": {
+      "en": "The line was added.",
+      "fa": "قلم افزوده شد."
+    },
+    "redirect": "/p/irn-details?id={irnReceiptId}"
+  }
+}

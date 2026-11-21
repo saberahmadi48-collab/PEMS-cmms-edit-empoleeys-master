@@ -1,0 +1,94 @@
+{
+  "kind": "page",
+  "key": "projects-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Projects details",
+    "fa": "جزئیات پروژه‌ها"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "projects-record",
+      "url": "/d/projects-grid",
+      "idField": "projectId",
+      "fields": [
+        {
+          "key": "projectCode",
+          "label": {
+            "en": "Project code",
+            "fa": "کد پروژه"
+          }
+        },
+        {
+          "key": "projectName",
+          "label": {
+            "en": "Project name",
+            "fa": "نام پروژه"
+          }
+        },
+        {
+          "key": "clientName",
+          "label": {
+            "en": "Client",
+            "fa": "کارفرما"
+          }
+        },
+        {
+          "key": "location",
+          "label": {
+            "en": "Location",
+            "fa": "محل"
+          }
+        },
+        {
+          "key": "startDate",
+          "label": {
+            "en": "Start date",
+            "fa": "تاریخ شروع"
+          },
+          "type": "date"
+        },
+        {
+          "key": "endDate",
+          "label": {
+            "en": "End date",
+            "fa": "تاریخ پایان"
+          },
+          "type": "date"
+        },
+        {
+          "key": "status",
+          "label": {
+            "en": "Status",
+            "fa": "وضعیت"
+          }
+        },
+        {
+          "key": "isActive",
+          "label": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "type": "bool"
+        }
+      ],
+      "backUrl": "/p/projects",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/projects-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

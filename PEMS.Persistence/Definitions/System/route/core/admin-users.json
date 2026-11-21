@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-users",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Users (old address)",
+    "fa": "کاربران (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Users (old address)",
+    "fa": "کاربران (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/Users/{*rest}",
+    "target": "/p/users",
+    "permanent": false
+  }
+}

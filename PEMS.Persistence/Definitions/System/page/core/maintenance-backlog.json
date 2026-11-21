@@ -1,0 +1,140 @@
+{
+  "kind": "page",
+  "key": "maintenance-backlog",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance backlog",
+    "fa": "بک‌لاگ تعمیرات"
+  },
+  "description": {
+    "en": "Open work orders with their age and due date (page definition)",
+    "fa": "دستورکارهای باز با عمر و سررسید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "maintenance-backlog",
+    "permission": "WorkOrder.View",
+    "template": "entity-list",
+    "args": {
+      "id": "maintenance-backlog",
+      "url": "/d/maintenance-backlog-grid",
+      "idField": "workOrderId",
+      "columns": [
+        {
+          "key": "workOrderNumber",
+          "header": {
+            "en": "WO number",
+            "fa": "شماره دستورکار"
+          },
+          "width": 140
+        },
+        {
+          "key": "equipmentTagNumber",
+          "header": {
+            "en": "Equipment",
+            "fa": "تجهیز"
+          },
+          "width": 150
+        },
+        {
+          "key": "equipmentDescription",
+          "header": {
+            "en": "Description",
+            "fa": "شرح"
+          },
+          "width": 240
+        },
+        {
+          "key": "workOrderType",
+          "header": {
+            "en": "Type",
+            "fa": "نوع"
+          },
+          "width": 120
+        },
+        {
+          "key": "priority",
+          "header": {
+            "en": "Priority",
+            "fa": "اولویت"
+          },
+          "width": 100
+        },
+        {
+          "key": "status",
+          "header": {
+            "en": "Status",
+            "fa": "وضعیت"
+          },
+          "width": 110
+        },
+        {
+          "key": "dueDate",
+          "header": {
+            "en": "Due",
+            "fa": "سررسید"
+          },
+          "width": 130,
+          "type": "date"
+        },
+        {
+          "key": "ageDays",
+          "header": {
+            "en": "Age (days)",
+            "fa": "عمر (روز)"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "isOverdue",
+          "header": {
+            "en": "Overdue",
+            "fa": "معوق"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "assignedEmployeeName",
+          "header": {
+            "en": "Assigned to",
+            "fa": "ارجاع به"
+          },
+          "width": 170
+        },
+        {
+          "key": "assignedTeamName",
+          "header": {
+            "en": "Team",
+            "fa": "تیم"
+          },
+          "width": 150
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 110,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "open",
+              "label": {
+                "en": "Open",
+                "fa": "باز کردن"
+              },
+              "url": "/WorkOrder/Details/{id}",
+              "method": "get"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "kind": "form",
+  "key": "team-member-move",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move a member",
+    "fa": "انتقال عضو"
+  },
+  "description": {
+    "en": "Move a member",
+    "fa": "انتقال عضو"
+  },
+  "payload": {
+    "id": "team-member-move",
+    "title": {
+      "en": "Move a member",
+      "fa": "انتقال عضو"
+    },
+    "submitLabel": {
+      "en": "Move",
+      "fa": "انتقال"
+    },
+    "actionKey": "team-member-move",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "employeeId",
+        "label": {
+          "en": "Employee id",
+          "fa": "شناسه کارمند"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Employee id is required.",
+            "fa": "شناسه کارمند الزامی است."
+          }
+        }
+      },
+      {
+        "name": "fromTeamId",
+        "label": {
+          "en": "From team id",
+          "fa": "از تیم"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "From team id is required.",
+            "fa": "از تیم الزامی است."
+          }
+        }
+      },
+      {
+        "name": "toTeamId",
+        "label": {
+          "en": "To team",
+          "fa": "به تیم"
+        },
+        "kind": "select",
+        "optionsFrom": "team-team-nodes",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "To team is required.",
+            "fa": "به تیم الزامی است."
+          }
+        }
+      },
+      {
+        "name": "roleId",
+        "label": {
+          "en": "Role",
+          "fa": "نقش"
+        },
+        "kind": "select",
+        "optionsFrom": "team-maintenance-roles",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Role is required.",
+            "fa": "نقش الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

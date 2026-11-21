@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "mrs-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MRS import (old address)",
+    "fa": "MRS import (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "MRS import (old address)",
+    "fa": "MRS import (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/MrsImport",
+    "target": "/p/mrs-import",
+    "permanent": false
+  }
+}

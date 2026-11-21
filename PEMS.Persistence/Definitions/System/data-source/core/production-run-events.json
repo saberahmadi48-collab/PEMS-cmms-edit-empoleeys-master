@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "production-run-events",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production: Run events",
+    "fa": "تولید: Run events"
+  },
+  "description": {
+    "en": "Production: Run events",
+    "fa": "تولید: Run events"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Production",
+      "action": "RunEvents",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

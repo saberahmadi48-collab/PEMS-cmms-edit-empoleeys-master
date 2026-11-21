@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "barcode-png",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode image (PNG) (old address)",
+    "fa": "Barcode image (PNG) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Barcode image (PNG) (old address)",
+    "fa": "Barcode image (PNG) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Barcode/Png/{id}",
+    "target": "/x/barcode-png?id={id}",
+    "permanent": false
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "employee-skills",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employee skills",
+    "fa": "مهارت‌های کارمند"
+  },
+  "description": {
+    "en": "Employee skills",
+    "fa": "مهارت‌های کارمند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Employee",
+      "action": "Skills",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

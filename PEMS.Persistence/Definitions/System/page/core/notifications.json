@@ -1,0 +1,179 @@
+{
+  "kind": "page",
+  "key": "notifications",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Notifications",
+    "fa": "اعلان‌ها"
+  },
+  "description": {
+    "en": "Your notification inbox (page definition)",
+    "fa": "صندوق اعلان‌های شما (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "notifications",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "notifications-filters",
+            "resetUrl": "/p/notifications",
+            "fields": [
+              {
+                "name": "filter",
+                "label": {
+                  "en": "Show",
+                  "fa": "نمایش"
+                },
+                "kind": "select",
+                "value": "{{params.filter}}",
+                "options": [
+                  {
+                    "value": "unread",
+                    "label": {
+                      "en": "Unread",
+                      "fa": "خوانده‌نشده"
+                    }
+                  },
+                  {
+                    "value": "read",
+                    "label": {
+                      "en": "Read",
+                      "fa": "خوانده‌شده"
+                    }
+                  },
+                  {
+                    "value": "dismissed",
+                    "label": {
+                      "en": "Dismissed",
+                      "fa": "ردشده"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "mark-all",
+          "component": "action-button",
+          "options": {
+            "action": "notification-mark-all-read",
+            "label": {
+              "en": "Mark all read",
+              "fa": "همه خوانده شد"
+            },
+            "tone": "neutral",
+            "icon": "bi-check2-all"
+          }
+        },
+        {
+          "id": "dismiss-all",
+          "component": "action-button",
+          "options": {
+            "action": "notification-dismiss-all",
+            "label": {
+              "en": "Dismiss all",
+              "fa": "رد کردن همه"
+            },
+            "tone": "neutral",
+            "icon": "bi-x-lg"
+          }
+        },
+        {
+          "id": "inbox",
+          "component": "data-grid",
+          "options": {
+            "id": "notifications",
+            "idField": "notificationId",
+            "columns": [
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 260
+              },
+              {
+                "key": "message",
+                "header": {
+                  "en": "Message",
+                  "fa": "پیام"
+                },
+                "width": 420
+              },
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 160
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/Notification/Open?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "read",
+                    "label": {
+                      "en": "Mark read",
+                      "fa": "خوانده شد"
+                    },
+                    "url": "/a/notification-mark-read",
+                    "method": "post"
+                  },
+                  {
+                    "key": "dismiss",
+                    "label": {
+                      "en": "Dismiss",
+                      "fa": "رد کردن"
+                    },
+                    "url": "/a/notification-dismiss",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Dismiss this notification?",
+                      "fa": "این اعلان رد شود؟"
+                    }
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520,
+            "url": "/d/notifications-grid?f.filter={{params.filter|url}}"
+          }
+        }
+      ]
+    }
+  }
+}

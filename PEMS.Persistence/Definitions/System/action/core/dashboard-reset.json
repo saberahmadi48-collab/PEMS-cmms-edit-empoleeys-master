@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "dashboard-reset",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reset the dashboard layout",
+    "fa": "بازنشانی چیدمان داشبورد"
+  },
+  "description": {
+    "en": "Reset the dashboard layout",
+    "fa": "بازنشانی چیدمان داشبورد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DashboardSettings",
+      "action": "Reset",
+      "args": {
+        "userName": "context:userName"
+      }
+    },
+    "success": {
+      "en": "The dashboard layout was reset.",
+      "fa": "چیدمان داشبورد بازنشانی شد."
+    },
+    "redirect": "/p/dashboard-settings"
+  }
+}

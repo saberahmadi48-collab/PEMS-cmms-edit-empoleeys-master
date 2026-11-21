@@ -1,0 +1,12 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("col", Category = "layout", Icon = "bi-layout-sidebar")]
+@FrameMarkup.Element("div", Css, Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public ColOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string Css => string.Join(" ", new[] { Width(null, Options.Span), Width("sm", Options.Sm), Width("md", Options.Md), Width("lg", Options.Lg), Width("xl", Options.Xl), Width("xxl", Options.Xxl), Options.Css }
+        .Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+    /// <summary>col, col-6, col-auto, col-md, col-md-6, col-md-auto: a null value writes nothing, "" the equal-width class.</summary>
+    private static string? Width(string? breakpoint, string? value)
+        => value is null ? null : "col" + (breakpoint is null ? "" : "-" + breakpoint) + (value.Length == 0 ? "" : "-" + value.Trim());
+}

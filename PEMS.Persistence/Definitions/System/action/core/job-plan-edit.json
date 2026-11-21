@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "job-plan-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit the job plan",
+    "fa": "ویرایش طرح کار"
+  },
+  "description": {
+    "en": "Edit the job plan",
+    "fa": "ویرایش طرح کار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "JobPlan",
+      "action": "Update",
+      "args": {
+        "title": "field:title",
+        "scope": "field:scope",
+        "estimatedDurationHours": "field:estimatedDurationHours",
+        "safetyRequirements": "field:safetyRequirements",
+        "equipmentClassId": "field:equipmentClassId",
+        "permitRequired": "field:permitRequired",
+        "lotoRequired": "field:lotoRequired",
+        "jobPlanId": "field:jobPlanId",
+        "currentUserName": "context:userName"
+      }
+    },
+    "success": {
+      "en": "The job plan was updated.",
+      "fa": "Job Plan ویرایش شد."
+    },
+    "redirect": "/JobPlan/Details/{jobPlanId}"
+  }
+}

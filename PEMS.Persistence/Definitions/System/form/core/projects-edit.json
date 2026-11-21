@@ -1,0 +1,141 @@
+{
+  "kind": "form",
+  "key": "projects-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit project",
+    "fa": "ویرایش پروژه"
+  },
+  "description": {
+    "en": "Edit project",
+    "fa": "ویرایش پروژه"
+  },
+  "payload": {
+    "id": "projects-edit",
+    "title": {
+      "en": "Edit project",
+      "fa": "ویرایش پروژه"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "projects-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "projectCode",
+        "label": {
+          "en": "Project code",
+          "fa": "کد پروژه"
+        },
+        "kind": "text",
+        "maxLength": 50,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Project code is required.",
+            "fa": "کد پروژه الزامی است."
+          }
+        }
+      },
+      {
+        "name": "projectName",
+        "label": {
+          "en": "Project name",
+          "fa": "نام پروژه"
+        },
+        "kind": "text",
+        "maxLength": 200,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Project name is required.",
+            "fa": "نام پروژه الزامی است."
+          }
+        }
+      },
+      {
+        "name": "clientName",
+        "label": {
+          "en": "Client",
+          "fa": "کارفرما"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "location",
+        "label": {
+          "en": "Location",
+          "fa": "محل"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "startDate",
+        "label": {
+          "en": "Start date",
+          "fa": "تاریخ شروع"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "endDate",
+        "label": {
+          "en": "End date",
+          "fa": "تاریخ پایان"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "status",
+        "label": {
+          "en": "Status",
+          "fa": "وضعیت"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Planning",
+            "label": {
+              "en": "Planning",
+              "fa": "برنامه‌ریزی"
+            }
+          },
+          {
+            "value": "Active",
+            "label": {
+              "en": "Active",
+              "fa": "فعال"
+            }
+          },
+          {
+            "value": "Completed",
+            "label": {
+              "en": "Completed",
+              "fa": "تکمیل‌شده"
+            }
+          },
+          {
+            "value": "Cancelled",
+            "label": {
+              "en": "Cancelled",
+              "fa": "لغوشده"
+            }
+          }
+        ],
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Status is required.",
+            "fa": "وضعیت الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "employees-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employees",
+    "fa": "کارکنان"
+  },
+  "description": {
+    "en": "Employees",
+    "fa": "کارکنان"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Employee",
+      "action": "List",
+      "args": {
+        "search": "param:search",
+        "departmentId": "param:departmentId",
+        "disciplineId": "param:disciplineId"
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "organization-assignment-end",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "End an assignment",
+    "fa": "پایان تخصیص"
+  },
+  "description": {
+    "en": "End an assignment",
+    "fa": "پایان تخصیص"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Organization",
+      "action": "EndAssignmentOfPosition",
+      "args": {
+        "positionId": "field:id",
+        "notes": "field:notes"
+      }
+    },
+    "success": {
+      "en": "Assignment ended.",
+      "fa": "تخصیص پایان یافت."
+    },
+    "redirect": "/p/organization-positions"
+  }
+}

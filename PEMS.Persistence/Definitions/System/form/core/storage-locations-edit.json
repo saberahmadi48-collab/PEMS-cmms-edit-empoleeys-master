@@ -1,0 +1,90 @@
+{
+  "kind": "form",
+  "key": "storage-locations-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit storage location",
+    "fa": "ویرایش محل نگهداری"
+  },
+  "description": {
+    "en": "Edit storage location",
+    "fa": "ویرایش محل نگهداری"
+  },
+  "payload": {
+    "id": "storage-locations-edit",
+    "title": {
+      "en": "Edit storage location",
+      "fa": "ویرایش محل نگهداری"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "storage-locations-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "owner": "platform",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "maxLength": 30,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Code is required.",
+            "fa": "کد الزامی است."
+          }
+        },
+        "readOnly": true
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "warehouseId",
+        "label": {
+          "en": "Warehouse",
+          "fa": "انبار"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Warehouse is required.",
+            "fa": "انبار الزامی است."
+          }
+        },
+        "optionsFrom": "storage-locations-warehouse-id-options",
+        "readOnly": true
+      },
+      {
+        "name": "parentLocationId",
+        "label": {
+          "en": "Parent location",
+          "fa": "محل والد"
+        },
+        "kind": "select",
+        "optionsFrom": "storage-locations-parent-location-id-options"
+      }
+    ]
+  }
+}

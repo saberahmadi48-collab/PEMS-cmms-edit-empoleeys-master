@@ -16,4 +16,9 @@ public class TaskItemDto
     public DateTime? CompletedDate { get; set; }
     public string? CompletionNote { get; set; }
     public bool IsOverdue { get; set; }
+    // Task Manager: وظیفه‌ی فضا (WorkSpaceId != null) وضعیتش را از طرح وضعیت فضا می‌گیرد و فقط از صفحه‌ی جزئیات تغییر می‌کند
+    public int? WorkSpaceId { get; set; }
+    public string? ItemKey { get; set; }
+    public string? StatusName { get; set; }
+    public string? StatusNameFa { get; set; }
 }

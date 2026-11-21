@@ -1,0 +1,15 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-popover", Category = "list", Icon = "bi-window-dock")]
+<div @attributes="Options.Attributes" class="@ListMarkup.Css("dropdown", Options.CssClass)">@if (Options.Primary){<button @attributes="PrimaryAttrs"><i aria-hidden="true" class="@("bi " + Options.Icon)"></i> <span class="lp-compose-label">@Options.Label</span></button>}else{<PemsListIconTool Options="@Tool" />}<div aria-labelledby="@(Options.Id + "Btn")" class="dropdown-menu dropdown-menu-end lp-filter-pop p-0" id="@Options.Id"><div class="lp-fp-body">@ChildContent</div></div></div>
+@code {
+    [Parameter, EditorRequired] public ListPopoverOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private Dictionary<string, string> Extra => new()
+    {
+        ["id"] = Options.Id + "Btn", ["data-bs-toggle"] = "dropdown", ["data-bs-auto-close"] = "outside", ["aria-expanded"] = "false", ["aria-controls"] = Options.Id
+    };
+    private ListIconToolOptions Tool => new() { Icon = Options.Icon, Label = Options.Label, Attributes = Extra };
+    private IEnumerable<KeyValuePair<string, object>> PrimaryAttrs
+        => ListMarkup.Sorted(Extra.Select(a => new KeyValuePair<string, string?>(a.Key, a.Value))
+            .Concat(new[] { new KeyValuePair<string, string?>("class", "btn btn-sm btn-pems-solid lp-compose"), new KeyValuePair<string, string?>("type", "button") }));
+}

@@ -7,12 +7,12 @@
 }
 
 
-<h2>
+<pems-heading level="2">
 Upload Document Attachment
-</h2>
+</pems-heading>
 
 
-<form asp-action="UploadAttachment"
+<pems-form asp-action="UploadAttachment"
       method="post"
       enctype="multipart/form-data">
 
@@ -22,49 +22,46 @@ Upload Document Attachment
            value="@ViewBag.DocumentId" />
 
 
-    <div class="mb-3">
+    <pems-form-group css="mb-3">
 
         <label>
             Select File
         </label>
 
 
-        <input type="file"
-               name="file"
-               class="form-control" />
+        <pems-uploader name="file" />
 
-    </div>
+    </pems-form-group>
 
-    <div class="mb-3">
-        <label class="form-label">Revision <span class="text-muted small">(optional — leave blank for a document-level attachment not tied to a specific revision)</span></label>
-        <select name="revisionId" class="form-select">
+    <pems-form-group css="mb-3">
+        <pems-label>Revision <span class="text-muted small">(optional — leave blank for a document-level attachment not tied to a specific revision)</span></pems-label>
+        <pems-select name="revisionId">
             <option value="">-- Document-level (no specific revision) --</option>
             @foreach (var rev in revisions)
             {
                 <option value="@rev.RevisionId">Rev @rev.RevisionNo (@rev.Status)</option>
             }
-        </select>
-    </div>
+        </pems-select>
+    </pems-form-group>
 
-    <div class="mb-3">
-        <label class="form-label">File Role <span class="text-muted small">@Localizer["(optional)"]</span></label>
-        <select name="fileRole" class="form-select">
+    <pems-form-group css="mb-3">
+        <pems-label>File Role <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
+        <pems-select name="fileRole">
             <option value="">-- Unspecified --</option>
             <option value="Native">Native / Source File</option>
             <option value="PdfRendition">PDF Rendition</option>
             <option value="MarkedUp">Marked-up File</option>
             <option value="ReviewCopy">Review Copy</option>
             <option value="SupportingAttachment">Supporting Attachment</option>
-        </select>
-        <div class="form-text">If this revision has no official file yet, the first upload for it becomes official automatically.</div>
-    </div>
+        </pems-select>
+        <pems-help-text>If this revision has no official file yet, the first upload for it becomes official automatically.</pems-help-text>
+    </pems-form-group>
 
-    <button type="submit"
-            class="btn btn-primary">
+    <pems-button tone="none" css="btn-primary" type="submit">
 
         @Localizer["Upload"]
 
-    </button>
+    </pems-button>
 
 
-</form>
+</pems-form>

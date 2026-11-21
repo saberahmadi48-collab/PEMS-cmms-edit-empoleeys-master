@@ -17,6 +17,8 @@ public class NotificationSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "Notification";
     public string DisplayName => "اعلان‌ها";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser(rowScope: "own notifications only");
 
     public NotificationSearchProvider(PEMSDbContext context, ICurrentUserContext currentUser)
     {

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "home-widgets",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My dashboard widgets",
+    "fa": "ویجت‌های داشبورد من"
+  },
+  "description": {
+    "en": "My dashboard widgets",
+    "fa": "ویجت‌های داشبورد من"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Home",
+      "action": "Widgets",
+      "args": {
+        "userName": "context:userName"
+      }
+    }
+  }
+}

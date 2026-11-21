@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "meeting-update-minutes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Update meeting minutes",
+    "fa": "به‌روزرسانی صورت‌جلسه"
+  },
+  "description": {
+    "en": "Update meeting minutes",
+    "fa": "به‌روزرسانی صورت‌جلسه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Meeting",
+      "action": "UpdateMinutes",
+      "args": {
+        "meetingId": "field:meetingId",
+        "minutesNotes": "field:minutesNotes",
+        "status": "field:status"
+      }
+    },
+    "success": {
+      "en": "The minutes were updated.",
+      "fa": "صورت‌جلسه به‌روزرسانی شد."
+    },
+    "redirect": "/Meeting/Details/{meetingId}"
+  }
+}

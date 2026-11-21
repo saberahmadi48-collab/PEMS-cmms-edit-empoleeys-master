@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "production-run-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New run",
+    "fa": "اجرای جدید"
+  },
+  "description": {
+    "en": "New run",
+    "fa": "اجرای جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "Create",
+      "args": {
+        "productionOrderId": "field:productionOrderId",
+        "equipmentId": "field:equipmentId",
+        "operatorEmployeeId": "field:operatorEmployeeId",
+        "shiftDefinitionId": "field:shiftDefinitionId",
+        "notes": "field:notes",
+        "createdByEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The run was created.",
+      "fa": "اجرای تولید ایجاد شد."
+    },
+    "redirect": "/ProductionOrder/Details/{productionOrderId}"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "permits-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permits (index) (old address)",
+    "fa": "Permits (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Permits (index) (old address)",
+    "fa": "Permits (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Permit/Index",
+    "target": "/p/permits",
+    "permanent": false
+  }
+}

@@ -4,16 +4,16 @@ namespace PEMS.Web.Models.Account;
 
 public class LoginViewModel
 {
-    [Required(ErrorMessage = "Username is required")]
-    [Display(Name = "Username")]
+    [Required(ErrorMessage = "Login_Err_UserNameRequired")]
+    [Display(Name = "Login_UserName")]
     public string UserName { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Password is required")]
+    [Required(ErrorMessage = "Login_Err_PasswordRequired")]
     [DataType(DataType.Password)]
-    [Display(Name = "Password")]
+    [Display(Name = "Login_Password")]
     public string Password { get; set; } = string.Empty;
 
-    [Display(Name = "Remember Me")]
+    [Display(Name = "Login_RememberMe")]
     public bool RememberMe { get; set; }
 
     public string? ReturnUrl { get; set; }

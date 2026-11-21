@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "pre-procurement-queue",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement queue",
+    "fa": "صف خرید"
+  },
+  "description": {
+    "en": "Procurement queue",
+    "fa": "صف خرید"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PreProcurement",
+      "action": "Queue",
+      "args": {
+        "status": "param:status",
+        "source": "param:source"
+      }
+    }
+  }
+}

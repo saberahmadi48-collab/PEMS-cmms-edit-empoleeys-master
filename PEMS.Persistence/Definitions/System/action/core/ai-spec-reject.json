@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "ai-spec-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject an extracted specification",
+    "fa": "رد مشخصه استخراج‌شده"
+  },
+  "description": {
+    "en": "Reject an extracted specification",
+    "fa": "رد مشخصه استخراج‌شده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "AiExtraction",
+      "action": "RejectSpec",
+      "args": {
+        "extractedSpecificationId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Specification rejected.",
+      "fa": "مشخصه رد شد."
+    }
+  }
+}

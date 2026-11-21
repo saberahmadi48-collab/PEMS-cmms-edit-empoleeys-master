@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "procurement-package-communications",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Package communications",
+    "fa": "Package communications"
+  },
+  "description": {
+    "en": "Package communications",
+    "fa": "Package communications"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ProcurementPackage",
+      "action": "Communications",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

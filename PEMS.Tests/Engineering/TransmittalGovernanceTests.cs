@@ -1,4 +1,5 @@
 using PEMS.Application.DTOs;
+using PEMS.Application.Exceptions;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
@@ -55,9 +56,10 @@ public class TransmittalGovernanceTests
         await svc.CreateAsync("TR-001", project.ProjectId, "Eng", "Client", "IFA", null,
             new List<int> { doc.DocumentId }, false, OneRecipient());
 
-        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+        var error = await Assert.ThrowsAsync<ConflictException>(() =>
             svc.CreateAsync("TR-001", project.ProjectId, "Eng", "Client", "IFA", null,
                 new List<int> { doc.DocumentId }, false, OneRecipient()));
+        Assert.Equal("transmittal-code-duplicate", error.Code);
     }
 
     [Fact]
@@ -66,9 +68,10 @@ public class TransmittalGovernanceTests
         var (svc, project, ctx) = await SeedAsync(nameof(CreateAsync_DocumentOnHold_Throws));
         var heldDoc = await SeedDocumentAsync(ctx, project.ProjectId, onHold: true);
 
-        await Assert.ThrowsAsync<InvalidOperationException>(() =>
+        var error = await Assert.ThrowsAsync<ConflictException>(() =>
             svc.CreateAsync("TR-002", project.ProjectId, "Eng", "Client", "IFA", null,
                 new List<int> { heldDoc.DocumentId }, false, OneRecipient()));
+        Assert.Equal("transmittal-documents-held", error.Code);
     }
 
     [Fact]

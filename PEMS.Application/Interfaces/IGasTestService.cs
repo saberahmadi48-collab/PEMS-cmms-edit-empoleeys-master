@@ -11,6 +11,7 @@ public interface IGasTestService
         string? instrumentTag, DateTime? instrumentCalibrationDueDate,
         List<GasReadingInputDto> readings, int? equipmentId, int? functionalLocationId);
 
+    [PEMS.Application.Common.PemsOperation("GasTest", "Invalidate", "GasTest.Invalidate")]
     Task<(bool Success, string? Error)> InvalidateAsync(
         int gasTestId, int permitId, string reason, int? actorEmployeeId);
 }

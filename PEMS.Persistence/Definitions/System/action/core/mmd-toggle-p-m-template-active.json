@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mmd-toggle-p-m-template-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "TogglePMTemplateActive",
+    "fa": "وضعیت PM Template به‌روزرسانی شد."
+  },
+  "description": {
+    "en": "TogglePMTemplateActive",
+    "fa": "وضعیت PM Template به‌روزرسانی شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "TogglePMTemplateActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "وضعیت PM Template به‌روزرسانی شد.",
+      "fa": "وضعیت PM Template به‌روزرسانی شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

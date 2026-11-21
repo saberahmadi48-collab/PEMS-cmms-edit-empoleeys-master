@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "replenishment-notes-other",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Not recommended",
+    "fa": "توصیه‌نشده"
+  },
+  "description": {
+    "en": "Not recommended",
+    "fa": "توصیه‌نشده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Replenishment",
+      "action": "Notes",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName"
+      },
+      "where": {
+        "kind": "NotRecommended"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "production-run-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production: Run",
+    "fa": "تولید: Run"
+  },
+  "description": {
+    "en": "Production: Run",
+    "fa": "تولید: Run"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Production",
+      "action": "RunHead",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

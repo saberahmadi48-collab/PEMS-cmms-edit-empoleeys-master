@@ -1,0 +1,204 @@
+{
+  "kind": "component",
+  "key": "entity-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "List page of records",
+    "fa": "صفحه فهرست رکوردها"
+  },
+  "description": {
+    "en": "A list page: the grid over a data source, with an optional new button. Used as the template of a page.",
+    "fa": "صفحه فهرست: جدول روی یک منبع داده، با دکمه جدید اختیاری. به‌عنوان قالب صفحه به کار می‌رود."
+  },
+  "payload": {
+    "parameters": {
+      "id": {
+        "type": "string",
+        "required": true,
+        "description": "The id of the grid (also its saved views and column choices)"
+      },
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "The url of the grid rows: /d/{key} of a grid data source"
+      },
+      "idField": {
+        "type": "string",
+        "required": true,
+        "description": "The row property that holds the record id"
+      },
+      "columns": {
+        "type": "array",
+        "required": true,
+        "description": "The grid columns (key, header, width, type, actions)"
+      },
+      "selectable": {
+        "type": "boolean",
+        "default": false
+      },
+      "newUrl": {
+        "type": "string",
+        "description": "Where the new button goes; no button without it"
+      },
+      "newLabel": {
+        "type": "text",
+        "description": "The label of the new button"
+      },
+      "texts": {
+        "type": "object",
+        "default": {
+          "search": {
+            "en": "Search",
+            "fa": "جستجو"
+          },
+          "columns": {
+            "en": "Columns",
+            "fa": "ستون‌ها"
+          },
+          "density": {
+            "en": "Density",
+            "fa": "تراکم"
+          },
+          "compact": {
+            "en": "Compact",
+            "fa": "فشرده"
+          },
+          "comfortable": {
+            "en": "Comfortable",
+            "fa": "راحت"
+          },
+          "export": {
+            "en": "Export",
+            "fa": "خروجی"
+          },
+          "views": {
+            "en": "Views",
+            "fa": "نماها"
+          },
+          "saveView": {
+            "en": "Save view",
+            "fa": "ذخیره نما"
+          },
+          "viewName": {
+            "en": "View name",
+            "fa": "نام نما"
+          },
+          "loading": {
+            "en": "Loading",
+            "fa": "در حال بارگذاری"
+          },
+          "empty": {
+            "en": "No rows",
+            "fa": "ردیفی نیست"
+          },
+          "error": {
+            "en": "Could not load",
+            "fa": "بارگذاری نشد"
+          },
+          "rows": {
+            "en": "{0} rows",
+            "fa": "{0} ردیف"
+          },
+          "selected": {
+            "en": "{0} selected",
+            "fa": "{0} انتخاب شد"
+          },
+          "selectAllMatching": {
+            "en": "Select all {0}",
+            "fa": "انتخاب همه {0}"
+          },
+          "clearSelection": {
+            "en": "Clear",
+            "fa": "پاک کردن"
+          },
+          "filter": {
+            "en": "Filter",
+            "fa": "فیلتر"
+          },
+          "delete": {
+            "en": "Delete",
+            "fa": "حذف"
+          }
+        },
+        "description": "The texts of the grid (search, columns, density, export, views, empty, error ...)"
+      },
+      "viewsKey": {
+        "type": "string",
+        "description": "Saved views of this grid are kept under this key; none without it"
+      },
+      "exportUrl": {
+        "type": "string",
+        "description": "The export endpoint of the grid; no export without it"
+      },
+      "density": {
+        "type": "string",
+        "description": "compact or comfortable (the user can change it and the choice is remembered)"
+      },
+      "pageSize": {
+        "type": "number",
+        "description": "Rows per request (server paging); the grid shows only the rows in view"
+      },
+      "height": {
+        "type": "number",
+        "description": "Height of the scroll area in pixels"
+      },
+      "bulkActions": {
+        "type": "array",
+        "description": "Actions on the selected rows (key, label, url, confirm, tone); needs selectable"
+      },
+      "filters": {
+        "type": "array",
+        "description": "The filter bar above the grid (name, label, kind select, text or date, value {{params.name}}, options); the values come back as the query of the page and the url of the grid takes them (/d/key?f.name={{params.name|url}})"
+      },
+      "filtersResetUrl": {
+        "type": "string",
+        "description": "The page without a query, for the reset button of the filter bar"
+      }
+    },
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "if": "${filters}",
+          "component": "page-filters",
+          "options": {
+            "id": "${id}-filters",
+            "fields": "${filters}",
+            "resetUrl": "${filtersResetUrl}"
+          }
+        },
+        {
+          "id": "grid",
+          "component": "data-grid",
+          "options": {
+            "id": "${id}",
+            "url": "${url}",
+            "idField": "${idField}",
+            "selectable": "${selectable}",
+            "columns": "${columns}",
+            "texts": "${texts}",
+            "viewsKey": "${viewsKey}",
+            "exportUrl": "${exportUrl}",
+            "density": "${density}",
+            "pageSize": "${pageSize}",
+            "height": "${height}",
+            "bulkActions": "${bulkActions}"
+          }
+        }
+      ],
+      "toolbar": [
+        {
+          "id": "new",
+          "if": "${newUrl}",
+          "component": "button",
+          "options": {
+            "label": "${newLabel}",
+            "tone": "primary",
+            "href": "${newUrl}"
+          }
+        }
+      ]
+    }
+  }
+}

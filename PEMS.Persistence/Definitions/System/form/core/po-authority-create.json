@@ -1,0 +1,120 @@
+{
+  "kind": "form",
+  "key": "po-authority-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create authority level",
+    "fa": "ایجاد سطح اختیار"
+  },
+  "description": {
+    "en": "Create a new authority level",
+    "fa": "ایجاد سطح اختیار جدید"
+  },
+  "payload": {
+    "id": "po-authority-create",
+    "title": {
+      "en": "New authority level",
+      "fa": "سطح اختیار جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "po-authority-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "level",
+        "label": {
+          "en": "Level",
+          "fa": "سطح"
+        },
+        "kind": "number",
+        "min": 1,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Level is required.",
+            "fa": "سطح الزامی است."
+          }
+        }
+      },
+      {
+        "name": "currency",
+        "label": {
+          "en": "Currency",
+          "fa": "ارز"
+        },
+        "kind": "text",
+        "maxLength": 10,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Currency is required.",
+            "fa": "ارز الزامی است."
+          }
+        }
+      },
+      {
+        "name": "minAmount",
+        "label": {
+          "en": "From",
+          "fa": "از مبلغ"
+        },
+        "kind": "number",
+        "min": 0,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "From is required.",
+            "fa": "از مبلغ الزامی است."
+          }
+        }
+      },
+      {
+        "name": "maxAmount",
+        "label": {
+          "en": "To (blank = no limit)",
+          "fa": "تا مبلغ (خالی = بدون سقف)"
+        },
+        "kind": "number",
+        "min": 0
+      },
+      {
+        "name": "approverRole",
+        "label": {
+          "en": "Approver role",
+          "fa": "نقش تأییدکننده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Approver role is required.",
+            "fa": "نقش تأییدکننده الزامی است."
+          }
+        },
+        "optionsFrom": "po-authority-approver-role-options"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "isActive",
+        "label": {
+          "en": "Active",
+          "fa": "فعال"
+        },
+        "kind": "switch"
+      }
+    ]
+  }
+}

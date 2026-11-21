@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "team-profile",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Team",
+    "fa": "تیم"
+  },
+  "description": {
+    "en": "Team",
+    "fa": "تیم"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Team",
+      "action": "Profile",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "teamId": "param:teamId"
+      }
+    }
+  }
+}

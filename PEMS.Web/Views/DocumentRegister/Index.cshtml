@@ -1,277 +1,234 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.EngineeringDocumentDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var savedFilters = (List<PEMS.Application.DTOs.SavedFilterDto>)ViewBag.SavedFilters;
     var selectedDisciplines = (List<string>)ViewBag.SelectedDisciplines;
+    var projects = (List<string>)ViewBag.Projects;
+    var disciplines = (List<string>)ViewBag.Disciplines;
+    var statuses = (List<string>)ViewBag.Statuses;
+    var project = (string?)ViewBag.SelectedProject;
+    var status = (string?)ViewBag.SelectedStatus;
+    var q = (string?)ViewBag.SearchTerm;
+    var disciplinesQs = selectedDisciplines.Any() ? string.Join(",", selectedDisciplines) : null;
+
+    var filterCount = (string.IsNullOrEmpty(project) ? 0 : 1) + (selectedDisciplines.Any() ? 1 : 0) + (string.IsNullOrEmpty(status) ? 0 : 1);
+
+    // display text of a status; the stored value never changes (no key => the raw value)
+    string StatusText(string? s)
+    {
+        var l = Localizer[DocumentStatusBadge.ResourceKey(s)];
+        return l.ResourceNotFound ? (s ?? "") : l.Value;
+    }
 }
 
-<div class="d-flex flex-wrap gap-2 mb-3">
-    <a asp-controller="EngineeringDocuments" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-file-earmark-text"></i> @Localizer["Documents"]</a>
-    <a asp-controller="DocumentRegister" asp-action="Index" class="btn btn-sm btn-pems-solid"><i class="bi bi-journal-bookmark"></i> Register</a>
-    <a asp-controller="VDR" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-journal-check"></i> @Localizer["Vendor Documents (VDR)"]</a>
-    <a asp-controller="Transmittal" asp-action="Index" class="btn btn-sm btn-outline-secondary"><i class="bi bi-send"></i> Transmittals</a>
-</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
+@* SCRUM-337 W1: built from the PEMS.UI list-page component. The register keeps its own filters (multi-discipline), saved filters,
+   row selection with "export selected", and its Excel export. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
 
-<div class="content-card mb-3">
-    <div class="d-flex flex-wrap gap-2 mb-3">
-        <span class="text-muted small align-self-center">Quick filters:</span>
-        <a asp-action="Index" asp-route-status="Approved" class="btn btn-sm btn-outline-success">@Localizer["Approved"]</a>
-        <a asp-action="Index" asp-route-status="Submitted" class="btn btn-sm btn-outline-warning">@Localizer["Pending Review"]</a>
+    <nav class="vs-subnav" aria-label="@Localizer["Ed_Documents"]">
+        <pems-link asp-controller="EngineeringDocuments" asp-action="Index">@Localizer["Ed_Documents"]</pems-link>
+        <pems-link asp-controller="DocumentRegister" asp-action="Index" class="active" aria-current="page">@Localizer["Ed_Register"]</pems-link>
+        <pems-link asp-controller="VDR" asp-action="Index">@Localizer["Ed_VendorDocs"]</pems-link>
+        <pems-link asp-controller="Transmittal" asp-action="Index">@Localizer["Ed_Transmittals"]</pems-link>
+    </nav>
 
-        @if (savedFilters.Any())
-        {
-            <span class="text-muted small align-self-center ms-3">Saved:</span>
-            foreach (var sf in savedFilters)
-            {
-                <a href="/DocumentRegister?@sf.QueryString" class="btn btn-sm btn-outline-primary">
-                    @if (sf.IsDefault) { <i class="bi bi-star-fill"></i> }
-                    @sf.Name
-                </a>
-                <form asp-action="DeleteFilter" method="post" class="d-inline">
-                    <input type="hidden" name="id" value="@sf.SavedFilterId" />
-                    <button class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="Delete this saved filter" aria-label="Delete saved filter @sf.Name" onclick="return confirm('Delete this saved filter?')"><i class="bi bi-x"></i></button>
-                </form>
-            }
-        }
-    </div>
+    <pems-list-panel>
 
-    <form method="get" id="registerFilterForm" class="row g-2 align-items-end">
-        <div class="col-md-3">
-            <label class="form-label small">@Localizer["Project"]</label>
-            <select name="project" class="form-select form-select-sm">
-                <option value="">@Localizer["All"]</option>
-                @foreach (var p in (List<string>)ViewBag.Projects)
-                {
-                    <option value="@p" selected="@(p == (string?)ViewBag.SelectedProject)">@p</option>
-                }
-            </select>
-        </div>
+        <pems-list-toolbar heading="@Localizer["DocumentRegister"]" total="@Model.TotalCount">
+            <pems-list-search id="drSearchForm" action="@Url.Action("Index")" input-id="drQuickSearch" name="q" value="@q"
+                              placeholder="@Localizer["Dr_SearchPlaceholder"]">
+                @if (!string.IsNullOrEmpty(project)) { <input type="hidden" name="project" value="@project" /> }
+                @if (disciplinesQs != null) { <input type="hidden" name="disciplines" value="@disciplinesQs" /> }
+                @if (!string.IsNullOrEmpty(status)) { <input type="hidden" name="status" value="@status" /> }
+            </pems-list-search>
 
-        <div class="col-md-3">
-            <label class="form-label small">Discipline <span class="text-muted">(multi-select)</span></label>
-            <div class="dropdown">
-                <button class="btn btn-sm btn-outline-secondary dropdown-toggle w-100 text-start" type="button" data-bs-toggle="dropdown">
-                    @(selectedDisciplines.Any() ? string.Join(", ", selectedDisciplines) : "All Disciplines")
-                </button>
-                <div class="dropdown-menu p-2" style="max-height:250px;overflow-y:auto;">
-                    @foreach (var d in (List<string>)ViewBag.Disciplines)
-                    {
-                        <div class="form-check">
-                            <input class="form-check-input discipline-check" type="checkbox" value="@d" id="disc_@d.GetHashCode()"
-                                   checked="@selectedDisciplines.Contains(d)" />
-                            <label class="form-check-label" for="disc_@d.GetHashCode()">@d</label>
+            <pems-list-tools search-for="drSearchForm">
+                <pems-list-filters form-id="drFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index", new { q })">
+                    <input type="hidden" name="q" value="@q" />
+                    <div>
+                        <label class="lp-lbl" for="drFilterProject">@Localizer["Project"]</label>
+                        <pems-select scale="small" id="drFilterProject" name="project">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var p in projects)
+                            { <option value="@p" selected="@(p == project)">@p</option> }
+                        </pems-select>
+                    </div>
+                    <fieldset>
+                        <legend class="lp-lbl">@Localizer["Ed_Discipline"]</legend>
+                        <div class="lp-checklist">
+                            @for (var i = 0; i < disciplines.Count; i++)
+                            {
+                                <pems-check-row>
+                                    <pems-input type="checkbox" value="@disciplines[i]" id="drDisc@(i)" data-dr-discipline checked="@selectedDisciplines.Contains(disciplines[i])" kind="check" />
+                                    <label class="form-check-label" for="drDisc@(i)">@disciplines[i]</label>
+                                </pems-check-row>
+                            }
                         </div>
+                        <input type="hidden" name="disciplines" id="drDisciplines" value="@disciplinesQs" />
+                    </fieldset>
+                    <div>
+                        <label class="lp-lbl" for="drFilterStatus">@Localizer["Ed_Status"]</label>
+                        <pems-select scale="small" id="drFilterStatus" name="status">
+                            <option value="">@Localizer["Ed_All"]</option>
+                            @foreach (var s in statuses)
+                            { <option value="@s" selected="@(s == status)">@StatusText(s)</option> }
+                        </pems-select>
+                    </div>
+                </pems-list-filters>
+
+                <pems-list-menu id="drViewsBtn" icon="bi-bookmark" label="@Localizer["Dr_Views"]">
+                    <pems-bullet><pems-heading level="6" class="dropdown-header">@Localizer["Dr_QuickFilters"]</pems-heading></pems-bullet>
+                    <pems-bullet><pems-link class="dropdown-item" href="@Url.Action("Index", new { status = "Approved" })">@StatusText("Approved")</pems-link></pems-bullet>
+                    <pems-bullet><pems-link class="dropdown-item" href="@Url.Action("Index", new { status = "Submitted" })">@Localizer["Dr_PendingReview"]</pems-link></pems-bullet>
+                    @if (savedFilters.Any())
+                    {
+                        <pems-bullet><pems-divider class="dropdown-divider" /></pems-bullet>
+                        <pems-bullet><pems-heading level="6" class="dropdown-header">@Localizer["Dr_SavedFilters"]</pems-heading></pems-bullet>
+                        foreach (var sf in savedFilters)
+                        {
+                            <pems-bullet class="lp-menu-row">
+                                <pems-link class="dropdown-item" href="@(Url.Action("Index") + "?" + sf.QueryString)">
+                                    @if (sf.IsDefault) { <pems-icon name="bi-star-fill" aria-hidden="true" /> }
+                                    @sf.Name
+                                </pems-link>
+                                <pems-form asp-action="DeleteFilter" method="post" data-pems-confirm="@Localizer["Dr_DeleteFilterConfirm"]">
+                                    <input type="hidden" name="id" value="@sf.SavedFilterId" />
+                                    <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["Dr_DeleteFilter"]"><pems-icon name="bi-x-lg" aria-hidden="true" /><span class="visually-hidden">@Localizer["Dr_DeleteFilter"]: @sf.Name</span></pems-button>
+                                </pems-form>
+                            </pems-bullet>
+                        }
                     }
-                </div>
-            </div>
-            <input type="hidden" name="disciplines" id="disciplinesInput" value="@string.Join(",", selectedDisciplines)" />
-        </div>
+                    <pems-bullet><pems-divider class="dropdown-divider" /></pems-bullet>
+                    <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveFilterModal"><pems-icon name="bi-bookmark-plus" aria-hidden="true" /> @Localizer["Dr_SaveFilter"]</pems-button></pems-bullet>
+                </pems-list-menu>
 
-        <div class="col-md-2">
-            <label class="form-label small">@Localizer["Status"]</label>
-            <select name="status" class="form-select form-select-sm">
-                <option value="">@Localizer["All"]</option>
-                @foreach (var s in (List<string>)ViewBag.Statuses)
-                {
-                    <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option>
+                <pems-list-export href="@Url.Action("ExportExcel", new { project, disciplines = disciplinesQs, status, q })" />
+                <pems-list-reset-columns grid-key="DocumentRegister" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips reset-href="@Url.Action("Index", new { q })">
+            @if (!string.IsNullOrEmpty(project))
+            { <pems-list-chip label="@Localizer["Project"]" value="@project" remove-href="@Url.Action("Index", new { disciplines = disciplinesQs, status, q })" /> }
+            @if (disciplinesQs != null)
+            { <pems-list-chip label="@Localizer["Ed_Discipline"]" value="@string.Join("، ", selectedDisciplines)" remove-href="@Url.Action("Index", new { project, status, q })" /> }
+            @if (!string.IsNullOrEmpty(status))
+            { <pems-list-chip label="@Localizer["Ed_Status"]" value="@StatusText(status)" remove-href="@Url.Action("Index", new { project, disciplines = disciplinesQs, q })" /> }
+        </pems-list-chips>
+
+        <pems-list-bulk count-text="@Localizer["Lp_SelectedCount"]">
+            <pems-form asp-action="ExportSelected" method="post">
+                <pems-button tone="success" size="small" outline="true" type="submit"><pems-icon name="bi-file-earmark-excel" aria-hidden="true" /> @Localizer["Dr_ExportSelected"]</pems-button>
+            </pems-form>
+        </pems-list-bulk>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="DocumentRegister" empty="@(!Model.Items.Any())" empty-text="@Localizer["Dr_Empty"]"
+                             filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header data-col-key="select" data-resizable="false" class="lp-select"><pems-input kind="check" type="checkbox" data-lp-select-all aria-label="@Localizer["Lp_SelectAll"]" /></pems-table-header>
+                        <pems-table-header class="pems-w-160" data-col-key="docNo" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Ed_DocNo"]</pems-table-header>
+                        <pems-table-header class="pems-w-300" data-col-key="title" data-resizable="true" data-min-width="180" data-max-width="500">@Localizer["Ed_Title"]</pems-table-header>
+                        <pems-table-header data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="200" class="vs-hide-md pems-w-120">@Localizer["Ed_Type"]</pems-table-header>
+                        <pems-table-header data-col-key="area" data-resizable="true" data-min-width="80" data-max-width="200" class="vs-hide-md pems-w-110">@Localizer["Ed_Area"]</pems-table-header>
+                        <pems-table-header class="pems-w-150" data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ed_Discipline"]</pems-table-header>
+                        <pems-table-header class="pems-w-160" data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="240">@Localizer["Project"]</pems-table-header>
+                        <pems-table-header class="pems-w-80" data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="120">@Localizer["Ed_Rev"]</pems-table-header>
+                        <pems-table-header class="pems-w-150" data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header data-col-key="commentStatus" data-resizable="true" data-min-width="100" data-max-width="220" class="vs-hide-md pems-w-140">@Localizer["Dr_CommentStatus"]</pems-table-header>
+                        <pems-table-header class="pems-w-90" data-col-key="delay" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Ed_Delay"]</pems-table-header>
+                        <pems-table-header data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160" class="vs-hide-md pems-w-120">@Localizer["Ed_Created"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var d in Model.Items)
+                    {
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-select"><pems-input kind="check" type="checkbox" value="@d.DocumentId" data-lp-select aria-label="@Localizer["Lp_SelectRow"]: @d.DocumentNo" /></pems-table-cell>
+                            <pems-table-cell class="lp-no"><pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="lp-subject" title="@d.DocumentNo">@d.DocumentNo</pems-link></pems-table-cell>
+                            <pems-table-cell><span class="vs-title-cell" title="@d.Title">@d.Title</span></pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small" title="@d.DocumentType">@d.DocumentType</pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small" title="@d.Area">@d.Area</pems-table-cell>
+                            <pems-table-cell class="small">
+                                @if (string.IsNullOrWhiteSpace(d.DisciplineName))
+                                { <span class="vs-pill vs-pill--neutral">@Localizer["Dr_Unassigned"]</span> }
+                                else { <span title="@d.DisciplineName">@d.DisciplineName</span> }
+                            </pems-table-cell>
+                            <pems-table-cell class="small" title="@d.ProjectName">@d.ProjectName</pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@d.RevisionNo</span></pems-table-cell>
+                            <pems-table-cell>
+                                <span class="vs-pill vs-pill--icon @DocumentStatusBadge.Tone(d.Status)"><pems-icon css="@DocumentStatusBadge.Icon(d.Status)" aria-hidden="true" /> @StatusText(d.Status)</span>
+                                @if (d.IsFrozen) { <pems-icon name="bi-snow" css="text-info ms-1" title="@Localizer["Ed_Frozen"]" aria-label="@Localizer["Ed_Frozen"]" /> }
+                            </pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small" title="@d.CommentStatus">@d.CommentStatus</pems-table-cell>
+                            <pems-table-cell class="small">
+                                @if (d.DelayDays.HasValue && d.DelayDays > 0)
+                                { <span class="vs-pill vs-pill--icon vs-pill--danger"><pems-icon name="bi-clock-history" aria-hidden="true" /> <span class="vs-num">@d.DelayDays</span> @Localizer["Ed_DaysShort"]</span> }
+                                else
+                                { <span class="text-muted">&mdash;</span> }
+                            </pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small text-muted">@PemsDates.Date(d.CreatedDate)</pems-table-cell>
+                            <pems-table-cell class="text-nowrap lp-actions">
+                                <pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId" class="lp-act lp-act--always" title="@Localizer["Ed_View"]"><pems-icon name="bi-eye" aria-hidden="true" /><span class="visually-hidden">@Localizer["Ed_View"]: @d.DocumentNo</span></pems-link>
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @{
+                    var qsParts = new List<string>();
+                    if (!string.IsNullOrEmpty(project)) qsParts.Add($"project={Uri.EscapeDataString(project)}");
+                    if (disciplinesQs != null) qsParts.Add($"disciplines={Uri.EscapeDataString(disciplinesQs)}");
+                    if (!string.IsNullOrEmpty(status)) qsParts.Add($"status={Uri.EscapeDataString(status)}");
+                    if (!string.IsNullOrEmpty(q)) qsParts.Add($"q={Uri.EscapeDataString(q)}");
                 }
-            </select>
-        </div>
-        <div class="col-md-2">
-            <label class="form-label small">@Localizer["Search"]</label>
-            <input type="text" name="q" value="@ViewBag.SearchTerm" class="form-control form-control-sm" placeholder="Doc No / Title" />
-        </div>
-        <div class="col-md-2 d-flex gap-1">
-            <button type="submit" class="btn btn-sm btn-pems-solid flex-fill" data-bs-toggle="tooltip" title="@Localizer["Apply filters"]" aria-label="@Localizer["Apply filters"]"><i class="bi bi-funnel"></i></button>
-            <a asp-action="Index" class="btn btn-sm btn-outline-danger" data-bs-toggle="tooltip" title="@Localizer["Reset filters"]" aria-label="@Localizer["Reset filters"]"><i class="bi bi-x-lg"></i></a>
-        </div>
-
-        <div class="col-12 d-flex gap-2 mt-2">
-            <a asp-action="ExportExcel"
-               asp-route-project="@ViewBag.SelectedProject"
-               asp-route-disciplines="@string.Join(",", selectedDisciplines)"
-               asp-route-status="@ViewBag.SelectedStatus"
-               asp-route-q="@ViewBag.SearchTerm"
-               class="btn btn-sm btn-outline-success">
-                <i class="bi bi-file-earmark-excel"></i> @Localizer["Export"]
-            </a>
-            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#saveFilterModal">
-                <i class="bi bi-bookmark-plus"></i> Save this filter
-            </button>
-        </div>
-    </form>
-</div>
-
-<div class="content-card">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <span class="text-muted small" id="selectedCount"></span>
-        <div class="d-flex gap-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('DocumentRegister')">
-                <i class="bi bi-arrow-counterclockwise"></i> @Localizer["ResetColumns"]
-            </button>
-            <form asp-action="ExportSelected" method="post" id="bulkExportForm">
-                <span id="selectedIdsContainer"></span>
-                <button type="submit" class="btn btn-sm btn-outline-success d-none" id="bulkExportBtn">
-                    <i class="bi bi-file-earmark-excel"></i> Export Selected
-                </button>
-            </form>
-        </div>
-    </div>
-    <div class="table-responsive pems-grid-scroll table-scroll-area">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="DocumentRegister">
-            <thead>
-                <tr>
-                    <th data-col-key="select" data-resizable="false" style="width:40px"><input type="checkbox" id="selectAllDocs" /></th>
-                    <th data-col-key="docNo" data-resizable="true" data-min-width="120" data-max-width="260" style="width:160px">@Localizer["Document No"]</th>
-                    <th data-col-key="title" data-resizable="true" data-min-width="180" data-max-width="500" style="width:300px">@Localizer["Title"]</th>
-                    <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="200" style="width:120px">@Localizer["Type"]</th>
-                    <th data-col-key="area" data-resizable="true" data-min-width="80" data-max-width="200" style="width:110px">@Localizer["Area"]</th>
-                    <th data-col-key="discipline" data-resizable="true" data-min-width="100" data-max-width="220" style="width:150px">@Localizer["Discipline"]</th>
-                    <th data-col-key="project" data-resizable="true" data-min-width="100" data-max-width="240" style="width:160px">@Localizer["Project"]</th>
-                    <th data-col-key="rev" data-resizable="true" data-min-width="60" data-max-width="120" style="width:80px">@Localizer["Rev"]</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="100" data-max-width="180" style="width:130px">@Localizer["Status"]</th>
-                    <th data-col-key="commentStatus" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Comment Status"]</th>
-                    <th data-col-key="freeze" data-resizable="true" data-min-width="80" data-max-width="140" style="width:90px">@Localizer["Freeze"]</th>
-                    <th data-col-key="delay" data-resizable="true" data-min-width="80" data-max-width="140" style="width:90px">Delay</th>
-                    <th data-col-key="created" data-resizable="true" data-min-width="90" data-max-width="160" style="width:120px">@Localizer["Created"]</th>
-                    <th data-col-key="actions" data-resizable="false" style="width:70px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var d in Model.Items)
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
                 {
-                    <tr>
-                        <td><input type="checkbox" class="doc-select" value="@d.DocumentId" /></td>
-                        <td title="@d.DocumentNo">@d.DocumentNo</td>
-                        <td title="@d.Title">@d.Title</td>
-                        <td title="@d.DocumentType">@d.DocumentType</td>
-                        <td title="@d.Area">@d.Area</td>
-                        <td>
-                            @if (string.IsNullOrWhiteSpace(d.DisciplineName))
-                            { <span class="badge bg-secondary">Unassigned</span> }
-                            else { <span title="@d.DisciplineName">@d.DisciplineName</span> }
-                        </td>
-                        <td title="@d.ProjectName">@d.ProjectName</td>
-                        <td>@d.RevisionNo</td>
-                        <td><span class="badge @PEMS.Web.Helpers.DocumentStatusBadge.CssClass(d.Status)">@d.Status</span></td>
-                        <td title="@d.CommentStatus">@d.CommentStatus</td>
-                        <td>@(d.IsFrozen ? "❄ Frozen" : "")</td>
-                        <td>
-                            @if (d.DelayDays.HasValue && d.DelayDays > 0)
-                            { <span class="badge bg-danger">@d.DelayDays d</span> }
-                        </td>
-                        <td>@d.CreatedDate.ToString("yyyy-MM-dd")</td>
-                        <td>
-                            <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId"
-                               class="btn btn-sm btn-outline-secondary">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "DocumentRegister",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.Join("&", qsParts)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
 
-        @if (!Model.Items.Any())
-        {
-            <p class="text-muted text-center py-4">No documents match the selected filters.</p>
-        }
-    </div>
+</pems-list-page>
 
-    @{
-        var qsParts = new List<string>();
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedProject)) qsParts.Add($"project={Uri.EscapeDataString((string)ViewBag.SelectedProject)}");
-        if (selectedDisciplines.Any()) qsParts.Add($"disciplines={Uri.EscapeDataString(string.Join(",", selectedDisciplines))}");
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) qsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
-        if (!string.IsNullOrEmpty((string?)ViewBag.SearchTerm)) qsParts.Add($"q={Uri.EscapeDataString((string)ViewBag.SearchTerm)}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "DocumentRegister",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
+<pems-modal id="saveFilterModal" tabindex="-1" aria-labelledby="saveFilterTitle" aria-hidden="true">
+            <pems-form asp-action="SaveFilter" method="post">
+                <pems-modal-header title-id="saveFilterTitle">@Localizer["Dr_SaveFilterTitle"]</pems-modal-header>
+                <pems-modal-body>
+                    <pems-label css="small" for="saveFilterName">@Localizer["Dr_FilterName"]</pems-label>
+                    <pems-input name="name" id="saveFilterName" required />
+                    <input type="hidden" name="queryString" id="saveFilterQueryString" />
+                    <pems-check-row css="mt-2">
+                        <pems-input kind="check" type="checkbox" name="isDefault" value="true" id="saveFilterDefault" />
+                        <label class="form-check-label" for="saveFilterDefault">@Localizer["Dr_SetDefault"]</label>
+                    </pems-check-row>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
 
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('DocumentRegister');
-            window.PemsTooltips.init();
-        });
-    </script>
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+    <script src="~/js/views/documentregister-index.js" asp-append-version="true"></script>
 }
-
-<div class="modal fade" id="saveFilterModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-action="SaveFilter" method="post">
-                <div class="modal-header"><h6 class="modal-title">Save Current Filter</h6></div>
-                <div class="modal-body">
-                    <label class="form-label small">Filter Name</label>
-                    <input name="name" class="form-control" required />
-                    <input type="hidden" name="queryString" id="saveFilterQueryString" />
-                    <div class="form-check mt-2">
-                        <input class="form-check-input" type="checkbox" name="isDefault" value="true" id="saveFilterDefault" />
-                        <label class="form-check-label" for="saveFilterDefault">Set as my default view for this page</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-    var selectAll = document.getElementById('selectAllDocs');
-    var checks = document.querySelectorAll('.doc-select');
-    var bulkExportBtn = document.getElementById('bulkExportBtn');
-    var selectedCount = document.getElementById('selectedCount');
-    var idsContainer = document.getElementById('selectedIdsContainer');
-
-    function updateBulkUI() {
-        var selected = Array.prototype.filter.call(checks, function (c) { return c.checked; });
-        idsContainer.innerHTML = '';
-        selected.forEach(function (c) {
-            var input = document.createElement('input');
-            input.type = 'hidden'; input.name = 'ids'; input.value = c.value;
-            idsContainer.appendChild(input);
-        });
-        bulkExportBtn.classList.toggle('d-none', selected.length === 0);
-        selectedCount.textContent = selected.length > 0 ? selected.length + ' selected' : '';
-    }
-
-    if (selectAll) {
-        selectAll.addEventListener('change', function () {
-            checks.forEach(function (c) { c.checked = selectAll.checked; });
-            updateBulkUI();
-        });
-    }
-    checks.forEach(function (c) { c.addEventListener('change', updateBulkUI); });
-
-    var disciplineChecks = document.querySelectorAll('.discipline-check');
-    var disciplinesInput = document.getElementById('disciplinesInput');
-
-    disciplineChecks.forEach(function (chk) {
-        chk.addEventListener('change', function () {
-            var selected = Array.prototype.filter.call(disciplineChecks, function (c) { return c.checked; })
-                .map(function (c) { return c.value; });
-            disciplinesInput.value = selected.join(',');
-        });
-    });
-
-    document.getElementById('saveFilterModal').addEventListener('show.bs.modal', function () {
-        var form = document.getElementById('registerFilterForm');
-        var params = new URLSearchParams(new FormData(form));
-        document.getElementById('saveFilterQueryString').value = params.toString();
-    });
-</script>

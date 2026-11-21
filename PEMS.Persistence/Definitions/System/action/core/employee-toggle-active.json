@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "employee-toggle-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Activate or deactivate an employee",
+    "fa": "فعال یا غیرفعال کردن کارمند"
+  },
+  "description": {
+    "en": "Activate or deactivate an employee",
+    "fa": "فعال یا غیرفعال کردن کارمند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Employee",
+      "action": "ToggleActive",
+      "args": {
+        "employeeId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Employee status changed.",
+      "fa": "وضعیت کارمند تغییر کرد."
+    }
+  }
+}

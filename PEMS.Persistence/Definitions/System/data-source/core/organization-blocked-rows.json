@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "organization-blocked-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Blocked requests",
+    "fa": "Blocked requests"
+  },
+  "description": {
+    "en": "Blocked requests rows",
+    "fa": "Blocked requests rows"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Organization",
+      "action": "Blocked"
+    }
+  }
+}

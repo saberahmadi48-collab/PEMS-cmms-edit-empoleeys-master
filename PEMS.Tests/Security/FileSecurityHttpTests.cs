@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace PEMS.Tests.Security;
@@ -73,5 +74,31 @@ public class FileSecurityHttpTests : IClassFixture<WebApplicationFactory<Program
         // طبق Middleware اضافه‌شده در Program.cs (قبل از UseStaticFiles) - این مسیرها باید همیشه
         // ۴۰۴ بدهند، حتی اگر (فرضاً) یک فایل واقعی هنوز آن‌جا فیزیکی باشد
         Assert.Equal(System.Net.HttpStatusCode.NotFound, response.StatusCode);
+    }
+    // ==================== SCRUM-202: upload guard in the real pipeline ====================
+    [Fact]
+    public void TheUploadGuardFilter_IsAGlobalMvcFilter_OfTheRealHost()
+    {
+        var mvc = _factory.Services.GetRequiredService<Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.MvcOptions>>().Value;
+        Assert.Contains(mvc.Filters, f => f is Microsoft.AspNetCore.Mvc.TypeFilterAttribute t && t.ImplementationType == typeof(PEMS.Web.Security.Uploads.UploadGuardFilter));
+    }
+
+    [Theory]
+    [InlineData("/uploads/profile-photos/emp1_x.jpg")]
+    [InlineData("/uploads/signatures/emp1_x.png")]
+    [InlineData("/uploads/letters/inline/x.png")]
+    [InlineData("/Files/Image/profile-photos/x.jpg")]
+    public async Task ImagesFromUploads_NeedALogin(string path)
+    {
+        using var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false,
+            BaseAddress = new Uri("https://localhost")
+        });
+
+        var response = await client.GetAsync(path);
+
+        // before SCRUM-202 profile photos and signatures were static files anyone could fetch
+        Assert.NotEqual(System.Net.HttpStatusCode.OK, response.StatusCode);
     }
 }

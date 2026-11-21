@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "tenders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tenders (old address)",
+    "fa": "Tenders (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Tenders (old address)",
+    "fa": "Tenders (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Tender",
+    "target": "/p/tenders",
+    "permanent": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-duplicate-candidates",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue duplicate candidates (old address)",
+    "fa": "Part Catalogue duplicate candidates (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue duplicate candidates (old address)",
+    "fa": "Part Catalogue duplicate candidates (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueDedup/DuplicateCandidates",
+    "target": "/x/pc-duplicate-candidates",
+    "permanent": false
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "work-request-submit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit work request to the workflow",
+    "fa": "ارسال درخواست کار به گردش‌کار"
+  },
+  "description": {
+    "en": "Submit work request to the workflow",
+    "fa": "ارسال درخواست کار به گردش‌کار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkRequest",
+      "action": "Submit",
+      "args": {
+        "workRequestId": "field:id"
+      }
+    },
+    "success": {
+      "en": "The request was submitted to the workflow.",
+      "fa": "درخواست به گردش‌کار ارسال شد."
+    },
+    "redirect": "/WorkRequest/Details/{id}"
+  }
+}

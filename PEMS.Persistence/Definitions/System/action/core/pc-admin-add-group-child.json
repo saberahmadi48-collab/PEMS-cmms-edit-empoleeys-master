@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "pc-admin-add-group-child",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Map a group 2 under a group 1",
+    "fa": "نگاشت گروه ۲ زیر گروه ۱"
+  },
+  "description": {
+    "en": "Map a group 2 under a group 1",
+    "fa": "نگاشت گروه ۲ زیر گروه ۱"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "AddGroupChild",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "parentGroupId": "field:parentGroupId",
+        "childGroupId": "field:childGroupId"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/p/pc-admin"
+  }
+}

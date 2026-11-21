@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "mocs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MOC (old address)",
+    "fa": "MOC (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "MOC (old address)",
+    "fa": "MOC (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MOC",
+    "target": "/p/mocs",
+    "permanent": false
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "kind": "form",
+  "key": "finding-close",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close the finding",
+    "fa": "بستن یافته"
+  },
+  "description": {
+    "en": "Close the finding",
+    "fa": "بستن یافته"
+  },
+  "payload": {
+    "id": "finding-close",
+    "title": {
+      "en": "Close the finding",
+      "fa": "بستن یافته"
+    },
+    "submitLabel": {
+      "en": "Close",
+      "fa": "بستن"
+    },
+    "actionKey": "finding-close",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Finding id",
+          "fa": "شناسه‌ی یافته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment id",
+          "fa": "شناسه‌ی تجهیز"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

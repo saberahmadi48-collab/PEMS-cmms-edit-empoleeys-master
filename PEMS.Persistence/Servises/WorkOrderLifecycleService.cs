@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Common;
@@ -70,6 +71,39 @@ public class WorkOrderLifecycleService : IWorkOrderLifecycleService
             throw new InvalidOperationException(T($"برای Work Order {workOrderId} بیش از یک Instance چرخه‌عمر ثبت شده است؛ رکورد ناسازگار است.",
                 $"Work Order {workOrderId} has more than one lifecycle instance; the record is inconsistent."));
         return all.FirstOrDefault();
+    }
+
+    /// <summary>نتیجه‌ی تطبیق حالت/علت خرابی با کاتالوگ (Error != null یعنی رد). با کاتالوگ خالی، متن آزاد مجاز می‌ماند (سازگاری با محیط‌های بدون Seed).</summary>
+    private sealed record FailureCatalogMatch(string? ModeCode, int? ModeId, string? CauseCode, int? CauseId, string? Error);
+
+    private async Task<FailureCatalogMatch> ResolveFailureCatalogAsync(string? modeCode, string? causeCode)
+    {
+        string? mode = modeCode?.Trim(), cause = causeCode?.Trim();
+        int? modeId = null, causeId = null;
+        string? error = null;
+
+        if (await _context.FailureModes.AnyAsync(f => f.IsActive) && !string.IsNullOrWhiteSpace(mode))
+        {
+            var m = await _context.FailureModes.Where(f => f.IsActive && (f.Code.ToLower() == mode.ToLower() || f.Name.ToLower() == mode.ToLower()))
+                .Select(f => new { f.FailureModeId, f.Code }).FirstOrDefaultAsync();
+            if (m == null) error = T($"حالت خرابی «{mode}» در کاتالوگ ISO 14224 وجود ندارد؛ از فهرست انتخاب کنید.", $"Failure mode '{mode}' is not in the ISO 14224 catalog; pick one from the list.");
+            else { modeId = m.FailureModeId; mode = m.Code; }
+        }
+        if (error == null && !string.IsNullOrWhiteSpace(cause) && await _context.FailureCauses.AnyAsync(f => f.IsActive))
+        {
+            var c = await _context.FailureCauses.Where(f => f.IsActive && (f.Code.ToLower() == cause.ToLower() || f.Name.ToLower() == cause.ToLower()))
+                .Select(f => new { f.FailureCauseId, f.Code }).FirstOrDefaultAsync();
+            if (c == null) error = T($"علت خرابی «{cause}» در کاتالوگ ISO 14224 وجود ندارد؛ از فهرست انتخاب کنید.", $"Failure cause '{cause}' is not in the ISO 14224 catalog; pick one from the list.");
+            else { causeId = c.FailureCauseId; cause = c.Code; }
+        }
+        return new FailureCatalogMatch(mode, modeId, cause, causeId, error);
+    }
+
+    /// <summary>B11: نسخه‌ی بدون استثنا؛ رکورد ناسازگار (چند Instance) به‌جای 500 بی‌صدا، پیام مشخص برمی‌گرداند.</summary>
+    private async Task<(WorkflowInstance? Instance, string? Error)> TryLifecycleInstanceAsync(int workOrderId)
+    {
+        try { return (await LifecycleInstanceAsync(workOrderId), null); }
+        catch (InvalidOperationException ex) { return (null, ex.Message); }
     }
 
     public async Task<bool> IsGovernedAsync(int workOrderId) => await LifecycleInstanceAsync(workOrderId) != null;
@@ -239,6 +273,11 @@ return await InStrategyAsync<(bool, string?, int?)>(async () =>
         if (action == null) return (false, T($"اقدام «{actionType}» در مرحله‌ی جاری برای شما در دسترس نیست.", $"Action \"{actionType}\" is not available for you at the current stage."));
         if (!action.IsAllowed) return (false, T($"اقدام «{actionType}» مجاز نیست: {action.DeniedReason}", $"Action \"{actionType}\" is not allowed: {action.DeniedReason}"));
 
+        // A1/B14: Reject/Cancel/Hold/Return without a reason are refused (shared rule; the reason stays in workflow + status history)
+        var reasonError = WorkflowActionRules.ValidateAction(actionType, comment);
+        if (reasonError != null) return (false, reasonError);
+        comment = WorkflowActionRules.Normalize(comment);
+
         var transition = await _context.WorkflowTransitions.AsNoTracking().FirstAsync(t => t.WorkflowTransitionId == action.TransitionId);
         var perm = transition.RequiredPermission;
 
@@ -264,6 +303,7 @@ return await InStrategyAsync<(bool, string?, int?)>(async () =>
         if (perm == Perm.Start && actionType == "Approve" && !wo.StartDate.HasValue)
             wo.StartDate = DateTime.Now;
 
+        FailureCatalogMatch? failureMatch = null;
         var recordsCompletion = perm == Perm.Execute && actionType == "Approve" && fromStatus == "InProgress";
         if (recordsCompletion)
         {
@@ -272,6 +312,14 @@ return await InStrategyAsync<(bool, string?, int?)>(async () =>
             completion ??= new WorkOrderCompletionData();
             if (wo.WorkOrderType is "Corrective" or "Emergency" && string.IsNullOrWhiteSpace(completion.FailureModeCode))
                 return (false, T("برای کار اصلاحی/اضطراری حالت خرابی (ISO 14224) الزامی است.", "The failure mode (ISO 14224) is required for Corrective/Emergency Work Orders."));
+
+            // B9: وقتی کاتالوگ فعال ISO 14224 وجود دارد، حالت/علت خرابی باید از همان کاتالوگ باشد (متن آزاد پذیرفته نمی‌شود)؛ کد به شکل استاندارد کاتالوگ ذخیره می‌شود
+            if (wo.WorkOrderType is "Corrective" or "Emergency")
+            {
+                var catalog = await ResolveFailureCatalogAsync(completion.FailureModeCode, completion.FailureCauseCode);
+                if (catalog.Error != null) return (false, catalog.Error);
+                failureMatch = catalog;
+            }
         }
 
         var newStatus = await ResolveNewStatusAsync(action, fromStatus) ?? fromStatus;
@@ -287,12 +335,19 @@ return await InStrategyAsync<(bool, string?)>(async () =>
                     wo.ContractorName = completion.ContractorName;
                     if (wo.WorkOrderType is "Corrective" or "Emergency")
                     {
-                        wo.FailureModeCode = completion.FailureModeCode; wo.FailureCauseCode = completion.FailureCauseCode;
+                        wo.FailureModeCode = failureMatch?.ModeCode ?? completion.FailureModeCode; wo.FailureCauseCode = failureMatch?.CauseCode ?? completion.FailureCauseCode;
+                        wo.FailureModeId = failureMatch?.ModeId ?? wo.FailureModeId; wo.FailureCauseId = failureMatch?.CauseId ?? wo.FailureCauseId;
+                        wo.FailureEffect = string.IsNullOrWhiteSpace(completion.FailureEffect) ? wo.FailureEffect : completion.FailureEffect;
                         wo.RootCause = completion.RootCause; wo.DowntimeHours = completion.DowntimeHours;
                         await SyncFailureRecordAsync(wo, completion.FailureModeCode!, completion.FailureCauseCode, completion.RootCause, completion.DowntimeHours, completion.FailureEffect, completion.CorrectiveAction);
                     }
                     await CreateMaintenanceHistoryAsync(wo);
                 }
+
+                // H29: در لحظه‌ی بستن، ردیف MaintenanceHistory با مجموع نهایی ساعت‌کار/قطعات/پیمانکار هم‌خوان می‌شود (پس از اصلاح‌های مجاز و بازگشایی)؛ از این پس
+                // رکوردهای فرزند تغییرناپذیرند، پس هزینه‌ی نهایی منجمد است.
+                if (newStatus == "Closed")
+                    await RefreshMaintenanceHistoryAsync(wo);
 
                 if (newStatus != fromStatus)
                 {
@@ -324,11 +379,92 @@ return await InStrategyAsync<(bool, string?)>(async () =>
 
     }
 
+    public async Task<(bool Success, string? Error)> ReopenAsync(int workOrderId, string? reason, WorkOrderActor actor, string? userName = null, int? userId = null, string? ipAddress = null)
+    {
+        reason = reason?.Trim();
+        if (string.IsNullOrWhiteSpace(reason)) return (false, T("دلیل بازگشایی الزامی است.", "A reason is required to reopen a Work Order."));
+
+        var wo = await _context.WorkOrders.FirstOrDefaultAsync(x => x.WorkOrderId == workOrderId);
+        if (wo == null) return (false, T("Work Order یافت نشد.", "Work Order not found."));
+        if (wo.Status != "Closed") return (false, T("فقط Work Order بسته‌شده قابل بازگشایی است.", "Only a closed Work Order can be reopened."));
+
+        if (!(await _access.AuthorizeForRolesAsync(actor.Roles, "WorkOrder", "Reopen")).Allowed)
+        {
+            await LogReopenAsync(wo, actor, userName, userId, ipAddress, "Denied", "MissingPermission", reason, "Closed", null);
+            return (false, T("مجوز WorkOrder.Reopen لازم است.", "Permission WorkOrder.Reopen is required."));
+        }
+
+        WorkflowInstance? instance;
+        try { instance = await LifecycleInstanceAsync(workOrderId); }
+        catch (InvalidOperationException ex) { return (false, ex.Message); }
+
+        int? targetStageId = null;
+        if (instance != null)
+        {
+            if (instance.Status != "Completed") return (false, T($"گردش‌کار در وضعیت «{instance.Status}» است و قابل بازگشایی نیست.", $"The workflow is {instance.Status} and cannot be reopened."));
+            // مرحله‌ی مقصد از «داده‌ی پیکربندی» خوانده می‌شود، نه نام ثابت: مرحله‌ای که گذار خروجی‌اش مجوز Verify می‌خواهد (جایی که اصلاح ساعت‌کار/قطعات هنوز مجاز است
+            // و تأیید دوباره انجام می‌شود، وضعیت Completed). با تغییر نام/ترتیب مراحل در نسخه‌های بعدی گردش‌کار، کد تغییر نمی‌کند.
+            targetStageId = await _context.WorkflowTransitions
+                .Where(t => t.WorkflowVersionId == instance.WorkflowVersionId && t.FromStageId != null && t.RequiredPermission == Perm.Verify)
+                .OrderBy(t => t.Priority).Select(t => t.FromStageId).FirstOrDefaultAsync();
+            if (targetStageId == null) return (false, T("مرحله‌ی مقصد بازگشایی در این نسخه‌ی گردش‌کار تعریف نشده است.", "The reopen target stage is not defined in this workflow version."));
+        }
+
+        return await InStrategyAsync<(bool, string?)>(async () =>
+        {
+            await using var tx = await BeginAsync();
+            try
+            {
+                const string from = "Closed", to = "Completed";
+                wo.Status = to;
+                _context.WorkOrderStatusHistories.Add(new WorkOrderStatusHistory
+                {
+                    WorkOrderId = wo.WorkOrderId, FromStatus = from, ToStatus = to, ChangedById = actor.EmployeeId, ChangedDate = DateTime.Now, Reason = "Reopened: " + reason
+                });
+                _context.WorkOrderChangeLogs.Add(new WorkOrderChangeLog
+                {
+                    WorkOrderId = wo.WorkOrderId, Section = "WorkOrder", Action = "Reopen", Outcome = "Allowed", Code = "Allowed", WorkOrderStatus = from,
+                    WorkflowStage = null, ChangedByEmployeeId = actor.EmployeeId, ChangedByUserId = userId, ChangedByUserName = userName, ChangedDate = DateTime.Now,
+                    Reason = reason.Length <= 500 ? reason : reason[..500], BeforeValue = from, AfterValue = to + (instance != null ? " @ stage#" + targetStageId : ""), IpAddress = ipAddress
+                });
+                await _context.SaveChangesAsync();
+
+                if (instance != null && !await _runtime.ReopenInstanceAsync(instance.WorkflowInstanceId, targetStageId!.Value, actor.EmployeeId, reason))
+                    throw new InvalidOperationException(T("بازگشایی گردش‌کار انجام نشد.", "The workflow could not be reopened."));
+
+                if (tx != null) await tx.CommitAsync();
+                return (true, null);
+            }
+            catch (Exception ex) when (ex is InvalidOperationException or UnauthorizedAccessException or DbUpdateException)
+            {
+                if (tx != null) await tx.RollbackAsync();
+                _context.ChangeTracker.Clear();
+                return (false, ex is DbUpdateConcurrencyException or WorkflowConcurrencyConflictException ? ConflictMessage() : ex.Message);
+            }
+        });
+    }
+
+    private async Task LogReopenAsync(WorkOrder wo, WorkOrderActor actor, string? userName, int? userId, string? ip, string outcome, string code, string? reason, string status, string? stage)
+    {
+        try
+        {
+            _context.WorkOrderChangeLogs.Add(new WorkOrderChangeLog
+            {
+                WorkOrderId = wo.WorkOrderId, Section = "WorkOrder", Action = "Reopen", Outcome = outcome, Code = code, WorkOrderStatus = status, WorkflowStage = stage,
+                ChangedByEmployeeId = actor.EmployeeId, ChangedByUserId = userId, ChangedByUserName = userName, ChangedDate = DateTime.Now, Reason = reason,
+                IsSecurityEvent = outcome == "Denied", IpAddress = ip
+            });
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception) { _context.ChangeTracker.Clear(); }
+    }
+
     public async Task<(bool Success, string? Error)> SetPlanningAsync(int workOrderId, int responsibleDisciplineId, WorkOrderActor actor)
     {
         var wo = await _context.WorkOrders.FirstOrDefaultAsync(x => x.WorkOrderId == workOrderId);
         if (wo == null) return (false, T("Work Order یافت نشد.", "Work Order not found."));
-        var instance = await LifecycleInstanceAsync(workOrderId);
+        var (instance, instanceError) = await TryLifecycleInstanceAsync(workOrderId);
+        if (instanceError != null) return (false, instanceError);
         if (instance == null || instance.Status != "Running") return (false, T("Work Order تحت گردش‌کار فعال نیست.", "The Work Order is not under an active workflow."));
         if (wo.Status is not ("Open" or "Assigned")) return (false, T("تغییر برنامه پس از صدور مجاز نیست؛ ابتدا باید به برنامه‌ریزی بازگردانده شود.", "Planning cannot change after issue; return it to Planning first."));
 
@@ -343,6 +479,7 @@ return await InStrategyAsync<(bool, string?)>(async () =>
         wo.ResponsibleOrganization = OrganizationDomains.Maintenance;
         try { await _context.SaveChangesAsync(); return (true, null); }
         catch (DbUpdateConcurrencyException) { _context.ChangeTracker.Clear(); return (false, ConflictMessage()); }
+        catch (DbUpdateException ex) { _context.ChangeTracker.Clear(); return (false, T("ذخیره انجام نشد: ", "Could not save: ") + ex.GetBaseException().Message); }
     }
 
     public async Task<(bool Success, string? Error)> AssignExecutorAsync(int workOrderId, int? teamId, int? employeeId, WorkOrderActor actor)
@@ -350,7 +487,8 @@ return await InStrategyAsync<(bool, string?)>(async () =>
         if (!teamId.HasValue && !employeeId.HasValue) return (false, T("تیم یا مجری را انتخاب کنید.", "Select a team or an executor."));
         var wo = await _context.WorkOrders.FirstOrDefaultAsync(x => x.WorkOrderId == workOrderId);
         if (wo == null) return (false, T("Work Order یافت نشد.", "Work Order not found."));
-        var instance = await LifecycleInstanceAsync(workOrderId);
+        var (instance, instanceError) = await TryLifecycleInstanceAsync(workOrderId);
+        if (instanceError != null) return (false, instanceError);
         if (instance == null || instance.Status != "Running") return (false, T("Work Order تحت گردش‌کار فعال نیست.", "The Work Order is not under an active workflow."));
         if (wo.Status != "Assigned") return (false, T("تخصیص مجری فقط در مرحله‌ی آماده‌سازی/تخصیص مجاز است.", "Executors can only be assigned during Preparation / Assignment."));
         if (!wo.ResponsibleDisciplineId.HasValue) return (false, T("دیسیپلین مسئول هنوز تعیین نشده است.", "The responsible discipline has not been set."));
@@ -378,6 +516,7 @@ return await InStrategyAsync<(bool, string?)>(async () =>
         }
         try { await _context.SaveChangesAsync(); return (true, null); }
         catch (DbUpdateConcurrencyException) { _context.ChangeTracker.Clear(); return (false, ConflictMessage()); }
+        catch (DbUpdateException ex) { _context.ChangeTracker.Clear(); return (false, T("ذخیره انجام نشد: ", "Could not save: ") + ex.GetBaseException().Message); }
     }
 
     // طبق «PEMS — Work Request/Work Order Scheduling & Maintenance Calendar»: دقیقاً هم‌الگو با
@@ -391,7 +530,8 @@ return await InStrategyAsync<(bool, string?)>(async () =>
         if (plannedFinish <= plannedStart) return (false, T("پایان برنامه‌ریزی‌شده باید بعد از شروع باشد.", "Planned finish must be after planned start."));
         var wo = await _context.WorkOrders.FirstOrDefaultAsync(x => x.WorkOrderId == workOrderId);
         if (wo == null) return (false, T("Work Order یافت نشد.", "Work Order not found."));
-        var instance = await LifecycleInstanceAsync(workOrderId);
+        var (instance, instanceError) = await TryLifecycleInstanceAsync(workOrderId);
+        if (instanceError != null) return (false, instanceError);
         if (instance == null || instance.Status != "Running") return (false, T("Work Order تحت گردش‌کار فعال نیست.", "The Work Order is not under an active workflow."));
         if (wo.Status != "Assigned") return (false, T("زمان‌بندی فقط در مرحله‌ی آماده‌سازی/تخصیص مجاز است.", "Scheduling is only allowed during Preparation / Assignment."));
         if (!wo.ResponsibleDisciplineId.HasValue) return (false, T("دیسیپلین مسئول هنوز تعیین نشده است.", "The responsible discipline has not been set."));
@@ -406,6 +546,7 @@ return await InStrategyAsync<(bool, string?)>(async () =>
         wo.PlannedFinish = plannedFinish;
         try { await _context.SaveChangesAsync(); return (true, null); }
         catch (DbUpdateConcurrencyException) { _context.ChangeTracker.Clear(); return (false, ConflictMessage()); }
+        catch (DbUpdateException ex) { _context.ChangeTracker.Clear(); return (false, T("ذخیره انجام نشد: ", "Could not save: ") + ex.GetBaseException().Message); }
     }
 
     public async Task<(bool Success, string? Error)> AdvanceStatusAsync(
@@ -437,6 +578,9 @@ return await InStrategyAsync<(bool, string?)>(async () =>
 
         if (!LegalTransitions.TryGetValue(fromStatus, out var allowed) || !allowed.Contains(nextStatus))
             return (false, $"گذار از وضعیت «{fromStatus}» به «{nextStatus}» مجاز نیست.");
+
+        var legacyReasonError = WorkflowActionRules.ValidateStatus(nextStatus, reason);
+        if (legacyReasonError != null) return (false, legacyReasonError);
 
         // طبق «PEMS Phase 6» بند ۱۸: قبل از اجرا، گیت ایمنی (Permit/LOTO/GasTest، اگر JobPlan
         // آن‌ها را الزامی کرده باشد) بررسی می‌شود - تنها نقطه‌ی اجرای این گیت، همین‌جاست (نه
@@ -528,6 +672,20 @@ return await InStrategyAsync<(bool, string?)>(async () =>
         failureRecord.DowntimeHours = downtimeHours;
         failureRecord.FailureEffect = failureEffect;
         failureRecord.CorrectiveAction = correctiveAction;
+    }
+
+    private async Task RefreshMaintenanceHistoryAsync(WorkOrder workOrder)
+    {
+        var history = await _context.MaintenanceHistories.FirstOrDefaultAsync(x => x.WorkOrderId == workOrder.WorkOrderId && x.IsActive);
+        if (history == null) return;      // سابقه‌ی تکمیل ساخته نشده (مسیر Legacy/ناقص): چیزی جعل نمی‌شود
+
+        var durationHours = await _context.WorkOrderLabors.Where(x => x.WorkOrderId == workOrder.WorkOrderId && x.IsActive)
+            .SumAsync(x => (decimal?)(x.RegularHours + x.OvertimeHours)) ?? 0;
+        var laborCost = await _context.WorkOrderLabors.Where(x => x.WorkOrderId == workOrder.WorkOrderId && x.IsActive).SumAsync(x => (decimal?)x.LaborCost) ?? 0;
+        var spareCost = await _context.MaintenanceSpareUsages.Where(x => x.WorkOrderId == workOrder.WorkOrderId && x.IsActive).SumAsync(x => (decimal?)x.TotalCost) ?? 0;
+
+        history.DurationHours = durationHours > 0 ? durationHours : null;
+        history.Cost = laborCost + spareCost + (workOrder.ContractorCost ?? 0);
     }
 
     private async Task CreateMaintenanceHistoryAsync(WorkOrder workOrder)

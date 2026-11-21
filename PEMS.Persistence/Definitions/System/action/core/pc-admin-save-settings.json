@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "pc-admin-save-settings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save the part number settings",
+    "fa": "ذخیره‌ی تنظیمات شماره‌ی قطعه"
+  },
+  "description": {
+    "en": "Save the part number settings",
+    "fa": "ذخیره‌ی تنظیمات شماره‌ی قطعه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "SaveSettings",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "partNoGenerationMethod": "field:partNoGenerationMethod",
+        "partNoFormat": "field:partNoFormat"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/p/pc-admin"
+  }
+}

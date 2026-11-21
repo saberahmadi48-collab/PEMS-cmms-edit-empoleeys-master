@@ -1,0 +1,19 @@
+{
+  "kind": "action",
+  "key": "grid-view-save",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a view of a list",
+    "fa": "ذخیره نمای یک فهرست"
+  },
+  "description": {
+    "en": "Saves the view for the user or for a role the user holds",
+    "fa": "نما را برای کاربر یا نقشی که دارد ذخیره می‌کند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "grid.view.save",
+    "parameters": {}
+  }
+}

@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("heading", Category = "display", Icon = "bi-type-h2")]
+@FrameMarkup.Element("h" + Math.Clamp(Options.Level, 1, 6), Options.Css ?? "", Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public HeadingOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

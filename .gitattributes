@@ -61,5 +61,8 @@ graphify-out/cache/** filter=lfs diff=lfs merge=lfs -text
 
 # shell scripts / unit files run on Linux: always LF
 deploy/remote/*.sh text eol=lf
+deploy/tests/*.sh text eol=lf
+deploy/tests/fakes/* text eol=lf
+deploy/docker/* text eol=lf
 deploy/systemd/*.service text eol=lf
 deploy/pems.env.example text eol=lf

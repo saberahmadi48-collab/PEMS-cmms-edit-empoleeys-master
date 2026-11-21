@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "production-uoms",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Units",
+    "fa": "Units"
+  },
+  "description": {
+    "en": "Units",
+    "fa": "Units"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Production",
+      "action": "UomChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

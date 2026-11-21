@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "work-request-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New work request (old address)",
+    "fa": "New work request (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New work request (old address)",
+    "fa": "New work request (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "WorkRequest/Create",
+    "target": "/f/work-request-create",
+    "permanent": false
+  }
+}

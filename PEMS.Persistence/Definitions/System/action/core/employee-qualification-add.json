@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "employee-qualification-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a qualification",
+    "fa": "افزودن صلاحیت"
+  },
+  "description": {
+    "en": "Add a qualification",
+    "fa": "افزودن صلاحیت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Employee",
+      "action": "AddQualification",
+      "args": {
+        "employeeId": "field:employeeId",
+        "qualificationId": "field:qualificationId",
+        "issueDate": "field:issueDate",
+        "issuer": "field:issuer",
+        "expiryDate": "field:expiryDate"
+      }
+    },
+    "success": {
+      "en": "Qualification added.",
+      "fa": "صلاحیت افزوده شد."
+    },
+    "redirect": "/p/employee-details?id={employeeId}"
+  }
+}

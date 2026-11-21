@@ -1,0 +1,51 @@
+{
+  "kind": "action",
+  "key": "contract-approval-authority-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create approval rule",
+    "fa": "ایجاد قاعده‌ی تأیید"
+  },
+  "description": {
+    "en": "Create approval rule",
+    "fa": "ایجاد قاعده‌ی تأیید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "ContractApprovalAuthorityRule",
+      "map": {
+        "minValue": "MinValue",
+        "maxValue": "MaxValue",
+        "criticalityClass": "CriticalityClass",
+        "requiredApproverRole": "RequiredApproverRole",
+        "priority": "Priority",
+        "description": "Description"
+      },
+      "required": [
+        "RequiredApproverRole"
+      ],
+      "defaults": {
+        "IsActive": true
+      },
+      "unique": [],
+      "validate": {
+        "model": "ContractApprovalRule",
+        "action": "Validate",
+        "args": {
+          "minValue": "field:minValue",
+          "maxValue": "field:maxValue",
+          "criticalityClass": "field:criticalityClass",
+          "requiredApproverRole": "field:requiredApproverRole"
+        }
+      }
+    },
+    "success": {
+      "en": "Approval rule created.",
+      "fa": "قاعده‌ی تأیید ایجاد شد."
+    },
+    "redirect": "/p/contract-approval-authority"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "po-remove-line",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a line",
+    "fa": "حذف قلم"
+  },
+  "description": {
+    "en": "Remove a line",
+    "fa": "حذف قلم"
+  },
+  "payload": {
+    "id": "po-remove-line",
+    "title": {
+      "en": "Remove a line",
+      "fa": "حذف قلم"
+    },
+    "submitLabel": {
+      "en": "Remove",
+      "fa": "حذف"
+    },
+    "actionKey": "po-remove-line",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Order id",
+          "fa": "شناسه‌ی سفارش"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "lineId",
+        "label": {
+          "en": "Line id",
+          "fa": "شناسه‌ی قلم"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

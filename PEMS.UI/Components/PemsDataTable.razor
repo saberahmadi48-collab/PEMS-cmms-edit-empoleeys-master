@@ -1,0 +1,146 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("data-table", Category = "data", Icon = "bi-table")]
+@using System.Globalization
+@using PEMS.UI.Abstractions
+@{ var columns = Options.Columns ?? []; var items = (Options.Items ?? []).ToList(); }
+<table class="@PEMS.UI.TagHelpers.FrameState.Table(Options.Enterprise, Options.Dense, Options.Css)" @attributes="Options.Attributes">
+    @if (Options.ShowHeader)
+    {
+        <thead>
+            <tr>
+                @foreach (var c in columns)
+                {
+                    <th scope="col" class="@c.HeaderCss">@c.Header</th>
+                }
+            </tr>
+        </thead>
+    }
+    <tbody>
+        @if (items.Count == 0 && !string.IsNullOrEmpty(Options.Empty))
+        {
+            <tr><td colspan="@Math.Max(columns.Count, 1)" class="text-muted small">@Options.Empty</td></tr>
+        }
+        @foreach (var item in items)
+        {
+            <tr @attributes="Options.RowAttrs?.Invoke(item)" class="@Join(Options.RowCss, Options.RowClass?.Invoke(item))">
+                @foreach (var c in columns)
+                {
+                    <td class="@Join(c.Css, c.CssFor?.Invoke(item))" dir="@c.Dir" title="@(c.TitleFor?.Invoke(item))">@Wrapped(c, item)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+    [Parameter, EditorRequired] public DataTableOptions Options { get; set; } = default!;
+
+    private static string? Join(string? a, string? b) => string.IsNullOrWhiteSpace(b) ? a : string.IsNullOrWhiteSpace(a) ? b : a + " " + b;
+
+    private RenderFragment Wrapped(DataColumn c, object item) => b =>
+    {
+        if (c.Element is null) { b.AddContent(0, Cell(c, item)); return; }
+        var tag = c.Element.Tag is "span" or "strong" or "small" or "em" or "bdi" ? c.Element.Tag : "span";
+        b.OpenElement(1, tag);
+        if (!string.IsNullOrWhiteSpace(c.Element.Css)) b.AddAttribute(2, "class", c.Element.Css);
+        if (!string.IsNullOrWhiteSpace(c.Element.Dir)) b.AddAttribute(3, "dir", c.Element.Dir);
+        b.AddContent(4, Cell(c, item));
+        b.CloseElement();
+    };
+
+    private RenderFragment Cell(DataColumn c, object item) => b =>
+    {
+        var v = c.Value(item);
+        switch (c.Kind)
+        {
+            case DataCellKind.Muted:
+                b.OpenElement(0, "span"); b.AddAttribute(1, "class", "text-muted"); b.AddContent(2, Text(v)); b.CloseElement();
+                break;
+            case DataCellKind.DateTime:
+            case DataCellKind.Date:
+                b.OpenElement(3, "bdi"); b.AddAttribute(4, "dir", "ltr"); b.AddContent(5, When(v, c.Kind == DataCellKind.DateTime)); b.CloseElement();
+                break;
+            case DataCellKind.Badge:
+                var toneName = c.Tone?.Invoke(item);
+                Tone? tone = string.IsNullOrWhiteSpace(toneName) ? Components.Tone.Neutral : toneName.Equals("none", StringComparison.OrdinalIgnoreCase) ? null : Enum.Parse<Tone>(toneName, true);
+                b.OpenComponent<PemsBadge>(6);
+                b.AddAttribute(7, nameof(PemsBadge.Options), new BadgeOptions { Label = TranslatableText.Literal(Text(v)), Tone = tone });
+                b.CloseComponent();
+                break;
+            case DataCellKind.Code:
+                b.OpenElement(12, "code"); b.AddContent(13, Text(v)); b.CloseElement();
+                break;
+            case DataCellKind.Pre:
+                b.OpenElement(8, "pre"); b.AddAttribute(9, "class", "mb-0 small"); b.AddContent(10, Text(v)); b.CloseElement();
+                break;
+            default:
+                if (v is CellNode node) b.AddContent(14, Node(node));
+                else if (v is Microsoft.AspNetCore.Html.IHtmlContent html) b.AddMarkupContent(11, Markup(html));   // like a Razor @expression: markup the page built is written as is
+                else b.AddContent(11, Text(v));
+                break;
+        }
+    };
+
+    private RenderFragment Nodes(IReadOnlyList<CellNode> nodes) => b => { foreach (var n in nodes) b.AddContent(0, Node(n)); };
+
+    private RenderFragment Node(CellNode node) => b =>
+    {
+        switch (node)
+        {
+            case CellText t: b.AddContent(0, t.Text); break;
+            case CellGroup g: b.AddContent(1, Nodes(g.Children)); break;
+            case CellSpan s:
+                b.OpenElement(2, s.Tag);
+                if (!string.IsNullOrWhiteSpace(s.Css)) b.AddAttribute(3, "class", s.Css);
+                if (!string.IsNullOrEmpty(s.Title)) b.AddAttribute(4, "title", s.Title);
+                if (!string.IsNullOrEmpty(s.Dir)) b.AddAttribute(5, "dir", s.Dir);
+                b.AddContent(6, Nodes(s.Children)); b.CloseElement();
+                break;
+            case CellIcon i:
+                b.OpenComponent<PemsIcon>(7); b.AddAttribute(8, nameof(PemsIcon.Options), new IconOptions { Name = i.Name, Css = i.Css }); b.CloseComponent();
+                break;
+            case CellBadge g:
+                b.OpenComponent<PemsBadge>(9);
+                b.AddAttribute(10, nameof(PemsBadge.Options), new BadgeOptions
+                {
+                    Label = TranslatableText.Literal(g.Text), CssClass = g.Css,
+                    Tone = string.IsNullOrWhiteSpace(g.Tone) ? Components.Tone.Neutral : g.Tone.Equals("none", StringComparison.OrdinalIgnoreCase) ? null : Enum.Parse<Tone>(g.Tone, true)
+                });
+                b.CloseComponent();
+                break;
+            case CellButton bt:
+                var attrs = new Dictionary<string, object>();
+                if (!string.IsNullOrEmpty(bt.Href)) attrs["href"] = bt.Href;
+                if (bt.Attrs is not null) foreach (var (k, val) in bt.Attrs) attrs[k] = val;
+                b.OpenComponent<PemsButtonFrame>(17);
+                b.AddAttribute(18, nameof(PemsButtonFrame.Options), new ButtonFrameOptions { Tone = bt.Tone, Size = bt.Size, Outline = bt.Outline, Css = bt.Css, Plain = bt.Plain, As = "a", Attributes = attrs.Count == 0 ? null : attrs });
+                b.AddAttribute(19, nameof(PemsButtonFrame.ChildContent), Nodes(bt.Children));
+                b.CloseComponent();
+                break;
+            case CellLink l:
+                b.OpenElement(11, "a");
+                if (!string.IsNullOrEmpty(l.Href)) b.AddAttribute(12, "href", l.Href);
+                if (!string.IsNullOrWhiteSpace(l.Css)) b.AddAttribute(13, "class", l.Css);
+                b.AddContent(14, Nodes(l.Children)); b.CloseElement();
+                break;
+            case CellCode c:
+                b.OpenElement(15, "code"); b.AddContent(16, Nodes(c.Children)); b.CloseElement();
+                break;
+        }
+    };
+
+    // like a Razor @expression: ToString() in the current culture, null is empty
+    private static string Markup(Microsoft.AspNetCore.Html.IHtmlContent content)
+    {
+        using var writer = new StringWriter();
+        content.WriteTo(writer, System.Text.Encodings.Web.HtmlEncoder.Default);
+        return writer.ToString();
+    }
+
+    private static string Text(object? v) => v?.ToString() ?? "";
+    private static string When(object? v, bool withTime) => v switch
+    {
+        DateTime d => d.ToString(withTime ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd"),
+        DateTimeOffset d => d.ToString(withTime ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd"),
+        _ => Text(v)
+    };
+}

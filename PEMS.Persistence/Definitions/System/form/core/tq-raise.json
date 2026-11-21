@@ -1,0 +1,193 @@
+{
+  "kind": "form",
+  "key": "tq-raise",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New TQ / TSR / RFI",
+    "fa": "TQ / TSR / RFI جدید"
+  },
+  "description": {
+    "en": "New TQ / TSR / RFI",
+    "fa": "TQ / TSR / RFI جدید"
+  },
+  "payload": {
+    "id": "tq-raise",
+    "title": {
+      "en": "New TQ / TSR / RFI",
+      "fa": "TQ / TSR / RFI جدید"
+    },
+    "submitLabel": {
+      "en": "Raise",
+      "fa": "ثبت"
+    },
+    "actionKey": "tq-raise",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "queryType",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "TQ",
+            "label": {
+              "en": "TQ",
+              "fa": "TQ"
+            }
+          },
+          {
+            "value": "TSR",
+            "label": {
+              "en": "TSR",
+              "fa": "TSR"
+            }
+          },
+          {
+            "value": "RFI",
+            "label": {
+              "en": "RFI",
+              "fa": "RFI"
+            }
+          }
+        ]
+      },
+      {
+        "name": "subject",
+        "label": {
+          "en": "Subject",
+          "fa": "موضوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 300
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "text",
+        "maxLength": 4000
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "tq-projects"
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "tq-disciplines"
+      },
+      {
+        "name": "relatedDocumentId",
+        "label": {
+          "en": "Related document id",
+          "fa": "شناسه‌ی سند مرتبط"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "relatedEquipmentId",
+        "label": {
+          "en": "Related equipment id",
+          "fa": "شناسه‌ی تجهیز مرتبط"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "requiredResponseDate",
+        "label": {
+          "en": "Required response date",
+          "fa": "تاریخ پاسخ مورد نیاز"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Low",
+            "label": {
+              "en": "Low",
+              "fa": "کم"
+            }
+          },
+          {
+            "value": "Normal",
+            "label": {
+              "en": "Normal",
+              "fa": "عادی"
+            }
+          },
+          {
+            "value": "High",
+            "label": {
+              "en": "High",
+              "fa": "زیاد"
+            }
+          },
+          {
+            "value": "Urgent",
+            "label": {
+              "en": "Urgent",
+              "fa": "فوری"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

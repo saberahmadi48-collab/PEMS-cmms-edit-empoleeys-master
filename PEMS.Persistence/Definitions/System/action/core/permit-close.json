@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "permit-close",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close the permit",
+    "fa": "بستن مجوز"
+  },
+  "description": {
+    "en": "Close the permit",
+    "fa": "بستن مجوز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PermitPage",
+      "action": "Close",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "id": "field:id",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The permit was closed.",
+      "fa": "Permit بسته شد."
+    },
+    "redirect": "/Permit/Details/{id}",
+    "permission": "Permit.Close",
+    "stepUp": {
+      "resource": "Permit",
+      "action": "Close"
+    }
+  }
+}

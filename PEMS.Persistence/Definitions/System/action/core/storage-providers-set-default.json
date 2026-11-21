@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "storage-providers-set-default",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set as default",
+    "fa": "تنظیم به‌عنوان پیش‌فرض"
+  },
+  "description": {
+    "en": "Set as default",
+    "fa": "تنظیم به‌عنوان پیش‌فرض"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StorageProvider",
+      "action": "SetDefault",
+      "args": {
+        "id": "field:id",
+        "modifiedBy": "context:userName"
+      }
+    },
+    "success": {
+      "en": "Default provider updated.",
+      "fa": "ارائه‌دهنده‌ی پیش‌فرض به‌روز شد."
+    },
+    "redirect": "/p/storage-providers"
+  }
+}

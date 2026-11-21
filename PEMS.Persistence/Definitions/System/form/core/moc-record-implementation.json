@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "moc-record-implementation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the implementation",
+    "fa": "ثبت اجرا"
+  },
+  "description": {
+    "en": "Record the implementation",
+    "fa": "ثبت اجرا"
+  },
+  "payload": {
+    "id": "moc-record-implementation",
+    "title": {
+      "en": "Record the implementation",
+      "fa": "ثبت اجرا"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "moc-record-implementation",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "mocId",
+        "label": {
+          "en": "MOC id",
+          "fa": "شناسه‌ی MOC"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "implementationPlan",
+        "label": {
+          "en": "Implementation",
+          "fa": "شرح اجرا"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 4000
+      }
+    ]
+  }
+}

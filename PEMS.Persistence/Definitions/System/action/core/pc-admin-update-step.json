@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "pc-admin-update-step",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Update a workflow step",
+    "fa": "ویرایش گام مسیر"
+  },
+  "description": {
+    "en": "Update a workflow step",
+    "fa": "ویرایش گام مسیر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "UpdateStep",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "stepId": "field:stepId",
+        "order": "field:order",
+        "isActive": "field:isActive",
+        "conditionKey": "field:conditionKey"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/p/pc-admin"
+  }
+}

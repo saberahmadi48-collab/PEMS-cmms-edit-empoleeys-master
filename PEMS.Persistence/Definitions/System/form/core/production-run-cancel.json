@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "production-run-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel the run",
+    "fa": "لغو اجرا"
+  },
+  "description": {
+    "en": "Cancel the run",
+    "fa": "لغو اجرا"
+  },
+  "payload": {
+    "id": "production-run-cancel",
+    "title": {
+      "en": "Cancel the run",
+      "fa": "لغو اجرا"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-run-cancel",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Run id",
+          "fa": "شناسه‌ی اجرا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      }
+    ]
+  }
+}

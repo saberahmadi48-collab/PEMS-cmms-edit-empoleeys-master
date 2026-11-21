@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "mmd-update-condition-priority-mapping",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "UpdateConditionPriorityMapping",
+    "fa": "UpdateConditionPriorityMapping"
+  },
+  "description": {
+    "en": "UpdateConditionPriorityMapping",
+    "fa": "UpdateConditionPriorityMapping"
+  },
+  "payload": {
+    "id": "mmd-update-condition-priority-mapping",
+    "title": {
+      "en": "UpdateConditionPriorityMapping",
+      "fa": "UpdateConditionPriorityMapping"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-update-condition-priority-mapping",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "id"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "priority"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      }
+    ]
+  }
+}

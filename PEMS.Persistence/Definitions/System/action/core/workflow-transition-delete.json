@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "workflow-transition-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a transition",
+    "fa": "حذف گذار"
+  },
+  "description": {
+    "en": "Remove a transition",
+    "fa": "حذف گذار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "DeleteTransition",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Transition removed.",
+      "fa": "گذار حذف شد."
+    },
+    "redirect": "/p/workflow-management"
+  }
+}

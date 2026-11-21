@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "material-requisitions-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material requisitions (index) (old address)",
+    "fa": "Material requisitions (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Material requisitions (index) (old address)",
+    "fa": "Material requisitions (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaterialRequisition/Index",
+    "target": "/p/material-requisitions",
+    "permanent": false
+  }
+}

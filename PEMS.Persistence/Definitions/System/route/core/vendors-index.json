@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "vendors-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendors (index) (old address)",
+    "fa": "Vendors (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Vendors (index) (old address)",
+    "fa": "Vendors (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Vendor/Index",
+    "target": "/p/vendors",
+    "permanent": false
+  }
+}

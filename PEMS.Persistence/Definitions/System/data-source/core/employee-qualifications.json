@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "employee-qualifications",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employee qualifications",
+    "fa": "صلاحیت‌های کارمند"
+  },
+  "description": {
+    "en": "Employee qualifications",
+    "fa": "صلاحیت‌های کارمند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Employee",
+      "action": "Qualifications",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

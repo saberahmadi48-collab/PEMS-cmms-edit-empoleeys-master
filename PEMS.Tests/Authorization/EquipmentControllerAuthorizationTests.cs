@@ -62,6 +62,7 @@ public class EquipmentControllerAuthorizationTests
             string? area, string? unit, string? description, string? currentUserName) => throw new NotImplementedException();
         public Task<(bool Success, string? Error)> UpdateAsync(int id, string code, string name, int? parentId, string? plant,
             string? area, string? unit, string? description, string? currentUserName) => throw new NotImplementedException();
+        public Task<TreeNodePage> GetTreeNodesAsync(int? parentId, string? query, int page, int pageSize) => throw new NotImplementedException();
         public Task<List<int>> GetDescendantIdsAsync(IEnumerable<int> functionalLocationIds, bool includeSelf) => throw new NotImplementedException();
     }
 

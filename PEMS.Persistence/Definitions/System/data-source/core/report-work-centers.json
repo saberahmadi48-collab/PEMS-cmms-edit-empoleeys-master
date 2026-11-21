@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "report-work-centers",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work centers",
+    "fa": "مراکز کاری"
+  },
+  "description": {
+    "en": "Work centers",
+    "fa": "مراکز کاری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "WorkCenters"
+    }
+  }
+}

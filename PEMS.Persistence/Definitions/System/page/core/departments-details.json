@@ -1,0 +1,73 @@
+{
+  "kind": "page",
+  "key": "departments-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Departments details",
+    "fa": "جزئیات دپارتمان‌ها"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "departments-record",
+      "url": "/d/departments-grid",
+      "idField": "departmentId",
+      "fields": [
+        {
+          "key": "code",
+          "label": {
+            "en": "Code",
+            "fa": "کد"
+          }
+        },
+        {
+          "key": "name",
+          "label": {
+            "en": "Name",
+            "fa": "نام"
+          }
+        },
+        {
+          "key": "description",
+          "label": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "wide": true
+        },
+        {
+          "key": "employees",
+          "label": {
+            "en": "Active employees",
+            "fa": "کارکنان فعال"
+          },
+          "type": "number"
+        },
+        {
+          "key": "isActive",
+          "label": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "type": "bool"
+        }
+      ],
+      "backUrl": "/p/departments",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/departments-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

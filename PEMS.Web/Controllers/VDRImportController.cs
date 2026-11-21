@@ -50,6 +50,7 @@ public class VDRImportController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Spreadsheet)]
     public async Task<IActionResult> Upload(IFormFile file, int projectId)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "Create"))

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "help-history-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help article history",
+    "fa": "Help article history"
+  },
+  "description": {
+    "en": "Help article history",
+    "fa": "Help article history"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Help",
+      "action": "History",
+      "args": {
+        "articleId": "param:articleId"
+      }
+    }
+  }
+}

@@ -1,0 +1,621 @@
+{
+  "kind": "page",
+  "key": "contract-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contract",
+    "fa": "قرارداد"
+  },
+  "description": {
+    "en": "One contract with its reviews, revisions, documents, NTPs and kick-off meetings, and the workflow commands (page definition)",
+    "fa": "یک قرارداد با بررسی‌ها، بازنگری‌ها، اسناد، NTP و جلسه‌ی Kick-off و دستورهای گردش کار (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "contract-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "contract-record",
+            "fields": [
+              {
+                "key": "contractNo",
+                "label": {
+                  "en": "Contract",
+                  "fa": "قرارداد"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "vendor",
+                "label": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                }
+              },
+              {
+                "key": "scopeOfWork",
+                "label": {
+                  "en": "Scope of work",
+                  "fa": "محدوده"
+                },
+                "wide": true
+              },
+              {
+                "key": "contractValue",
+                "label": {
+                  "en": "Value",
+                  "fa": "مبلغ"
+                }
+              },
+              {
+                "key": "currency",
+                "label": {
+                  "en": "Currency",
+                  "fa": "ارز"
+                }
+              },
+              {
+                "key": "startDate",
+                "label": {
+                  "en": "Start",
+                  "fa": "شروع"
+                },
+                "type": "date"
+              },
+              {
+                "key": "endDate",
+                "label": {
+                  "en": "End",
+                  "fa": "پایان"
+                },
+                "type": "date"
+              },
+              {
+                "key": "purchaseOrdersCount",
+                "label": {
+                  "en": "Purchase orders",
+                  "fa": "سفارش‌های خرید"
+                }
+              },
+              {
+                "key": "requiresInspection",
+                "label": {
+                  "en": "Requires inspection",
+                  "fa": "نیازمند بازرسی"
+                }
+              },
+              {
+                "key": "tenderNumber",
+                "label": {
+                  "en": "Originating tender",
+                  "fa": "مناقصه‌ی مبدأ"
+                }
+              },
+              {
+                "key": "packageNumber",
+                "label": {
+                  "en": "Package",
+                  "fa": "پکیج"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/contract-head",
+              "idField": "contractId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/contract-submit-for-review?contractId={{params.id}}",
+                "text": {
+                  "en": "Submit for review",
+                  "fa": "ارسال برای بررسی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/contract-record-discipline-review?contractId={{params.id}}",
+                "text": {
+                  "en": "Record a discipline review",
+                  "fa": "ثبت بررسی دیسیپلین"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/contract-approve?contractId={{params.id}}",
+                "text": {
+                  "en": "Approve",
+                  "fa": "تأیید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/contract-reject?contractId={{params.id}}",
+                "text": {
+                  "en": "Reject",
+                  "fa": "رد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/contract-sign?contractId={{params.id}}",
+                "text": {
+                  "en": "Sign",
+                  "fa": "امضا"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/contract-mark-effective?contractId={{params.id}}",
+                "text": {
+                  "en": "Mark effective",
+                  "fa": "اجراپذیر کردن"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/contract-request-revision?contractId={{params.id}}",
+                "text": {
+                  "en": "Request a revision",
+                  "fa": "درخواست بازنگری"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/contract-complete?contractId={{params.id}}",
+                "text": {
+                  "en": "Complete",
+                  "fa": "تکمیل"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/contract-terminate?contractId={{params.id}}",
+                "text": {
+                  "en": "Terminate",
+                  "fa": "فسخ"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/contract-add-document?contractId={{params.id}}",
+                "text": {
+                  "en": "Add a document",
+                  "fa": "افزودن سند"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/contract-issue-ntp?contractId={{params.id}}",
+                "text": {
+                  "en": "Issue the NTP",
+                  "fa": "صدور NTP"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/contract-schedule-kickoff?contractId={{params.id}}",
+                "text": {
+                  "en": "Schedule the kick-off",
+                  "fa": "برنامه‌ریزی Kick-off"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/contracts",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "reviews",
+          "component": "def:related-table",
+          "options": {
+            "id": "reviews",
+            "title": {
+              "en": "Discipline reviews",
+              "fa": "بررسی دیسیپلین‌ها"
+            },
+            "url": "/d/contract-reviews?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "disciplineRole",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 180
+              },
+              {
+                "key": "isRequired",
+                "header": {
+                  "en": "Required",
+                  "fa": "الزامی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "reviewer",
+                "header": {
+                  "en": "Reviewer",
+                  "fa": "بررسی‌کننده"
+                },
+                "width": 180
+              },
+              {
+                "key": "decision",
+                "header": {
+                  "en": "Decision",
+                  "fa": "تصمیم"
+                },
+                "width": 110
+              },
+              {
+                "key": "comment",
+                "header": {
+                  "en": "Comment",
+                  "fa": "توضیح"
+                },
+                "width": 260
+              },
+              {
+                "key": "reviewDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 120,
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "revisions",
+          "component": "def:related-table",
+          "options": {
+            "id": "revisions",
+            "title": {
+              "en": "Revisions",
+              "fa": "بازنگری‌ها"
+            },
+            "url": "/d/contract-revisions?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "revisionNo",
+                "header": {
+                  "en": "No",
+                  "fa": "شماره"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "changeType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 110
+              },
+              {
+                "key": "previousValue",
+                "header": {
+                  "en": "Previous",
+                  "fa": "قبلی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "newValue",
+                "header": {
+                  "en": "New",
+                  "fa": "جدید"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 240
+              },
+              {
+                "key": "requestedBy",
+                "header": {
+                  "en": "Requested by",
+                  "fa": "درخواست"
+                },
+                "width": 160
+              },
+              {
+                "key": "approvedBy",
+                "header": {
+                  "en": "Approved by",
+                  "fa": "تأیید"
+                },
+                "width": 160
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "approve",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    },
+                    "url": "/f/contract-approve-revision?contractId={{params.id}}&contractRevisionId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "documents",
+          "component": "def:related-table",
+          "options": {
+            "id": "documents",
+            "title": {
+              "en": "Documents",
+              "fa": "اسناد"
+            },
+            "url": "/d/contract-documents?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "documentNo",
+                "header": {
+                  "en": "No",
+                  "fa": "شماره"
+                },
+                "width": 140
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 260
+              },
+              {
+                "key": "documentType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "clauseReference",
+                "header": {
+                  "en": "Clause",
+                  "fa": "بند"
+                },
+                "width": 110
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              },
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 120,
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "ntps",
+          "component": "def:related-table",
+          "options": {
+            "id": "ntps",
+            "title": {
+              "en": "NTPs",
+              "fa": "NTPها"
+            },
+            "url": "/d/contract-ntps?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "ntpNumber",
+                "header": {
+                  "en": "NTP",
+                  "fa": "NTP"
+                },
+                "width": 140
+              },
+              {
+                "key": "issuedDate",
+                "header": {
+                  "en": "Issued",
+                  "fa": "صدور"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "effectiveStartDate",
+                "header": {
+                  "en": "Effective from",
+                  "fa": "شروع مؤثر"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              }
+            ]
+          }
+        },
+        {
+          "id": "kickoffs",
+          "component": "def:related-table",
+          "options": {
+            "id": "kickoffs",
+            "title": {
+              "en": "Kick-off meetings",
+              "fa": "جلسات Kick-off"
+            },
+            "url": "/d/contract-kickoffs?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 260
+              },
+              {
+                "key": "meetingDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/meeting-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "itps",
+          "component": "def:related-table",
+          "options": {
+            "id": "itps",
+            "title": {
+              "en": "Linked ITPs",
+              "fa": "ITPهای مرتبط"
+            },
+            "url": "/d/contract-itps?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "itpNumber",
+                "header": {
+                  "en": "ITP",
+                  "fa": "ITP"
+                },
+                "width": 160
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Contracts.View"
+  }
+}

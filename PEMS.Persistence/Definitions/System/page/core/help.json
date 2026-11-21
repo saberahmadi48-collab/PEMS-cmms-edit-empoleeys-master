@@ -1,0 +1,128 @@
+{
+  "kind": "page",
+  "key": "help",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help Center",
+    "fa": "مرکز راهنما"
+  },
+  "description": {
+    "en": "Browse Help by module or search all articles in English and Persian (page definition)",
+    "fa": "راهنما را بر اساس ماژول مرور کنید یا در همه مقالات جستجو کنید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "help",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "help-filters",
+            "resetUrl": "/p/help",
+            "fields": [
+              {
+                "name": "q",
+                "label": {
+                  "en": "Search",
+                  "fa": "جستجو"
+                },
+                "kind": "text",
+                "value": "{{params.q}}"
+              },
+              {
+                "name": "categoryId",
+                "label": {
+                  "en": "Category",
+                  "fa": "دسته"
+                },
+                "kind": "select",
+                "value": "{{params.categoryId}}",
+                "options": []
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "categoryId",
+                "source": "/d/help-categories",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "articles",
+          "component": "data-grid",
+          "options": {
+            "id": "help-articles",
+            "idField": "code",
+            "columns": [
+              {
+                "key": "title",
+                "header": {
+                  "en": "Article",
+                  "fa": "مقاله"
+                },
+                "width": 320
+              },
+              {
+                "key": "category",
+                "header": {
+                  "en": "Category",
+                  "fa": "دسته"
+                },
+                "width": 200
+              },
+              {
+                "key": "articleType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 130
+              },
+              {
+                "key": "summary",
+                "header": {
+                  "en": "Summary",
+                  "fa": "خلاصه"
+                },
+                "width": 480
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/Help/Article?code={raw.code}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560,
+            "url": "/d/help-articles-grid?f.categoryId={{params.categoryId|url}}&f.q={{params.q|url}}"
+          }
+        }
+      ]
+    }
+  }
+}

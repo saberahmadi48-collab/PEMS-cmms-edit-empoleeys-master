@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "production-run-post-input",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Post an input to inventory",
+    "fa": "ارسال مصرف به موجودی"
+  },
+  "description": {
+    "en": "Post an input to inventory",
+    "fa": "ارسال مصرف به موجودی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "PostInputToInventory",
+      "args": {
+        "productionInputId": "field:productionInputId",
+        "warehouseId": "field:warehouseId",
+        "storageLocationId": "field:storageLocationId",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Posted to inventory.",
+      "fa": "به موجودی ارسال شد."
+    },
+    "redirect": "/ProductionRun/Details/{productionRunId}"
+  }
+}

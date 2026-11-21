@@ -1,0 +1,97 @@
+{
+  "key": "empty-state",
+  "component": "PEMS.UI.Components.PemsEmptyState",
+  "category": "feedback",
+  "icon": "bi-inbox",
+  "nameKey": "component.empty-state",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "description": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "icon": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "action": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "label": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "href": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "href"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "title"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "EmptyStateOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "title": {
+      "en": "No records",
+      "fa": "رکوردی نیست"
+    },
+    "icon": "bi-inbox"
+  }
+}

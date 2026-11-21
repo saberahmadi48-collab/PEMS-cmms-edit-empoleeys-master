@@ -1,0 +1,47 @@
+{
+  "key": "related-act",
+  "component": "PEMS.UI.Components.PemsRelatedAct",
+  "category": "list",
+  "icon": "bi-x-lg",
+  "nameKey": "component.related-act",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "icon": {
+        "type": "string"
+      },
+      "label": {
+        "type": "string"
+      },
+      "tone": {
+        "type": "string"
+      },
+      "form": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "icon",
+      "label"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "RelatedActOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "icon": "bi-x-lg",
+    "label": "Remove",
+    "tone": "text-danger"
+  }
+}

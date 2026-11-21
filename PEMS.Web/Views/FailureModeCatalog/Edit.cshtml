@@ -1,0 +1,48 @@
+@model PEMS.Application.DTOs.FailureModeEditDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.ViewModels
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var classes = (List<LookupItem>)ViewBag.Classes;
+    var causes = (List<LookupItem>)ViewBag.Causes;
+    var errors = (List<string>)ViewBag.Errors;
+}
+
+<pems-content-card css="pems-s-71e17938">
+    <pems-heading level="6" class="mb-3">@Localizer["Rcm_FailureMode"]</pems-heading>
+    @await Html.PartialAsync("_RcmErrors", errors)
+    <pems-form method="post" asp-action="Edit">
+        <input type="hidden" name="FailureModeId" value="@Model.FailureModeId" />
+        <pems-row gap="3">
+            <pems-col md="4"><pems-label>@Localizer["Rcm_Code"] *</pems-label><pems-input name="Code" value="@Model.Code" required /></pems-col>
+            <pems-col md="4"><pems-label>@Localizer["Rcm_NameEn"] *</pems-label><pems-input name="Name" value="@Model.Name" required /></pems-col>
+            <pems-col md="4"><pems-label>@Localizer["Rcm_NameFa"]</pems-label><pems-input name="NameFa" value="@Model.NameFa" dir="rtl" /></pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Rcm_EquipmentClass"]</pems-label>
+                <pems-select name="EquipmentClassId">
+                    <option value="">@Localizer["Rcm_AllClasses"]</option>
+                    @foreach (var c in classes) { <option value="@c.Id" selected="@(Model.EquipmentClassId == c.Id)">@c.Text (@c.Code)</option> }
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Rcm_FailureCauses"]</pems-label>
+                <pems-select name="CauseIds" multiple size="6">
+                    @foreach (var c in causes) { <option value="@c.Id" selected="@Model.CauseIds.Contains(c.Id)">@c.Text</option> }
+                </pems-select>
+            </pems-col>
+            <pems-col span="12"><pems-label>@Localizer["Rcm_Description"]</pems-label><pems-textarea name="Description" rows="2">@Model.Description</pems-textarea></pems-col>
+            <pems-col span="12">
+                <pems-check-row>
+                    <pems-input type="checkbox" name="IsActive" value="true" id="act" checked="@Model.IsActive" kind="check" />
+                    <label class="form-check-label" for="act">@Localizer["Rcm_Active"]</label>
+                    <input type="hidden" name="IsActive" value="false" />
+                </pems-check-row>
+            </pems-col>
+        </pems-row>
+        <pems-action-bar css="mt-4">
+            <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>

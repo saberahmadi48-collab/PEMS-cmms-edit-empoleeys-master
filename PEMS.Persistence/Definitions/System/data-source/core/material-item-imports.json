@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "material-item-imports",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import sources of a material",
+    "fa": "منبع ورود یک ماده"
+  },
+  "description": {
+    "en": "Import sources of a material",
+    "fa": "منبع ورود یک ماده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaterialItem",
+      "action": "Imports",
+      "args": {
+        "materialItemId": "param:materialItemId"
+      }
+    }
+  }
+}

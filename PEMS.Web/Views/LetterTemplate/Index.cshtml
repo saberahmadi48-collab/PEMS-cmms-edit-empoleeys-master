@@ -1,0 +1,63 @@
+@model List<PEMS.Application.DTOs.LetterTemplateDto>
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+
+@section Styles { <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" /> }
+
+@* SCRUM-337: built from the PEMS.UI list-page component; the help line is the heading tooltip, "Correspondence" moved to the page menu. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer["LtT_Manage"]" heading-title="@Localizer["LtT_Help"]" total="@Model.Count">
+            <pems-list-tools>
+                <pems-list-menu id="ltMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">
+                    <pems-bullet><pems-link class="dropdown-item" asp-controller="Letter" asp-action="Index"><pems-icon name="bi-arrow-left-short" aria-hidden="true" /> @Localizer["Correspondence"]</pems-link></pems-bullet>
+                </pems-list-menu>
+                <pems-list-new href="@Url.Action("Edit", new { id = 0 })" text="@Localizer["LtT_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+        <pems-list-grid>
+            <pems-list-table empty="@(!Model.Any())" empty-text="@Localizer["LtT_Empty"]">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header scope="col">@Localizer["LtT_Name"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Type"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Lt_Subject"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Lt_Priority"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Lt_Confidentiality"]</pems-table-header>
+                        <pems-table-header scope="col">@Localizer["Status"]</pems-table-header>
+                        <pems-table-header scope="col"><span class="visually-hidden">@Localizer["Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var t in Model)
+                    {
+                        <pems-table-row class="@(t.IsActive ? "lp-row" : "lp-row text-muted")">
+                            <pems-table-cell class="fw-semibold">@t.Name</pems-table-cell>
+                            <pems-table-cell>@(t.LetterType ?? Localizer["LtT_AllTypes"].Value)</pems-table-cell>
+                            <pems-table-cell>@t.Subject</pems-table-cell>
+                            <pems-table-cell>@Localizer["Lt_P_" + t.Priority]</pems-table-cell>
+                            <pems-table-cell>@t.ConfidentialityLevel</pems-table-cell>
+                            <pems-table-cell>
+                                @if (t.IsActive) { <pems-badge tone="success"><pems-icon name="bi-check-circle" aria-hidden="true" /> @Localizer["LtT_Active"]</pems-badge> }
+                                else { <pems-badge tone="neutral"><pems-icon name="bi-slash-circle" aria-hidden="true" /> @Localizer["LtT_Inactive"]</pems-badge> }
+                            </pems-table-cell>
+                            <pems-table-cell class="text-nowrap">
+                                <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Preview" asp-route-id="@t.LetterTemplateId"><pems-icon name="bi-eye" aria-hidden="true" /> @Localizer["LtT_Preview"]</pems-button>
+                                <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@t.LetterTemplateId"><pems-icon name="bi-pencil" aria-hidden="true" /> @Localizer["Edit"]</pems-button>
+                                <pems-form asp-action="SetActive" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@t.LetterTemplateId" />
+                                    <input type="hidden" name="active" value="@(t.IsActive ? "false" : "true")" />
+                                    <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer[t.IsActive ? "LtT_Deactivate" : "LtT_Activate"]</pems-button>
+                                </pems-form>
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }

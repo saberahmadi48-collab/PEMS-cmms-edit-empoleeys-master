@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "procurement-package-approvals",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Package approvals",
+    "fa": "Package approvals"
+  },
+  "description": {
+    "en": "Package approvals",
+    "fa": "Package approvals"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ProcurementPackage",
+      "action": "Approvals",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

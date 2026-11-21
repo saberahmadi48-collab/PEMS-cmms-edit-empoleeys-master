@@ -1,0 +1,40 @@
+{
+  "kind": "action",
+  "key": "work-order-create-crew",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create crew for work order",
+    "fa": "ساخت Crew برای Work Order"
+  },
+  "description": {
+    "en": "Create crew for work order",
+    "fa": "ساخت Crew برای Work Order"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Crew",
+      "action": "Create",
+      "sectionGuard": {
+        "section": "Crew",
+        "action": "Add",
+        "workOrderId": "field:workOrderId",
+        "recordRef": "field:code",
+        "audit": "Code={code}; Name={name}",
+        "recordRefFromResult": true
+      },
+      "args": {
+        "code": "field:code",
+        "name": "field:name",
+        "workOrderId": "field:workOrderId"
+      }
+    },
+    "success": {
+      "en": "Crew created.",
+      "fa": "Crew ساخته شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

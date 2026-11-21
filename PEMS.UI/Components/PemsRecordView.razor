@@ -1,0 +1,59 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("record-view", Category = "display", Icon = "bi-card-text")]
+@using System.Globalization
+@inject IPemsLocale Locale
+@if (Options.Values is null)
+{
+    <p class="pems-state pems-state--empty" role="status" id="@Options.Id">@Locale.Text(Options.Texts.NotFound)</p>
+}
+else
+{
+    <dl class="@Join("pems-info", Options.Css, Options.PageClass)" id="@Options.Id" @attributes="Options.Attributes">
+        @foreach (var f in Options.Fields)
+        {
+            <div class="@(f.Wide ? "pems-info__item pems-info__item--wide" : "pems-info__item")">
+                <dt class="pems-info__label">@Locale.Text(f.Label)</dt>
+                <dd class="@(f.Mono ? "pems-info__value pems-info__value--mono" : "pems-info__value")">@Show(f, f.Template is null ? Options.Values.GetValueOrDefault(f.Key) : Merge(f.Template))</dd>
+            </div>
+        }
+    </dl>
+}
+@code {
+    [Parameter, EditorRequired] public RecordViewOptions Options { get; set; } = default!;
+
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+
+    private static readonly System.Text.RegularExpressions.Regex MergeToken = new(@"\{\{([A-Za-z0-9_]{1,64})\}\}", System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    /// <summary>The template with every {{key}} replaced by the record's property (empty when the record has none).</summary>
+    private string Merge(string template) => MergeToken.Replace(template, m => Options.Values?.GetValueOrDefault(m.Groups[1].Value) ?? "");
+
+    private RenderFragment Show(RecordField f, string? raw) => b =>
+    {
+        if (string.IsNullOrWhiteSpace(raw)) { b.AddContent(0, Locale.Text(Options.Texts.Empty)); return; }
+        switch (f.Type)
+        {
+            case "bool":
+                b.AddContent(1, Locale.Text(string.Equals(raw, "true", StringComparison.OrdinalIgnoreCase) ? Options.Texts.Yes : Options.Texts.No));
+                break;
+            case "badge":
+                b.OpenElement(2, "span");
+                b.AddAttribute(3, "class", "badge text-bg-secondary");
+                b.AddContent(4, raw);
+                b.CloseElement();
+                break;
+            case "number" when decimal.TryParse(raw, NumberStyles.Any, CultureInfo.InvariantCulture, out var n):
+                b.OpenElement(5, "span"); b.AddAttribute(6, "class", "pems-info__num"); b.AddAttribute(7, "dir", "ltr"); b.AddContent(8, Locale.Format(n, ValueKind.Number)); b.CloseElement();
+                break;
+            case "date" when DateTime.TryParse(raw, CultureInfo.InvariantCulture, DateTimeStyles.None, out var d):
+                b.AddContent(9, Locale.Format(d, ValueKind.Date));
+                break;
+            case "datetime" when DateTime.TryParse(raw, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt):
+                b.AddContent(10, Locale.Format(dt, ValueKind.DateTime));
+                break;
+            default:
+                b.AddContent(11, raw);
+                break;
+        }
+    };
+}

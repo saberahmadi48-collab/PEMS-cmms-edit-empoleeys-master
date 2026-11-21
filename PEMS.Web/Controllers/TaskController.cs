@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
-using PEMS.Persistence.Context;
+using PEMS.Web.Resources;
 using PEMS.Web.Security;
 
 namespace PEMS.Web.Controllers;
@@ -11,22 +11,29 @@ namespace PEMS.Web.Controllers;
 /// <summary>
 /// وظایف مستقل (طبق نمونه‌ی کارتابل مرجع Pargar/Fonix: "اقدام وظایف" / "پیگیری وظایف") -
 /// جدا از گردش‌کار ارجاع نامه، می‌تواند کاملاً مستقل باشد یا به هر موجودیتی وصل شود.
+/// Task Manager (فاز ۰): مسیرها و کلیدهای مجوز قبلی حفظ شده‌اند؛ تغییر وضعیت حالا سطح-شیء (فقط درگیرها/Lead)،
+/// فقط گذارهای مجاز و با کنترل RowVersion از ITaskManagerService انجام می‌شود. Controller به DbContext دسترسی ندارد.
 /// </summary>
 public class TaskController : Controller
 {
     private readonly ITaskService _service;
-    private readonly PEMSDbContext _context;
+    private readonly ITaskManagerService _manager;
     private readonly ICurrentUserService _currentUser;
     private readonly IPermissionService _permissionService;
+    private readonly IStringLocalizer<SharedResource>? _l;
 
-    public TaskController(ITaskService service, PEMSDbContext context, ICurrentUserService currentUser,
-        IPermissionService permissionService)
+    public TaskController(ITaskService service, ITaskManagerService manager, ICurrentUserService currentUser,
+        IPermissionService permissionService, IStringLocalizer<SharedResource>? localizer = null)
     {
         _service = service;
-        _context = context;
+        _manager = manager;
         _currentUser = currentUser;
         _permissionService = permissionService;
+        _l = localizer;
     }
+
+    private Task<TaskActor> ActorAsync() => _manager.ResolveActorAsync(_currentUser.UserId, _currentUser.Roles, _currentUser.FullName);
+
 
     // طبق سند «PEMS — Global Data Grid Standard» (فاز ۶B - Wave A): قبلاً کل جدول فیلترشده با
     // ToListAsync (بدون Skip/Take) بارگذاری می‌شد.
@@ -40,50 +47,44 @@ public class TaskController : Controller
 
         ViewData["Title"] = "Tasks";
         ViewData["Section"] = "Correspondence Management";
+        tab = tab == "followup" ? "followup" : "action";
+        ViewBag.Tab = tab;
+        ViewBag.CanEdit = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Task", "Edit");
+        ViewBag.CanCreate = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Task", "Create");
 
         var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
 
         if (_currentUser.UserId == null)
+        {
+            ViewBag.Employees = new List<EligibleAssigneeDto>();
             return View(new PagedResult<TaskItemDto> { Page = page, PageSize = normalizedPageSize });
+        }
 
         var tasks = tab == "followup"
             ? await _service.GetAssignedByMeAsync(_currentUser.UserId.Value, page: page, pageSize: normalizedPageSize)
             : await _service.GetMyActionItemsAsync(_currentUser.UserId.Value, page: page, pageSize: normalizedPageSize);
 
-        ViewBag.Tab = tab;
-
-        ViewBag.Employees = await _context.Employees.Where(x => x.IsActive)
-            .Select(x => new { x.EmployeeId, Name = x.FirstName + " " + x.LastName }).ToListAsync();
+        ViewBag.Employees = (await _manager.GetEligibleAssigneesAsync(null, await ActorAsync())).Candidates;
 
         return View(tasks);
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(string title, string? description, int? assignedToEmployeeId,
-        DateTime? dueDate, string priority)
+    /// <summary>صفحه‌ی جزئیات وظیفه (شخصی یا فضا). وظیفه‌ی غیرقابل‌دید = 404 (وجودش افشا نمی‌شود).</summary>
+    [HttpGet]
+    public async Task<IActionResult> Details(int id)
     {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Task", "Create"))
+        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Task", "View"))
             return Forbid();
+        var actor = await ActorAsync();
+        var detail = await _manager.GetDetailAsync(id, actor);
+        if (detail == null) return NotFound();
 
-        await _service.CreateAsync(title, description, assignedToEmployeeId, dueDate, priority,
-            null, null, _currentUser.UserId, _currentUser.FullName);
-
-        TempData["Message"] = "Task created";
-        return RedirectToAction(nameof(Index));
-    }
-
-    // طبق ممیزی مستقل فاز ۶B Wave A (P0): تغییر وضعیت یک رکورد موجود است - طبق الگوی پروژه
-    // (مثلاً MaterialRequisitionController.ChangeStatus) نیازمند مجوز "Edit" است، نه یک مجوز
-    // اختصاصیِ جدید.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> UpdateStatus(int taskItemId, string status, string? completionNote, string tab = "action")
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Task", "Edit"))
-            return Forbid();
-
-        await _service.UpdateStatusAsync(taskItemId, status, completionNote);
-        return RedirectToAction(nameof(Index), new { tab });
+        ViewData["Title"] = detail.Item.Key ?? $"#{detail.Item.Id}";
+        ViewData["Section"] = "Task Manager";
+        ViewBag.History = await _manager.GetHistoryAsync(id, actor) ?? new List<WorkItemHistoryEntryDto>();
+        ViewBag.Assignees = detail.CanAssign
+            ? await _manager.GetEligibleAssigneesAsync(detail.Item.WorkSpaceId, actor)
+            : new AssigneeResolutionDto();
+        return View(detail);
     }
 }

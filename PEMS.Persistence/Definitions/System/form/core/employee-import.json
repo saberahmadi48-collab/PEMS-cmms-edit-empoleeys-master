@@ -1,0 +1,38 @@
+{
+  "kind": "form",
+  "key": "employee-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import employees",
+    "fa": "ایمپورت کارمندان"
+  },
+  "description": {
+    "en": "Import employees",
+    "fa": "ایمپورت کارمندان"
+  },
+  "payload": {
+    "id": "employee-import",
+    "title": {
+      "en": "Import employees (xlsx: code, first name, last name, position, email, phone, department, discipline)",
+      "fa": "ایمپورت کارمندان (xlsx: کد، نام، نام خانوادگی، سمت، ایمیل، تلفن، دپارتمان، دیسیپلین)"
+    },
+    "submitLabel": {
+      "en": "Import",
+      "fa": "ایمپورت"
+    },
+    "actionKey": "employee-import",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "file",
+        "label": {
+          "en": "Spreadsheet",
+          "fa": "صفحه‌گسترده"
+        },
+        "kind": "file",
+        "required": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "cmms-readiness-class",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Class readiness (old address)",
+    "fa": "آمادگی کلاس (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Class readiness (old address)",
+    "fa": "آمادگی کلاس (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "CmmsReadiness/ClassDetail/{*rest}",
+    "target": "/p/cmms-readiness-equipment",
+    "permanent": false
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "home-documents-by-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Documents by status",
+    "fa": "مدارک بر اساس وضعیت"
+  },
+  "description": {
+    "en": "Documents by status",
+    "fa": "مدارک بر اساس وضعیت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Home",
+      "action": "DocumentsByStatus",
+      "args": {}
+    }
+  }
+}

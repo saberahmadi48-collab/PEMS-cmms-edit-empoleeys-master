@@ -1,0 +1,47 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("breadcrumb", Category = "navigation", Icon = "bi-chevron-double-right")]
+@inject IPemsLocale Locale
+@if (Options.Skin == ComponentSkin.Bootstrap)
+{
+    <nav class="mb-2" aria-label="@Locale.Text(Options.Label)">
+        <ol class="breadcrumb mb-0 small">
+            @foreach (var (item, last) in Entries)
+            {
+                <li class="@(last ? "breadcrumb-item active" : "breadcrumb-item")" aria-current="@(last ? "page" : null)">
+                    @if (last || item.Href is null)
+                    {
+                        <span>@Locale.Text(item.Label)</span>
+                    }
+                    else
+                    {
+                        <a href="@item.Href">@Locale.Text(item.Label)</a>
+                    }
+                </li>
+            }
+        </ol>
+    </nav>
+}
+else
+{
+    <nav class="pems-breadcrumb" aria-label="@Locale.Text(Options.Label)">
+        <ol class="pems-breadcrumb__list">
+            @foreach (var (item, last) in Entries)
+            {
+                <li class="pems-breadcrumb__item">
+                    @if (last || item.Href is null)
+                    {
+                        <span aria-current="@(last ? "page" : null)">@Locale.Text(item.Label)</span>
+                    }
+                    else
+                    {
+                        <a href="@item.Href">@Locale.Text(item.Label)</a>
+                    }
+                </li>
+            }
+        </ol>
+    </nav>
+}
+@code {
+    [Parameter, EditorRequired] public BreadcrumbOptions Options { get; set; } = default!;
+    private IEnumerable<(Crumb Item, bool Last)> Entries => Options.Items.Select((c, i) => (c, i == Options.Items.Count - 1));
+}

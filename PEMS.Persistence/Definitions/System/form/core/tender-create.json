@@ -1,0 +1,120 @@
+{
+  "kind": "form",
+  "key": "tender-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New tender",
+    "fa": "مناقصه جدید"
+  },
+  "description": {
+    "en": "New tender",
+    "fa": "مناقصه جدید"
+  },
+  "payload": {
+    "id": "tender-create",
+    "title": {
+      "en": "New tender",
+      "fa": "مناقصه جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "tender-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "procurementPackageId",
+        "label": {
+          "en": "Package id",
+          "fa": "شناسه‌ی پکیج"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 300
+      },
+      {
+        "name": "issueDate",
+        "label": {
+          "en": "Issue date",
+          "fa": "تاریخ انتشار"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "responseDeadline",
+        "label": {
+          "en": "Response deadline",
+          "fa": "مهلت پاسخ"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "requiresVendorQualification",
+        "label": {
+          "en": "Requires vendor qualification",
+          "fa": "نیازمند احراز صلاحیت فروشنده"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "technicalRequirements",
+        "label": {
+          "en": "Technical requirements",
+          "fa": "الزامات فنی"
+        },
+        "kind": "text",
+        "maxLength": 4000
+      },
+      {
+        "name": "commercialRequirements",
+        "label": {
+          "en": "Commercial requirements",
+          "fa": "الزامات بازرگانی"
+        },
+        "kind": "text",
+        "maxLength": 4000
+      },
+      {
+        "name": "inspectionRequirements",
+        "label": {
+          "en": "Inspection requirements",
+          "fa": "الزامات بازرسی"
+        },
+        "kind": "text",
+        "maxLength": 4000
+      },
+      {
+        "name": "contractualRequirements",
+        "label": {
+          "en": "Contractual requirements",
+          "fa": "الزامات قراردادی"
+        },
+        "kind": "text",
+        "maxLength": 4000
+      }
+    ]
+  }
+}

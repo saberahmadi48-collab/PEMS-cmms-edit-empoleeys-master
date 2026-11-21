@@ -13,80 +13,59 @@
     };
 }
 
-<div class="content-card mb-3">
-    <div class="row g-3">
-        <div class="col-md-3"><strong>@Localizer["File:"]</strong> @Model.FileName</div>
-        <div class="col-md-2"><strong>Source Rows:</strong> @Model.SourceRowCount</div>
-        <div class="col-md-2"><strong>Expanded:</strong> @Model.ExpandedLocationCount</div>
-        <div class="col-md-2"><strong>New / Existing:</strong> @Model.NewCount / @Model.ExistingCount</div>
-        <div class="col-md-1"><strong>Conflicts:</strong> @Model.ConflictCount</div>
-        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
-    </div>
+<pems-content-card css="mb-3">
+    <pems-row gap="3">
+        <pems-col md="3"><strong>@Localizer["File:"]</strong> @Model.FileName</pems-col>
+        <pems-col md="2"><strong>Source Rows:</strong> @Model.SourceRowCount</pems-col>
+        <pems-col md="2"><strong>Expanded:</strong> @Model.ExpandedLocationCount</pems-col>
+        <pems-col md="2"><strong>New / Existing:</strong> @Model.NewCount / @Model.ExistingCount</pems-col>
+        <pems-col md="1"><strong>Conflicts:</strong> @Model.ConflictCount</pems-col>
+        <pems-col md="2"><strong>@Localizer["Status:"]</strong> <pems-badge tone="@(Model.Status == "Committed" ? "success" : "neutral")">@Model.Status</pems-badge></pems-col>
+    </pems-row>
 
     @if (Model.Status == "Staging")
     {
         <div class="pems-command-bar">
-            <form asp-action="Commit" method="post">
+            <pems-form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.FunctionalLocationImportBatchId" />
-                <button type="submit" class="btn btn-pems-solid" onclick="return confirm('Commit the selected rows into the live Functional Locations register?')">
-                    <i class="bi bi-check-circle"></i> Commit Selected Rows
-                </button>
-            </form>
-            <form asp-action="Discard" method="post">
+                <pems-button tone="primary" type="submit" data-pems-confirm="Commit the selected rows into the live Functional Locations register?">
+                    <pems-icon name="bi-check-circle" /> Commit Selected Rows
+                </pems-button>
+            </pems-form>
+            <pems-form asp-action="Discard" method="post">
                 <input type="hidden" name="batchId" value="@Model.FunctionalLocationImportBatchId" />
-                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Discard this entire import batch?')">
-                    <i class="bi bi-trash"></i> Discard Batch
-                </button>
-            </form>
+                <pems-button tone="danger" outline="true" type="submit" data-pems-confirm="Discard this entire import batch?">
+                    <pems-icon name="bi-trash" /> Discard Batch
+                </pems-button>
+            </pems-form>
         </div>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card">
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
-            <thead>
-                <tr>
-                    <th>@Localizer["Include"]</th><th>@Localizer["Src Row"]</th><th>@Localizer["Code"]</th><th>@Localizer["Name"]</th><th>Parent / Area</th><th>@Localizer["Status"]</th><th>@Localizer["Action"]</th><th>@Localizer["Note"]</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var r in Model.Rows)
-                {
-                    <tr>
-                        <td>
+<pems-content-card>
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
+        @{
+            var rows_40 = Model.Rows;
+            var cell_40_0 = DataCell.Template(rows_40, @<text>@{ var r = item; }
                             @if (Model.Status == "Staging")
                             {
-                                <form asp-action="ToggleRow" method="post">
+                                <pems-form asp-action="ToggleRow" method="post">
                                     <input type="hidden" name="rowId" value="@r.FunctionalLocationImportRowId" />
                                     <input type="hidden" name="batchId" value="@Model.FunctionalLocationImportBatchId" />
                                     <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
-                                    <button type="submit" class="btn btn-sm @(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" style="width:36px;">
-                                        <i class="bi @(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")"></i>
-                                    </button>
-                                </form>
+                                    <pems-button class="pems-w-36" tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit">
+                                        <pems-icon css="@(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")" />
+                                    </pems-button>
+                                </pems-form>
                             }
                             else
                             {
                                 @(r.IncludeInCommit ? "Yes" : "No")
                             }
-                        </td>
-                        <td>@r.SourceRowNumber</td>
-                        <td><strong>@r.Code</strong>@if (r.Payload?.IsAreaParentRow == true) { <span class="badge bg-light text-dark border ms-1">Area parent</span> }</td>
-                        <td class="small">@r.Name</td>
-                        <td class="small">@(r.ParentAreaName ?? r.Name)</td>
-                        <td><span class="badge @StatusBadge(r.Status)">@r.Status</span></td>
-                        <td class="small">@r.Action</td>
-                        <td class="small">
-                            @if (r.ValidationMessage != null)
-                            {
-                                <span class="text-muted" style="white-space:normal;">@r.ValidationMessage</span>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    @if (!Model.Rows.Any()) { <p class="text-muted text-center py-4">No Functional Location rows recognized in this file.</p> }
-</div>
+                        </text>);
+            var cell_40_5 = DataCell.Template(rows_40, @<text>@{ var r = item; }<pems-badge tone="none" css="@StatusBadge(r.Status)">@r.Status</pems-badge></text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_40, c_ => c_.Add(((Localizer["Include"])?.ToString() ?? ""), r => (object?)cell_40_0(r)).Add(((Localizer["Src Row"])?.ToString() ?? ""), r => (object?)(r.SourceRowNumber)).Add(((Localizer["Code"])?.ToString() ?? ""), r => (object?)(DataCell.Group(DataCell.Span(null, r.Code).WithTag("strong"), (r.Payload?.IsAreaParentRow == true ? (object?)DataCell.Badge("light", "Area parent", "ms-1") : null)))).Add(((Localizer["Name"])?.ToString() ?? ""), r => (object?)(r.Name), css: "small").Add("Parent / Area", r => (object?)((r.ParentAreaName ?? r.Name)), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), r => (object?)cell_40_5(r)).Add(((Localizer["Action"])?.ToString() ?? ""), r => (object?)(r.Action), css: "small").Add(((Localizer["Note"])?.ToString() ?? ""), r => (object?)((r.ValidationMessage != null ? (object?)DataCell.Span("text-muted pems-s-f8f979be", r.ValidationMessage) : null)), css: "small")))" />
+    </pems-table-scroll>
+    @if (!Model.Rows.Any()) { <pems-text class="text-muted text-center py-4">No Functional Location rows recognized in this file.</pems-text> }
+</pems-content-card>

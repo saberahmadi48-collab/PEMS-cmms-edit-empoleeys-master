@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "team-sub-nodes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Sub-teams and shifts",
+    "fa": "زیرتیم‌ها و شیفت‌ها"
+  },
+  "description": {
+    "en": "Sub-teams and shifts",
+    "fa": "زیرتیم‌ها و شیفت‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Team",
+      "action": "SubNodes",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "teamId": "param:teamId"
+      }
+    }
+  }
+}

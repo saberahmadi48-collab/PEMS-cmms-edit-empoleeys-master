@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "production-order-close",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close the order",
+    "fa": "بستن سفارش"
+  },
+  "description": {
+    "en": "Close the order",
+    "fa": "بستن سفارش"
+  },
+  "payload": {
+    "id": "production-order-close",
+    "title": {
+      "en": "Close the order",
+      "fa": "بستن سفارش"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-order-close",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Order id",
+          "fa": "شناسه‌ی سفارش"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

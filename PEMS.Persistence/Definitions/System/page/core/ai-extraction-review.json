@@ -1,0 +1,318 @@
+{
+  "kind": "page",
+  "key": "ai-extraction-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Review AI extracted data",
+    "fa": "بازبینی داده‌های استخراج‌شده"
+  },
+  "description": {
+    "en": "Approve or reject the tags and specifications AI extracted from one file (page definition)",
+    "fa": "تأیید یا رد تگ‌ها و مشخصات استخراج‌شده از یک فایل (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "ai-extraction-review",
+    "permission": "AIExtraction.View",
+    "regions": {
+      "content": [
+        {
+          "id": "file",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "File",
+              "fa": "فایل"
+            },
+            "icon": "bi-file-earmark-text"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/ai-extraction-review?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "fileName"
+              }
+            }
+          }
+        },
+        {
+          "id": "confidence",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Confidence",
+              "fa": "اطمینان"
+            },
+            "icon": "bi-percent"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/ai-extraction-review?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "confidence"
+              }
+            }
+          }
+        },
+        {
+          "id": "summary",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Summary",
+              "fa": "خلاصه"
+            },
+            "icon": "bi-card-text"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/ai-extraction-review?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "summary"
+              }
+            }
+          }
+        },
+        {
+          "id": "back",
+          "component": "content-blocks",
+          "options": {
+            "id": "back",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/ai-extraction",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-tags",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-tags",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Extracted equipment tags",
+                  "fa": "تگ‌های تجهیز استخراج‌شده"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "tags",
+          "component": "data-grid",
+          "options": {
+            "id": "ai-tags",
+            "url": "/d/ai-extraction-tags?f.id={{params.id|url}}",
+            "idField": "extractedTagId",
+            "pageSize": 25,
+            "height": 360,
+            "columns": [
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag number",
+                  "fa": "شماره تگ"
+                },
+                "width": 180
+              },
+              {
+                "key": "tagType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "area",
+                "header": {
+                  "en": "Area",
+                  "fa": "ناحیه"
+                },
+                "width": 120
+              },
+              {
+                "key": "service",
+                "header": {
+                  "en": "Service",
+                  "fa": "سرویس"
+                },
+                "width": 140
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "width": 240
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "approve",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    },
+                    "url": "/f/ai-tag-approve?extractedTagId={id}&attachmentId={raw.attachmentId}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "reject",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    },
+                    "url": "/a/ai-tag-reject",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Reject this tag?",
+                      "fa": "این تگ رد شود؟"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-specs",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-specs",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Extracted specifications",
+                  "fa": "مشخصات استخراج‌شده"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "specs",
+          "component": "data-grid",
+          "options": {
+            "id": "ai-specs",
+            "url": "/d/ai-extraction-specs?f.id={{params.id|url}}",
+            "idField": "extractedSpecificationId",
+            "pageSize": 25,
+            "height": 360,
+            "columns": [
+              {
+                "key": "relatedTag",
+                "header": {
+                  "en": "Related tag",
+                  "fa": "تگ مرتبط"
+                },
+                "width": 160
+              },
+              {
+                "key": "field",
+                "header": {
+                  "en": "Field",
+                  "fa": "فیلد"
+                },
+                "width": 180
+              },
+              {
+                "key": "value",
+                "header": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                },
+                "width": 200
+              },
+              {
+                "key": "unit",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 100
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "approve",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    },
+                    "url": "/a/ai-spec-approve",
+                    "method": "post"
+                  },
+                  {
+                    "key": "reject",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    },
+                    "url": "/a/ai-spec-reject",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Reject this specification?",
+                      "fa": "این مشخصه رد شود؟"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

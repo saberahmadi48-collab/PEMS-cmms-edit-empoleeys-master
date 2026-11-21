@@ -1,0 +1,15 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("button", Category = "actions", Icon = "bi-cursor")]
+@inject IPemsLocale Locale
+@{ var state = ButtonState.From(Options); var label = Locale.Text(Options.Label); }
+@if (state.AsLink)
+{
+    <a class="@state.Css" href="@Options.Href">@label</a>
+}
+else
+{
+    <button type="@Options.Type" class="@state.Css" disabled="@Options.Disabled" data-pems-open="@(Options.Opens is null ? null : "#" + Options.Opens)" data-pems-row-key="@Options.RowKey" aria-haspopup="@(Options.Opens is null ? null : "dialog")">@label</button>
+}
+@code {
+    [Parameter, EditorRequired] public ButtonOptions Options { get; set; } = default!;
+}

@@ -1,0 +1,300 @@
+{
+  "kind": "page",
+  "key": "report-procurement",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement report",
+    "fa": "گزارش تدارکات"
+  },
+  "description": {
+    "en": "Packages, tenders, contracts and the pipeline (page definition)",
+    "fa": "پکیج‌ها، مناقصه‌ها، قراردادها و خط لوله (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "report-procurement",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "report-procurement-filters",
+            "resetUrl": "/p/report-procurement",
+            "fields": [
+              {
+                "name": "projectId",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "kind": "select",
+                "value": "{{params.projectId}}"
+              },
+              {
+                "name": "disciplineId",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "kind": "select",
+                "value": "{{params.disciplineId}}"
+              },
+              {
+                "name": "fromDate",
+                "label": {
+                  "en": "From",
+                  "fa": "از تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.fromDate}}"
+              },
+              {
+                "name": "toDate",
+                "label": {
+                  "en": "To",
+                  "fa": "تا تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.toDate}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "projectId",
+                "source": "/d/report-projects",
+                "valueField": "value",
+                "labelField": "label"
+              },
+              {
+                "field": "disciplineId",
+                "source": "/d/report-disciplines",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "chart-by-status",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/report-procurement-chart-by-status?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
+              }
+            ],
+            "kind": "donut",
+            "ariaLabel": {
+              "en": "By status",
+              "fa": "بر اساس وضعیت"
+            }
+          }
+        },
+        {
+          "id": "chart-by-vendor",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/report-procurement-chart-by-vendor?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
+              }
+            ],
+            "kind": "hbar",
+            "ariaLabel": {
+              "en": "By vendor",
+              "fa": "بر اساس تامین‌کننده"
+            }
+          }
+        },
+        {
+          "id": "report-procurement-rows",
+          "component": "data-grid",
+          "options": {
+            "id": "report-procurement-rows",
+            "url": "/d/report-procurement-grid?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "idField": "name",
+            "columns": [
+              {
+                "key": "section",
+                "header": {
+                  "en": "Section",
+                  "fa": "بخش"
+                },
+                "width": 260
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 320
+              },
+              {
+                "key": "value",
+                "header": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                },
+                "width": 220
+              }
+            ],
+            "pageSize": 50,
+            "height": 420
+          }
+        },
+        {
+          "id": "pipeline-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "pipeline-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Procurement pipeline",
+                  "fa": "خط لوله تدارکات"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "report-procurement-pipeline",
+          "component": "data-grid",
+          "options": {
+            "id": "report-procurement-pipeline",
+            "url": "/d/report-procurement-pipeline-grid?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "idField": "packageNumber",
+            "columns": [
+              {
+                "key": "packageNumber",
+                "header": {
+                  "en": "Package",
+                  "fa": "پکیج"
+                },
+                "width": 140
+              },
+              {
+                "key": "tenderNumber",
+                "header": {
+                  "en": "Tender",
+                  "fa": "مناقصه"
+                },
+                "width": 140
+              },
+              {
+                "key": "tenderStatus",
+                "header": {
+                  "en": "Tender status",
+                  "fa": "وضعیت مناقصه"
+                },
+                "width": 140
+              },
+              {
+                "key": "winnerVendor",
+                "header": {
+                  "en": "Winner",
+                  "fa": "برنده"
+                },
+                "width": 180
+              },
+              {
+                "key": "bidStatus",
+                "header": {
+                  "en": "Bid status",
+                  "fa": "وضعیت پیشنهاد"
+                },
+                "width": 130
+              },
+              {
+                "key": "technicalEvaluation",
+                "header": {
+                  "en": "Technical evaluation",
+                  "fa": "ارزیابی فنی"
+                },
+                "width": 150
+              },
+              {
+                "key": "commercialEvaluation",
+                "header": {
+                  "en": "Commercial evaluation",
+                  "fa": "ارزیابی بازرگانی"
+                },
+                "width": 150
+              },
+              {
+                "key": "contractNo",
+                "header": {
+                  "en": "Contract",
+                  "fa": "قرارداد"
+                },
+                "width": 130
+              },
+              {
+                "key": "contractStatus",
+                "header": {
+                  "en": "Contract status",
+                  "fa": "وضعیت قرارداد"
+                },
+                "width": 140
+              },
+              {
+                "key": "contractValue",
+                "header": {
+                  "en": "Contract value",
+                  "fa": "مبلغ قرارداد"
+                },
+                "width": 130
+              },
+              {
+                "key": "poNumber",
+                "header": {
+                  "en": "PO",
+                  "fa": "سفارش خرید"
+                },
+                "width": 120
+              },
+              {
+                "key": "ntpStatus",
+                "header": {
+                  "en": "NTP",
+                  "fa": "ابلاغ"
+                },
+                "width": 110
+              },
+              {
+                "key": "kickoffStatus",
+                "header": {
+                  "en": "Kickoff",
+                  "fa": "شروع"
+                },
+                "width": 110
+              }
+            ],
+            "pageSize": 50,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "ProcurementPackage.View"
+  }
+}

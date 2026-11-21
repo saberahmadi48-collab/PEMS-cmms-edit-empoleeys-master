@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "production-loss-categories",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Loss categories",
+    "fa": "Loss categories"
+  },
+  "description": {
+    "en": "Loss categories",
+    "fa": "Loss categories"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Production",
+      "action": "LossCategoryChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

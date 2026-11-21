@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "irn-purchase-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Issued purchase orders",
+    "fa": "سفارش‌های صادرشده"
+  },
+  "description": {
+    "en": "Issued purchase orders",
+    "fa": "سفارش‌های صادرشده"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Irn",
+      "action": "PurchaseOrders",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

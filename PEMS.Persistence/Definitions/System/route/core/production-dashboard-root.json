@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "production-dashboard-root",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production (old address)",
+    "fa": "Production (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Production (old address)",
+    "fa": "Production (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Production",
+    "target": "/p/production-dashboard",
+    "permanent": false
+  }
+}

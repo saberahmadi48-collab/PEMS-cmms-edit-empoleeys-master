@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "procurement-package-closeout",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close out the package",
+    "fa": "بستن بسته"
+  },
+  "description": {
+    "en": "Close out the package",
+    "fa": "بستن بسته"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProcurementPackage",
+      "action": "Closeout",
+      "args": {
+        "packageId": "field:packageId"
+      },
+      "guard": {
+        "resource": "ProcurementPackage",
+        "action": "Approve",
+        "resourceId": "field:packageId",
+        "mode": "strict"
+      }
+    },
+    "success": {
+      "en": "The package was closed out.",
+      "fa": "بسته بسته شد."
+    },
+    "redirect": "/p/procurement-package-details?id={packageId}"
+  }
+}

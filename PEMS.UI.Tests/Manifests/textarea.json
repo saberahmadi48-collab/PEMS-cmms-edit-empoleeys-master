@@ -1,0 +1,54 @@
+{
+  "key": "textarea",
+  "component": "PEMS.UI.Components.PemsTextarea",
+  "category": "forms",
+  "icon": "bi-textarea-t",
+  "nameKey": "component.textarea",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "scale": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "TextareaOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {}
+}

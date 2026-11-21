@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "team-node-move",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move a team node",
+    "fa": "جابه‌جایی گره تیم"
+  },
+  "description": {
+    "en": "Move a team node",
+    "fa": "جابه‌جایی گره تیم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "MoveTeamNode",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "teamId": "field:teamId",
+        "newParentTeamId": "field:newParentTeamId",
+        "newMaintenanceGroupId": "field:newMaintenanceGroupId"
+      }
+    },
+    "success": {
+      "en": "Moved.",
+      "fa": "جابه‌جا شد."
+    },
+    "redirect": "/p/team-details?teamId={teamId}"
+  }
+}

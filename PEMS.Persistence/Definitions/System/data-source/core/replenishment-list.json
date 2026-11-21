@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "replenishment-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Replenishment recommendations",
+    "fa": "توصیه‌های تأمین"
+  },
+  "description": {
+    "en": "Replenishment recommendations",
+    "fa": "توصیه‌های تأمین"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Replenishment",
+      "action": "List",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "status": "param:status",
+        "q": "param:q",
+        "definitiveOnly": "param:definitiveOnly"
+      }
+    }
+  }
+}

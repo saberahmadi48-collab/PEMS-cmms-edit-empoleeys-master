@@ -1,0 +1,55 @@
+{
+  "kind": "action",
+  "key": "maintenance-groups-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit maintenance group",
+    "fa": "ویرایش گروه تعمیراتی"
+  },
+  "description": {
+    "en": "Edit maintenance group",
+    "fa": "ویرایش گروه تعمیراتی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.update",
+    "parameters": {
+      "entity": "MaintenanceGroup",
+      "map": {
+        "name": "Name",
+        "disciplineId": "DisciplineId",
+        "description": "Description"
+      },
+      "required": [
+        "Name",
+        "DisciplineId"
+      ],
+      "unique": [
+        {
+          "fields": [
+            "Name"
+          ],
+          "message": {
+            "en": "A maintenance group with this name already exists.",
+            "fa": "گروه تعمیراتی با همین نام از قبل وجود دارد."
+          }
+        },
+        {
+          "fields": [
+            "Code"
+          ],
+          "message": {
+            "en": "A maintenance group with this code already exists.",
+            "fa": "گروه تعمیراتی با همین کد از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Maintenance group saved.",
+      "fa": "گروه تعمیراتی ذخیره شد."
+    },
+    "redirect": "/p/maintenance-groups"
+  }
+}

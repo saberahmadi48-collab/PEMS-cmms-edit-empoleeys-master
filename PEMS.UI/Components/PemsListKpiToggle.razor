@@ -1,0 +1,18 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-kpi-toggle", Category = "list", Icon = "bi-bar-chart-line")]
+<PemsListIconTool Options="@Tool" />
+@code {
+    [Parameter, EditorRequired] public ListKpiToggleOptions Options { get; set; } = default!;
+    private ListIconToolOptions Tool
+    {
+        get
+        {
+            var a = new Dictionary<string, string>
+            {
+                ["data-lp-kpi-toggle"] = "", ["aria-controls"] = Options.Target, ["aria-expanded"] = Options.Open ? "true" : "false", ["data-storage-key"] = Options.StorageKey
+            };
+            if (Options.Open) a["data-lp-open"] = "1";
+            return new ListIconToolOptions { Icon = "bi-bar-chart-line", Label = Options.Label, Attributes = a };
+        }
+    }
+}

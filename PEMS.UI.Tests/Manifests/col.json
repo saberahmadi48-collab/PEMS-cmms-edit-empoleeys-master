@@ -1,0 +1,87 @@
+{
+  "key": "col",
+  "component": "PEMS.UI.Components.PemsCol",
+  "category": "layout",
+  "icon": "bi-layout-sidebar",
+  "nameKey": "component.col",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "span": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "sm": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "md": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "lg": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "xl": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "xxl": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ColOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "span": "12",
+    "md": "6"
+  }
+}

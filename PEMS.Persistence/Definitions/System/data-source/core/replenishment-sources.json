@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "replenishment-sources",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Sources of a recommendation",
+    "fa": "منابع یک توصیه"
+  },
+  "description": {
+    "en": "Sources of a recommendation",
+    "fa": "منابع یک توصیه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Replenishment",
+      "action": "Sources",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "shift-handover-prepare",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Prepare the handover",
+    "fa": "آماده‌سازی تحویل"
+  },
+  "description": {
+    "en": "Prepare the handover",
+    "fa": "آماده‌سازی تحویل"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ShiftHandover",
+      "action": "Prepare",
+      "args": {
+        "id": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The handover is prepared.",
+      "fa": "تحویل شیفت آماده شد."
+    },
+    "redirect": "/ShiftHandover/Details/{id}"
+  }
+}

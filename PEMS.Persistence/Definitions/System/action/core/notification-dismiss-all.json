@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "notification-dismiss-all",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Dismiss all notifications",
+    "fa": "رد کردن همه اعلان‌ها"
+  },
+  "description": {
+    "en": "Dismiss all notifications",
+    "fa": "رد کردن همه اعلان‌ها"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Notification",
+      "action": "DismissAll",
+      "args": {
+        "userName": "context:userName"
+      }
+    },
+    "success": {
+      "en": "All notifications dismissed.",
+      "fa": "همه اعلان‌ها رد شدند."
+    },
+    "redirect": "/p/notifications"
+  }
+}

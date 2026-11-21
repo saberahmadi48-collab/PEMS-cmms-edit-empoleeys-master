@@ -14,8 +14,8 @@ public class OllamaService : IOllamaService
     public OllamaService(HttpClient httpClient, IConfiguration configuration)
     {
         _httpClient = httpClient;
-        _defaultModel = configuration["Ollama:Model"] ?? "qwen2.5:3b";
-        _embeddingModel = configuration["Ollama:EmbeddingModel"] ?? "nomic-embed-text";
+        _defaultModel = configuration["Ollama:Model"] ?? throw new InvalidOperationException("Missing required setting 'Ollama:Model' (Ollama__Model in env/<name>.env).");
+        _embeddingModel = configuration["Ollama:EmbeddingModel"] ?? throw new InvalidOperationException("Missing required setting 'Ollama:EmbeddingModel' (Ollama__EmbeddingModel in env/<name>.env).");
     }
 
     public async Task<string> GenerateAsync(string prompt)

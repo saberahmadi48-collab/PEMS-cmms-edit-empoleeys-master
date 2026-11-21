@@ -1,0 +1,33 @@
+{
+  "kind": "data-source",
+  "key": "uoms-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Units of measure rows",
+    "fa": "ردیف‌های واحدهای اندازه‌گیری"
+  },
+  "description": {
+    "en": "The rows of the units of measure grid",
+    "fa": "ردیف‌های جدول واحدهای اندازه‌گیری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "MaterialUOM",
+      "fields": [
+        "Code",
+        "Name",
+        "Description",
+        "ConversionFactor",
+        "IsActive"
+      ],
+      "search": [
+        "Code",
+        "Name",
+        "Description"
+      ]
+    }
+  }
+}

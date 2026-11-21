@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "procurement-package-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New procurement package (old address)",
+    "fa": "New procurement package (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New procurement package (old address)",
+    "fa": "New procurement package (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ProcurementPackage/Create",
+    "target": "/f/procurement-package-create",
+    "permanent": false
+  }
+}

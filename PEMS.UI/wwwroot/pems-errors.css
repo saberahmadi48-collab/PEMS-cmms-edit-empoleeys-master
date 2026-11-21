@@ -1,0 +1,55 @@
+/* PEMS.UI client error toast (SCRUM-467): the one toast pems-errors.js shows for a failed request or an uncaught script error. Logical properties, theme tokens. */
+.pems-error-toasts {
+    position: fixed;
+    inset-block-end: 16px;
+    inset-inline-end: 16px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-inline-size: min(420px, calc(100vw - 32px));
+}
+
+.pems-error-toast {
+    position: relative;
+    padding-block: 10px;
+    padding-inline: 12px 36px;
+    border: 1px solid var(--pems-chart-danger-text);
+    border-radius: 8px;
+    background: var(--pems-surface);
+    color: var(--pems-text);
+    box-shadow: 0 6px 20px var(--pems-shadow);
+    font-size: 13px;
+}
+
+.pems-error-toast__message { font-weight: 600; color: var(--pems-chart-danger-text); }
+
+.pems-error-toast__ref {
+    margin-block-start: 4px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    color: var(--pems-text-muted);
+    font-size: 12px;
+}
+
+.pems-error-toast__code { font-size: 12px; user-select: all; }
+
+.pems-error-toast__copy,
+.pems-error-toast__close {
+    border: 0;
+    background: transparent;
+    color: var(--pems-link);
+    cursor: pointer;
+    padding: 0 4px;
+}
+
+.pems-error-toast__close {
+    position: absolute;
+    inset-block-start: 4px;
+    inset-inline-end: 6px;
+    color: var(--pems-text-muted);
+    font-size: 18px;
+    line-height: 1;
+}

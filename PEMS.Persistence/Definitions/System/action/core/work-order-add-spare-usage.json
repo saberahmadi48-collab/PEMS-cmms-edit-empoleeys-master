@@ -1,0 +1,42 @@
+{
+  "kind": "action",
+  "key": "work-order-add-spare-usage",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record spare part usage",
+    "fa": "ثبت مصرف قطعه"
+  },
+  "description": {
+    "en": "Record spare part usage",
+    "fa": "ثبت مصرف قطعه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderSpare",
+      "action": "AddUsage",
+      "sectionGuard": {
+        "section": "SpareParts",
+        "action": "Add",
+        "workOrderId": "field:workOrderId",
+        "recordRef": "field:materialItemId",
+        "audit": "MaterialItemId={materialItemId}; Quantity={quantity}; UnitCost={unitCost}",
+        "reason": "field:correctionReason"
+      },
+      "args": {
+        "workOrderId": "field:workOrderId",
+        "materialItemId": "field:materialItemId",
+        "quantity": "field:quantity",
+        "unitCost": "field:unitCost",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The spare part usage was recorded.",
+      "fa": "مصرف قطعه ثبت شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

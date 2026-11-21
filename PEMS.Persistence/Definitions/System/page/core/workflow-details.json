@@ -1,0 +1,491 @@
+{
+  "kind": "page",
+  "key": "workflow-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Workflow details",
+    "fa": "جزئیات گردش‌کار"
+  },
+  "description": {
+    "en": "One workflow definition with its versions, bindings, usage and audit (page definition)",
+    "fa": "یک تعریف گردش‌کار با نسخه‌ها، اتصال‌ها، مصرف و ممیزی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "workflow-details",
+    "regions": {
+      "header": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the list",
+              "fa": "بازگشت به فهرست"
+            },
+            "tone": "neutral",
+            "href": "/p/workflow-management"
+          }
+        }
+      ],
+      "content": [
+        {
+          "id": "definition",
+          "component": "record-view",
+          "options": {
+            "id": "definition",
+            "fields": [
+              {
+                "key": "name",
+                "label": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
+              },
+              {
+                "key": "nameFa",
+                "label": {
+                  "en": "Name (Persian)",
+                  "fa": "نام (فارسی)"
+                }
+              },
+              {
+                "key": "module",
+                "label": {
+                  "en": "Module",
+                  "fa": "ماژول"
+                }
+              },
+              {
+                "key": "category",
+                "label": {
+                  "en": "Category",
+                  "fa": "دسته"
+                }
+              },
+              {
+                "key": "isActive",
+                "label": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "publishedVersion",
+                "label": {
+                  "en": "Published version",
+                  "fa": "نسخه‌ی منتشرشده"
+                },
+                "type": "number"
+              },
+              {
+                "key": "openDraftVersion",
+                "label": {
+                  "en": "Draft version",
+                  "fa": "نسخه‌ی پیش‌نویس"
+                },
+                "type": "number"
+              },
+              {
+                "key": "totalInstances",
+                "label": {
+                  "en": "Instances",
+                  "fa": "نمونه‌ها"
+                },
+                "type": "number"
+              },
+              {
+                "key": "editableReason",
+                "label": {
+                  "en": "Editable",
+                  "fa": "قابل ویرایش"
+                },
+                "wide": true
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/workflow-definition-record",
+              "idField": "definitionId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "versions",
+          "component": "data-grid",
+          "options": {
+            "id": "versions",
+            "url": "/d/workflow-versions-rows?f.definitionId=eq:{{params.id|url}}",
+            "idField": "versionId",
+            "columns": [
+              {
+                "key": "versionNumber",
+                "header": {
+                  "en": "Version",
+                  "fa": "نسخه"
+                },
+                "width": 90,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "stages",
+                "header": {
+                  "en": "Stages",
+                  "fa": "مراحل"
+                },
+                "width": 90,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "transitions",
+                "header": {
+                  "en": "Transitions",
+                  "fa": "گذارها"
+                },
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "isBound",
+                "header": {
+                  "en": "Bound",
+                  "fa": "متصل"
+                },
+                "width": 90,
+                "sortable": false,
+                "filterable": false,
+                "type": "bool"
+              },
+              {
+                "key": "runningInstances",
+                "header": {
+                  "en": "Running",
+                  "fa": "در حال اجرا"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "changeSummary",
+                "header": {
+                  "en": "Summary",
+                  "fa": "خلاصه"
+                },
+                "width": 240,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 520,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "designer",
+                    "label": {
+                      "en": "Designer",
+                      "fa": "طراح"
+                    },
+                    "url": "/p/workflow-designer?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "clone",
+                    "label": {
+                      "en": "Clone to a draft",
+                      "fa": "ایجاد پیش‌نویس"
+                    },
+                    "url": "/f/workflow-clone/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "validate",
+                    "label": {
+                      "en": "Validate",
+                      "fa": "اعتبارسنجی"
+                    },
+                    "url": "/a/workflow-validate",
+                    "method": "post",
+                    "showWhen": "row.status == 'Draft'"
+                  },
+                  {
+                    "key": "publish",
+                    "label": {
+                      "en": "Publish",
+                      "fa": "انتشار"
+                    },
+                    "url": "/a/workflow-publish",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Publish this version?",
+                      "fa": "این نسخه منتشر شود؟"
+                    },
+                    "showWhen": "row.status == 'Draft'"
+                  },
+                  {
+                    "key": "discard",
+                    "label": {
+                      "en": "Discard",
+                      "fa": "حذف پیش‌نویس"
+                    },
+                    "url": "/a/workflow-discard",
+                    "method": "post",
+                    "tone": "danger",
+                    "confirm": {
+                      "en": "Discard this draft?",
+                      "fa": "این پیش‌نویس حذف شود؟"
+                    },
+                    "showWhen": "row.status == 'Draft'"
+                  },
+                  {
+                    "key": "retire",
+                    "label": {
+                      "en": "Retire",
+                      "fa": "بازنشستگی"
+                    },
+                    "url": "/a/workflow-retire",
+                    "method": "post",
+                    "tone": "danger",
+                    "confirm": {
+                      "en": "Retire this version?",
+                      "fa": "این نسخه بازنشسته شود؟"
+                    },
+                    "showWhen": "row.status == 'Published' and row.isBound == false"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "bindings",
+          "component": "data-grid",
+          "options": {
+            "id": "bindings",
+            "url": "/d/workflow-bindings-rows?f.definitionId=eq:{{params.id|url}}",
+            "idField": "bindingId",
+            "columns": [
+              {
+                "key": "module",
+                "header": {
+                  "en": "Module",
+                  "fa": "ماژول"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "entityType",
+                "header": {
+                  "en": "Entity",
+                  "fa": "موجودیت"
+                },
+                "width": 160,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "context",
+                "header": {
+                  "en": "Context",
+                  "fa": "بافت"
+                },
+                "width": 160,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "pinnedVersionNumber",
+                "header": {
+                  "en": "Pinned version",
+                  "fa": "نسخه‌ی ثابت"
+                },
+                "width": 130,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 90,
+                "sortable": false,
+                "filterable": false,
+                "type": "bool"
+              }
+            ]
+          }
+        },
+        {
+          "id": "usage",
+          "component": "data-grid",
+          "options": {
+            "id": "usage",
+            "url": "/d/workflow-usage-rows?f.definitionId=eq:{{params.id|url}}",
+            "idField": "versionNumber",
+            "columns": [
+              {
+                "key": "versionNumber",
+                "header": {
+                  "en": "Version",
+                  "fa": "نسخه"
+                },
+                "width": 90,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "running",
+                "header": {
+                  "en": "Running",
+                  "fa": "در حال اجرا"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "completed",
+                "header": {
+                  "en": "Completed",
+                  "fa": "تکمیل‌شده"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "cancelled",
+                "header": {
+                  "en": "Cancelled",
+                  "fa": "لغوشده"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "rejected",
+                "header": {
+                  "en": "Rejected",
+                  "fa": "ردشده"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "audit",
+          "component": "data-grid",
+          "options": {
+            "id": "audit",
+            "url": "/d/workflow-audit-rows?f.definitionId=eq:{{params.id|url}}",
+            "idField": "timestamp",
+            "columns": [
+              {
+                "key": "timestamp",
+                "header": {
+                  "en": "When",
+                  "fa": "زمان"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              },
+              {
+                "key": "action",
+                "header": {
+                  "en": "Action",
+                  "fa": "کنش"
+                },
+                "width": 180,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "actor",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "versionNumber",
+                "header": {
+                  "en": "Version",
+                  "fa": "نسخه"
+                },
+                "width": 90,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "details",
+                "header": {
+                  "en": "Details",
+                  "fa": "جزئیات"
+                },
+                "width": 360,
+                "sortable": false,
+                "filterable": false
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

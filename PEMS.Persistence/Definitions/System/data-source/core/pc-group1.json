@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-group1",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup: Group1",
+    "fa": "جستجوی کاتالوگ قطعه: Group1"
+  },
+  "description": {
+    "en": "Part Catalogue lookup: Group1",
+    "fa": "جستجوی کاتالوگ قطعه: Group1"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueLookup",
+      "action": "Group1",
+      "args": {
+        "userRoles": "context:roles",
+        "sectionId": "param:sectionId"
+      },
+      "disposition": "inline"
+    }
+  }
+}

@@ -1,0 +1,72 @@
+area,controller,module,wave,owner,decision,status,notes
+Admin,Employee,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,no page actions
+Admin,OrganizationImport,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+Admin,Users,Administration,"W1 admin, account, shell",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,Asset,Assets,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,FunctionalLocation,Assets,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,FunctionalLocationImport,Assets,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,Instrument,Assets,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,CriticalityAssessment,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,Equipment,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,EquipmentClassification,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,EquipmentCriticality,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,EquipmentFunctionalLocationAssignment,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,EquipmentImport,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,FailureModeCatalog,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,MaintenanceCalendar,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,MaintenancePlan,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,MaintenanceStrategy,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,MechanicalEquipment,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,Reliability,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,WorkOrder,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,WorkRequest,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,Team,Organization and people,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,Permit,Permit to work and safety,"W2 CMMS, maintenance, reliability",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
+,Task,Work and tasks,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,TaskManager,Work and tasks,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,Letter,Correspondence,"W3 engineering documents, letters, import, AI",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
+,LetterCartable,Correspondence,"W3 engineering documents, letters, import, AI",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
+,LetterCompose,Correspondence,"W3 engineering documents, letters, import, AI",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
+,LetterTemplate,Correspondence,"W3 engineering documents, letters, import, AI",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
+,DCC,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,DocumentRegister,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,DocumentRevisions,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,page-definition,proposed,view-only pages: page definitions
+,DocumentUpload,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,DocumentWorkflow,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
+,EngineeringDocumentIntelligence,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,EngineeringDocuments,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,MDB,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,Transmittal,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
+,VDR,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,VDRImport,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,StrategyImport,Maintenance and reliability,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,MDRImport,Platform and shell,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,OCRProcessing,Platform and shell,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,Relationship,Platform and shell,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,Contract,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
+Warehouse,PartCatalogueRequest,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,Account,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,AccountRecovery,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,ActionHost,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,confirmed,the generic host of the definition engines (code by design)
+,BreakGlass,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,ComingSoon,Platform and shell,"W5 operations, production, organization, other",Hamid,page-definition,proposed,view-only pages: page definitions
+,Culture,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,no page actions
+,DataHost,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,confirmed,the generic host of the definition engines (code by design)
+,Discipline,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,ExecutiveDashboard,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,Files,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,FormHost,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,confirmed,the generic host of the definition engines (code by design)
+,Help,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,Home,Platform and shell,"W5 operations, production, organization, other",Hamid,page-definition,proposed,view-only pages: page definitions
+,NavigationBadge,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,PageHost,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,confirmed,the generic host of the definition engines (code by design)
+,QC,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,RcmFmea,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,RecoveryCodes,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,SearchApi,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,TableExtraction,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,Tag,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,Tender,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
+,Theme,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,no page actions
+,WebAuthn,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+,Notification,Work and tasks,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"

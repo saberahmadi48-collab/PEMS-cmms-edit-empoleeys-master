@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "organization-issues-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Organization issues",
+    "fa": "Organization issues"
+  },
+  "description": {
+    "en": "Organization issues rows",
+    "fa": "Organization issues rows"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Organization",
+      "action": "Issues"
+    }
+  }
+}

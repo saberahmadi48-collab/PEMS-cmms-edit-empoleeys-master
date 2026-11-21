@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "work-request-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel the request",
+    "fa": "لغو درخواست"
+  },
+  "description": {
+    "en": "Cancel the request",
+    "fa": "لغو درخواست"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkRequestPage",
+      "action": "Cancel",
+      "args": {
+        "employeeId": "context:employeeId",
+        "id": "field:id",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The request was cancelled.",
+      "fa": "درخواست لغو شد."
+    },
+    "redirect": "/WorkRequest/Details/{id}"
+  }
+}

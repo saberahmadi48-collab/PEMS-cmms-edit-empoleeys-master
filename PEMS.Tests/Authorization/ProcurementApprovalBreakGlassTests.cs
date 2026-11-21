@@ -69,16 +69,6 @@ public class ProcurementApprovalBreakGlassTests
         await ctx.SaveChangesAsync();
     }
 
-    private static PurchaseOrderController PoControllerFor(PEMSDbContext ctx, ApplicationUser user, string role)
-    {
-        var accessControl = new AccessControlService(ctx);
-        return new PurchaseOrderController(
-            new PurchaseOrderService(ctx),
-            new PermissionService(ctx, accessControl),
-            new FakeCurrentUserService { UserId = user.Id, Roles = new List<string> { role }, FullName = user.UserName },
-            ctx, accessControl).WithTempData();
-    }
-
     // ───────────────────── Policy table ─────────────────────
 
     [Theory]
@@ -215,160 +205,30 @@ public class ProcurementApprovalBreakGlassTests
     public async Task Entity_DefaultStatus_StaysIssued_ForLegacyAndImportCallers()
         => Assert.Equal("Issued", new PurchaseOrder().Status);
 
+    // SCRUM-470 (owner decision 2026-10-29): only an approved PO is issued; a Draft is refused like every other status.
     [Fact]
-    public async Task IssueAsync_MovesDraftToIssued_AndRejectsEverythingElse()
+    public async Task IssueAsync_MovesApprovedToIssued_AndRejectsEverythingElse_IncludingDraft()
     {
-        var ctx = await CreateSeededDbAsync(nameof(IssueAsync_MovesDraftToIssued_AndRejectsEverythingElse));
+        var ctx = await CreateSeededDbAsync(nameof(IssueAsync_MovesApprovedToIssued_AndRejectsEverythingElse_IncludingDraft));
         var service = new PurchaseOrderService(ctx);
-        var draftId = await service.CreateAsync("PO-D", 1, 1, null, null, null);
+        var approvedId = await service.CreateAsync("PO-A", 1, 1, null, null, null);
+        ctx.PurchaseOrders.Single(x => x.PoId == approvedId).Status = "Approved";   // approval itself: PurchaseOrderApprovalServiceTests
+        await service.CreateAsync("PO-D", 1, 1, null, null, null);
         ctx.PurchaseOrders.Add(new PurchaseOrder { PoNumber = "PO-LEGACY", ProjectId = 1, VendorId = 1 }); // پیش‌فرض Issued
         ctx.PurchaseOrders.Add(new PurchaseOrder { PoNumber = "PO-CLOSED", ProjectId = 1, VendorId = 1, Status = "Closed" });
-        ctx.PurchaseOrders.Add(new PurchaseOrder { PoNumber = "PO-OFF", ProjectId = 1, VendorId = 1, Status = "Draft", IsActive = false });
+        ctx.PurchaseOrders.Add(new PurchaseOrder { PoNumber = "PO-OFF", ProjectId = 1, VendorId = 1, Status = "Approved", IsActive = false });
+        ctx.PurchaseOrders.Add(new PurchaseOrder { PoNumber = "PO-SUB", ProjectId = 1, VendorId = 1, Status = "Submitted" });
         await ctx.SaveChangesAsync();
 
-        await service.IssueAsync(draftId);
-        Assert.Equal("Issued", ctx.PurchaseOrders.Single(x => x.PoId == draftId).Status);
+        await service.IssueAsync(approvedId);
+        Assert.Equal("Issued", ctx.PurchaseOrders.Single(x => x.PoId == approvedId).Status);
 
-        foreach (var number in new[] { "PO-D", "PO-LEGACY", "PO-CLOSED", "PO-OFF" })
+        foreach (var number in new[] { "PO-A", "PO-D", "PO-LEGACY", "PO-CLOSED", "PO-OFF", "PO-SUB" })
         {
             var po = ctx.PurchaseOrders.Single(x => x.PoNumber == number);
             await Assert.ThrowsAsync<InvalidOperationException>(() => service.IssueAsync(po.PoId));
         }
         await Assert.ThrowsAsync<InvalidOperationException>(() => service.IssueAsync(99999));
         Assert.Equal("Closed", ctx.PurchaseOrders.Single(x => x.PoNumber == "PO-CLOSED").Status);
-    }
-
-    [Fact]
-    public async Task Controller_Create_ProducesDraft_AndLeavesExistingIssuedPosUntouched()
-    {
-        var ctx = await CreateSeededDbAsync(nameof(Controller_Create_ProducesDraft_AndLeavesExistingIssuedPosUntouched));
-        ctx.PurchaseOrders.Add(new PurchaseOrder { PoNumber = "PO-OLD", ProjectId = 1, VendorId = 1 });
-        await ctx.SaveChangesAsync();
-        var creator = await AddUserAsync(ctx, "creator", SystemRoles.ContractManager);
-        var controller = PoControllerFor(ctx, creator, SystemRoles.ContractManager);
-
-        var result = await controller.Create("PO-NEW", 1, 1, null, null, 10m);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal("Draft", ctx.PurchaseOrders.Single(x => x.PoNumber == "PO-NEW").Status);
-        Assert.Equal("Issued", ctx.PurchaseOrders.Single(x => x.PoNumber == "PO-OLD").Status);
-    }
-
-    private static async Task<int> CreateDraftAsync(PEMSDbContext ctx, ApplicationUser creator, string role)
-    {
-        await PoControllerFor(ctx, creator, role).Create("PO-NEW", 1, 1, null, null, 10m);
-        return ctx.PurchaseOrders.Single(x => x.PoNumber == "PO-NEW").PoId;
-    }
-
-    [Theory]
-    [InlineData("Viewer")]
-    [InlineData("DisciplineEngineer")]
-    [InlineData("ContractManager")] // Create/Edit دارد، Approve ندارد - فاصله‌ی سیاستی مستند
-    public async Task Issue_ByRolesWithoutApprove_IsForbidden_AndPoStaysDraft(string role)
-    {
-        var ctx = await CreateSeededDbAsync(nameof(Issue_ByRolesWithoutApprove_IsForbidden_AndPoStaysDraft) + role);
-        var creator = await AddUserAsync(ctx, "creator", SystemRoles.ContractManager);
-        var poId = await CreateDraftAsync(ctx, creator, SystemRoles.ContractManager);
-        var other = await AddUserAsync(ctx, "other", role);
-
-        var result = await PoControllerFor(ctx, other, role).Issue(poId);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Equal("Draft", ctx.PurchaseOrders.Single().Status);
-    }
-
-    [Fact]
-    public async Task Issue_BySystemAdmin_WithoutExplicitGrant_IsForbidden_AndPoStaysDraft()
-    {
-        var ctx = await CreateSeededDbAsync(nameof(Issue_BySystemAdmin_WithoutExplicitGrant_IsForbidden_AndPoStaysDraft));
-        var creator = await AddUserAsync(ctx, "creator", SystemRoles.ContractManager);
-        var poId = await CreateDraftAsync(ctx, creator, SystemRoles.ContractManager);
-        var admin = await AddUserAsync(ctx, "admin", SystemRoles.SystemAdmin);
-
-        var result = await PoControllerFor(ctx, admin, SystemRoles.SystemAdmin).Issue(poId);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Equal("Draft", ctx.PurchaseOrders.Single().Status);
-    }
-
-    [Fact]
-    public async Task Issue_ByAuthorizedIndependentApprover_IssuesThePo()
-    {
-        var ctx = await CreateSeededDbAsync(nameof(Issue_ByAuthorizedIndependentApprover_IssuesThePo));
-        await GrantAsync(ctx, SystemRoles.EngineeringManager, "PurchaseOrder", "Approve");
-        var creator = await AddUserAsync(ctx, "creator", SystemRoles.ContractManager);
-        var poId = await CreateDraftAsync(ctx, creator, SystemRoles.ContractManager);
-        var approver = await AddUserAsync(ctx, "approver", SystemRoles.EngineeringManager);
-
-        var controller = PoControllerFor(ctx, approver, SystemRoles.EngineeringManager);
-        var result = await controller.Issue(poId);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.Null(controller.TempData["Error"]);
-        Assert.Equal("Issued", ctx.PurchaseOrders.Single().Status);
-    }
-
-    [Fact]
-    public async Task Issue_ByTheCreator_EvenWithApproveGrant_IsDeniedBySoD()
-    {
-        var ctx = await CreateSeededDbAsync(nameof(Issue_ByTheCreator_EvenWithApproveGrant_IsDeniedBySoD));
-        await GrantAsync(ctx, SystemRoles.ContractManager, "PurchaseOrder", "Approve");
-        var creator = await AddUserAsync(ctx, "creator", SystemRoles.ContractManager);
-        var poId = await CreateDraftAsync(ctx, creator, SystemRoles.ContractManager);
-
-        var controller = PoControllerFor(ctx, creator, SystemRoles.ContractManager);
-        var result = await controller.Issue(poId);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.NotNull(controller.TempData["Error"]);
-        Assert.Equal("Draft", ctx.PurchaseOrders.Single().Status);
-    }
-
-    [Fact]
-    public async Task Issue_BySystemAdmin_WithExplicitGrant_WhoCreatedThePo_IsDeniedBySoD()
-    {
-        var ctx = await CreateSeededDbAsync(nameof(Issue_BySystemAdmin_WithExplicitGrant_WhoCreatedThePo_IsDeniedBySoD));
-        await GrantAsync(ctx, SystemRoles.SystemAdmin, "PurchaseOrder", "Approve");
-        var admin = await AddUserAsync(ctx, "admin", SystemRoles.SystemAdmin);
-        var poId = await CreateDraftAsync(ctx, admin, SystemRoles.SystemAdmin);
-
-        var controller = PoControllerFor(ctx, admin, SystemRoles.SystemAdmin);
-        await controller.Issue(poId);
-
-        Assert.NotNull(controller.TempData["Error"]);
-        Assert.Equal("Draft", ctx.PurchaseOrders.Single().Status);
-    }
-
-    [Fact]
-    public async Task Issue_BySystemAdmin_WithExplicitGrant_OnAnotherUsersPo_Issues_AndIsAudited()
-    {
-        var ctx = await CreateSeededDbAsync(nameof(Issue_BySystemAdmin_WithExplicitGrant_OnAnotherUsersPo_Issues_AndIsAudited));
-        await GrantAsync(ctx, SystemRoles.SystemAdmin, "PurchaseOrder", "Approve");
-        var creator = await AddUserAsync(ctx, "creator", SystemRoles.ContractManager);
-        var poId = await CreateDraftAsync(ctx, creator, SystemRoles.ContractManager);
-        var admin = await AddUserAsync(ctx, "admin", SystemRoles.SystemAdmin);
-
-        await PoControllerFor(ctx, admin, SystemRoles.SystemAdmin).Issue(poId);
-
-        Assert.Equal("Issued", ctx.PurchaseOrders.Single().Status);
-        Assert.Contains(ctx.AuthorizationAuditLogs, a =>
-            a.UserId == admin.Id && a.ResourceName == "PurchaseOrder" && a.ActionName == "Approve" && a.ResourceId == poId.ToString());
-    }
-
-    [Fact]
-    public async Task Issue_OnAnAlreadyIssuedPo_ByAuthorizedApprover_ReportsErrorAndChangesNothing()
-    {
-        var ctx = await CreateSeededDbAsync(nameof(Issue_OnAnAlreadyIssuedPo_ByAuthorizedApprover_ReportsErrorAndChangesNothing));
-        await GrantAsync(ctx, SystemRoles.EngineeringManager, "PurchaseOrder", "Approve");
-        ctx.PurchaseOrders.Add(new PurchaseOrder { PoNumber = "PO-LEGACY", ProjectId = 1, VendorId = 1 });
-        await ctx.SaveChangesAsync();
-        var approver = await AddUserAsync(ctx, "approver", SystemRoles.EngineeringManager);
-
-        var controller = PoControllerFor(ctx, approver, SystemRoles.EngineeringManager);
-        var result = await controller.Issue(ctx.PurchaseOrders.Single().PoId);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.NotNull(controller.TempData["Error"]);
-        Assert.Equal("Issued", ctx.PurchaseOrders.Single().Status);
     }
 }

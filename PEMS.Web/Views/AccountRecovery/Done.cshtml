@@ -1,0 +1,22 @@
+@model PEMS.Application.DTOs.RecoveryCodeRedeemResult
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    ViewData["Title"] = "Administrator recovery";
+    Layout = "_AuthLayout";
+}
+
+<pems-heading level="2">@Localizer["Account recovered"]</pems-heading>
+<pems-alert tone="success" css="small">
+    @Localizer["The new password is set and the recovery code is used up. Sign in with the new password and enroll MFA again."]
+</pems-alert>
+<pems-text class="small">@Localizer["Recovery codes left"]: <strong>@Model.RemainingCodes</strong></pems-text>
+@if (Model.RemainingCodes <= 3)
+{
+    <pems-text class="small text-warning">@Localizer["Few recovery codes are left. Generate a new set from your profile after signing in."]</pems-text>
+}
+
+<div class="auth-links">
+    <pems-link asp-controller="Account" asp-action="Login">@Localizer["Sign in"] &rarr;</pems-link>
+</div>

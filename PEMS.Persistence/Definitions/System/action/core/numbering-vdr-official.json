@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "numbering-vdr-official",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate the official number",
+    "fa": "تولید شماره‌ی رسمی"
+  },
+  "description": {
+    "en": "Generate the official number",
+    "fa": "تولید شماره‌ی رسمی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Numbering",
+      "action": "GenerateContractorNumber",
+      "args": {
+        "vdrItemId": "field:id",
+        "vendorCode": "field:vendorCode",
+        "plantCode": "field:plantCode",
+        "unitCode": "field:unitCode",
+        "materialCode": "field:materialCode"
+      }
+    },
+    "redirect": "/p/numbering-vdr"
+  }
+}

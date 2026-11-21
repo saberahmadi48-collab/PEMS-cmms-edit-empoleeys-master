@@ -3,79 +3,79 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card mb-3">
-    <p class="text-muted small mb-3">
+<pems-content-card css="mb-3">
+    <pems-text class="text-muted small mb-3">
         هر بُعد به‌صورت مستقل نشان داده می‌شود (نه یک درصد ترکیبی مبهم) - درصدها فقط روی
         کلاس‌هایی محاسبه می‌شوند که واقعاً Equipment دارند (کلاس‌های بدون تجهیز کاندید عملی هوش
         نگهداری نیستند).
-    </p>
-    <div class="row g-3 text-center">
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@Model.ClassesWithEquipment</div>
+    </pems-text>
+    <pems-row gap="3" css="text-center">
+        <pems-col md="2">
+            <pems-metric>@Model.ClassesWithEquipment</pems-metric>
             <div class="text-muted small">@Localizer["Classes with Equipment"]</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@Model.ActivityCoveragePercent.ToString("0.0")%</div>
+        </pems-col>
+        <pems-col md="2">
+            <pems-metric>@Model.ActivityCoveragePercent.ToString("0.0")%</pems-metric>
             <div class="text-muted small">Activity Coverage</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@Model.PMTemplateCoveragePercent.ToString("0.0")%</div>
+        </pems-col>
+        <pems-col md="2">
+            <pems-metric>@Model.PMTemplateCoveragePercent.ToString("0.0")%</pems-metric>
             <div class="text-muted small">PM Template Coverage</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@Model.FailureModeCoveragePercent.ToString("0.0")%</div>
+        </pems-col>
+        <pems-col md="2">
+            <pems-metric>@Model.FailureModeCoveragePercent.ToString("0.0")%</pems-metric>
             <div class="text-muted small">@Localizer["Failure Taxonomy Coverage"]</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@Model.StandardsCoveragePercent.ToString("0.0")%</div>
+        </pems-col>
+        <pems-col md="2">
+            <pems-metric>@Model.StandardsCoveragePercent.ToString("0.0")%</pems-metric>
             <div class="text-muted small">Standards Coverage</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@Model.ClassesWithJobPlans</div>
+        </pems-col>
+        <pems-col md="2">
+            <pems-metric>@Model.ClassesWithJobPlans</pems-metric>
             <div class="text-muted small">Classes with Job Plans</div>
-        </div>
-    </div>
-</div>
+        </pems-col>
+    </pems-row>
+</pems-content-card>
 
-<div class="content-card">
-    <div class="table-responsive">
-        <table class="table table-enterprise table-sm">
-            <thead>
-                <tr>
-                    <th>@Localizer["Equipment Class"]</th>
-                    <th>@Localizer["Parent"]</th>
-                    <th class="text-end">@Localizer["Equipment"]</th>
-                    <th class="text-end">Activities<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></th>
-                    <th class="text-end">@Localizer["Strategy Types"]</th>
-                    <th class="text-end">Standards<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></th>
-                    <th class="text-end">PM Templates<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></th>
-                    <th class="text-end">Job Plans<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></th>
-                    <th class="text-end">Failure Modes<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></th>
-                    <th>Gap</th>
-                </tr>
-            </thead>
-            <tbody>
+<pems-content-card>
+    <pems-table-scroll>
+        <pems-table kind="enterprise" scale="small">
+            <pems-table-head>
+                <pems-table-row>
+                    <pems-table-header>@Localizer["Equipment Class"]</pems-table-header>
+                    <pems-table-header>@Localizer["Parent"]</pems-table-header>
+                    <pems-table-header class="text-end">@Localizer["Equipment"]</pems-table-header>
+                    <pems-table-header class="text-end">Activities<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></pems-table-header>
+                    <pems-table-header class="text-end">@Localizer["Strategy Types"]</pems-table-header>
+                    <pems-table-header class="text-end">Standards<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></pems-table-header>
+                    <pems-table-header class="text-end">PM Templates<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></pems-table-header>
+                    <pems-table-header class="text-end">Job Plans<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></pems-table-header>
+                    <pems-table-header class="text-end">Failure Modes<br /><span class="small text-muted">@Localizer["Direct / Inherited"]</span></pems-table-header>
+                    <pems-table-header>Gap</pems-table-header>
+                </pems-table-row>
+            </pems-table-head>
+            <pems-table-body>
                 @foreach (var c in Model.Classes)
                 {
-                    <tr class="@(c.EquipmentCount > 0 && c.GapReasons.Any(g => !g.StartsWith("Intentional")) ? "table-warning" : "")">
-                        <td><strong>@c.Name</strong> <code class="small">@c.Code</code></td>
-                        <td class="small text-muted">@(c.ParentClassName ?? "-")</td>
-                        <td class="text-end">@c.EquipmentCount.ToString("N0")</td>
-                        <td class="text-end">@c.DirectActivityCount / @c.InheritedActivityCount</td>
-                        <td class="text-end">@c.StrategyTypeCount</td>
-                        <td class="text-end">@c.DirectStandardReferenceCount / @c.InheritedStandardReferenceCount</td>
-                        <td class="text-end">@c.DirectPMTemplateCount / @c.InheritedPMTemplateCount</td>
-                        <td class="text-end">@c.DirectJobPlanCount / @c.InheritedJobPlanCount</td>
-                        <td class="text-end">@c.DirectFailureModeCount / @c.InheritedFailureModeCount</td>
-                        <td class="small">
+                    <pems-table-row class="@(c.EquipmentCount > 0 && c.GapReasons.Any(g => !g.StartsWith("Intentional")) ? "table-warning" : "")">
+                        <pems-table-cell><strong>@c.Name</strong> <code class="small">@c.Code</code></pems-table-cell>
+                        <pems-table-cell class="small text-muted">@(c.ParentClassName ?? "-")</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.EquipmentCount.ToString("N0")</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.DirectActivityCount / @c.InheritedActivityCount</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.StrategyTypeCount</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.DirectStandardReferenceCount / @c.InheritedStandardReferenceCount</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.DirectPMTemplateCount / @c.InheritedPMTemplateCount</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.DirectJobPlanCount / @c.InheritedJobPlanCount</pems-table-cell>
+                        <pems-table-cell class="text-end">@c.DirectFailureModeCount / @c.InheritedFailureModeCount</pems-table-cell>
+                        <pems-table-cell class="small">
                             @foreach (var g in c.GapReasons)
                             {
                                 <div class="text-muted">@g</div>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
-        </table>
-    </div>
-</div>
+            </pems-table-body>
+        </pems-table>
+    </pems-table-scroll>
+</pems-content-card>

@@ -1,0 +1,394 @@
+{
+  "kind": "page",
+  "key": "replenishment-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Replenishment recommendation",
+    "fa": "توصیه‌ی تأمین"
+  },
+  "description": {
+    "en": "One recommendation: figures, freshness, sources and history, with dismiss, reopen and send to procurement (page definition)",
+    "fa": "یک توصیه: ارقام، تازگی، منابع و تاریخچه، با رد، بازگشایی و ارسال به خرید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "replenishment-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "replenishment-record",
+            "fields": [
+              {
+                "key": "material",
+                "label": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "wide": true
+              },
+              {
+                "key": "warehouse",
+                "label": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                }
+              },
+              {
+                "key": "revision",
+                "label": {
+                  "en": "Revision",
+                  "fa": "بازنگری"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "definitive",
+                "label": {
+                  "en": "Definitive",
+                  "fa": "قطعی"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "firstDetected",
+                "label": {
+                  "en": "First detected",
+                  "fa": "اولین شناسایی"
+                },
+                "type": "date"
+              },
+              {
+                "key": "lastEvaluated",
+                "label": {
+                  "en": "Evaluated",
+                  "fa": "آخرین بررسی"
+                },
+                "type": "date"
+              },
+              {
+                "key": "usable",
+                "label": {
+                  "en": "Usable",
+                  "fa": "قابل استفاده"
+                },
+                "type": "number"
+              },
+              {
+                "key": "onHand",
+                "label": {
+                  "en": "On hand",
+                  "fa": "موجودی"
+                },
+                "type": "number"
+              },
+              {
+                "key": "reserved",
+                "label": {
+                  "en": "Reserved",
+                  "fa": "رزرو"
+                },
+                "type": "number"
+              },
+              {
+                "key": "grossDemand",
+                "label": {
+                  "en": "Gross demand",
+                  "fa": "تقاضای کل"
+                },
+                "type": "number"
+              },
+              {
+                "key": "covered",
+                "label": {
+                  "en": "Covered by reservations",
+                  "fa": "پوشش با رزرو"
+                },
+                "type": "number"
+              },
+              {
+                "key": "shortage",
+                "label": {
+                  "en": "Shortage",
+                  "fa": "کمبود"
+                },
+                "type": "number"
+              },
+              {
+                "key": "blockingIssues",
+                "label": {
+                  "en": "Why not definitive",
+                  "fa": "علت غیرقطعی بودن"
+                },
+                "wide": true
+              },
+              {
+                "key": "notices",
+                "label": {
+                  "en": "Notices",
+                  "fa": "هشدارها"
+                },
+                "wide": true
+              },
+              {
+                "key": "lastRunStarted",
+                "label": {
+                  "en": "Calculated from",
+                  "fa": "محاسبه از"
+                },
+                "type": "date"
+              },
+              {
+                "key": "lastRunCompleted",
+                "label": {
+                  "en": "Calculated to",
+                  "fa": "محاسبه تا"
+                },
+                "type": "date"
+              },
+              {
+                "key": "stockUpdated",
+                "label": {
+                  "en": "Stock updated",
+                  "fa": "به‌روزرسانی موجودی"
+                },
+                "type": "date"
+              },
+              {
+                "key": "demandChanged",
+                "label": {
+                  "en": "Demand changed",
+                  "fa": "تغییر تقاضا"
+                },
+                "type": "date"
+              },
+              {
+                "key": "dismissedAt",
+                "label": {
+                  "en": "Dismissed at",
+                  "fa": "زمان رد"
+                },
+                "type": "date"
+              },
+              {
+                "key": "dismissedReason",
+                "label": {
+                  "en": "Dismissal reason",
+                  "fa": "دلیل رد"
+                },
+                "wide": true
+              },
+              {
+                "key": "closedReason",
+                "label": {
+                  "en": "Closed reason",
+                  "fa": "دلیل بسته شدن"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/replenishment-detail",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/pre-procurement-send-recommendation?recommendationId={{params.id}}",
+                "text": {
+                  "en": "Send the shortage to procurement (open and definitive only)",
+                  "fa": "ارسال کمبود به خرید (فقط باز و قطعی)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/replenishment-dismiss?id={{params.id}}",
+                "text": {
+                  "en": "Dismiss",
+                  "fa": "رد کردن"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/replenishment-reopen?id={{params.id}}",
+                "text": {
+                  "en": "Reopen",
+                  "fa": "بازگشایی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/replenishment",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "sources",
+          "component": "def:related-table",
+          "options": {
+            "id": "sources",
+            "title": {
+              "en": "Sources of the demand",
+              "fa": "منابع تقاضا"
+            },
+            "url": "/d/replenishment-sources?f.id={{params.id|url}}",
+            "idField": "index",
+            "columns": [
+              {
+                "key": "sourceType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 140
+              },
+              {
+                "key": "number",
+                "header": {
+                  "en": "Number",
+                  "fa": "شماره"
+                },
+                "width": 160
+              },
+              {
+                "key": "gross",
+                "header": {
+                  "en": "Gross demand",
+                  "fa": "تقاضای کل"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "covered",
+                "header": {
+                  "en": "Covered",
+                  "fa": "پوشش"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "unreserved",
+                "header": {
+                  "en": "Unreserved",
+                  "fa": "رزروشده‌نشده"
+                },
+                "width": 130,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "history",
+          "component": "def:related-table",
+          "options": {
+            "id": "history",
+            "title": {
+              "en": "History",
+              "fa": "تاریخچه"
+            },
+            "url": "/d/replenishment-history?f.id={{params.id|url}}",
+            "idField": "index",
+            "columns": [
+              {
+                "key": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 160,
+                "type": "date"
+              },
+              {
+                "key": "revision",
+                "header": {
+                  "en": "Revision",
+                  "fa": "بازنگری"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "action",
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                },
+                "width": 140
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 180
+              },
+              {
+                "key": "shortage",
+                "header": {
+                  "en": "Shortage",
+                  "fa": "کمبود"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "usable",
+                "header": {
+                  "en": "Usable",
+                  "fa": "قابل استفاده"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "by",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 150
+              },
+              {
+                "key": "note",
+                "header": {
+                  "en": "Note",
+                  "fa": "یادداشت"
+                },
+                "width": 240
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "ReplenishmentRecommendation.View"
+  }
+}

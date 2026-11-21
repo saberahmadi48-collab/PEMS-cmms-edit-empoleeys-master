@@ -1,0 +1,53 @@
+{
+  "key": "toast",
+  "component": "PEMS.UI.Components.PemsToast",
+  "category": "feedback",
+  "icon": "bi-chat-square-text",
+  "nameKey": "component.toast",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "tone": {
+        "type": "string"
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ToastOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "tone": "success"
+  }
+}

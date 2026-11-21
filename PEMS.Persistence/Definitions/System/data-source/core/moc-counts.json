@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "moc-counts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MOC counts",
+    "fa": "شمارش MOC"
+  },
+  "description": {
+    "en": "MOC counts",
+    "fa": "شمارش MOC"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MocPage",
+      "action": "Counts",
+      "args": {
+        "riskLevel": "param:riskLevel",
+        "status": "param:status",
+        "projectId": "param:projectId"
+      }
+    }
+  }
+}

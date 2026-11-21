@@ -1,0 +1,128 @@
+{
+  "kind": "form",
+  "key": "production-order-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New production order",
+    "fa": "سفارش تولید جدید"
+  },
+  "description": {
+    "en": "New production order",
+    "fa": "سفارش تولید جدید"
+  },
+  "payload": {
+    "id": "production-order-create",
+    "title": {
+      "en": "New production order",
+      "fa": "سفارش تولید جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "production-order-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "materialItemId",
+        "label": {
+          "en": "Material",
+          "fa": "ماده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "production-materials"
+      },
+      {
+        "name": "plannedQuantity",
+        "label": {
+          "en": "Planned quantity",
+          "fa": "مقدار برنامه‌ریزی‌شده"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "uomId",
+        "label": {
+          "en": "Unit",
+          "fa": "واحد"
+        },
+        "kind": "select",
+        "optionsFrom": "production-uoms"
+      },
+      {
+        "name": "productionWorkCenterId",
+        "label": {
+          "en": "Work center",
+          "fa": "مرکز کار"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "production-work-centers"
+      },
+      {
+        "name": "plannedStartDate",
+        "label": {
+          "en": "Planned start",
+          "fa": "شروع برنامه‌ریزی‌شده"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "plannedFinishDate",
+        "label": {
+          "en": "Planned finish",
+          "fa": "پایان برنامه‌ریزی‌شده"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment",
+          "fa": "تجهیز"
+        },
+        "kind": "select",
+        "optionsFrom": "production-equipment"
+      },
+      {
+        "name": "responsibleEmployeeId",
+        "label": {
+          "en": "Responsible",
+          "fa": "مسئول"
+        },
+        "kind": "select",
+        "optionsFrom": "production-employees"
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

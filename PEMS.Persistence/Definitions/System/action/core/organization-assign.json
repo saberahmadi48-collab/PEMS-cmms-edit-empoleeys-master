@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "organization-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign a holder",
+    "fa": "تعیین دارنده"
+  },
+  "description": {
+    "en": "Assign a holder",
+    "fa": "تعیین دارنده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Organization",
+      "action": "Assign",
+      "args": {
+        "request": {
+          "positionId": "field:id",
+          "employeeId": "field:employeeId",
+          "isPrimary": "field:isPrimary",
+          "startDate": "field:startDate",
+          "endDate": "field:endDate",
+          "notes": "field:notes"
+        }
+      }
+    },
+    "success": {
+      "en": "Holder assigned.",
+      "fa": "دارنده تعیین شد."
+    },
+    "redirect": "/p/organization-positions"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "navigation-visibility-role-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Navigation seen by a role",
+    "fa": "ناوبری قابل مشاهده برای یک نقش"
+  },
+  "description": {
+    "en": "What a role sees",
+    "fa": "آنچه یک نقش می‌بیند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "NavigationVisibility",
+      "action": "RoleRows",
+      "args": {
+        "roleName": "param:roleName"
+      }
+    }
+  }
+}

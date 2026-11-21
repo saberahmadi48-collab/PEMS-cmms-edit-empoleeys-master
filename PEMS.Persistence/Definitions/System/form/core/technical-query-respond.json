@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "technical-query-respond",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Respond",
+    "fa": "پاسخ"
+  },
+  "description": {
+    "en": "Respond",
+    "fa": "پاسخ"
+  },
+  "payload": {
+    "id": "technical-query-respond",
+    "title": {
+      "en": "Respond",
+      "fa": "پاسخ"
+    },
+    "submitLabel": {
+      "en": "Send",
+      "fa": "ارسال"
+    },
+    "actionKey": "technical-query-respond",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "technicalQueryId",
+        "label": {
+          "en": "TQ id",
+          "fa": "شناسه‌ی TQ"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "responseText",
+        "label": {
+          "en": "Response",
+          "fa": "متن پاسخ"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 4000
+      }
+    ]
+  }
+}

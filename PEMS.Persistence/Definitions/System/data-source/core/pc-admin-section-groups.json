@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-admin-section-groups",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin: Section commodity groups",
+    "fa": "مدیریت کاتالوگ قطعه: Section commodity groups"
+  },
+  "description": {
+    "en": "Part Catalogue admin: Section commodity groups",
+    "fa": "مدیریت کاتالوگ قطعه: Section commodity groups"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "SectionGroups",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId"
+      }
+    }
+  }
+}

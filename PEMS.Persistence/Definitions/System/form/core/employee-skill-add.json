@@ -1,0 +1,107 @@
+{
+  "kind": "form",
+  "key": "employee-skill-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a skill",
+    "fa": "افزودن مهارت"
+  },
+  "description": {
+    "en": "Add a skill to an employee",
+    "fa": "افزودن مهارت به کارمند"
+  },
+  "payload": {
+    "id": "employee-skill-add",
+    "title": {
+      "en": "Skill",
+      "fa": "مهارت"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "employee-skill-add",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "employeeId",
+        "label": {
+          "en": "Employee id",
+          "fa": "شناسه کارمند"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Employee id is required.",
+            "fa": "شناسه کارمند الزامی است."
+          }
+        }
+      },
+      {
+        "name": "skillId",
+        "label": {
+          "en": "Skill",
+          "fa": "مهارت"
+        },
+        "kind": "select",
+        "optionsFrom": "employee-skill-choices",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Skill is required.",
+            "fa": "مهارت الزامی است."
+          }
+        }
+      },
+      {
+        "name": "proficiencyLevel",
+        "label": {
+          "en": "Proficiency",
+          "fa": "سطح تسلط"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "Basic",
+            "label": {
+              "en": "Basic",
+              "fa": "مقدماتی"
+            }
+          },
+          {
+            "value": "Intermediate",
+            "label": {
+              "en": "Intermediate",
+              "fa": "متوسط"
+            }
+          },
+          {
+            "value": "Advanced",
+            "label": {
+              "en": "Advanced",
+              "fa": "پیشرفته"
+            }
+          },
+          {
+            "value": "Expert",
+            "label": {
+              "en": "Expert",
+              "fa": "خبره"
+            }
+          }
+        ]
+      },
+      {
+        "name": "certifiedDate",
+        "label": {
+          "en": "Certified on",
+          "fa": "تاریخ گواهی"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}

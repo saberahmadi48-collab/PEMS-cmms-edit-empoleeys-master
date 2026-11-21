@@ -1,0 +1,60 @@
+{
+  "kind": "page",
+  "key": "knowledge-base",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Knowledge base semantic search",
+    "fa": "جستجوی معنایی پایگاه دانش"
+  },
+  "description": {
+    "en": "Semantic search over the AI summaries of the system (page definition)",
+    "fa": "جستجوی معنایی روی خلاصه‌های هوش مصنوعی سیستم (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "knowledge-base",
+    "template": "entity-list",
+    "args": {
+      "id": "knowledge-base",
+      "url": "/d/knowledge-base-grid",
+      "idField": "sourceId",
+      "columns": [
+        {
+          "key": "similarityScore",
+          "header": {
+            "en": "Relevance",
+            "fa": "ارتباط"
+          },
+          "width": 120,
+          "type": "number"
+        },
+        {
+          "key": "sourceType",
+          "header": {
+            "en": "Source",
+            "fa": "منبع"
+          },
+          "width": 180
+        },
+        {
+          "key": "sourceId",
+          "header": {
+            "en": "Id",
+            "fa": "شناسه"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "content",
+          "header": {
+            "en": "Content",
+            "fa": "محتوا"
+          },
+          "width": 640
+        }
+      ]
+    }
+  }
+}

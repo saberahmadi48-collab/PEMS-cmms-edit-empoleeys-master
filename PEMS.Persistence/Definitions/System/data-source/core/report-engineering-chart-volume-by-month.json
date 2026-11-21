@@ -1,0 +1,31 @@
+{
+  "kind": "data-source",
+  "key": "report-engineering-chart-volume-by-month",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering chart: Volume by month",
+    "fa": "نمودار engineering: حجم به تفکیک ماه"
+  },
+  "description": {
+    "en": "Engineering chart: Volume by month",
+    "fa": "نمودار engineering: حجم به تفکیک ماه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Engineering",
+      "args": {
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      },
+      "where": {
+        "key": "VolumeByMonth"
+      }
+    }
+  }
+}

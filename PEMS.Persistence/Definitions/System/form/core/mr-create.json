@@ -1,0 +1,130 @@
+{
+  "kind": "form",
+  "key": "mr-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New MR",
+    "fa": "MR جدید"
+  },
+  "description": {
+    "en": "New MR",
+    "fa": "MR جدید"
+  },
+  "payload": {
+    "id": "mr-create",
+    "title": {
+      "en": "New MR",
+      "fa": "MR جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "mr-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "mrNumber",
+        "label": {
+          "en": "MR number",
+          "fa": "شماره MR"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "mr-projects"
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "mr-disciplines"
+      },
+      {
+        "name": "equipmentTagNumber",
+        "label": {
+          "en": "Equipment tag",
+          "fa": "تگ تجهیز"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "requiredDate",
+        "label": {
+          "en": "Required date",
+          "fa": "تاریخ نیاز"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "responsibleEngineerId",
+        "label": {
+          "en": "Responsible engineer",
+          "fa": "مهندس مسئول"
+        },
+        "kind": "select",
+        "optionsFrom": "mr-engineers"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 1000,
+        "span": 2
+      },
+      {
+        "name": "items",
+        "label": {
+          "en": "Items, one per line: description | part number | quantity | unit (a registered part number alone is enough)",
+          "fa": "اقلام، هر خط یک قلم: شرح | شماره قطعه | تعداد | واحد (شماره قطعه‌ی ثبت‌شده به‌تنهایی کافی است)"
+        },
+        "kind": "textArea",
+        "maxLength": 4000,
+        "span": 2
+      }
+    ]
+  }
+}

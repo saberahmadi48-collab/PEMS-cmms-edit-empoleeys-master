@@ -1,0 +1,187 @@
+{
+  "kind": "page",
+  "key": "organization-positions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Organization positions",
+    "fa": "سمت‌های سازمانی"
+  },
+  "description": {
+    "en": "Organization positions (page definition)",
+    "fa": "سمت‌های سازمانی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "organization-positions",
+    "template": "entity-list",
+    "args": {
+      "id": "organization-positions",
+      "url": "/d/organization-positions-rows",
+      "idField": "positionId",
+      "columns": [
+        {
+          "key": "positionCode",
+          "header": {
+            "en": "Code",
+            "fa": "کد"
+          },
+          "width": 110
+        },
+        {
+          "key": "title",
+          "header": {
+            "en": "Title",
+            "fa": "عنوان"
+          },
+          "width": 240
+        },
+        {
+          "key": "departmentName",
+          "header": {
+            "en": "Department",
+            "fa": "دپارتمان"
+          },
+          "width": 180
+        },
+        {
+          "key": "parentLabel",
+          "header": {
+            "en": "Parent",
+            "fa": "مافوق"
+          },
+          "width": 220
+        },
+        {
+          "key": "holderName",
+          "header": {
+            "en": "Holder",
+            "fa": "دارنده"
+          },
+          "width": 200
+        },
+        {
+          "key": "lifecycle",
+          "header": {
+            "en": "State",
+            "fa": "وضعیت"
+          },
+          "width": 110
+        },
+        {
+          "key": "childCount",
+          "header": {
+            "en": "Children",
+            "fa": "زیرمجموعه"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "issueCount",
+          "header": {
+            "en": "Issues",
+            "fa": "مشکلات"
+          },
+          "width": 90,
+          "type": "number"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 600,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/organization-position-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "hierarchy",
+              "label": {
+                "en": "Hierarchy",
+                "fa": "سلسله‌مراتب"
+              },
+              "url": "/f/organization-position-hierarchy/{id}",
+              "method": "get"
+            },
+            {
+              "key": "assign",
+              "label": {
+                "en": "Assign",
+                "fa": "تعیین دارنده"
+              },
+              "url": "/f/organization-assign/{id}",
+              "method": "get",
+              "showWhen": "row.isActive == true and row.isVacant == true"
+            },
+            {
+              "key": "assignment",
+              "label": {
+                "en": "Edit the assignment",
+                "fa": "ویرایش تخصیص"
+              },
+              "url": "/f/organization-assignment-edit/{id}",
+              "method": "get",
+              "showWhen": "row.isVacant == false"
+            },
+            {
+              "key": "end",
+              "label": {
+                "en": "End the assignment",
+                "fa": "پایان تخصیص"
+              },
+              "url": "/f/organization-assignment-end/{id}",
+              "method": "get",
+              "showWhen": "row.isVacant == false"
+            },
+            {
+              "key": "deactivate",
+              "label": {
+                "en": "Deactivate",
+                "fa": "غیرفعال‌سازی"
+              },
+              "url": "/a/organization-position-deactivate",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Deactivate this position?",
+                "fa": "این سمت غیرفعال شود؟"
+              },
+              "showWhen": "row.isActive == true"
+            },
+            {
+              "key": "activate",
+              "label": {
+                "en": "Reactivate",
+                "fa": "فعال‌سازی"
+              },
+              "url": "/a/organization-position-activate",
+              "method": "post",
+              "confirm": {
+                "en": "Reactivate this position?",
+                "fa": "این سمت دوباره فعال شود؟"
+              },
+              "showWhen": "row.isActive == false"
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/organization-position-create",
+      "newLabel": {
+        "en": "New position",
+        "fa": "سمت جدید"
+      }
+    }
+  }
+}

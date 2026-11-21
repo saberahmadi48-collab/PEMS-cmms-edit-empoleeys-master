@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-authorization-simulate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Authorization (old address)",
+    "fa": "مجوزدهی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Authorization (old address)",
+    "fa": "مجوزدهی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/Authorization/Simulate/{*rest}",
+    "target": "/p/authorization-simulate",
+    "permanent": false
+  }
+}

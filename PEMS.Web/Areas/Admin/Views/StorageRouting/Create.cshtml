@@ -1,9 +1,0 @@
-@model PEMS.Application.DTOs.StorageRouteUpsertRequest
-
-<div class="admin-page-shell">
-    <div class="admin-hero"><div class="d-flex align-items-center gap-3"><div><p>Route a module (and optionally a document type) to a Storage Provider.</p></div></div></div>
-    @if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }
-    <form asp-action="Create" method="post">
-        @await Html.PartialAsync("_Form", Model)
-    </form>
-</div>

@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "mrs-import-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload an MRS file",
+    "fa": "بارگذاری فایل MRS"
+  },
+  "description": {
+    "en": "Upload an MRS file",
+    "fa": "بارگذاری فایل MRS"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MrsImport",
+      "action": "Upload",
+      "args": {
+        "file": "file:file",
+        "sheetName": "field:sheetName",
+        "employeeId": "context:employeeId"
+      },
+      "upload": {
+        "profile": "spreadsheet",
+        "maxFileMb": 20
+      }
+    },
+    "success": {
+      "en": "The file was staged; open the new batch to review it.",
+      "fa": "فایل مرحله‌بندی شد؛ دسته‌ی جدید را برای بررسی باز کنید."
+    },
+    "redirect": "/p/mrs-import"
+  }
+}

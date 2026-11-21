@@ -1,0 +1,40 @@
+{
+  "kind": "action",
+  "key": "isolation-verify",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Verify the isolation",
+    "fa": "تأیید ایزوله‌سازی"
+  },
+  "description": {
+    "en": "Verify the isolation",
+    "fa": "تأیید ایزوله‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Isolation",
+      "action": "Verify",
+      "args": {
+        "userRoles": "context:roles",
+        "userId": "context:userId",
+        "employeeId": "context:employeeId",
+        "isolationPointId": "field:id",
+        "permitId": "field:permitId",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The isolation was verified.",
+      "fa": "ایزوله‌سازی تایید شد."
+    },
+    "redirect": "/Permit/Details/{permitId}",
+    "permission": "LOTO.Verify",
+    "stepUp": {
+      "resource": "LOTO",
+      "action": "Verify"
+    }
+  }
+}

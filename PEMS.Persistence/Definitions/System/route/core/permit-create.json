@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "permit-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New permit (old address)",
+    "fa": "New permit (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New permit (old address)",
+    "fa": "New permit (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Permit/Create",
+    "target": "/f/permit-create",
+    "permanent": false
+  }
+}

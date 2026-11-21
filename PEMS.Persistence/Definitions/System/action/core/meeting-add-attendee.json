@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "meeting-add-attendee",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add meeting attendee",
+    "fa": "افزودن شرکت‌کننده"
+  },
+  "description": {
+    "en": "Add meeting attendee",
+    "fa": "افزودن شرکت‌کننده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Meeting",
+      "action": "AddAttendee",
+      "args": {
+        "meetingId": "field:meetingId",
+        "employeeId": "field:employeeId",
+        "externalName": "field:externalName",
+        "isRequired": "literal:true"
+      }
+    },
+    "success": {
+      "en": "The attendee was added.",
+      "fa": "شرکت‌کننده افزوده شد."
+    },
+    "redirect": "/Meeting/Details/{meetingId}"
+  }
+}

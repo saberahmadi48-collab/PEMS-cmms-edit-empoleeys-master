@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "help-workflow-sources",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Workflow sources",
+    "fa": "Workflow sources"
+  },
+  "description": {
+    "en": "Workflow sources",
+    "fa": "Workflow sources"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Help",
+      "action": "WorkflowSourceOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "key": "list-filter-select",
+  "component": "PEMS.UI.Components.PemsListFilterSelect",
+  "category": "list",
+  "icon": "bi-menu-button-wide",
+  "nameKey": "component.list-filter-select",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "label": {
+        "type": "string"
+      },
+      "value": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "allText": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "text"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "ListFilterSelectOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "st",
+    "name": "status",
+    "label": "Status",
+    "allText": "All",
+    "items": [
+      {
+        "value": "open",
+        "text": "Open"
+      }
+    ]
+  }
+}

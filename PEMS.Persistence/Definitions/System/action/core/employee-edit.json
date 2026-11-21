@@ -1,0 +1,72 @@
+{
+  "kind": "action",
+  "key": "employee-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit an employee",
+    "fa": "ویرایش کارمند"
+  },
+  "description": {
+    "en": "Edit an employee",
+    "fa": "ویرایش کارمند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.update",
+    "parameters": {
+      "entity": "Employee",
+      "map": {
+        "personnelCode": "PersonnelCode",
+        "firstName": "FirstName",
+        "lastName": "LastName",
+        "email": "Email",
+        "phone": "Phone",
+        "departmentId": "DepartmentId",
+        "disciplineId": "DisciplineId",
+        "personnelType": "PersonnelType",
+        "vendorId": "VendorId",
+        "hireDate": "HireDate",
+        "location": "Location",
+        "shift": "Shift",
+        "homeAddress": "HomeAddress"
+      },
+      "required": [
+        "FirstName",
+        "LastName",
+        "DepartmentId",
+        "DisciplineId"
+      ],
+      "unique": [
+        {
+          "fields": [
+            "PersonnelCode"
+          ],
+          "ignoreEmpty": true,
+          "message": {
+            "en": "This personnel code is already used by another employee.",
+            "fa": "این کد پرسنلی برای کارمند دیگری ثبت شده است."
+          }
+        }
+      ],
+      "validate": {
+        "model": "Employee",
+        "action": "ValidateEdit",
+        "args": {
+          "id": "field:id",
+          "firstName": "field:firstName",
+          "lastName": "field:lastName",
+          "departmentId": "field:departmentId",
+          "disciplineId": "field:disciplineId",
+          "personnelType": "field:personnelType",
+          "vendorId": "field:vendorId"
+        }
+      }
+    },
+    "success": {
+      "en": "Employee updated.",
+      "fa": "کارمند به‌روز شد."
+    },
+    "redirect": "/p/employees"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "work-order-workflow-action",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Workflow action on a work order",
+    "fa": "اقدام گردش‌کار روی Work Order"
+  },
+  "description": {
+    "en": "Workflow action on a work order",
+    "fa": "اقدام گردش‌کار روی Work Order"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrder",
+      "action": "WorkflowAction",
+      "args": {
+        "workOrderId": "field:id",
+        "actionType": "field:actionType",
+        "comment": "field:comment",
+        "completion": {}
+      }
+    },
+    "success": {
+      "en": "The action was completed.",
+      "fa": "اقدام با موفقیت انجام شد."
+    },
+    "redirect": "/WorkOrder/Details/{id}"
+  }
+}

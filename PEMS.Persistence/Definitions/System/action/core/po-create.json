@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "po-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New purchase order",
+    "fa": "سفارش خرید جدید"
+  },
+  "description": {
+    "en": "New purchase order",
+    "fa": "سفارش خرید جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "Create",
+      "args": {
+        "poNumber": "field:poNumber",
+        "projectId": "field:projectId",
+        "vendorId": "field:vendorId",
+        "contractId": "field:contractId",
+        "description": "field:description",
+        "value": "field:value",
+        "userId": "context:userId",
+        "ip": "context:ip"
+      }
+    },
+    "success": {
+      "en": "The purchase order was created as a Draft.",
+      "fa": "سفارش خرید به‌صورت پیش‌نویس ساخته شد."
+    },
+    "redirect": "/p/purchase-orders"
+  }
+}

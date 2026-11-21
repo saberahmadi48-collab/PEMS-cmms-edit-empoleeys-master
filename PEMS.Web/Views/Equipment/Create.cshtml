@@ -7,32 +7,32 @@
     var disciplines = (IEnumerable<dynamic>)ViewBag.Disciplines;
 }
 
-<div class="content-card" style="max-width:700px;">
-    <form asp-action="Create" method="post">
-        <div class="row g-3">
-            <div class="col-md-4"><label class="form-label">@Localizer["Tag Number"]</label><input asp-for="TagNumber" class="form-control" required /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Name"]</label><input asp-for="Name" class="form-control" required /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Type"]</label><input asp-for="EquipmentType" class="form-control" placeholder="@Localizer["Pump, Vessel, Motor ..."]" /></div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Project"]</label>
-                <select asp-for="ProjectId" class="form-select" required>
+<pems-content-card css="pems-s-bcaa1805">
+    <pems-form asp-action="Create" method="post">
+        <pems-row gap="3">
+            <pems-col md="4"><pems-label>@Localizer["Tag Number"]</pems-label><pems-input asp-for="TagNumber" required /></pems-col>
+            <pems-col md="4"><pems-label>@Localizer["Name"]</pems-label><pems-input asp-for="Name" required /></pems-col>
+            <pems-col md="4"><pems-label>@Localizer["Type"]</pems-label><pems-input asp-for="EquipmentType" placeholder="@Localizer["Pump, Vessel, Motor ..."]" /></pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Project"]</pems-label>
+                <pems-select asp-for="ProjectId" required>
                     @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Discipline"]</label>
-                <select asp-for="DisciplineId" class="form-select" required>
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Discipline"]</pems-label>
+                <pems-select asp-for="DisciplineId" required>
                     @foreach (var d in disciplines) { <option value="@d.DisciplineId">@d.Name</option> }
-                </select>
-            </div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Manufacturer"]</label><input asp-for="Manufacturer" class="form-control" /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Model"]</label><input asp-for="Model" class="form-control" /></div>
-            <div class="col-md-4"><label class="form-label">@Localizer["Serial Number"]</label><input asp-for="SerialNumber" class="form-control" /></div>
-            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea asp-for="Description" class="form-control" rows="2"></textarea></div>
-        </div>
-        <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
-        </div>
-    </form>
-</div>
+                </pems-select>
+            </pems-col>
+            <pems-col md="4"><pems-label>@Localizer["Manufacturer"]</pems-label><pems-input asp-for="Manufacturer" /></pems-col>
+            <pems-col md="4"><pems-label>@Localizer["Model"]</pems-label><pems-input asp-for="Model" /></pems-col>
+            <pems-col md="4"><pems-label>@Localizer["Serial Number"]</pems-label><pems-input asp-for="SerialNumber" /></pems-col>
+            <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea asp-for="Description" rows="2"></pems-textarea></pems-col>
+        </pems-row>
+        <pems-action-bar css="mt-4">
+            <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>

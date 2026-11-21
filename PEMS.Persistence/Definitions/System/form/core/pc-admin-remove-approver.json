@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "pc-admin-remove-approver",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove an approver",
+    "fa": "حذف تأییدکننده"
+  },
+  "description": {
+    "en": "Remove an approver",
+    "fa": "حذف تأییدکننده"
+  },
+  "payload": {
+    "id": "pc-admin-remove-approver",
+    "title": {
+      "en": "Remove an approver",
+      "fa": "حذف تأییدکننده"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-admin-remove-approver",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "assignmentId",
+        "label": {
+          "en": "Assignment id",
+          "fa": "شناسه‌ی انتساب"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

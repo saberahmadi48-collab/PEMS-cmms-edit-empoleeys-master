@@ -1,0 +1,27 @@
+{
+  "kind": "action",
+  "key": "vendor-toggle",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Activate or deactivate a vendor",
+    "fa": "فعال یا غیرفعال کردن فروشنده"
+  },
+  "description": {
+    "en": "Activate or deactivate a vendor",
+    "fa": "فعال یا غیرفعال کردن فروشنده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.toggle",
+    "parameters": {
+      "entity": "Vendor",
+      "property": "IsActive"
+    },
+    "success": {
+      "en": "The vendor status was updated.",
+      "fa": "وضعیت فروشنده به‌روز شد."
+    },
+    "redirect": "/p/vendors"
+  }
+}

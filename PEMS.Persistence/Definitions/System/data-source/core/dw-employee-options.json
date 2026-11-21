@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "dw-employee-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Workspace choices: Employees",
+    "fa": "گزینه‌های فضای کاری: Employees"
+  },
+  "description": {
+    "en": "Workspace choices: Employees",
+    "fa": "گزینه‌های فضای کاری: Employees"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "DisciplineWorkspace",
+      "action": "Employees",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "team-assignment-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assignment history",
+    "fa": "تاریخچه تخصیص"
+  },
+  "description": {
+    "en": "Assignment history",
+    "fa": "تاریخچه تخصیص"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Team",
+      "action": "AssignmentHistory",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "teamId": "param:teamId"
+      }
+    }
+  }
+}

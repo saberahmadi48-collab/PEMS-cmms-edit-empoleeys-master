@@ -1,0 +1,31 @@
+{
+  "kind": "data-source",
+  "key": "report-vdr-chart-submissions-by-month",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vdr chart: Submissions by month",
+    "fa": "نمودار vdr: ارسال‌ها به تفکیک ماه"
+  },
+  "description": {
+    "en": "Vdr chart: Submissions by month",
+    "fa": "نمودار vdr: ارسال‌ها به تفکیک ماه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Vdr",
+      "args": {
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      },
+      "where": {
+        "key": "SubmissionsByMonth"
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "tq-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "TQ / TSR / RFI",
+    "fa": "TQ / TSR / RFI"
+  },
+  "description": {
+    "en": "TQ / TSR / RFI",
+    "fa": "TQ / TSR / RFI"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TechnicalQueryPage",
+      "action": "List",
+      "args": {
+        "queryType": "param:queryType",
+        "status": "param:status",
+        "projectId": "param:projectId"
+      }
+    }
+  }
+}

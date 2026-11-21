@@ -1,0 +1,75 @@
+@using PEMS.Web.Navigation
+@using PEMS.Web.Security
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@inject ICurrentUserService CurrentUserService
+@inject DynamicSidebarBuilder SidebarBuilder
+@{
+    // سایدبار داده‌محور (پشت پرچم Features:DynamicSidebar:Enabled). ساختار/قاعده‌ها از NavigationMenuItems؛ Markup و کلاس‌ها عیناً
+    // همان _SidebarMenu.cshtml تا ظاهر، Accordion، حالت Icon-Rail و دسترس‌پذیری صفحه‌کلید بدون تغییر بمانند.
+    var route = new SidebarRouteContext(
+        ViewContext.RouteData.Values["area"]?.ToString(),
+        ViewContext.RouteData.Values["controller"]?.ToString() ?? "",
+        ViewContext.RouteData.Values["action"]?.ToString() ?? "");
+
+    var nodes = await SidebarBuilder.BuildAsync(User, CurrentUserService.Roles, route,
+        item => item.ExternalPath ?? (item.Controller == null ? null : Url.Action(item.Action ?? "Index", item.Controller, new { area = item.Area ?? "" })),
+        key => Localizer[key]);
+
+    string SectionId(string key) => "sec-" + new string(key.Select(c => char.IsLetterOrDigit(c) ? c : '-').ToArray());
+}
+
+@functions {
+    private Microsoft.AspNetCore.Html.IHtmlContent Badge(SidebarNode node)
+    {
+        if (node.BadgeKey == null) return Microsoft.AspNetCore.Html.HtmlString.Empty;
+        return new Microsoft.AspNetCore.Html.HtmlString(
+            $"<span class=\"badge rounded-pill bg-{node.BadgeTone} ms-auto nav-badge d-none\" data-nav-badge=\"{System.Net.WebUtility.HtmlEncode(node.BadgeKey)}\"></span>");
+    }
+}
+
+<nav class="pems-sidebar" id="pemsSidebar" data-dynamic-sidebar="true">
+    @foreach (var node in nodes)
+    {
+        if (node.IsSection)
+        {
+            var id = SectionId(node.Key);
+            <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#@id" role="button" tabindex="0" aria-expanded="@node.IsActive.ToString().ToLower()" data-nav-key="@node.Key">
+                <pems-icon css="@node.Icon nav-section-icon" />
+                <span>@node.Title</span>
+                <pems-icon name="bi-chevron-down" css="nav-section-chevron@(node.IsActive ? " rotated" : "")" />
+            </div>
+            <div class="collapse@(node.IsActive ? " show" : "")" id="@id">
+                @foreach (var child in node.Children)
+                {
+                    if (child.IsSubheading)
+                    {
+                        <div class="nav-subheading" data-nav-key="@child.Key">@child.Title</div>
+                        foreach (var sub in child.Children)
+                        {
+                            <pems-nav-link item="false" sub="true" active="@(sub.IsActive)" href="@sub.Href" data-nav-key="@sub.Key" new-tab="@sub.OpenInNewTab">
+                                <pems-icon css="@sub.Icon" /><span class="nav-label">@sub.Title</span>@Badge(sub)
+                            </pems-nav-link>
+                        }
+                    }
+                    else
+                    {
+                        <pems-nav-link item="false" active="@(child.IsActive)" href="@child.Href" data-nav-key="@child.Key" new-tab="@child.OpenInNewTab">
+                            <pems-icon css="@child.Icon" /><span class="nav-label">@child.Title</span>@Badge(child)
+                        </pems-nav-link>
+                    }
+                }
+            </div>
+        }
+        else if (!node.IsSubheading)
+        {
+            <pems-nav-link item="false" active="@(node.IsActive)" href="@node.Href" data-nav-key="@node.Key" new-tab="@node.OpenInNewTab">
+                <pems-icon css="@node.Icon" /><span class="nav-label">@node.Title</span>@Badge(node)
+            </pems-nav-link>
+        }
+    }
+</nav>
+
+<script src="~/js/views/shared-dynamicsidebarmenu.js" asp-append-version="true"></script>
+<script src="~/js/sidebar-badges.js" asp-append-version="true"></script>

@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "isolation-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel isolation point",
+    "fa": "لغو نقطه‌ی ایزوله‌سازی"
+  },
+  "description": {
+    "en": "Cancel isolation point",
+    "fa": "لغو نقطه‌ی ایزوله‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Isolation",
+      "action": "AdvanceStatus",
+      "args": {
+        "isolationPointId": "field:id",
+        "nextStatus": "literal:Cancelled",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The isolation point was cancelled.",
+      "fa": "نقطه‌ی ایزوله‌سازی لغو شد."
+    },
+    "redirect": "/Permit/Details/{permitId}",
+    "permission": "LOTO.Cancel"
+  }
+}

@@ -1,0 +1,45 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var spaceView = ViewBag.SpaceView as PEMS.Application.DTOs.WorkSpaceViewDto;
+    var assignees = spaceView != null ? ViewBag.Assignees as PEMS.Application.DTOs.AssigneeResolutionDto : null;
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+}
+@* هر مورد جداگانه در سرور مجوز می‌گیرد؛ این نوار فقط ورودی جمع می‌کند. مقادیر وضعیت/Sprint/مسئول فقط از همان فضا. *@
+<pems-form class="tm-bulkbar" id="tmBulk" asp-controller="TaskManager" asp-action="Bulk" method="post" data-tm-bulkbar hidden><pems-flex wrap="true" gap="2" align="center">
+    <input type="hidden" name="returnUrl" value="@returnUrl" />
+    <span class="small"><strong data-tm-bulk-count>0</strong> @Localizer["Tm_Selected"]</span>
+    <label class="visually-hidden" for="tm-bulk-action">@Localizer["Tm_BulkAction"]</label>
+    <pems-select scale="small" css="w-auto" id="tm-bulk-action" name="bulkAction" data-tm-bulk-action>
+        @if (spaceView != null)
+        {
+            <option value="status">@Localizer["Tm_Bulk_Status"]</option>
+            @if (assignees != null) { <option value="assign">@Localizer["Tm_Bulk_Assign"]</option> }
+            @if (spaceView.CanRank) { <option value="sprint">@Localizer["Tm_Bulk_Sprint"]</option> }
+        }
+        <option value="archive">@Localizer["Tm_Bulk_Archive"]</option>
+    </pems-select>
+    @if (spaceView != null)
+    {
+        <pems-select scale="small" css="w-auto" name="value" data-tm-bulk-value="status" aria-label="@Localizer["Tm_Field_Status"]">
+            @foreach (var s in spaceView.Statuses) { <option value="@s.Id">@TaskManagerUi.Name(s.Name, s.NameFa)</option> }
+        </pems-select>
+        @if (assignees != null)
+        {
+            <pems-select scale="small" css="w-auto" name="value" data-tm-bulk-value="assign" aria-label="@Localizer["Tm_Field_Assignee"]" disabled hidden>
+                <option value="">@Localizer["Tm_Unassigned"]</option>
+                @foreach (var e in assignees.Candidates) { <option value="@e.EmployeeId">@e.Name</option> }
+            </pems-select>
+        }
+        @if (spaceView.CanRank)
+        {
+            <pems-select scale="small" css="w-auto" name="value" data-tm-bulk-value="sprint" aria-label="@Localizer["Tm_Field_Sprint"]" disabled hidden>
+                <option value="0">@Localizer["Tm_Backlog"]</option>
+                @foreach (var s in spaceView.Sprints) { <option value="@s.Id">@s.Name</option> }
+            </pems-select>
+        }
+    }
+    <pems-button tone="primary" size="small" type="submit" data-pems-confirm="@Localizer["Tm_BulkConfirm"]">@Localizer["Tm_Apply"]</pems-button>
+</pems-flex></pems-form>

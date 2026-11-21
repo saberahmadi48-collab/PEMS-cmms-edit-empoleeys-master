@@ -6,17 +6,21 @@ namespace PEMS.Application.Interfaces;
 /// برچسب دلخواه و قابل‌ساخت توسط کاربر (طبق نمونه‌ی کارتابل مرجع) - فعلاً مخصوص نامه‌ها،
 /// طراحی به‌گونه‌ای که بعداً برای هر ماژول دیگر هم قابل‌استفاده‌ی مجدد باشد.
 /// </summary>
+/// <summary>The result of <see cref="ITagService.DeleteAsync"/> (SCRUM-550).</summary>
+public enum TagDeleteOutcome { Deleted, NotFound, NotOwner, HasSubTags }
+
 public interface ITagService
 {
-    Task<List<TagDto>> GetAllAsync();
+    Task<List<TagDto>> GetAllAsync(int? viewerUserId = null);
 
     Task<int> CreateAsync(string name, string color, int? createdById);
 
-    Task DeleteAsync(int tagId);
+    /// <summary>Deactivates a tag; the outcome says why it was refused (SCRUM-550: the page shows it).</summary>
+    Task<TagDeleteOutcome> DeleteAsync(int tagId, int? actorUserId = null);
 
-    Task AttachToLetterAsync(int letterId, int tagId);
+    Task AttachToLetterAsync(int letterId, int tagId, int? actorUserId = null);
 
     Task DetachFromLetterAsync(int letterId, int tagId);
 
-    Task<List<TagDto>> GetForLetterAsync(int letterId);
+    Task<List<TagDto>> GetForLetterAsync(int letterId, int? viewerUserId = null);
 }

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "irn-detail",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "IRN",
+    "fa": "IRN"
+  },
+  "description": {
+    "en": "IRN",
+    "fa": "IRN"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Irn",
+      "action": "Detail",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

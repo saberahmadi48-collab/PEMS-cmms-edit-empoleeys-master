@@ -1,0 +1,24 @@
+/* Moved verbatim from the <style> block of PEMS.Web/Views/Letter/Details.cshtml (SCRUM-347). */
+.letter-header .meta-item { color: var(--pems-muted, #6c757d); }
+.letter-header .meta-item strong { color: inherit; font-weight: 600; }
+.thread-message { border-inline-start: 3px solid var(--bs-border-color, #dee2e6); padding-inline-start: .75rem; }
+.thread-message.current { border-inline-start-color: var(--bs-primary, #0d6efd); }
+.thread-message .msg-summary { cursor: pointer; }
+.cv-msg { border: 1px solid var(--bs-border-color, #dee2e6); border-inline-start-width: 4px; border-radius: .5rem; padding: .6rem .8rem; margin-bottom: .6rem; background: var(--pems-surface, transparent); }
+.cv-msg--original { border-inline-start-color: var(--bs-secondary, #6c757d); }
+.cv-msg--reply { border-inline-start-color: var(--bs-primary, #0d6efd); }
+.cv-msg--referral { border-inline-start-color: #d97706; }
+.cv-msg--current { background: color-mix(in srgb, var(--bs-primary, #0d6efd) 6%, transparent); }
+.cv-head { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .75rem; font-size: .82rem; }
+.cv-head .cv-who { font-weight: 600; }
+.cv-to { color: var(--bs-secondary-color, #6c757d); }
+.cv-body { margin-top: .5rem; padding-top: .5rem; border-top: 1px dashed var(--bs-border-color, #dee2e6); overflow-wrap: anywhere; }
+.cv-body blockquote { border-inline-start: 3px solid var(--bs-border-color, #dee2e6); margin: .5rem 0; padding-inline-start: .75rem; color: var(--bs-secondary-color, #6c757d); }
+.cv-kind { display: inline-flex; align-items: center; gap: .25rem; font-size: .7rem; font-weight: 700; padding: .05rem .45rem; border-radius: 3px; border: 1px solid transparent; }
+.cv-kind--referral { color: #92400e; background: #fef3c7; border-color: #fcd34d; }
+.cv-kind--reply { color: #1d4ed8; background: #dbeafe; border-color: #bfdbfe; }
+.cv-kind--original { color: #475569; background: #f1f5f9; border-color: #e2e8f0; }
+:root[data-theme="dark"] .cv-kind--referral, :root[data-theme="turquoise"] .cv-kind--referral { color: #fcd34d; background: rgba(217,119,6,.2); border-color: rgba(252,211,77,.4); }
+:root[data-theme="dark"] .cv-kind--reply, :root[data-theme="turquoise"] .cv-kind--reply { color: #93c5fd; background: rgba(59,130,246,.18); border-color: rgba(147,197,253,.4); }
+:root[data-theme="dark"] .cv-kind--original, :root[data-theme="turquoise"] .cv-kind--original { color: #cbd5e1; background: rgba(148,163,184,.15); border-color: rgba(148,163,184,.3); }
+.section-title { font-size: .85rem; text-transform: uppercase; letter-spacing: .03em; color: var(--pems-muted, #6c757d); }

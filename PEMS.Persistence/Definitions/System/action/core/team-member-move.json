@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "team-member-move",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move a member",
+    "fa": "انتقال عضو"
+  },
+  "description": {
+    "en": "Move a member",
+    "fa": "انتقال عضو"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "MoveMember",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "employeeId": "field:employeeId",
+        "fromTeamId": "field:fromTeamId",
+        "toTeamId": "field:toTeamId",
+        "roleId": "field:roleId"
+      }
+    },
+    "success": {
+      "en": "Member moved.",
+      "fa": "عضو منتقل شد."
+    },
+    "redirect": "/p/team-details?teamId={toTeamId}"
+  }
+}

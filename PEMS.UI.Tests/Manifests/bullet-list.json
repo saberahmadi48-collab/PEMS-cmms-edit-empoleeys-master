@@ -1,0 +1,54 @@
+{
+  "key": "bullet-list",
+  "component": "PEMS.UI.Components.PemsBulletList",
+  "category": "display",
+  "icon": "bi-list-ul",
+  "nameKey": "component.bullet-list",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "ordered": {
+        "type": "boolean"
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "BulletListOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "ordered": false,
+    "css": "mb-0"
+  }
+}

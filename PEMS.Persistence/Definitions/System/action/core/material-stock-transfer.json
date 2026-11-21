@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "material-stock-transfer",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Transfer stock",
+    "fa": "انتقال بین انبارها"
+  },
+  "description": {
+    "en": "Transfer stock",
+    "fa": "انتقال بین انبارها"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaterialStock",
+      "action": "Transfer",
+      "args": {
+        "materialItemId": "field:materialItemId",
+        "fromWarehouseId": "field:fromWarehouseId",
+        "toWarehouseId": "field:toWarehouseId",
+        "quantity": "field:quantity",
+        "reason": "field:reason",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The transfer was recorded.",
+      "fa": "انتقال ثبت شد."
+    },
+    "redirect": "/p/material-item-details?id={materialItemId}"
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "kind": "page",
+  "key": "license",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Licence",
+    "fa": "مجوز"
+  },
+  "description": {
+    "en": "Licence status, request file and licence upload (page definition)",
+    "fa": "وضعیت مجوز، فایل درخواست و بارگذاری مجوز (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "license",
+    "template": "entity-list",
+    "args": {
+      "id": "license",
+      "url": "/d/license-status",
+      "idField": "id",
+      "columns": [
+        {
+          "key": "state",
+          "header": {
+            "en": "State",
+            "fa": "وضعیت"
+          },
+          "width": 160,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "reasons",
+          "header": {
+            "en": "Reasons",
+            "fa": "دلایل"
+          },
+          "width": 260,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "licenceType",
+          "header": {
+            "en": "Type",
+            "fa": "نوع"
+          },
+          "width": 120,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "edition",
+          "header": {
+            "en": "Edition",
+            "fa": "نسخه"
+          },
+          "width": 120,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "expiresUtc",
+          "header": {
+            "en": "Expires (UTC)",
+            "fa": "انقضا (UTC)"
+          },
+          "width": 160,
+          "sortable": false,
+          "filterable": false,
+          "type": "datetime"
+        },
+        {
+          "key": "daysLeft",
+          "header": {
+            "en": "Days left",
+            "fa": "روز باقی‌مانده"
+          },
+          "width": 110,
+          "sortable": false,
+          "filterable": false,
+          "type": "number"
+        },
+        {
+          "key": "updatesUntil",
+          "header": {
+            "en": "Updates until (UTC)",
+            "fa": "به‌روزرسانی تا (UTC)"
+          },
+          "width": 170,
+          "sortable": false,
+          "filterable": false,
+          "type": "datetime"
+        },
+        {
+          "key": "installId",
+          "header": {
+            "en": "Install id",
+            "fa": "شناسه‌ی نصب"
+          },
+          "width": 260,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "fingerprintShort",
+          "header": {
+            "en": "Fingerprint",
+            "fa": "اثر انگشت"
+          },
+          "width": 140,
+          "sortable": false,
+          "filterable": false
+        },
+        {
+          "key": "enforce",
+          "header": {
+            "en": "Enforced",
+            "fa": "اعمال‌شده"
+          },
+          "width": 110,
+          "sortable": false,
+          "filterable": false,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 320,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "request",
+              "label": {
+                "en": "Download a request file",
+                "fa": "دریافت فایل درخواست"
+              },
+              "url": "/f/license-request",
+              "method": "get"
+            },
+            {
+              "key": "upload",
+              "label": {
+                "en": "Upload a licence",
+                "fa": "بارگذاری مجوز"
+              },
+              "url": "/f/license-upload",
+              "method": "get"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

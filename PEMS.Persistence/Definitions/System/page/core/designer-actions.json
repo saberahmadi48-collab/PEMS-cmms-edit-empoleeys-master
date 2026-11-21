@@ -1,0 +1,56 @@
+{
+  "kind": "page",
+  "key": "designer-actions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Action designer: operations",
+    "fa": "طراح کنش: عملیات‌ها"
+  },
+  "description": {
+    "en": "Every operation an action can run, with its permission and arguments",
+    "fa": "همه عملیات‌ها"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "designer-actions",
+    "permission": "Definitions.View",
+    "template": "entity-list",
+    "args": {
+      "id": "designer-actions",
+      "url": "/d/operation-catalog-grid",
+      "idField": "ref",
+      "newUrl": "/f/designer-action-create",
+      "newLabel": {
+        "en": "Create an action",
+        "fa": "ایجاد کنش"
+      },
+      "columns": [
+        {
+          "key": "ref",
+          "header": {
+            "en": "Operation",
+            "fa": "عملیات"
+          },
+          "width": 300
+        },
+        {
+          "key": "permission",
+          "header": {
+            "en": "Permission",
+            "fa": "مجوز"
+          },
+          "width": 220
+        },
+        {
+          "key": "arguments",
+          "header": {
+            "en": "Arguments",
+            "fa": "آرگومان‌ها"
+          },
+          "width": 480
+        }
+      ]
+    }
+  }
+}

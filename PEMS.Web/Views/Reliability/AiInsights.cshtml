@@ -9,87 +9,74 @@
 
     string ReviewBadge(string status) => status switch
     {
-        "Approved" => "text-bg-success",
-        "Rejected" => "text-bg-danger",
-        _ => "text-bg-warning"
+        "Approved" => "success",
+        "Rejected" => "danger",
+        _ => "warning"
     };
 }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["← Reliability"]</a>
-</div>
-<div class="alert alert-info small">
+<pems-flex justify="end" align="center" css="mb-2">
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["← Reliability"]</pems-button>
+</pems-flex>
+<pems-alert tone="info" css="small">
     طبق «PEMS Phase 9» بند ۱۷ (AI Governance): این بینش‌ها فقط <strong>@Localizer["پیشنهاد"]</strong> هستند -
     هرگز خودکار هیچ RCMDecision/MaintenanceStrategy/EquipmentCriticality/FailureRecord/WorkOrder
     ای را تغییر نمی‌دهند. هر بینش باید توسط یک مهندس انسانی بازبینی (تایید/رد) شود. مدل و منبع
     داده‌ی واقعی همیشه ثبت می‌شود.
-</div>
+</pems-alert>
 
 @if (canGenerate)
 {
-    <div class="content-card mb-3">
-        <form method="post" asp-action="GenerateAiInsights" class="row g-2 align-items-end">
+    <pems-content-card css="mb-3">
+        <pems-form method="post" asp-action="GenerateAiInsights"><pems-row gap="2" css="align-items-end">
             @Html.AntiForgeryToken()
-            <div class="col-auto">
-                <label class="form-label small mb-0">Equipment Class ID (optional)</label>
-                <input type="number" name="equipmentClassId" class="form-control form-control-sm" style="width:160px" />
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-sm btn-pems-solid">Generate Insights (Ollama, local)</button>
-            </div>
-        </form>
-    </div>
+            <pems-col span="auto">
+                <pems-label css="small mb-0">Equipment Class ID (optional)</pems-label>
+                <pems-input class="pems-w-160" scale="small" type="number" name="equipmentClassId" />
+            </pems-col>
+            <pems-col span="auto">
+                <pems-button tone="primary" size="small" type="submit">Generate Insights (Ollama, local)</pems-button>
+            </pems-col>
+        </pems-row></pems-form>
+    </pems-content-card>
 }
 
-<div class="content-card mb-3">
-    <form method="get" class="row g-2">
-        <div class="col-auto">
-            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+<pems-content-card css="mb-3">
+    <pems-form method="get"><pems-row gap="2">
+        <pems-col span="auto">
+            <pems-select scale="small" name="status" data-pems-change="submit-form">
                 <option value="">@Localizer["All"]</option>
                 <option value="Draft" selected="@(statusFilter == "Draft")">Draft</option>
                 <option value="Approved" selected="@(statusFilter == "Approved")">Approved</option>
                 <option value="Rejected" selected="@(statusFilter == "Rejected")">Rejected</option>
-            </select>
-        </div>
-    </form>
-</div>
+            </pems-select>
+        </pems-col>
+    </pems-row></pems-form>
+</pems-content-card>
 
-<div class="content-card">
-    <div class="table-scroll-area" style="overflow-x:auto;">
-    <table class="table table-enterprise table-sm mb-0">
-        <thead><tr><th>@Localizer["Scope"]</th><th>@Localizer["Type"]</th><th>Suggestion</th><th>Source Data</th><th>@Localizer["Model"]</th><th>@Localizer["Status"]</th><th>@Localizer["Reviewed By"]</th><th></th></tr></thead>
-        <tbody>
-            @foreach (var insight in Model)
-            {
-                <tr>
-                    <td class="small">@(insight.EquipmentTagNumber ?? insight.EquipmentClassName ?? "Fleet")</td>
-                    <td class="small">@insight.InsightType</td>
-                    <td class="small">@insight.SuggestionText</td>
-                    <td class="small text-muted">@insight.SourceDataSummary</td>
-                    <td class="small">@insight.ModelName <span class="badge text-bg-light border">AI_SUGGESTED</span></td>
-                    <td><span class="badge @ReviewBadge(insight.ReviewStatus)">@insight.ReviewStatus</span></td>
-                    <td class="small">@insight.ReviewedByName</td>
-                    <td>
+<pems-content-card>
+    <div class="table-scroll-area pems-s-0ddf068b">
+    @{
+        var rows_71 = Model;
+        var cell_71_7 = DataCell.Template(rows_71, @<text>@{ var insight = item; }
                         @if (canReview && insight.ReviewStatus == "Draft")
                         {
-                            <form method="post" asp-action="ReviewAiInsight" class="d-inline">
+                            <pems-form method="post" asp-action="ReviewAiInsight" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="insightId" value="@insight.AIReliabilityInsightId" />
                                 <input type="hidden" name="approve" value="true" />
-                                <button type="submit" class="btn btn-sm btn-outline-success">@Localizer["Approve"]</button>
-                            </form>
-                            <form method="post" asp-action="ReviewAiInsight" class="d-inline">
+                                <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["Approve"]</pems-button>
+                            </pems-form>
+                            <pems-form method="post" asp-action="ReviewAiInsight" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="insightId" value="@insight.AIReliabilityInsightId" />
                                 <input type="hidden" name="approve" value="false" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">@Localizer["Reject"]</button>
-                            </form>
+                                <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
+                            </pems-form>
                         }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_71, c_ => c_.Add(((Localizer["Scope"])?.ToString() ?? ""), insight => (object?)((insight.EquipmentTagNumber ?? insight.EquipmentClassName ?? "Fleet")), css: "small").Add(((Localizer["Type"])?.ToString() ?? ""), insight => (object?)(insight.InsightType), css: "small").Add("Suggestion", insight => (object?)(insight.SuggestionText), css: "small").Add("Source Data", insight => (object?)(insight.SourceDataSummary), css: "small text-muted").Add(((Localizer["Model"])?.ToString() ?? ""), insight => (object?)(DataCell.Group(insight.ModelName, " ", DataCell.Badge("light", "AI_SUGGESTED"))), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), insight => (object?)(DataCell.Badge(ReviewBadge(insight.ReviewStatus), insight.ReviewStatus))).Add(((Localizer["Reviewed By"])?.ToString() ?? ""), insight => (object?)(insight.ReviewedByName), css: "small").Add("", insight => (object?)cell_71_7(insight))))" dense="true" css="mb-0" />
     </div>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هیچ بینشی هنوز تولید نشده."]</p> }
-</div>
+    @if (!Model.Any()) { <pems-text class="text-muted text-center py-4 mb-0">@Localizer["هیچ بینشی هنوز تولید نشده."]</pems-text> }
+</pems-content-card>

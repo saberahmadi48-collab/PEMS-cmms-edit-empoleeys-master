@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "chat-ask",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Ask the assistant",
+    "fa": "پرسش از دستیار"
+  },
+  "description": {
+    "en": "Ask the assistant",
+    "fa": "پرسش از دستیار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ChatAssistant",
+      "action": "Ask",
+      "args": {
+        "userName": "context:userName",
+        "message": "field:message"
+      }
+    },
+    "success": {
+      "en": "Answered.",
+      "fa": "پاسخ داده شد."
+    },
+    "redirect": "/p/chat-assistant"
+  }
+}

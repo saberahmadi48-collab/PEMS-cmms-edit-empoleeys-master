@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "technical-query-reopen",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reopen technical query",
+    "fa": "بازگشایی پرسش فنی"
+  },
+  "description": {
+    "en": "Reopen technical query",
+    "fa": "بازگشایی پرسش فنی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TechnicalQuery",
+      "action": "Reopen",
+      "args": {
+        "technicalQueryId": "field:technicalQueryId",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "The query was reopened and returned to the responsible discipline.",
+      "fa": "دوباره باز شد و به دیسیپلین مسئول برگشت."
+    },
+    "redirect": "/TechnicalQuery/Details/{technicalQueryId}"
+  }
+}

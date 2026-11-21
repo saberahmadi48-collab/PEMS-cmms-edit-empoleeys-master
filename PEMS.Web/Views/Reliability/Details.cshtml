@@ -3,67 +3,23 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-graph-up-arrow"></i> Reliability — @Model.TagNumber</h5>
+<pems-flex justify="between" align="center" css="mb-3">
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-graph-up-arrow" /> Reliability — @Model.TagNumber</pems-heading>
     <div>
-        <a asp-action="EquipmentProfile" asp-route-id="@Model.EquipmentId" class="btn btn-outline-primary btn-sm"><i class="bi bi-person-badge"></i> Intelligence Profile</a>
-        <a asp-action="Ram" asp-route-id="@Model.EquipmentId" class="btn btn-outline-primary btn-sm"><i class="bi bi-graph-up"></i> @Localizer["RAM / Weibull"]</a>
-        <a asp-action="Index" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-right"></i> Back</a>
+        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="EquipmentProfile" asp-route-id="@Model.EquipmentId"><pems-icon name="bi-person-badge" /> Intelligence Profile</pems-button>
+        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Ram" asp-route-id="@Model.EquipmentId"><pems-icon name="bi-graph-up" /> @Localizer["RAM / Weibull"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index"><pems-icon name="bi-arrow-right" /> Back</pems-button>
     </div>
-</div>
+</pems-flex>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3">
-        <div class="content-card text-center py-3">
-            <div class="small text-muted">@Localizer["MTBF"]</div>
-            <div class="fs-5 fw-bold">@(Model.MTBFHours.HasValue ? $"{Model.MTBFHours.Value:N1} h" : "N/A")</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center py-3">
-            <div class="small text-muted">@Localizer["MTTR"]</div>
-            <div class="fs-5 fw-bold">@(Model.MTTRHours.HasValue ? $"{Model.MTTRHours.Value:N1} h" : "N/A")</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center py-3">
-            <div class="small text-muted">@Localizer["Availability"]</div>
-            <div class="fs-5 fw-bold">@(Model.AvailabilityPercent.HasValue ? $"{Model.AvailabilityPercent.Value:N1}%" : "N/A")</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center py-3">
-            <div class="small text-muted">@Localizer["Failure Count"]</div>
-            <div class="fs-5 fw-bold">@Model.FailureCount</div>
-        </div>
-    </div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3"><pems-kpi-tile compact label="@Localizer["MTBF"]">@(Model.MTBFHours.HasValue ? $"{Model.MTBFHours.Value:N1} h" : "")</pems-kpi-tile></pems-col>
+    <pems-col md="3"><pems-kpi-tile compact label="@Localizer["MTTR"]">@(Model.MTTRHours.HasValue ? $"{Model.MTTRHours.Value:N1} h" : "")</pems-kpi-tile></pems-col>
+    <pems-col md="3"><pems-kpi-tile compact label="@Localizer["Availability"]">@(Model.AvailabilityPercent.HasValue ? $"{Model.AvailabilityPercent.Value:N1}%" : "")</pems-kpi-tile></pems-col>
+    <pems-col md="3"><pems-kpi-tile compact label="@Localizer["Failure Count"]">@Model.FailureCount</pems-kpi-tile></pems-col>
+</pems-row>
 
-<div class="content-card">
-    <h6 class="mb-2"><i class="bi bi-clock-history"></i> Failure History</h6>
-    <table class="table table-enterprise mb-0">
-        <thead>
-            <tr><th>@Localizer["Date"]</th><th>@Localizer["Mode"]</th><th>@Localizer["Cause"]</th><th>@Localizer["Effect"]</th><th>@Localizer["Root Cause"]</th><th>@Localizer["Corrective Action"]</th><th>@Localizer["Downtime"]</th><th>@Localizer["Work Order"]</th></tr>
-        </thead>
-        <tbody>
-            @foreach (var f in Model.FailureHistory.OrderByDescending(x => x.FailureDate))
-            {
-                <tr>
-                    <td class="small">@f.FailureDate.ToString("yyyy-MM-dd")</td>
-                    <td class="small">@f.FailureMode</td>
-                    <td class="small">@f.FailureCause</td>
-                    <td class="small">@f.FailureEffect</td>
-                    <td class="small">@f.RootCause</td>
-                    <td class="small">@f.CorrectiveAction</td>
-                    <td class="small">@(f.DowntimeHours.HasValue ? $"{f.DowntimeHours.Value:N1} h" : "-")</td>
-                    <td class="small">
-                        @if (f.WorkOrderId.HasValue)
-                        {
-                            <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@f.WorkOrderId">@f.WorkOrderNumber</a>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+<pems-content-card>
+    <pems-heading level="6" class="mb-2"><pems-icon name="bi-clock-history" /> Failure History</pems-heading>
+    <pems-data-table data="@(DataRows.Of(Model.FailureHistory.OrderByDescending(x => x.FailureDate), c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), f => (object?)((PemsDates.Date(f.FailureDate))), css: "small").Add(((Localizer["Mode"])?.ToString() ?? ""), f => (object?)(f.FailureMode), css: "small").Add(((Localizer["Cause"])?.ToString() ?? ""), f => (object?)(f.FailureCause), css: "small").Add(((Localizer["Effect"])?.ToString() ?? ""), f => (object?)(f.FailureEffect), css: "small").Add(((Localizer["Root Cause"])?.ToString() ?? ""), f => (object?)(f.RootCause), css: "small").Add(((Localizer["Corrective Action"])?.ToString() ?? ""), f => (object?)(f.CorrectiveAction), css: "small").Add(((Localizer["Downtime"])?.ToString() ?? ""), f => (object?)((f.DowntimeHours.HasValue ? $"{f.DowntimeHours.Value:N1} h" : "-")), css: "small").Add(((Localizer["Work Order"])?.ToString() ?? ""), f => (object?)((f.WorkOrderId.HasValue ? (object?)DataCell.Link(Url.Action("Details", "WorkOrder", new { id = f.WorkOrderId }), f.WorkOrderNumber) : null)), css: "small")))" css="mb-0" />
+</pems-content-card>

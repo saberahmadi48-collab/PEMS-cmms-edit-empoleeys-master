@@ -1,0 +1,32 @@
+@model PEMS.Web.Models.StatusPageViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    // 404 و 401/403 متن اختصاصی دارند؛ بقیه‌ی کدها پیام عمومی. صفحه عنوان خودش را دارد، پس هدر عمومی پنهان می‌شود.
+    var (titleKey, textKey, icon) = Model.Code switch
+    {
+        404 => ("Status_NotFound_Title", "Status_NotFound_Text", "bi-compass"),
+        401 or 403 => ("Status_Forbidden_Title", "Status_Forbidden_Text", "bi-shield-lock"),
+        409 => ("Status_Conflict_Title", "Status_Conflict_Text", "bi-arrow-repeat"),
+        429 => ("Status_TooMany_Title", "Status_TooMany_Text", "bi-hourglass-split"),
+        503 => ("Status_Unavailable_Title", "Status_Unavailable_Text", "bi-cloud-slash"),
+        _ => ("Status_Generic_Title", "Status_Generic_Text", "bi-exclamation-triangle")
+    };
+    ViewData["Title"] = Localizer[titleKey].Value;
+    ViewData["HidePageTitle"] = true;
+}
+
+<pems-content-card as="section" css="text-center py-5 pems-status-page" aria-labelledby="statusTitle" data-status-code="@Model.Code">
+    <pems-form-group css="mb-3"><pems-icon class="pems-fs-26rem" css="@icon" aria-hidden="true" /></pems-form-group>
+    <pems-heading level="1" id="statusTitle" class="h4 mb-2">@Localizer[titleKey]</pems-heading>
+    <pems-text class="text-muted mb-4">@Localizer[textKey]</pems-text>
+    <pems-flex justify="center" gap="2" wrap="true">
+        <pems-button tone="neutral" outline="true" type="button" data-pems-click="back"><pems-icon name="bi-arrow-left-short" /> @Localizer["Status_Back"]</pems-button>
+        <pems-button tone="primary" as="a" asp-area="" asp-controller="Home" asp-action="Index"><pems-icon name="bi-house" /> @Localizer["Status_Home"]</pems-button>
+    </pems-flex>
+    <pems-text class="small text-muted mt-4 mb-0">
+        @Localizer["Status_Code"]: <span dir="ltr">@Model.Code</span>
+        @if (!string.IsNullOrEmpty(Model.RequestId)) { <text> &middot; @Localizer["Status_RequestId"]: <span dir="ltr">@Model.RequestId</span></text> }
+    </pems-text>
+</pems-content-card>

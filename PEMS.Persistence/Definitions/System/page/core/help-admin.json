@@ -1,0 +1,155 @@
+{
+  "kind": "page",
+  "key": "help-admin",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help administration",
+    "fa": "مدیریت راهنما"
+  },
+  "description": {
+    "en": "Help articles (page definition)",
+    "fa": "مقاله‌های راهنما (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "help-admin",
+    "template": "entity-list",
+    "args": {
+      "id": "help-admin",
+      "url": "/d/help-articles-rows",
+      "idField": "helpArticleId",
+      "columns": [
+        {
+          "key": "code",
+          "header": {
+            "en": "Code",
+            "fa": "کد"
+          },
+          "width": 160
+        },
+        {
+          "key": "title",
+          "header": {
+            "en": "Title",
+            "fa": "عنوان"
+          },
+          "width": 300
+        },
+        {
+          "key": "categoryName",
+          "header": {
+            "en": "Category",
+            "fa": "دسته"
+          },
+          "width": 180
+        },
+        {
+          "key": "articleType",
+          "header": {
+            "en": "Type",
+            "fa": "نوع"
+          },
+          "width": 130
+        },
+        {
+          "key": "isPublished",
+          "header": {
+            "en": "Published",
+            "fa": "منتشرشده"
+          },
+          "width": 110,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 760,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/help-article-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "visuals",
+              "label": {
+                "en": "Visuals",
+                "fa": "تصاویر"
+              },
+              "url": "/p/help-visuals?id={id}",
+              "method": "get"
+            },
+            {
+              "key": "addvisual",
+              "label": {
+                "en": "Add a visual",
+                "fa": "افزودن تصویر"
+              },
+              "url": "/f/help-visual-create/{id}",
+              "method": "get"
+            },
+            {
+              "key": "history",
+              "label": {
+                "en": "History",
+                "fa": "تاریخچه"
+              },
+              "url": "/p/help-history?f=1",
+              "method": "get"
+            },
+            {
+              "key": "publish",
+              "label": {
+                "en": "Publish",
+                "fa": "انتشار"
+              },
+              "url": "/a/help-article-publish",
+              "method": "post",
+              "showWhen": "row.isPublished == false"
+            },
+            {
+              "key": "unpublish",
+              "label": {
+                "en": "Unpublish",
+                "fa": "لغو انتشار"
+              },
+              "url": "/a/help-article-unpublish",
+              "method": "post",
+              "showWhen": "row.isPublished == true"
+            },
+            {
+              "key": "delete",
+              "label": {
+                "en": "Delete",
+                "fa": "حذف"
+              },
+              "url": "/a/help-article-delete",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Delete this article?",
+                "fa": "این مقاله حذف شود؟"
+              }
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/help-article-create",
+      "newLabel": {
+        "en": "New help article",
+        "fa": "مقاله‌ی راهنمای جدید"
+      }
+    }
+  }
+}

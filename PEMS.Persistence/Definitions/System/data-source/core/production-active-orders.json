@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "production-active-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Active production orders",
+    "fa": "سفارش‌های تولید فعال"
+  },
+  "description": {
+    "en": "Active production orders",
+    "fa": "سفارش‌های تولید فعال"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Production",
+      "action": "ActiveOrders"
+    }
+  }
+}

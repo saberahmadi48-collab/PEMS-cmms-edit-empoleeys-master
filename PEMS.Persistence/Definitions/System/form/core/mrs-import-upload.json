@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "mrs-import-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload an MRS file",
+    "fa": "بارگذاری فایل MRS"
+  },
+  "description": {
+    "en": "Upload an MRS file",
+    "fa": "بارگذاری فایل MRS"
+  },
+  "payload": {
+    "id": "mrs-import-upload",
+    "title": {
+      "en": "Upload an MRS file",
+      "fa": "بارگذاری فایل MRS"
+    },
+    "submitLabel": {
+      "en": "Upload and stage",
+      "fa": "بارگذاری و مرحله‌بندی"
+    },
+    "actionKey": "mrs-import-upload",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "file",
+        "label": {
+          "en": "Excel file (.xlsx, .xlsm)",
+          "fa": "فایل Excel (.xlsx, .xlsm)"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "sheetName",
+        "label": {
+          "en": "Sheet name (optional)",
+          "fa": "نام شیت (اختیاری)"
+        },
+        "kind": "text",
+        "maxLength": 100
+      }
+    ]
+  }
+}

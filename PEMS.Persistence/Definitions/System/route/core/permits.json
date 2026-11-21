@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "permits",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permits (old address)",
+    "fa": "Permits (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Permits (old address)",
+    "fa": "Permits (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Permit",
+    "target": "/p/permits",
+    "permanent": false
+  }
+}

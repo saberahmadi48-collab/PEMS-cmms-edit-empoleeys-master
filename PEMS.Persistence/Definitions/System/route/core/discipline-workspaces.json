@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "discipline-workspaces",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline workspaces (old address)",
+    "fa": "فضای کاری دیسیپلین‌ها (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Discipline workspaces (old address)",
+    "fa": "فضای کاری دیسیپلین‌ها (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Discipline",
+    "target": "/p/discipline-workspaces",
+    "permanent": false
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "reading-import-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload a workbook",
+    "fa": "بارگذاری فایل"
+  },
+  "description": {
+    "en": "Upload a workbook",
+    "fa": "بارگذاری فایل"
+  },
+  "payload": {
+    "id": "reading-import-upload",
+    "title": {
+      "en": "Upload a workbook",
+      "fa": "بارگذاری فایل"
+    },
+    "submitLabel": {
+      "en": "Upload",
+      "fa": "بارگذاری"
+    },
+    "actionKey": "reading-import-upload",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "file",
+        "label": {
+          "en": "Excel file (.xlsx)",
+          "fa": "فایل Excel (.xlsx)"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "fileName",
+        "label": {
+          "en": "File name (with extension)",
+          "fa": "نام فایل (با پسوند)"
+        },
+        "kind": "text",
+        "maxLength": 200
+      }
+    ]
+  }
+}

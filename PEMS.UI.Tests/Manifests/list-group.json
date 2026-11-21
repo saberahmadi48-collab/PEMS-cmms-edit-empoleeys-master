@@ -1,0 +1,41 @@
+{
+  "key": "list-group",
+  "component": "PEMS.UI.Components.PemsListGroup",
+  "category": "display",
+  "icon": "bi-list-ul",
+  "nameKey": "component.list-group",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "flush": {
+        "type": "boolean"
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ListGroupOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "flush": true
+  }
+}

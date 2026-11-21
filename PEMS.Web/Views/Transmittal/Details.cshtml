@@ -5,109 +5,109 @@
 @using PEMS.Web.Helpers
 @{ ViewData["Title"] = Model.TransmittalNo; }
 
-<div class="vs-page">
+<pems-page-shell kind="workspace">
 
 <div class="vs-header">
     <span class="vs-pill @VdrUi.TransmittalTone(Model.Status)">@VdrUi.Loc(Localizer, "St_", Model.Status)</span>
-    <a asp-action="Index" class="vs-btn vs-btn--sm"><i class="bi bi-arrow-left"></i> @Localizer["Vs_Back"]</a>
+    <pems-link asp-action="Index" class="vs-btn vs-btn--sm"><pems-icon name="bi-arrow-left" /> @Localizer["Vs_Back"]</pems-link>
 </div>
 
-<div class="content-card mb-3">
-    <div class="row g-3">
-        <div class="col-md-3"><strong>@Localizer["Vs_Project"]:</strong> @Model.ProjectName</div>
-        <div class="col-md-3"><strong>@Localizer["Vs_From"]:</strong> @Model.From</div>
-        <div class="col-md-3"><strong>@Localizer["Vs_To"]:</strong> @Model.To</div>
-        <div class="col-md-3"><strong>@Localizer["Vs_Purpose"]:</strong> @Model.Purpose</div>
-        <div class="col-md-3"><strong>@Localizer["Td_Created"]:</strong> @Model.TransmittalDate.ToString("yyyy-MM-dd")</div>
-        <div class="col-md-3"><strong>@Localizer["Td_Sent"]:</strong> @(Model.SentDate?.ToString("yyyy-MM-dd") ?? "-")</div>
-    </div>
+<pems-content-card css="mb-3">
+    <pems-info-grid>
+        <pems-info-item label="@Localizer["Vs_Project"]">@Model.ProjectName</pems-info-item>
+        <pems-info-item label="@Localizer["Vs_From"]">@Model.From</pems-info-item>
+        <pems-info-item label="@Localizer["Vs_To"]">@Model.To</pems-info-item>
+        <pems-info-item label="@Localizer["Vs_Purpose"]">@VdrUi.Loc(Localizer, "Transmittal_Purpose_", Model.Purpose)</pems-info-item>
+        <pems-info-item label="@Localizer["Td_Created"]" num>@PemsDates.Date(Model.TransmittalDate)</pems-info-item>
+        <pems-info-item label="@Localizer["Td_Sent"]" num>@PemsDates.Date(Model.SentDate)</pems-info-item>
+    </pems-info-grid>
 
     @if (!string.IsNullOrEmpty(Model.Description))
     {
-        <p class="mt-3 text-muted">@Model.Description</p>
+        <pems-text class="mt-3 text-muted">@Model.Description</pems-text>
     }
 
     @if (Model.SupersedesTransmittalId.HasValue)
     {
-        <p class="small text-muted">
-            <i class="bi bi-arrow-return-right"></i> @Localizer["Td_ReissuedFrom"]
-            <a asp-action="Details" asp-route-id="@Model.SupersedesTransmittalId">@Model.SupersedesTransmittalNo</a>
-        </p>
+        <pems-text class="small text-muted">
+            <pems-icon name="bi-arrow-return-right" /> @Localizer["Td_ReissuedFrom"]
+            <pems-link asp-action="Details" asp-route-id="@Model.SupersedesTransmittalId">@Model.SupersedesTransmittalNo</pems-link>
+        </pems-text>
     }
     @if (Model.SupersededByTransmittalId.HasValue)
     {
-        <p class="small text-muted">
-            <i class="bi bi-arrow-return-right"></i> @Localizer["Td_SupersededBy"]
-            <a asp-action="Details" asp-route-id="@Model.SupersededByTransmittalId">@Model.SupersededByTransmittalNo</a>
-        </p>
+        <pems-text class="small text-muted">
+            <pems-icon name="bi-arrow-return-right" /> @Localizer["Td_SupersededBy"]
+            <pems-link asp-action="Details" asp-route-id="@Model.SupersededByTransmittalId">@Model.SupersededByTransmittalNo</pems-link>
+        </pems-text>
     }
 
     @if (Model.Status == "Cancelled")
     {
-        <div class="alert alert-danger py-2 px-3 small mb-2">
-            @Localizer["Td_Cancelled"] @Model.CancelledDate?.ToString("yyyy-MM-dd") - @Model.CancelledReason
-        </div>
+        <pems-alert tone="danger" css="py-2 px-3 small mb-2">
+            @Localizer["Td_Cancelled"] @PemsDates.Date(Model.CancelledDate) - @Model.CancelledReason
+        </pems-alert>
     }
 
     @if (Model.Status == "Draft")
     {
-        <form asp-action="MarkSent" asp-route-id="@Model.TransmittalId" method="post" class="mt-2 d-flex gap-2 align-items-end">
+        <pems-form class="mt-2" asp-action="MarkSent" asp-route-id="@Model.TransmittalId" method="post"><pems-flex gap="2" align="end">
             @if (Model.ResponseRequired)
             {
                 <div>
-                    <label class="form-label small mb-0">@Localizer["Td_ResponseDueDays"]</label>
-                    <input name="responseDueWorkingDays" type="number" value="10" min="1" class="form-control form-control-sm" style="width:100px;" />
+                    <pems-label css="small mb-0">@Localizer["Td_ResponseDueDays"]</pems-label>
+                    <pems-input class="pems-w-100" scale="small" name="responseDueWorkingDays" type="number" value="10" min="1" />
                 </div>
             }
             @if ((bool)(ViewBag.CanIssue ?? false))
             {
-                <button class="btn btn-sm btn-pems-solid"><i class="bi bi-send"></i> @Localizer["Td_MarkSent"]</button>
+                <pems-button tone="primary" size="small"><pems-icon name="bi-send" /> @Localizer["Td_MarkSent"]</pems-button>
             }
             else
             {
                 <span class="text-muted small">@Localizer["Td_NoIssuePerm"]</span>
             }
-        </form>
+        </pems-flex></pems-form>
     }
 
     @if (Model.Status == "Sent" || Model.Status == "Acknowledged")
     {
-        <div class="alert alert-secondary py-2 px-3 small mt-2 mb-2">
-            <i class="bi bi-lock"></i> @Localizer["Td_Locked"]
-        </div>
+        <pems-alert tone="secondary" css="py-2 px-3 small mt-2 mb-2">
+            <pems-icon name="bi-lock" /> @Localizer["Td_Locked"]
+        </pems-alert>
 
         @if ((bool)(ViewBag.CanCancel ?? false))
         {
-            <form asp-action="Cancel" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-2 align-items-end mt-2">
+            <pems-form class="mt-2" asp-action="Cancel" asp-route-id="@Model.TransmittalId" method="post"><pems-flex gap="2" align="end">
                 <div class="flex-grow-1">
-                    <label class="form-label small mb-0">@Localizer["Td_CancelReason"]</label>
-                    <input name="reason" class="form-control form-control-sm" required />
+                    <pems-label css="small mb-0">@Localizer["Td_CancelReason"]</pems-label>
+                    <pems-input scale="small" name="reason" required />
                 </div>
-                <button class="btn btn-sm btn-outline-danger"><i class="bi bi-x-circle"></i> @Localizer["Td_CancelBtn"]</button>
-            </form>
+                <pems-button tone="danger" size="small" outline="true"><pems-icon name="bi-x-circle" /> @Localizer["Td_CancelBtn"]</pems-button>
+            </pems-flex></pems-form>
         }
 
         @if (Model.ResponseRequired)
         {
             <div class="mt-3">
-                <strong>@Localizer["Td_ResponseDue"]</strong> @(Model.ResponseDueDate?.ToString("yyyy-MM-dd") ?? "-")
+                <strong>@Localizer["Td_ResponseDue"]</strong> @(PemsDates.Date(Model.ResponseDueDate) ?? "-")
                 @if (Model.IsResponseOverdue)
                 {
-                    <span class="badge bg-danger">@Localizer["Td_Overdue"]</span>
+                    <pems-badge tone="danger">@Localizer["Td_Overdue"]</pems-badge>
                 }
                 @if (Model.ResponseReceivedDate.HasValue)
                 {
-                    <span class="badge bg-success">@Localizer["Td_Received"] @Model.ResponseReceivedDate.Value.ToString("yyyy-MM-dd")</span>
+                    <pems-badge tone="success">@Localizer["Td_Received"] @PemsDates.Date(Model.ResponseReceivedDate.Value)</pems-badge>
                     <div class="small text-muted">@Model.ResponseNote</div>
                 }
                 else if ((bool)(ViewBag.CanRecordResponse ?? false))
                 {
-                    <form asp-action="RecordResponse" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-2 align-items-end mt-1">
+                    <pems-form class="mt-1" asp-action="RecordResponse" asp-route-id="@Model.TransmittalId" method="post"><pems-flex gap="2" align="end">
                         <div class="flex-grow-1">
-                            <input name="responseNote" class="form-control form-control-sm" placeholder="@Localizer["Td_ResponseNotePh"]" />
+                            <pems-input scale="small" name="responseNote" placeholder="@Localizer["Td_ResponseNotePh"]" />
                         </div>
-                        <button class="btn btn-sm btn-outline-primary">@Localizer["Td_RecordResponse"]</button>
-                    </form>
+                        <pems-button tone="primary" size="small" outline="true">@Localizer["Td_RecordResponse"]</pems-button>
+                    </pems-flex></pems-form>
                 }
             </div>
         }
@@ -115,72 +115,53 @@
 
     @if (Model.Status == "Cancelled" && (bool)(ViewBag.CanReissue ?? false))
     {
-        <form asp-action="Reissue" asp-route-id="@Model.TransmittalId" method="post" class="mt-2">
-            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-arrow-repeat"></i> @Localizer["Td_Reissue"]</button>
-        </form>
+        <pems-form asp-action="Reissue" asp-route-id="@Model.TransmittalId" method="post" class="mt-2">
+            <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-arrow-repeat" /> @Localizer["Td_Reissue"]</pems-button>
+        </pems-form>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
-    <h6 class="mb-3">@Localizer["Td_Recipients"]</h6>
-    <table class="table table-enterprise">
-        <thead><tr><th>@Localizer["Td_Name"]</th><th>@Localizer["Td_Type"]</th><th>@Localizer["Td_Organization"]</th><th>@Localizer["Td_ResponseRequired"]</th><th>@Localizer["Td_Acknowledgement"]</th></tr></thead>
-        <tbody>
-            @foreach (var r in Model.Recipients)
-            {
-                <tr>
-                    <td>@r.Name</td>
-                    <td>@r.RecipientType</td>
-                    <td>@r.Organization</td>
-                    <td>@(r.ResponseRequired ? Localizer["Td_Yes"].Value : "")</td>
-                    <td>
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3">@Localizer["Td_Recipients"]</pems-heading>
+    @{
+        var rows_79 = Model.Recipients;
+        var cell_79_4 = DataCell.Template(rows_79, @<text>@{ var r = item; }
                         @if (r.AcknowledgedAt.HasValue)
                         {
-                            <span class="badge bg-success">@Localizer["Td_Acknowledged"] @r.AcknowledgedAt.Value.ToString("yyyy-MM-dd")</span>
+                            <pems-badge tone="success">@Localizer["Td_Acknowledged"] @PemsDates.Date(r.AcknowledgedAt.Value)</pems-badge>
                             @if (!string.IsNullOrEmpty(r.AcknowledgedByName)) { <div class="small text-muted">@Localizer["Td_By"] @r.AcknowledgedByName</div> }
                             @if (!string.IsNullOrEmpty(r.AcknowledgementNote)) { <div class="small text-muted">@r.AcknowledgementNote</div> }
                         }
                         else if (Model.IsIssued && (bool)(ViewBag.CanRecordResponse ?? false))
                         {
-                            <form asp-action="Acknowledge" asp-route-id="@Model.TransmittalId" method="post" class="d-flex gap-1 align-items-center">
+                            <pems-form asp-action="Acknowledge" asp-route-id="@Model.TransmittalId" method="post"><pems-flex gap="1" align="center">
                                 <input type="hidden" name="recipientId" value="@r.TransmittalRecipientId" />
-                                <input name="note" class="form-control form-control-sm" placeholder="@Localizer["Td_NotePh"]" style="min-width:140px;" />
-                                <button class="btn btn-sm btn-outline-success" title="@Localizer["Td_RecordAck"]"><i class="bi bi-check2"></i></button>
-                            </form>
+                                <pems-input class="pems-minw-140" scale="small" name="note" placeholder="@Localizer["Td_NotePh"]" />
+                                <pems-button tone="success" size="small" outline="true" title="@Localizer["Td_RecordAck"]"><pems-icon name="bi-check2" /></pems-button>
+                            </pems-flex></pems-form>
                         }
                         else
                         {
                             <span class="text-muted small">@Localizer["Td_Pending"]</span>
                         }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_79, c_ => c_.Add(((Localizer["Td_Name"])?.ToString() ?? ""), r => (object?)(r.Name)).Add(((Localizer["Td_Type"])?.ToString() ?? ""), r => (object?)(r.RecipientType)).Add(((Localizer["Td_Organization"])?.ToString() ?? ""), r => (object?)(r.Organization)).Add(((Localizer["Td_ResponseRequired"])?.ToString() ?? ""), r => (object?)((r.ResponseRequired ? Localizer["Td_Yes"].Value : ""))).Add(((Localizer["Td_Acknowledgement"])?.ToString() ?? ""), r => (object?)cell_79_4(r))))" />
     @if (!Model.Recipients.Any())
     {
-        <p class="text-muted small mb-0">@Localizer["Td_NoRecipients"]</p>
+        <pems-text class="text-muted small mb-0">@Localizer["Td_NoRecipients"]</pems-text>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card">
-    <h6 class="mb-3">@Localizer["Td_IncludedDocs"]</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead>
-            <tr><th>@Localizer["Td_DocNo"]</th><th>@Localizer["Td_Title"]</th><th>@Localizer["Td_RevAtSend"]</th><th>@Localizer["Td_FileAtSend"]</th><th>@Localizer["Td_Remarks"]</th></tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Items)
-            {
-                <tr>
-                    <td>@item.DocumentNo</td>
-                    <td>@item.DocumentTitle</td>
-                    <td><span class="badge bg-secondary">@item.RevisionNo</span></td>
-                    <td class="small">
+<pems-content-card>
+    <pems-heading level="6" class="mb-3">@Localizer["Td_IncludedDocs"]</pems-heading>
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
+    @{
+        var rows_80 = Model.Items;
+        var cell_80_3 = DataCell.Template(rows_80, @<text>
                         @if (!string.IsNullOrEmpty(item.SnapshotFileName))
                         {
-                            <i class="bi bi-file-earmark-lock text-muted" title="@Localizer["Td_Snapshot"]"></i>
+                            <pems-icon name="bi-file-earmark-lock" css="text-muted" title="@Localizer["Td_Snapshot"]" />
                             @item.SnapshotFileName
                             @if (!string.IsNullOrEmpty(item.SnapshotFileHash))
                             {
@@ -191,16 +172,13 @@
                         {
                             <span class="text-muted">@Localizer["Td_NoFile"]</span>
                         }
-                    </td>
-                    <td>@item.Remarks</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-</div>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_80, c_ => c_.Add(((Localizer["Td_DocNo"])?.ToString() ?? ""), item => (object?)(item.DocumentNo)).Add(((Localizer["Td_Title"])?.ToString() ?? ""), item => (object?)(item.DocumentTitle)).Add(((Localizer["Td_RevAtSend"])?.ToString() ?? ""), item => (object?)(DataCell.Badge("neutral", item.RevisionNo))).Add(((Localizer["Td_FileAtSend"])?.ToString() ?? ""), item => (object?)cell_80_3(item), css: "small").Add(((Localizer["Td_Remarks"])?.ToString() ?? ""), item => (object?)(item.Remarks))))" />
+    </pems-table-scroll>
+</pems-content-card>
 
-</div>
+</pems-page-shell>
 
 @{ ViewData["Title"] = Localizer["Vs_TransmittalRegistry"].Value; }
 @section Styles {

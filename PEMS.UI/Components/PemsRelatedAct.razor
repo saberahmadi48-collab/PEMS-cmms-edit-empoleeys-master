@@ -1,0 +1,6 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("related-act", Category = "list", Icon = "bi-x-lg")]
+<button class="@("lp-act lp-act--always " + Options.Tone)" form="@(string.IsNullOrEmpty(Options.Form) ? null : Options.Form)" title="@Options.Label" type="submit"><i aria-hidden="true" class="@("bi " + Options.Icon)"></i><span class="visually-hidden">@Options.Label</span></button>
+@code {
+    [Parameter, EditorRequired] public RelatedActOptions Options { get; set; } = default!;
+}

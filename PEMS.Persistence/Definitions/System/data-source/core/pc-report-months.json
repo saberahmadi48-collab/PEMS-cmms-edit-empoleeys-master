@@ -1,0 +1,34 @@
+{
+  "kind": "data-source",
+  "key": "pc-report-months",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue report: By month",
+    "fa": "گزارش کاتالوگ قطعه: By month"
+  },
+  "description": {
+    "en": "Part Catalogue report: By month",
+    "fa": "گزارش کاتالوگ قطعه: By month"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueReport",
+      "action": "Months",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "period": "param:period",
+        "from": "param:from",
+        "to": "param:to",
+        "sectionId": "param:sectionId",
+        "requestType": "param:requestType",
+        "status": "param:status",
+        "employeeId": "param:employeeId",
+        "equipmentId": "param:equipmentId"
+      }
+    }
+  }
+}

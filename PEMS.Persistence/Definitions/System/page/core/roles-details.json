@@ -1,0 +1,98 @@
+{
+  "kind": "page",
+  "key": "roles-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Roles details",
+    "fa": "جزئیات نقش‌ها"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "roles-record",
+      "url": "/d/roles-grid",
+      "idField": "id",
+      "fields": [
+        {
+          "key": "name",
+          "label": {
+            "en": "Name",
+            "fa": "نام"
+          }
+        },
+        {
+          "key": "displayName",
+          "label": {
+            "en": "Display name",
+            "fa": "نام نمایشی"
+          }
+        },
+        {
+          "key": "description",
+          "label": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "wide": true
+        },
+        {
+          "key": "category",
+          "label": {
+            "en": "Category",
+            "fa": "دسته"
+          }
+        },
+        {
+          "key": "domain",
+          "label": {
+            "en": "Domain",
+            "fa": "حوزه"
+          }
+        },
+        {
+          "key": "isSystemRole",
+          "label": {
+            "en": "System role",
+            "fa": "نقش سیستمی"
+          },
+          "type": "bool"
+        },
+        {
+          "key": "users",
+          "label": {
+            "en": "Users",
+            "fa": "کاربران"
+          },
+          "type": "number"
+        },
+        {
+          "key": "permissions",
+          "label": {
+            "en": "Permissions",
+            "fa": "مجوزها"
+          },
+          "type": "number"
+        },
+        {
+          "key": "sortOrder",
+          "label": {
+            "en": "Order",
+            "fa": "ترتیب"
+          },
+          "type": "number"
+        }
+      ],
+      "backUrl": "/p/roles",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      }
+    }
+  }
+}

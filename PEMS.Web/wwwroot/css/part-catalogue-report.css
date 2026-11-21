@@ -1,0 +1,33 @@
+/* SCRUM-478: Part Catalogue reports. The page uses the list component frame (pems-list.css); this file only adds the summary
+   area (KPIs and charts scroll inside the panel), the two date inputs side by side and the notes line. Tokens only, logical CSS. */
+
+.lp-page .pc-rpt-summary {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    padding: 12px;
+}
+
+.pc-rpt-dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.pc-rpt-notes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-block: 4px;
+    padding-inline: 12px;
+    border-block-end: 1px solid var(--pems-surface-border);
+}
+
+.vs-subnav .pc-rpt-back {
+    margin-inline-start: auto;
+}
+
+.pc-rpt-attrs {
+    min-width: 220px;
+    white-space: normal;
+}

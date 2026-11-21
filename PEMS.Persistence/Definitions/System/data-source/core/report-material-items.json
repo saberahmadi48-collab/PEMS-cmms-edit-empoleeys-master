@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "report-material-items",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material items",
+    "fa": "اقلام مواد"
+  },
+  "description": {
+    "en": "Material items",
+    "fa": "اقلام مواد"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "MaterialItems"
+    }
+  }
+}

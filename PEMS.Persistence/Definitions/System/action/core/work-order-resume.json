@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "work-order-resume",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Resume work order",
+    "fa": "از سرگیری Work Order"
+  },
+  "description": {
+    "en": "Resume work order",
+    "fa": "از سرگیری Work Order"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrder",
+      "action": "AdvanceStatus",
+      "args": {
+        "workOrderId": "field:id",
+        "nextStatus": "literal:InProgress",
+        "reason": "field:reason",
+        "changedByEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Work order resumed.",
+      "fa": "Work Order از سر گرفته شد."
+    },
+    "redirect": "/WorkOrder/Details/{id}"
+  }
+}

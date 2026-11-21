@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "designer-entity-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Entity list data source",
+    "fa": "منبع داده فهرست موجودیت"
+  },
+  "description": {
+    "en": "Entity list data source",
+    "fa": "منبع داده فهرست موجودیت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The data source was changed in the draft.",
+      "fa": "منبع داده در پیش‌نویس تغییر کرد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "SetEntityGrid",
+      "args": {
+        "reference": "field:ref",
+        "entity": "field:entity",
+        "fields": "field:fields",
+        "searchFields": "field:searchFields",
+        "sort": "field:sort",
+        "whereJson": "field:whereJson",
+        "pageSize": "field:pageSize",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "replenishment-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Replenishment (index) (old address)",
+    "fa": "Replenishment (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Replenishment (index) (old address)",
+    "fa": "Replenishment (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/Replenishment/Index",
+    "target": "/p/replenishment",
+    "permanent": false
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "production-batch-release",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Release the batch",
+    "fa": "Release بچ"
+  },
+  "description": {
+    "en": "Release the batch",
+    "fa": "Release بچ"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "ReleaseBatch",
+      "args": {
+        "productionBatchId": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      },
+      "guard": {
+        "resource": "Production",
+        "action": "Approve",
+        "resourceId": "field:id",
+        "mode": "sod"
+      }
+    },
+    "success": {
+      "en": "The batch was released.",
+      "fa": "بچ Release شد."
+    },
+    "redirect": "/ProductionRun/BatchDetails/{id}"
+  }
+}

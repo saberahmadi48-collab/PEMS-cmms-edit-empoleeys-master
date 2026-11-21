@@ -1,0 +1,41 @@
+{
+  "kind": "action",
+  "key": "organization-import-confirm",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save the validated organization structure",
+    "fa": "ذخیره‌ی ساختار سازمانی اعتبارسنجی‌شده"
+  },
+  "description": {
+    "en": "Save the validated organization structure",
+    "fa": "ذخیره‌ی ساختار سازمانی اعتبارسنجی‌شده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "OrganizationImport",
+      "action": "Confirm",
+      "args": {
+        "userName": "context:userName"
+      },
+      "require": {
+        "confirm": {
+          "en": "Confirm the save first.",
+          "fa": "ابتدا ذخیره را تأیید کنید."
+        }
+      },
+      "load": {
+        "operation": {
+          "model": "OrganizationImport",
+          "action": "Pending",
+          "args": {
+            "userName": "context:userName"
+          }
+        }
+      }
+    },
+    "redirect": "/p/organization-positions"
+  }
+}

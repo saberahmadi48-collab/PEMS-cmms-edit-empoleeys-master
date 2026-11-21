@@ -4,6 +4,8 @@
     if (!userId) return;
 
     function setBadge(count) {
+        // شمارنده‌های سایدبار داده‌محور (sidebar-badges.js) هم با هر تغییر اعلان دوباره از سرور خوانده شوند
+        document.dispatchEvent(new CustomEvent('pems:notifications-changed'));
         var badge = document.getElementById('notifBadge');
         if (!badge) return;
         count = parseInt(count, 10) || 0;

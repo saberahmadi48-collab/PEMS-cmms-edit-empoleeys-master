@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "production-run-record-loss",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record a loss",
+    "fa": "ثبت افت"
+  },
+  "description": {
+    "en": "Record a loss",
+    "fa": "ثبت افت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "RecordLoss",
+      "args": {
+        "productionRunId": "field:productionRunId",
+        "quantity": "field:quantity",
+        "uomId": "field:uomId",
+        "lossCategory": "field:lossCategory",
+        "notes": "field:notes",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The loss was recorded.",
+      "fa": "افت ثبت شد."
+    },
+    "redirect": "/ProductionRun/Details/{productionRunId}"
+  }
+}

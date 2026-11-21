@@ -1,0 +1,20 @@
+{
+  "kind": "data-source",
+  "key": "definition-translations-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Missing translations",
+    "fa": "ترجمه‌های ناقص"
+  },
+  "description": {
+    "en": "Missing translations",
+    "fa": "ترجمه‌های ناقص"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "definition-translations",
+    "permission": "Definitions.View",
+    "parameters": {}
+  }
+}

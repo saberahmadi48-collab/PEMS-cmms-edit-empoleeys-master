@@ -1,0 +1,86 @@
+{
+  "kind": "form",
+  "key": "po-create-from-mr",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a purchase order from an MR",
+    "fa": "ساخت سفارش خرید از MR"
+  },
+  "description": {
+    "en": "Create a purchase order from an MR",
+    "fa": "ساخت سفارش خرید از MR"
+  },
+  "payload": {
+    "id": "po-create-from-mr",
+    "title": {
+      "en": "Create a purchase order from an MR",
+      "fa": "ساخت سفارش خرید از MR"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "po-create-from-mr",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "mrId",
+        "label": {
+          "en": "MR",
+          "fa": "MR"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "po-requisitions"
+      },
+      {
+        "name": "vendorId",
+        "label": {
+          "en": "Vendor",
+          "fa": "فروشنده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "po-vendors"
+      },
+      {
+        "name": "currency",
+        "label": {
+          "en": "Currency",
+          "fa": "ارز"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 10
+      },
+      {
+        "name": "poNumber",
+        "label": {
+          "en": "PO number (blank = automatic)",
+          "fa": "شماره سفارش (خالی = خودکار)"
+        },
+        "kind": "text",
+        "maxLength": 50
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "dw-documents",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline workspace documents",
+    "fa": "مدارک فضای کاری دیسیپلین"
+  },
+  "description": {
+    "en": "Discipline workspace documents",
+    "fa": "مدارک فضای کاری دیسیپلین"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DisciplineWorkspace",
+      "action": "Documents",
+      "args": {
+        "id": "param:id",
+        "projectId": "param:projectId"
+      }
+    }
+  }
+}

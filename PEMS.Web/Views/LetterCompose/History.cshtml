@@ -1,0 +1,61 @@
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@model PEMS.Web.Controllers.LetterHistoryViewModel
+@inject IStringLocalizer<SharedResource> Localizer
+@section Styles {
+    <link rel="stylesheet" href="~/css/letter-compose.css" asp-append-version="true" />
+}
+<div class="lc-page">
+    <div class="lc-header">
+        <pems-heading level="2" class="vs-section__title mb-0">@Localizer["Lc_HistoryTitle"]</pems-heading>
+        <span class="lc-number">@Model.Report.LetterNumber</span>
+        <pems-badge tone="neutral">@Model.Report.Status</pems-badge>
+        <span class="lc-savestate">
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@Model.Report.LetterId">@Localizer["Lc_BackToLetter"]</pems-button>
+            <pems-button tone="primary" size="small" outline="true" as="a" asp-action="ComplianceExport" asp-route-id="@Model.Report.LetterId"><pems-icon name="bi-download" aria-hidden="true" /> @Localizer["Lc_ExportCsv"]</pems-button>
+        </span>
+    </div>
+    <pems-text class="text-muted">@Model.Report.Subject</pems-text>
+
+    <section class="lc-card" aria-labelledby="lhViews">
+        <pems-heading level="3" id="lhViews"><pems-icon name="bi-eye" aria-hidden="true" /> @Localizer["Lc_WhoViewed"]</pems-heading>
+        @if (!Model.Views.Any())
+        {
+            <pems-text class="text-muted mb-0">@Localizer["Lc_NobodyViewed"]</pems-text>
+        }
+        else
+        {
+            <pems-table-scroll>
+                <pems-data-table data="@(DataRows.Of(Model.Views, c_ => c_.Add(((Localizer["Lc_Name"])?.ToString() ?? ""), v => (object?)(v.UserName)).Add(((Localizer["Lc_FirstViewed"])?.ToString() ?? ""), v => (object?)((PemsDates.DateTime(v.FirstViewedDate)))).Add(((Localizer["Lc_LastViewed"])?.ToString() ?? ""), v => (object?)((PemsDates.DateTime(v.LastViewedDate)))).Add(((Localizer["Lc_ViewCount"])?.ToString() ?? ""), v => (object?)(v.ViewCount))))" dense="true" css="lh-table" enterprise="false" />
+            </pems-table-scroll>
+        }
+    </section>
+
+    <section class="lc-card" aria-labelledby="lhVersions">
+        <pems-heading level="3" id="lhVersions"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Lc_Versions"]</pems-heading>
+        @if (!Model.Versions.Any())
+        {
+            <pems-text class="text-muted mb-0">@Localizer["Lc_NoVersions"]</pems-text>
+        }
+        else
+        {
+            @foreach (var v in Model.Versions.OrderByDescending(x => x.VersionNo))
+            {
+                <details class="mb-2">
+                    <summary>
+                        <strong>v@(v.VersionNo)</strong> · @v.Reason · @v.SavedByName · @PemsDates.DateTime(v.SavedDate) — @v.Subject
+                    </summary>
+                    @* نسخه‌ها هنگام ذخیره Sanitize شده‌اند *@
+                    <div class="lh-body mt-2">@Html.Raw(v.Body)</div>
+                </details>
+            }
+        }
+    </section>
+
+    <section class="lc-card" aria-labelledby="lhAudit">
+        <pems-heading level="3" id="lhAudit"><pems-icon name="bi-shield-check" aria-hidden="true" /> @Localizer["Lc_AuditTrail"]</pems-heading>
+        <pems-table-scroll>
+            <pems-data-table data="@(DataRows.Of(Model.Report.Rows, c_ => c_.Add(((Localizer["Lc_When"])?.ToString() ?? ""), r => (object?)((PemsDates.DateTime(r.Timestamp))), css: "text-nowrap").Add(((Localizer["Lc_Who"])?.ToString() ?? ""), r => (object?)(r.Actor)).Add(((Localizer["Lc_Category"])?.ToString() ?? ""), r => (object?)(r.Category)).Add(((Localizer["Lc_Event"])?.ToString() ?? ""), r => (object?)(r.Event)).Add(((Localizer["Lc_DetailCol"])?.ToString() ?? ""), r => (object?)(r.Detail))))" dense="true" css="lh-table" enterprise="false" />
+        </pems-table-scroll>
+    </section>
+</div>

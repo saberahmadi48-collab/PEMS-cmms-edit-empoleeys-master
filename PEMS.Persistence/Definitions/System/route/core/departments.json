@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "departments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Departments (old address)",
+    "fa": "دپارتمان‌ها (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Departments (old address)",
+    "fa": "دپارتمان‌ها (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Department/{*rest}",
+    "target": "/p/departments",
+    "permanent": false
+  }
+}

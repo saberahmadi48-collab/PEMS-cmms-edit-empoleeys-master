@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "production-run-complete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Complete the run",
+    "fa": "تکمیل اجرا"
+  },
+  "description": {
+    "en": "Complete the run",
+    "fa": "تکمیل اجرا"
+  },
+  "payload": {
+    "id": "production-run-complete",
+    "title": {
+      "en": "Complete the run",
+      "fa": "تکمیل اجرا"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-run-complete",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Run id",
+          "fa": "شناسه‌ی اجرا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

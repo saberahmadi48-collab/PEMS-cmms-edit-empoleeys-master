@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("related-save", Category = "list", Icon = "bi-check2")]
+<PemsRelatedAct Options="@Act" />
+@code {
+    [Parameter, EditorRequired] public RelatedSaveOptions Options { get; set; } = default!;
+    private RelatedActOptions Act => new() { Icon = "bi-check2", Label = Options.Label, Tone = "text-primary", Form = Options.FormId };
+}

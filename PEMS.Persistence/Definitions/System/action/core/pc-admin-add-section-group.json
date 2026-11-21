@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "pc-admin-add-section-group",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a commodity group to a section",
+    "fa": "افزودن گروه کالا به بخش"
+  },
+  "description": {
+    "en": "Add a commodity group to a section",
+    "fa": "افزودن گروه کالا به بخش"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "AddSectionGroup",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "sectionId": "field:sectionId",
+        "commodityGroupId": "field:commodityGroupId"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/p/pc-admin"
+  }
+}

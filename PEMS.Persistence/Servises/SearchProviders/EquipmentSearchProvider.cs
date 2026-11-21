@@ -24,6 +24,8 @@ public class EquipmentSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "Equipment";
     public string DisplayName => "تجهیزات";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser();
 
     public EquipmentSearchProvider(PEMSDbContext context)
     {
@@ -36,17 +38,21 @@ public class EquipmentSearchProvider : ISearchableEntityProvider
         var matches = await TryFullTextSearchAsync(query, projectId);
 
         // ==============================================================================
-        // فاز C: اگر Full-Text Search فعال باشه (اسکریپت EnableFullTextSearch.sql اجرا شده)
+        // فاز C: اگر Full-Text Search فعال باشه (Migration با نام FullTextSearch اجرا شده)
         // از همون‌جا نتیجه می‌گیریم - دقیق‌تر و برای Fuzzy واقعی بهتره. اگر null برگشت یعنی
         // یا نصب نیست یا هنوز Index ساخته نشده - بدون هیچ خطایی به روش LIKE قبلی برمی‌گردیم.
         // ==============================================================================
         if (matches == null)
         {
+            // جستجوی بی‌اعتنا به جداکننده‌ها: «FT 6001» و «FT6001» هم تگ «80-FT-6001» را پیدا می‌کنند (خط‌تیره/فاصله/نقطه/اسلش)
+            var squashed = Squash(query);
+
             var candidatesQuery = _context.Equipments
                 .Include(x => x.Discipline)
                 .Where(x => x.IsActive)
                 .Where(x =>
                     x.TagNumber.Contains(query) ||
+                    (squashed.Length >= 3 && x.TagNumber.Replace("-", "").Replace(" ", "").Replace(".", "").Replace("/", "").Replace("_", "").Contains(squashed)) ||
                     x.Name.Contains(query) ||
                     (x.Description != null && x.Description.Contains(query)) ||
                     (x.Manufacturer != null && x.Manufacturer.Contains(query)));
@@ -55,33 +61,20 @@ public class EquipmentSearchProvider : ISearchableEntityProvider
                 candidatesQuery = candidatesQuery.Where(x => x.ProjectId == projectId.Value);
 
             matches = await candidatesQuery.Take(500).ToListAsync();
-
-            // طبق محدودیت شناخته‌شده‌ی فاز A: برای اینکه غلط‌های تایپی ۱-۲ حرفی هم (که با
-            // LIKE پیدا نمی‌شوند) موقتاً پوشش داده شوند، در نبود نتیجه‌ی کافی از LIKE، یک
-            // نمونه‌ی بزرگ‌تر از کل جدول برای امتیازدهی Fuzzy در حافظه بارگذاری می‌شود.
-            if (matches.Count < 5 && query.Length is >= 2 and <= 25)
-            {
-                var fallbackQuery = _context.Equipments.Include(x => x.Discipline).Where(x => x.IsActive);
-                if (projectId.HasValue) fallbackQuery = fallbackQuery.Where(x => x.ProjectId == projectId.Value);
-
-                var fallbackPool = await fallbackQuery.Take(500).ToListAsync();
-                foreach (var eq in fallbackPool)
-                {
-                    if (matches.All(x => x.EquipmentId != eq.EquipmentId))
-                        matches.Add(eq);
-                }
-            }
         }
 
         var scored = matches
             .Select(eq => new
             {
                 Equipment = eq,
-                Score = SearchScoring.ComputeWeightedScore(query,
-                    (eq.TagNumber, 1.0),
-                    (eq.Name, 0.8),
-                    (eq.Description, 0.6),
-                    (eq.Manufacturer, 0.5))
+                Score = Math.Max(
+                    SearchScoring.ComputeWeightedScore(query,
+                        (eq.TagNumber, 1.0),
+                        (eq.Name, 0.8),
+                        (eq.Description, 0.6),
+                        (eq.Manufacturer, 0.5)),
+                    // تطبیق بدون جداکننده روی تگ (کمی کم‌وزن‌تر از تطبیق دقیق)
+                    (int)Math.Round(SearchScoring.ComputeFieldScore(Squash(eq.TagNumber), Squash(query)) * 0.9))
             })
             .Where(x => x.Score > 0)
             .OrderByDescending(x => x.Score)
@@ -115,7 +108,7 @@ public class EquipmentSearchProvider : ISearchableEntityProvider
 
     // ==============================================================================
     // فاز C: تلاش با CONTAINS واقعی SQL Server Full-Text Search (اگه اسکریپت
-    // EnableFullTextSearch.sql اجرا شده باشه). اگه Index هنوز نساخته شده یا FTS نصب نیست،
+    // FullTextSearch migration اجرا شده باشه). اگه Index هنوز نساخته شده یا FTS نصب نیست،
     // SQL Server خطا می‌ده (مثلاً "Cannot use a CONTAINS or FREETEXT predicate on column
     // ... because it is not full-text indexed") - این‌جا امن گرفته می‌شه و null برمی‌گرده
     // تا مسیر LIKE قبلی (که همیشه کار می‌کنه) جایگزینش بشه.
@@ -124,6 +117,9 @@ public class EquipmentSearchProvider : ISearchableEntityProvider
     {
         try
         {
+            // Full-Text فقط روی SQL Server رابطه‌ای معنا دارد (InMemory/تست: مستقیم LIKE)
+            if (!_context.Database.IsRelational()) return null;
+
             var ftsTerm = BuildPrefixTerm(query);
             if (ftsTerm == null) return null; // عبارت خیلی کوتاه/نامعتبر برای FTS
 
@@ -148,6 +144,9 @@ public class EquipmentSearchProvider : ISearchableEntityProvider
             return null;
         }
     }
+
+    internal static string Squash(string? text)
+        => new string((text ?? "").Where(c => c is not ('-' or ' ' or '.' or '/' or '_')).ToArray());
 
     // یک عبارت کوتاه یا شامل کاراکترهای خاص، تبدیل به Prefix Term امن برای CONTAINS می‌شود:
     // "query*" - برای پشتیبانی از Search-As-You-Type (نه فقط کلمه‌ی کامل)

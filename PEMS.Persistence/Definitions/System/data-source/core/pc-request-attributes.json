@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "pc-request-attributes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue request: Attributes",
+    "fa": "درخواست کاتالوگ قطعه: Attributes"
+  },
+  "description": {
+    "en": "Part Catalogue request: Attributes",
+    "fa": "درخواست کاتالوگ قطعه: Attributes"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "Attributes",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "id": "param:id"
+      }
+    }
+  }
+}

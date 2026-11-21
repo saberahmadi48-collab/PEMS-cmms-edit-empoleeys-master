@@ -2,6 +2,7 @@
 @using PEMS.WorkflowPlatform.Dtos
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var nextStatus = (string?)ViewBag.NextStatus;
@@ -17,7 +18,6 @@
     var simopsConflicts = (List<PEMS.Application.DTOs.SimopsConflictListDto>)ViewBag.SimopsConflicts;
     bool RoleMatchesMe(string? assignedToRole) =>
         assignedToRole != null && assignedToRole.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Any(currentUserRoles.Contains);
-    string NA(string? v) => string.IsNullOrWhiteSpace(v) ? "N/A" : v;
     string WaitingSince(DateTime since)
     {
         var span = DateTime.Now - since;
@@ -28,12 +28,12 @@
 
     var badgeClass = Model.Status switch
     {
-        "Active" => "bg-success",
-        "Closed" => "bg-secondary",
-        "Rejected" or "Cancelled" or "Revoked" => "bg-danger",
-        "Suspended" => "bg-warning text-dark",
-        "Approved" or "Issued" => "bg-info text-dark",
-        _ => "bg-primary"
+        "Active" => "success",
+        "Closed" => "neutral",
+        "Rejected" or "Cancelled" or "Revoked" => "danger",
+        "Suspended" => "warning",
+        "Approved" or "Issued" => "info",
+        _ => "primary"
     };
 
     // طبق PEMS-UI-01 (UI01-003): یک‌بار خوانده می‌شوند تا هم در بنر بالای صفحه (fallback عمومی)
@@ -69,158 +69,152 @@
     if (eg is { Result: "Eligible" }) { actionItems.Add(("Execution Gate is ready - Start Work available", "#executiongate")); }
 }
 
-<div class="content-card mb-3">
-    <div class="d-flex align-items-center gap-3 mb-2 flex-wrap">
-        <div class="kpi-icon bg-icon-blue" style="width:56px;height:56px;font-size:26px;"><i class="bi bi-shield-check"></i></div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+<pems-content-card css="mb-3">
+    <pems-flex align="center" gap="3" wrap="true" css="mb-2">
+        <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-shield-check" /></div>
         <div>
-            <h5 class="mb-0">@Model.PermitNumber &mdash; @Model.Title <span class="badge @badgeClass">@Model.Status</span></h5>
-            <span class="text-muted small">@Model.PermitType - Requested by @Model.RequestedByName on @Model.CreatedDate.ToString("yyyy-MM-dd")</span>
+            <pems-heading level="5" class="mb-0">@Model.PermitNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@VdrUi.Loc(Localizer, "Pt_St_", Model.Status)</pems-badge></pems-heading>
+            <span class="text-muted small">@Model.PermitType - Requested by @Model.RequestedByName on @PemsDates.Date(Model.CreatedDate)</span>
         </div>
-    </div>
-    <div class="row g-2 small mt-1">
-        <div class="col-md-3"><strong>@Localizer["Equipment:"]</strong> @(Model.EquipmentTagNumber ?? "N/A")</div>
-        <div class="col-md-3"><strong>@Localizer["Functional Location:"]</strong> @(Model.FunctionalLocationBreadcrumb ?? "N/A")</div>
-        <div class="col-md-3">
-            <strong>Work Order:</strong>
-            @if (Model.WorkOrderId.HasValue)
-            {
-                <a asp-controller="WorkOrder" asp-action="Details" asp-route-id="@Model.WorkOrderId">@Model.WorkOrderNumber</a>
-            }
-            else { <text>N/A</text> }
-        </div>
-        <div class="col-md-3"><strong>@Localizer["Priority:"]</strong> @Model.Priority</div>
-    </div>
-    <div class="row g-2 small mt-1">
-        <div class="col-md-4"><strong>Permit Issuer:</strong> @(Model.IssuerName ?? "N/A")</div>
-        <div class="col-md-4">
-            <strong>Permit Receiver:</strong> @(Model.ReceiverName ?? "N/A")
+    </pems-flex>
+    <pems-info-grid class="mt-2">
+        <pems-info-item label="@Localizer["Equipment"]" num>@Model.EquipmentTagNumber</pems-info-item>
+        <pems-info-item label="@Localizer["Functional Location"]">@Model.FunctionalLocationBreadcrumb</pems-info-item>
+        <pems-info-item label="@Localizer["Work Order"]" num>@if (Model.WorkOrderId.HasValue) { <pems-link asp-controller="WorkOrder" asp-action="Details" asp-route-id="@Model.WorkOrderId">@Model.WorkOrderNumber</pems-link> }</pems-info-item>
+        <pems-info-item label="@Localizer["Priority"]">@VdrUi.Loc(Localizer, "Pri_", Model.Priority)</pems-info-item>
+        <pems-info-item label="@Localizer["Info_PermitIssuer"]">@Model.IssuerName</pems-info-item>
+        <pems-info-item label="@Localizer["Info_PermitReceiver"]">
+            @Model.ReceiverName
             @if (!string.IsNullOrWhiteSpace(Model.ReceiverPersonnelType) && Model.ReceiverPersonnelType != "Internal")
             {
-                <span class="badge bg-light text-dark border">@Model.ReceiverPersonnelType @(Model.ReceiverVendorName != null ? $"- {Model.ReceiverVendorName}" : "")</span>
+                <pems-badge tone="light">@Model.ReceiverPersonnelType @(Model.ReceiverVendorName != null ? $"- {Model.ReceiverVendorName}" : "")</pems-badge>
             }
-        </div>
-        <div class="col-md-4"><strong>Validity:</strong> @(Model.ValidFrom?.ToString("yyyy-MM-dd") ?? "N/A") &rarr; @(Model.ValidTo?.ToString("yyyy-MM-dd") ?? "N/A")</div>
-    </div>
-    <div class="row g-2 small mt-1">
-        <div class="col-12"><strong>@Localizer["Description:"]</strong> @NA(Model.Description)</div>
-    </div>
+        </pems-info-item>
+        <pems-info-item label="@Localizer["Info_ValidFrom"]" num>@PemsDates.Date(Model.ValidFrom)</pems-info-item>
+        <pems-info-item label="@Localizer["Info_ValidTo"]" num>@PemsDates.Date(Model.ValidTo)</pems-info-item>
+        <pems-info-item label="@Localizer["Description"]" wide>@Model.Description</pems-info-item>
+    </pems-info-grid>
 
     @if (Model.Status == "Cancelled" && !string.IsNullOrWhiteSpace(Model.CancellationReason))
     {
-        <div class="alert alert-secondary py-2 px-3 small mt-2 mb-0"><strong>Cancellation Reason:</strong> @Model.CancellationReason</div>
+        <pems-alert tone="secondary" css="py-2 px-3 small mt-2 mb-0"><strong>Cancellation Reason:</strong> @Model.CancellationReason</pems-alert>
     }
     @if (Model.Status == "Revoked" && !string.IsNullOrWhiteSpace(Model.RevocationReason))
     {
-        <div class="alert alert-danger py-2 px-3 small mt-2 mb-0"><strong>Revocation Reason:</strong> @Model.RevocationReason</div>
+        <pems-alert tone="danger" css="py-2 px-3 small mt-2 mb-0"><strong>Revocation Reason:</strong> @Model.RevocationReason</pems-alert>
     }
     @if (Model.ClosedDate.HasValue)
     {
-        <div class="alert alert-success py-2 px-3 small mt-2 mb-0">Closed on @Model.ClosedDate.Value.ToString("yyyy-MM-dd HH:mm")</div>
+        <pems-alert tone="success" css="py-2 px-3 small mt-2 mb-0">Closed on @PemsDates.DateTime(Model.ClosedDate.Value)</pems-alert>
     }
-</div>
+</pems-content-card>
 
 @if (actionItems.Any())
 {
-    <div class="content-card mb-3 border-start border-4 border-warning">
-        <h6 class="mb-2"><i class="bi bi-exclamation-circle text-warning"></i> Action Required</h6>
-        <ul class="list-unstyled mb-0">
+    <pems-content-card css="mb-3 border-start border-4 border-warning">
+        <pems-heading level="6" class="mb-2"><pems-icon name="bi-exclamation-circle" css="text-warning" /> Action Required</pems-heading>
+        <pems-bullet-list class="list-unstyled mb-0">
             @foreach (var item in actionItems)
             {
-                <li class="py-1"><a href="@item.Anchor">@item.Text</a></li>
+                <pems-bullet class="py-1"><pems-link href="@item.Anchor">@item.Text</pems-link></pems-bullet>
             }
-        </ul>
-    </div>
+        </pems-bullet-list>
+    </pems-content-card>
 }
 
 @* طبق UI01-003: بنر عمومی فقط وقتی نمایش داده می‌شود که ErrorArea تعیین نشده باشد - در غیر این
    صورت پیام همان‌جایی که اقدام مربوطه انجام شد نمایش داده می‌شود (پایین‌تر در این فایل). *@
 @if (pageMessage != null && errorArea == null)
 {
-    <div class="alert alert-success py-2 px-3 small">@pageMessage</div>
+    <pems-alert tone="success" css="py-2 px-3 small">@pageMessage</pems-alert>
 }
 @if (pageError != null && errorArea == null)
 {
     @if (pageError.Contains(passkeyMissingMarker))
     {
-        <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+        <pems-alert tone="danger" css="py-2 px-3 small">@pageError <pems-link asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</pems-link></pems-alert>
     }
     else
     {
-        <div class="alert alert-danger py-2 px-3 small">@pageError</div>
+        <pems-alert tone="danger" css="py-2 px-3 small">@pageError</pems-alert>
     }
 }
 
-<div class="content-card mb-3" id="actions">
-    <h6 class="mb-3">@Localizer["Actions"]</h6>
+<pems-content-card css="mb-3" id="actions">
+    <pems-heading level="6" class="mb-3">@Localizer["Actions"]</pems-heading>
     @if (errorArea == "Actions" && (pageMessage != null || pageError != null))
     {
         @if (pageError != null && pageError.Contains(passkeyMissingMarker))
         {
-            <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+            <pems-alert tone="danger" css="py-2 px-3 small">@pageError <pems-link asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</pems-link></pems-alert>
         }
         else
         {
-            <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+            <pems-alert tone="@(pageError != null ? "danger" : "success")" css="py-2 px-3 small">@(pageError ?? pageMessage)</pems-alert>
         }
     }
     @if (closeElig != null && closeElig.Result != "Eligible")
     {
-        <div class="mb-2">
-            <span class="badge bg-danger">Not Eligible to Close</span>
-            <ul class="small text-muted mb-0 mt-1">
-                @foreach (var c in closeElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }
-            </ul>
-        </div>
+        <pems-form-group css="mb-2">
+            <pems-badge tone="danger">Not Eligible to Close</pems-badge>
+            <pems-bullet-list class="small text-muted mb-0 mt-1">
+                @foreach (var c in closeElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }
+            </pems-bullet-list>
+        </pems-form-group>
     }
-    <div class="d-flex flex-wrap gap-2">
+    <pems-flex wrap="true" gap="2">
         @if (nextStatus != null && nextStatus != "Active")
         {
-            <form asp-action="AdvanceStatus" method="post" class="d-flex gap-2">
+            <pems-form action="/a/permit-advance" method="post"><pems-flex gap="2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <button type="submit" class="btn btn-sm btn-pems-solid">Advance to @nextStatus</button>
-            </form>
+                <pems-button tone="primary" size="small" type="submit">Advance to @nextStatus</pems-button>
+            </pems-flex></pems-form>
         }
         @if (Model.Status == "Submitted" && approvalInstance == null)
         {
-            <form asp-action="SubmitForApproval" method="post" class="d-flex gap-2">
+            <pems-form action="/a/permit-submit-for-approval" method="post"><pems-flex gap="2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <button type="submit" class="btn btn-sm btn-pems-solid"><i class="bi bi-signpost-split"></i> Submit for Approval</button>
-            </form>
+                <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-signpost-split" /> Submit for Approval</pems-button>
+            </pems-flex></pems-form>
         }
         @if (Model.Status == "Active")
         {
-            <form asp-action="Suspend" method="post" class="d-flex flex-wrap gap-2">
+            <pems-form action="/a/permit-suspend" method="post"><pems-flex wrap="true" gap="2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <input type="text" name="reason" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Suspend reason" />
-                <button type="submit" class="btn btn-sm btn-outline-warning">Suspend</button>
-            </form>
-            <form asp-action="Close" method="post">
+                <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="reason" placeholder="Suspend reason" />
+                <pems-button tone="warning" size="small" outline="true" type="submit">Suspend</pems-button>
+            </pems-flex></pems-form>
+            <pems-form action="/a/permit-close" method="post">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <button type="button" class="btn btn-sm btn-outline-secondary" @(closeElig != null && closeElig.Result != "Eligible" ? "disabled" : "")
-                        onclick="if(confirm('این Permit بسته شود؟')) pemsSubmitWithStepUp(this)">Close</button>
-            </form>
+                <pems-button tone="neutral" size="small" outline="true" type="button" disabled="@(closeElig != null && closeElig.Result != "Eligible")" data-pems-confirm="این Permit بسته شود؟" data-pems-click="call" data-pems-fn="pemsSubmitWithStepUp" data-pems-arg="this">Close</pems-button>
+            </pems-form>
         }
         @if (Model.Status is "Draft" or "Submitted")
         {
-            <form asp-action="Cancel" method="post">
+            <pems-form action="/a/permit-cancel" method="post">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این Permit لغو شود؟');">@Localizer["Cancel"]</button>
-            </form>
+                <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این Permit لغو شود؟">@Localizer["Cancel"]</pems-button>
+            </pems-form>
         }
         @if (Model.Status is "Approved" or "Issued" or "Active")
         {
-            <form asp-action="Revoke" method="post" class="d-flex flex-wrap gap-2">
+            <pems-form action="/a/permit-revoke" method="post"><pems-flex wrap="true" gap="2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <input type="text" name="reason" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Revocation reason" />
-                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('این Permit ابطال شود؟');">@Localizer["Revoke"]</button>
-            </form>
+                <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="reason" placeholder="Revocation reason" />
+                <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="این Permit ابطال شود؟">@Localizer["Revoke"]</pems-button>
+            </pems-flex></pems-form>
         }
         @if (nextStatus == null && Model.Status is not ("Active" or "Draft" or "Submitted" or "Approved" or "Issued"))
         {
             <span class="text-muted small">@Localizer["No further actions available."]</span>
         }
-    </div>
-</div>
+    </pems-flex>
+</pems-content-card>
 
 @{
     var executionGate = (PEMS.Application.DTOs.ExecutionGateResultDto?)ViewBag.ExecutionGate;
@@ -229,92 +223,92 @@
 }
 @if (executionGate != null)
 {
-    var gateBadge = executionGate.Result == "Eligible" ? "bg-success" : "bg-danger";
-    <div class="content-card mb-3" id="executiongate">
-        <h6 class="mb-3">
-            <i class="bi bi-door-open"></i> Execution Gate
-            <span class="badge @gateBadge">@executionGate.Result.ToUpper()</span>
-        </h6>
+    var gateBadge = executionGate.Result == "Eligible" ? "success" : "danger";
+    <pems-content-card css="mb-3" id="executiongate">
+        <pems-heading level="6" class="mb-3">
+            <pems-icon name="bi-door-open" /> Execution Gate
+            <pems-badge tone="@gateBadge">@executionGate.Result.ToUpper()</pems-badge>
+        </pems-heading>
         @if (errorArea == "ExecutionGate" && pageError != null && pageError.Contains(passkeyMissingMarker))
         {
-            <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+            <pems-alert tone="danger" css="py-2 px-3 small">@pageError <pems-link asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</pems-link></pems-alert>
         }
         else if (errorArea == "ExecutionGate" && (pageMessage != null || pageError != null))
         {
-            <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+            <pems-alert tone="@(pageError != null ? "danger" : "success")" css="py-2 px-3 small">@(pageError ?? pageMessage)</pems-alert>
         }
-        <ul class="list-unstyled mb-2">
+        <pems-bullet-list class="list-unstyled mb-2">
             @foreach (var c in executionGate.Checks)
             {
-                <li class="d-flex align-items-center gap-2 py-1">
-                    @if (c.Passed) { <i class="bi bi-check-circle-fill text-success"></i> } else { <i class="bi bi-x-circle-fill text-danger"></i> }
+                <pems-flex as="li" align="center" gap="2" css="py-1">
+                    @if (c.Passed) { <pems-icon name="bi-check-circle-fill" css="text-success" /> } else { <pems-icon name="bi-x-circle-fill" css="text-danger" /> }
                     <span class="small"><strong>[@c.Category]</strong> @c.Name — @c.Detail</span>
-                </li>
+                </pems-flex>
             }
-        </ul>
+        </pems-bullet-list>
         @if (executionGate.AdvisoryNotes.Any())
         {
-            <p class="small text-muted mb-2">Advisory (does not block):</p>
-            <ul class="list-unstyled mb-2">
+            <pems-text class="small text-muted mb-2">Advisory (does not block):</pems-text>
+            <pems-bullet-list class="list-unstyled mb-2">
                 @foreach (var a in executionGate.AdvisoryNotes)
                 {
-                    <li class="d-flex align-items-center gap-2 py-1"><i class="bi bi-info-circle text-warning"></i> <span class="small">@a.Name — @a.Detail</span></li>
+                    <pems-flex as="li" align="center" gap="2" css="py-1"><pems-icon name="bi-info-circle" css="text-warning" /> <span class="small">@a.Name — @a.Detail</span></pems-flex>
                 }
-            </ul>
+            </pems-bullet-list>
         }
-        <div class="d-flex gap-2 flex-wrap border-top pt-3">
-            <form asp-controller="ExecutionGate" asp-action="StartWork" method="post" class="d-inline">
+        <pems-flex gap="2" wrap="true" css="border-top pt-3">
+            <pems-form action="/a/execution-gate-start-work" method="post" class="d-inline">
                 <input type="hidden" name="permitId" value="@Model.PermitId" />
-                <button type="button" class="btn btn-sm btn-pems-solid" @(executionGate.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)">
-                    <i class="bi bi-play-circle"></i> Start Work
-                </button>
-            </form>
+                <pems-button tone="primary" size="small" type="button" disabled="@(executionGate.Result != "Eligible")" data-pems-click="call" data-pems-fn="pemsSubmitWithStepUp" data-pems-arg="this">
+                    <pems-icon name="bi-play-circle" /> Start Work
+                </pems-button>
+            </pems-form>
             @if (canEmergencyOverride)
             {
-                <form asp-controller="ExecutionGate" asp-action="EmergencyOverride" method="post" class="d-flex flex-wrap gap-2">
+                <pems-form action="/a/execution-gate-emergency-override" method="post"><pems-flex wrap="true" gap="2">
                     <input type="hidden" name="permitId" value="@Model.PermitId" />
-                    <input type="text" name="reason" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Emergency reason (required)" required />
-                    <button type="button" class="btn btn-sm btn-outline-danger"
-                            onclick="if(confirm('Emergency Override یک اقدام واقعاً استثنایی است. مطمئن هستید؟')) pemsSubmitWithStepUp(this)">
-                        <i class="bi bi-exclamation-triangle"></i> Emergency Override
-                    </button>
-                </form>
+                    <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="reason" placeholder="Emergency reason (required)" required />
+                    <pems-button tone="danger" size="small" outline="true" type="button"
+                            data-pems-confirm="Emergency Override یک اقدام واقعاً استثنایی است. مطمئن هستید؟" data-pems-click="call" data-pems-fn="pemsSubmitWithStepUp" data-pems-arg="this">
+                        <pems-icon name="bi-exclamation-triangle" /> Emergency Override
+                    </pems-button>
+                </pems-flex></pems-form>
             }
-        </div>
+        </pems-flex>
         @if (executionGateDecisions.Any())
         {
-            <table class="table table-enterprise table-sm mt-3 mb-0">
-                <thead><tr><th>@Localizer["From"]</th><th>To</th><th>@Localizer["Result"]</th><th>By</th><th>@Localizer["Date"]</th><th>@Localizer["Emergency"]</th><th>@Localizer["Detail"]</th></tr></thead>
-                <tbody>
+            <pems-related-table>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>To</pems-table-header><pems-table-header>@Localizer["Result"]</pems-table-header><pems-table-header>By</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Emergency"]</pems-table-header><pems-table-header>@Localizer["Detail"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var d in executionGateDecisions)
                     {
-                        <tr>
-                            <td class="small">@d.FromStatus</td>
-                            <td class="small">@d.ToStatus</td>
-                            <td><span class="badge @(d.Result == "Eligible" ? "bg-success" : "bg-danger")">@d.Result</span></td>
-                            <td class="small">@(d.ActorName ?? "-")</td>
-                            <td class="small">@d.DecisionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                            <td>@(d.IsEmergencyOverride ? "Yes" : "-")</td>
-                            <td class="small text-muted">@(d.IsEmergencyOverride ? d.EmergencyReason : d.BlockingReasonsSummary)</td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell class="small">@d.FromStatus</pems-table-cell>
+                            <pems-table-cell class="small">@d.ToStatus</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="@(d.Result == "Eligible" ? "success" : "danger")">@d.Result</pems-badge></pems-table-cell>
+                            <pems-table-cell class="small">@(d.ActorName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@PemsDates.DateTime(d.DecisionDate)</pems-table-cell>
+                            <pems-table-cell>@(d.IsEmergencyOverride ? "Yes" : "-")</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@(d.IsEmergencyOverride ? d.EmergencyReason : d.BlockingReasonsSummary)</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
-            </table>
+                </pems-table-body>
+            </pems-related-table>
         }
-    </div>
+    </pems-content-card>
 }
 
 @if (approvalInstance != null)
 {
-    <div class="content-card mb-3" id="approval">
-        <h6 class="mb-3"><i class="bi bi-diagram-3"></i> Approval Progress <span class="badge @(approvalInstance.Status == "Completed" ? "bg-success" : approvalInstance.Status == "Rejected" ? "bg-danger" : "bg-primary")">@approvalInstance.Status</span></h6>
+    <pems-content-card css="mb-3" id="approval">
+        <pems-heading level="6" class="mb-3"><pems-icon name="bi-diagram-3" /> Approval Progress <pems-badge tone="@(approvalInstance.Status == "Completed" ? "success" : approvalInstance.Status == "Rejected" ? "danger" : "primary")">@approvalInstance.Status</pems-badge></pems-heading>
         @if (errorArea == "Approval" && pageError != null && pageError.Contains(passkeyMissingMarker))
         {
-            <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+            <pems-alert tone="danger" css="py-2 px-3 small">@pageError <pems-link asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</pems-link></pems-alert>
         }
         else if (errorArea == "Approval" && (pageMessage != null || pageError != null))
         {
-            <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+            <pems-alert tone="@(pageError != null ? "danger" : "success")" css="py-2 px-3 small">@(pageError ?? pageMessage)</pems-alert>
         }
 
         @{
@@ -326,31 +320,31 @@
                 .Where(h => h.FromStageName != null && h.Decision != null)
                 .ToList();
         }
-        <ul class="list-unstyled mb-3">
+        <pems-bullet-list class="list-unstyled mb-3">
             @foreach (var stageName in stageOrder)
             {
                 var completedEntry = completedStages.FirstOrDefault(h => h.FromStageName == stageName);
                 var isCurrent = approvalInstance.CurrentStageName == stageName;
-                <li class="d-flex align-items-center gap-2 py-1">
+                <pems-flex as="li" align="center" gap="2" css="py-1">
                     @if (completedEntry != null)
                     {
-                        <i class="bi bi-check-circle-fill text-success"></i>
-                        <span>@stageName - <strong>@completedEntry.Decision</strong> @(completedEntry.Role != null ? $"({completedEntry.Role})" : "") @completedEntry.ActionDate.ToString("yyyy-MM-dd HH:mm")</span>
+                        <pems-icon name="bi-check-circle-fill" css="text-success" />
+                        <span>@stageName - <strong>@completedEntry.Decision</strong> @(completedEntry.Role != null ? $"({completedEntry.Role})" : "") @PemsDates.DateTime(completedEntry.ActionDate)</span>
                     }
                     else if (isCurrent)
                     {
                         var stageWaitSince = approvalInstance.PendingStages.Any() ? approvalInstance.PendingStages.Min(p => p.AssignedDate) : (DateTime?)null;
-                        <i class="bi bi-record-circle text-primary"></i>
+                        <pems-icon name="bi-record-circle" css="text-primary" />
                         <span>@stageName - <span class="text-muted">در انتظار: @string.Join(" / ", approvalInstance.PendingStages.Select(p => p.AssignedToRole)) @(stageWaitSince.HasValue ? $"({WaitingSince(stageWaitSince.Value)})" : "")</span></span>
                     }
                     else
                     {
-                        <i class="bi bi-circle text-muted"></i>
+                        <pems-icon name="bi-circle" css="text-muted" />
                         <span class="text-muted">@stageName</span>
                     }
-                </li>
+                </pems-flex>
             }
-        </ul>
+        </pems-bullet-list>
 
         @if (approvalInstance.Status == "Running" && approvalInstance.PendingStages.Any(p => RoleMatchesMe(p.AssignedToRole)))
         {
@@ -359,435 +353,432 @@
                 <div class="border-top pt-3 mb-0">
                     @if (approveElig != null && approveElig.Result != "Eligible")
                     {
-                        <div class="mb-1"><span class="badge bg-danger">Not Eligible to Approve</span>
-                            <ul class="small text-muted mb-0 mt-1">@foreach (var c in approveElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
-                        </div>
+                        <pems-form-group css="mb-1"><pems-badge tone="danger">Not Eligible to Approve</pems-badge>
+                            <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in approveElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
+                        </pems-form-group>
                     }
                     @if (rejectElig != null && rejectElig.Result != "Eligible")
                     {
-                        <div class="mb-1"><span class="badge bg-danger">Not Eligible to Reject</span>
-                            <ul class="small text-muted mb-0 mt-1">@foreach (var c in rejectElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
-                        </div>
+                        <pems-form-group css="mb-1"><pems-badge tone="danger">Not Eligible to Reject</pems-badge>
+                            <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in rejectElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
+                        </pems-form-group>
                     }
                 </div>
             }
-            <form asp-action="RespondApproval" method="post" class="d-flex flex-wrap gap-2 align-items-center @(approveElig == null && rejectElig == null ? "border-top pt-3" : "")">
+            <pems-form class="@(approveElig == null && rejectElig == null ? "border-top pt-3" : "")" action="/a/permit-respond-approval" method="post"><pems-flex wrap="true" gap="2" align="center">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <input type="text" name="comment" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="@Localizer["Comment (optional)"]" />
-                <button type="button" class="btn btn-sm btn-success" @(approveElig != null && approveElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this, 'decision', 'Approve')">Approve</button>
-                <button type="button" class="btn btn-sm btn-outline-danger" @(rejectElig != null && rejectElig.Result != "Eligible" ? "disabled" : "")
-                        onclick="if(confirm('این مرحله رد شود؟ کل زنجیره‌ی تایید با نتیجه‌ی Rejected بسته می‌شود.')) pemsSubmitWithStepUp(this, 'decision', 'Reject')">Reject</button>
-            </form>
-            <form asp-action="ReturnForRework" method="post" class="d-flex flex-wrap gap-2 align-items-center mt-2">
+                <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="comment" placeholder="@Localizer["Comment (optional)"]" />
+                <pems-button tone="success" size="small" type="button" disabled="@(approveElig != null && approveElig.Result != "Eligible")" data-pems-click="call" data-pems-fn="pemsSubmitWithStepUp" data-pems-arg="this" data-pems-args='["decision", "Approve"]'>Approve</pems-button>
+                <pems-button tone="danger" size="small" outline="true" type="button" disabled="@(rejectElig != null && rejectElig.Result != "Eligible")" data-pems-confirm="این مرحله رد شود؟ کل زنجیره‌ی تایید با نتیجه‌ی Rejected بسته می‌شود." data-pems-click="call" data-pems-fn="pemsSubmitWithStepUp" data-pems-arg="this" data-pems-args='["decision", "Reject"]'>Reject</pems-button>
+            </pems-flex></pems-form>
+            <pems-form class="mt-2" action="/a/permit-return-for-rework" method="post"><pems-flex wrap="true" gap="2" align="center">
                 <input type="hidden" name="id" value="@Model.PermitId" />
-                <input type="text" name="comment" class="form-control form-control-sm flex-grow-1" style="min-width:160px;max-width:280px;" placeholder="Rework instructions" />
-                <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Permit برای اصلاح به Draft برگردد؟');">Return for Rework</button>
-            </form>
+                <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="comment" placeholder="Rework instructions" />
+                <pems-button tone="warning" size="small" outline="true" type="submit" data-pems-confirm="Permit برای اصلاح به Draft برگردد؟">Return for Rework</pems-button>
+            </pems-flex></pems-form>
         }
         else if (approvalInstance.Status == "Running")
         {
-            <p class="text-muted small mb-0">شما نقش لازم برای اقدام روی مرحله‌ی جاری این زنجیره را ندارید.</p>
+            <pems-text class="text-muted small mb-0">شما نقش لازم برای اقدام روی مرحله‌ی جاری این زنجیره را ندارید.</pems-text>
         }
 
         @if (approvalHistory != null && approvalHistory.Any())
         {
-            <table class="table table-enterprise table-sm mt-3 mb-0">
-                <thead><tr><th>@Localizer["From"]</th><th>To</th><th>@Localizer["Action"]</th><th>By Role</th><th>@Localizer["Comment"]</th><th>@Localizer["Date"]</th></tr></thead>
-                <tbody>
+            <pems-related-table>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>To</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["By Role"]</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var h in approvalHistory.OrderByDescending(h => h.ActionDate))
                     {
-                        <tr>
-                            <td class="small">@(h.FromStageName ?? "-")</td>
-                            <td class="small">@(h.ToStageName ?? "-")</td>
-                            <td class="small">@h.ActionType</td>
-                            <td class="small">@(h.Role ?? "-")</td>
-                            <td class="small text-muted">@h.Comment</td>
-                            <td class="small">@h.ActionDate.ToString("yyyy-MM-dd HH:mm")</td>
-                        </tr>
+                        <pems-table-row>
+                            <pems-table-cell class="small">@(h.FromStageName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(h.ToStageName ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@Localizer[h.ActionType]</pems-table-cell>
+                            <pems-table-cell class="small">@(h.Role ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small text-muted">@h.Comment</pems-table-cell>
+                            <pems-table-cell class="small">@PemsDates.DateTime(h.ActionDate)</pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
-            </table>
+                </pems-table-body>
+            </pems-related-table>
         }
-    </div>
+    </pems-content-card>
 }
 
 @{
     var verifiedCount = isolationPoints.Count(p => p.Status is "Verified" or "Deisolated");
     var unverifiedCount = isolationPoints.Count(p => p.Status is "Requested" or "Isolated");
 }
-<div class="content-card mb-3" id="loto">
-    <h6 class="mb-3">
-        <i class="bi bi-lock"></i> Isolation Points (LOTO)
+<pems-content-card css="mb-3" id="loto">
+    <pems-heading level="6" class="mb-3">
+        <pems-icon name="bi-lock" /> Isolation Points (LOTO)
         @if (isolationPoints.Any())
         {
-            <span class="badge @(unverifiedCount == 0 ? "bg-success" : "bg-warning text-dark")">@verifiedCount / @isolationPoints.Count Verified</span>
+            <pems-badge tone="@(unverifiedCount == 0 ? "success" : "warning")">@verifiedCount / @isolationPoints.Count Verified</pems-badge>
         }
-    </h6>
+    </pems-heading>
     @if (errorArea == "LOTO" && pageError != null && pageError.Contains(passkeyMissingMarker))
     {
-        <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+        <pems-alert tone="danger" css="py-2 px-3 small">@pageError <pems-link asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</pems-link></pems-alert>
     }
     else if (errorArea == "LOTO" && (pageMessage != null || pageError != null))
     {
-        <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+        <pems-alert tone="@(pageError != null ? "danger" : "success")" css="py-2 px-3 small">@(pageError ?? pageMessage)</pems-alert>
     }
     @if (lotoVerifyElig != null && lotoVerifyElig.Result != "Eligible")
     {
-        <div class="mb-2"><span class="badge bg-danger">Not Eligible to Verify</span>
-            <ul class="small text-muted mb-0 mt-1">@foreach (var c in lotoVerifyElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
-        </div>
+        <pems-form-group css="mb-2"><pems-badge tone="danger">Not Eligible to Verify</pems-badge>
+            <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in lotoVerifyElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
+        </pems-form-group>
     }
 
-    <table class="table table-enterprise table-sm mb-3">
-        <thead><tr><th>@Localizer["Energy Type"]</th><th>@Localizer["Location"]</th><th>Lock/Tag</th><th>@Localizer["Status"]</th><th>Isolated By</th><th>Verified By</th><th></th></tr></thead>
-        <tbody>
+    <pems-related-table>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Energy Type"]</pems-table-header><pems-table-header>@Localizer["Location"]</pems-table-header><pems-table-header>@Localizer["Lock/Tag"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Isolated By"]</pems-table-header><pems-table-header>@Localizer["Verified By"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var p in isolationPoints)
             {
                 var isoBadge = p.Status switch
                 {
-                    "Verified" => "bg-success",
-                    "Deisolated" => "bg-secondary",
-                    "Cancelled" => "bg-danger",
-                    "Isolated" => "bg-warning text-dark",
-                    _ => "bg-primary"
+                    "Verified" => "success",
+                    "Deisolated" => "neutral",
+                    "Cancelled" => "danger",
+                    "Isolated" => "warning",
+                    _ => "primary"
                 };
-                <tr>
-                    <td class="small">@p.EnergyType</td>
-                    <td class="small">@p.Location @(p.EquipmentTagNumber != null ? $"({p.EquipmentTagNumber})" : "")</td>
-                    <td class="small">@(p.LockNumber ?? "-") / @(p.TagNumber ?? "-")</td>
-                    <td><span class="badge @isoBadge">@p.Status</span></td>
-                    <td class="small">@(p.IsolatedByName ?? "-")</td>
-                    <td class="small">@(p.VerifiedByName ?? "-")</td>
-                    <td class="text-nowrap">
+                <pems-table-row>
+                    <pems-table-cell class="small">@p.EnergyType</pems-table-cell>
+                    <pems-table-cell class="small">@p.Location @(p.EquipmentTagNumber != null ? $"({p.EquipmentTagNumber})" : "")</pems-table-cell>
+                    <pems-table-cell class="small">@(p.LockNumber ?? "-") / @(p.TagNumber ?? "-")</pems-table-cell>
+                    <pems-table-cell><pems-badge tone="@isoBadge">@p.Status</pems-badge></pems-table-cell>
+                    <pems-table-cell class="small">@(p.IsolatedByName ?? "-")</pems-table-cell>
+                    <pems-table-cell class="small">@(p.VerifiedByName ?? "-")</pems-table-cell>
+                    <pems-table-cell class="text-nowrap">
                         @if (p.Status == "Requested")
                         {
-                            <form asp-controller="Isolation" asp-action="MarkIsolated" method="post" class="d-inline">
+                            <pems-form action="/a/isolation-mark-isolated" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                <input type="text" name="lockNumber" class="form-control form-control-sm d-inline-block" placeholder="Lock #" style="width:90px;" />
-                                <input type="text" name="tagNumber" class="form-control form-control-sm d-inline-block" placeholder="Tag #" style="width:90px;" />
-                                <button type="submit" class="btn btn-sm btn-outline-warning"><i class="bi bi-lock-fill"></i> Isolate</button>
-                            </form>
-                            <form asp-controller="Isolation" asp-action="Cancel" method="post" class="d-inline">
+                                <pems-input class="pems-w-90" scale="small" css="d-inline-block" type="text" name="lockNumber" placeholder="Lock #" />
+                                <pems-input class="pems-w-90" scale="small" css="d-inline-block" type="text" name="tagNumber" placeholder="Tag #" />
+                                <pems-button tone="warning" size="small" outline="true" type="submit"><pems-icon name="bi-lock-fill" /> Isolate</pems-button>
+                            </pems-form>
+                            <pems-form action="/a/isolation-cancel" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این نقطه لغو شود؟');">@Localizer["Cancel"]</button>
-                            </form>
+                                <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این نقطه لغو شود؟">@Localizer["Cancel"]</pems-button>
+                            </pems-form>
                         }
                         @if (p.Status == "Isolated")
                         {
-                            <form asp-controller="Isolation" asp-action="Verify" method="post" class="d-inline">
+                            <pems-form action="/a/isolation-verify" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                <button type="button" class="btn btn-sm btn-outline-success" @(lotoVerifyElig != null && lotoVerifyElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)"><i class="bi bi-check-circle"></i> Verify</button>
-                            </form>
+                                <pems-button tone="success" size="small" outline="true" type="button" disabled="@(lotoVerifyElig != null && lotoVerifyElig.Result != "Eligible")" data-pems-click="call" data-pems-fn="pemsSubmitWithStepUp" data-pems-arg="this"><pems-icon name="bi-check-circle" /> Verify</pems-button>
+                            </pems-form>
                         }
                         @if (p.Status == "Verified")
                         {
-                            <form asp-controller="Isolation" asp-action="Deisolate" method="post" class="d-inline">
+                            <pems-form action="/a/isolation-deisolate" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@p.IsolationPointId" />
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('این ایزوله‌سازی برداشته شود (De-isolation)؟');">De-isolate</button>
-                            </form>
+                                <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این ایزوله‌سازی برداشته شود (De-isolation)؟">De-isolate</pems-button>
+                            </pems-form>
                         }
-                    </td>
-                </tr>
+                    </pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
-    </table>
-    @if (!isolationPoints.Any()) { <p class="text-muted small mb-3">هنوز هیچ نقطه‌ی ایزوله‌سازی‌ای ثبت نشده.</p> }
+        </pems-table-body>
+    </pems-related-table>
+    @if (!isolationPoints.Any()) { <pems-text class="text-muted small mb-3">هنوز هیچ نقطه‌ی ایزوله‌سازی‌ای ثبت نشده.</pems-text> }
 
     @if (Model.Status is not ("Closed" or "Cancelled" or "Rejected" or "Revoked"))
     {
-        <form asp-controller="Isolation" asp-action="Create" method="post" class="row g-2 align-items-end border-top pt-3">
+        <pems-form action="/a/isolation-create" method="post"><pems-row gap="2" css="align-items-end border-top pt-3">
             <input type="hidden" name="permitId" value="@Model.PermitId" />
-            <div class="col-md-2">
-                <label class="form-label small">@Localizer["Energy Type"]</label>
-                <select name="energyType" class="form-select form-select-sm" required>
+            <pems-col md="2">
+                <pems-label css="small">@Localizer["Energy Type"]</pems-label>
+                <pems-select scale="small" name="energyType" required>
                     @foreach (var t in isolationEnergyTypes) { <option value="@t">@t</option> }
-                </select>
-            </div>
-            <div class="col-md-3"><label class="form-label small">@Localizer["Location"]</label><input name="location" class="form-control form-control-sm" required /></div>
-            <div class="col-md-2"><label class="form-label small">Normal State</label><input name="normalState" class="form-control form-control-sm" /></div>
-            <div class="col-md-2"><label class="form-label small">Required Isolation State</label><input name="requiredIsolationState" class="form-control form-control-sm" /></div>
-            <div class="col-md-2"><label class="form-label small">Method</label><input name="isolationMethod" class="form-control form-control-sm" /></div>
-            <div class="col-md-1"><button type="submit" class="btn btn-sm btn-pems-solid w-100">@Localizer["Add"]</button></div>
-        </form>
+                </pems-select>
+            </pems-col>
+            <pems-col md="3"><pems-label css="small">@Localizer["Location"]</pems-label><pems-input scale="small" name="location" required /></pems-col>
+            <pems-col md="2"><pems-label css="small">Normal State</pems-label><pems-input scale="small" name="normalState" /></pems-col>
+            <pems-col md="2"><pems-label css="small">Required Isolation State</pems-label><pems-input scale="small" name="requiredIsolationState" /></pems-col>
+            <pems-col md="2"><pems-label css="small">Method</pems-label><pems-input scale="small" name="isolationMethod" /></pems-col>
+            <pems-col md="1"><pems-button tone="primary" size="small" css="w-100" type="submit">@Localizer["Add"]</pems-button></pems-col>
+        </pems-row></pems-form>
     }
-</div>
+</pems-content-card>
 
 @{
     var passedGasTests = gasTests.Count(g => g.Status == "Passed" && !g.IsExpired);
 }
-<div class="content-card mb-3">
-    <h6 class="mb-3">
-        <i class="bi bi-clouds"></i> Gas Testing
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3">
+        <pems-icon name="bi-clouds" /> Gas Testing
         @if (gasTests.Any())
         {
-            <span class="badge @(passedGasTests > 0 ? "bg-success" : "bg-warning text-dark")">@passedGasTests / @gasTests.Count Valid</span>
+            <pems-badge tone="@(passedGasTests > 0 ? "success" : "warning")">@passedGasTests / @gasTests.Count Valid</pems-badge>
         }
-    </h6>
+    </pems-heading>
 
     @foreach (var g in gasTests)
     {
         var gasBadge = g.Status switch
         {
-            "Passed" => g.IsExpired ? "bg-secondary" : "bg-success",
-            "Failed" => "bg-danger",
-            "Invalidated" => "bg-dark",
-            _ => "bg-primary"
+            "Passed" => g.IsExpired ? "neutral" : "success",
+            "Failed" => "danger",
+            "Invalidated" => "dark",
+            _ => "primary"
         };
         var calBadge = g.InstrumentCalibrationStatus switch
         {
-            "Overdue" => "bg-danger",
-            "DueSoon" => "bg-warning text-dark",
-            "OK" => "bg-success",
-            _ => "bg-secondary"
+            "Overdue" => "danger",
+            "DueSoon" => "warning",
+            "OK" => "success",
+            _ => "neutral"
         };
         <div class="border rounded p-2 mb-2">
-            <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                <span class="badge @gasBadge">@g.Status</span>
-                @if (g.IsExpired && g.Status != "Invalidated") { <span class="badge bg-secondary">Expired</span> }
+            <pems-flex wrap="true" align="center" gap="2" css="mb-2">
+                <pems-badge tone="@gasBadge">@g.Status</pems-badge>
+                @if (g.IsExpired && g.Status != "Invalidated") { <pems-badge tone="neutral">Expired</pems-badge> }
                 <span class="small">@g.Location</span>
-                <span class="small text-muted">Tested by @(g.TesterName ?? "-") @g.TestedAt.ToString("yyyy-MM-dd HH:mm")</span>
-                @if (g.ValidUntil.HasValue) { <span class="small text-muted">Valid Until @g.ValidUntil.Value.ToString("yyyy-MM-dd HH:mm")</span> }
+                <span class="small text-muted">Tested by @(g.TesterName ?? "-") @PemsDates.DateTime(g.TestedAt)</span>
+                @if (g.ValidUntil.HasValue) { <span class="small text-muted">Valid Until @PemsDates.DateTime(g.ValidUntil.Value)</span> }
                 @if (!string.IsNullOrWhiteSpace(g.InstrumentTag))
                 {
-                    <span class="small text-muted">Instrument: @g.InstrumentTag <span class="badge @calBadge">@g.InstrumentCalibrationStatus</span></span>
+                    <span class="small text-muted">Instrument: @g.InstrumentTag <pems-badge tone="@calBadge">@g.InstrumentCalibrationStatus</pems-badge></span>
                 }
-            </div>
-            <table class="table table-enterprise table-sm mb-2">
-                <thead><tr><th>Parameter</th><th>@Localizer["Value"]</th><th>@Localizer["Unit"]</th><th>@Localizer["Result"]</th></tr></thead>
-                <tbody>
+            </pems-flex>
+            <pems-related-table>
+                <pems-table-head><pems-table-row><pems-table-header>Parameter</pems-table-header><pems-table-header>@Localizer["Value"]</pems-table-header><pems-table-header>@Localizer["Unit"]</pems-table-header><pems-table-header>@Localizer["Result"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-body>
                     @foreach (var r in g.Readings)
                     {
-                        var resultBadge = r.Result switch { "Pass" => "bg-success", "Fail" => "bg-danger", _ => "bg-secondary" };
-                        <tr>
-                            <td class="small">@r.Parameter</td>
-                            <td class="small">@r.Value</td>
-                            <td class="small">@r.Unit</td>
-                            <td><span class="badge @resultBadge">@r.Result</span></td>
-                        </tr>
+                        var resultBadge = r.Result switch { "Pass" => "success", "Fail" => "danger", _ => "neutral" };
+                        <pems-table-row>
+                            <pems-table-cell class="small">@r.Parameter</pems-table-cell>
+                            <pems-table-cell class="small">@r.Value</pems-table-cell>
+                            <pems-table-cell class="small">@r.Unit</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="@resultBadge">@r.Result</pems-badge></pems-table-cell>
+                        </pems-table-row>
                     }
-                </tbody>
-            </table>
+                </pems-table-body>
+            </pems-related-table>
             @if (g.Status != "Invalidated")
             {
-                @if (!string.IsNullOrWhiteSpace(g.InvalidationReason)) { <p class="small text-muted mb-2">Invalidation reason: @g.InvalidationReason</p> }
-                <form asp-controller="GasTest" asp-action="Invalidate" method="post" class="d-flex gap-2 align-items-center">
+                @if (!string.IsNullOrWhiteSpace(g.InvalidationReason)) { <pems-text class="small text-muted mb-2">Invalidation reason: @g.InvalidationReason</pems-text> }
+                <pems-form action="/a/gas-test-invalidate" method="post"><pems-flex gap="2" align="center">
                     <input type="hidden" name="id" value="@g.GasTestId" />
                     <input type="hidden" name="permitId" value="@Model.PermitId" />
-                    <input type="text" name="reason" class="form-control form-control-sm" placeholder="Invalidation reason" style="max-width:260px;" required />
-                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('این تست گاز باطل شود؟');">Invalidate</button>
-                </form>
+                    <pems-input class="pems-maxw-260" scale="small" type="text" name="reason" placeholder="Invalidation reason" required />
+                    <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="این تست گاز باطل شود؟">Invalidate</pems-button>
+                </pems-flex></pems-form>
             }
             else
             {
-                <p class="small text-muted mb-0">Invalidated: @g.InvalidationReason</p>
+                <pems-text class="small text-muted mb-0">Invalidated: @g.InvalidationReason</pems-text>
             }
         </div>
     }
-    @if (!gasTests.Any()) { <p class="text-muted small mb-3">هنوز هیچ تست گازی ثبت نشده.</p> }
+    @if (!gasTests.Any()) { <pems-text class="text-muted small mb-3">هنوز هیچ تست گازی ثبت نشده.</pems-text> }
 
     @if (Model.Status is not ("Closed" or "Cancelled" or "Rejected" or "Revoked"))
     {
-        <form asp-controller="GasTest" asp-action="Create" method="post" class="row g-2 align-items-end border-top pt-3">
+        <pems-form action="/a/gas-test-create" method="post"><pems-row gap="2" css="align-items-end border-top pt-3">
             <input type="hidden" name="permitId" value="@Model.PermitId" />
-            <div class="col-md-3"><label class="form-label small">@Localizer["Location"]</label><input name="location" class="form-control form-control-sm" required /></div>
-            <div class="col-md-2"><label class="form-label small">Tested At</label><input type="datetime-local" name="testedAt" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required /></div>
-            <div class="col-md-2"><label class="form-label small">Instrument Tag</label><input name="instrumentTag" class="form-control form-control-sm" /></div>
-            <div class="col-md-2"><label class="form-label small">Instrument Cal. Due</label><input type="date" name="instrumentCalibrationDueDate" class="form-control form-control-sm" /></div>
+            <pems-col md="3"><pems-label css="small">@Localizer["Location"]</pems-label><pems-input scale="small" name="location" required /></pems-col>
+            <pems-col md="2"><pems-label css="small">@Localizer["Tested At"]</pems-label><pems-date time="true" name="testedAt" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required scale="small" /></pems-col>
+            <pems-col md="2"><pems-label css="small">Instrument Tag</pems-label><pems-input scale="small" name="instrumentTag" /></pems-col>
+            <pems-col md="2"><pems-label css="small">Instrument Cal. Due</pems-label><pems-date name="instrumentCalibrationDueDate" scale="small" /></pems-col>
             @foreach (var p in gasRequiredParameters)
             {
-                <input type="hidden" name="parameter" value="@p" />
-                <div class="col-md-1">
-                    <label class="form-label small">@p</label>
-                    <input type="number" step="0.01" name="value" class="form-control form-control-sm" required />
-                </div>
-                <input type="hidden" name="unit" value="@(p == "O2" ? "%VOL" : p == "LEL" ? "%LEL" : "PPM")" />
+                <pems-col md="1">
+                    <pems-label css="small">@p</pems-label>
+                    <pems-input scale="small" type="number" step="0.01" name="@p.ToLowerInvariant()" required />
+                </pems-col>
             }
-            <div class="col-md-1"><label class="form-label small">@Localizer["Other"]</label><input type="number" step="0.01" name="otherValue" class="form-control form-control-sm" /></div>
-            <div class="col-md-1"><label class="form-label small">@Localizer["Unit"]</label><input type="text" name="otherUnit" class="form-control form-control-sm" placeholder="e.g. PPM" /></div>
-            <div class="col-md-1"><button type="submit" class="btn btn-sm btn-pems-solid w-100">Record</button></div>
-        </form>
+            <pems-col md="1"><pems-label css="small">@Localizer["Other"]</pems-label><pems-input scale="small" type="number" step="0.01" name="otherValue" /></pems-col>
+            <pems-col md="1"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" type="text" name="otherUnit" placeholder="e.g. PPM" /></pems-col>
+            <pems-col md="1"><pems-button tone="primary" size="small" css="w-100" type="submit">Record</pems-button></pems-col>
+        </pems-row></pems-form>
     }
-</div>
+</pems-content-card>
 
 @{
     var handoverBacklinks = (IEnumerable<dynamic>)ViewBag.HandoverBacklinks;
     var unresolvedSimopsCount = simopsConflicts.Count(c => c.Status is "Potential" or "Confirmed");
 }
-<div class="content-card mb-3" id="simops">
-    <h6 class="mb-3">
-        <i class="bi bi-arrows-angle-contract"></i> SIMOPS
+<pems-content-card css="mb-3" id="simops">
+    <pems-heading level="6" class="mb-3">
+        <pems-icon name="bi-arrows-angle-contract" /> SIMOPS
         @if (simopsConflicts.Any())
         {
-            <span class="badge @(unresolvedSimopsCount == 0 ? "bg-success" : "bg-warning text-dark")">@unresolvedSimopsCount unresolved</span>
+            <pems-badge tone="@(unresolvedSimopsCount == 0 ? "success" : "warning")">@unresolvedSimopsCount unresolved</pems-badge>
         }
-    </h6>
+    </pems-heading>
     @if (errorArea == "Simops" && pageError != null && pageError.Contains(passkeyMissingMarker))
     {
-        <div class="alert alert-danger py-2 px-3 small">@pageError <a asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</a></div>
+        <pems-alert tone="danger" css="py-2 px-3 small">@pageError <pems-link asp-controller="Account" asp-action="ManagePasskeys" class="alert-link">Manage Passkeys &rarr;</pems-link></pems-alert>
     }
     else if (errorArea == "Simops" && (pageMessage != null || pageError != null))
     {
-        <div class="alert @(pageError != null ? "alert-danger" : "alert-success") py-2 px-3 small">@(pageError ?? pageMessage)</div>
+        <pems-alert tone="@(pageError != null ? "danger" : "success")" css="py-2 px-3 small">@(pageError ?? pageMessage)</pems-alert>
     }
     @if ((simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible") || (simopsResolveElig != null && simopsResolveElig.Result != "Eligible") || (simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible"))
     {
-        <div class="mb-2">
+        <pems-form-group css="mb-2">
             @if (simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible")
             {
-                <div class="mb-1"><span class="badge bg-danger">Not Eligible to Confirm</span>
-                    <ul class="small text-muted mb-0 mt-1">@foreach (var c in simopsConfirmElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
-                </div>
+                <pems-form-group css="mb-1"><pems-badge tone="danger">Not Eligible to Confirm</pems-badge>
+                    <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in simopsConfirmElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
+                </pems-form-group>
             }
             @if (simopsResolveElig != null && simopsResolveElig.Result != "Eligible")
             {
-                <div class="mb-1"><span class="badge bg-danger">Not Eligible to Resolve</span>
-                    <ul class="small text-muted mb-0 mt-1">@foreach (var c in simopsResolveElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
-                </div>
+                <pems-form-group css="mb-1"><pems-badge tone="danger">Not Eligible to Resolve</pems-badge>
+                    <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in simopsResolveElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
+                </pems-form-group>
             }
             @if (simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible")
             {
-                <div class="mb-1"><span class="badge bg-danger">Not Eligible to Accept Risk</span>
-                    <ul class="small text-muted mb-0 mt-1">@foreach (var c in simopsAcceptRiskElig.Checks.Where(c => !c.Passed)) { <li>@c.Detail</li> }</ul>
-                </div>
+                <pems-form-group css="mb-1"><pems-badge tone="danger">Not Eligible to Accept Risk</pems-badge>
+                    <pems-bullet-list class="small text-muted mb-0 mt-1">@foreach (var c in simopsAcceptRiskElig.Checks.Where(c => !c.Passed)) { <pems-bullet>@c.Detail</pems-bullet> }</pems-bullet-list>
+                </pems-form-group>
             }
-        </div>
+        </pems-form-group>
     }
 
     @if (simopsConflicts.Any())
     {
-        <table class="table table-enterprise table-sm mb-3">
-            <thead><tr><th>Other Permit</th><th>@Localizer["Basis"]</th><th>@Localizer["Severity"]</th><th>@Localizer["Status"]</th><th>@Localizer["Detail"]</th><th></th></tr></thead>
-            <tbody>
+        <pems-related-table>
+            <pems-table-head><pems-table-row><pems-table-header>Other Permit</pems-table-header><pems-table-header>@Localizer["Basis"]</pems-table-header><pems-table-header>@Localizer["Severity"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Detail"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var c in simopsConflicts)
                 {
                     var otherPermitId = c.PermitAId == Model.PermitId ? c.PermitBId : c.PermitAId;
                     var otherPermitNumber = c.PermitAId == Model.PermitId ? c.PermitBNumber : c.PermitANumber;
                     var simopsBadge = c.Status switch
                     {
-                        "Resolved" => "bg-success",
-                        "AcceptedRisk" => "bg-secondary",
-                        "Confirmed" => "bg-warning text-dark",
-                        _ => "bg-danger"
+                        "Resolved" => "success",
+                        "AcceptedRisk" => "neutral",
+                        "Confirmed" => "warning",
+                        _ => "danger"
                     };
-                    var sevBadge = c.Severity switch { "High" => "bg-danger", "Medium" => "bg-warning text-dark", "Low" => "bg-info text-dark", _ => "bg-secondary" };
-                    <tr>
-                        <td class="small"><a asp-action="Details" asp-route-id="@otherPermitId">@otherPermitNumber</a></td>
-                        <td class="small">@c.ConflictBasis</td>
-                        <td><span class="badge @sevBadge">@c.Severity</span></td>
-                        <td><span class="badge @simopsBadge">@c.Status</span></td>
-                        <td class="small text-muted">
+                    var sevBadge = c.Severity switch { "High" => "danger", "Medium" => "warning", "Low" => "info", _ => "neutral" };
+                    <pems-table-row>
+                        <pems-table-cell class="small"><pems-link asp-action="Details" asp-route-id="@otherPermitId">@otherPermitNumber</pems-link></pems-table-cell>
+                        <pems-table-cell class="small">@c.ConflictBasis</pems-table-cell>
+                        <pems-table-cell><pems-badge tone="@sevBadge">@c.Severity</pems-badge></pems-table-cell>
+                        <pems-table-cell><pems-badge tone="@simopsBadge">@c.Status</pems-badge></pems-table-cell>
+                        <pems-table-cell class="small text-muted">
                             @if (c.Status == "Resolved") { <text>@c.ResolutionNotes</text> }
                             else if (c.Status == "AcceptedRisk") { <text>@c.AcceptanceJustification</text> }
                             else { <text>Raised by @c.RaisedByName</text> }
-                        </td>
-                        <td class="text-nowrap">
+                        </pems-table-cell>
+                        <pems-table-cell class="text-nowrap">
                             @if (c.Status == "Potential")
                             {
-                                <form asp-controller="Simops" asp-action="Confirm" method="post" class="d-inline">
+                                <pems-form action="/a/simops-confirm" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@c.SimopsConflictId" />
                                     <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                    <button type="button" class="btn btn-sm btn-outline-warning" @(simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)">Confirm</button>
-                                </form>
+                                    <pems-button tone="warning" size="small" outline="true" type="button" disabled="@(simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible")" data-pems-click="call" data-pems-fn="pemsSubmitWithStepUp" data-pems-arg="this">Confirm</pems-button>
+                                </pems-form>
                             }
                             @if (c.Status is "Potential" or "Confirmed")
                             {
-                                <form asp-controller="Simops" asp-action="AcceptRisk" method="post" class="d-inline-flex flex-wrap gap-1 align-items-center">
+                                <pems-form action="/a/simops-accept-risk" method="post"><pems-flex inline="true" wrap="true" gap="1" align="center">
                                     <input type="hidden" name="id" value="@c.SimopsConflictId" />
                                     <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                    <input type="text" name="justification" class="form-control form-control-sm" style="min-width:110px;max-width:180px;" placeholder="Justification" required />
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" @(simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)">Accept Risk</button>
-                                </form>
+                                    <pems-input class="pems-minw-110 pems-maxw-180" scale="small" type="text" name="justification" placeholder="Justification" required />
+                                    <pems-button tone="neutral" size="small" outline="true" type="button" disabled="@(simopsAcceptRiskElig != null && simopsAcceptRiskElig.Result != "Eligible")" data-pems-click="call" data-pems-fn="pemsSubmitWithStepUp" data-pems-arg="this">Accept Risk</pems-button>
+                                </pems-flex></pems-form>
                             }
                             @if (c.Status == "Confirmed")
                             {
-                                <form asp-controller="Simops" asp-action="Resolve" method="post" class="d-inline-flex flex-wrap gap-1 align-items-center">
+                                <pems-form action="/a/simops-resolve" method="post"><pems-flex inline="true" wrap="true" gap="1" align="center">
                                     <input type="hidden" name="id" value="@c.SimopsConflictId" />
                                     <input type="hidden" name="permitId" value="@Model.PermitId" />
-                                    <input type="text" name="resolutionNotes" class="form-control form-control-sm" style="min-width:110px;max-width:180px;" placeholder="Resolution notes" required />
-                                    <button type="button" class="btn btn-sm btn-outline-success" @(simopsResolveElig != null && simopsResolveElig.Result != "Eligible" ? "disabled" : "") onclick="pemsSubmitWithStepUp(this)">Resolve</button>
-                                </form>
+                                    <pems-input class="pems-minw-110 pems-maxw-180" scale="small" type="text" name="resolutionNotes" placeholder="Resolution notes" required />
+                                    <pems-button tone="success" size="small" outline="true" type="button" disabled="@(simopsResolveElig != null && simopsResolveElig.Result != "Eligible")" data-pems-click="call" data-pems-fn="pemsSubmitWithStepUp" data-pems-arg="this">Resolve</pems-button>
+                                </pems-flex></pems-form>
                             }
-                        </td>
-                    </tr>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
-        </table>
+            </pems-table-body>
+        </pems-related-table>
     }
 
     @if (simopsCandidates.Any(x => x.ExistingConflictId == null))
     {
-        <p class="small text-muted mb-1">Other active Permits sharing equipment/location:</p>
-        <table class="table table-enterprise table-sm mb-2">
-            <thead><tr><th>@Localizer["Permit"]</th><th>@Localizer["Type"]</th><th>@Localizer["Basis"]</th><th>Time Overlap</th><th></th></tr></thead>
-            <tbody>
+        <pems-text class="small text-muted mb-1">Other active Permits sharing equipment/location:</pems-text>
+        <pems-related-table>
+            <pems-table-head><pems-table-row><pems-table-header>@Localizer["Permit"]</pems-table-header><pems-table-header>@Localizer["Type"]</pems-table-header><pems-table-header>@Localizer["Basis"]</pems-table-header><pems-table-header>Time Overlap</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+            <pems-table-body>
                 @foreach (var cand in simopsCandidates.Where(x => x.ExistingConflictId == null))
                 {
-                    <tr>
-                        <td class="small"><a asp-action="Details" asp-route-id="@cand.PermitId">@cand.PermitNumber</a> - @cand.Title</td>
-                        <td class="small">@cand.PermitType</td>
-                        <td class="small">@cand.MatchBasis</td>
-                        <td class="small">@(!cand.TimeWindowKnown ? "Unknown" : cand.TimeOverlapConfirmed ? "Yes" : "No")</td>
-                        <td>
-                            <form asp-controller="Simops" asp-action="Create" method="post" class="d-inline">
+                    <pems-table-row>
+                        <pems-table-cell class="small"><pems-link asp-action="Details" asp-route-id="@cand.PermitId">@cand.PermitNumber</pems-link> - @cand.Title</pems-table-cell>
+                        <pems-table-cell class="small">@cand.PermitType</pems-table-cell>
+                        <pems-table-cell class="small">@cand.MatchBasis</pems-table-cell>
+                        <pems-table-cell class="small">@(!cand.TimeWindowKnown ? "Unknown" : cand.TimeOverlapConfirmed ? "Yes" : "No")</pems-table-cell>
+                        <pems-table-cell>
+                            <pems-form action="/a/simops-create" method="post" class="d-inline">
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
                                 <input type="hidden" name="otherPermitId" value="@cand.PermitId" />
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Raise Conflict</button>
-                            </form>
-                        </td>
-                    </tr>
+                                <pems-button tone="danger" size="small" outline="true" type="submit">Raise Conflict</pems-button>
+                            </pems-form>
+                        </pems-table-cell>
+                    </pems-table-row>
                 }
-            </tbody>
-        </table>
+            </pems-table-body>
+        </pems-related-table>
     }
     @if (simopsCandidateWorkOrders.Any())
     {
-        <p class="small text-muted mb-1">Work Orders on this Equipment with no linked Permit (verify manually):</p>
-        <ul class="small text-muted mb-0">
+        <pems-text class="small text-muted mb-1">Work Orders on this Equipment with no linked Permit (verify manually):</pems-text>
+        <pems-bullet-list class="small text-muted mb-0">
             @foreach (var wo in simopsCandidateWorkOrders)
             {
-                <li>@wo.WorkOrderNumber (@wo.EquipmentTagNumber) — @wo.StartDate?.ToString("yyyy-MM-dd") to @(wo.CompletionDate?.ToString("yyyy-MM-dd") ?? "ongoing")</li>
+                <pems-bullet>@wo.WorkOrderNumber (@wo.EquipmentTagNumber) — @PemsDates.Date(wo.StartDate) to @(PemsDates.Date(wo.CompletionDate) ?? "ongoing")</pems-bullet>
             }
-        </ul>
+        </pems-bullet-list>
     }
     @if (!simopsConflicts.Any() && !simopsCandidates.Any() && !simopsCandidateWorkOrders.Any())
     {
-        <p class="text-muted small mb-0">هیچ تعارض یا هم‌پوشانی احتمالی شناسایی نشد.</p>
+        <pems-text class="text-muted small mb-0">هیچ تعارض یا هم‌پوشانی احتمالی شناسایی نشد.</pems-text>
     }
 
     @if (handoverBacklinks.Any())
     {
-        <p class="small text-muted mt-2 mb-0">
+        <pems-text class="small text-muted mt-2 mb-0">
             @foreach (var b in handoverBacklinks)
             {
-                <span>Included in <a asp-controller="ShiftHandover" asp-action="Details" asp-route-id="@b.ShiftHandoverId">Handover #@b.ShiftHandoverId</a> (@b.Status)</span>
+                <span>Included in <pems-link href="/p/shift-handover-details?id=@b.ShiftHandoverId">Handover #@b.ShiftHandoverId</pems-link> (@b.Status)</span>
                 <br />
             }
-        </p>
+        </pems-text>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card">
-    <h6 class="mb-3">@Localizer["Status History"]</h6>
-    <table class="table table-enterprise table-sm mb-0">
-        <thead><tr><th>@Localizer["From"]</th><th>To</th><th>By</th><th>@Localizer["Date"]</th><th>@Localizer["Reason"]</th></tr></thead>
-        <tbody>
+<pems-content-card>
+    <pems-heading level="6" class="mb-3">@Localizer["Status History"]</pems-heading>
+    <pems-related-table>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>To</pems-table-header><pems-table-header>By</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header><pems-table-header>@Localizer["Reason"]</pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-body>
             @foreach (var h in Model.StatusHistory)
             {
-                <tr>
-                    <td class="small">@h.FromStatus</td>
-                    <td class="small">@h.ToStatus</td>
-                    <td class="small">@(h.ChangedByName ?? "-")</td>
-                    <td class="small">@h.ChangedDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="small text-muted">@h.Reason</td>
-                </tr>
+                <pems-table-row>
+                    <pems-table-cell class="small">@h.FromStatus</pems-table-cell>
+                    <pems-table-cell class="small">@h.ToStatus</pems-table-cell>
+                    <pems-table-cell class="small">@(h.ChangedByName ?? "-")</pems-table-cell>
+                    <pems-table-cell class="small">@PemsDates.DateTime(h.ChangedDate)</pems-table-cell>
+                    <pems-table-cell class="small text-muted">@h.Reason</pems-table-cell>
+                </pems-table-row>
             }
-        </tbody>
-    </table>
-    @if (!Model.StatusHistory.Any()) { <p class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</p> }
-</div>
+        </pems-table-body>
+    </pems-related-table>
+    @if (!Model.StatusHistory.Any()) { <pems-text class="text-muted text-center py-3 mb-0">@Localizer["هنوز تغییر وضعیتی ثبت نشده."]</pems-text> }
+</pems-content-card>
 
 <script src="~/js/webauthn.js"></script>

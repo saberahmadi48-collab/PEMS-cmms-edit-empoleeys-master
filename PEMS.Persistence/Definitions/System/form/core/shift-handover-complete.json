@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "shift-handover-complete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Complete the handover",
+    "fa": "نهایی‌سازی تحویل"
+  },
+  "description": {
+    "en": "Complete the handover",
+    "fa": "نهایی‌سازی تحویل"
+  },
+  "payload": {
+    "id": "shift-handover-complete",
+    "title": {
+      "en": "Complete the handover",
+      "fa": "نهایی‌سازی تحویل"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "shift-handover-complete",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Handover id",
+          "fa": "شناسه‌ی تحویل"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

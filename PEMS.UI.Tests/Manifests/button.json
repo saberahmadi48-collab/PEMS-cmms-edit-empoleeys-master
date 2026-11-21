@@ -1,0 +1,106 @@
+{
+  "key": "button",
+  "component": "PEMS.UI.Components.PemsButton",
+  "category": "actions",
+  "icon": "bi-cursor",
+  "nameKey": "component.button",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "label": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "tone": {
+        "enum": [
+          "neutral",
+          "primary",
+          "danger",
+          "success",
+          "warning",
+          "info",
+          "light",
+          "dark",
+          null
+        ]
+      },
+      "size": {
+        "enum": [
+          "small",
+          "medium",
+          "large"
+        ]
+      },
+      "disabled": {
+        "type": "boolean"
+      },
+      "type": {
+        "type": "string"
+      },
+      "href": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "opens": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "rowKey": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "outline": {
+        "type": "boolean"
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "skin": {
+        "enum": [
+          "bootstrap",
+          "pems"
+        ]
+      }
+    },
+    "required": [
+      "label"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "ButtonOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "label": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "tone": "primary"
+  }
+}

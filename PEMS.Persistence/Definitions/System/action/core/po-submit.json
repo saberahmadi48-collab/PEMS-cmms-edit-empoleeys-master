@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "po-submit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit for approval",
+    "fa": "ارسال برای تأیید"
+  },
+  "description": {
+    "en": "Submit for approval",
+    "fa": "ارسال برای تأیید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "Submit",
+      "args": {
+        "poId": "field:id"
+      }
+    },
+    "success": {
+      "en": "The order was submitted.",
+      "fa": "سفارش ارسال شد."
+    },
+    "redirect": "/p/purchase-order-details?id={id}"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "tender-invite-vendor",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Invite vendor to tender",
+    "fa": "دعوت تامین‌کننده به مناقصه"
+  },
+  "description": {
+    "en": "Invite vendor to tender",
+    "fa": "دعوت تامین‌کننده به مناقصه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Tender",
+      "action": "InviteVendor",
+      "args": {
+        "tenderId": "field:tenderId",
+        "vendorId": "field:vendorId"
+      }
+    },
+    "success": {
+      "en": "The vendor was invited.",
+      "fa": "تامین‌کننده دعوت شد."
+    },
+    "redirect": "/Tender/Details/{tenderId}"
+  }
+}

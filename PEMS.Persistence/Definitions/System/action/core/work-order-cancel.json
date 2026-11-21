@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "work-order-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel work order",
+    "fa": "لغو Work Order"
+  },
+  "description": {
+    "en": "Cancel work order",
+    "fa": "لغو Work Order"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrder",
+      "action": "AdvanceStatus",
+      "args": {
+        "workOrderId": "field:id",
+        "nextStatus": "literal:Cancelled",
+        "reason": "field:reason",
+        "changedByEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Work order cancelled.",
+      "fa": "Work Order لغو شد."
+    },
+    "redirect": "/WorkOrder/Details/{id}",
+    "permission": "WorkOrder.Approve"
+  }
+}

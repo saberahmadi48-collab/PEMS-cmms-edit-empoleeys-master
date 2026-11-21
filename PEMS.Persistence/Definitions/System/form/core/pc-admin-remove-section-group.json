@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "pc-admin-remove-section-group",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a commodity group from a section",
+    "fa": "حذف گروه کالا از بخش"
+  },
+  "description": {
+    "en": "Remove a commodity group from a section",
+    "fa": "حذف گروه کالا از بخش"
+  },
+  "payload": {
+    "id": "pc-admin-remove-section-group",
+    "title": {
+      "en": "Remove a commodity group from a section",
+      "fa": "حذف گروه کالا از بخش"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-admin-remove-section-group",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "mapId",
+        "label": {
+          "en": "Map id",
+          "fa": "شناسه‌ی نگاشت"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

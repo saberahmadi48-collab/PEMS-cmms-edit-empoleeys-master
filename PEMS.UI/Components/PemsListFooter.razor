@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-footer", Category = "list", Icon = "bi-layout-text-sidebar-reverse")]
+<div @attributes="Options.Attributes" class="@ListMarkup.Css("lp-footer", Options.CssClass)">@ChildContent</div>
+@code {
+    [Parameter, EditorRequired] public ListFrameOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

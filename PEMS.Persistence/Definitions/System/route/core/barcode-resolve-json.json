@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "barcode-resolve-json",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode resolution (JSON) (old address)",
+    "fa": "Barcode resolution (JSON) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Barcode resolution (JSON) (old address)",
+    "fa": "Barcode resolution (JSON) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Barcode/ResolveJson",
+    "target": "/x/barcode-resolve-json",
+    "permanent": false
+  }
+}

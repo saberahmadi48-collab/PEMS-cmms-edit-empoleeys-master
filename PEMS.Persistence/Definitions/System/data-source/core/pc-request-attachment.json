@@ -1,0 +1,30 @@
+{
+  "kind": "data-source",
+  "key": "pc-request-attachment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue request attachment",
+    "fa": "پیوست درخواست کاتالوگ قطعه"
+  },
+  "description": {
+    "en": "Part Catalogue request attachment",
+    "fa": "پیوست درخواست کاتالوگ قطعه"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "Attachment",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "id": "param:id",
+        "attachmentId": "param:attachmentId"
+      },
+      "disposition": "attachment"
+    }
+  }
+}

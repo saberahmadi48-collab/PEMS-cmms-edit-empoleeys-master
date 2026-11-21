@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mmd-strategy-types",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Strategy types",
+    "fa": "انواع استراتژی"
+  },
+  "description": {
+    "en": "Strategy types",
+    "fa": "انواع استراتژی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "StrategyTypes"
+    }
+  }
+}

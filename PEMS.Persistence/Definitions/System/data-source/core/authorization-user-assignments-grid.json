@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "authorization-user-assignments-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Role assignments of a user",
+    "fa": "تخصیص‌های نقشی یک کاربر"
+  },
+  "description": {
+    "en": "Role assignments of a user rows",
+    "fa": "ردیف‌های تخصیص‌های نقشی یک کاربر"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Authorization",
+      "action": "AssignmentsOfUser",
+      "args": {
+        "userId": "param:userId"
+      }
+    }
+  }
+}

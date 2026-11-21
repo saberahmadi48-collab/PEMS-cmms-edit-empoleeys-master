@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "po-contracts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contracts",
+    "fa": "قراردادها"
+  },
+  "description": {
+    "en": "Contracts",
+    "fa": "قراردادها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "Contracts",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

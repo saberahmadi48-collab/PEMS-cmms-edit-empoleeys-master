@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "procurement-package-detail",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement package",
+    "fa": "Procurement package"
+  },
+  "description": {
+    "en": "Procurement package",
+    "fa": "Procurement package"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ProcurementPackage",
+      "action": "Detail",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

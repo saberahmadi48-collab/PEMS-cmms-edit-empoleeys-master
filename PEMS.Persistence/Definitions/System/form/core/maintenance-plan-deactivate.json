@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "maintenance-plan-deactivate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Deactivate the plan",
+    "fa": "غیرفعال‌سازی برنامه"
+  },
+  "description": {
+    "en": "Deactivate the plan",
+    "fa": "غیرفعال‌سازی برنامه"
+  },
+  "payload": {
+    "id": "maintenance-plan-deactivate",
+    "title": {
+      "en": "Deactivate the plan",
+      "fa": "غیرفعال‌سازی برنامه"
+    },
+    "submitLabel": {
+      "en": "Deactivate",
+      "fa": "غیرفعال"
+    },
+    "actionKey": "maintenance-plan-deactivate",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "planId",
+        "label": {
+          "en": "Plan id",
+          "fa": "شناسه‌ی برنامه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

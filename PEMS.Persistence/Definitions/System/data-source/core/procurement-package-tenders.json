@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "procurement-package-tenders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Package tenders",
+    "fa": "Package tenders"
+  },
+  "description": {
+    "en": "Package tenders",
+    "fa": "Package tenders"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ProcurementPackage",
+      "action": "Tenders",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

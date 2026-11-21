@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "numbering-preview-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Numbering preview",
+    "fa": "پیش‌نمایش شماره‌گذاری"
+  },
+  "description": {
+    "en": "Preview rows",
+    "fa": "ردیف‌های پیش‌نمایش"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Numbering",
+      "action": "Preview",
+      "args": {
+        "documentType": "param:documentType",
+        "pattern": "param:pattern",
+        "padWidth": "param:padWidth",
+        "calendar": "param:calendar",
+        "resetPeriod": "param:resetPeriod"
+      }
+    }
+  }
+}

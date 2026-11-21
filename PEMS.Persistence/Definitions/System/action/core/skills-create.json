@@ -1,0 +1,49 @@
+{
+  "kind": "action",
+  "key": "skills-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create skill",
+    "fa": "ایجاد مهارت"
+  },
+  "description": {
+    "en": "Create skill",
+    "fa": "ایجاد مهارت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "Skill",
+      "map": {
+        "name": "Name",
+        "disciplineId": "DisciplineId",
+        "description": "Description"
+      },
+      "required": [
+        "Name"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "Name"
+          ],
+          "message": {
+            "en": "A skill with this name already exists.",
+            "fa": "مهارتی با همین نام از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Skill created.",
+      "fa": "مهارت ایجاد شد."
+    },
+    "redirect": "/p/skills"
+  }
+}

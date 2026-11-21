@@ -19,6 +19,10 @@
     const DEBOUNCE_MS = 300;
     const MIN_CHARS = 1; // طبق درخواست: "به محض تایپ اولین کاراکتر"
     const PAGE_SIZE = 10;
+    const SEARCH_TIMEOUT_MS = 15000;
+
+    // markup comes from the page's registered templates (script-templates component, pems-template.js), never from a string in this file
+    const tpl = (name, values) => window.PemsTemplate.fill(window.PemsTemplate.clone(name), values || {});
 
     function debounce(fn, delay) {
         let timer = null;
@@ -47,13 +51,11 @@
         }
 
         _buildPanel() {
-            this.panel = document.createElement('div');
-            this.panel.className = 'pems-search-panel';
+            this.panel = tpl('search-panel');
             this.panel.style.display = 'none';
 
             // موقعیت‌دهی نسبی به Input - Input باید داخل یک والد position:relative باشد
-            const wrapper = document.createElement('div');
-            wrapper.className = 'pems-search-wrapper';
+            const wrapper = tpl('search-wrapper');
             wrapper.style.position = 'relative';
             this.input.parentNode.insertBefore(wrapper, this.input);
             wrapper.appendChild(this.input);
@@ -138,7 +140,12 @@
             }
 
             if (this.abortController) this.abortController.abort();
-            this.abortController = new AbortController();
+            const controller = new AbortController();
+            this.abortController = controller;
+
+            // هیچ جستجویی نباید برای همیشه روی «skeleton» بماند: پس از SEARCH_TIMEOUT_MS خطا نمایش داده می‌شود
+            let timedOut = false;
+            const timeoutId = setTimeout(() => { timedOut = true; controller.abort(); }, SEARCH_TIMEOUT_MS);
 
             this._renderLoading();
 
@@ -151,12 +158,14 @@
             if (this.projectId) params.set('projectId', this.projectId);
 
             try {
-                const res = await fetch('/SearchApi?' + params.toString(), { signal: this.abortController.signal });
+                const res = await fetch('/SearchApi?' + params.toString(), { signal: controller.signal });
+                if (controller !== this.abortController) return; // پاسخ کهنه‌ی یک جستجوی قدیمی
                 if (!res.ok) {
                     this._renderError();
                     return;
                 }
                 const data = await res.json();
+                if (controller !== this.abortController) return;
 
                 if (resetPage) {
                     this.items = data.items || [];
@@ -167,38 +176,44 @@
                 this.hasMore = !!data.hasMore;
                 this._render();
             } catch (err) {
-                if (err.name !== 'AbortError') this._renderError();
+                if (controller !== this.abortController && !timedOut) return;
+                if (err.name !== 'AbortError' || timedOut) this._renderError();
+            } finally {
+                clearTimeout(timeoutId);
             }
         }
 
         _renderLoading() {
-            this.panel.innerHTML = '<div class="pems-search-loading">در حال جستجو...</div>';
+            // SCRUM-337: the shared skeleton, its screen-reader label in the page language
+            const loading = tpl('search-loading');
+            window.PemsSkeleton.show(loading, 'table', { rows: 3, cols: 2 });
+            this.panel.replaceChildren(loading);
             this._showPanel();
         }
 
         _renderError() {
-            this.panel.innerHTML = '<div class="pems-search-error">خطا در جستجو - دوباره تلاش کنید</div>';
+            this.panel.replaceChildren(tpl('search-error', { text: 'خطا در جستجو - دوباره تلاش کنید' }));
         }
 
         _render() {
             if (this.items.length === 0) {
-                this.panel.innerHTML = '<div class="pems-search-empty">نتیجه‌ای پیدا نشد</div>';
+                this.panel.replaceChildren(tpl('search-empty', { text: 'نتیجه‌ای پیدا نشد' }));
                 this._showPanel();
                 return;
             }
 
-            const listHtml = this.items.map((item, i) => `
-                <div class="pems-search-item${i === this.activeIndex ? ' active' : ''}" data-index="${i}">
-                    <div class="pems-search-item-label">${item.highlightedLabel || item.label}</div>
-                    ${item.subLabel ? `<div class="pems-search-item-sub">${this._escape(item.subLabel)}</div>` : ''}
-                </div>
-            `).join('');
-
-            const loadMoreHtml = this.hasMore
-                ? '<div class="pems-search-loadmore">بارگذاری بیشتر...</div>'
-                : '';
-
-            this.panel.innerHTML = listHtml + loadMoreHtml;
+            const nodes = this.items.map((item, i) => {
+                const el = tpl('search-item', {
+                    root: { attrs: { 'data-index': String(i) }, addClass: i === this.activeIndex ? 'active' : '' },
+                    sub: item.subLabel ? item.subLabel : null
+                });
+                const label = el.querySelector('[data-slot=label]');
+                // highlightedLabel is the server-encoded fragment (SearchScoring.Highlight); the plain label is text
+                if (item.highlightedLabel) window.PemsTemplate.html(label, item.highlightedLabel); else label.textContent = item.label;
+                return el;
+            });
+            if (this.hasMore) nodes.push(tpl('search-loadmore', { text: 'بارگذاری بیشتر...' }));
+            this.panel.replaceChildren(...nodes);
 
             this.panel.querySelectorAll('.pems-search-item').forEach((el) => {
                 el.addEventListener('mousedown', (e) => {
@@ -236,12 +251,6 @@
         _closePanel() {
             this.panel.style.display = 'none';
             this.activeIndex = -1;
-        }
-
-        _escape(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
         }
     }
 

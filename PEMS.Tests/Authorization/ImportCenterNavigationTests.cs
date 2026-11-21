@@ -41,12 +41,13 @@ public class ImportCenterNavigationTests
     // ---------- (1) catalog integrity ----------
 
     [Fact]
-    public void Catalog_HasThirteen_UniqueImports()
+    public void Catalog_HasFourteen_UniqueImports()
     {
         // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۹:
         // یک ورودی تازه («ConditionReading») به کاتالوگ اضافه شد - ۱۱ → ۱۲.
         // Organization Hierarchy Phase 1: «OrganizationStructure» اضافه شد - ۱۲ → ۱۳.
-        Assert.Equal(13, ImportCatalog.All.Count);
+        // RCM کلاس‌محور: «RcmStrategy» اضافه شد - ۱۳ → ۱۴.
+        Assert.Equal(14, ImportCatalog.All.Count);
         Assert.Equal(ImportCatalog.All.Count, ImportCatalog.All.Select(e => e.Key).Distinct().Count());
     }
 
@@ -59,7 +60,7 @@ public class ImportCenterNavigationTests
     [Fact]
     public void EveryCatalogEntry_PointsToAnExistingControllerAction()
     {
-        var asm = typeof(ImportCenterController).Assembly;
+        var asm = typeof(ImportCatalog).Assembly;
         foreach (var e in ImportCatalog.All)
         {
             var type = ControllerType(asm, e);
@@ -77,18 +78,20 @@ public class ImportCenterNavigationTests
         ["DCC"] = "attachment on incoming correspondence",
         ["EngineeringDocuments"] = "document attachments",
         ["Letter"] = "letter attachments / editor images",
+        ["LetterCompose"] = "draft attachments and the recipient list (CSV/text is only resolved to employees; nothing is imported)",
         ["MOC"] = "MOC attachments",
         ["TechnicalQuery"] = "TQ attachments",
         ["MyProfile"] = "profile photo",
         ["VDR"] = "comment sheet / reply sheet / FTP upload on an existing VDR item",
         ["PartCatalogueRequest"] = "request attachments (drawings/documents)",
         ["PartCatalogueAdmin"] = "IFS reference-data upsert (gated by PartCatalogue.Admin on its own admin page, not role-set based)",
+        ["License"] = "licence file install on the Admin licence page (SCRUM-26); guarded by the SCRUM-202 upload guard as a LicenceFile upload",
     };
 
     [Fact]
     public void EveryControllerWithFileUploadAction_IsInCatalog_OrExplicitlyExcluded()
     {
-        var asm = typeof(ImportCenterController).Assembly;
+        var asm = typeof(ImportCatalog).Assembly;
         var catalogControllers = ImportCatalog.All.Select(e => e.Controller).ToHashSet();
         var offenders = new List<string>();
 
@@ -113,11 +116,11 @@ public class ImportCenterNavigationTests
     // طبق فاز ۹: «ConditionReading» دقیقاً همون Sets(CmmsIntegration, ImportCenter) را دارد که
     // MaintenanceHistory دارد - پس هر جا MaintenanceHistory دیده می‌شد، حالا این‌جا هم دیده می‌شود.
     [Theory]
-    [InlineData(SystemRoles.SystemAdmin, 13)]
-    [InlineData(SystemRoles.EngineeringManager, 10)]
+    [InlineData(SystemRoles.SystemAdmin, 14)]
+    [InlineData(SystemRoles.EngineeringManager, 11)]
     [InlineData(SystemRoles.Viewer, 2)]
     [InlineData(SystemRoles.DocumentController, 3)]
-    [InlineData(SystemRoles.MaintenanceEngineer, 7)]
+    [InlineData(SystemRoles.MaintenanceEngineer, 8)]
     [InlineData(SystemRoles.QAManager, 0)]
     public void VisibleByRole_MatchesLegacySidebarGates(string role, int expectedCount)
     {
@@ -166,23 +169,6 @@ public class ImportCenterNavigationTests
         Assert.Contains(spy.Asked, a => a.Module == "MDRImport" && a.Action == "View");
     }
 
-    [Fact]
-    public async Task ImportCenterController_Index_ReturnsOnlyImportsTheUserMayOpen()
-    {
-        var spy = new SpyPermissionService();
-        spy.Denied.Add("MrsImport");
-        var controller = new ImportCenterController(spy, new FakeCurrentUserService { Roles = new List<string> { SystemRoles.SystemAdmin } })
-        {
-            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = UserWith(SystemRoles.SystemAdmin) } }
-        };
-
-        var view = Assert.IsType<ViewResult>(await controller.Index());
-        var model = Assert.IsAssignableFrom<IReadOnlyList<ImportCatalog.ImportEntry>>(view.Model);
-
-        Assert.Equal(12, model.Count);
-        Assert.DoesNotContain(model, e => e.Key == "Mrs");
-    }
-
     // ---------- (5) old scattered sidebar links are gone, one entry remains ----------
 
     // مسیر را از محل خودِ فایل تست پیدا می‌کند (نه از پوشه‌ی خروجی Build) تا از هر خروجی اجرا شود
@@ -200,7 +186,7 @@ public class ImportCenterNavigationTests
     [Fact]
     public void Sidebar_HasNoScatteredImportLinks_AndExactlyOneImportCenterEntry()
     {
-        var sidebar = File.ReadAllText(RepoFile("PEMS.Web", "Views", "Shared", "_SidebarMenu.cshtml"));
+        var sidebar = SourceTree.Text(RepoFile("PEMS.Web", "Views", "Shared", "_SidebarMenu.cshtml"));
 
         foreach (var e in ImportCatalog.All.Where(x => x.Mode == ImportCatalog.LaunchMode.Page))
             Assert.DoesNotContain($"asp-controller=\"{e.Controller}\"", sidebar);
@@ -229,7 +215,7 @@ public class ImportCenterNavigationTests
         };
         var offenders = new List<string>();
 
-        foreach (var file in Directory.EnumerateFiles(viewsRoot, "*.cshtml", SearchOption.AllDirectories))
+        foreach (var file in SourceTree.Files(viewsRoot, "*.cshtml"))
         {
             var rel = Path.GetRelativePath(viewsRoot, file).Replace(Path.DirectorySeparatorChar, '/');
             var folder = rel.Split('/')[0];
@@ -258,7 +244,7 @@ public class ImportCenterNavigationTests
         {
             Assert.Equal("Import", e.Action);
             Assert.False(string.IsNullOrEmpty(e.Accept));
-            var type = ControllerType(typeof(ImportCenterController).Assembly, e)!;
+            var type = ControllerType(typeof(ImportCatalog).Assembly, e)!;
             var post = type.GetMethods().Single(m => m.Name == "Import" && m.GetCustomAttributes<HttpPostAttribute>().Any());
             Assert.Contains(post.GetParameters(), p => p.ParameterType == typeof(IFormFile));
         }

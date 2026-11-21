@@ -1,0 +1,436 @@
+{
+  "kind": "page",
+  "key": "material-item-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material",
+    "fa": "ماده"
+  },
+  "description": {
+    "en": "One material with its stock lines, recent transactions and import sources (page definition)",
+    "fa": "یک ماده با موجودی، تراکنش‌های اخیر و منابع ورود (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "material-item-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "material-record",
+            "fields": [
+              {
+                "key": "materialCode",
+                "label": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "mono": true
+              },
+              {
+                "key": "materialType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "wide": true
+              },
+              {
+                "key": "longDescription",
+                "label": {
+                  "en": "Long description",
+                  "fa": "شرح کامل"
+                },
+                "wide": true
+              },
+              {
+                "key": "category",
+                "label": {
+                  "en": "Category",
+                  "fa": "دسته‌بندی"
+                }
+              },
+              {
+                "key": "discipline",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "uom",
+                "label": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                }
+              },
+              {
+                "key": "vendor",
+                "label": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                }
+              },
+              {
+                "key": "manufacturer",
+                "label": {
+                  "en": "Manufacturer",
+                  "fa": "سازنده"
+                }
+              },
+              {
+                "key": "manufacturerPartNumber",
+                "label": {
+                  "en": "Manufacturer part number",
+                  "fa": "شماره قطعه‌ی سازنده"
+                }
+              },
+              {
+                "key": "model",
+                "label": {
+                  "en": "Model",
+                  "fa": "مدل"
+                }
+              },
+              {
+                "key": "size",
+                "label": {
+                  "en": "Size",
+                  "fa": "اندازه"
+                }
+              },
+              {
+                "key": "materialGrade",
+                "label": {
+                  "en": "Grade",
+                  "fa": "گرید"
+                }
+              },
+              {
+                "key": "specification",
+                "label": {
+                  "en": "Specification",
+                  "fa": "مشخصات"
+                },
+                "wide": true
+              },
+              {
+                "key": "isStockItem",
+                "label": {
+                  "en": "Stock item",
+                  "fa": "کالای انباری"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "isCritical",
+                "label": {
+                  "en": "Critical",
+                  "fa": "بحرانی"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "isActive",
+                "label": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "type": "bool"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/material-item-detail",
+              "idField": "materialItemId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/material-item-edit/{{params.id}}",
+                "text": {
+                  "en": "Edit",
+                  "fa": "ویرایش"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/material-stock-receive?materialItemId={{params.id}}",
+                "text": {
+                  "en": "Receive stock",
+                  "fa": "دریافت کالا"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/material-stock-adjust?materialItemId={{params.id}}",
+                "text": {
+                  "en": "Adjust stock",
+                  "fa": "اصلاح موجودی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/material-stock-transfer?materialItemId={{params.id}}",
+                "text": {
+                  "en": "Transfer stock",
+                  "fa": "انتقال بین انبارها"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/material-items",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "stocks",
+          "component": "def:related-table",
+          "options": {
+            "id": "stocks",
+            "title": {
+              "en": "Stock by warehouse",
+              "fa": "موجودی به تفکیک انبار"
+            },
+            "url": "/d/material-item-stocks?f.materialItemId={{params.id|url}}",
+            "idField": "materialStockId",
+            "columns": [
+              {
+                "key": "warehouse",
+                "header": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                },
+                "width": 120
+              },
+              {
+                "key": "location",
+                "header": {
+                  "en": "Location",
+                  "fa": "محل"
+                },
+                "width": 120
+              },
+              {
+                "key": "onHand",
+                "header": {
+                  "en": "On hand",
+                  "fa": "موجودی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "reserved",
+                "header": {
+                  "en": "Reserved",
+                  "fa": "رزرو"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "available",
+                "header": {
+                  "en": "Available",
+                  "fa": "در دسترس"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "minimum",
+                "header": {
+                  "en": "Minimum",
+                  "fa": "حداقل"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "maximum",
+                "header": {
+                  "en": "Maximum",
+                  "fa": "حداکثر"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "reorderPoint",
+                "header": {
+                  "en": "Reorder point",
+                  "fa": "نقطه سفارش"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              }
+            ]
+          }
+        },
+        {
+          "id": "transactions",
+          "component": "def:related-table",
+          "options": {
+            "id": "transactions",
+            "title": {
+              "en": "Recent transactions",
+              "fa": "تراکنش‌های اخیر"
+            },
+            "url": "/d/material-item-transactions?f.materialItemId={{params.id|url}}",
+            "idField": "inventoryTransactionId",
+            "columns": [
+              {
+                "key": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 160,
+                "type": "date"
+              },
+              {
+                "key": "type",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "warehouse",
+                "header": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                },
+                "width": 110
+              },
+              {
+                "key": "quantity",
+                "header": {
+                  "en": "Qty",
+                  "fa": "تعداد"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "reference",
+                "header": {
+                  "en": "Reference",
+                  "fa": "مرجع"
+                },
+                "width": 160
+              },
+              {
+                "key": "by",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 150
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 240
+              }
+            ]
+          }
+        },
+        {
+          "id": "imports",
+          "component": "def:related-table",
+          "options": {
+            "id": "imports",
+            "title": {
+              "en": "Import sources",
+              "fa": "منابع ورود"
+            },
+            "url": "/d/material-item-imports?f.materialItemId={{params.id|url}}",
+            "idField": "mrsImportBatchId",
+            "columns": [
+              {
+                "key": "sourceFile",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 240
+              },
+              {
+                "key": "importDate",
+                "header": {
+                  "en": "Imported",
+                  "fa": "تاریخ ورود"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "mrsNo",
+                "header": {
+                  "en": "MRS no",
+                  "fa": "شماره MRS"
+                },
+                "width": 140
+              },
+              {
+                "key": "supplier",
+                "header": {
+                  "en": "Supplier",
+                  "fa": "تأمین‌کننده"
+                },
+                "width": 160
+              },
+              {
+                "key": "poNo",
+                "header": {
+                  "en": "PO no",
+                  "fa": "شماره PO"
+                },
+                "width": 140
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "MaterialItem.View"
+  }
+}

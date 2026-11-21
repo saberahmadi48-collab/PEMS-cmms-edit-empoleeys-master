@@ -87,7 +87,7 @@
         input.addEventListener("input", function () {
             var term = input.value.trim().toLowerCase();
             var currentValue = select.value;
-            select.innerHTML = "";
+            select.replaceChildren();
             allOptions.forEach(function (opt) {
                 if (!term || opt.value === "" || opt.text.toLowerCase().indexOf(term) !== -1) {
                     select.appendChild(opt);

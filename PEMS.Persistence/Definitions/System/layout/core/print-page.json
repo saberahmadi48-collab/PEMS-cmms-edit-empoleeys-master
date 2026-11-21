@@ -1,0 +1,32 @@
+{
+  "kind": "layout",
+  "key": "print-page",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Printable page",
+    "fa": "صفحه قابل چاپ"
+  },
+  "description": {
+    "en": "A narrow, chrome-free page for labels, forms and reports that are printed",
+    "fa": "صفحه باریک و بدون حاشیه برای چاپ"
+  },
+  "payload": {
+    "root": {
+      "tag": "div",
+      "css": "pems-print-page",
+      "children": [
+        {
+          "region": "header"
+        },
+        {
+          "region": "content",
+          "required": true
+        },
+        {
+          "region": "footer"
+        }
+      ]
+    }
+  }
+}

@@ -1,76 +1,53 @@
 ﻿@using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["Back to Dashboard"]</a>
-</div>
+<pems-flex justify="end" align="center" css="mb-2">
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["Back to Dashboard"]</pems-button>
+</pems-flex>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-4">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold">@ViewBag.TotalNCRs</div>
-            <div class="text-muted small">@Localizer["کل NCR های ثبت‌شده"]</div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-success">@ViewBag.ClosedOnTimeRate%</div>
-            <div class="text-muted small">@Localizer["درصد بسته‌شده در ۱۴ روز"]</div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="content-card text-center">
-            @{
-                var bySeverity = (IEnumerable<dynamic>)ViewBag.BySeverity;
-                var criticalCount = bySeverity.FirstOrDefault(x => x.Severity == "Critical")?.Count ?? 0;
-            }
-            <div class="fs-3 fw-bold text-danger">@criticalCount</div>
-            <div class="text-muted small">@Localizer["NCR بحرانی (کل تاریخچه)"]</div>
-        </div>
-    </div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="4">
+        <pems-kpi-tile label="@Localizer["کل NCR های ثبت‌شده"]">@ViewBag.TotalNCRs</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="4">
+        <pems-kpi-tile tone="success" label="@Localizer["درصد بسته‌شده در ۱۴ روز"]">@ViewBag.ClosedOnTimeRate%</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="4">
+        @{
+            var bySeverity = (IEnumerable<dynamic>)ViewBag.BySeverity;
+            var criticalCount = bySeverity.FirstOrDefault(x => x.Severity == "Critical")?.Count ?? 0;
+        }
+        <pems-kpi-tile tone="danger" label="@Localizer["NCR بحرانی (کل تاریخچه)"]">@criticalCount</pems-kpi-tile>
+    </pems-col>
+</pems-row>
 
-<div class="row g-3">
-    <div class="col-md-7">
-        <div class="content-card h-100">
-            <h6 class="mb-3">@Localizer["نرخ NCR به تفکیک دیسیپلین"]</h6>
-            <table class="table table-enterprise mb-0">
-                <thead><tr><th>@Localizer["دیسیپلین"]</th><th>@Localizer["کل"]</th><th>@Localizer["باز"]</th><th>@Localizer["بحرانی"]</th><th>@Localizer["میانگین روز تا بستن"]</th></tr></thead>
-                <tbody>
-                    @foreach (var d in (IEnumerable<dynamic>)ViewBag.ByDiscipline)
-                    {
-                        <tr>
-                            <td>@d.Discipline</td>
-                            <td>@d.Total</td>
-                            <td>@(d.Open > 0 ? (object)@d.Open : "0")</td>
-                            <td>@(d.Critical > 0 ? (object)@d.Critical : "0")</td>
-                            <td>@(Math.Round((double)d.AvgDaysToClose, 1))</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+<pems-row gap="3">
+    <pems-col md="7">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-3">@Localizer["نرخ NCR به تفکیک دیسیپلین"]</pems-heading>
+            <pems-data-table data="@(DataRows.Of((IEnumerable<dynamic>)ViewBag.ByDiscipline, c_ => c_.Add(((Localizer["دیسیپلین"])?.ToString() ?? ""), d => (object?)(d.Discipline)).Add(((Localizer["کل"])?.ToString() ?? ""), d => (object?)(d.Total)).Add(((Localizer["باز"])?.ToString() ?? ""), d => (object?)(d.Open > 0 ? (object)@d.Open : "0")).Add(((Localizer["بحرانی"])?.ToString() ?? ""), d => (object?)(d.Critical > 0 ? (object)@d.Critical : "0")).Add(((Localizer["میانگین روز تا بستن"])?.ToString() ?? ""), d => (object?)(Math.Round((double)d.AvgDaysToClose, 1)))))" css="mb-0" />
+        </pems-content-card>
+    </pems-col>
 
-    <div class="col-md-5">
-        <div class="content-card h-100">
-            <h6 class="mb-3">@Localizer["نرخ NCR به تفکیک شدت"]</h6>
-            <ul class="list-unstyled mb-0">
+    <pems-col md="5">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-3">@Localizer["نرخ NCR به تفکیک شدت"]</pems-heading>
+            <pems-bullet-list class="list-unstyled mb-0">
                 @foreach (var s in (IEnumerable<dynamic>)ViewBag.BySeverity)
                 {
-                    var badgeClass = s.Severity == "Critical" ? "bg-danger" : s.Severity == "Major" ? "bg-warning text-dark" : "bg-secondary";
-                    <li class="d-flex justify-content-between border-bottom py-1">
-                        <span class="badge @badgeClass">@s.Severity</span>
+                    var badgeClass = s.Severity == "Critical" ? "danger" : s.Severity == "Major" ? "warning" : "neutral";
+                    <pems-flex as="li" justify="between" css="border-bottom py-1">
+                        <pems-badge tone="@badgeClass">@s.Severity</pems-badge>
                         <strong>@s.Count</strong>
-                    </li>
+                    </pems-flex>
                 }
-            </ul>
-        </div>
-    </div>
-</div>
+            </pems-bullet-list>
+        </pems-content-card>
+    </pems-col>
+</pems-row>
 
-<div class="content-card mt-3">
-    <h6 class="mb-3">@Localizer["روند ماهانه NCR (۱۲ ماه اخیر)"]</h6>
+<pems-content-card css="mt-3">
+    <pems-heading level="6" class="mb-3">@Localizer["روند ماهانه NCR (۱۲ ماه اخیر)"]</pems-heading>
     @{
         var byMonth = (IEnumerable<dynamic>)ViewBag.ByMonth;
         var maxCount = byMonth.Any() ? (int)byMonth.Max(x => (int)x.Count) : 1;
@@ -78,19 +55,19 @@
     }
     @if (byMonth.Any())
     {
-        <div class="d-flex align-items-end gap-2" style="height:150px;">
+        <pems-flex align="end" gap="2" css="pems-s-a2ed4726">
             @foreach (var m in byMonth)
             {
                 var heightPct = (int)((double)((int)m.Count) / maxCount * 100);
-                <div class="d-flex flex-column align-items-center" style="flex:1;">
-                    <div class="bg-primary" style="width:100%; height:@(heightPct)%; min-height:4px;" title="@m.Count"></div>
-                    <div class="text-muted small mt-1" style="writing-mode:vertical-rl;">@m.Month</div>
-                </div>
+                <pems-flex dir="column" align="center" css="pems-s-97445a8d">
+                    <div class="bg-primary pems-bar pems-h-pct-@Math.Clamp(heightPct, 0, 100)" title="@m.Count"></div>
+                    <div class="text-muted small mt-1 pems-s-3e8135c8">@m.Month</div>
+                </pems-flex>
             }
-        </div>
+        </pems-flex>
     }
     else
     {
-        <p class="text-muted small mb-0">@Localizer["داده‌ای برای ۱۲ ماه اخیر نیست."]</p>
+        <pems-text class="text-muted small mb-0">@Localizer["داده‌ای برای ۱۲ ماه اخیر نیست."]</pems-text>
     }
-</div>
+</pems-content-card>

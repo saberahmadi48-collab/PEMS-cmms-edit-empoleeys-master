@@ -1,0 +1,104 @@
+{
+  "key": "error-state",
+  "component": "PEMS.UI.Components.PemsErrorState",
+  "category": "feedback",
+  "icon": "bi-exclamation-octagon",
+  "nameKey": "component.error-state",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "description": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "detail": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "action": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "label": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "href": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "label",
+          "href"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "title"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "ErrorStateOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "title": {
+      "en": "Could not load",
+      "fa": "بارگذاری نشد"
+    }
+  }
+}

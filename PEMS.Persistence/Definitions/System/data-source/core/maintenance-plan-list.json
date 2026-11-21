@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "maintenance-plan-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance plans",
+    "fa": "برنامه‌های نگهداری"
+  },
+  "description": {
+    "en": "Maintenance plans",
+    "fa": "برنامه‌های نگهداری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenancePlanPage",
+      "action": "List"
+    }
+  }
+}

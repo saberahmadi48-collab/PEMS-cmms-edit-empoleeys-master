@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "tender-raise-clarification",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Raise a clarification",
+    "fa": "طرح شفاف‌سازی"
+  },
+  "description": {
+    "en": "Raise a clarification",
+    "fa": "طرح شفاف‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TenderPage",
+      "action": "RaiseClarification",
+      "args": {
+        "tenderId": "field:tenderId",
+        "procurementPackageId": "field:procurementPackageId",
+        "type": "field:type",
+        "subject": "field:subject",
+        "body": "field:body",
+        "vendorId": "field:vendorId"
+      }
+    },
+    "success": {
+      "en": "The clarification was raised.",
+      "fa": "شفاف‌سازی ثبت شد."
+    },
+    "redirect": "/Tender/Details/{tenderId}"
+  }
+}

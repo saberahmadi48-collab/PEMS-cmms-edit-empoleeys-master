@@ -1,0 +1,18 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("signature-pad", Category = "input", Icon = "bi-pen")]
+@inject IPemsLocale Locale
+<div @attributes="Options.Attributes" class="@Join("pems-signature", Options.PageClass)" id="@Options.Id" data-pems-signature="" data-action="@("/a/" + Options.Action)" data-field="@Options.Field" data-empty="@Locale.Text(Options.EmptyText)" data-saved="@Locale.Text(Options.SavedText)" data-error="@Locale.Text(Options.ErrorText)">
+    @if (Options.Hint is not null) { <p class="text-muted small">@Locale.Text(Options.Hint)</p> }
+    @if (HasCurrent) { <div class="mb-3"><div class="text-muted small mb-1">@(Options.CurrentLabel is null ? "" : Locale.Text(Options.CurrentLabel))</div><img class="pems-signature-view" src="@Options.CurrentUrl" alt="" /></div> }
+    <canvas class="pems-signature-pad" width="@Options.Width" height="@Options.Height" data-pems-signature-canvas=""></canvas>
+    <div class="d-flex gap-2 mt-2">
+        <button type="button" class="btn btn-sm btn-outline-secondary" data-pems-signature-clear=""><i class="bi bi-eraser" aria-hidden="true"></i> @Locale.Text(Options.ClearLabel)</button>
+        <button type="button" class="btn btn-sm btn-primary" data-pems-signature-save=""><i class="bi bi-check-lg" aria-hidden="true"></i> @Locale.Text(Options.SaveLabel)</button>
+    </div>
+    <div class="small mt-2" role="status" data-pems-signature-status=""></div>
+</div>
+@code {
+    [Parameter, EditorRequired] public SignaturePadOptions Options { get; set; } = default!;
+    private bool HasCurrent => !string.IsNullOrEmpty(Options.CurrentUrl) && Options.CurrentUrl.StartsWith('/') && !Options.CurrentUrl.StartsWith("//");
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+}

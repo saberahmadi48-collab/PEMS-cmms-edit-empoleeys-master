@@ -1,0 +1,16 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("image", Category = "display", Icon = "bi-image")]
+@inject IPemsLocale Locale
+@if (HasSrc)
+{
+    <img @attributes="Options.Attributes" src="@Options.Src" alt="@(Options.Alt is null ? "" : Locale.Text(Options.Alt))" class="@Join(Options.Css, Options.PageClass)" width="@Options.Size" height="@Options.Size" />
+}
+else if (Options.Empty is not null)
+{
+    <div class="text-muted small">@Locale.Text(Options.Empty)</div>
+}
+@code {
+    [Parameter, EditorRequired] public ImageOptions Options { get; set; } = default!;
+    private bool HasSrc => !string.IsNullOrEmpty(Options.Src) && Options.Src.StartsWith('/') && !Options.Src.StartsWith("//");
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+}

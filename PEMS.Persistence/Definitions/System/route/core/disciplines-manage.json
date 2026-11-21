@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "disciplines-manage",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline master data (old address)",
+    "fa": "داده‌ی پایه‌ی دیسیپلین (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Discipline master data (old address)",
+    "fa": "داده‌ی پایه‌ی دیسیپلین (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Discipline/Manage",
+    "target": "/p/disciplines",
+    "permanent": false
+  }
+}

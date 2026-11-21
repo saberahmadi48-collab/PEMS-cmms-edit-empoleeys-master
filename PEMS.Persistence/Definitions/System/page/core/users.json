@@ -1,0 +1,186 @@
+{
+  "kind": "page",
+  "key": "users",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Users",
+    "fa": "کاربران"
+  },
+  "description": {
+    "en": "User accounts (page definition)",
+    "fa": "حساب‌های کاربری (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "users",
+    "regions": {
+      "header": [
+        {
+          "id": "new",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "New user",
+              "fa": "کاربر جدید"
+            },
+            "tone": "primary",
+            "href": "/f/users-create"
+          }
+        },
+        {
+          "id": "export",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Export",
+              "fa": "خروجی"
+            },
+            "tone": "neutral",
+            "href": "/f/users-export"
+          }
+        }
+      ],
+      "content": [
+        {
+          "id": "grid",
+          "component": "data-grid",
+          "options": {
+            "id": "users",
+            "url": "/d/users-grid",
+            "idField": "id",
+            "viewsKey": "users",
+            "columns": [
+              {
+                "key": "userName",
+                "header": {
+                  "en": "User name",
+                  "fa": "نام کاربری"
+                },
+                "width": 160
+              },
+              {
+                "key": "fullName",
+                "header": {
+                  "en": "Full name",
+                  "fa": "نام کامل"
+                },
+                "width": 200
+              },
+              {
+                "key": "email",
+                "header": {
+                  "en": "Email",
+                  "fa": "ایمیل"
+                },
+                "width": 220
+              },
+              {
+                "key": "roles",
+                "header": {
+                  "en": "Roles",
+                  "fa": "نقش‌ها"
+                },
+                "width": 260
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "lockedOut",
+                "header": {
+                  "en": "Locked out",
+                  "fa": "قفل‌شده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "lastLoginDate",
+                "header": {
+                  "en": "Last sign-in",
+                  "fa": "آخرین ورود"
+                },
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 420,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "details",
+                    "label": {
+                      "en": "Access",
+                      "fa": "دسترسی"
+                    },
+                    "url": "/p/users-details?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/users-edit/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "deactivate",
+                    "label": {
+                      "en": "Deactivate",
+                      "fa": "غیرفعال‌سازی"
+                    },
+                    "url": "/a/users-toggle",
+                    "method": "post",
+                    "tone": "danger",
+                    "confirm": {
+                      "en": "Deactivate this user?",
+                      "fa": "این کاربر غیرفعال شود؟"
+                    },
+                    "showWhen": "row.isActive == true"
+                  },
+                  {
+                    "key": "activate",
+                    "label": {
+                      "en": "Activate",
+                      "fa": "فعال‌سازی"
+                    },
+                    "url": "/a/users-toggle",
+                    "method": "post",
+                    "showWhen": "row.isActive == false"
+                  },
+                  {
+                    "key": "reset",
+                    "label": {
+                      "en": "Reset administrator",
+                      "fa": "ریست مدیر"
+                    },
+                    "url": "/f/users-reset-admin/{id}",
+                    "method": "get",
+                    "tone": "danger",
+                    "showWhen": "row.isAdmin == true"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

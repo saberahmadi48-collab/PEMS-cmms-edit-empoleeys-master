@@ -1,0 +1,58 @@
+{
+  "key": "related-row-form",
+  "component": "PEMS.UI.Components.PemsRelatedRowForm",
+  "category": "list",
+  "icon": "bi-pencil-square",
+  "nameKey": "component.related-row-form",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "action": {
+        "type": "string"
+      },
+      "antiforgery": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "token"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "RelatedRowFormOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "row1",
+    "action": "/save"
+  }
+}

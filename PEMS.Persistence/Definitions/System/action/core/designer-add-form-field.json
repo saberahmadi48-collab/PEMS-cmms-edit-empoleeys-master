@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "designer-add-form-field",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a form field",
+    "fa": "افزودن فیلد فرم"
+  },
+  "description": {
+    "en": "Add a form field",
+    "fa": "افزودن فیلد فرم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The field was added to the draft.",
+      "fa": "فیلد به پیش‌نویس افزوده شد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "AddFormField",
+      "args": {
+        "reference": "field:ref",
+        "name": "field:name",
+        "kind": "field:kind",
+        "titleEn": "field:titleEn",
+        "titleFa": "field:titleFa",
+        "required": "field:required",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

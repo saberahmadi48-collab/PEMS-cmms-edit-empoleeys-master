@@ -1,0 +1,20 @@
+{
+  "kind": "action",
+  "key": "definition-export",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Export a definition version",
+    "fa": "خروجی یک نسخه تعریف"
+  },
+  "description": {
+    "en": "The package of one version as a JSON file",
+    "fa": "بسته یک نسخه به‌صورت فایل JSON"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "definition.export",
+    "permission": "Definitions.View",
+    "parameters": {}
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "pre-procurement-accept",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Accept an engineering MR",
+    "fa": "پذیرش MR مهندسی"
+  },
+  "description": {
+    "en": "Accept an engineering MR",
+    "fa": "پذیرش MR مهندسی"
+  },
+  "payload": {
+    "id": "pre-procurement-accept",
+    "title": {
+      "en": "Accept an engineering MR",
+      "fa": "پذیرش MR مهندسی"
+    },
+    "submitLabel": {
+      "en": "Accept",
+      "fa": "پذیرش"
+    },
+    "actionKey": "pre-procurement-accept",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Demand id",
+          "fa": "شناسه‌ی تقاضا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

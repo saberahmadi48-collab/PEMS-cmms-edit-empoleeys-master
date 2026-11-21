@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "contract-request-revision",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Request contract value change",
+    "fa": "درخواست تغییر ارزش قرارداد"
+  },
+  "description": {
+    "en": "Request contract value change",
+    "fa": "درخواست تغییر ارزش قرارداد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Contract",
+      "action": "RequestRevision",
+      "args": {
+        "contractId": "field:contractId",
+        "changeType": "field:changeType",
+        "newValue": "field:newValue",
+        "reason": "field:reason",
+        "changeDescription": "field:changeDescription",
+        "actorEmployeeId": "context:employeeId",
+        "editorUserId": "context:userId",
+        "ipAddress": "context:ip"
+      }
+    },
+    "success": {
+      "en": "The value change request was recorded (awaiting approval).",
+      "fa": "درخواست تغییر ارزش قرارداد ثبت شد (در انتظار تایید)."
+    },
+    "redirect": "/Contract/Details/{contractId}"
+  }
+}

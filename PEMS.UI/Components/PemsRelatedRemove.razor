@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("related-remove", Category = "list", Icon = "bi-x-lg")]
+<form action="@(Options.Action ?? "")" class="lp-rel-inline" data-confirm="@(string.IsNullOrEmpty(Options.Confirm) ? null : Options.Confirm)" method="post" onsubmit="@(string.IsNullOrEmpty(Options.Confirm) ? null : "return confirm(this.dataset.confirm)")">@if (Options.Antiforgery is not null){<input name="@Options.Antiforgery.Name" type="hidden" value="@Options.Antiforgery.Token" />}<input name="@Options.KeyName" type="hidden" value="@(Options.KeyValue ?? "")" />@if (!string.IsNullOrEmpty(Options.ParentName)){<input name="@Options.ParentName" type="hidden" value="@(Options.ParentValue ?? "")" />}<PemsRelatedAct Options="@Act" /></form>
+@code {
+    [Parameter, EditorRequired] public RelatedRemoveOptions Options { get; set; } = default!;
+    private RelatedActOptions Act => new() { Icon = "bi-x-lg", Label = Options.Label, Tone = "text-danger" };
+}

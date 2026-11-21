@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "tender-request-negotiation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Propose negotiation",
+    "fa": "پیشنهاد مذاکره"
+  },
+  "description": {
+    "en": "Propose negotiation",
+    "fa": "پیشنهاد مذاکره"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Tender",
+      "action": "RequestNegotiation",
+      "args": {
+        "bidId": "field:bidId",
+        "negotiatedValue": "field:negotiatedValue",
+        "participants": "field:participants",
+        "justification": "field:justification",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The negotiation was proposed.",
+      "fa": "مذاکره پیشنهاد شد."
+    },
+    "redirect": "/Tender/Details/{tenderId}"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "kind": "action",
+  "key": "roles-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create role",
+    "fa": "ایجاد نقش"
+  },
+  "description": {
+    "en": "Create role",
+    "fa": "ایجاد نقش"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "ApplicationRole",
+      "map": {
+        "name": "Name",
+        "displayName": "DisplayName",
+        "description": "Description"
+      },
+      "required": [
+        "Name"
+      ],
+      "defaults": {},
+      "unique": [
+        {
+          "fields": [
+            "Name"
+          ],
+          "message": {
+            "en": "A role with this name already exists.",
+            "fa": "نقشی با این نام از قبل وجود دارد."
+          }
+        }
+      ],
+      "redirect": "/Admin/PermissionMatrix#role-{Name}"
+    },
+    "success": {
+      "en": "Role created.",
+      "fa": "نقش ایجاد شد."
+    },
+    "redirect": "/p/roles"
+  }
+}

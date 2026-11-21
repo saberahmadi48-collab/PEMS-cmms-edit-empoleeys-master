@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "global-search",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Global search (old address)",
+    "fa": "جستجوی سراسری (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Global search (old address)",
+    "fa": "جستجوی سراسری (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "GlobalSearch/{*rest}",
+    "target": "/p/global-search",
+    "permanent": false
+  }
+}

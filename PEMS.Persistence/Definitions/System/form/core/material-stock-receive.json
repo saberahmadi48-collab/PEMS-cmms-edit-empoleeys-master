@@ -1,0 +1,84 @@
+{
+  "kind": "form",
+  "key": "material-stock-receive",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Receive stock",
+    "fa": "دریافت کالا"
+  },
+  "description": {
+    "en": "Receive stock",
+    "fa": "دریافت کالا"
+  },
+  "payload": {
+    "id": "material-stock-receive",
+    "title": {
+      "en": "Receive stock",
+      "fa": "دریافت کالا"
+    },
+    "submitLabel": {
+      "en": "Receive",
+      "fa": "ثبت دریافت"
+    },
+    "actionKey": "material-stock-receive",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "materialItemId",
+        "label": {
+          "en": "Material id",
+          "fa": "شناسه‌ی ماده"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "warehouseId",
+        "label": {
+          "en": "Warehouse",
+          "fa": "انبار"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "material-item-warehouses"
+      },
+      {
+        "name": "quantity",
+        "label": {
+          "en": "Quantity",
+          "fa": "مقدار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

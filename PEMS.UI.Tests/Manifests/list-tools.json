@@ -1,0 +1,51 @@
+{
+  "key": "list-tools",
+  "component": "PEMS.UI.Components.PemsListTools",
+  "category": "list",
+  "icon": "bi-three-dots",
+  "nameKey": "component.list-tools",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "searchFor": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "searchOpenText": {
+        "type": "string"
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ListToolsOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {}
+}

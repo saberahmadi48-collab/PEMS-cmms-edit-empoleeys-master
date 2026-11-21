@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "production-batch-unblock",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Unblock the batch",
+    "fa": "رفع توقف بچ"
+  },
+  "description": {
+    "en": "Unblock the batch",
+    "fa": "رفع توقف بچ"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "UnblockBatch",
+      "args": {
+        "productionBatchId": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The batch was unblocked.",
+      "fa": "توقف بچ برداشته شد."
+    },
+    "redirect": "/ProductionRun/BatchDetails/{id}"
+  }
+}

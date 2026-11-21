@@ -1,0 +1,9 @@
+@namespace PEMS.UI.Components
+@using PEMS.Web.Models
+@attribute [PEMS.UI.Rendering.PemsComponent("chart", Category = "display", Icon = "bi-bar-chart-line")]
+@if (Spec is not null){<div class="bk-scope bk-chart min-w-0" data-bk-chart="@Spec.ToJson()" role="img" aria-label="@Spec.AriaLabel"></div>@if (Spec.Kind == "gauge"){@if (Spec.Value.HasValue){<span class="visually-hidden">@(Spec.AriaLabel + ": " + Spec.Value.Value.ToString("0.#", Culture) + Spec.Unit)</span>}}else if (Spec.Labels.Count > 0){<table class="visually-hidden"><caption>@Spec.AriaLabel</caption><thead><tr><th scope="col"></th>@foreach (var s in Spec.Series){<th scope="col">@s.Name</th>}</tr></thead><tbody>@foreach (var row in Enumerable.Range(0, Spec.Labels.Count)){<tr><th scope="row">@Spec.Labels[row]</th>@foreach (var s in Spec.Series){<td>@(row < s.Values.Count ? s.Values[row].ToString("0.##", Culture) : "")</td>}</tr>}</tbody></table>}}
+@code {
+    [Parameter, EditorRequired] public ChartOptions Options { get; set; } = default!;
+    private BkChartSpec? Spec => Options.Spec;
+    private static System.Globalization.CultureInfo Culture => System.Globalization.CultureInfo.CurrentCulture;
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "form",
+  "key": "users-export",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Export users",
+    "fa": "خروجی کاربران"
+  },
+  "description": {
+    "en": "Export users",
+    "fa": "خروجی کاربران"
+  },
+  "payload": {
+    "id": "users-export",
+    "title": {
+      "en": "Export users",
+      "fa": "خروجی کاربران"
+    },
+    "submitLabel": {
+      "en": "Download",
+      "fa": "دریافت"
+    },
+    "actionKey": "users-export",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "onlyActive",
+        "label": {
+          "en": "Only active users",
+          "fa": "فقط کاربران فعال"
+        },
+        "kind": "switch"
+      }
+    ]
+  }
+}

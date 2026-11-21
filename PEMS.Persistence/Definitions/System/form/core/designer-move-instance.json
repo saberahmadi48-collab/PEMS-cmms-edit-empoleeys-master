@@ -1,0 +1,104 @@
+{
+  "kind": "form",
+  "key": "designer-move-instance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move a component",
+    "fa": "جابه‌جایی مؤلفه"
+  },
+  "description": {
+    "en": "Move a component",
+    "fa": "جابه‌جایی مؤلفه"
+  },
+  "payload": {
+    "id": "designer-move-instance",
+    "title": {
+      "en": "Move a component",
+      "fa": "جابه‌جایی مؤلفه"
+    },
+    "submitLabel": {
+      "en": "Move",
+      "fa": "جابه‌جایی"
+    },
+    "actionKey": "designer-move-instance",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ref",
+        "label": {
+          "en": "Page",
+          "fa": "صفحه"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Page is required.",
+            "fa": "صفحه الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "appKey:page:key, for example core:page:home",
+          "fa": "appKey:page:key, for example core:page:home"
+        }
+      },
+      {
+        "name": "instanceId",
+        "label": {
+          "en": "Component id on the page",
+          "fa": "شناسه مؤلفه در صفحه"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Component id on the page is required.",
+            "fa": "شناسه مؤلفه در صفحه الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "region",
+        "label": {
+          "en": "Region to move it to",
+          "fa": "ناحیه مقصد"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Region to move it to is required.",
+            "fa": "ناحیه مقصد الزامی است."
+          }
+        },
+        "maxLength": 100,
+        "placeholder": {
+          "en": "content",
+          "fa": "content"
+        }
+      },
+      {
+        "name": "position",
+        "label": {
+          "en": "Position in the region (0 = first)",
+          "fa": "جایگاه (۰ = اول)"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Position in the region (0 = first) is required.",
+            "fa": "جایگاه (۰ = اول) الزامی است."
+          }
+        },
+        "min": 0,
+        "max": 999
+      }
+    ]
+  }
+}

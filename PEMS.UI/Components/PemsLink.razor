@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("link", Category = "navigation", Icon = "bi-link")]
+@FrameMarkup.Element("a", Options.Css ?? "", Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public LinkOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

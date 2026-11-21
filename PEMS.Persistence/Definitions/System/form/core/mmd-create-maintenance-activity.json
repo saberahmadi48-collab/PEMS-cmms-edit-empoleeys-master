@@ -1,0 +1,104 @@
+{
+  "kind": "form",
+  "key": "mmd-create-maintenance-activity",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateMaintenanceActivity",
+    "fa": "CreateMaintenanceActivity"
+  },
+  "description": {
+    "en": "CreateMaintenanceActivity",
+    "fa": "CreateMaintenanceActivity"
+  },
+  "payload": {
+    "id": "mmd-create-maintenance-activity",
+    "title": {
+      "en": "CreateMaintenanceActivity",
+      "fa": "CreateMaintenanceActivity"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-create-maintenance-activity",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "code"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "name"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "nameFa",
+        "label": {
+          "en": "Name fa",
+          "fa": "nameFa"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "maintenanceGroupId",
+        "label": {
+          "en": "Maintenance group id",
+          "fa": "maintenanceGroupId"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "mmd-groups-choices"
+      },
+      {
+        "name": "maintenanceTypeId",
+        "label": {
+          "en": "Maintenance type id",
+          "fa": "maintenanceTypeId"
+        },
+        "kind": "select",
+        "optionsFrom": "mmd-maintenance-types-choices"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "description"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

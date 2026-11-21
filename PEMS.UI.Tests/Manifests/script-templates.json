@@ -1,0 +1,48 @@
+{
+  "key": "script-templates",
+  "component": "PEMS.UI.Components.PemsScriptTemplates",
+  "category": "display",
+  "icon": "bi-file-earmark-code",
+  "nameKey": "component.script-templates",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "set": {
+        "enum": [
+          "dccRegister",
+          "letterCompose",
+          "globalSearch",
+          "orgChart",
+          "orgPositionChart",
+          "accountLogin",
+          "managePasskeys",
+          "projectIntelligence",
+          "helpArticle",
+          "helpDrawer",
+          "layout",
+          "cartableSettings",
+          "permissionMatrix",
+          "userPermissions",
+          "shell",
+          "maintenanceCalendar",
+          "chatAssistant",
+          "partCatalogue"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "ScriptTemplatesOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "set": "dccRegister"
+  }
+}

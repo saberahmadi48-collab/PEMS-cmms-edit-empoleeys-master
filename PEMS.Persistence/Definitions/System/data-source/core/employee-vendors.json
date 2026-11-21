@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "employee-vendors",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendors",
+    "fa": "فروشندگان"
+  },
+  "description": {
+    "en": "Vendors",
+    "fa": "فروشندگان"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Employee",
+      "action": "Vendors",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

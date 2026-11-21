@@ -1,0 +1,100 @@
+{
+  "kind": "form",
+  "key": "license-request",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Licence request",
+    "fa": "درخواست مجوز"
+  },
+  "description": {
+    "en": "Download a signed licence request file",
+    "fa": "دریافت فایل امضاشده‌ی درخواست مجوز"
+  },
+  "payload": {
+    "id": "license-request",
+    "title": {
+      "en": "Licence request file",
+      "fa": "فایل درخواست مجوز"
+    },
+    "submitLabel": {
+      "en": "Download the request",
+      "fa": "دریافت درخواست"
+    },
+    "actionKey": "license-request",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "requestType",
+        "label": {
+          "en": "Request type",
+          "fa": "نوع درخواست"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "activation",
+            "label": {
+              "en": "activation",
+              "fa": "activation"
+            }
+          },
+          {
+            "value": "renewal",
+            "label": {
+              "en": "renewal",
+              "fa": "renewal"
+            }
+          },
+          {
+            "value": "refresh",
+            "label": {
+              "en": "refresh",
+              "fa": "refresh"
+            }
+          },
+          {
+            "value": "transfer",
+            "label": {
+              "en": "transfer",
+              "fa": "transfer"
+            }
+          },
+          {
+            "value": "restore",
+            "label": {
+              "en": "restore",
+              "fa": "restore"
+            }
+          }
+        ]
+      },
+      {
+        "name": "customerRef",
+        "label": {
+          "en": "Customer reference",
+          "fa": "مرجع مشتری"
+        },
+        "required": true,
+        "maxLength": 64
+      },
+      {
+        "name": "orderRef",
+        "label": {
+          "en": "Order reference",
+          "fa": "مرجع سفارش"
+        },
+        "maxLength": 64
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "maxLength": 500
+      }
+    ]
+  }
+}

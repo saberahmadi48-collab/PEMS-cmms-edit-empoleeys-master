@@ -40,7 +40,7 @@ if ($Action -eq 'MigrationScript') {
     $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'; $dir = Join-Path $repo 'deploy\artifacts'; New-Item -ItemType Directory -Force -Path $dir | Out-Null
     $out = Join-Path $dir "pems-migrations-idempotent-$stamp.sql"
     Write-Step 'Generating an IDEMPOTENT migration script (no database connection is opened)'
-    & dotnet ef migrations script --idempotent --project (Join-Path $repo 'PEMS.Persistence') --startup-project (Join-Path $repo 'PEMS.Web') -o $out
+    & dotnet ef migrations script --idempotent --project (Join-Path $repo 'PEMS.Migrations') --startup-project (Join-Path $repo 'PEMS.Web') -o $out
     if ($LASTEXITCODE -ne 0) { Fail 'dotnet ef failed (is the dotnet-ef tool installed?)' }
     $safe = $out -replace '\.sql$', '-sqlcmd-safe.sql'
     & (Join-Path $PSScriptRoot 'Convert-EfScript.ps1') -InputFile $out -OutputFile $safe     # raw SQL -> EXEC(N'...') (see the script's header for why)
@@ -48,7 +48,7 @@ if ($Action -eq 'MigrationScript') {
     Write-Host "Apply THIS one: $safe   (review it, then -Action Migrate -SqlFile <this> -ConfirmReviewed)"
     if ($FromMigration) {
         $delta = Join-Path $dir "pems-migrations-delta-$stamp.sql"
-        & dotnet ef migrations script $FromMigration --project (Join-Path $repo 'PEMS.Persistence') --startup-project (Join-Path $repo 'PEMS.Web') -o $delta
+        & dotnet ef migrations script $FromMigration --project (Join-Path $repo 'PEMS.Migrations') --startup-project (Join-Path $repo 'PEMS.Web') -o $delta
         if ($LASTEXITCODE -ne 0) { Fail 'dotnet ef (delta) failed' }
         Write-Host "Delta since $FromMigration : $delta"
     }

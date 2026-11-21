@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "dw-tasks",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline workspace tasks",
+    "fa": "وظایف فضای کاری دیسیپلین"
+  },
+  "description": {
+    "en": "Discipline workspace tasks",
+    "fa": "وظایف فضای کاری دیسیپلین"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DisciplineWorkspace",
+      "action": "Tasks",
+      "args": {
+        "id": "param:id",
+        "projectId": "param:projectId"
+      }
+    }
+  }
+}

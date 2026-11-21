@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "pc-request-steps",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue request: Route",
+    "fa": "درخواست کاتالوگ قطعه: Route"
+  },
+  "description": {
+    "en": "Part Catalogue request: Route",
+    "fa": "درخواست کاتالوگ قطعه: Route"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "Steps",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "id": "param:id"
+      }
+    }
+  }
+}

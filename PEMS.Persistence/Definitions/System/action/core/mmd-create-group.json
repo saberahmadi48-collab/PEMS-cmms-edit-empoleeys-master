@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "mmd-create-group",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateGroup",
+    "fa": "گروه تعمیراتی ساخته شد."
+  },
+  "description": {
+    "en": "CreateGroup",
+    "fa": "گروه تعمیراتی ساخته شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "CreateGroup",
+      "args": {
+        "code": "field:code",
+        "name": "field:name",
+        "disciplineId": "field:disciplineId",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "گروه تعمیراتی ساخته شد.",
+      "fa": "گروه تعمیراتی ساخته شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

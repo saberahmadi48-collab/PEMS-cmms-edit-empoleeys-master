@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("help-text", Category = "forms", Icon = "bi-info-circle")]
+@FrameMarkup.Element(Options.As is "small" or "span" or "p" ? Options.As : "div", string.IsNullOrWhiteSpace(Options.Css) ? "form-text" : "form-text " + Options.Css.Trim(), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public HelpTextOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

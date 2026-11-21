@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "gas-test-invalidate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Invalidate a gas test",
+    "fa": "ابطال تست گاز"
+  },
+  "description": {
+    "en": "Invalidate a gas test",
+    "fa": "ابطال تست گاز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "GasTest",
+      "action": "Invalidate",
+      "args": {
+        "gasTestId": "field:id",
+        "permitId": "field:permitId",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The gas test was invalidated.",
+      "fa": "تست گاز باطل شد."
+    },
+    "redirect": "/Permit/Details/{permitId}",
+    "permission": "GasTest.Invalidate"
+  }
+}

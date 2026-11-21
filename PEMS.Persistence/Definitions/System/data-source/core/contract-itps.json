@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "contract-itps",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contract: Linked ITPs",
+    "fa": "قرارداد: Linked ITPs"
+  },
+  "description": {
+    "en": "Contract: Linked ITPs",
+    "fa": "قرارداد: Linked ITPs"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ContractPage",
+      "action": "Itps",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

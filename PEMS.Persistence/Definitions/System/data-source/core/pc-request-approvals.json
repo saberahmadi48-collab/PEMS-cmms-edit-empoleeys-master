@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "pc-request-approvals",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue request: History",
+    "fa": "درخواست کاتالوگ قطعه: History"
+  },
+  "description": {
+    "en": "Part Catalogue request: History",
+    "fa": "درخواست کاتالوگ قطعه: History"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "Approvals",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "id": "param:id"
+      }
+    }
+  }
+}

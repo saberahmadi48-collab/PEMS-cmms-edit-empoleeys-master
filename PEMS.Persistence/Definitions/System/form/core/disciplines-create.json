@@ -1,0 +1,92 @@
+{
+  "kind": "form",
+  "key": "disciplines-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create discipline",
+    "fa": "ایجاد دیسیپلین"
+  },
+  "description": {
+    "en": "Create a new discipline",
+    "fa": "ایجاد دیسیپلین جدید"
+  },
+  "payload": {
+    "id": "disciplines-create",
+    "title": {
+      "en": "New discipline",
+      "fa": "دیسیپلین جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "disciplines-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "owner": "platform",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "maxLength": 20,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Code is required.",
+            "fa": "کد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 150,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      },
+      {
+        "name": "importAliases",
+        "label": {
+          "en": "Import aliases (comma separated)",
+          "fa": "نام‌های مستعار ایمپورت (جداشده با ویرگول)"
+        },
+        "kind": "text",
+        "maxLength": 500,
+        "span": 2
+      },
+      {
+        "name": "transmittalCode",
+        "label": {
+          "en": "Transmittal code (one letter)",
+          "fa": "کد ترانسمیتال (یک حرف)"
+        },
+        "kind": "text",
+        "maxLength": 1
+      }
+    ]
+  }
+}

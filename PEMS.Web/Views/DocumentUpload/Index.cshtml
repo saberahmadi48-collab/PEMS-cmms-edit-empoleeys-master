@@ -5,34 +5,33 @@
     var projects = (IEnumerable<dynamic>)ViewBag.Projects;
 }
 
-<div class="content-card" style="max-width:700px;">
-    <p class="text-muted">
+<pems-content-card css="pems-s-bcaa1805">
+    <pems-text class="text-muted">
         فایل‌های PDF، Word، Excel یا عکس (اسکن) را انتخاب کنید. برخلاف قبل، آپلود دیگر خودکار
         یک مدرک مهندسی نمی‌سازد — هر فایل ابتدا وارد <strong>AI Intake Queue</strong> می‌شود:
         هوش مصنوعی نوع مدرک، دیسیپلین، Vendor و ماژول درست (MDR/VDR/...) را تشخیص می‌دهد و بر اساس
         میزان اطمینان، یا خودکار پردازش می‌کند یا برای بازبینی شما در صف می‌ماند.
-    </p>
+    </pems-text>
 
-    <form asp-controller="DocumentUpload" asp-action="Upload" method="post" enctype="multipart/form-data">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Project"]</label>
-                <select name="projectId" class="form-select" required>
+    <pems-form asp-controller="DocumentUpload" asp-action="Upload" method="post" enctype="multipart/form-data">
+        <pems-row gap="3">
+            <pems-col md="6">
+                <pems-label>@Localizer["Project"]</pems-label>
+                <pems-select name="projectId" required>
                     @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                </select>
-            </div>
-            <div class="col-12">
-                <label class="form-label">Files</label>
-                <input type="file" name="files" class="form-control" multiple
-                       accept=".pdf,.docx,.xlsx,.jpg,.jpeg,.png,.bmp,.tif,.tiff" required />
-                <div class="form-text">Supported: PDF, Word (.docx), Excel (.xlsx), images/scans (OCR).</div>
-            </div>
-        </div>
+                </pems-select>
+            </pems-col>
+            <pems-col span="12">
+                <pems-label>Files</pems-label>
+                <pems-uploader name="files" multiple accept=".pdf,.docx,.xlsx,.jpg,.jpeg,.png,.bmp,.tif,.tiff" required />
+                <pems-help-text>Supported: PDF, Word (.docx), Excel (.xlsx), images/scans (OCR).</pems-help-text>
+            </pems-col>
+        </pems-row>
 
-        <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">
-                <i class="bi bi-cloud-upload"></i> Upload to AI Intake Queue
-            </button>
-        </div>
-    </form>
-</div>
+        <pems-action-bar css="mt-4">
+            <pems-button tone="primary" type="submit">
+                <pems-icon name="bi-cloud-upload" /> Upload to AI Intake Queue
+            </pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>

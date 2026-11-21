@@ -1,0 +1,133 @@
+{
+  "kind": "form",
+  "key": "designer-menu-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a menu item",
+    "fa": "افزودن آیتم منو"
+  },
+  "description": {
+    "en": "Add a menu item",
+    "fa": "افزودن آیتم منو"
+  },
+  "payload": {
+    "id": "designer-menu-item",
+    "title": {
+      "en": "Add a menu item",
+      "fa": "افزودن آیتم منو"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "designer-add-menu-item",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ref",
+        "label": {
+          "en": "Definition",
+          "fa": "تعریف"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Definition is required.",
+            "fa": "تعریف الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "appKey:kind:key, for example core:form:department-create",
+          "fa": "appKey:kind:key"
+        }
+      },
+      {
+        "name": "itemKey",
+        "label": {
+          "en": "Key",
+          "fa": "کلید"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Key is required.",
+            "fa": "کلید الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "parent",
+        "label": {
+          "en": "Parent key",
+          "fa": "کلید والد"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "titleEn",
+        "label": {
+          "en": "Title (English)",
+          "fa": "عنوان (انگلیسی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Title (English) is required.",
+            "fa": "عنوان (انگلیسی) الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "titleFa",
+        "label": {
+          "en": "Title (Persian)",
+          "fa": "عنوان (فارسی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Title (Persian) is required.",
+            "fa": "عنوان (فارسی) الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "page",
+        "label": {
+          "en": "Page key",
+          "fa": "کلید صفحه"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Page key is required.",
+            "fa": "کلید صفحه الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "order",
+        "label": {
+          "en": "Order",
+          "fa": "ترتیب"
+        },
+        "kind": "text",
+        "maxLength": 6
+      }
+    ]
+  }
+}

@@ -223,3 +223,12 @@ public sealed class PcOverviewResult
     public bool Allowed { get; set; }
     public PcAdminOverview? Overview { get; set; }
 }
+
+/// <summary>
+/// SCRUM-478: Part Catalogue reports (who did what, equipment coverage, stages). Rows follow the request list's visibility rule.
+/// <paramref name="today"/> only fixes "now" for tests.
+/// </summary>
+public interface IPartCatalogueReportService
+{
+    Task<PartCatalogueReportDto> GetReportAsync(PartCatalogueReportFilter filter, PcActor actor, DateTime? today = null);
+}

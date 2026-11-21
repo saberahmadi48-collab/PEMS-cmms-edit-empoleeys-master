@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "technical-query-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "TQ details (old address)",
+    "fa": "TQ details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "TQ details (old address)",
+    "fa": "TQ details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "TechnicalQuery/Details/{id}",
+    "target": "/p/technical-query-details?id={id}",
+    "permanent": false
+  }
+}

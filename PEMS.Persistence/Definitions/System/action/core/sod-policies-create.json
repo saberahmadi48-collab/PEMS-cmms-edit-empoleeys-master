@@ -1,0 +1,64 @@
+{
+  "kind": "action",
+  "key": "sod-policies-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create separation policy",
+    "fa": "ایجاد سیاست تفکیک وظایف"
+  },
+  "description": {
+    "en": "Create separation policy",
+    "fa": "ایجاد سیاست تفکیک وظایف"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "SoDPolicy",
+      "map": {
+        "permissionAId": "PermissionAId",
+        "permissionBId": "PermissionBId",
+        "description": "Description"
+      },
+      "required": [
+        "PermissionAId",
+        "PermissionBId"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "PermissionAId",
+            "PermissionBId"
+          ],
+          "symmetric": true,
+          "where": {
+            "IsActive": true
+          },
+          "message": {
+            "en": "An active policy for this permission pair already exists.",
+            "fa": "برای این جفت مجوز از قبل سیاست فعالی وجود دارد."
+          }
+        }
+      ],
+      "deny": [
+        {
+          "when": "values.permissionAId == values.permissionBId",
+          "message": {
+            "en": "A permission cannot conflict with itself.",
+            "fa": "یک مجوز نمی‌تواند با خودش تعارض داشته باشد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Separation policy created.",
+      "fa": "سیاست تفکیک وظایف ایجاد شد."
+    },
+    "redirect": "/p/sod-policies"
+  }
+}

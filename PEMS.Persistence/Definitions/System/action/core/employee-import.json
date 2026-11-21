@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "employee-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import employees",
+    "fa": "ایمپورت کارمندان"
+  },
+  "description": {
+    "en": "Import employees",
+    "fa": "ایمپورت کارمندان"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ImportCenter",
+      "action": "ImportEmployees",
+      "args": {
+        "file": "file:file",
+        "userRoles": "context:roles"
+      },
+      "upload": {
+        "profile": "spreadsheet",
+        "maxFileMb": 20
+      }
+    },
+    "success": {
+      "en": "Import finished.",
+      "fa": "ایمپورت تمام شد."
+    },
+    "redirect": "/p/import-center"
+  }
+}

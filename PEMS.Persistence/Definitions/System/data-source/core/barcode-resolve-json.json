@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "barcode-resolve-json",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode resolution (JSON for the scan fields)",
+    "fa": "نتیجه‌ی بارکد (JSON برای فیلدهای اسکن)"
+  },
+  "description": {
+    "en": "Barcode resolution (JSON for the scan fields)",
+    "fa": "نتیجه‌ی بارکد (JSON برای فیلدهای اسکن)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Barcode",
+      "action": "ResolveJson",
+      "args": {
+        "code": "param:code"
+      },
+      "disposition": "inline"
+    }
+  }
+}

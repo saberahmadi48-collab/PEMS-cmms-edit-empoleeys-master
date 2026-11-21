@@ -1,0 +1,63 @@
+{
+  "key": "accordion-item",
+  "component": "PEMS.UI.Components.PemsAccordionItem",
+  "category": "display",
+  "icon": "bi-chevron-expand",
+  "nameKey": "component.accordion-item",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "target": {
+        "type": "string"
+      },
+      "parentId": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "buttonCssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "bodyCssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "target"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "header",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "AccordionItemOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "target": "a1-item",
+    "parentId": "a1"
+  }
+}

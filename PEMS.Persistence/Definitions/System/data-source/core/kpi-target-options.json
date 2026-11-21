@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "kpi-target-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "KPI choices",
+    "fa": "شاخص‌ها"
+  },
+  "description": {
+    "en": "KPI choices",
+    "fa": "شاخص‌ها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Kpi",
+      "action": "TargetChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

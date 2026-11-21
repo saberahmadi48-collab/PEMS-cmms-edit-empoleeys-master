@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "barcode-scan",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode scan (old address)",
+    "fa": "Barcode scan (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Barcode scan (old address)",
+    "fa": "Barcode scan (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Barcode/Resolve",
+    "target": "/p/barcode-scan",
+    "permanent": false
+  }
+}

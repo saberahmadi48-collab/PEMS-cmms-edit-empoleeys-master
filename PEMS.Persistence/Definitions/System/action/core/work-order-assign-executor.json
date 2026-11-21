@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "work-order-assign-executor",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign executor",
+    "fa": "تخصیص مجری"
+  },
+  "description": {
+    "en": "Assign executor",
+    "fa": "تخصیص مجری"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrder",
+      "action": "AssignExecutor",
+      "sectionGuard": {
+        "section": "ExecutorAssignment",
+        "action": "Edit",
+        "workOrderId": "field:id",
+        "audit": "TeamId={teamId}; EmployeeId={employeeId}"
+      },
+      "args": {
+        "workOrderId": "field:id",
+        "teamId": "field:teamId",
+        "employeeId": "field:employeeId"
+      }
+    },
+    "success": {
+      "en": "Executor assigned.",
+      "fa": "مجری تخصیص داده شد."
+    },
+    "redirect": "/WorkOrder/Details/{id}"
+  }
+}

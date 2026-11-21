@@ -1,0 +1,128 @@
+{
+  "key": "tabs",
+  "component": "PEMS.UI.Components.PemsTabs",
+  "category": "navigation",
+  "icon": "bi-segmented-nav",
+  "nameKey": "component.tabs",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "skin": {
+        "enum": [
+          "bootstrap",
+          "pems"
+        ]
+      },
+      "id": {
+        "type": "string"
+      },
+      "label": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "label": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "content": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            }
+          },
+          "required": [
+            "key",
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "active": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "id",
+      "label",
+      "items"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "TabsOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "t1",
+    "label": {
+      "en": "Sections",
+      "fa": "بخش‌ها"
+    },
+    "items": [
+      {
+        "key": "a",
+        "label": {
+          "en": "General",
+          "fa": "عمومی"
+        },
+        "content": {
+          "en": "First",
+          "fa": "اول"
+        }
+      },
+      {
+        "key": "b",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "key": "list-bulk",
+  "component": "PEMS.UI.Components.PemsListBulk",
+  "category": "list",
+  "icon": "bi-check2-square",
+  "nameKey": "component.list-bulk",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "countText": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ListBulkOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "name": "ids"
+  }
+}

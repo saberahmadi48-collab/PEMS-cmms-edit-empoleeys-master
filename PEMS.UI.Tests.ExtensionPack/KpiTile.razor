@@ -1,0 +1,6 @@
+@attribute [PemsComponent("sample-kpi")]
+<div class="pems-kpi"><span class="pems-kpi__value">@Value</span> <span class="pems-kpi__label">@Label</span></div>
+@code {
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public string? Label { get; set; }
+}

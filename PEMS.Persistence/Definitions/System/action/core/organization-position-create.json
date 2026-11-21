@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "organization-position-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a position",
+    "fa": "ایجاد سمت"
+  },
+  "description": {
+    "en": "Create a position",
+    "fa": "ایجاد سمت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Organization",
+      "action": "CreatePosition",
+      "args": {
+        "title": "field:title",
+        "positionCode": "field:positionCode",
+        "departmentId": "field:departmentId",
+        "description": "field:description",
+        "parentPositionId": "field:parentPositionId"
+      }
+    },
+    "success": {
+      "en": "Position created.",
+      "fa": "سمت ایجاد شد."
+    },
+    "redirect": "/p/organization-positions"
+  }
+}

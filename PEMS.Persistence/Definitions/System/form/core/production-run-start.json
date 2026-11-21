@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "production-run-start",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Start the run",
+    "fa": "شروع اجرا"
+  },
+  "description": {
+    "en": "Start the run",
+    "fa": "شروع اجرا"
+  },
+  "payload": {
+    "id": "production-run-start",
+    "title": {
+      "en": "Start the run",
+      "fa": "شروع اجرا"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-run-start",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Run id",
+          "fa": "شناسه‌ی اجرا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

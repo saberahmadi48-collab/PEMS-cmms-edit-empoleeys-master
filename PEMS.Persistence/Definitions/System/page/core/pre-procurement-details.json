@@ -1,0 +1,193 @@
+{
+  "kind": "page",
+  "key": "pre-procurement-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement demand",
+    "fa": "تقاضای خرید"
+  },
+  "description": {
+    "en": "One demand: convert it to a requisition, accept it, or dismiss / return it (page definition)",
+    "fa": "یک تقاضا: تبدیل به MR، پذیرش یا رد / برگشت (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "pre-procurement-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "ppr-record",
+            "fields": [
+              {
+                "key": "source",
+                "label": {
+                  "en": "Source",
+                  "fa": "منبع"
+                }
+              },
+              {
+                "key": "sourceNumber",
+                "label": {
+                  "en": "Source number",
+                  "fa": "شماره منبع"
+                },
+                "mono": true
+              },
+              {
+                "key": "item",
+                "label": {
+                  "en": "Item",
+                  "fa": "قلم"
+                },
+                "wide": true
+              },
+              {
+                "key": "quantity",
+                "label": {
+                  "en": "Quantity",
+                  "fa": "تعداد"
+                },
+                "type": "number"
+              },
+              {
+                "key": "unit",
+                "label": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                }
+              },
+              {
+                "key": "warehouse",
+                "label": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "raisedAt",
+                "label": {
+                  "en": "Raised",
+                  "fa": "ثبت"
+                },
+                "type": "date"
+              },
+              {
+                "key": "raisedBy",
+                "label": {
+                  "en": "Raised by",
+                  "fa": "ثبت‌کننده"
+                }
+              },
+              {
+                "key": "requisition",
+                "label": {
+                  "en": "Requisition",
+                  "fa": "MR"
+                }
+              },
+              {
+                "key": "inCatalogue",
+                "label": {
+                  "en": "In the material catalogue",
+                  "fa": "در فهرست مواد"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "decidedAt",
+                "label": {
+                  "en": "Decided",
+                  "fa": "تصمیم"
+                },
+                "type": "date"
+              },
+              {
+                "key": "decidedBy",
+                "label": {
+                  "en": "Decided by",
+                  "fa": "تصمیم‌گیرنده"
+                }
+              },
+              {
+                "key": "decisionReason",
+                "label": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pre-procurement-detail",
+              "idField": "procurementDemandId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/pre-procurement-convert-new?id={{params.id}}",
+                "text": {
+                  "en": "Add to a new requisition (material demands)",
+                  "fa": "افزودن به MR جدید (تقاضای مواد)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pre-procurement-convert-existing?id={{params.id}}",
+                "text": {
+                  "en": "Add to a Draft requisition (material demands)",
+                  "fa": "افزودن به MR پیش‌نویس (تقاضای مواد)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pre-procurement-accept?id={{params.id}}",
+                "text": {
+                  "en": "Accept an engineering MR",
+                  "fa": "پذیرش MR مهندسی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pre-procurement-dismiss?id={{params.id}}",
+                "text": {
+                  "en": "Dismiss / return with a reason",
+                  "fa": "رد / برگشت با دلیل"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/pre-procurement",
+                "text": {
+                  "en": "Back to the queue",
+                  "fa": "بازگشت به صف"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "PreProcurement.View"
+  }
+}

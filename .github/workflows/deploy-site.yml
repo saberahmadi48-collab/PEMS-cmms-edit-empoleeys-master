@@ -1,0 +1,395 @@
+# Reusable deploy of PEMS.Web to a Plesk/IIS subdomain over FTP. Called by deploy-demo.yml (push to `demo`) and deploy-staging.yml (push to `staging`).
+# It never runs by itself. Secrets are read by prefix (inputs.prefix): DEMO_* for the demo, STAGING_* for staging (see docs/deployment/DEPLOYMENT_README.md):
+#   <P>_FTP_HOST, <P>_FTP_USER, <P>_FTP_PASSWORD, <P>_FTP_DIR (trailing slash), <P>_FTP_PROTOCOL (optional), <P>_FTP_PORT (optional),
+#   <P>_SQL_CONNECTION_STRING (the separate database of that environment, never a live one), <P>_ADMIN_PASSWORD, <P>_SITE_URL (health check).
+# The database is code-first: the first start after the upload installs the schema, later deploys update it
+# (docs/deployment/CODE_FIRST_DATABASE.md). The pipeline gates on model/migration drift and waits for /health/database to report UpToDate.
+
+name: PEMS Deploy Site (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      target:
+        description: 'Environment to deploy: demo or staging (selects env/<target>.env and PEMS_ENV)'
+        required: true
+        type: string
+      prefix:
+        description: 'Prefix of the GitHub secrets: DEMO or STAGING'
+        required: true
+        type: string
+      force_gate:
+        description: 'Run the build, drift and test gate even when this exact source tree already passed it'
+        required: false
+        type: boolean
+        default: false
+      ref:
+        description: 'Commit, tag or branch to deploy instead of the one that triggered the run (roll back = deploy the previous good one)'
+        required: false
+        type: string
+        default: ''
+      require_staged:
+        description: 'Refuse to deploy unless this exact source tree was already deployed to staging (set for demo)'
+        required: false
+        type: boolean
+        default: false
+      allow_unstaged:
+        description: 'Deploy even though the staged/<tree> tag is missing (a rollback to a build that was never staged, or a first deploy)'
+        required: false
+        type: boolean
+        default: false
+      backup:
+        description: 'Back up the database before the deploy when <PREFIX>_BACKUP_DIR is set (scripts/ci/backup-database.sh)'
+        required: false
+        type: boolean
+        default: true
+
+concurrency:
+  group: deploy-${{ inputs.target }}
+  cancel-in-progress: false
+
+jobs:
+  # SCRUM-413: the migration chain is applied to a real SQL Server (empty install, then upgrade from the previous release) before
+  # anything is built for upload, so a migration that fails on SQL Server stops the deploy instead of the site. No secrets, no deployment.
+  # Previous release = the commit the branch pointed to before this push; a new branch or a manual run falls back to origin/main.
+  migration-gate:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/migration-chain.yml
+    with:
+      base_ref: ${{ (github.event.before != '' && github.event.before != '0000000000000000000000000000000000000000') && github.event.before || 'origin/main' }}
+
+  build-test-deploy:
+    needs: migration-gate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write      # only to record the gate-pass tag (see 'Record that this exact tree passed the gate')
+    env:
+      TARGET: ${{ inputs.target }}
+
+    steps:
+      # Fail fast and clearly when the environment has not been configured yet (for example a brand-new `staging` branch before its secrets exist).
+      - name: Check required secrets
+        env:
+          P: ${{ inputs.prefix }}
+          FTP_HOST: ${{ secrets[format('{0}_FTP_HOST', inputs.prefix)] }}
+          FTP_USER: ${{ secrets[format('{0}_FTP_USER', inputs.prefix)] }}
+          FTP_PASSWORD: ${{ secrets[format('{0}_FTP_PASSWORD', inputs.prefix)] }}
+          FTP_DIR: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
+          SQL_CONNECTION_STRING: ${{ secrets[format('{0}_SQL_CONNECTION_STRING', inputs.prefix)] }}
+          ADMIN_PASSWORD: ${{ secrets[format('{0}_ADMIN_PASSWORD', inputs.prefix)] }}
+          SITE_URL: ${{ secrets[format('{0}_SITE_URL', inputs.prefix)] }}
+        run: |
+          missing=""
+          for n in FTP_HOST FTP_USER FTP_PASSWORD FTP_DIR SQL_CONNECTION_STRING ADMIN_PASSWORD SITE_URL; do
+            [ -n "${!n}" ] || missing="$missing ${P}_$n"
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Missing GitHub secrets:$missing. Create them (see docs/deployment/DEPLOYMENT_README.md, section 2.4) and re-run the workflow."
+            exit 1
+          fi
+
+      # Cheap early check of the FTP login and the remote folder (seconds, before the long build). A wrong <P>_FTP_DIR gives
+      # "550 The system cannot find the file specified" only after the whole build; here the folders at the FTP root are listed instead.
+      - name: Check FTP login and remote directory
+        env:
+          P: ${{ inputs.prefix }}
+          FTP_HOST: ${{ secrets[format('{0}_FTP_HOST', inputs.prefix)] }}
+          FTP_USER: ${{ secrets[format('{0}_FTP_USER', inputs.prefix)] }}
+          FTP_PASS: ${{ secrets[format('{0}_FTP_PASSWORD', inputs.prefix)] }}
+          FTP_DIR: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
+          FTP_PROTO: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] }}
+        run: |
+          TLS=""; [ "${FTP_PROTO:-ftps}" = "ftps" ] && TLS="--ssl-reqd --insecure"   # empty protocol = ftps, the same default as the upload action
+          cred() { printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS"; }
+          URL="ftp://${FTP_HOST}${FTP_DIR}"
+          echo probe > pems-write-probe.txt
+          if cred | curl -sS -K - $TLS --max-time 60 --list-only "$URL" > ftp-dir.txt 2> ftp.err \
+             && cred | curl -sS -K - $TLS --max-time 60 -T pems-write-probe.txt "${URL}pems-write-probe.txt" 2>> ftp.err \
+             && cred | curl -sS -K - $TLS --max-time 60 -Q "DELE ${FTP_DIR#/}pems-write-probe.txt" "ftp://${FTP_HOST}/" -o /dev/null 2>> ftp.err; then
+            echo "FTP login works, the remote folder exists and is writable (${P}_FTP_DIR is correct)."
+            exit 0
+          fi
+          echo "::error::FTP check failed: $(head -c 300 ftp.err). ${P}_FTP_PROTOCOL must be ftp when the host does not support FTPS (this host). ${P}_FTP_DIR is relative to the FTP account home and must be the folder the site is served from, with a trailing slash (use / only when the account home IS the site folder)."
+          echo "Entries visible at the FTP account root (names only; pick the site folder from this list):"
+          cred | curl -sS -K - $TLS --max-time 60 --list-only "ftp://${FTP_HOST}/" || true
+          echo "Write test at the FTP account root (/): "
+          if cred | curl -sS -K - $TLS --max-time 60 -T pems-write-probe.txt "ftp://${FTP_HOST}/pems-write-probe.txt" 2> root.err; then
+            cred | curl -sS -K - $TLS --max-time 60 -Q "DELE pems-write-probe.txt" "ftp://${FTP_HOST}/" -o /dev/null || true
+            echo "-> the root IS writable, so ${P}_FTP_DIR points to a folder that is missing or read-only: set it to / if the root listing above is the site folder."
+          else
+            echo "-> the root is NOT writable either ($(head -c 150 root.err)): the FTP account has no write permission (Plesk > FTP > account > Permissions: Read and Write)."
+          fi
+          exit 1
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}      # empty = the commit that triggered the run
+
+      # Identical code is not tested twice. After the gate passes, the tag gate-pass/<hash of all tracked files except docs, plan and *.md> is pushed; a later deploy of a tree
+      # with the same hash (for example demo after staging) finds the tag and skips restore, build, drift gate and tests. Any change gives a new hash,
+      # so the gate runs again. Failed gates leave no tag. force_gate or a manual run with force_tests ignores the tag.
+      - name: Decide whether the test gate is needed
+        id: gate
+        env:
+          FORCE: ${{ inputs.force_gate }}
+        run: |
+          # hash of every tracked file except documentation, plan files and retired material, so a docs-only difference never forces the gate
+          tree=$(git ls-files -s -- . ':!docs' ':!plan' ':!legacy-trash' ':!*.md' | sha1sum | cut -c1-40)
+          echo "tree=$tree" >> "$GITHUB_OUTPUT"
+          if [ "$FORCE" != "true" ] && git ls-remote --exit-code --tags origin "refs/tags/gate-pass/$tree" > /dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "This exact source tree ($tree) already passed the gate: build, drift gate and tests are skipped."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "Gate needed for source tree $tree."
+          fi
+
+      # SCRUM-314: every demo deploy is preceded by a staging deploy of the same artifact. A successful staging deploy records the tag
+      # staged/<same tree hash as the gate-pass tag> (see 'Record the staging deploy' below); the demo run refuses a tree without it.
+      - name: Require a staging deploy of this exact source tree
+        if: inputs.require_staged && !inputs.allow_unstaged
+        env:
+          TREE: ${{ steps.gate.outputs.tree }}
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/staged/$TREE" > /dev/null 2>&1; then
+            echo "Source tree $TREE was deployed to staging first."
+          else
+            echo "::error::Source tree $TREE was never deployed to staging. Merge it into the staging branch first and wait for that run to pass (docs/deployment/RUNBOOK_DEPLOY_SITES.md). To deploy it anyway (rollback of a build that was never staged), run this workflow by hand with allow_unstaged ticked."
+            exit 1
+          fi
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ hashFiles('**/*.csproj', 'Directory.Build.props') }}
+          restore-keys: nuget-
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        if: steps.gate.outputs.skip != 'true'
+        run: dotnet restore PEMS.slnx
+
+      - name: Build
+        if: steps.gate.outputs.skip != 'true'
+        run: dotnet build PEMS.slnx --no-restore --configuration Release
+
+      # Code-first gate: the entity model and the migrations must agree, otherwise the startup migrator cannot
+      # apply a complete schema on the target database.
+      - name: Model drift gate (no entity change without a migration)
+        if: steps.gate.outputs.skip != 'true'
+        env:
+          # model-only comparison: the design-time factory needs a connection string but no connection is opened
+          ConnectionStrings__PEMSConnection: Server=localhost;Database=PEMS_ModelCheck;Trusted_Connection=True;TrustServerCertificate=True
+        run: |
+          dotnet tool install --global dotnet-ef --version 10.0.10
+          export PATH="$PATH:$HOME/.dotnet/tools"
+          dotnet ef migrations has-pending-model-changes --project PEMS.Migrations --startup-project PEMS.Web --no-build --configuration Release
+
+      # The full suite needs a real SQL Server (and Windows paths) and runs in build.yml. This runner has neither, so the deploy
+      # gate runs the tests that need no database: code-first/migration chain rules, environment files, localization parity, sidebar.
+      - name: Test (database-free gate)
+        if: steps.gate.outputs.skip != 'true'
+        run: >
+          dotnet test PEMS.Tests/PEMS.Tests.csproj --no-build --configuration Release --verbosity normal
+          --filter "FullyQualifiedName~PEMS.Tests.Deployment.DatabaseInitializerTests|FullyQualifiedName~PEMS.Tests.Deployment.EnvironmentFilesTests|FullyQualifiedName~LocalizationKeyCoverageTests|FullyQualifiedName~PEMS.Tests.Web.DynamicSidebarTests"
+
+      # Plesk/IIS on Windows: self-contained win-x64 so the host does not need the .NET 10 runtime
+      # installed (it still needs the ASP.NET Core Module). The SDK emits web.config on publish.
+      # -p:PemsEnv=${{ inputs.target }} ships env/<target>.env (non-secret settings) as publish/env/<target>.env.
+      - name: Record that this exact tree passed the gate
+        if: steps.gate.outputs.skip != 'true'
+        run: |
+          git tag "gate-pass/${{ steps.gate.outputs.tree }}"
+          git push origin "gate-pass/${{ steps.gate.outputs.tree }}" || echo "::warning::could not record the gate-pass tag (the next deploy will run the gate again)"
+
+      - name: Publish
+        run: dotnet publish PEMS.Web/PEMS.Web.csproj -c Release -r win-x64 --self-contained true -p:PemsEnv=${{ inputs.target }} -p:DebugType=none -p:DebugSymbols=false -o ./publish
+
+      # Environment selection and secrets, without storing anything in Git:
+      #  - PEMS_ENV=<target> is set for the app in web.config (the app then reads env/<target>.env + env/<target>.secrets.env),
+      #  - env/<target>.secrets.env is generated here from GitHub secrets and uploaded next to the app (never packaged by the build),
+      #  - a longer IIS startup limit: the first run installs the whole schema before the app starts serving.
+      - name: Configure runtime
+        env:
+          CONN: ${{ secrets[format('{0}_SQL_CONNECTION_STRING', inputs.prefix)] }}
+          ADMIN_PASSWORD: ${{ secrets[format('{0}_ADMIN_PASSWORD', inputs.prefix)] }}
+        run: |
+          test -n "$CONN" && test -n "$ADMIN_PASSWORD"
+          test -f "publish/env/${TARGET}.env"
+          umask 077
+          {
+            printf 'ConnectionStrings__PEMSConnection=%s\n' "$CONN"
+            printf 'Seed__Admin__Password=%s\n' "$ADMIN_PASSWORD"
+          } > "publish/env/${TARGET}.secrets.env"
+          sed -i 's#hostingModel="inprocess" />#hostingModel="inprocess"><environmentVariables><environmentVariable name="PEMS_ENV" value="'"${TARGET}"'" /></environmentVariables></aspNetCore>#' publish/web.config
+          sed -i 's/<aspNetCore /<aspNetCore startupTimeLimit="900" /' publish/web.config
+          # startup output is written to logs/stdout* on the server so a failed first run can be diagnosed from the hosting panel
+          sed -i 's/stdoutLogEnabled="false"/stdoutLogEnabled="true"/' publish/web.config
+          grep -q 'stdoutLogEnabled="true"' publish/web.config
+          grep -q "name=\"PEMS_ENV\" value=\"${TARGET}\"" publish/web.config
+          grep -q 'startupTimeLimit="900"' publish/web.config
+
+      # SCRUM-313: copy-only backup of the target database before anything on the server changes. A configured backup that fails stops the deploy;
+      # without <PREFIX>_BACKUP_DIR it only warns (the hosting login often may not run BACKUP). The restore steps are in the runbook.
+      - name: Back up the database before the deploy
+        if: inputs.backup
+        env:
+          CONN: ${{ secrets[format('{0}_SQL_CONNECTION_STRING', inputs.prefix)] }}
+          BACKUP_DIR: ${{ secrets[format('{0}_BACKUP_DIR', inputs.prefix)] }}
+        run: bash scripts/ci/backup-database.sh
+
+      # IIS keeps the application DLLs locked while the app runs (FTP error 550 "being used by another process").
+      # Uploading app_offline.htm makes the ASP.NET Core Module stop the app and release the files; it is removed after a successful upload.
+      - name: Take the app offline (release file locks)
+        continue-on-error: true
+        env:
+          FTP_HOST: ${{ secrets[format('{0}_FTP_HOST', inputs.prefix)] }}
+          FTP_USER: ${{ secrets[format('{0}_FTP_USER', inputs.prefix)] }}
+          FTP_PASS: ${{ secrets[format('{0}_FTP_PASSWORD', inputs.prefix)] }}
+          FTP_DIR: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
+          FTP_PROTO: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] }}
+        run: |
+          printf '<html><body><h3>PEMS %s is being updated, back in a few minutes.</h3></body></html>' "$TARGET" > app_offline.htm
+          TLS=""; [ "${FTP_PROTO:-ftps}" = "ftps" ] && TLS="--ssl-reqd --insecure"   # empty protocol = ftps, the same default as the upload action
+          printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS" | curl -sS -K - $TLS --max-time 90 -T app_offline.htm "ftp://${FTP_HOST}${FTP_DIR}app_offline.htm"
+          echo "app_offline.htm uploaded; waiting for IIS to stop the app"
+          sleep 25
+
+      # The host is slow to accept FTP connections intermittently (control-socket timeouts), so the upload gets a long timeout and one retry.
+      - name: Deploy via FTP
+        id: ftp1
+        continue-on-error: true
+        timeout-minutes: 60
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets[format('{0}_FTP_HOST', inputs.prefix)] }}
+          username: ${{ secrets[format('{0}_FTP_USER', inputs.prefix)] }}
+          password: ${{ secrets[format('{0}_FTP_PASSWORD', inputs.prefix)] }}
+          protocol: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] || 'ftps' }}
+          port: ${{ secrets[format('{0}_FTP_PORT', inputs.prefix)] || 21 }}
+          local-dir: ./publish/
+          server-dir: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
+          timeout: 180000
+
+      - name: Deploy via FTP (retry)
+        if: steps.ftp1.outcome == 'failure'
+        timeout-minutes: 60
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets[format('{0}_FTP_HOST', inputs.prefix)] }}
+          username: ${{ secrets[format('{0}_FTP_USER', inputs.prefix)] }}
+          password: ${{ secrets[format('{0}_FTP_PASSWORD', inputs.prefix)] }}
+          protocol: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] || 'ftps' }}
+          port: ${{ secrets[format('{0}_FTP_PORT', inputs.prefix)] || 21 }}
+          local-dir: ./publish/
+          server-dir: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
+          timeout: 180000
+
+      - name: Bring the app back online
+        if: success()
+        env:
+          FTP_HOST: ${{ secrets[format('{0}_FTP_HOST', inputs.prefix)] }}
+          FTP_USER: ${{ secrets[format('{0}_FTP_USER', inputs.prefix)] }}
+          FTP_PASS: ${{ secrets[format('{0}_FTP_PASSWORD', inputs.prefix)] }}
+          FTP_DIR: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
+          FTP_PROTO: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] }}
+        run: |
+          TLS=""; [ "${FTP_PROTO:-ftps}" = "ftps" ] && TLS="--ssl-reqd --insecure"   # empty protocol = ftps, the same default as the upload action
+          REL="${FTP_DIR#/}app_offline.htm"
+          printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS" | curl -sS -K - $TLS --max-time 90 -Q "DELE ${REL}" "ftp://${FTP_HOST}/" -o /dev/null
+          echo "app_offline.htm removed; the next request starts the application"
+
+      # The first request starts the app, which installs/updates the schema before serving. /health/database is
+      # anonymous and returns 200 only when every migration is applied (503 + state name otherwise).
+      # The probe uses --insecure so a missing/invalid TLS certificate (Plesk "Domain not secured") does not hide the app state;
+      # the certificate itself is reported by the separate non-fatal check below.
+      - name: Wait for database install/update to finish
+        timeout-minutes: 35
+        env:
+          PREFIX: ${{ inputs.prefix }}
+          SITE: ${{ secrets[format('{0}_SITE_URL', inputs.prefix)] }}
+          FTP_HOST: ${{ secrets[format('{0}_FTP_HOST', inputs.prefix)] }}
+          FTP_USER: ${{ secrets[format('{0}_FTP_USER', inputs.prefix)] }}
+          FTP_PASS: ${{ secrets[format('{0}_FTP_PASSWORD', inputs.prefix)] }}
+          FTP_DIR: ${{ secrets[format('{0}_FTP_DIR', inputs.prefix)] }}
+          FTP_PROTO: ${{ secrets[format('{0}_FTP_PROTOCOL', inputs.prefix)] }}
+        run: |
+          if [ -z "$SITE" ]; then
+            echo "::warning::<PREFIX>_SITE_URL is not set; skipping the post-deploy database check."
+            exit 0
+          fi
+          # Shows the readable text of an HTML error page (IIS / ASP.NET Core Module) instead of its first raw bytes, so the cause is in the run log.
+          # '#' is the sed delimiter because the pattern contains '/' (</style>); with '/' sed failed on every poll (SCRUM-555).
+          page_text() { tr -s '[:space:]' ' ' < health.txt 2>/dev/null | sed -e 's#<style[^>]*>[^<]*</style>##g' -e 's#<[^>]*># #g' | head -c "${1:-300}"; }
+          # Prints the newest start-up logs of the site over FTP so the real exception is in this run log.
+          show_server_logs() {
+            TLS=""; [ "${FTP_PROTO:-ftps}" = "ftps" ] && TLS="--ssl-reqd --insecure"
+            cred() { printf 'user = "%s:%s"\n' "$FTP_USER" "$FTP_PASS"; }
+            names=$(cred | curl -sS -K - $TLS --max-time 60 --list-only "ftp://${FTP_HOST}${FTP_DIR}logs/" 2>/dev/null || true)
+            # The names carry the date (stdout_<yyyyMMddHHmmss>_<pid>.log, pems-<yyyyMMdd>.log), so name order is time order.
+            # List them so the run shows when this start wrote no new file (the process did not start at all).
+            echo "Files in logs/ (newest last): $(echo "$names" | grep -E '^(stdout|pems-)' | sort | tail -6 | tr '\n' ' ')"
+            for f in $(echo "$names" | grep -E '^stdout' | sort | tail -2) $(echo "$names" | grep -E '^pems-' | sort | tail -1); do
+              echo "----- logs/$f (last 60 lines)"
+              cred | curl -sS -K - $TLS --max-time 60 "ftp://${FTP_HOST}${FTP_DIR}logs/$f" 2>/dev/null | tail -60 | cut -c1-400 || true
+            done
+          }
+          state="no response"; fails5xx=0
+          for i in $(seq 1 70); do
+            code=$(curl -sS -k -o health.txt -w '%{http_code}' --max-time 90 "$SITE/health/database" 2> curl.err) || true
+            state=$(page_text 300)
+            echo "attempt $i: HTTP ${code:-000} ${state} $(head -c 120 curl.err 2>/dev/null)"
+            if [ "$code" = "200" ]; then
+              echo "Database is up to date on the ${TARGET} site."
+              exit 0
+            fi
+            # A schema install hangs or times out; it does not answer 5xx. Twenty 5xx answers in a row (about 7 minutes) mean the application failed to start.
+            case "$code" in 5??) fails5xx=$((fails5xx+1));; *) fails5xx=0;; esac
+            if [ "$fails5xx" -ge 20 ]; then
+              echo "::error::The ${TARGET} application answers HTTP $code and does not start: $(page_text 500)"
+              echo "Likely causes, in order: the database is not reachable or the login in ${PREFIX}_SQL_CONNECTION_STRING is wrong or lacks rights to create tables; the app pool or ASP.NET Core Module is missing or stopped; an environment file or setting is missing. Read logs/stdout* and logs/pems-*.log in Plesk > Files for the real error."
+              show_server_logs
+              exit 1
+            fi
+            sleep 20
+          done
+          echo "::error::${TARGET} database did not reach UpToDate (last: HTTP ${code:-000} ${state}). Read logs/stdout* and logs/pems-*.log on the server (Plesk > Files) and Admin > Database Update on the site."
+          exit 1
+
+      # SCRUM-313: anonymous smoke test beyond /health/database (health, login page, static files, protected page, 404). A failure fails the run;
+      # the site stays on the new build, roll back by re-running this workflow with ref = the previous good commit (runbook).
+      - name: Smoke test the deployed site
+        env:
+          SITE: ${{ secrets[format('{0}_SITE_URL', inputs.prefix)] }}
+        run: |
+          if [ -z "$SITE" ]; then
+            echo "::warning::<PREFIX>_SITE_URL is not set; skipping the smoke test."
+            exit 0
+          fi
+          bash scripts/ci/smoke-test.sh "$SITE" "$TARGET"
+
+      - name: Record the staging deploy
+        if: inputs.target == 'staging'
+        env:
+          TREE: ${{ steps.gate.outputs.tree }}
+        run: |
+          git tag -f "staged/$TREE"
+          git push -f origin "refs/tags/staged/$TREE" || echo "::warning::could not record the staged tag (the demo deploy of this tree will refuse to run until it exists)"
+
+      - name: TLS certificate of the site (informational)
+        if: always()
+        env:
+          SITE: ${{ secrets[format('{0}_SITE_URL', inputs.prefix)] }}
+        run: |
+          [ -z "$SITE" ] && exit 0
+          if curl -sS -o /dev/null --max-time 30 "$SITE/health" 2> tls.err; then
+            echo "TLS certificate is valid."
+          else
+            echo "::warning::TLS verification failed for $SITE ($(head -c 200 tls.err)). Issue a certificate for the subdomain in Plesk (SSL/TLS Certificates > Let's Encrypt)."
+          fi

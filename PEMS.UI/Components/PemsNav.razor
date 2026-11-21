@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("nav", Category = "navigation", Icon = "bi-segmented-nav")]
+@FrameMarkup.Element("ul", PEMS.UI.TagHelpers.FrameState.Nav(Options.Kind, Options.Css), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public NavOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

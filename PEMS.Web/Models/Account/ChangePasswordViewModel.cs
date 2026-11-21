@@ -4,20 +4,20 @@ namespace PEMS.Web.Models.Account;
 
 public class ChangePasswordViewModel
 {
-    [Required(ErrorMessage = "رمز فعلی الزامی است")]
+    [Required]
     [DataType(DataType.Password)]
-    [Display(Name = "رمز فعلی")]
+    [Display(Name = "Current password")]
     public string CurrentPassword { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "رمز جدید الزامی است")]
+    [Required]
     [DataType(DataType.Password)]
-    [Display(Name = "رمز جدید")]
-    [MinLength(6, ErrorMessage = "رمز باید حداقل ۶ کاراکتر باشد")]
+    [Display(Name = "New password")]
+    [MinLength(6)]
     public string NewPassword { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "تکرار رمز جدید الزامی است")]
+    [Required]
     [DataType(DataType.Password)]
-    [Display(Name = "تکرار رمز جدید")]
-    [Compare(nameof(NewPassword), ErrorMessage = "رمز جدید و تکرار آن یکسان نیستند")]
+    [Display(Name = "Confirm new password")]
+    [Compare(nameof(NewPassword), ErrorMessage = "The new password and its confirmation do not match.")]
     public string ConfirmPassword { get; set; } = string.Empty;
 }

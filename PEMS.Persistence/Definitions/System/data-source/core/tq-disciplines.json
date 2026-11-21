@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "tq-disciplines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Disciplines",
+    "fa": "دیسیپلین‌ها"
+  },
+  "description": {
+    "en": "Disciplines",
+    "fa": "دیسیپلین‌ها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "TechnicalQueryPage",
+      "action": "DisciplineChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

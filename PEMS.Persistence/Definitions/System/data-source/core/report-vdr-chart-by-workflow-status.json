@@ -1,0 +1,31 @@
+{
+  "kind": "data-source",
+  "key": "report-vdr-chart-by-workflow-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vdr chart: By workflow status",
+    "fa": "نمودار vdr: بر اساس وضعیت گردش"
+  },
+  "description": {
+    "en": "Vdr chart: By workflow status",
+    "fa": "نمودار vdr: بر اساس وضعیت گردش"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Vdr",
+      "args": {
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      },
+      "where": {
+        "key": "ByWorkflowStatus"
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("modal-footer", Category = "overlays", Icon = "bi-card-checklist")]
+@FrameMarkup.Element("div", string.IsNullOrWhiteSpace(Options.Css) ? "modal-footer" : "modal-footer " + Options.Css.Trim(), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public ModalFooterOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

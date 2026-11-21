@@ -1,0 +1,216 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("script-templates", Category = "display", Icon = "bi-file-earmark-code")]
+@* The markup a page script clones (SCRUM-508 item 6, pems-template.js): inert <template>s, no text of their own (scripts fill the slots). *@
+@switch (Options.Set)
+{
+    case ScriptTemplateSet.DccRegister:
+        <template data-pems-template="dcc-combo-option"><li role="option" aria-selected="false"></li></template>
+        <template data-pems-template="dcc-combo-create"><li role="option" aria-selected="false" class="dcr-opt-create"></li></template>
+        <template data-pems-template="dcc-combo-empty"><li class="dcr-opt-empty" data-slot="text"></li></template>
+        <template data-pems-template="dcc-summary-item"><li><button type="button" class="dcr-link" data-slot="button"></button></li></template>
+        <template data-pems-template="dcc-preview-item"><li><button type="button" data-slot="button"></button></li></template>
+        <template data-pems-template="dcc-empty"><div class="dcr-empty"><i class="bi" aria-hidden="true" data-slot="icon"></i><span data-slot="text"></span><strong data-slot="name"></strong></div></template>
+        <template data-pems-template="dcc-opt-person"><span class="dcr-opt-main" data-slot="main"></span><span class="dcr-opt-sub" data-slot="sub"></span></template>
+        <template data-pems-template="dcc-opt-party"><span class="dcr-opt-main"><span data-slot="name"></span> <span class="dcr-badge" data-slot="badge"></span></span><span class="dcr-opt-sub" data-slot="sub"></span></template>
+        <template data-pems-template="dcc-opt-link"><span class="dcr-opt-main dcr-ltr" data-slot="main"></span><span class="dcr-opt-sub" data-slot="sub"></span></template>
+        <template data-pems-template="dcc-opt-create"><i class="bi bi-plus-circle" aria-hidden="true"></i> <span data-slot="text"></span></template>
+        <template data-pems-template="dcc-cal-head"><div class="dcr-cal-head"><button type="button" data-nav="-1" data-slot="prev"><i class="bi bi-chevron-right"></i></button><strong data-slot="title"></strong><button type="button" data-nav="1" data-slot="next"><i class="bi bi-chevron-left"></i></button></div></template>
+        <template data-pems-template="dcc-cal-grid"><div class="dcr-cal-grid" role="grid"></div></template>
+        <template data-pems-template="dcc-cal-weekday"><span class="dcr-cal-wd" aria-hidden="true" data-slot="text"></span></template>
+        <template data-pems-template="dcc-cal-blank"><span></span></template>
+        <template data-pems-template="dcc-cal-day"><button type="button" class="dcr-cal-day" data-slot="day"></button></template>
+        <template data-pems-template="dcc-cal-foot"><div class="dcr-cal-foot"><button type="button" data-today="1" data-slot="today"></button></div></template>
+        <template data-pems-template="dcc-thread-kpis"><div class="dcr-kpis"><div class="dcr-kpi" data-slot="us"><strong data-slot="usValue"></strong><span data-slot="usLabel"></span></div><div class="dcr-kpi"><strong data-slot="themValue"></strong><span data-slot="themLabel"></span></div><div class="dcr-kpi"><strong class="dcr-ltr" data-slot="lastValue"></strong><span data-slot="lastLabel"></span></div></div></template>
+        <template data-pems-template="dcc-thread-list"><ol class="dcr-thread"></ol></template>
+        <template data-pems-template="dcc-thread-item"><li class="dcr-thread-item"><i class="bi" aria-hidden="true" data-slot="icon"></i><div><a class="dcr-link dcr-ltr" target="_blank" rel="noopener" data-slot="number"></a> <span class="dcr-sub-date dcr-ltr" data-slot="date"></span> <div class="dcr-thread-subject" data-slot="subject"></div></div></li></template>
+        <template data-pems-template="dcc-flag"><span class="dcr-flag" data-slot="text"></span></template>
+        <template data-pems-template="dcc-cc-tag"><span class="dcr-tag"><span data-slot="name"></span> <button type="button" data-slot="remove"><i class="bi bi-x"></i></button></span></template>
+        <template data-pems-template="dcc-file-row"><li class="dcr-file"><i class="bi" data-slot="icon" aria-hidden="true"></i><div class="dcr-file-name"><span data-slot="name"></span><small class="dcr-ltr" data-slot="size"></small></div><select class="form-select form-select-sm" data-slot="role"></select><button type="button" class="dcr-icon" data-slot="remove"><i class="bi bi-trash3"></i></button></li></template>
+        <template data-pems-template="dcc-preview-pdf"><iframe data-slot="frame"></iframe></template>
+        <template data-pems-template="dcc-preview-image"><img data-slot="image" /></template>
+        <template data-pems-template="dcc-link-item"><li class="dcr-linkitem"><span class="dcr-badge" data-slot="type"></span><bdi class="dcr-ltr" data-slot="number"></bdi><span data-slot="title"></span><button type="button" class="dcr-icon" data-slot="remove"><i class="bi bi-x-lg"></i></button></li></template>
+        <template data-pems-template="dcc-busy"><PemsSpinner Options="@(new SpinnerOptions { Size = Size.Small })" /> <span data-slot="text"></span></template>
+        break;
+    case ScriptTemplateSet.LetterCompose:
+        <template data-pems-template="lc-alert"><div class="alert" data-slot="root"><strong><i class="bi" aria-hidden="true" data-slot="icon"></i> <span data-slot="title"></span></strong><ul data-slot="items"></ul></div></template>
+        <template data-pems-template="lc-icon-button"><button type="button" data-slot="root"><i class="bi" aria-hidden="true" data-slot="icon"></i></button></template>
+        <template data-pems-template="lc-icon-button-secondary"><button type="button" class="btn btn-sm btn-outline-secondary" data-slot="root"><i class="bi" aria-hidden="true" data-slot="icon"></i></button></template>
+        <template data-pems-template="lc-icon-button-danger"><button type="button" class="btn btn-sm btn-outline-danger" data-slot="root"><i class="bi" aria-hidden="true" data-slot="icon"></i></button></template>
+        <template data-pems-template="lc-file-row"><li><i class="bi bi-file-earmark" aria-hidden="true"></i><span data-slot="name"></span><small class="text-muted" data-slot="size"></small></li></template>
+        <template data-pems-template="lc-text-li"><li data-slot="text"></li></template>
+        <template data-pems-template="lc-live"><div class="alert alert-warning lc-live" role="status"></div></template>
+        <template data-pems-template="lc-live-line"><div data-slot="text"></div></template>
+        <template data-pems-template="lc-chip"><span class="lc-chip" data-slot="root"><span data-slot="label"></span></span></template>
+        <template data-pems-template="lc-empty"><li class="lc-empty" data-slot="text"></li></template>
+        <template data-pems-template="lc-option"><li role="option" aria-selected="false" data-slot="root"><span data-slot="name"></span><small data-slot="sub"></small></li></template>
+        <template data-pems-template="lc-menu-wait"><li class="px-3 py-2"></li></template>
+        <template data-pems-template="lc-menu-note"><li><span class="dropdown-item-text small text-muted" data-slot="text"></span></li></template>
+        <template data-pems-template="lc-menu-item"><li><button type="button" class="dropdown-item" data-slot="button"></button></li></template>
+        <template data-pems-template="lc-chain-item"><li><span data-slot="name"></span></li></template>
+        <template data-pems-template="lc-upload-row"><li><span data-slot="name"></span><progress max="100" value="0"></progress></li></template>
+        break;
+    case ScriptTemplateSet.GlobalSearch:
+        <template data-pems-template="search-panel"><div class="pems-search-panel"></div></template>
+        <template data-pems-template="search-wrapper"><div class="pems-search-wrapper"></div></template>
+        <template data-pems-template="search-loading"><div class="pems-search-loading"></div></template>
+        <template data-pems-template="search-error"><div class="pems-search-error" data-slot="text"></div></template>
+        <template data-pems-template="search-empty"><div class="pems-search-empty" data-slot="text"></div></template>
+        <template data-pems-template="search-loadmore"><div class="pems-search-loadmore" data-slot="text"></div></template>
+        <template data-pems-template="search-item"><div class="pems-search-item" data-slot="root"><div class="pems-search-item-label" data-slot="label"></div><div class="pems-search-item-sub" data-slot="sub"></div></div></template>
+        break;
+    case ScriptTemplateSet.OrgChart:
+        <template data-pems-template="org-node"><div class="pems-org-node" tabindex="-1" role="treeitem" data-slot="root"><span class="pems-org-node-kind"><i class="bi" data-slot="icon"></i><span data-slot="kind"></span></span><span class="pems-org-node-name" data-slot="name"></span><span class="pems-org-node-meta" data-slot="meta"></span></div></template>
+        <template data-pems-template="org-item"><li></li></template>
+        <template data-pems-template="org-group-list"><ul role="group"></ul></template>
+        <template data-pems-template="org-tree"><ul class="pems-org-tree" role="tree"></ul></template>
+        <template data-pems-template="org-toggle-empty"><span></span></template>
+        <template data-pems-template="org-meta-text"><span data-slot="text"></span></template>
+        <template data-pems-template="org-badge-vacant"><span class="pems-org-badge-vacant"><i class="bi" data-slot="icon"></i> <span data-slot="text"></span></span></template>
+        <template data-pems-template="org-occupant"><span><i class="bi bi-person-check"></i> <span data-slot="name"></span></span></template>
+        <template data-pems-template="org-toggle"><span class="pems-org-toggle"><i class="bi bi-dash"></i></span></template>
+        <template data-pems-template="org-detail"><h6 class="mb-1" data-slot="title"></h6><div class="text-muted small mb-2" data-slot="sub"></div><dl></dl></template>
+        <template data-pems-template="org-detail-row"><dt data-slot="term"></dt><dd data-slot="value"></dd></template>
+        <template data-pems-template="org-detail-link"><a class="btn btn-pems-solid btn-sm w-100 mt-2" data-slot="link"><i class="bi bi-box-arrow-up-right"></i> <span data-slot="label"></span></a></template>
+        break;
+    case ScriptTemplateSet.OrgPositionChart:
+        <template data-pems-template="opc-node-container"><div class="pems-opc-node kind-container" data-slot="text"></div></template>
+        <template data-pems-template="opc-node"><div class="pems-opc-node" role="button" tabindex="0" data-slot="root"><div><div class="pems-opc-label"><span data-slot="label"></span><span class="pems-opc-badge" data-slot="badge"></span></div><div class="pems-opc-title" data-slot="title"></div></div><div class="pems-opc-vacant" data-slot="vacant"></div><div class="pems-opc-emp" data-slot="emp"></div><div class="pems-opc-unit" data-slot="unit"></div></div></template>
+        <template data-pems-template="opc-button"><div class="pems-opc-btn" data-slot="text"></div></template>
+        <template data-pems-template="opc-hint"><p class="text-muted small mb-0" data-slot="text"></p></template>
+        <template data-pems-template="opc-detail"><h2 class="h6 mb-2"><span data-slot="title"></span> <small class="text-muted" data-slot="code"></small></h2><dl></dl><div class="mt-3"><a class="btn btn-outline-secondary btn-sm" data-slot="manage"></a></div></template>
+        <template data-pems-template="opc-detail-row"><dt data-slot="term"></dt><dd data-slot="value"></dd></template>
+        <template data-pems-template="opc-note"><span class="text-muted" data-slot="text"></span></template>
+        <template data-pems-template="opc-reports"><ul></ul></template>
+        <template data-pems-template="opc-report-item"><li data-slot="text"></li></template>
+        break;
+    case ScriptTemplateSet.AccountLogin:
+        <template data-pems-template="login-busy"><span class="pems-inline-progress" style="color:#fff"><span class="pems-dot"></span><span class="pems-dot"></span><span class="pems-dot"></span></span></template>
+        break;
+    case ScriptTemplateSet.ManagePasskeys:
+        <template data-pems-template="passkey-error"><div class="alert alert-danger py-2 px-3 small" role="alert" data-slot="text"></div></template>
+        break;
+    case ScriptTemplateSet.ProjectIntelligence:
+        <template data-pems-template="scan-busy"><PemsSpinner Options="@(new SpinnerOptions { Size = Size.Small })" /> <span data-slot="text"></span></template>
+        break;
+    case ScriptTemplateSet.HelpArticle:
+        <template data-pems-template="help-thinking"><span class="text-muted" data-slot="text"></span></template>
+        <template data-pems-template="help-answer"><div class="p-2 rounded bg-body-tertiary pems-pre-line" data-slot="text"></div></template>
+        <template data-pems-template="help-error"><span class="text-danger" data-slot="text"></span></template>
+        break;
+    case ScriptTemplateSet.HelpDrawer:
+        <template data-pems-template="help-nocontent"><p class="text-muted small text-center py-4" data-slot="text"></p><a class="btn btn-sm btn-outline-secondary w-100" data-slot="link"></a></template>
+        <template data-pems-template="help-load-error"><p class="text-danger small text-center py-4" data-slot="text"></p></template>
+        <template data-pems-template="help-article"><h6 data-slot="title"></h6><p class="text-muted small" data-slot="summary"></p><a class="btn btn-sm btn-outline-primary w-100 mb-2" data-slot="diagram"><i class="bi bi-diagram-3"></i> <span data-slot="diagramText"></span></a><div class="pems-help-article-body small" data-slot="content"></div><div data-slot="relatedBox"><hr /><p class="small text-muted mb-1" data-slot="relatedLabel"></p><div data-slot="related"></div></div><hr /><a class="btn btn-sm btn-pems-solid w-100" data-slot="open"><i class="bi bi-box-arrow-up-right"></i> <span data-slot="openText"></span></a></template>
+        <template data-pems-template="help-related-link"><a class="btn btn-sm btn-outline-secondary me-1 mb-1" data-slot="link"></a></template>
+        break;
+    case ScriptTemplateSet.Layout:
+        <template data-pems-template="toast-notif-error"><div class="toast align-items-center border-0 text-bg-danger" role="alert" data-slot="root"><div class="d-flex"><div class="toast-body"><i class="bi bi-bell-fill me-1"></i> <span class="toast-msg" data-slot="message"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div></template>
+        <template data-pems-template="toast-notif"><div class="toast align-items-center border-0 text-bg-primary" role="alert" data-slot="root"><div class="d-flex"><div class="toast-body"><i class="bi bi-bell-fill me-1"></i> <span class="toast-msg" data-slot="message"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div></template>
+        break;
+    case ScriptTemplateSet.CartableSettings:
+        <template data-pems-template="ct-clock"><span data-slot="date"></span><strong data-slot="time"></strong></template>
+        <template data-pems-template="ct-synth-submit"><button type="submit" name="op" hidden tabindex="-1"></button></template>
+        <template data-pems-template="ct-thread-wait"><tr><td></td></tr></template>
+        <template data-pems-template="ct-reply-row"><tr class="lp-row ct-reply-row"><td><div class="lp-subject-line"><a class="lp-subject" data-slot="subject"></a><span class="lp-snippet" data-slot="meta"></span></div></td></tr></template>
+        <template data-pems-template="cs-input"><input class="form-control form-control-sm" /></template>
+        <template data-pems-template="cs-select"><select class="form-select form-select-sm"></select></template>
+        <template data-pems-template="cs-check"><input type="checkbox" class="form-check-input" /></template>
+        <template data-pems-template="cs-button"><button type="button" class="btn btn-sm"></button></template>
+        <template data-pems-template="cs-link-button"><a class="btn btn-sm btn-outline-secondary"></a></template>
+        <template data-pems-template="cs-chip"><span class="badge text-bg-secondary d-inline-flex align-items-center gap-1"><span data-slot="name"></span><button type="button" class="btn-close btn-close-white" style="font-size:.55rem" data-slot="remove"></button></span></template>
+        break;
+    case ScriptTemplateSet.PermissionMatrix:
+        <template data-pems-template="pm-toast"><div class="pm-toast" data-slot="root"><span class="pm-toast-msg" data-slot="msg"></span></div></template>
+        <template data-pems-template="pm-close"><button type="button" class="btn-close"></button></template>
+        <template data-pems-template="pm-hit"><mark class="pm-hit" data-slot="text"></mark></template>
+        <template data-pems-template="pm-retry-button"><button type="button" class="btn btn-sm btn-outline-primary"></button></template>
+        break;
+    case ScriptTemplateSet.UserPermissions:
+        <template data-pems-template="up-icon"><span aria-hidden="true" data-slot="icon"></span></template>
+        <template data-pems-template="up-spinner"><span class="spinner-border spinner-border-sm text-secondary" aria-hidden="true"></span></template>
+        break;
+    case ScriptTemplateSet.MaintenanceCalendar:
+        <template data-pems-template="mc-error"><div class="alert alert-danger alert-dismissible fade show mb-3" role="alert"><span data-slot="text"></span><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div></template>
+        break;
+    case ScriptTemplateSet.ChatAssistant:
+        <template data-pems-template="chat-bubble"><div class="mb-3 d-flex" data-slot="wrap"><div class="p-2 rounded" data-slot="bubble"></div></div></template>
+        break;
+    case ScriptTemplateSet.Shell:
+        <template data-pems-template="pems-confirm-dialog"><dialog class="pems-modal pems-modal--small pems-confirm" aria-labelledby="pems-confirm-title" aria-describedby="pems-confirm-message"><div class="pems-modal__panel"><header class="pems-modal__header"><h2 class="pems-modal__title" id="pems-confirm-title"></h2></header><div class="pems-modal__body"><p class="pems-confirm__message" id="pems-confirm-message"></p></div><footer class="pems-modal__footer"><button type="button" class="pems-btn pems-btn--neutral pems-btn--medium" data-pems-confirm-cancel></button><button type="button" class="pems-btn pems-btn--primary pems-btn--medium" data-pems-confirm-ok></button></footer></div></dialog></template>
+        <template data-pems-template="pems-error-toasts"><div class="pems-error-toasts" role="region" aria-live="assertive"></div></template>
+        <template data-pems-template="pems-error-toast"><div class="pems-error-toast" role="alert"><div class="pems-error-toast__message" data-slot="message"></div><div class="pems-error-toast__ref" data-slot="ref"><span data-slot="label"></span><code class="pems-error-toast__code" dir="ltr" data-slot="code"></code><button type="button" class="pems-error-toast__copy" data-slot="copy"></button></div><button type="button" class="pems-error-toast__close" data-slot="close"></button></div></template>
+        <template data-pems-template="cp-palette"><div class="pems-cp-backdrop" hidden><div class="pems-cp" role="dialog" aria-modal="true"><div class="pems-cp-head"><i class="bi bi-search pems-cp-search-icon" aria-hidden="true"></i><input class="pems-cp-input" type="text" role="combobox" aria-expanded="true" aria-autocomplete="list" autocomplete="off" spellcheck="false" /><kbd class="pems-cp-kbd" aria-hidden="true" data-slot="esc"></kbd></div><div class="pems-cp-list" role="listbox"></div><div class="pems-cp-foot"><span class="pems-cp-keys" data-slot="keys"></span><span class="pems-cp-status" role="status" aria-live="polite"></span></div></div></div></template>
+        <template data-pems-template="cp-group"><div class="pems-cp-group" role="group"><div class="pems-cp-group-title" role="presentation" data-slot="title"></div></div></template>
+        <template data-pems-template="cp-option"><a class="pems-cp-option" tabindex="-1" role="option" aria-selected="false" data-slot="root"><i class="bi pems-cp-icon" aria-hidden="true" data-slot="icon"></i><span class="pems-cp-text"><span class="pems-cp-label" data-slot="label"></span><span class="pems-cp-sub" data-slot="sub"></span></span></a></template>
+        <template data-pems-template="sb-search"><div class="pems-sb-search"><i class="bi bi-search" aria-hidden="true"></i><input type="search" class="pems-sb-search-input" autocomplete="off" aria-controls="pemsSidebar" /></div></template>
+        <template data-pems-template="sb-status"><div class="pems-sb-status" role="status" aria-live="polite"></div></template>
+        <template data-pems-template="auto-icon"><i class="bi" aria-hidden="true" data-pems-auto="1"></i></template>
+        <template data-pems-template="auto-table-wrap"><div class="table-responsive" data-pems-auto="1"></div></template>
+        <template data-pems-template="nav-label"><span class="nav-label"></span></template>
+        <template data-pems-template="col-resize-handle"><span class="pems-col-resize-handle" aria-hidden="true"></span></template>
+        <template data-pems-template="sel-no-results"><div class="no-results" data-slot="text"></div></template>
+        <template data-pems-template="ts-item"><li class="pems-tree-select__item" role="treeitem" tabindex="-1"><div class="pems-tree-select__row"><span class="pems-tree-select__toggle" aria-hidden="true" data-slot="toggle"></span><span class="pems-tree-select__spacer" aria-hidden="true" data-slot="spacer"></span><span class="pems-tree-select__label" data-slot="label"></span><small class="pems-tree-select__sub text-muted" data-slot="sub"></small></div><ul class="pems-tree-select__group" role="group" hidden data-slot="group"></ul></li></template>
+        <template data-pems-template="ts-more"><li class="pems-tree-select__more-item" role="none"><button type="button" class="pems-tree-select__more btn btn-link btn-sm" data-slot="button"></button></li></template>
+        <template data-pems-template="dg-root"><div class="pems-grid__shell"><div class="pems-grid__toolbar"><input type="search" class="form-control form-control-sm pems-grid__search" autocomplete="off" data-slot="search"><div class="pems-grid__tools"><button type="button" class="btn btn-sm btn-outline-secondary" data-act="columns" data-slot="columnsBtn"></button><button type="button" class="btn btn-sm btn-outline-secondary" data-act="density" data-slot="densityBtn"></button><button type="button" class="btn btn-sm btn-outline-secondary" data-act="views" data-slot="viewsBtn"></button><a class="btn btn-sm btn-outline-secondary" href="#" data-act="export" data-slot="exportBtn"></a></div></div><div class="pems-grid__bulk" hidden data-slot="bulk"><span class="pems-grid__bulk-text" data-slot="bulkText"></span><span class="pems-grid__bulk-actions" data-slot="bulkActions"></span><button type="button" class="btn btn-sm btn-link" data-act="clearSel" data-slot="clearBtn"></button></div><div class="pems-grid__panel" hidden data-slot="panel"></div><div class="pems-grid__scroller" role="grid" tabindex="0" data-slot="scroller"><div class="pems-grid__head" role="row" data-slot="head"></div><div class="pems-grid__filters" role="row" data-slot="filters"></div><div class="pems-grid__spacer" data-slot="spacer"><div class="pems-grid__rows" data-slot="rows"></div></div></div><div class="pems-grid__status small text-muted" role="status" aria-live="polite" data-slot="status"></div></div></template>
+        <template data-pems-template="dg-hcheck"><div class="pems-grid__hcell pems-grid__hcell--check" role="columnheader"><input type="checkbox" class="form-check-input" data-slot="check"></div></template>
+        <template data-pems-template="dg-fblank"><div class="pems-grid__fcell pems-grid__fcell--check"></div></template>
+        <template data-pems-template="dg-hcell"><div class="pems-grid__hcell" role="columnheader"><button type="button" class="pems-grid__sort" data-slot="label"></button><span class="pems-grid__resize" aria-hidden="true" data-slot="resize"></span></div></template>
+        <template data-pems-template="dg-fcell"><div class="pems-grid__fcell"><input type="search" class="form-control form-control-sm" autocomplete="off" data-slot="input"></div></template>
+        <template data-pems-template="dg-row"><div class="pems-grid__row" role="row"></div></template>
+        <template data-pems-template="dg-check"><div class="pems-grid__cell pems-grid__cell--check" role="gridcell"><input type="checkbox" class="form-check-input" data-slot="check"></div></template>
+        <template data-pems-template="dg-cell"><div class="pems-grid__cell" role="gridcell" data-slot="text"></div></template>
+        <template data-pems-template="dg-cell-badge"><div class="pems-grid__cell" role="gridcell"><span class="badge text-bg-secondary" data-slot="text"></span></div></template>
+        <template data-pems-template="dg-cell-actions"><div class="pems-grid__cell pems-grid__cell--actions" role="gridcell"><span class="pems-grid__actions" data-slot="actions"></span></div></template>
+        <template data-pems-template="dg-row-link"><a class="btn btn-sm" data-slot="link"></a></template>
+        <template data-pems-template="dg-row-button"><button type="button" class="btn btn-sm" data-slot="button"></button></template>
+        <template data-pems-template="dg-menu-item"><div class="pems-grid__menu-item"><label class="pems-grid__menu-label"><input type="checkbox" class="form-check-input" data-slot="box"><span data-slot="text"></span></label><button type="button" class="pems-grid__pin" data-pin="none" data-slot="pin"></button></div></template>
+        <template data-pems-template="dg-menu-choice"><button type="button" class="pems-grid__menu-choice" data-slot="text"></button></template>
+        <template data-pems-template="dg-view-item"><div class="pems-grid__view-item"><button type="button" class="pems-grid__view-name" data-slot="name"></button><button type="button" class="btn btn-sm btn-link text-danger" data-slot="remove"></button></div></template>
+        <template data-pems-template="dg-view-scope"><select class="form-select form-select-sm" data-slot="scope"></select></template>
+        <template data-pems-template="dg-view-save"><div class="pems-grid__view-save"><input type="text" class="form-control form-control-sm" data-slot="input"><button type="button" class="btn btn-sm btn-primary" data-slot="button"></button></div></template>
+        <template data-pems-template="dg-bulk-link"><button type="button" class="btn btn-sm btn-link" data-slot="button"></button></template>
+        <template data-pems-template="dg-bulk-action"><button type="button" class="btn btn-sm" data-slot="button"></button></template>
+        <template data-pems-template="dv-root"><div class="pems-view__shell"><div class="pems-view__toolbar" data-slot="toolbar"><div class="pems-view__nav"><button type="button" class="btn btn-sm btn-outline-secondary" data-act="prev" data-slot="prev"></button><button type="button" class="btn btn-sm btn-outline-secondary" data-act="today" data-slot="today"></button><button type="button" class="btn btn-sm btn-outline-secondary" data-act="next" data-slot="next"></button></div><strong class="pems-view__title" data-slot="title"></strong><div class="pems-view__systems" data-slot="systems"><button type="button" class="btn btn-sm btn-outline-secondary" data-act="jalali" data-slot="jalali"></button><button type="button" class="btn btn-sm btn-outline-secondary" data-act="gregorian" data-slot="gregorian"></button></div></div><div class="pems-view__body" data-slot="body"></div><div class="pems-view__status small text-muted" role="status" aria-live="polite" data-slot="status"></div></div></template>
+        <template data-pems-template="dv-cards"><div class="pems-view__cards" data-slot="cards"></div></template>
+        <template data-pems-template="dv-card"><a class="pems-view__card" data-slot="card"><img class="pems-view__image" alt="" data-slot="image"><div class="pems-view__card-body"><div class="pems-view__card-title" data-slot="title"></div><div class="pems-view__card-sub text-muted small" data-slot="subtitle"></div><span class="badge text-bg-secondary" data-slot="badge"></span></div></a></template>
+        <template data-pems-template="dv-board"><div class="pems-view__board" data-slot="board"></div></template>
+        <template data-pems-template="dv-col"><section class="pems-view__col" data-slot="col"><header class="pems-view__col-head"><span data-slot="label"></span><span class="badge text-bg-light" data-slot="count"></span></header><div class="pems-view__col-list" data-slot="list"></div></section></template>
+        <template data-pems-template="dv-cal"><div class="pems-view__cal" role="grid" data-slot="cal"><div class="pems-view__cal-week" role="row" data-slot="weekdays"></div><div class="pems-view__cal-grid" data-slot="grid"></div></div></template>
+        <template data-pems-template="dv-cal-wd"><div class="pems-view__cal-wd" role="columnheader" data-slot="text"></div></template>
+        <template data-pems-template="dv-cal-day"><div class="pems-view__cal-day" role="gridcell" data-slot="day"><span class="pems-view__cal-num" data-slot="num"></span><div class="pems-view__cal-items" data-slot="items"></div></div></template>
+        <template data-pems-template="dv-chip"><a class="pems-view__chip" data-slot="chip"></a></template>
+        <template data-pems-template="dv-more-items"><button type="button" class="pems-view__more-items" data-slot="button"></button></template>
+        <template data-pems-template="dv-timeline"><div class="pems-view__timeline" data-slot="timeline"></div></template>
+        <template data-pems-template="dv-tl-day"><section class="pems-view__tl-day"><h3 class="pems-view__tl-date" data-slot="date"></h3><div class="pems-view__tl-list" data-slot="list"></div></section></template>
+        <template data-pems-template="up-root"><div class="pems-upload__shell"><div class="pems-upload__zone" data-slot="zone"><span data-slot="drop"></span> <button type="button" class="btn btn-link btn-sm p-0" data-slot="choose"></button></div><ul class="pems-upload__list" data-slot="list"></ul><div class="pems-upload__message text-danger small" role="alert" data-slot="message"></div></div></template>
+        <template data-pems-template="up-file"><li class="pems-upload__file"><span class="pems-upload__name" data-slot="name"></span><span class="pems-upload__size text-muted small" data-slot="size"></span><button type="button" class="btn btn-sm btn-outline-secondary" data-slot="remove"></button></li></template>
+        <template data-pems-template="dv-gantt"><div class="pems-view__gantt"><div class="pems-view__g-head"><span class="pems-view__g-label"></span><div class="pems-view__g-scale" data-slot="scale"></div></div><div class="pems-view__g-body" data-slot="rows"></div></div></template>
+        <template data-pems-template="dv-gantt-tick"><span class="pems-view__g-tick" data-slot="tick"></span></template>
+        <template data-pems-template="dv-gantt-row"><div class="pems-view__g-row"><a class="pems-view__g-label" data-slot="label"></a><div class="pems-view__g-track" data-slot="track"><a class="pems-view__bar" data-slot="bar"></a></div></div></template>
+        <template data-pems-template="dv-tree"><ul class="pems-view__tree" role="tree"></ul></template>
+        <template data-pems-template="dv-tree-node"><li class="pems-view__node" role="treeitem"><div class="pems-view__node-row"><button type="button" class="pems-view__toggle" data-slot="toggle"></button><a class="pems-view__node-title" data-slot="title"></a><span class="badge text-bg-secondary" data-slot="badge"></span></div><ul class="pems-view__children" role="group" data-slot="children"></ul></li></template>
+        <template data-pems-template="dv-more"><div class="pems-view__more"><button type="button" class="btn btn-sm btn-outline-secondary" data-slot="button"></button></div></template>
+        <template data-pems-template="sel-loading"><div class="spinner-text" data-slot="text"></div></template>
+        <template data-pems-template="rte-box"><div class="pems-rte-box"><div class="pems-rte-box__area"></div></div></template>
+        <template data-pems-template="skel-root"><div class="pems-skeleton" role="status" aria-busy="true" aria-live="polite"></div></template>
+        <template data-pems-template="skel-label"><span class="visually-hidden" data-slot="text"></span></template>
+        <template data-pems-template="skel-bar"><span class="pems-skeleton__line" aria-hidden="true"></span></template>
+        <template data-pems-template="skel-stack"><span class="pems-skeleton__stack"></span></template>
+        <template data-pems-template="skel-row"><span class="pems-skeleton__row"></span></template>
+        <template data-pems-template="pems-copy-buffer"><textarea></textarea></template>
+        break;
+    case ScriptTemplateSet.PartCatalogue:
+        <template data-pems-template="pc-combobox-input"><input class="form-control form-control-sm" /></template>
+        <template data-pems-template="pc-hidden"><input type="hidden" /></template>
+        <template data-pems-template="pc-lookup-list"><ul class="pc-lookup-list pc-lookup-portal list-unstyled" role="listbox" hidden></ul></template>
+        <template data-pems-template="pc-lookup-empty"><li class="pc-lookup-empty" data-slot="text"></li></template>
+        <template data-pems-template="pc-lookup-item"><li role="option" class="pc-lookup-item" data-slot="text"></li></template>
+        <template data-pems-template="pc-tc-cand"><button type="button" class="pc-tc-cand" data-slot="text"></button></template>
+        <template data-pems-template="pcd-note"><div class="text-muted" data-slot="text"></div></template>
+        <template data-pems-template="pcd-list"><ul class="list-unstyled mb-0"></ul></template>
+        <template data-pems-template="pcd-item"><li class="border-bottom py-1"><strong class="vs-num" data-slot="code"></strong><span class="text-muted ms-2" data-slot="meta"></span><div data-slot="description"></div></li></template>
+        break;
+}
+@code {
+    [Parameter, EditorRequired] public ScriptTemplatesOptions Options { get; set; } = default!;
+}

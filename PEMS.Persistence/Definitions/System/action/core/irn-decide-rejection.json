@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "irn-decide-rejection",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Decide the rejection",
+    "fa": "تصمیم درباره‌ی رد"
+  },
+  "description": {
+    "en": "Decide the rejection",
+    "fa": "تصمیم درباره‌ی رد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Irn",
+      "action": "DecideRejection",
+      "args": {
+        "irnReceiptLineId": "field:lineId",
+        "action": "field:action"
+      }
+    },
+    "success": {
+      "en": "The decision was recorded.",
+      "fa": "تصمیم ثبت شد."
+    },
+    "redirect": "/p/irn-details?id={id}"
+  }
+}

@@ -1,6 +1,8 @@
 /* PEMS Part Catalogue - client behaviour (progressive enhancement; every rule is re-validated on the server). */
 (function () {
     'use strict';
+    // markup comes from the page's registered templates (script-templates component, pems-template.js), never from a string in this file
+    function tpl(name, values) { return window.PemsTemplate.fill(window.PemsTemplate.clone(name), values || {}); }
 
     var page = document.querySelector('.pc-page');
     if (!page) return;
@@ -43,10 +45,9 @@
         var inputId = host.dataset.inputId || ('pcl_' + Math.random().toString(36).slice(2));
         var listId = inputId + '_list';
 
-        var input = document.createElement('input');
+        var input = PemsTemplate.clone('pc-combobox-input');
         input.type = 'text';
         input.id = inputId;
-        input.className = 'form-control form-control-sm';
         input.autocomplete = 'off';
         input.setAttribute('role', 'combobox');
         input.setAttribute('aria-autocomplete', 'list');
@@ -55,18 +56,14 @@
         input.placeholder = txt.search;
         input.value = host.dataset.text || '';
 
-        var hidden = document.createElement('input');
-        hidden.type = 'hidden';
+        var hidden = tpl('pc-hidden');
         hidden.name = host.dataset.name;
         if (host.dataset.form) hidden.setAttribute('form', host.dataset.form);
         var initial = host.dataset.id;
         hidden.value = (initial && initial !== '0') ? initial : '';
 
-        var list = document.createElement('ul');
+        var list = tpl('pc-lookup-list');
         list.id = listId;
-        list.className = 'pc-lookup-list pc-lookup-portal list-unstyled';
-        list.setAttribute('role', 'listbox');
-        list.hidden = true;
 
         host.appendChild(input);
         host.appendChild(hidden);
@@ -123,19 +120,13 @@
         }
 
         function render() {
-            list.innerHTML = '';
+            list.replaceChildren();
             if (!items.length) {
-                var empty = document.createElement('li');
-                empty.className = 'pc-lookup-empty';
-                empty.textContent = txt.noResults;
-                list.appendChild(empty);
+                list.appendChild(tpl('pc-lookup-empty', { text: txt.noResults }));
             }
             items.forEach(function (it, i) {
-                var li = document.createElement('li');
+                var li = tpl('pc-lookup-item', { text: it.text });
                 li.id = listId + '_o' + i;
-                li.setAttribute('role', 'option');
-                li.className = 'pc-lookup-item';
-                li.textContent = it.text;
                 li.addEventListener('mousedown', function (e) { e.preventDefault(); pick(it, 'manual'); });
                 li.addEventListener('mousemove', function () { if (active !== i) highlight(i, false); });
                 list.appendChild(li);
@@ -208,10 +199,11 @@
     if (tcHidden && tcLong) {
         tcHidden.addEventListener('change', function () {
             if (!tcHidden.value) { tcLong.textContent = ''; return; }
+            window.PemsSkeleton.show(tcLong, 'text', { lines: 2 });   // SCRUM-337: while the description loads
             fetch(lookupBase + '/TechnicalClass?id=' + encodeURIComponent(tcHidden.value), { credentials: 'same-origin' })
                 .then(function (r) { return r.ok ? r.json() : null; })
                 .then(function (it) { tcLong.textContent = it && it.extra ? it.extra : ''; })
-                .catch(function () { });
+                .catch(function () { tcLong.textContent = ''; });
         });
     }
 
@@ -222,10 +214,9 @@
 
     function fillSelect(sel, items, keep) {
         var current = keep ? sel.value : '';
-        sel.innerHTML = '<option value=""></option>';
+        sel.replaceChildren(new Option('', ''));
         items.forEach(function (it) {
-            var o = document.createElement('option');
-            o.value = it.id; o.textContent = it.text;
+            var o = new Option(it.text, it.id);
             if (String(it.id) === String(current)) o.selected = true;
             sel.appendChild(o);
         });
@@ -385,8 +376,7 @@
             var isAuto = function () { return tcHidden.dataset.source === 'auto'; };
             var showCandidates = function (cands) {
                 cands.forEach(function (c) {
-                    var b = document.createElement('button');
-                    b.type = 'button'; b.className = 'pc-tc-cand'; b.textContent = c.text;
+                    var b = tpl('pc-tc-cand', { text: c.text });
                     b.addEventListener('click', function () { tcHost.pcSetValue(c, 'manual'); say('ok', tcStatus.dataset.txtPicked || ''); });
                     tcStatus.appendChild(b);
                 });
@@ -434,8 +424,14 @@
     if (addAttr && attrTpl && attrTable) {
         addAttr.addEventListener('click', function () {
             var idx = parseInt(addAttr.dataset.nextIndex || '1', 10);
-            var html = attrTpl.innerHTML.replace(/__i__/g, String(idx));
-            attrTable.tBodies[0].insertAdjacentHTML('beforeend', html);
+            // the row is the page's own <template> (pcAttrTemplate): cloned, its __i__ placeholders replaced in the attributes
+            var row = attrTpl.content.cloneNode(true);
+            row.querySelectorAll('*').forEach(function (el) {
+                Array.prototype.forEach.call(el.attributes, function (a) {
+                    if (a.value.indexOf('__i__') >= 0) el.setAttribute(a.name, a.value.replace(/__i__/g, String(idx)));
+                });
+            });
+            attrTable.tBodies[0].appendChild(row);
             addAttr.dataset.nextIndex = String(idx + 1);
         });
         attrTable.addEventListener('click', function (e) {
@@ -445,9 +441,7 @@
     }
 
     /* ------------------------------------------------------------------ generate-number button lives in an independent form */
-    document.querySelectorAll('[data-pc-confirm]').forEach(function (b) {
-        b.addEventListener('click', function (e) { if (!confirm(b.dataset.pcConfirm)) e.preventDefault(); });
-    });
+    document.querySelectorAll('[data-pc-confirm]').forEach(function (b) { b.setAttribute('data-pems-confirm', b.dataset.pcConfirm); });
 
     /* ------------------------------------------------------------------ Admin: positions multi-select -> CSV (option order) */
     document.querySelectorAll('select[data-pc-pos-target]').forEach(function (sel) {
@@ -471,7 +465,7 @@
                 + (grp && grp.value ? '&commodityGroupId=' + encodeURIComponent(grp.value) : '');
             fetch(url, { credentials: 'same-origin' })
                 .then(function (r) { return r.ok ? r.text() : ''; })
-                .then(function (html) { prevOut.innerHTML = html; });   // HTML comes from our own server-encoded partial
+                .then(function (html) { window.PemsTemplate.html(prevOut, html); });   // HTML comes from our own server-encoded partial
         };
         document.querySelectorAll('[data-pc-preview]').forEach(function (b) {
             b.addEventListener('click', function () { runPreview(b.dataset.pcPreview); });

@@ -1,0 +1,74 @@
+{
+  "kind": "form",
+  "key": "departments-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create department",
+    "fa": "ایجاد دپارتمان"
+  },
+  "description": {
+    "en": "Create a new department",
+    "fa": "ایجاد دپارتمان جدید"
+  },
+  "payload": {
+    "id": "departments-create",
+    "title": {
+      "en": "New department",
+      "fa": "دپارتمان جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "departments-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "owner": "platform",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "maxLength": 20,
+        "pattern": "[A-Za-z0-9_-]+",
+        "messages": {
+          "pattern": {
+            "en": "The code may only contain letters, digits, hyphen and underscore.",
+            "fa": "کد فقط می‌تواند شامل حروف انگلیسی، عدد، خط تیره و زیرخط باشد."
+          }
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "minLength": 2,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

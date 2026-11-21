@@ -1,0 +1,66 @@
+@page
+@model LedgerModel
+@{ ViewData["Title"] = "Ledger"; }
+<h1>Issued licences</h1>
+<form method="get"><label for="customer">Customer reference</label><input id="customer" name="customer" value="@Model.Customer" /> <button type="submit">Filter</button>
+   <a asp-page-handler="Csv" asp-route-customer="@Model.Customer">Export CSV</a></form>
+@if (Model.Message is not null) { <p class="warn">@Model.Message</p> }
+<table>
+    <thead><tr><th>#</th><th>Licence</th><th>Customer</th><th>Install</th><th>Type</th><th>Valid until</th><th>Maintenance until</th><th>Status</th><th></th></tr></thead>
+    <tbody>
+    @foreach (var l in Model.Rows)
+    {
+        <tr>
+            <td>@l.IssueSeq</td><td>@l.LicenceId</td><td>@l.CustomerRef</td><td><code>@l.InstallId</code></td><td>@l.Type</td>
+            <td>@(l.NotAfter is null ? "no expiry" : PEMS.Licensing.Evaluation.LicenseDates.ToJalaliString(l.NotAfter.Value.AddSeconds(-1)) + " (Jalali)")</td>
+            <td>@(l.UpdatesUntil is null ? "-" : PEMS.Licensing.Evaluation.LicenseDates.ToJalaliString(l.UpdatesUntil.Value.AddSeconds(-1)) + " (Jalali)")</td>
+            <td>@Model.EffectiveStatus(l)@(l.Imported ? " (imported)" : "")</td>
+            <td>
+                <a asp-page-handler="Download" asp-route-id="@l.LicenceId">Download</a>
+                @if (l.Status == "active")
+                {
+                    <form method="post" asp-page-handler="Revoke" style="display:inline">
+                        <input type="hidden" name="id" value="@l.LicenceId" />
+                        <input name="reason" placeholder="reason" required maxlength="300" />
+                        <button type="submit">Revoke</button>
+                    </form>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+@functions {
+    public class LedgerModel : Microsoft.AspNetCore.Mvc.RazorPages.PageModel
+    {
+        private readonly Ledger _ledger;
+        private readonly LicenseIssuer _issuer;
+        private readonly VendorSettings _settings;
+        private readonly TimeProvider _time;
+        public IReadOnlyList<LedgerRow> Rows { get; private set; } = Array.Empty<LedgerRow>();
+        [Microsoft.AspNetCore.Mvc.BindProperty(SupportsGet = true)] public string? Customer { get; set; }
+        public string? Message { get; private set; }
+
+        public LedgerModel(Ledger ledger, LicenseIssuer issuer, VendorSettings settings, TimeProvider time) { _ledger = ledger; _issuer = issuer; _settings = settings; _time = time; }
+
+        public void OnGet() => Rows = _ledger.Licences(string.IsNullOrWhiteSpace(Customer) ? null : Customer);
+
+        public string EffectiveStatus(LedgerRow l) => l.Status == "active" && l.NotAfter is { } e && e <= _time.GetUtcNow() ? "expired" : l.Status;
+
+        public Microsoft.AspNetCore.Mvc.IActionResult OnGetCsv()
+            => File(System.Text.Encoding.UTF8.GetBytes(LicenseIssuer.ToCsv(_ledger.Licences(string.IsNullOrWhiteSpace(Customer) ? null : Customer))), "text/csv", "pems-licence-ledger.csv");
+
+        public Microsoft.AspNetCore.Mvc.IActionResult OnGetDownload(string id)
+        {
+            var text = _ledger.GetLicenceText(id);
+            return text is null ? NotFound() : File(System.Text.Encoding.UTF8.GetBytes(text), "application/octet-stream", id + ".pemslic");
+        }
+
+        public void OnPostRevoke(string id, string reason)
+        {
+            _issuer.Revoke(id, reason, _settings.OperatorName);
+            Message = $"{id} revoked. It stays valid on an install that never receives a newer file until revocation lists ship (plan #117); the EULA covers that gap.";
+            OnGet();
+        }
+    }
+}

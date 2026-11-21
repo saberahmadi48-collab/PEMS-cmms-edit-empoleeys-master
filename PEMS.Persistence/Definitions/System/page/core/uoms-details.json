@@ -1,0 +1,73 @@
+{
+  "kind": "page",
+  "key": "uoms-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Units of measure details",
+    "fa": "جزئیات واحدهای اندازه‌گیری"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "uoms-record",
+      "url": "/d/uoms-grid",
+      "idField": "materialUOMId",
+      "fields": [
+        {
+          "key": "code",
+          "label": {
+            "en": "Code",
+            "fa": "کد"
+          }
+        },
+        {
+          "key": "name",
+          "label": {
+            "en": "Name",
+            "fa": "نام"
+          }
+        },
+        {
+          "key": "description",
+          "label": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "wide": true
+        },
+        {
+          "key": "conversionFactor",
+          "label": {
+            "en": "Conversion factor",
+            "fa": "ضریب تبدیل"
+          },
+          "type": "number"
+        },
+        {
+          "key": "isActive",
+          "label": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "type": "bool"
+        }
+      ],
+      "backUrl": "/p/uoms",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/uoms-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

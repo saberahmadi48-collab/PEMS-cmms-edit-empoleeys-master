@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "pc-admin-add-approver",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add an approver to a step",
+    "fa": "افزودن تأییدکننده به گام"
+  },
+  "description": {
+    "en": "Add an approver to a step",
+    "fa": "افزودن تأییدکننده به گام"
+  },
+  "payload": {
+    "id": "pc-admin-add-approver",
+    "title": {
+      "en": "Add an approver to a step",
+      "fa": "افزودن تأییدکننده به گام"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-admin-add-approver",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "stepKey",
+        "label": {
+          "en": "Step key",
+          "fa": "کلید گام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "approverEmployeeId",
+        "label": {
+          "en": "Employee id",
+          "fa": "شناسه‌ی کارمند"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

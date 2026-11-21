@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-chips", Category = "list", Icon = "bi-tags")]
+<div @attributes="Options.Attributes" class="@ListMarkup.Css("lp-chips", Options.CssClass)"><ul aria-label="@Options.ActiveFiltersText" class="pems-filter-chips list-unstyled mb-0">@ChildContent</ul>@if (!string.IsNullOrEmpty(Options.ResetHref) && Options.Count > 1){<a class="small" href="@Options.ResetHref">@Options.ResetAllText</a>}</div>
+@code {
+    [Parameter, EditorRequired] public ListChipsOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

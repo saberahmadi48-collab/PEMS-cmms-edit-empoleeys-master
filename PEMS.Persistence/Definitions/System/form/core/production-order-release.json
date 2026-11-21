@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "production-order-release",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Release the order",
+    "fa": "Release سفارش"
+  },
+  "description": {
+    "en": "Release the order",
+    "fa": "Release سفارش"
+  },
+  "payload": {
+    "id": "production-order-release",
+    "title": {
+      "en": "Release the order",
+      "fa": "Release سفارش"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-order-release",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Order id",
+          "fa": "شناسه‌ی سفارش"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

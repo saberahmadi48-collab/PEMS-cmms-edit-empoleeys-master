@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "reading-import-discard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discard the batch",
+    "fa": "دور ریختن دسته"
+  },
+  "description": {
+    "en": "Discard the batch",
+    "fa": "دور ریختن دسته"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ConditionReadingImport",
+      "action": "Discard",
+      "args": {
+        "batchId": "field:batchId"
+      }
+    },
+    "success": {
+      "en": "The batch was discarded.",
+      "fa": "دسته دور ریخته شد."
+    },
+    "redirect": "/p/reading-import"
+  }
+}

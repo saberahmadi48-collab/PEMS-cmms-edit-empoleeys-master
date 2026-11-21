@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "tq-attachments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "TQ attachments",
+    "fa": "پیوست‌های TQ"
+  },
+  "description": {
+    "en": "TQ attachments",
+    "fa": "پیوست‌های TQ"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TechnicalQueryPage",
+      "action": "Attachments",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

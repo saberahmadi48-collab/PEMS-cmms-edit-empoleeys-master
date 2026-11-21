@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "mmd-create-equipment-class",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateEquipmentClass",
+    "fa": "Equipment Class ساخته شد."
+  },
+  "description": {
+    "en": "CreateEquipmentClass",
+    "fa": "Equipment Class ساخته شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "CreateEquipmentClass",
+      "args": {
+        "code": "field:code",
+        "name": "field:name",
+        "nameFa": "field:nameFa",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "Equipment Class ساخته شد.",
+      "fa": "Equipment Class ساخته شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

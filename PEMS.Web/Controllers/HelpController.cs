@@ -36,26 +36,6 @@ public class HelpController : Controller
         return int.TryParse(claim, out var id) ? id : null;
     }
 
-    public async Task<IActionResult> Index()
-    {
-        ViewData["Title"] = "Help Center";
-        ViewData["Section"] = "Help";
-
-        ViewBag.Categories = await _helpService.GetCategoriesAsync(CurrentLanguage);
-        return View();
-    }
-
-    public async Task<IActionResult> Category(int id)
-    {
-        ViewData["Title"] = "Help Center";
-        ViewData["Section"] = "Help";
-
-        ViewBag.Categories = await _helpService.GetCategoriesAsync(CurrentLanguage);
-        ViewBag.SelectedCategoryId = id;
-        ViewBag.Articles = await _helpService.GetArticlesByCategoryAsync(id, CurrentLanguage);
-        return View("Index");
-    }
-
     public async Task<IActionResult> Article(string code)
     {
         var article = await _helpService.GetArticleByCodeAsync(code, CurrentLanguage);
@@ -70,19 +50,6 @@ public class HelpController : Controller
             ViewBag.StandardReference = await _helpStandardReferenceService.GetByArticleIdAsync(article.HelpArticleId);
 
         return View(article);
-    }
-
-    public async Task<IActionResult> Search(string q)
-    {
-        ViewData["Title"] = "Help Search";
-        ViewData["Section"] = "Help";
-
-        ViewBag.Query = q ?? "";
-        ViewBag.Results = string.IsNullOrWhiteSpace(q)
-            ? Array.Empty<PEMS.Application.DTOs.HelpArticleSummaryDto>()
-            : await _helpService.SearchAsync(q, CurrentLanguage);
-
-        return View();
     }
 
     /// <summary>

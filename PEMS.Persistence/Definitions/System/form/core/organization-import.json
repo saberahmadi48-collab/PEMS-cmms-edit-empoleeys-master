@@ -1,0 +1,39 @@
+{
+  "kind": "form",
+  "key": "organization-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Validate the organization file",
+    "fa": "اعتبارسنجی فایل ساختار سازمانی"
+  },
+  "description": {
+    "en": "Validate the organization file",
+    "fa": "اعتبارسنجی فایل ساختار سازمانی"
+  },
+  "payload": {
+    "id": "organization-import",
+    "title": {
+      "en": "Validate the organization file",
+      "fa": "اعتبارسنجی فایل ساختار سازمانی"
+    },
+    "submitLabel": {
+      "en": "Validate file",
+      "fa": "اعتبارسنجی فایل"
+    },
+    "actionKey": "organization-import",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "file",
+        "label": {
+          "en": "Excel file (.xlsx, up to 5 MB)",
+          "fa": "فایل اکسل (xlsx، تا ۵ مگابایت)"
+        },
+        "kind": "file",
+        "required": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "team-node-deactivate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Deactivate a team node",
+    "fa": "غیرفعال‌سازی گره تیم"
+  },
+  "description": {
+    "en": "Deactivate a team node",
+    "fa": "غیرفعال‌سازی گره تیم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "DeactivateTeamNode",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "teamId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Deactivated.",
+      "fa": "غیرفعال شد."
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "designer-set-value",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set a value of the draft",
+    "fa": "تنظیم مقدار پیش‌نویس"
+  },
+  "description": {
+    "en": "Set a value of the draft",
+    "fa": "تنظیم مقدار پیش‌نویس"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The value was set in the draft.",
+      "fa": "مقدار در پیش‌نویس تنظیم شد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "SetValue",
+      "args": {
+        "reference": "field:ref",
+        "pointer": "field:pointer",
+        "valueJson": "field:value",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

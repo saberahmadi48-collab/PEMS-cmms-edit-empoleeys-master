@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "history-import-discard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discard the batch",
+    "fa": "دور ریختن دسته"
+  },
+  "description": {
+    "en": "Discard the batch",
+    "fa": "دور ریختن دسته"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceHistoryImport",
+      "action": "Discard",
+      "args": {
+        "batchId": "field:batchId"
+      }
+    },
+    "success": {
+      "en": "The batch was discarded.",
+      "fa": "دسته دور ریخته شد."
+    },
+    "redirect": "/p/history-import"
+  }
+}

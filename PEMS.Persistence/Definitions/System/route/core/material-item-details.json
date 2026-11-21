@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "material-item-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material details (old address)",
+    "fa": "Material details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Material details (old address)",
+    "fa": "Material details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/MaterialItem/Details/{id}",
+    "target": "/p/material-item-details?id={id}",
+    "permanent": false
+  }
+}

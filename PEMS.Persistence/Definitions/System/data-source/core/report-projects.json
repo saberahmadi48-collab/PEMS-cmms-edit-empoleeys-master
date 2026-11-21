@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "report-projects",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Projects",
+    "fa": "پروژه‌ها"
+  },
+  "description": {
+    "en": "Projects",
+    "fa": "پروژه‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Projects"
+    }
+  }
+}

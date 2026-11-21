@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "barcode-revoke",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Revoke a barcode (never reactivated)",
+    "fa": "ابطال بارکد (هرگز فعال نمی‌شود)"
+  },
+  "description": {
+    "en": "Revoke a barcode (never reactivated)",
+    "fa": "ابطال بارکد (هرگز فعال نمی‌شود)"
+  },
+  "payload": {
+    "id": "barcode-revoke",
+    "title": {
+      "en": "Revoke a barcode (never reactivated)",
+      "fa": "ابطال بارکد (هرگز فعال نمی‌شود)"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "barcode-revoke",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Barcode id",
+          "fa": "شناسه‌ی بارکد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

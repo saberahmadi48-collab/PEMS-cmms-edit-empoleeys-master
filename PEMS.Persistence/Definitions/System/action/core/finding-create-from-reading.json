@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "finding-create-from-reading",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Raise a finding from a reading",
+    "fa": "ثبت یافته از قرائت"
+  },
+  "description": {
+    "en": "Raise a finding from a reading",
+    "fa": "ثبت یافته از قرائت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Finding",
+      "action": "CreateFromReading",
+      "args": {
+        "description": "field:description",
+        "recommendedAction": "field:recommendedAction",
+        "failureModeId": "field:failureModeId",
+        "failureCauseId": "field:failureCauseId",
+        "conditionReadingId": "field:conditionReadingId"
+      }
+    },
+    "success": {
+      "en": "The finding was recorded.",
+      "fa": "یافته ثبت شد."
+    },
+    "redirect": "/Reliability/ConditionMonitoring?equipmentId={equipmentId}"
+  }
+}

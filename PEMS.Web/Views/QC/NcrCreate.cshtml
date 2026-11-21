@@ -1,51 +1,50 @@
 ﻿@using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-<div class="content-card" style="max-width:800px;">
-    <h6 class="mb-3"><i class="bi bi-exclamation-triangle"></i> Raise New NCR</h6>
+<pems-content-card css="pems-s-3f7efa5f">
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-exclamation-triangle" /> Raise New NCR</pems-heading>
 
-    <form asp-action="NcrCreate" method="post">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">NCR Number</label>
-                <input name="ncrNumber" class="form-control" required placeholder="e.g. NCR-2026-001" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Project"]</label>
-                <select name="projectId" class="form-select" required>
+    <pems-form asp-action="NcrCreate" method="post">
+        <pems-row gap="3">
+            <pems-col md="6">
+                <pems-label>NCR Number</pems-label>
+                <pems-input name="ncrNumber" required placeholder="e.g. NCR-2026-001" />
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Project"]</pems-label>
+                <pems-select name="projectId" required>
                     @foreach (var p in (IEnumerable<dynamic>)ViewBag.Projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                </select>
-            </div>
+                </pems-select>
+            </pems-col>
 
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["QC Discipline"]</label>
-                <select name="qcDisciplineId" class="form-select" required>
+            <pems-col md="6">
+                <pems-label>@Localizer["QC Discipline"]</pems-label>
+                <pems-select name="qcDisciplineId" required>
                     @foreach (var d in (IEnumerable<PEMS.Domain.Entities.QCDiscipline>)ViewBag.QCDisciplines)
                     {
                         <option value="@d.QCDisciplineId">@d.Name</option>
                     }
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Severity"]</label>
-                <select name="severity" class="form-select">
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Severity"]</pems-label>
+                <pems-select name="severity">
                     <option>Minor</option><option>Major</option><option>@Localizer["Critical"]</option>
-                </select>
-            </div>
+                </pems-select>
+            </pems-col>
 
-            <div class="col-md-6">
-                <label class="form-label">Equipment <span class="text-muted small">@Localizer["(optional)"]</span></label>
-                <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]"
-                       data-pems-search data-search-type="Equipment" data-search-hidden="#equipmentIdHidden" autocomplete="off" />
+            <pems-col md="6">
+                <pems-label>Equipment <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
+                <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]" data-pems-search data-search-type="Equipment" data-search-hidden="#equipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="equipmentId" id="equipmentIdHidden" />
-            </div>
+            </pems-col>
 
-            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="4" required></textarea></div>
-        </div>
+            <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="4" required></pems-textarea></pems-col>
+        </pems-row>
 
-        <div class="mt-4">
-            <button type="submit" class="btn btn-danger">@Localizer["Raise NCR"]</button>
-            <a asp-action="NcrIndex" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
-        </div>
-    </form>
-</div>
+        <pems-action-bar css="mt-4">
+            <pems-button tone="danger" type="submit">@Localizer["Raise NCR"]</pems-button>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="NcrIndex">@Localizer["Cancel"]</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>

@@ -1,0 +1,1014 @@
+{
+  "kind": "page",
+  "key": "pc-report",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue Reports",
+    "fa": "گزارش‌های کاتالوگ قطعه"
+  },
+  "description": {
+    "en": "Pipeline, people, activity and equipment of the part catalogue requests, with the workbook (page definition)",
+    "fa": "خط لوله، افراد، فعالیت و تجهیزات درخواست‌های کاتالوگ قطعه، با فایل اکسل (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "pc-report",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "pc-report-filters",
+            "resetUrl": "/p/pc-report",
+            "fields": [
+              {
+                "name": "period",
+                "label": {
+                  "en": "Period",
+                  "fa": "بازه"
+                },
+                "kind": "select",
+                "value": "{{params.period}}",
+                "options": [
+                  {
+                    "value": "ThisMonth",
+                    "label": {
+                      "en": "ThisMonth",
+                      "fa": "این ماه"
+                    }
+                  },
+                  {
+                    "value": "LastMonth",
+                    "label": {
+                      "en": "LastMonth",
+                      "fa": "ماه گذشته"
+                    }
+                  },
+                  {
+                    "value": "ThisQuarter",
+                    "label": {
+                      "en": "ThisQuarter",
+                      "fa": "این فصل"
+                    }
+                  },
+                  {
+                    "value": "ThisYear",
+                    "label": {
+                      "en": "ThisYear",
+                      "fa": "امسال"
+                    }
+                  },
+                  {
+                    "value": "All",
+                    "label": {
+                      "en": "All",
+                      "fa": "همه"
+                    }
+                  },
+                  {
+                    "value": "Custom",
+                    "label": {
+                      "en": "Custom",
+                      "fa": "بازه‌ی دلخواه"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "from",
+                "label": {
+                  "en": "From (custom)",
+                  "fa": "از (دلخواه)"
+                },
+                "kind": "date",
+                "value": "{{params.from}}"
+              },
+              {
+                "name": "to",
+                "label": {
+                  "en": "To (custom)",
+                  "fa": "تا (دلخواه)"
+                },
+                "kind": "date",
+                "value": "{{params.to}}"
+              },
+              {
+                "name": "sectionId",
+                "label": {
+                  "en": "Section",
+                  "fa": "بخش"
+                },
+                "kind": "select",
+                "value": "{{params.sectionId}}",
+                "options": []
+              },
+              {
+                "name": "requestType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "kind": "select",
+                "value": "{{params.requestType}}",
+                "options": [
+                  {
+                    "value": "Add",
+                    "label": {
+                      "en": "Add",
+                      "fa": "افزودن"
+                    }
+                  },
+                  {
+                    "value": "Change",
+                    "label": {
+                      "en": "Change",
+                      "fa": "تغییر"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "text",
+                "value": "{{params.status}}"
+              },
+              {
+                "name": "employeeId",
+                "label": {
+                  "en": "Person",
+                  "fa": "فرد"
+                },
+                "kind": "select",
+                "value": "{{params.employeeId}}",
+                "options": []
+              },
+              {
+                "name": "equipmentId",
+                "label": {
+                  "en": "Equipment id",
+                  "fa": "شناسه‌ی تجهیز"
+                },
+                "kind": "text",
+                "value": "{{params.equipmentId}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "sectionId",
+                "source": "/d/pc-report-sections",
+                "valueField": "value",
+                "labelField": "label"
+              },
+              {
+                "field": "employeeId",
+                "source": "/d/pc-report-employees",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "export",
+          "component": "content-blocks",
+          "options": {
+            "id": "export",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/x/pc-report-export?period={{params.period|url}}&from={{params.from|url}}&to={{params.to|url}}&sectionId={{params.sectionId|url}}&requestType={{params.requestType|url}}&status={{params.status|url}}&employeeId={{params.employeeId|url}}&equipmentId={{params.equipmentId|url}}",
+                "text": {
+                  "en": "Download the whole workbook",
+                  "fa": "دریافت کل فایل اکسل"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/x/pc-report-export?period={{params.period|url}}&from={{params.from|url}}&to={{params.to|url}}&sectionId={{params.sectionId|url}}&requestType={{params.requestType|url}}&status={{params.status|url}}&employeeId={{params.employeeId|url}}&equipmentId={{params.equipmentId|url}}&sheet=people",
+                "text": {
+                  "en": "People sheet",
+                  "fa": "برگه‌ی افراد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/x/pc-report-export?period={{params.period|url}}&from={{params.from|url}}&to={{params.to|url}}&sectionId={{params.sectionId|url}}&requestType={{params.requestType|url}}&status={{params.status|url}}&employeeId={{params.employeeId|url}}&equipmentId={{params.equipmentId|url}}&sheet=activity",
+                "text": {
+                  "en": "Activity sheet",
+                  "fa": "برگه‌ی فعالیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/x/pc-report-export?period={{params.period|url}}&from={{params.from|url}}&to={{params.to|url}}&sectionId={{params.sectionId|url}}&requestType={{params.requestType|url}}&status={{params.status|url}}&employeeId={{params.employeeId|url}}&equipmentId={{params.equipmentId|url}}&sheet=equipment",
+                "text": {
+                  "en": "Equipment sheet",
+                  "fa": "برگه‌ی تجهیزات"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/x/pc-report-export?period={{params.period|url}}&from={{params.from|url}}&to={{params.to|url}}&sectionId={{params.sectionId|url}}&requestType={{params.requestType|url}}&status={{params.status|url}}&employeeId={{params.employeeId|url}}&equipmentId={{params.equipmentId|url}}&sheet=parts",
+                "text": {
+                  "en": "Parts sheet",
+                  "fa": "برگه‌ی قطعات"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/x/pc-report-export?period={{params.period|url}}&from={{params.from|url}}&to={{params.to|url}}&sectionId={{params.sectionId|url}}&requestType={{params.requestType|url}}&status={{params.status|url}}&employeeId={{params.employeeId|url}}&equipmentId={{params.equipmentId|url}}&sheet=stages",
+                "text": {
+                  "en": "Stages sheet",
+                  "fa": "برگه‌ی مراحل"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "t-total",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Requests",
+              "fa": "درخواست‌ها"
+            },
+            "icon": "bi-collection"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-report-summary?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+              "first": true,
+              "map": {
+                "value": "total"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-add",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Add",
+              "fa": "افزودن"
+            },
+            "icon": "bi-plus-circle"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-report-summary?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+              "first": true,
+              "map": {
+                "value": "add"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-change",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Change",
+              "fa": "تغییر"
+            },
+            "icon": "bi-pencil"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-report-summary?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+              "first": true,
+              "map": {
+                "value": "change"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-open",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Open",
+              "fa": "باز"
+            },
+            "icon": "bi-hourglass-split",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-report-summary?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+              "first": true,
+              "map": {
+                "value": "open"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-done",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Completed in the period",
+              "fa": "تکمیل‌شده در بازه"
+            },
+            "icon": "bi-check-circle",
+            "tone": "success"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-report-summary?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+              "first": true,
+              "map": {
+                "value": "completedInPeriod"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-parts",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Part numbers registered",
+              "fa": "شماره قطعه‌ی ثبت‌شده"
+            },
+            "icon": "bi-123"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-report-summary?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+              "first": true,
+              "map": {
+                "value": "partNumbersRegisteredInPeriod"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-avg",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Average days to complete",
+              "fa": "میانگین روز تا تکمیل"
+            },
+            "icon": "bi-clock"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-report-summary?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+              "first": true,
+              "map": {
+                "value": "averageDaysToComplete"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-median",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Median days to complete",
+              "fa": "میانه‌ی روز تا تکمیل"
+            },
+            "icon": "bi-clock-history"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/pc-report-summary?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+              "first": true,
+              "map": {
+                "value": "medianDaysToComplete"
+              }
+            }
+          }
+        },
+        {
+          "id": "h-status",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-status",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "By status",
+                  "fa": "به تفکیک وضعیت"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "by-status",
+          "component": "data-grid",
+          "options": {
+            "id": "by-status",
+            "url": "/d/pc-report-by-status?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 240
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 100,
+                "type": "number"
+              }
+            ],
+            "pageSize": 10,
+            "height": 300
+          }
+        },
+        {
+          "id": "h-step",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-step",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Open requests by step",
+                  "fa": "درخواست‌های باز به تفکیک مرحله"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "by-step",
+          "component": "data-grid",
+          "options": {
+            "id": "by-step",
+            "url": "/d/pc-report-by-step?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Step",
+                  "fa": "مرحله"
+                },
+                "width": 240
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 100,
+                "type": "number"
+              }
+            ],
+            "pageSize": 10,
+            "height": 300
+          }
+        },
+        {
+          "id": "h-age",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-age",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Age of open requests",
+                  "fa": "سن درخواست‌های باز"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "open-age",
+          "component": "data-grid",
+          "options": {
+            "id": "open-age",
+            "url": "/d/pc-report-open-age?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Age",
+                  "fa": "سن"
+                },
+                "width": 200
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 100,
+                "type": "number"
+              }
+            ],
+            "pageSize": 10,
+            "height": 300
+          }
+        },
+        {
+          "id": "h-months",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-months",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "By month",
+                  "fa": "به تفکیک ماه"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "months",
+          "component": "data-grid",
+          "options": {
+            "id": "months",
+            "url": "/d/pc-report-months?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+            "idField": "month",
+            "columns": [
+              {
+                "key": "month",
+                "header": {
+                  "en": "Month",
+                  "fa": "ماه"
+                },
+                "width": 140
+              },
+              {
+                "key": "created",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "completed",
+                "header": {
+                  "en": "Completed",
+                  "fa": "تکمیل"
+                },
+                "width": 100,
+                "type": "number"
+              }
+            ],
+            "pageSize": 12,
+            "height": 360
+          }
+        },
+        {
+          "id": "h-people",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-people",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "People",
+                  "fa": "افراد"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "people",
+          "component": "data-grid",
+          "options": {
+            "id": "people",
+            "url": "/d/pc-report-people?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+            "idField": "employeeId",
+            "columns": [
+              {
+                "key": "employeeName",
+                "header": {
+                  "en": "Person",
+                  "fa": "فرد"
+                },
+                "width": 220
+              },
+              {
+                "key": "created",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "submitted",
+                "header": {
+                  "en": "Submitted",
+                  "fa": "ارسال"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "approved",
+                "header": {
+                  "en": "Approved",
+                  "fa": "تأیید"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "returned",
+                "header": {
+                  "en": "Returned",
+                  "fa": "بازگشت"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "cancelled",
+                "header": {
+                  "en": "Cancelled",
+                  "fa": "لغو"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "partNumbersRegistered",
+                "header": {
+                  "en": "Part numbers",
+                  "fa": "شماره قطعه"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "total",
+                "header": {
+                  "en": "Total",
+                  "fa": "جمع"
+                },
+                "width": 90,
+                "type": "number"
+              }
+            ],
+            "pageSize": 15,
+            "height": 420
+          }
+        },
+        {
+          "id": "h-activity",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-activity",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Activity (the latest 500; the workbook has all)",
+                  "fa": "فعالیت (۵۰۰ مورد آخر؛ فایل اکسل همه را دارد)"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "activity",
+          "component": "data-grid",
+          "options": {
+            "id": "activity",
+            "url": "/d/pc-report-activity?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+            "idField": "requestId",
+            "columns": [
+              {
+                "key": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "employeeName",
+                "header": {
+                  "en": "Person",
+                  "fa": "فرد"
+                },
+                "width": 180
+              },
+              {
+                "key": "action",
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                },
+                "width": 120
+              },
+              {
+                "key": "stepKey",
+                "header": {
+                  "en": "Step",
+                  "fa": "مرحله"
+                },
+                "width": 120
+              },
+              {
+                "key": "requestNumber",
+                "header": {
+                  "en": "Request",
+                  "fa": "درخواست"
+                },
+                "width": 130
+              },
+              {
+                "key": "requestType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 90
+              },
+              {
+                "key": "manufacturerPartNumber",
+                "header": {
+                  "en": "Manufacturer part no",
+                  "fa": "شماره قطعه‌ی سازنده"
+                },
+                "width": 160
+              },
+              {
+                "key": "assignedPartNumber",
+                "header": {
+                  "en": "Part number",
+                  "fa": "شماره قطعه"
+                },
+                "width": 130
+              },
+              {
+                "key": "technicalClass",
+                "header": {
+                  "en": "Technical class",
+                  "fa": "کلاس فنی"
+                },
+                "width": 160
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        },
+        {
+          "id": "h-equipment",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-equipment",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Equipment",
+                  "fa": "تجهیزات"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "equipment",
+          "component": "data-grid",
+          "options": {
+            "id": "equipment",
+            "url": "/d/pc-report-equipment?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+            "idField": "equipmentKey",
+            "columns": [
+              {
+                "key": "tag",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 140
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 220
+              },
+              {
+                "key": "inRegister",
+                "header": {
+                  "en": "In the register",
+                  "fa": "در رجیستر"
+                },
+                "width": 110,
+                "type": "bool"
+              },
+              {
+                "key": "requests",
+                "header": {
+                  "en": "Requests",
+                  "fa": "درخواست‌ها"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "registeredPartNumbers",
+                "header": {
+                  "en": "Registered parts",
+                  "fa": "قطعات ثبت‌شده"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "inProgress",
+                "header": {
+                  "en": "In progress",
+                  "fa": "در جریان"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "critical",
+                "header": {
+                  "en": "Critical",
+                  "fa": "بحرانی"
+                },
+                "width": 90,
+                "type": "number"
+              }
+            ],
+            "pageSize": 15,
+            "height": 420
+          }
+        },
+        {
+          "id": "h-parts",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-parts",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Parts per equipment (the first 500)",
+                  "fa": "قطعات هر تجهیز (۵۰۰ مورد اول)"
+                },
+                "level": 3
+              }
+            ]
+          }
+        },
+        {
+          "id": "parts",
+          "component": "data-grid",
+          "options": {
+            "id": "parts",
+            "url": "/d/pc-report-parts?f.period={{params.period|url}}&f.from={{params.from|url}}&f.to={{params.to|url}}&f.sectionId={{params.sectionId|url}}&f.requestType={{params.requestType|url}}&f.status={{params.status|url}}&f.employeeId={{params.employeeId|url}}&f.equipmentId={{params.equipmentId|url}}",
+            "idField": "requestId",
+            "columns": [
+              {
+                "key": "equipmentTag",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 140
+              },
+              {
+                "key": "installedQuantity",
+                "header": {
+                  "en": "Installed qty",
+                  "fa": "تعداد نصب"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "requestNumber",
+                "header": {
+                  "en": "Request",
+                  "fa": "درخواست"
+                },
+                "width": 130
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "assignedPartNumber",
+                "header": {
+                  "en": "Part number",
+                  "fa": "شماره قطعه"
+                },
+                "width": 130
+              },
+              {
+                "key": "manufacturerName",
+                "header": {
+                  "en": "Manufacturer",
+                  "fa": "سازنده"
+                },
+                "width": 160
+              },
+              {
+                "key": "manufacturerPartNumber",
+                "header": {
+                  "en": "Manufacturer part no",
+                  "fa": "شماره قطعه‌ی سازنده"
+                },
+                "width": 160
+              },
+              {
+                "key": "technicalClass",
+                "header": {
+                  "en": "Technical class",
+                  "fa": "کلاس فنی"
+                },
+                "width": 160
+              },
+              {
+                "key": "isCritical",
+                "header": {
+                  "en": "Critical",
+                  "fa": "بحرانی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "isRegistered",
+                "header": {
+                  "en": "Registered",
+                  "fa": "ثبت‌شده"
+                },
+                "width": 100,
+                "type": "bool"
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    }
+  }
+}

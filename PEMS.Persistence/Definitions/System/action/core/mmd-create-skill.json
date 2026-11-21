@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "mmd-create-skill",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateSkill",
+    "fa": "مهارت ساخته شد."
+  },
+  "description": {
+    "en": "CreateSkill",
+    "fa": "مهارت ساخته شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "CreateSkill",
+      "args": {
+        "name": "field:name",
+        "disciplineId": "field:disciplineId",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "مهارت ساخته شد.",
+      "fa": "مهارت ساخته شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

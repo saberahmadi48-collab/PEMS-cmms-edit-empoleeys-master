@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "reading-import-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Condition Reading Import review (old address)",
+    "fa": "Condition Reading Import review (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Condition Reading Import review (old address)",
+    "fa": "Condition Reading Import review (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ConditionReadingImport/Review",
+    "target": "/p/reading-import-review",
+    "permanent": false
+  }
+}

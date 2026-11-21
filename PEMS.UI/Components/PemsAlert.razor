@@ -1,0 +1,81 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("alert", Category = "feedback", Icon = "bi-exclamation-circle")]
+@inject IPemsLocale Locale
+@{
+    var tone = Options.Tone.ToString().ToLowerInvariant();
+    var role = Options.Tone is AlertTone.Danger or AlertTone.Warning ? "alert" : "status";
+}
+@if (Options.Skin == ComponentSkin.Bootstrap)
+{
+    <div class="@BootstrapClass(tone)" role="@role" @attributes="Options.Attributes">
+        @if (Options.Title is not null)
+        {
+            <strong>@Locale.Text(Options.Title)</strong>
+        }
+        @if (Options.Message is not null)
+        {
+            <span>@Locale.Text(Options.Message)</span>
+        }
+        @ChildContent
+        @if (!string.IsNullOrWhiteSpace(Options.TraceId))
+        {
+            <div class="small mt-1">
+                @if (Options.TraceLabel is not null)
+                {
+                    <span>@Locale.Text(Options.TraceLabel)</span>
+                }
+                <code dir="ltr">@Options.TraceId</code>
+                @if (Options.CopyLabel is not null)
+                {
+                    <button type="button" class="btn btn-sm btn-outline-secondary py-0" data-pems-copy="@Options.TraceId">@Locale.Text(Options.CopyLabel)</button>
+                }
+            </div>
+        }
+        @if (Options.DismissLabel is not null)
+        {
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="@Locale.Text(Options.DismissLabel)"></button>
+        }
+    </div>
+}
+else
+{
+    <div class="pems-alert pems-alert--@tone" role="@role">
+        @if (Options.Title is not null)
+        {
+            @if (Options.Title is not null)
+        {
+            <p class="pems-alert__title">@Locale.Text(Options.Title)</p>
+        }
+        }
+        @if (Options.Message is not null)
+        {
+            <p class="pems-alert__text">@Locale.Text(Options.Message)</p>
+        }
+        @if (!string.IsNullOrWhiteSpace(Options.TraceId))
+        {
+            <p class="pems-alert__trace">
+                @if (Options.TraceLabel is not null)
+                {
+                    <span>@Locale.Text(Options.TraceLabel)</span>
+                }
+                <code dir="ltr">@Options.TraceId</code>
+                @if (Options.CopyLabel is not null)
+                {
+                    <button type="button" class="pems-alert__copy" data-pems-copy="@Options.TraceId">@Locale.Text(Options.CopyLabel)</button>
+                }
+            </p>
+        }
+        @ChildContent
+        @if (Options.DismissLabel is not null)
+        {
+            <button type="button" class="pems-alert__dismiss" data-pems-dismiss aria-label="@Locale.Text(Options.DismissLabel)"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+        }
+    </div>
+}
+@code {
+    [Parameter, EditorRequired] public AlertOptions Options { get; set; } = default!;
+    /// <summary>Page markup inside the alert (links, lists, buttons) when the text alone is not enough.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string BootstrapClass(string tone) =>
+        "alert" + (Options.Tone == AlertTone.None ? "" : " alert-" + tone) + (Options.DismissLabel is null ? "" : " alert-dismissible fade show") + (string.IsNullOrWhiteSpace(Options.CssClass) ? "" : " " + Options.CssClass);
+}

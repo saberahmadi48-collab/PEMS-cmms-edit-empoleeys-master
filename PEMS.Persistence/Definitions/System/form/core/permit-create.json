@@ -1,0 +1,165 @@
+{
+  "kind": "form",
+  "key": "permit-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New permit",
+    "fa": "مجوز جدید"
+  },
+  "description": {
+    "en": "New permit",
+    "fa": "مجوز جدید"
+  },
+  "payload": {
+    "id": "permit-create",
+    "title": {
+      "en": "New permit",
+      "fa": "مجوز جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "permit-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "permitType",
+        "label": {
+          "en": "Permit type",
+          "fa": "نوع مجوز"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "permit-types"
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 300
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Low",
+            "label": {
+              "en": "Low",
+              "fa": "کم"
+            }
+          },
+          {
+            "value": "Medium",
+            "label": {
+              "en": "Medium",
+              "fa": "متوسط"
+            }
+          },
+          {
+            "value": "High",
+            "label": {
+              "en": "High",
+              "fa": "زیاد"
+            }
+          },
+          {
+            "value": "Urgent",
+            "label": {
+              "en": "Urgent",
+              "fa": "فوری"
+            }
+          }
+        ]
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "text",
+        "maxLength": 4000
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment id",
+          "fa": "شناسه‌ی تجهیز"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "functionalLocationId",
+        "label": {
+          "en": "Functional location",
+          "fa": "مکان عملکردی"
+        },
+        "kind": "select",
+        "optionsFrom": "permit-locations"
+      },
+      {
+        "name": "workOrderId",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه‌ی دستورکار"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "permitReceiverEmployeeId",
+        "label": {
+          "en": "Receiver",
+          "fa": "دریافت‌کننده"
+        },
+        "kind": "select",
+        "optionsFrom": "permit-receivers"
+      },
+      {
+        "name": "validFrom",
+        "label": {
+          "en": "Valid from",
+          "fa": "اعتبار از"
+        },
+        "kind": "datetime"
+      },
+      {
+        "name": "validTo",
+        "label": {
+          "en": "Valid to",
+          "fa": "اعتبار تا"
+        },
+        "kind": "datetime"
+      }
+    ]
+  }
+}

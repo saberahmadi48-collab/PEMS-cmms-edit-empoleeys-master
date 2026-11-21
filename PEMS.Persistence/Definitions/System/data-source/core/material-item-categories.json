@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "material-item-categories",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material categories",
+    "fa": "دسته‌بندی مواد"
+  },
+  "description": {
+    "en": "Material categories",
+    "fa": "دسته‌بندی مواد"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MaterialItem",
+      "action": "Categories",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

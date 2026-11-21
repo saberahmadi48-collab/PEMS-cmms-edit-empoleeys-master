@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "vendor-recalculate-risk",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Recalculate the risk",
+    "fa": "محاسبه‌ی مجدد ریسک"
+  },
+  "description": {
+    "en": "Recalculate the risk",
+    "fa": "محاسبه‌ی مجدد ریسک"
+  },
+  "payload": {
+    "id": "vendor-recalculate-risk",
+    "title": {
+      "en": "Recalculate the risk",
+      "fa": "محاسبه‌ی مجدد ریسک"
+    },
+    "submitLabel": {
+      "en": "Recalculate",
+      "fa": "محاسبه"
+    },
+    "actionKey": "vendor-recalculate-risk",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Vendor id",
+          "fa": "شناسه‌ی فروشنده"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

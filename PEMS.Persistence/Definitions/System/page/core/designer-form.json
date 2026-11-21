@@ -1,0 +1,101 @@
+{
+  "kind": "page",
+  "key": "designer-form",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Form designer: fields (open it with ?ref=appKey:kind:key)",
+    "fa": "طراح فرم: فیلدها"
+  },
+  "description": {
+    "en": "Form designer: fields (open it with ?ref=appKey:kind:key)",
+    "fa": "طراح فرم: فیلدها"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "designer-form",
+    "permission": "Definitions.View",
+    "template": "entity-list",
+    "args": {
+      "id": "designer-form",
+      "url": "/d/definition-payload-grid?f.ref=eq:{{params.ref|url}}&f.pointer=eq:/fields",
+      "idField": "rowId",
+      "newUrl": "/f/designer-form-field",
+      "newLabel": {
+        "en": "Add a field",
+        "fa": "افزودن فیلد"
+      },
+      "columns": [
+        {
+          "key": "index",
+          "header": {
+            "en": "#",
+            "fa": "#"
+          },
+          "width": 70
+        },
+        {
+          "key": "summary",
+          "header": {
+            "en": "Part",
+            "fa": "بخش"
+          },
+          "width": 260
+        },
+        {
+          "key": "json",
+          "header": {
+            "en": "Value",
+            "fa": "مقدار"
+          },
+          "width": 480
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 300,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "up",
+              "label": {
+                "en": "Up",
+                "fa": "بالا"
+              },
+              "url": "/a/designer-move-up",
+              "method": "post"
+            },
+            {
+              "key": "down",
+              "label": {
+                "en": "Down",
+                "fa": "پایین"
+              },
+              "url": "/a/designer-move-down",
+              "method": "post"
+            },
+            {
+              "key": "remove",
+              "label": {
+                "en": "Remove",
+                "fa": "حذف"
+              },
+              "url": "/a/designer-remove-row",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Remove this part from the draft?",
+                "fa": "این بخش از پیش‌نویس حذف شود؟"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

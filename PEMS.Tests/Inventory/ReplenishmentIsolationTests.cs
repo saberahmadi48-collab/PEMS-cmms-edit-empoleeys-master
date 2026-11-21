@@ -18,7 +18,7 @@ public class ReplenishmentIsolationTests
     private static readonly string[] P5Sources =
     {
         "PEMS.Persistence/Servises/ReplenishmentRecommendationService.cs",
-        "PEMS.Web/Areas/Warehouse/Controllers/ReplenishmentController.cs",
+        "PEMS.Web/Services/ReplenishmentOperations.cs",
         "PEMS.Application/Replenishment/ReplenishmentRules.cs",
         "PEMS.Application/Replenishment/ReplenishmentModels.cs",
         "PEMS.Application/Interfaces/IReplenishmentRecommendationService.cs"

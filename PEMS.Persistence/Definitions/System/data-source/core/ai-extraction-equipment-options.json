@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "ai-extraction-equipment-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment choices",
+    "fa": "تجهیزات"
+  },
+  "description": {
+    "en": "Equipment choices",
+    "fa": "تجهیزات"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "entity-options",
+    "parameters": {
+      "entity": "Equipment",
+      "value": "EquipmentId",
+      "label": "TagNumber"
+    }
+  }
+}

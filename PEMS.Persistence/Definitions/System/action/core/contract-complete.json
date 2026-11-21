@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "contract-complete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Complete contract",
+    "fa": "تکمیل قرارداد"
+  },
+  "description": {
+    "en": "Complete contract",
+    "fa": "تکمیل قرارداد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Contract",
+      "action": "Complete",
+      "args": {
+        "contractId": "field:contractId",
+        "actorRoles": "context:roles"
+      }
+    },
+    "success": {
+      "en": "The contract was completed.",
+      "fa": "قرارداد تکمیل شد."
+    },
+    "redirect": "/Contract/Details/{contractId}"
+  }
+}

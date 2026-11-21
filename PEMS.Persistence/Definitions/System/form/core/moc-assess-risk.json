@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "moc-assess-risk",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assess the risk",
+    "fa": "ارزیابی ریسک"
+  },
+  "description": {
+    "en": "Assess the risk",
+    "fa": "ارزیابی ریسک"
+  },
+  "payload": {
+    "id": "moc-assess-risk",
+    "title": {
+      "en": "Assess the risk",
+      "fa": "ارزیابی ریسک"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "moc-assess-risk",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "mocId",
+        "label": {
+          "en": "MOC id",
+          "fa": "شناسه‌ی MOC"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "riskAssessmentText",
+        "label": {
+          "en": "Risk assessment",
+          "fa": "ارزیابی ریسک"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 4000
+      }
+    ]
+  }
+}

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Common;
@@ -25,7 +26,7 @@ public class WorkOrderLaborService : IWorkOrderLaborService
     // کسب‌وکاری صریح برای زمان‌ثبت در حین توقف، پیش‌فرض رد است).
     public async Task<int> AddLaborEntryAsync(
         int workOrderId, int employeeId, int? teamId, DateTime workDate,
-        decimal regularHours, decimal overtimeHours, string? notes, WorkOrderActor actor)
+        decimal regularHours, decimal overtimeHours, string? notes, WorkOrderActor actor, bool isCorrection = false)
     {
         // Rule 6: ساعت کار نمی‌تواند منفی باشد
         if (regularHours < 0 || overtimeHours < 0)
@@ -38,8 +39,11 @@ public class WorkOrderLaborService : IWorkOrderLaborService
         if (workOrder == null) throw new Exception("WorkOrder یافت نشد.");
 
         // ---------- F3: وضعیت گردش‌کار ----------
-        if (workOrder.Status != "InProgress")
-            throw new Exception("ثبت ساعت کار واقعی فقط در مرحله‌ی «در حال اجرا» مجاز است.");
+        // H29: اصلاح پیش از تصویب نهایی (وضعیت Completed) فقط وقتی مجاز است که فراخوان دروازه‌ی بخش (مجوز اصلاح + دلیل + ممیزی) را گذرانده باشد؛
+        // نرخ همچنان Snapshot لحظه‌ی ثبت است (GetEffectiveRatesAsync) و Closed هرگز مجاز نیست.
+        var statusOk = workOrder.Status == "InProgress" || (isCorrection && workOrder.Status == "Completed");
+        if (!statusOk)
+            throw new Exception("ثبت ساعت کار واقعی فقط در مرحله‌ی «در حال اجرا» (یا اصلاح مجاز پیش از تصویب نهایی) مجاز است.");
 
         var employee = await _context.Employees.FirstOrDefaultAsync(x => x.EmployeeId == employeeId);
         if (employee == null) throw new Exception("کارمند یافت نشد.");
@@ -80,6 +84,9 @@ public class WorkOrderLaborService : IWorkOrderLaborService
         }
 
         var (regularRate, overtimeRate) = await GetEffectiveRatesAsync(employeeId, workDate);
+        // B8: ساعت بدون نرخ مؤثر، هزینه‌ی صفر بی‌صدا می‌ساخت؛ حالا ثبت رد می‌شود (نرخ Snapshot همچنان در رکورد ذخیره می‌شود)
+        if (regularHours > 0 && regularRate <= 0) throw new LaborRateMissingException(employeeId, "Normal", workDate);
+        if (overtimeHours > 0 && overtimeRate <= 0) throw new LaborRateMissingException(employeeId, "Overtime", workDate);
 
         // Rule 8: LaborCost همیشه در سرور محاسبه می‌شود، هرگز از ورودی Client گرفته نمی‌شود
         var laborCost = (regularHours * regularRate) + (overtimeHours * overtimeRate);

@@ -1,0 +1,20 @@
+{
+  "kind": "data-source",
+  "key": "menu-tree-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Menu tree",
+    "fa": "درخت منو"
+  },
+  "description": {
+    "en": "The items of a menu as an indented tree",
+    "fa": "آیتم‌های منو به‌صورت درخت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "menu-tree",
+    "permission": "Definitions.View",
+    "parameters": {}
+  }
+}

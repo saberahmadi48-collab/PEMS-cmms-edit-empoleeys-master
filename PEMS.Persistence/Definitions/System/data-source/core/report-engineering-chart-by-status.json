@@ -1,0 +1,31 @@
+{
+  "kind": "data-source",
+  "key": "report-engineering-chart-by-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering chart: By status",
+    "fa": "نمودار engineering: بر اساس وضعیت"
+  },
+  "description": {
+    "en": "Engineering chart: By status",
+    "fa": "نمودار engineering: بر اساس وضعیت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Engineering",
+      "args": {
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      },
+      "where": {
+        "key": "ByStatus"
+      }
+    }
+  }
+}

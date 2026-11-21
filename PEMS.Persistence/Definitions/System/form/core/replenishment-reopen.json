@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "replenishment-reopen",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reopen a recommendation",
+    "fa": "بازگشایی توصیه"
+  },
+  "description": {
+    "en": "Reopen a recommendation",
+    "fa": "بازگشایی توصیه"
+  },
+  "payload": {
+    "id": "replenishment-reopen",
+    "title": {
+      "en": "Reopen a recommendation",
+      "fa": "بازگشایی توصیه"
+    },
+    "submitLabel": {
+      "en": "Reopen",
+      "fa": "بازگشایی"
+    },
+    "actionKey": "replenishment-reopen",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Recommendation id",
+          "fa": "شناسه‌ی توصیه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "note",
+        "label": {
+          "en": "Note",
+          "fa": "یادداشت"
+        },
+        "kind": "textArea",
+        "maxLength": 500
+      }
+    ]
+  }
+}

@@ -179,22 +179,31 @@ public class OrganizationImportService : IOrganizationImportService
         if (!commit) { Summarize(result, defs, posByCode, codeById, deptIds, holderRows, empByCode, activeAssigns, false, _ctx, now); return result; }
 
         // ---- ۴) ذخیره (یک SaveChanges ⇒ اتمیک)
-        var tx = _ctx.Database.IsRelational() ? await _ctx.Database.BeginTransactionAsync(ct) : null;
+        // SCRUM-497: the app runs with EnableRetryOnFailure, which accepts a user transaction only inside the execution strategy.
+        // The changes are applied to the context once; each attempt saves them without accepting them (EF Core connection-resiliency
+        // pattern), so a retry after a transient failure saves the same changes again and nothing is applied twice.
         try
         {
             Summarize(result, defs, posByCode, codeById, deptIds, holderRows, empByCode, activeAssigns, true, _ctx, now);
-            await _ctx.SaveChangesAsync(ct);
-            if (tx != null) await tx.CommitAsync(ct);
+            if (_ctx.Database.IsRelational())
+            {
+                await _ctx.Database.CreateExecutionStrategy().ExecuteAsync(async () =>
+                {
+                    await using var tx = await _ctx.Database.BeginTransactionAsync(ct);
+                    await _ctx.SaveChangesAsync(acceptAllChangesOnSuccess: false, ct);
+                    await tx.CommitAsync(ct);
+                });
+                _ctx.ChangeTracker.AcceptAllChanges();
+            }
+            else await _ctx.SaveChangesAsync(ct);
             result.Committed = true;
         }
         catch (Exception ex)
         {
-            if (tx != null) await tx.RollbackAsync(ct);
             _ctx.ChangeTracker.Clear();
             result.Errors.Add("Nothing was saved: " + ex.Message);
             result.Committed = false;
         }
-        finally { if (tx != null) await tx.DisposeAsync(); }
         return result;
     }
 

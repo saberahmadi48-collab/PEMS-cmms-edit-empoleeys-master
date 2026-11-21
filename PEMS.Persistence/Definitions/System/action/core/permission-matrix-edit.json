@@ -1,0 +1,40 @@
+{
+  "kind": "action",
+  "key": "permission-matrix-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save permissions of a role",
+    "fa": "ذخیره‌ی مجوزهای یک نقش"
+  },
+  "description": {
+    "en": "Save all cells of one role",
+    "fa": "ذخیره‌ی همه‌ی خانه‌های یک نقش"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PermissionMatrix",
+      "action": "SetRole",
+      "args": {
+        "roleName": "field:id",
+        "cells": "field:cells"
+      },
+      "load": {
+        "operation": {
+          "model": "PermissionMatrix",
+          "action": "CellsOfRole",
+          "args": {
+            "roleName": "param:id"
+          }
+        }
+      }
+    },
+    "success": {
+      "en": "Permissions saved.",
+      "fa": "مجوزها ذخیره شد."
+    },
+    "redirect": "/p/permission-matrix"
+  }
+}

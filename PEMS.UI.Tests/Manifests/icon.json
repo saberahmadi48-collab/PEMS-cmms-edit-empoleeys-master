@@ -1,0 +1,51 @@
+{
+  "key": "icon",
+  "component": "PEMS.UI.Components.PemsIcon",
+  "category": "display",
+  "icon": "bi-emoji-smile",
+  "nameKey": "component.icon",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "IconOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "name": "bi-gear",
+    "css": "me-1"
+  }
+}

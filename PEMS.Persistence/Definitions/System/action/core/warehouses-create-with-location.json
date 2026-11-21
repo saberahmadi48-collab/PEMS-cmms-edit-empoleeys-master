@@ -1,0 +1,83 @@
+{
+  "kind": "action",
+  "key": "warehouses-create-with-location",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create warehouse with its first location",
+    "fa": "ایجاد انبار با نخستین محل نگهداری"
+  },
+  "description": {
+    "en": "Two writes in one transaction (action.steps): the warehouse, then its first storage location with the id of the new warehouse. A refusal of the second leaves the first unwritten (SCRUM-799).",
+    "fa": "دو نوشتن در یک تراکنش: انبار و سپس نخستین محل نگهداری آن. رد شدن مرحله دوم مرحله اول را نمی‌نویسد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "action.steps",
+    "parameters": {
+      "transaction": true,
+      "steps": [
+        {
+          "as": "warehouse",
+          "handler": "entity.create",
+          "parameters": {
+            "entity": "Warehouse",
+            "map": {
+              "code": "Code",
+              "name": "Name",
+              "description": "Description"
+            },
+            "required": [
+              "Code",
+              "Name"
+            ],
+            "defaults": {
+              "IsActive": true,
+              "CreatedDate": "$now"
+            },
+            "unique": [
+              {
+                "fields": [
+                  "Code"
+                ],
+                "message": {
+                  "en": "This code already exists.",
+                  "fa": "این کد از قبل وجود دارد."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "as": "location",
+          "handler": "entity.create",
+          "values": {
+            "warehouseId": "step:warehouse.WarehouseId"
+          },
+          "parameters": {
+            "entity": "StorageLocation",
+            "map": {
+              "locationCode": "Code",
+              "locationName": "Name",
+              "warehouseId": "WarehouseId"
+            },
+            "required": [
+              "Code",
+              "Name",
+              "WarehouseId"
+            ],
+            "defaults": {
+              "IsActive": true,
+              "CreatedDate": "$now"
+            }
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Warehouse and its first location created.",
+      "fa": "انبار و نخستین محل نگهداری ایجاد شد."
+    },
+    "redirect": "/p/warehouses"
+  }
+}

@@ -11,8 +11,27 @@ namespace PEMS.Tests.TestSupport;
 /// QCController) - با یک نمونه‌ی در-حافظه از وضعیت هر Instance، تا GetInstanceAsync بعد از
 /// StartInstanceAsync واقعاً چیزی برگرداند.
 /// </summary>
-public class FakeWorkflowRuntime : IWorkflowRuntime
+public class FakeWorkflowRuntime : IWorkflowRuntime, IWorkflowInstanceControl
 {
+    // SCRUM-546: administrative cancel / reopen of an instance, like WorkflowRuntimeService
+    public Task<bool> CancelInstanceAsync(int workflowInstanceId, int? actorEmployeeId, string? reason, CancellationToken ct = default)
+    {
+        var entry = _instances.Values.FirstOrDefault(x => x.WorkflowInstanceId == workflowInstanceId);
+        if (entry == null || entry.Status != "Running") return Task.FromResult(false);
+        entry.Status = "Cancelled";
+        entry.CompletionDate = DateTime.Now;
+        return Task.FromResult(true);
+    }
+
+    public Task<bool> ReopenInstanceAsync(int workflowInstanceId, int toStageId, int? actorEmployeeId, string reason, CancellationToken ct = default)
+    {
+        var entry = _instances.Values.FirstOrDefault(x => x.WorkflowInstanceId == workflowInstanceId);
+        if (entry == null || entry.Status != "Completed") return Task.FromResult(false);
+        entry.Status = "Running";
+        entry.CompletionDate = null;
+        return Task.FromResult(true);
+    }
+
     public HashSet<int> PendingPermitIds { get; set; } = new();
 
     /// <summary>
@@ -23,6 +42,9 @@ public class FakeWorkflowRuntime : IWorkflowRuntime
     public Dictionary<int, DateTime>? ExplicitAssignedDates { get; set; }
 
     public bool ThrowOnExecute { get; set; }
+
+    /// <summary>P0 / F-07: شبیه‌سازی شکست شروع گردش‌کار (برای اثبات جبران Disposition).</summary>
+    public bool ThrowOnStart { get; set; }
     public string? LastExecutedActionType { get; private set; }
 
     private int _nextInstanceId = 1;
@@ -31,6 +53,8 @@ public class FakeWorkflowRuntime : IWorkflowRuntime
     public Task<int> StartInstanceAsync(string module, string businessObjectType, int businessObjectId, string workflowCategory,
         int? projectId, int? initiatedByEmployeeId, IReadOnlyList<string>? firstStageParticipantRoles = null)
     {
+        if (ThrowOnStart) throw new InvalidOperationException("Workflow engine unavailable.");
+
         var instance = new WorkflowInstanceDto
         {
             WorkflowInstanceId = _nextInstanceId++,
@@ -54,7 +78,7 @@ public class FakeWorkflowRuntime : IWorkflowRuntime
         var entry = _instances.Values.FirstOrDefault(x => x.WorkflowInstanceId == workflowInstanceId);
         if (entry != null)
         {
-            entry.Status = actionType == "Approve" ? "Completed" : "Rejected";
+            entry.Status = actionType switch { "Approve" or "Complete" => "Completed", "Cancel" => "Cancelled", _ => "Rejected" };   // SCRUM-472: Complete/Cancel
             entry.CompletionDate = DateTime.Now;
         }
         return Task.CompletedTask;

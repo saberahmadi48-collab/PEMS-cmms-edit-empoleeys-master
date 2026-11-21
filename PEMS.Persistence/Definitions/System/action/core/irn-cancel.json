@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "irn-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel the IRN",
+    "fa": "لغو IRN"
+  },
+  "description": {
+    "en": "Cancel the IRN",
+    "fa": "لغو IRN"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Irn",
+      "action": "Cancel",
+      "args": {
+        "irnReceiptId": "field:id",
+        "reason": "field:reason",
+        "changedByEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The IRN was cancelled.",
+      "fa": "IRN لغو شد."
+    },
+    "redirect": "/p/irn-details?id={id}"
+  }
+}

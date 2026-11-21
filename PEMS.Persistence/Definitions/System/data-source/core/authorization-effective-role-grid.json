@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "authorization-effective-role-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Effective permissions of a role",
+    "fa": "مجوزهای مؤثر یک نقش"
+  },
+  "description": {
+    "en": "Effective permissions of a role rows",
+    "fa": "ردیف‌های مجوزهای مؤثر یک نقش"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Authorization",
+      "action": "EffectiveForRole",
+      "args": {
+        "roleName": "param:roleName"
+      }
+    }
+  }
+}

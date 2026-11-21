@@ -31,34 +31,34 @@
     var filterOptions = new[] { "Exact", "AlreadyAssigned", "NoChange", "UnresolvedEquipment", "UnresolvedFunctionalLocation", "ConflictEquipment", "ConflictFunctionalLocation", "ValidationError" };
 }
 
-<div class="content-card mb-3">
-    <div class="row g-3">
-        <div class="col-md-3"><strong>@Localizer["File:"]</strong> @Model.FileName</div>
-        <div class="col-md-2"><strong>@Localizer["Total Rows:"]</strong> @Model.TotalRows</div>
-        <div class="col-md-2"><strong>Exact / No Change:</strong> @Model.ExactCount / @Model.NoChangeCount</div>
-        <div class="col-md-2"><strong>Already Assigned:</strong> @Model.AlreadyAssignedCount</div>
-        <div class="col-md-1"><strong>@Localizer["Unresolved:"]</strong> @(Model.UnresolvedCount)</div>
-        <div class="col-md-2"><strong>@Localizer["Status:"]</strong> <span class="badge @(Model.Status == "Committed" ? "bg-success" : "bg-secondary")">@Model.Status</span></div>
-    </div>
+<pems-content-card css="mb-3">
+    <pems-row gap="3">
+        <pems-col md="3"><strong>@Localizer["File:"]</strong> @Model.FileName</pems-col>
+        <pems-col md="2"><strong>@Localizer["Total Rows:"]</strong> @Model.TotalRows</pems-col>
+        <pems-col md="2"><strong>Exact / No Change:</strong> @Model.ExactCount / @Model.NoChangeCount</pems-col>
+        <pems-col md="2"><strong>Already Assigned:</strong> @Model.AlreadyAssignedCount</pems-col>
+        <pems-col md="1"><strong>@Localizer["Unresolved:"]</strong> @(Model.UnresolvedCount)</pems-col>
+        <pems-col md="2"><strong>@Localizer["Status:"]</strong> <pems-badge tone="@(Model.Status == "Committed" ? "success" : "neutral")">@Model.Status</pems-badge></pems-col>
+    </pems-row>
 
     @if (Model.Status == "Staging")
     {
         <div class="pems-command-bar">
-            <form asp-action="Commit" method="post">
+            <pems-form asp-action="Commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.EquipmentFunctionalLocationAssignmentBatchId" />
-                <button type="submit" class="btn btn-pems-solid" onclick="return confirm('Commit the approved rows? Equipment Functional Location assignments will be updated.')">
-                    <i class="bi bi-check-circle"></i> Commit Approved Rows
-                </button>
-            </form>
-            <form asp-action="Discard" method="post">
+                <pems-button tone="primary" type="submit" data-pems-confirm="Commit the approved rows? Equipment Functional Location assignments will be updated.">
+                    <pems-icon name="bi-check-circle" /> Commit Approved Rows
+                </pems-button>
+            </pems-form>
+            <pems-form asp-action="Discard" method="post">
                 <input type="hidden" name="batchId" value="@Model.EquipmentFunctionalLocationAssignmentBatchId" />
-                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Discard this entire assignment batch?')">
-                    <i class="bi bi-trash"></i> Discard Batch
-                </button>
-            </form>
+                <pems-button tone="danger" outline="true" type="submit" data-pems-confirm="Discard this entire assignment batch?">
+                    <pems-icon name="bi-trash" /> Discard Batch
+                </pems-button>
+            </pems-form>
         </div>
     }
-</div>
+</pems-content-card>
 
 <div class="pems-filter-bar mb-3">
     <span class="pems-filter-label">@Localizer["Filter"]</span>
@@ -66,50 +66,38 @@
     {
         <span class="pems-filter-active-count">1</span>
     }
-    <a asp-action="Review" asp-route-batchId="@Model.EquipmentFunctionalLocationAssignmentBatchId"
-       class="btn btn-sm @(statusFilter == null ? "btn-pems-solid" : "btn-outline-secondary")">All</a>
+    <pems-button as="a" tone="none" size="small" css="@(statusFilter == null ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Review" asp-route-batchId="@Model.EquipmentFunctionalLocationAssignmentBatchId">All</pems-button>
     @foreach (var s in filterOptions)
     {
-        <a asp-action="Review" asp-route-batchId="@Model.EquipmentFunctionalLocationAssignmentBatchId" asp-route-status="@s"
-           class="btn btn-sm @(statusFilter == s ? "btn-pems-solid" : "btn-outline-secondary")">@StatusLabel(s)</a>
+        <pems-button as="a" tone="none" size="small" css="@(statusFilter == s ? "btn-pems-solid" : "btn-outline-secondary")" asp-action="Review" asp-route-batchId="@Model.EquipmentFunctionalLocationAssignmentBatchId" asp-route-status="@s">@StatusLabel(s)</pems-button>
     }
     @if (!string.IsNullOrEmpty(statusFilter))
     {
         <span class="pems-command-bar-spacer"></span>
-        <a asp-action="Review" asp-route-batchId="@Model.EquipmentFunctionalLocationAssignmentBatchId" class="pems-filter-clear-all">Clear All</a>
+        <pems-link asp-action="Review" asp-route-batchId="@Model.EquipmentFunctionalLocationAssignmentBatchId" class="pems-filter-clear-all">Clear All</pems-link>
     }
 </div>
 
-<div class="content-card">
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise">
-            <thead>
-                <tr>
-                    <th>@Localizer["Approve"]</th><th>@Localizer["Src Row"]</th><th>@Localizer["Equipment Tag"]</th><th>@Localizer["Equipment"]</th>
-                    <th>Current FL</th><th>Proposed FL</th><th>@Localizer["Match Result"]</th><th>@Localizer["Note"]</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var r in Model.Rows.Items)
-                {
-                    <tr>
-                        <td>
+<pems-content-card>
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
+        @{
+            var rows_34 = Model.Rows.Items;
+            var cell_34_0 = DataCell.Template(rows_34, @<text>@{ var r = item; }
                             @if (Model.Status == "Staging")
                             {
                                 var canToggle = r.Status is "Exact" or "AlreadyAssigned";
                                 if (canToggle)
                                 {
-                                    <form asp-action="ToggleRow" method="post">
+                                    <pems-form asp-action="ToggleRow" method="post">
                                         <input type="hidden" name="rowId" value="@r.EquipmentFunctionalLocationAssignmentRowId" />
                                         <input type="hidden" name="batchId" value="@Model.EquipmentFunctionalLocationAssignmentBatchId" />
                                         <input type="hidden" name="page" value="@Model.Rows.Page" />
                                         <input type="hidden" name="status" value="@statusFilter" />
                                         <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
-                                        <button type="submit" class="btn btn-sm @(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" style="width:36px;"
-                                                title="@(r.IncludeInCommit ? "Approved - click to exclude" : "Excluded - click to approve")">
-                                            <i class="bi @(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")"></i>
-                                        </button>
-                                    </form>
+                                        <pems-button class="pems-w-36" tone="none" size="small" css="@(r.IncludeInCommit ? "btn-success" : "btn-outline-secondary")" type="submit" title="@(r.IncludeInCommit ? "Approved - click to exclude" : "Excluded - click to approve")">
+                                            <pems-icon css="@(r.IncludeInCommit ? "bi-check-lg" : "bi-x-lg")" />
+                                        </pems-button>
+                                    </pems-form>
                                 }
                                 else
                                 {
@@ -118,42 +106,28 @@
 
                                 @if (r.Status == "AlreadyAssigned")
                                 {
-                                    <form asp-action="ReplaceExisting" method="post" class="mt-1">
+                                    <pems-form asp-action="ReplaceExisting" method="post" class="mt-1">
                                         <input type="hidden" name="rowId" value="@r.EquipmentFunctionalLocationAssignmentRowId" />
                                         <input type="hidden" name="batchId" value="@Model.EquipmentFunctionalLocationAssignmentBatchId" />
                                         <input type="hidden" name="page" value="@Model.Rows.Page" />
                                         <input type="hidden" name="status" value="@statusFilter" />
                                         <input type="hidden" name="replace" value="@(!r.ReplaceExistingAssignment)" />
-                                        <button type="submit" class="btn btn-sm @(r.ReplaceExistingAssignment ? "btn-warning" : "btn-outline-warning")"
-                                                onclick="return confirm('Replace the existing Functional Location assignment for this equipment?')">
+                                        <pems-button tone="none" size="small" css="@(r.ReplaceExistingAssignment ? "btn-warning" : "btn-outline-warning")" type="submit" data-pems-confirm="Replace the existing Functional Location assignment for this equipment?">
                                             @(r.ReplaceExistingAssignment ? "Replace: Yes" : "Replace existing?")
-                                        </button>
-                                    </form>
+                                        </pems-button>
+                                    </pems-form>
                                 }
                             }
                             else
                             {
                                 @(r.CommittedAssignment ? "Assigned" : (r.IncludeInCommit ? "Approved" : "No"))
                             }
-                        </td>
-                        <td>@r.SourceRowNumber</td>
-                        <td><strong dir="ltr">@r.EquipmentTag</strong></td>
-                        <td class="small">@(r.EquipmentDescription ?? "-")</td>
-                        <td class="small" dir="ltr">@(r.CurrentFunctionalLocationBreadcrumb ?? "-")</td>
-                        <td class="small" dir="ltr">@(r.ProposedFunctionalLocationBreadcrumb ?? r.FunctionalLocationCode)</td>
-                        <td><span class="badge @StatusBadge(r.Status)">@StatusLabel(r.Status)</span></td>
-                        <td class="small">
-                            @if (r.ValidationMessage != null)
-                            {
-                                <span class="text-muted" style="white-space:normal;">@r.ValidationMessage</span>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    @if (!Model.Rows.Items.Any()) { <p class="text-muted text-center py-4">@Localizer["No rows match this filter."]</p> }
+                        </text>);
+            var cell_34_6 = DataCell.Template(rows_34, @<text>@{ var r = item; }<pems-badge tone="none" css="@StatusBadge(r.Status)">@StatusLabel(r.Status)</pems-badge></text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_34, c_ => c_.Add(((Localizer["Approve"])?.ToString() ?? ""), r => (object?)cell_34_0(r)).Add(((Localizer["Src Row"])?.ToString() ?? ""), r => (object?)(r.SourceRowNumber)).Add(((Localizer["Equipment Tag"])?.ToString() ?? ""), r => (object?)(DataCell.Span(null, r.EquipmentTag).WithDir("ltr").WithTag("strong"))).Add(((Localizer["Equipment"])?.ToString() ?? ""), r => (object?)((r.EquipmentDescription ?? "-")), css: "small").Add("Current FL", r => (object?)((r.CurrentFunctionalLocationBreadcrumb ?? "-")), css: "small", dir: "ltr").Add("Proposed FL", r => (object?)((r.ProposedFunctionalLocationBreadcrumb ?? r.FunctionalLocationCode)), css: "small", dir: "ltr").Add(((Localizer["Match Result"])?.ToString() ?? ""), r => (object?)cell_34_6(r)).Add(((Localizer["Note"])?.ToString() ?? ""), r => (object?)((r.ValidationMessage != null ? (object?)DataCell.Span("text-muted pems-s-f8f979be", r.ValidationMessage) : null)), css: "small")))" />
+    </pems-table-scroll>
+    @if (!Model.Rows.Items.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["No rows match this filter."]</pems-text> }
 
     @{
         var qsParts = new List<string>();
@@ -170,4 +144,4 @@
         BaseUrl = Url.Action("Review") ?? "",
         ExistingQueryString = string.Join("&", qsParts)
     })
-</div>
+</pems-content-card>

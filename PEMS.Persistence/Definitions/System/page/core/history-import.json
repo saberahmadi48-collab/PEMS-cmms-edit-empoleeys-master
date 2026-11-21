@@ -1,0 +1,162 @@
+{
+  "kind": "page",
+  "key": "history-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance History Import",
+    "fa": "ورود سوابق نگهداری"
+  },
+  "description": {
+    "en": "Staged workbook import: upload, review the rows, then commit or discard (page definition)",
+    "fa": "ورود فایل مرحله‌ای: بارگذاری، بررسی ردیف‌ها، سپس تأیید یا دور ریختن (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "history-import",
+    "regions": {
+      "content": [
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/history-import-upload",
+                "text": {
+                  "en": "Upload a workbook",
+                  "fa": "بارگذاری فایل"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "batches",
+          "component": "data-grid",
+          "options": {
+            "id": "batches",
+            "url": "/d/history-import-batches",
+            "idField": "batchId",
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 260
+              },
+              {
+                "key": "importDate",
+                "header": {
+                  "en": "Imported",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "importedBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "totalRows",
+                "header": {
+                  "en": "Rows",
+                  "fa": "ردیف"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "newCount",
+                "header": {
+                  "en": "New",
+                  "fa": "جدید"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "duplicateCount",
+                "header": {
+                  "en": "Duplicate",
+                  "fa": "تکراری"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "unresolvedCount",
+                "header": {
+                  "en": "Unresolved",
+                  "fa": "نامشخص"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "conflictCount",
+                "header": {
+                  "en": "Conflict",
+                  "fa": "متعارض"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "validationErrorCount",
+                "header": {
+                  "en": "Errors",
+                  "fa": "خطا"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Review",
+                      "fa": "بررسی"
+                    },
+                    "url": "/p/history-import-review?batchId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 480
+          }
+        }
+      ]
+    },
+    "permission": "MaintenanceHistoryImport.View"
+  }
+}

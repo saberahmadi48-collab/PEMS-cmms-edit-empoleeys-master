@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "maintenance-plan-record-meter",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record a meter reading",
+    "fa": "ثبت قرائت Meter"
+  },
+  "description": {
+    "en": "Record a meter reading",
+    "fa": "ثبت قرائت Meter"
+  },
+  "payload": {
+    "id": "maintenance-plan-record-meter",
+    "title": {
+      "en": "Record a meter reading",
+      "fa": "ثبت قرائت Meter"
+    },
+    "submitLabel": {
+      "en": "Record",
+      "fa": "ثبت"
+    },
+    "actionKey": "maintenance-plan-record-meter",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "planId",
+        "label": {
+          "en": "Plan id",
+          "fa": "شناسه‌ی برنامه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "currentReading",
+        "label": {
+          "en": "Current reading",
+          "fa": "قرائت فعلی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

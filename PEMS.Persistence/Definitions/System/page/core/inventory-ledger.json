@@ -1,0 +1,210 @@
+{
+  "kind": "page",
+  "key": "inventory-ledger",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Inventory Transaction Ledger",
+    "fa": "دفتر کل تراکنش‌های موجودی"
+  },
+  "description": {
+    "en": "Every stock movement, newest first, read only (page definition)",
+    "fa": "همه حرکت‌های موجودی از جدید به قدیم، فقط خواندنی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "inventory-ledger",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "ledger-filters",
+            "resetUrl": "/p/inventory-ledger",
+            "fields": [
+              {
+                "name": "warehouseId",
+                "label": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                },
+                "kind": "select",
+                "value": "{{params.warehouseId}}",
+                "options": []
+              },
+              {
+                "name": "transactionType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "kind": "select",
+                "value": "{{params.transactionType}}",
+                "options": [
+                  {
+                    "value": "Receipt",
+                    "label": {
+                      "en": "Receipt",
+                      "fa": "رسید"
+                    }
+                  },
+                  {
+                    "value": "Issue",
+                    "label": {
+                      "en": "Issue",
+                      "fa": "خروج"
+                    }
+                  },
+                  {
+                    "value": "Return",
+                    "label": {
+                      "en": "Return",
+                      "fa": "برگشت"
+                    }
+                  },
+                  {
+                    "value": "Transfer",
+                    "label": {
+                      "en": "Transfer",
+                      "fa": "انتقال"
+                    }
+                  },
+                  {
+                    "value": "Adjustment",
+                    "label": {
+                      "en": "Adjustment",
+                      "fa": "اصلاح"
+                    }
+                  },
+                  {
+                    "value": "Reservation",
+                    "label": {
+                      "en": "Reservation",
+                      "fa": "رزرو"
+                    }
+                  },
+                  {
+                    "value": "ReservationRelease",
+                    "label": {
+                      "en": "ReservationRelease",
+                      "fa": "آزادسازی رزرو"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "fromDate",
+                "label": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "kind": "date",
+                "value": "{{params.fromDate}}"
+              },
+              {
+                "name": "toDate",
+                "label": {
+                  "en": "To",
+                  "fa": "تا"
+                },
+                "kind": "date",
+                "value": "{{params.toDate}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "warehouseId",
+                "source": "/d/inventory-warehouses",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "ledger",
+          "component": "data-grid",
+          "options": {
+            "id": "ledger",
+            "url": "/d/inventory-ledger?f.warehouseId={{params.warehouseId|url}}&f.transactionType={{params.transactionType|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "idField": "inventoryTransactionId",
+            "columns": [
+              {
+                "key": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 160,
+                "type": "date"
+              },
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 300
+              },
+              {
+                "key": "type",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "warehouse",
+                "header": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                },
+                "width": 110
+              },
+              {
+                "key": "quantity",
+                "header": {
+                  "en": "Qty",
+                  "fa": "تعداد"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "reference",
+                "header": {
+                  "en": "Reference",
+                  "fa": "مرجع"
+                },
+                "width": 160
+              },
+              {
+                "key": "by",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 240
+              }
+            ],
+            "pageSize": 30,
+            "height": 620
+          }
+        }
+      ]
+    },
+    "permission": "MaterialItem.View"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "employee-skill-choices-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Skills",
+    "fa": "مهارت‌ها"
+  },
+  "description": {
+    "en": "Skills",
+    "fa": "مهارت‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Employee",
+      "action": "SkillChoices",
+      "args": {}
+    }
+  }
+}

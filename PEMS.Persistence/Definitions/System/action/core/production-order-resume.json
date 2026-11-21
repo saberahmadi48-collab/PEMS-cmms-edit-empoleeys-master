@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "production-order-resume",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Resume production order",
+    "fa": "ازسرگیری سفارش تولید"
+  },
+  "description": {
+    "en": "Resume production order",
+    "fa": "ازسرگیری سفارش تولید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionOrder",
+      "action": "Resume",
+      "args": {
+        "productionOrderId": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The order was resumed.",
+      "fa": "سفارش ازسرگیری شد."
+    },
+    "redirect": "/ProductionOrder/Details/{id}"
+  }
+}

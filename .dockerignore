@@ -11,3 +11,12 @@ logs/
 Dockerfile
 docker-compose*.yml
 .dockerignore
+env/*.secrets.env
+env/*.example
+# SCRUM-532: local tool output (the graphify knowledge graph is GBs) never goes into the build context
+graphify-out/
+.claude/
+tools/loadtest/results/
+**/logs/
+PEMS.Web/filestore/
+.kilo/

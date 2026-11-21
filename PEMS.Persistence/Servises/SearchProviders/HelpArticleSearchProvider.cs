@@ -19,6 +19,8 @@ public class HelpArticleSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "HelpArticle";
     public string DisplayName => "راهنما";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser(rowScope: "published articles only");
 
     public HelpArticleSearchProvider(PEMSDbContext context)
     {
@@ -56,7 +58,8 @@ public class HelpArticleSearchProvider : ISearchableEntityProvider
                 Label = x.Translation.Title,
                 HighlightedLabel = SearchScoring.Highlight(x.Translation.Title, query),
                 SubLabel = x.Translation.Summary,
-                Url = $"/Help/Article/{x.Translation.Article!.Code}",
+                // SCRUM-548: HelpController.Article(string code) reads the code from the query string; "/Help/Article/{code}" was a 404.
+                Url = $"/Help/Article?code={Uri.EscapeDataString(x.Translation.Article!.Code)}",
                 Score = x.Score
             }).ToList();
 

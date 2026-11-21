@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "maintenance-plan-generate-due",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate every due work order",
+    "fa": "ساخت همه‌ی دستورکارهای سررسید"
+  },
+  "description": {
+    "en": "Generate every due work order",
+    "fa": "ساخت همه‌ی دستورکارهای سررسید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenancePlanPage",
+      "action": "GenerateDueWorkOrders",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The due work orders were generated.",
+      "fa": "دستورکارهای سررسید ساخته شدند."
+    },
+    "redirect": "/p/maintenance-plans"
+  }
+}

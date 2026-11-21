@@ -1,0 +1,73 @@
+{
+  "kind": "form",
+  "key": "packager-install",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor: build an install package",
+    "fa": "فروشنده: ساخت بسته نصب"
+  },
+  "description": {
+    "en": "Vendor: build an install package",
+    "fa": "فروشنده: ساخت بسته نصب"
+  },
+  "payload": {
+    "id": "packager-install",
+    "title": {
+      "en": "Vendor: build an install package",
+      "fa": "فروشنده: ساخت بسته نصب"
+    },
+    "submitLabel": {
+      "en": "Build and download",
+      "fa": "ساخت و دریافت"
+    },
+    "actionKey": "packager-install",
+    "permission": "Definitions.Create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "toVersion",
+        "label": {
+          "en": "Product version",
+          "fa": "نسخه محصول"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Product version is required.",
+            "fa": "نسخه محصول الزامی است."
+          }
+        },
+        "maxLength": 30
+      },
+      {
+        "name": "schemaLevel",
+        "label": {
+          "en": "Schema level (last migration id)",
+          "fa": "سطح شما"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Schema level (last migration id) is required.",
+            "fa": "سطح شما الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "definitions",
+        "label": {
+          "en": "Definitions (appKey:kind:key, comma separated)",
+          "fa": "تعریف‌ها (appKey:kind:key)"
+        },
+        "kind": "textArea",
+        "maxLength": 20000,
+        "span": 2
+      }
+    ]
+  }
+}

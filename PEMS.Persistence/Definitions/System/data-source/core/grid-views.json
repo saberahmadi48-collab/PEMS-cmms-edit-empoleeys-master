@@ -1,0 +1,19 @@
+{
+  "kind": "data-source",
+  "key": "grid-views",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Saved views of a list",
+    "fa": "نماهای ذخیره‌شده یک فهرست"
+  },
+  "description": {
+    "en": "The views of the signed-in user and of the roles they hold, and the roles they may share a view with",
+    "fa": "نماهای کاربر و نقش‌های او"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "grid-views",
+    "parameters": {}
+  }
+}

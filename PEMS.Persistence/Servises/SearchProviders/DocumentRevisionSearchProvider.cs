@@ -22,6 +22,8 @@ public class DocumentRevisionSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "DocumentRevision";
     public string DisplayName => "رویژن مدارک";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser(rowScope: "parent engineering document discipline");
 
     public DocumentRevisionSearchProvider(PEMSDbContext context, IAccessControlService accessControlService,
         ICurrentUserContext currentUser)

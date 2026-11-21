@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "cmms-operations-backlog",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance backlog (old address)",
+    "fa": "بک‌لاگ تعمیرات (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Maintenance backlog (old address)",
+    "fa": "بک‌لاگ تعمیرات (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "CmmsOperations/Backlog",
+    "target": "/p/maintenance-backlog",
+    "permanent": false
+  }
+}

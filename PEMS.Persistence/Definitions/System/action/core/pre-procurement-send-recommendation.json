@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "pre-procurement-send-recommendation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Send a shortage to procurement",
+    "fa": "ارسال کمبود به خرید"
+  },
+  "description": {
+    "en": "Send a shortage to procurement",
+    "fa": "ارسال کمبود به خرید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PreProcurement",
+      "action": "SendRecommendation",
+      "args": {
+        "recommendationId": "field:recommendationId"
+      }
+    },
+    "success": {
+      "en": "The shortage was sent to procurement.",
+      "fa": "کمبود به خرید ارسال شد."
+    },
+    "redirect": "/p/replenishment-details?id={recommendationId}"
+  }
+}

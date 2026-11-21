@@ -1,0 +1,159 @@
+{
+  "kind": "page",
+  "key": "barcodes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode",
+    "fa": "بارکد"
+  },
+  "description": {
+    "en": "Recent barcodes, scan and verify, bulk generation (page definition)",
+    "fa": "بارکدهای اخیر، اسکن و تطبیق، ساخت گروهی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "barcodes",
+    "regions": {
+      "content": [
+        {
+          "id": "go",
+          "component": "content-blocks",
+          "options": {
+            "id": "go",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/barcode-scan",
+                "text": {
+                  "en": "Scan or resolve a code",
+                  "fa": "اسکن یا شناسایی یک کد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/barcode-verify",
+                "text": {
+                  "en": "Verify a code against an expected record",
+                  "fa": "تطبیق کد با رکورد مورد انتظار"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/barcode-bulk",
+                "text": {
+                  "en": "Generate equipment barcodes in bulk",
+                  "fa": "ساخت گروهی بارکد تجهیزات"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "recent",
+          "component": "data-grid",
+          "options": {
+            "id": "recent",
+            "url": "/d/barcode-recent",
+            "idField": "barcodeIdentityId",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 200
+              },
+              {
+                "key": "symbology",
+                "header": {
+                  "en": "Symbology",
+                  "fa": "نوع"
+                },
+                "width": 110
+              },
+              {
+                "key": "targetType",
+                "header": {
+                  "en": "Target",
+                  "fa": "هدف"
+                },
+                "width": 130
+              },
+              {
+                "key": "targetId",
+                "header": {
+                  "en": "Target id",
+                  "fa": "شناسه"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "printCount",
+                "header": {
+                  "en": "Prints",
+                  "fa": "چاپ"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "label",
+                    "label": {
+                      "en": "Label (PDF)",
+                      "fa": "برچسب (PDF)"
+                    },
+                    "url": "/x/barcode-label-pdf?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "print",
+                    "label": {
+                      "en": "Print and record",
+                      "fa": "چاپ و ثبت"
+                    },
+                    "url": "/f/barcode-print?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "Barcode.View"
+  }
+}

@@ -705,6 +705,7 @@ public class EngineeringDocumentsController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> UploadAttachment(
         int documentId,
         IFormFile file,
@@ -1514,6 +1515,7 @@ public class EngineeringDocumentsController : Controller
     // طبق درخواست: چرخه‌ی کامنت/ریپلای دقیقاً مثل VDR - همان سرویس مشترک، همان قابلیت پیوست
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> AddComment(int documentId, string commentText, string? raisedByName,
         string? sheet, string? zone, string? reference, string? category, string? severity, string? requiredAction,
         DateTime? dueDate, IFormFile? attachment, int? pageNumber, double? pinX, double? pinY, bool marksRevisionRequired)
@@ -1538,6 +1540,7 @@ public class EngineeringDocumentsController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
     public async Task<IActionResult> RecordCommentResponse(int documentId, int commentId, string? responseText, IFormFile? replyAttachment)
     {
         var replyAttachmentId = replyAttachment != null ? await SaveCommentFileAsync(replyAttachment, "replies") : null;

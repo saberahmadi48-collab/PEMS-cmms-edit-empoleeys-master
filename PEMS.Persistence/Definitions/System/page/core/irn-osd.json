@@ -1,0 +1,233 @@
+{
+  "kind": "page",
+  "key": "irn-osd",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "OS&D report",
+    "fa": "گزارش OS&D"
+  },
+  "description": {
+    "en": "Over, short and damaged lines of one receipt, for the vendor (page definition)",
+    "fa": "اقلام اضافه، کسری و آسیب‌دیده‌ی یک رسید، برای فروشنده (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "irn-osd",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "irn-osd-record",
+            "fields": [
+              {
+                "key": "irnNumber",
+                "label": {
+                  "en": "IRN",
+                  "fa": "IRN"
+                },
+                "mono": true
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "vendor",
+                "label": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                }
+              },
+              {
+                "key": "warehouse",
+                "label": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                }
+              },
+              {
+                "key": "purchaseOrder",
+                "label": {
+                  "en": "Purchase order",
+                  "fa": "سفارش خرید"
+                }
+              },
+              {
+                "key": "receivedBy",
+                "label": {
+                  "en": "Received by",
+                  "fa": "دریافت‌کننده"
+                }
+              },
+              {
+                "key": "receivingDate",
+                "label": {
+                  "en": "Receiving date",
+                  "fa": "تاریخ دریافت"
+                },
+                "type": "date"
+              },
+              {
+                "key": "notes",
+                "label": {
+                  "en": "Notes",
+                  "fa": "یادداشت"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/irn-detail",
+              "idField": "irnReceiptId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "back",
+          "component": "content-blocks",
+          "options": {
+            "id": "back",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/irn-details?id={{params.id}}",
+                "text": {
+                  "en": "Back to the receipt",
+                  "fa": "بازگشت به رسید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "osd",
+          "component": "data-grid",
+          "options": {
+            "id": "osd",
+            "url": "/d/irn-osd?f.id={{params.id|url}}",
+            "idField": "irnReceiptLineId",
+            "columns": [
+              {
+                "key": "poLineNo",
+                "header": {
+                  "en": "PO line",
+                  "fa": "ردیف سفارش"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 140
+              },
+              {
+                "key": "ordered",
+                "header": {
+                  "en": "Ordered",
+                  "fa": "سفارش"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "receivedBefore",
+                "header": {
+                  "en": "Received before",
+                  "fa": "دریافت قبلی"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "thisReceipt",
+                "header": {
+                  "en": "This receipt",
+                  "fa": "این رسید"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "over",
+                "header": {
+                  "en": "Over",
+                  "fa": "اضافه"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "short",
+                "header": {
+                  "en": "Short",
+                  "fa": "کسری"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "accepted",
+                "header": {
+                  "en": "Accepted",
+                  "fa": "پذیرفته"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "rejected",
+                "header": {
+                  "en": "Rejected / damaged",
+                  "fa": "ردشده / آسیب‌دیده"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "hold",
+                "header": {
+                  "en": "Hold",
+                  "fa": "معلق"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "action",
+                "header": {
+                  "en": "Decision",
+                  "fa": "تصمیم"
+                },
+                "width": 120
+              },
+              {
+                "key": "notes",
+                "header": {
+                  "en": "Notes",
+                  "fa": "یادداشت"
+                },
+                "width": 220
+              }
+            ],
+            "pageSize": 50,
+            "height": 480
+          }
+        }
+      ]
+    },
+    "permission": "IRN.View"
+  }
+}

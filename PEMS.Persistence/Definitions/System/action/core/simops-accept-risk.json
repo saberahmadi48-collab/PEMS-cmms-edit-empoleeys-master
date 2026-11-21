@@ -1,0 +1,40 @@
+{
+  "kind": "action",
+  "key": "simops-accept-risk",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Accept the risk",
+    "fa": "پذیرش ریسک"
+  },
+  "description": {
+    "en": "Accept the risk",
+    "fa": "پذیرش ریسک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Simops",
+      "action": "AcceptRisk",
+      "args": {
+        "userRoles": "context:roles",
+        "userId": "context:userId",
+        "employeeId": "context:employeeId",
+        "conflictId": "field:id",
+        "permitId": "field:permitId",
+        "justification": "field:justification"
+      }
+    },
+    "success": {
+      "en": "The risk was accepted.",
+      "fa": "ریسک پذیرفته شد."
+    },
+    "redirect": "/Permit/Details/{permitId}",
+    "permission": "Simops.AcceptRisk",
+    "stepUp": {
+      "resource": "Simops",
+      "action": "AcceptRisk"
+    }
+  }
+}

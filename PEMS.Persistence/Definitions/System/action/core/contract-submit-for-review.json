@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "contract-submit-for-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit contract for review",
+    "fa": "ارسال قرارداد برای بازبینی"
+  },
+  "description": {
+    "en": "Submit contract for review",
+    "fa": "ارسال قرارداد برای بازبینی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Contract",
+      "action": "SubmitForReview",
+      "args": {
+        "contractId": "field:contractId",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "editorUserId": "context:userId",
+        "ipAddress": "context:ip"
+      }
+    },
+    "success": {
+      "en": "The contract was sent for multi-discipline review.",
+      "fa": "قرارداد برای بازبینی چند-رشته‌ای ارسال شد."
+    },
+    "redirect": "/Contract/Details/{contractId}"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "cmms-ops-types",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance type breakdown",
+    "fa": "تفکیک نوع تعمیرات"
+  },
+  "description": {
+    "en": "Maintenance type breakdown",
+    "fa": "تفکیک نوع تعمیرات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CmmsOperations",
+      "action": "TypeBreakdown"
+    }
+  }
+}

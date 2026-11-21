@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "mr-quotations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MR quotations (old address)",
+    "fa": "MR quotations (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "MR quotations (old address)",
+    "fa": "MR quotations (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaterialRequisition/Quotations",
+    "target": "/p/mr-quotations",
+    "permanent": false
+  }
+}

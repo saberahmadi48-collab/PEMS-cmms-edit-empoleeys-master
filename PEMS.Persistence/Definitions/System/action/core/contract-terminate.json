@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "contract-terminate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Terminate contract",
+    "fa": "فسخ قرارداد"
+  },
+  "description": {
+    "en": "Terminate contract",
+    "fa": "فسخ قرارداد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Contract",
+      "action": "Terminate",
+      "args": {
+        "contractId": "field:contractId",
+        "reason": "field:reason",
+        "actorRoles": "context:roles"
+      }
+    },
+    "success": {
+      "en": "The contract was terminated.",
+      "fa": "قرارداد فسخ شد."
+    },
+    "redirect": "/Contract/Details/{contractId}"
+  }
+}

@@ -37,79 +37,31 @@ public class Phase8AuthorizationGapTests
         var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
         var crewService = new CrewService(ctx);
 
-        var controller = new WorkOrderController(ctx, null!, currentUser, permissionService, null!, null!, crewService, null!, null!).WithTempData();
+        var controller = new WorkOrderController(ctx, null!, currentUser, permissionService, null!, null!, crewService, null!, null!, new WorkOrderSectionGuard(ctx, accessControl)).WithTempData();
         return (controller, ctx);
     }
 
+    // SCRUM-437: CreateCrewForWorkOrder is the action definition work-order-create-crew over the operation Crew.Create; the permission is declared on the service
+    // method and checked by the operation catalog before the service is called.
     [Fact]
-    public async Task CreateCrewForWorkOrder_WithoutEditPermission_ReturnsForbid_AndCreatesNoCrew()
+    public void CreateCrew_operation_requires_WorkOrder_Edit()
     {
-        var (controller, ctx) = await CreateWorkOrderController(nameof(CreateCrewForWorkOrder_WithoutEditPermission_ReturnsForbid_AndCreatesNoCrew), role: null);
-        var workOrder = new WorkOrder { WorkOrderId = 1, EquipmentId = 1, WorkOrderNumber = "WO-1", WorkOrderType = "Corrective", Status = "Open", IsActive = true };
-        ctx.WorkOrders.Add(workOrder);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.CreateCrewForWorkOrder(workOrder.WorkOrderId, "CR-1", "Test Crew");
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Empty(ctx.Crews);
+        var catalog = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        Assert.Equal("WorkOrder.Edit", catalog.Get("Crew", "Create")!.Permission);
     }
 
     [Fact]
-    public async Task CreateCrewForWorkOrder_WithEditPermission_CreatesCrew()
+    public async Task CreateCrew_service_creates_a_crew_for_the_work_order()
     {
-        var (controller, ctx) = await CreateWorkOrderController(nameof(CreateCrewForWorkOrder_WithEditPermission_CreatesCrew), role: SystemRoles.MaintenanceEngineer);
+        var (_, ctx) = await CreateWorkOrderController(nameof(CreateCrew_service_creates_a_crew_for_the_work_order), role: SystemRoles.MaintenanceEngineer);
         var workOrder = new WorkOrder { WorkOrderId = 1, EquipmentId = 1, WorkOrderNumber = "WO-1", WorkOrderType = "Corrective", Status = "Open", IsActive = true };
         ctx.WorkOrders.Add(workOrder);
         await ctx.SaveChangesAsync();
 
-        var result = await controller.CreateCrewForWorkOrder(workOrder.WorkOrderId, "CR-1", "Test Crew");
+        var (success, _, crewId) = await new CrewService(ctx).CreateAsync("CR-1", "Test Crew", workOrder.WorkOrderId);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(success); Assert.NotNull(crewId);
         Assert.Single(ctx.Crews);
     }
 
-    private static async Task<(KpiController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateKpiController(
-        string dbName, string? role)
-    {
-        var ctx = PemsDbContextFactory.CreateInMemory($"P8AuthKpi_{dbName}");
-        foreach (var roleName in SystemRoles.All)
-            ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
-        await ctx.SaveChangesAsync();
-
-        var accessControl = new AccessControlService(ctx);
-        var permissionService = new PermissionService(ctx, accessControl);
-        await permissionService.SeedDefaultsAsync();
-
-        var services = new ServiceCollection();
-        services.AddSingleton(ctx);
-        await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
-
-        var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
-        var kpiService = new KpiService(ctx);
-        var reliabilityService = new ReliabilityService(ctx);
-
-        var controller = new KpiController(kpiService, reliabilityService, currentUser, permissionService);
-        return (controller, ctx);
-    }
-
-    [Fact]
-    public async Task Index_WithoutReliabilityViewPermission_ReturnsForbid()
-    {
-        var (controller, _) = await CreateKpiController(nameof(Index_WithoutReliabilityViewPermission_ReturnsForbid), role: null);
-
-        var result = await controller.Index(null, null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Index_WithReliabilityViewPermission_ReturnsView()
-    {
-        var (controller, _) = await CreateKpiController(nameof(Index_WithReliabilityViewPermission_ReturnsView), role: SystemRoles.MaintenanceEngineer);
-
-        var result = await controller.Index(null, null);
-
-        Assert.IsType<ViewResult>(result);
-    }
 }

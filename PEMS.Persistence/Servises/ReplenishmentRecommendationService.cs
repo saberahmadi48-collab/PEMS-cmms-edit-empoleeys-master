@@ -31,11 +31,15 @@ public class ReplenishmentRecommendationService : IReplenishmentRecommendationSe
     private readonly INetDemandService _netDemand;
     private readonly IPermissionService _permissions;
 
-    public ReplenishmentRecommendationService(PEMSDbContext ctx, INetDemandService netDemand, IPermissionService permissions)
+    // SCRUM-471: optional so the existing callers and tests keep their constructor; DI always provides it.
+    private readonly IProcurementPipeline? _pipeline;
+
+    public ReplenishmentRecommendationService(PEMSDbContext ctx, INetDemandService netDemand, IPermissionService permissions, IProcurementPipeline? pipeline = null)
     {
         _ctx = ctx;
         _netDemand = netDemand;
         _permissions = permissions;
+        _pipeline = pipeline;
     }
 
     private Task<bool> Can(ReplenishmentActor actor, string action) =>
@@ -137,6 +141,10 @@ public class ReplenishmentRecommendationService : IReplenishmentRecommendationSe
 
         var fresh = await LoadFreshnessAsync(results, ct);
         var names = await LoadNamesAsync(results, ct);
+        // SCRUM-471 (design §6.1 PlannedSupply): quantity already in procurement for (item, warehouse) is not recommended again
+        var planned = _pipeline == null
+            ? new Dictionary<(int MaterialItemId, int WarehouseId), decimal>()
+            : await _pipeline.GetPlannedSupplyAsync(scope.MaterialItemIds, ct);
 
         int evaluated = 0, created = 0, updated = 0, unchanged = 0, closed = 0, autoReopened = 0, notDefinitive = 0, noWarehouse = 0;
         var summary = new List<string>();
@@ -157,6 +165,13 @@ public class ReplenishmentRecommendationService : IReplenishmentRecommendationSe
             seen.Add(key);
             liveByKey.TryGetValue(key, out var rec);
             var ev = ReplenishmentRules.Evaluate(r);
+            var inProcurement = planned.GetValueOrDefault(key);
+            var coveredByProcurement = false;
+            if (ev.IsDefinitive && inProcurement > 0m && ev.Shortage > 0m)
+            {
+                coveredByProcurement = ev.Shortage <= inProcurement;
+                ev = ev with { Shortage = Math.Max(0m, ev.Shortage - inProcurement) };
+            }
 
             if (!ev.IsDefinitive)
             {
@@ -168,7 +183,11 @@ public class ReplenishmentRecommendationService : IReplenishmentRecommendationSe
 
             if (ev.Shortage <= 0m)
             {
-                if (rec != null) { Close(rec, ReplenishmentCloseReasons.ShortageResolved, run.NetDemandRunId, now); closed++; }
+                if (rec != null)
+                {
+                    Close(rec, coveredByProcurement ? ReplenishmentCloseReasons.CoveredByProcurement : ReplenishmentCloseReasons.ShortageResolved, run.NetDemandRunId, now);
+                    closed++;
+                }
                 else unchanged++;
                 continue;
             }

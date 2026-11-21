@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "ai-insights-delay-vendor",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delay by vendor",
+    "fa": "تاخیر به تفکیک وندور"
+  },
+  "description": {
+    "en": "Delay by vendor",
+    "fa": "تاخیر به تفکیک وندور"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "AiInsights",
+      "action": "DelayByVendor"
+    }
+  }
+}

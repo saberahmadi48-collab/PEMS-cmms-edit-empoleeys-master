@@ -1,13 +1,10 @@
 # طبق PEMS Architecture & Development Bible (Volume X - DevOps): CI پایه.
 # فقط Build و Restore را بررسی می‌کند - افزودن Test واقعی وقتی PEMS.Tests محتوا داشته باشد.
 
-name: PEMS Build
+name: PEMS Build (manual)
 
 on:
-  push:
-    branches: [ "main", "develop" ]
-  pull_request:
-    branches: [ "main", "develop" ]
+  workflow_dispatch:   # manual only: no build pipeline runs on pushes or pull requests to main or any working branch; the only pull request check is commit-key-check.yml (docs/guidelines/05)
 
 jobs:
   build:
@@ -15,6 +12,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      # The plan is markdown (plan/rows, plan/sheets): consistency check and the tool's own tests, standard library only.
+      - name: Plan check
+        run: |
+          python tools/plan-sync/plan_sync.py check
+          python -m unittest discover -s tools/plan-sync
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -27,6 +30,26 @@ jobs:
 
       - name: Build
         run: dotnet build PEMS.slnx --no-restore --configuration Release
+
+      # Code-first gate: the entity model and the migrations must agree, otherwise the
+      # startup migrator (Database:MigrateOnStartup) cannot apply a complete schema.
+      - name: Model drift gate (no entity change without a migration)
+        env:
+          # model-only comparison: the design-time factory needs a connection string but no connection is opened
+          ConnectionStrings__PEMSConnection: Server=localhost;Database=PEMS_ModelCheck;Trusted_Connection=True;TrustServerCertificate=True
+        run: |
+          dotnet tool install --global dotnet-ef --version 10.0.10
+          dotnet ef migrations has-pending-model-changes --project PEMS.Migrations --startup-project PEMS.Web --no-build --configuration Release
+
+      # API quality gates (SCRUM-436, guideline chapter 08): these fail the job; the general test step below still tolerates the known SQL Server failures.
+      - name: API gates - conformance, policy, snapshot, definitions
+        run: dotnet test PEMS.slnx --no-build --configuration Release --filter "FullyQualifiedName~PEMS.Tests.Api|FullyQualifiedName~PEMS.Tests.Definitions"
+
+      - name: API gates - OpenAPI lint and rule self-test
+        shell: bash
+        run: |
+          tools/api-lint/lint.sh
+          tools/api-lint/lint.sh selftest
 
       - name: Test (when PEMS.Tests has real tests)
         run: dotnet test PEMS.slnx --no-build --configuration Release --verbosity normal

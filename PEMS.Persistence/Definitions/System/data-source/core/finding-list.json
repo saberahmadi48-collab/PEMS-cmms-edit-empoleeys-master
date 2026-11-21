@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "finding-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Findings",
+    "fa": "یافته‌ها"
+  },
+  "description": {
+    "en": "Findings",
+    "fa": "یافته‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Finding",
+      "action": "List",
+      "args": {
+        "equipmentId": "param:equipmentId",
+        "status": "param:status"
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "pc-request-pdf",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue request form (PDF)",
+    "fa": "فرم درخواست کاتالوگ قطعه (PDF)"
+  },
+  "description": {
+    "en": "Part Catalogue request form (PDF)",
+    "fa": "فرم درخواست کاتالوگ قطعه (PDF)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "ExportPdf",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "id": "param:id"
+      },
+      "disposition": "attachment"
+    }
+  }
+}

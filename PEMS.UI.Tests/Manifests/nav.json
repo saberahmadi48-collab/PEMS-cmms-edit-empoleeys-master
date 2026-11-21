@@ -1,0 +1,53 @@
+{
+  "key": "nav",
+  "component": "PEMS.UI.Components.PemsNav",
+  "category": "navigation",
+  "icon": "bi-segmented-nav",
+  "nameKey": "component.nav",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "kind": {
+        "type": "string"
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "NavOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "kind": "pills"
+  }
+}

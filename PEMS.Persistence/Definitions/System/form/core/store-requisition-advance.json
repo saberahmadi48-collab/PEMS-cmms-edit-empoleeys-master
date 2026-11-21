@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "store-requisition-advance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move to the next status",
+    "fa": "رفتن به وضعیت بعدی"
+  },
+  "description": {
+    "en": "Move to the next status",
+    "fa": "رفتن به وضعیت بعدی"
+  },
+  "payload": {
+    "id": "store-requisition-advance",
+    "title": {
+      "en": "Move to the next status",
+      "fa": "رفتن به وضعیت بعدی"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "store-requisition-advance",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Requisition id",
+          "fa": "شناسه‌ی درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "database-update-pending",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Pending migrations",
+    "fa": "مهاجرت‌های در انتظار"
+  },
+  "description": {
+    "en": "Migrations not applied yet",
+    "fa": "مهاجرت‌هایی که هنوز اعمال نشده‌اند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DatabaseUpdate",
+      "action": "Status",
+      "path": "PendingMigrations"
+    }
+  }
+}

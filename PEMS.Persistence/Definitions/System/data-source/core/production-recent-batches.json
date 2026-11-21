@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "production-recent-batches",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Recent production batches",
+    "fa": "بچ‌های اخیر"
+  },
+  "description": {
+    "en": "Recent production batches",
+    "fa": "بچ‌های اخیر"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Production",
+      "action": "RecentBatches"
+    }
+  }
+}

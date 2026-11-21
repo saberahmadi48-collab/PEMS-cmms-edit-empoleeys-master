@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "technical-query-raise",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New TQ (old address)",
+    "fa": "New TQ (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New TQ (old address)",
+    "fa": "New TQ (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "TechnicalQuery/Raise",
+    "target": "/f/tq-raise",
+    "permanent": false
+  }
+}

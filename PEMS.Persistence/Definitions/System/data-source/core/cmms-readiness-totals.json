@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "cmms-readiness-totals",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CMMS readiness totals",
+    "fa": "جمع‌های آمادگی CMMS"
+  },
+  "description": {
+    "en": "CMMS readiness totals",
+    "fa": "جمع‌های آمادگی CMMS"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CmmsReadiness",
+      "action": "Totals"
+    }
+  }
+}

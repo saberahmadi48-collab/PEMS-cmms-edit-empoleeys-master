@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "meeting-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Meetings",
+    "fa": "جلسات"
+  },
+  "description": {
+    "en": "Meetings",
+    "fa": "جلسات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Meeting",
+      "action": "List"
+    }
+  }
+}

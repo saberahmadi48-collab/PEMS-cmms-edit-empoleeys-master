@@ -1,0 +1,116 @@
+@model PEMS.Application.DTOs.CartableReportDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var noData = Localizer["Chart_NoData"].Value;
+    var slaItems = new List<(string, double)>
+    {
+        (Localizer["Ct_SlaOnTime"].Value, Model.AnsweredOnTime),
+        (Localizer["Ct_SlaLate"].Value, Model.AnsweredLate),
+        (Localizer["Ct_SlaOpenOverdue"].Value, Model.OpenOverdue),
+        (Localizer["Ct_SlaOpenWithin"].Value, Model.OpenWithinSla)
+    }.Where(x => x.Item2 > 0).ToList();
+    var slaChart = BkChartSpec.Donut(Localizer["Ct_SlaTitle"].Value, noData, Localizer["Total"].Value, slaItems,
+        new[] { BkChartSpec.Positive, BkChartSpec.Warning, BkChartSpec.Negative, BkChartSpec.Primary });
+    var gauge = BkChartSpec.Gauge(Localizer["Ct_SlaOnTimePercent"].Value, noData, Localizer["Ct_SlaOnTimePercent"].Value,
+        Model.ResponseRequired == 0 ? null : Model.OnTimePercent, "%", 0);
+    var monthChart = BkChartSpec.MonthlyBars(Localizer["Ct_ByMonth"].Value, noData, Model.ByMonth.Select(x => x.Label),
+        BkSeries.Of(Localizer["Ct_Received"].Value, Model.ByMonth.Select(x => x.Count), BkChartSpec.Primary));
+    var disciplineChart = BkChartSpec.HBars(Localizer["Ct_ByDiscipline"].Value, noData, Model.ByDiscipline.Select(x => x.Label), false,
+        new BkSeries(Localizer["Ct_Received"].Value, Model.ByDiscipline.Select(x => (double)x.Count).ToList(), BkChartSpec.Accent));
+    string Days(double? d) => d.HasValue ? d.Value.ToString("0.0") : "—";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-cartable.css" asp-append-version="true" />
+    <partial name="_BkChartStyles" />
+}
+
+<pems-flex wrap="true" align="center" gap="2" css="mb-3">
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Index"><pems-icon name="bi-arrow-left-right" aria-hidden="true" /> @Localizer["Correspondence"]</pems-button>
+    <pems-form class="ms-auto" method="get"><pems-flex wrap="true" align="end" gap="2">
+        <div><pems-label css="small mb-0" for="rFrom">@Localizer["Lp_From"]</pems-label><pems-date id="rFrom" name="from" value="@PemsDates.Date(Model.FromDate)" scale="small" /></div>
+        <div><pems-label css="small mb-0" for="rTo">@Localizer["Lp_To"]</pems-label><pems-date id="rTo" name="to" value="@PemsDates.Date(Model.ToDate)" scale="small" /></div>
+        <pems-button tone="primary" size="small"><pems-icon name="bi-funnel" aria-hidden="true" /> @Localizer["Apply"]</pems-button>
+    </pems-flex></pems-form>
+</pems-flex>
+
+<div class="ct-report">
+    <section aria-label="@Localizer["Ct_ReportPersonal"]">
+        <div class="ct-kpis">
+            <div class="ct-kpi"><div class="v">@Model.Received</div><div class="l">@Localizer["Ct_Received"]</div></div>
+            <div class="ct-kpi @(Model.Unread > 0 ? "warn" : "")"><div class="v">@Model.Unread</div><div class="l">@Localizer["Ct_Unread"]</div></div>
+            <div class="ct-kpi"><div class="v">@Model.Sent</div><div class="l">@Localizer["Ct_FolderSent"]</div></div>
+            <div class="ct-kpi"><div class="v">@Model.OpenReferrals</div><div class="l">@Localizer["Ct_OpenReferrals"]</div></div>
+            <div class="ct-kpi @(Model.OverdueReferrals > 0 ? "warn" : "")"><div class="v">@Model.OverdueReferrals</div><div class="l">@Localizer["Ct_OverdueReferrals"]</div></div>
+            <div class="ct-kpi good"><div class="v">@Model.CompletedReferrals</div><div class="l">@Localizer["Ct_CompletedReferrals"]</div></div>
+            <div class="ct-kpi"><div class="v">@Days(Model.AvgReferralDays)</div><div class="l">@Localizer["Ct_AvgReferralDays"]</div></div>
+        </div>
+    </section>
+
+    <div class="ct-report-grid">
+        <section class="ct-card" aria-labelledby="slaH">
+            <pems-heading level="2" id="slaH">@Localizer["Ct_SlaTitle"]</pems-heading>
+            <pems-text class="small text-muted">@Localizer["Ct_SlaHint"]</pems-text>
+            <pems-row gap="3" css="align-items-center">
+                <pems-col sm="6"><pems-chart spec="@slaChart" /></pems-col>
+                <pems-col sm="6"><pems-chart spec="@gauge" /></pems-col>
+            </pems-row>
+            <div class="ct-kpis mt-3">
+                <div class="ct-kpi"><div class="v">@Model.ResponseRequired</div><div class="l">@Localizer["Ct_SlaRequired"]</div></div>
+                <div class="ct-kpi"><div class="v">@Days(Model.AvgResponseDays)</div><div class="l">@Localizer["Ct_AvgResponseDays"]</div></div>
+                <div class="ct-kpi @(Model.OpenOverdue > 0 ? "warn" : "")"><div class="v">@Model.OpenOverdue</div><div class="l">@Localizer["Ct_SlaOpenOverdue"]</div></div>
+            </div>
+        </section>
+        <section class="ct-card" aria-labelledby="monthH">
+            <pems-heading level="2" id="monthH">@Localizer["Ct_ByMonth"]</pems-heading>
+            <pems-chart spec="@monthChart" />
+        </section>
+        <section class="ct-card" aria-labelledby="discH">
+            <pems-heading level="2" id="discH">@Localizer["Ct_ByDiscipline"]</pems-heading>
+            <pems-chart spec="@disciplineChart" />
+        </section>
+    </div>
+
+    @if (Model.HasSubordinates)
+    {
+        <section class="ct-card" aria-labelledby="subH">
+            <pems-heading level="2" id="subH">@Localizer["Ct_SubordinatesTitle"]</pems-heading>
+            <pems-text class="small text-muted">@Localizer["Ct_SubordinatesHint"]</pems-text>
+            <pems-table-scroll>
+                <pems-table kind="plain" css="ct-table">
+                    <pems-table-head>
+                        <pems-table-row>
+                            <pems-table-header>@Localizer["Ct_Employee"]</pems-table-header>
+                            <pems-table-header class="num">@Localizer["Ct_Received"]</pems-table-header>
+                            <pems-table-header class="num">@Localizer["Ct_Unread"]</pems-table-header>
+                            <pems-table-header class="num">@Localizer["Ct_OpenReferrals"]</pems-table-header>
+                            <pems-table-header class="num">@Localizer["Ct_OverdueReferrals"]</pems-table-header>
+                            <pems-table-header class="num">@Localizer["Ct_CompletedReferrals"]</pems-table-header>
+                            <pems-table-header class="num">@Localizer["Ct_AvgReferralDays"]</pems-table-header>
+                        </pems-table-row>
+                    </pems-table-head>
+                    <pems-table-body>
+                        @foreach (var s in Model.Subordinates)
+                        {
+                            <pems-table-row>
+                                <pems-table-cell><div>@(new string('—', Math.Max(0, s.Depth - 1)))@(s.Depth > 1 ? " " : "")@s.Name</div><div class="small text-muted">@s.Position</div></pems-table-cell>
+                                <pems-table-cell class="num">@s.Received</pems-table-cell>
+                                <pems-table-cell class="num">@s.Unread</pems-table-cell>
+                                <pems-table-cell class="num">@s.OpenReferrals</pems-table-cell>
+                                <pems-table-cell class="num @(s.OverdueReferrals > 0 ? "bad" : "")">@s.OverdueReferrals</pems-table-cell>
+                                <pems-table-cell class="num">@s.CompletedReferrals</pems-table-cell>
+                                <pems-table-cell class="num">@Days(s.AvgReferralDays)</pems-table-cell>
+                            </pems-table-row>
+                        }
+                    </pems-table-body>
+                </pems-table>
+            </pems-table-scroll>
+        </section>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_BkChartScripts" />
+}

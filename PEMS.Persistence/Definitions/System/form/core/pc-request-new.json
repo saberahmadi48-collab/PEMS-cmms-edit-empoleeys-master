@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "pc-request-new",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New part catalogue request",
+    "fa": "درخواست جدید کاتالوگ قطعه"
+  },
+  "description": {
+    "en": "New part catalogue request",
+    "fa": "درخواست جدید کاتالوگ قطعه"
+  },
+  "payload": {
+    "id": "pc-request-new",
+    "title": {
+      "en": "New part catalogue request",
+      "fa": "درخواست جدید کاتالوگ قطعه"
+    },
+    "submitLabel": {
+      "en": "Create the draft",
+      "fa": "ساخت پیش‌نویس"
+    },
+    "actionKey": "pc-request-new",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "requestType",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Add",
+            "label": {
+              "en": "Add a part",
+              "fa": "افزودن قطعه"
+            }
+          },
+          {
+            "value": "Change",
+            "label": {
+              "en": "Change a part",
+              "fa": "تغییر قطعه"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

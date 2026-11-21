@@ -1,0 +1,61 @@
+{
+  "key": "tab",
+  "component": "PEMS.UI.Components.PemsTab",
+  "category": "navigation",
+  "icon": "bi-segmented-nav",
+  "nameKey": "component.tab",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "target": {
+        "type": "string"
+      },
+      "active": {
+        "type": "boolean"
+      },
+      "disabled": {
+        "type": "boolean"
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "TabOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "target": "tab-info",
+    "active": true,
+    "css": "px-3"
+  }
+}

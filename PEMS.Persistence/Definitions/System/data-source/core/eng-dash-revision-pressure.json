@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "eng-dash-revision-pressure",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Documents under revision pressure",
+    "fa": "مدارک تحت فشار بازنگری"
+  },
+  "description": {
+    "en": "Documents under revision pressure",
+    "fa": "مدارک تحت فشار بازنگری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EngineeringDashboard",
+      "action": "RevisionPressure",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "minRevisionCount": "param:minRevisionCount"
+      }
+    }
+  }
+}

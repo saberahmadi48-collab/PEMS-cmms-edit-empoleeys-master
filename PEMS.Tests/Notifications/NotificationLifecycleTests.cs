@@ -229,7 +229,7 @@ public class NotificationLifecycleTests
 
         var result = await NewController(svc, 1).Open(id);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.IsType<RedirectResult>(result);
     }
 
     [Fact]

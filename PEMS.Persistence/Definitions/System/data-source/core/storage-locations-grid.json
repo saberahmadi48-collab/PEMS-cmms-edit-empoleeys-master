@@ -1,0 +1,46 @@
+{
+  "kind": "data-source",
+  "key": "storage-locations-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Storage locations rows",
+    "fa": "ردیف‌های محل‌های نگهداری"
+  },
+  "description": {
+    "en": "The rows of the storage locations grid",
+    "fa": "ردیف‌های جدول محل‌های نگهداری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "StorageLocation",
+      "fields": [
+        "Code",
+        "Name",
+        "IsActive",
+        "WarehouseId",
+        "ParentLocationId"
+      ],
+      "search": [
+        "Code",
+        "Name"
+      ],
+      "lookups": [
+        {
+          "name": "warehouse",
+          "entity": "Warehouse",
+          "foreignKey": "WarehouseId",
+          "label": "Name"
+        },
+        {
+          "name": "parent",
+          "entity": "StorageLocation",
+          "foreignKey": "ParentLocationId",
+          "label": "Name"
+        }
+      ]
+    }
+  }
+}

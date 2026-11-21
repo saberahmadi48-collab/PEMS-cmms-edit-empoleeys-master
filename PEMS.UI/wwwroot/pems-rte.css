@@ -1,0 +1,32 @@
+/* PEMS.UI rich-text editor (SCRUM-59): theme tokens on top of the vendored Quill snow styles (loaded on demand by pems-rte.js).
+   Logical properties only (one sheet for RTL and LTR). The textarea keeps its own class .pems-rte; the editor is the .pems-rte-box next to it. */
+.pems-rte-box { display: flex; flex-direction: column; }
+.pems-rte-box .ql-toolbar.ql-snow,
+.pems-rte-box .ql-container.ql-snow { border-color: var(--pems-surface-border); }
+.pems-rte-box .ql-toolbar.ql-snow { border-start-start-radius: .375rem; border-start-end-radius: .375rem; background: var(--pems-surface); }
+.pems-rte-box .ql-container.ql-snow { border-end-start-radius: .375rem; border-end-end-radius: .375rem; }
+/* explicit height: Quill's default height:100% resolved against a stretched flex column and overflowed onto the controls below */
+.pems-rte-box__area { block-size: 240px; min-block-size: 180px; background: var(--pems-input-bg, var(--pems-surface)); color: var(--pems-text); }
+.pems-rte-box__area .ql-editor { font-size: 14px; text-align: start; }
+.pems-rte-box__area .ql-editor.ql-blank::before { color: var(--pems-text-muted); inset-inline: 15px; }
+.pems-rte-box .ql-snow .ql-stroke { stroke: var(--pems-text); }
+.pems-rte-box .ql-snow .ql-fill { fill: var(--pems-text); }
+.pems-rte-box .ql-snow .ql-picker { color: var(--pems-text); }
+.pems-rte-box .ql-snow .ql-picker-options { background: var(--pems-surface); }
+.pems-rte-box:focus-within .ql-container.ql-snow { border-color: var(--pems-primary); }
+.pems-rte-box--invalid .ql-container.ql-snow,
+.pems-rte-box--invalid .ql-toolbar.ql-snow { border-color: var(--pems-chart-negative-text, var(--pems-surface-border)); }
+
+/* Font names in the picker and the fonts themselves, in the editor and wherever the stored HTML is shown */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="tahoma"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="tahoma"]::before { content: 'Tahoma'; font-family: Tahoma; }
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="arial"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="arial"]::before { content: 'Arial'; font-family: Arial; }
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="times-new-roman"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="times-new-roman"]::before { content: 'Times New Roman'; font-family: 'Times New Roman'; }
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="b-nazanin"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="b-nazanin"]::before { content: 'B Nazanin'; font-family: 'B Nazanin', Tahoma; }
+.ql-font-tahoma { font-family: Tahoma, sans-serif; }
+.ql-font-arial { font-family: Arial, sans-serif; }
+.ql-font-times-new-roman { font-family: 'Times New Roman', serif; }
+.ql-font-b-nazanin { font-family: 'B Nazanin', Tahoma, sans-serif; }

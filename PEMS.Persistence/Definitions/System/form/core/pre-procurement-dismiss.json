@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "pre-procurement-dismiss",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Dismiss or return a demand",
+    "fa": "رد یا برگشت تقاضا"
+  },
+  "description": {
+    "en": "Dismiss or return a demand",
+    "fa": "رد یا برگشت تقاضا"
+  },
+  "payload": {
+    "id": "pre-procurement-dismiss",
+    "title": {
+      "en": "Dismiss or return a demand",
+      "fa": "رد یا برگشت تقاضا"
+    },
+    "submitLabel": {
+      "en": "Dismiss",
+      "fa": "رد کردن"
+    },
+    "actionKey": "pre-procurement-dismiss",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Demand id",
+          "fa": "شناسه‌ی تقاضا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason (required)",
+          "fa": "دلیل (الزامی)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      }
+    ]
+  }
+}

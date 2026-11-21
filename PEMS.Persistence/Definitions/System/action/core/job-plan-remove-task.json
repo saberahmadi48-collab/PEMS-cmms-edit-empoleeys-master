@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "job-plan-remove-task",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a task",
+    "fa": "حذف مرحله"
+  },
+  "description": {
+    "en": "Remove a task",
+    "fa": "حذف مرحله"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "JobPlan",
+      "action": "RemoveTask",
+      "args": {
+        "maintenanceTaskId": "field:maintenanceTaskId"
+      }
+    },
+    "success": {
+      "en": "The task was removed.",
+      "fa": "مرحله حذف شد."
+    },
+    "redirect": "/JobPlan/Details/{jobPlanId}"
+  }
+}

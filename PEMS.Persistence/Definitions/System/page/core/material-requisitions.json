@@ -1,0 +1,158 @@
+{
+  "kind": "page",
+  "key": "material-requisitions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MR Management",
+    "fa": "مدیریت MR"
+  },
+  "description": {
+    "en": "Material requisitions and their quotations (page definition)",
+    "fa": "درخواست‌های مواد و استعلام‌های آن‌ها (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "material-requisitions",
+    "regions": {
+      "content": [
+        {
+          "id": "go",
+          "component": "content-blocks",
+          "options": {
+            "id": "go",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mr-create",
+                "text": {
+                  "en": "New MR",
+                  "fa": "MR جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/mr-quotations",
+                "text": {
+                  "en": "All quotations (MRQ)",
+                  "fa": "همه‌ی استعلام‌ها (MRQ)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/procurement-packages",
+                "text": {
+                  "en": "Procurement packages",
+                  "fa": "بسته‌های تدارکات"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "mrs",
+          "component": "data-grid",
+          "options": {
+            "id": "mrs",
+            "url": "/d/mr-grid",
+            "idField": "mrId",
+            "columns": [
+              {
+                "key": "mrNumber",
+                "header": {
+                  "en": "MR",
+                  "fa": "MR"
+                },
+                "width": 150
+              },
+              {
+                "key": "project",
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "width": 180
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 150
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 300
+              },
+              {
+                "key": "requiredDate",
+                "header": {
+                  "en": "Required",
+                  "fa": "تاریخ نیاز"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 160
+              },
+              {
+                "key": "quotations",
+                "header": {
+                  "en": "Quotations",
+                  "fa": "استعلام‌ها"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "details",
+                    "label": {
+                      "en": "Details",
+                      "fa": "جزئیات"
+                    },
+                    "url": "/p/mr-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "MaterialRequisition.View"
+  }
+}

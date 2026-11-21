@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "job-plan-remove-task",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a task",
+    "fa": "حذف مرحله"
+  },
+  "description": {
+    "en": "Remove a task",
+    "fa": "حذف مرحله"
+  },
+  "payload": {
+    "id": "job-plan-remove-task",
+    "title": {
+      "en": "Remove a task",
+      "fa": "حذف مرحله"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "job-plan-remove-task",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "maintenanceTaskId",
+        "label": {
+          "en": "Task id",
+          "fa": "شناسه‌ی مرحله"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "jobPlanId",
+        "label": {
+          "en": "Job plan id",
+          "fa": "شناسه‌ی طرح کار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

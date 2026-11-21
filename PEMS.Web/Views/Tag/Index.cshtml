@@ -1,44 +1,78 @@
 ﻿@model List<PEMS.Application.DTOs.TagDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="content-card mb-3">
-    <h6 class="mb-3">Create Tag</h6>
-    <form asp-action="Create" method="post" class="row g-2">
-        <input type="hidden" name="returnUrl" value="/Tag" />
-        <div class="col-md-4"><input name="name" class="form-control form-control-sm" placeholder="Tag name" required /></div>
-        <div class="col-md-3">
-            <select name="color" class="form-select form-select-sm">
-                @foreach (var c in new[] { "secondary", "primary", "success", "danger", "warning", "info", "dark" })
-                { <option value="@c">@c</option> }
-            </select>
-        </div>
-        <div class="col-md-2"><button class="btn btn-sm btn-pems-solid w-100">@Localizer["Create"]</button></div>
-    </form>
-</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-<div class="content-card">
-    <h6 class="mb-3">All Tags</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead><tr><th>@Localizer["Tag"]</th><th>Used on</th><th></th></tr></thead>
-        <tbody>
-            @foreach (var t in Model)
-            {
-                <tr>
-                    <td><span class="badge bg-@t.Color">@t.Name</span></td>
-                    <td>@t.LetterCount letter(s)</td>
-                    <td>
-                        <form asp-action="Delete" method="post" onsubmit="return confirm('Delete this tag?')">
-                            <input type="hidden" name="tagId" value="@t.TagId" />
-                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4">No tags yet.</p> }
-</div>
+@* SCRUM-337 W2: built from the PEMS.UI list-page component. The create form moved into a modal opened by "New tag";
+   the tag colour stays the colour the user chose (a Bootstrap colour name), so the badge keeps it. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Tg_Title"]" total="@Model.Count">
+            <pems-list-tools>
+                <pems-list-new modal="createTagModal" text="@Localizer["Tg_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table empty="@(!Model.Any())" empty-text="@Localizer["Tg_Empty"]">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["Tg_Tag"]</pems-table-header>
+                        <pems-table-header>@Localizer["Tg_UsedOn"]</pems-table-header>
+                        <pems-table-header class="pems-w-60"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var t in Model)
+                    {
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell><pems-badge tone="none" css="bg-@t.Color">@t.Name</pems-badge></pems-table-cell>
+                            <pems-table-cell class="small">@string.Format(Localizer["Tg_LetterCount"].Value, t.LetterCount)</pems-table-cell>
+                            <pems-table-cell class="lp-actions">
+                                <pems-form asp-action="Delete" method="post" class="d-inline" data-pems-confirm="@Localizer["Tg_DeleteConfirm"]">
+                                    <input type="hidden" name="tagId" value="@t.TagId" />
+                                    <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["Delete"]" aria-label="@Localizer["Delete"]"><pems-icon name="bi-trash" aria-hidden="true" /></pems-button>
+                                </pems-form>
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+<pems-modal id="createTagModal" tabindex="-1" aria-labelledby="createTagTitle">
+        <pems-form asp-action="Create" method="post">
+            <input type="hidden" name="returnUrl" value="/Tag" />
+            <pems-modal-header title-id="createTagTitle">@Localizer["Tg_New"]</pems-modal-header>
+            <pems-modal-body>
+                <pems-form-group css="mb-2">
+                    <pems-label css="small" for="tagName">@Localizer["Tg_Name"]</pems-label>
+                    <pems-input scale="small" name="name" id="tagName" required />
+                </pems-form-group>
+                <pems-form-group css="mb-2">
+                    <pems-label css="small" for="tagColor">@Localizer["Tg_Color"]</pems-label>
+                    <pems-select scale="small" name="color" id="tagColor">
+                        @foreach (var c in new[] { "secondary", "primary", "success", "danger", "warning", "info", "dark" })
+                        { <option value="@c">@c</option> }
+                    </pems-select>
+                </pems-form-group>
+            </pems-modal-body>
+            <pems-modal-footer>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["Create"]</pems-button>
+            </pems-modal-footer>
+        </pems-form>
+    </pems-modal>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

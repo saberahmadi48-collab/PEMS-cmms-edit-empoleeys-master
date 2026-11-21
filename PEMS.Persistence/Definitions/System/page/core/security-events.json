@@ -1,0 +1,92 @@
+{
+  "kind": "page",
+  "key": "security-events",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Security events",
+    "fa": "رویدادهای امنیتی"
+  },
+  "description": {
+    "en": "Security events list (page definition)",
+    "fa": "فهرست رویدادهای امنیتی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "security-events",
+    "template": "entity-list",
+    "args": {
+      "id": "security-events",
+      "url": "/d/security-events-grid",
+      "idField": "securityEventId",
+      "viewsKey": "security-events",
+      "columns": [
+        {
+          "key": "occurredAtUtc",
+          "header": {
+            "en": "When (UTC)",
+            "fa": "زمان (UTC)"
+          },
+          "width": 170,
+          "type": "datetime"
+        },
+        {
+          "key": "eventType",
+          "header": {
+            "en": "Event",
+            "fa": "رویداد"
+          },
+          "width": 170
+        },
+        {
+          "key": "method",
+          "header": {
+            "en": "Method",
+            "fa": "روش"
+          },
+          "width": 150
+        },
+        {
+          "key": "result",
+          "header": {
+            "en": "Result",
+            "fa": "نتیجه"
+          },
+          "width": 100
+        },
+        {
+          "key": "failureReason",
+          "header": {
+            "en": "Failure reason",
+            "fa": "دلیل شکست"
+          },
+          "width": 180
+        },
+        {
+          "key": "actorUserName",
+          "header": {
+            "en": "Actor",
+            "fa": "انجام‌دهنده"
+          },
+          "width": 150
+        },
+        {
+          "key": "targetUserName",
+          "header": {
+            "en": "Target account",
+            "fa": "حساب هدف"
+          },
+          "width": 150
+        },
+        {
+          "key": "ipAddress",
+          "header": {
+            "en": "IP address",
+            "fa": "نشانی IP"
+          },
+          "width": 130
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mmd-toggle-evaluation-profile-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleEvaluationProfileActive",
+    "fa": "وضعیت Evaluation Profile به‌روزرسانی شد."
+  },
+  "description": {
+    "en": "ToggleEvaluationProfileActive",
+    "fa": "وضعیت Evaluation Profile به‌روزرسانی شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "ToggleEvaluationProfileActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "وضعیت Evaluation Profile به‌روزرسانی شد.",
+      "fa": "وضعیت Evaluation Profile به‌روزرسانی شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

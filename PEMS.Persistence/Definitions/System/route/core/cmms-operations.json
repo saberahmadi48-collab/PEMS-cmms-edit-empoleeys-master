@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "cmms-operations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CMMS operations (old address)",
+    "fa": "عملیات CMMS (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "CMMS operations (old address)",
+    "fa": "عملیات CMMS (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "CmmsOperations",
+    "target": "/p/cmms-operations",
+    "permanent": false
+  }
+}

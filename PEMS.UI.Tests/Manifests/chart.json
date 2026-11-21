@@ -1,0 +1,132 @@
+{
+  "key": "chart",
+  "component": "PEMS.UI.Components.PemsChart",
+  "category": "display",
+  "icon": "bi-bar-chart-line",
+  "nameKey": "component.chart",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "spec": {
+        "type": [
+          "object",
+          "null"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "ariaLabel": {
+            "type": "string"
+          },
+          "emptyText": {
+            "type": "string"
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "series": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "values": {
+                  "type": "array",
+                  "items": {
+                    "type": [
+                      "string",
+                      "number"
+                    ],
+                    "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$"
+                  }
+                },
+                "color": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "default": null
+                }
+              },
+              "required": [
+                "name",
+                "values"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "monthly": {
+            "type": "boolean"
+          },
+          "stacked": {
+            "type": "boolean"
+          },
+          "colors": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "centerLabel": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "value": {
+            "type": [
+              "string",
+              "number",
+              "null"
+            ],
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$"
+          },
+          "unit": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decimals": {
+            "type": [
+              "string",
+              "integer",
+              "null"
+            ],
+            "pattern": "^-?(?:0|[1-9]\\d*)$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "ChartOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "spec": {
+      "kind": "gauge",
+      "ariaLabel": "Completion",
+      "emptyText": "-",
+      "value": 72.5,
+      "unit": "%"
+    }
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "kind": "page",
+  "key": "mr-quotations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MRQ Management",
+    "fa": "مدیریت MRQ"
+  },
+  "description": {
+    "en": "Every quotation of every MR (page definition)",
+    "fa": "همه‌ی استعلام‌های همه‌ی MRها (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "mr-quotations",
+    "regions": {
+      "content": [
+        {
+          "id": "mrqs",
+          "component": "data-grid",
+          "options": {
+            "id": "mrqs",
+            "url": "/d/mrq-grid",
+            "idField": "mrqId",
+            "columns": [
+              {
+                "key": "mrqNumber",
+                "header": {
+                  "en": "MRQ",
+                  "fa": "MRQ"
+                },
+                "width": 130
+              },
+              {
+                "key": "mrNumber",
+                "header": {
+                  "en": "MR",
+                  "fa": "MR"
+                },
+                "width": 130
+              },
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 180
+              },
+              {
+                "key": "inquiryDate",
+                "header": {
+                  "en": "Inquiry",
+                  "fa": "تاریخ استعلام"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "quotedAmount",
+                "header": {
+                  "en": "Amount",
+                  "fa": "مبلغ"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "currency",
+                "header": {
+                  "en": "Currency",
+                  "fa": "ارز"
+                },
+                "width": 80
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "technical",
+                "header": {
+                  "en": "Technical",
+                  "fa": "فنی"
+                },
+                "width": 120
+              },
+              {
+                "key": "commercial",
+                "header": {
+                  "en": "Commercial",
+                  "fa": "بازرگانی"
+                },
+                "width": 120
+              },
+              {
+                "key": "approval",
+                "header": {
+                  "en": "Approval",
+                  "fa": "تأیید"
+                },
+                "width": 120
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 140,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "mr",
+                    "label": {
+                      "en": "Open the MR",
+                      "fa": "باز کردن MR"
+                    },
+                    "url": "/p/mr-details?id={raw.mrId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "MaterialRequisition.View"
+  }
+}

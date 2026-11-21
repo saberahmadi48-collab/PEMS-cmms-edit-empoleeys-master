@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("page-hero", Category = "display", Icon = "bi-megaphone")]
+@FrameMarkup.Element("div", string.IsNullOrWhiteSpace(Options.Css) ? "admin-hero" : "admin-hero " + Options.Css.Trim(), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public PageHeroOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

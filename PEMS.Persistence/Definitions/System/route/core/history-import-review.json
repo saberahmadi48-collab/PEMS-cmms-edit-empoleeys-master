@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "history-import-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance History Import review (old address)",
+    "fa": "Maintenance History Import review (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Maintenance History Import review (old address)",
+    "fa": "Maintenance History Import review (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenanceHistoryImport/Review",
+    "target": "/p/history-import-review",
+    "permanent": false
+  }
+}

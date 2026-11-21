@@ -1,0 +1,40 @@
+{
+  "kind": "action",
+  "key": "simops-confirm",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Confirm a conflict",
+    "fa": "تأیید تعارض"
+  },
+  "description": {
+    "en": "Confirm a conflict",
+    "fa": "تأیید تعارض"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Simops",
+      "action": "Confirm",
+      "args": {
+        "userRoles": "context:roles",
+        "userId": "context:userId",
+        "employeeId": "context:employeeId",
+        "conflictId": "field:id",
+        "permitId": "field:permitId",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The conflict was confirmed.",
+      "fa": "تعارض تایید شد."
+    },
+    "redirect": "/Permit/Details/{permitId}",
+    "permission": "Simops.Confirm",
+    "stepUp": {
+      "resource": "Simops",
+      "action": "Confirm"
+    }
+  }
+}

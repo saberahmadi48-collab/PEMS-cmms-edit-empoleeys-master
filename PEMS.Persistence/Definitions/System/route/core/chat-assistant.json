@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "chat-assistant",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Chat assistant (old address)",
+    "fa": "دستیار گفتگو (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Chat assistant (old address)",
+    "fa": "دستیار گفتگو (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ChatAssistant/{*rest}",
+    "target": "/p/chat-assistant",
+    "permanent": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "crews-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Crews (index) (old address)",
+    "fa": "Crews (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Crews (index) (old address)",
+    "fa": "Crews (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Crew/Index",
+    "target": "/p/crews",
+    "permanent": false
+  }
+}

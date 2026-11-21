@@ -1,0 +1,209 @@
+{
+  "kind": "page",
+  "key": "work-requests",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work Requests",
+    "fa": "درخواست‌های کار"
+  },
+  "description": {
+    "en": "Work requests with a status filter (page definition)",
+    "fa": "درخواست‌های کار با فیلتر وضعیت (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "work-requests",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "work-request-filters",
+            "resetUrl": "/p/work-requests",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Draft",
+                    "label": {
+                      "en": "Draft",
+                      "fa": "پیش‌نویس"
+                    }
+                  },
+                  {
+                    "value": "Submitted",
+                    "label": {
+                      "en": "Submitted",
+                      "fa": "ارسال‌شده"
+                    }
+                  },
+                  {
+                    "value": "UnderReview",
+                    "label": {
+                      "en": "UnderReview",
+                      "fa": "در بررسی"
+                    }
+                  },
+                  {
+                    "value": "Approved",
+                    "label": {
+                      "en": "Approved",
+                      "fa": "تأییدشده"
+                    }
+                  },
+                  {
+                    "value": "Planned",
+                    "label": {
+                      "en": "Planned",
+                      "fa": "برنامه‌ریزی‌شده"
+                    }
+                  },
+                  {
+                    "value": "Converted",
+                    "label": {
+                      "en": "Converted",
+                      "fa": "تبدیل‌شده"
+                    }
+                  },
+                  {
+                    "value": "Rejected",
+                    "label": {
+                      "en": "Rejected",
+                      "fa": "ردشده"
+                    }
+                  },
+                  {
+                    "value": "Cancelled",
+                    "label": {
+                      "en": "Cancelled",
+                      "fa": "لغوشده"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/work-request-create",
+                "text": {
+                  "en": "New work request",
+                  "fa": "درخواست کار جدید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "requests",
+          "component": "data-grid",
+          "options": {
+            "id": "requests",
+            "url": "/d/work-request-list?f.status={{params.status|url}}",
+            "idField": "workRequestId",
+            "columns": [
+              {
+                "key": "requestNumber",
+                "header": {
+                  "en": "Request",
+                  "fa": "درخواست"
+                },
+                "width": 140
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 320
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 100
+              },
+              {
+                "key": "requestedBy",
+                "header": {
+                  "en": "Requested by",
+                  "fa": "درخواست‌دهنده"
+                },
+                "width": 180
+              },
+              {
+                "key": "requestedDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "equipment",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 130
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/WorkRequest/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "WorkRequest.View"
+  }
+}

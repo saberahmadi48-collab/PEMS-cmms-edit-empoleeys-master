@@ -1,0 +1,17 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("flex", Category = "layout", Icon = "bi-distribute-horizontal")]
+@FrameMarkup.Element(Options.As is "span" or "li" or "header" or "footer" or "section" or "h5" or "h6" ? Options.As : "div", Css, Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public FlexOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string Css => string.Join(" ", new[]
+    {
+        Options.Inline ? "d-inline-flex" : "d-flex",
+        string.Equals(Options.Dir, "column", StringComparison.OrdinalIgnoreCase) ? "flex-column" : null,
+        Options.Wrap ? "flex-wrap" : null,
+        Options.Justify is { Length: > 0 } j ? "justify-content-" + j.Trim() : null,
+        Options.Align is { Length: > 0 } a ? "align-items-" + a.Trim() : null,
+        Options.Gap is { Length: > 0 } g ? "gap-" + g.Trim() : null,
+        Options.Css
+    }.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+}

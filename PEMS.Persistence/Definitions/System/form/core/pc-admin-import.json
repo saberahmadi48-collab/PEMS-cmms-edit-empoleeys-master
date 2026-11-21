@@ -1,0 +1,96 @@
+{
+  "kind": "form",
+  "key": "pc-admin-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import a reference workbook",
+    "fa": "ورود فایل مرجع"
+  },
+  "description": {
+    "en": "Import a reference workbook",
+    "fa": "ورود فایل مرجع"
+  },
+  "payload": {
+    "id": "pc-admin-import",
+    "title": {
+      "en": "Import a reference workbook",
+      "fa": "ورود فایل مرجع"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-admin-import",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "kind",
+        "label": {
+          "en": "Reference",
+          "fa": "مرجع"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "TechnicalClass",
+            "label": {
+              "en": "Technical classes",
+              "fa": "کلاس‌های فنی"
+            }
+          },
+          {
+            "value": "CommodityGroup",
+            "label": {
+              "en": "Commodity groups",
+              "fa": "گروه‌های کالا"
+            }
+          },
+          {
+            "value": "ProductFamily",
+            "label": {
+              "en": "Product families",
+              "fa": "خانواده‌های محصول"
+            }
+          },
+          {
+            "value": "Manufacturer",
+            "label": {
+              "en": "Manufacturers",
+              "fa": "سازندگان"
+            }
+          },
+          {
+            "value": "Supplier",
+            "label": {
+              "en": "Suppliers",
+              "fa": "تأمین‌کنندگان"
+            }
+          }
+        ]
+      },
+      {
+        "name": "file",
+        "label": {
+          "en": "Excel file (.xlsx)",
+          "fa": "فایل Excel (.xlsx)"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

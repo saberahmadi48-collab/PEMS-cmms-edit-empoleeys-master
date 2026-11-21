@@ -1,0 +1,152 @@
+{
+  "kind": "page",
+  "key": "help-standards",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Standards matrix",
+    "fa": "ماتریس استانداردها"
+  },
+  "description": {
+    "en": "Standard references (page definition)",
+    "fa": "مراجع استاندارد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "help-standards",
+    "template": "entity-list",
+    "args": {
+      "id": "help-standards",
+      "url": "/d/help-standards-rows",
+      "idField": "helpStandardReferenceId",
+      "columns": [
+        {
+          "key": "identifier",
+          "header": {
+            "en": "Identifier",
+            "fa": "شناسه"
+          },
+          "width": 160
+        },
+        {
+          "key": "titleEn",
+          "header": {
+            "en": "Title",
+            "fa": "عنوان"
+          },
+          "width": 260
+        },
+        {
+          "key": "issuingOrganization",
+          "header": {
+            "en": "Issuer",
+            "fa": "منتشرکننده"
+          },
+          "width": 180
+        },
+        {
+          "key": "editionOrYear",
+          "header": {
+            "en": "Edition",
+            "fa": "ویرایش"
+          },
+          "width": 100
+        },
+        {
+          "key": "applicabilityStatus",
+          "header": {
+            "en": "Applicability",
+            "fa": "کاربردپذیری"
+          },
+          "width": 170
+        },
+        {
+          "key": "verificationStatus",
+          "header": {
+            "en": "Verification",
+            "fa": "راستی‌آزمایی"
+          },
+          "width": 200
+        },
+        {
+          "key": "pEMSImplementationStatus",
+          "header": {
+            "en": "Implementation",
+            "fa": "پیاده‌سازی"
+          },
+          "width": 220
+        },
+        {
+          "key": "isPublished",
+          "header": {
+            "en": "Published",
+            "fa": "منتشرشده"
+          },
+          "width": 110,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 560,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/help-standard-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "publish",
+              "label": {
+                "en": "Publish",
+                "fa": "انتشار"
+              },
+              "url": "/a/help-standard-publish",
+              "method": "post",
+              "showWhen": "row.isPublished == false"
+            },
+            {
+              "key": "unpublish",
+              "label": {
+                "en": "Unpublish",
+                "fa": "لغو انتشار"
+              },
+              "url": "/a/help-standard-unpublish",
+              "method": "post",
+              "showWhen": "row.isPublished == true"
+            },
+            {
+              "key": "delete",
+              "label": {
+                "en": "Delete",
+                "fa": "حذف"
+              },
+              "url": "/a/help-standard-delete",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Delete this standard reference?",
+                "fa": "این مرجع حذف شود؟"
+              }
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/help-standard-create",
+      "newLabel": {
+        "en": "New standard reference",
+        "fa": "مرجع استاندارد جدید"
+      }
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "kind": "form",
+  "key": "team-position-move-employee",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move an employee between positions",
+    "fa": "جابه‌جایی کارمند بین سمت‌ها"
+  },
+  "description": {
+    "en": "Move an employee between positions",
+    "fa": "جابه‌جایی کارمند بین سمت‌ها"
+  },
+  "payload": {
+    "id": "team-position-move-employee",
+    "title": {
+      "en": "Move an employee between positions",
+      "fa": "جابه‌جایی کارمند بین سمت‌ها"
+    },
+    "submitLabel": {
+      "en": "Move",
+      "fa": "جابه‌جایی"
+    },
+    "actionKey": "team-position-move-employee",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "fromPositionId",
+        "label": {
+          "en": "From position id",
+          "fa": "از سمت"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "From position id is required.",
+            "fa": "از سمت الزامی است."
+          }
+        }
+      },
+      {
+        "name": "returnTeamId",
+        "label": {
+          "en": "Team id",
+          "fa": "شناسه تیم"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Team id is required.",
+            "fa": "شناسه تیم الزامی است."
+          }
+        }
+      },
+      {
+        "name": "toPositionId",
+        "label": {
+          "en": "To vacant position",
+          "fa": "به سمت خالی"
+        },
+        "kind": "select",
+        "optionsFrom": "team-vacant-positions",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "To vacant position is required.",
+            "fa": "به سمت خالی الزامی است."
+          }
+        }
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت"
+        },
+        "kind": "text",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

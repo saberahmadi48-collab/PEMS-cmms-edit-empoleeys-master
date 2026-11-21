@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "employee-position",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set the organizational position",
+    "fa": "تعیین سمت سازمانی"
+  },
+  "description": {
+    "en": "Set the organizational position",
+    "fa": "تعیین سمت سازمانی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Employee",
+      "action": "SetPosition",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "field:employeeId",
+        "positionId": "field:positionId"
+      }
+    },
+    "success": {
+      "en": "Position updated.",
+      "fa": "سمت سازمانی به‌روز شد."
+    },
+    "redirect": "/p/employee-details?id={employeeId}"
+  }
+}

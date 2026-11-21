@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-group1",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup Group1 (old address)",
+    "fa": "Part Catalogue lookup Group1 (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue lookup Group1 (old address)",
+    "fa": "Part Catalogue lookup Group1 (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueLookup/Group1",
+    "target": "/x/pc-group1",
+    "permanent": false
+  }
+}

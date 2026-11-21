@@ -1,0 +1,28 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("uploader", Category = "forms", Icon = "bi-cloud-arrow-up")]
+@using System.Text.Json
+@inject IPemsLocale Locale
+<div class="@Join("pems-upload", Options.Css)" data-pems-upload="" data-config="@Config()">
+    <input @attributes="Options.Attributes" type="file" id="@Options.Id" name="@Options.Name" accept="@(string.IsNullOrWhiteSpace(Options.Accept) ? null : Options.Accept)" multiple="@Options.Multiple" required="@Options.Required"
+           class="@Join("form-control", Options.Scale == "small" ? "form-control-sm" : null, Options.PageClass)" />
+</div>
+@code {
+    [Parameter, EditorRequired] public UploaderOptions Options { get; set; } = default!;
+
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+
+    /// <summary>What the script reads: the limit, the allowed types and every text in the language of the request.</summary>
+    private string Config()
+    {
+        var t = Options.Texts ?? UploaderTexts.Default;
+        var config = new
+        {
+            maxBytes = Options.MaxMb is > 0 ? Options.MaxMb.Value * 1024L * 1024L : (long?)null,
+            maxMb = Options.MaxMb,
+            accept = Options.Accept,
+            multiple = Options.Multiple,
+            texts = new { drop = Locale.Text(t.Drop), choose = Locale.Text(t.Choose), tooBig = Locale.Text(t.TooBig), wrongType = Locale.Text(t.WrongType), remove = Locale.Text(t.Remove) }
+        };
+        return JsonSerializer.Serialize(config, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });
+    }
+}

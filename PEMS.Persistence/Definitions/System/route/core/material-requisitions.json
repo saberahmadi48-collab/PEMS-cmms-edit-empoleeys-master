@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "material-requisitions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material requisitions (old address)",
+    "fa": "Material requisitions (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Material requisitions (old address)",
+    "fa": "Material requisitions (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaterialRequisition",
+    "target": "/p/material-requisitions",
+    "permanent": false
+  }
+}

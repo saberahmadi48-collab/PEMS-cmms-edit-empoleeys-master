@@ -1,0 +1,15 @@
+@* Facade for .cshtml pages: pass EmptyStateOptions, ErrorStateOptions or LoadingStateOptions. The markup lives in the components. *@
+@model object
+@using PEMS.UI.Components
+@using PEMS.UI.Rendering
+@inject IPemsComponentRenderer Renderer
+@{
+    var key = Model switch
+    {
+        EmptyStateOptions => "empty-state",
+        ErrorStateOptions => "error-state",
+        LoadingStateOptions => "loading-state",
+        _ => throw new InvalidOperationException("_PemsState expects EmptyStateOptions, ErrorStateOptions or LoadingStateOptions.")
+    };
+}
+@Html.Raw(await Renderer.RenderAsync(key, new Dictionary<string, object?> { ["Options"] = Model }))

@@ -1,0 +1,19 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("accordion-item", Category = "display", Icon = "bi-chevron-expand")]
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="@ButtonCss" type="button" data-bs-toggle="collapse" data-bs-target="#@Options.Target">@Header</button>
+    </h2>
+    <div id="@Options.Target" class="accordion-collapse collapse" data-bs-parent="@(Options.ParentId is null ? null : "#" + Options.ParentId)">
+        <div class="@BodyCss">@ChildContent</div>
+    </div>
+</div>
+@code {
+    [Parameter, EditorRequired] public AccordionItemOptions Options { get; set; } = default!;
+    /// <summary>The always-visible button content (icon, text, count).</summary>
+    [Parameter] public RenderFragment? Header { get; set; }
+    /// <summary>The collapsible body.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string ButtonCss => string.IsNullOrWhiteSpace(Options.ButtonCssClass) ? "accordion-button collapsed" : "accordion-button collapsed " + Options.ButtonCssClass.Trim();
+    private string BodyCss => string.IsNullOrWhiteSpace(Options.BodyCssClass) ? "accordion-body" : "accordion-body " + Options.BodyCssClass.Trim();
+}

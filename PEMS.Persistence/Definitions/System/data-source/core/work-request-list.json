@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "work-request-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work requests",
+    "fa": "درخواست‌های کار"
+  },
+  "description": {
+    "en": "Work requests",
+    "fa": "درخواست‌های کار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkRequestPage",
+      "action": "List",
+      "args": {
+        "status": "param:status"
+      }
+    }
+  }
+}

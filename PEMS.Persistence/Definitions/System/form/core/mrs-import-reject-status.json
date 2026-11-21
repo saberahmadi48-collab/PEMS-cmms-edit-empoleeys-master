@@ -1,0 +1,89 @@
+{
+  "kind": "form",
+  "key": "mrs-import-reject-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject a whole match status",
+    "fa": "رد یک وضعیت کامل"
+  },
+  "description": {
+    "en": "Reject a whole match status",
+    "fa": "رد یک وضعیت کامل"
+  },
+  "payload": {
+    "id": "mrs-import-reject-status",
+    "title": {
+      "en": "Reject a whole match status",
+      "fa": "رد یک وضعیت کامل"
+    },
+    "submitLabel": {
+      "en": "Reject",
+      "fa": "رد"
+    },
+    "actionKey": "mrs-import-reject-status",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه‌ی دسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "matchStatus",
+        "label": {
+          "en": "Match status",
+          "fa": "وضعیت تطبیق"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "New",
+            "label": {
+              "en": "New",
+              "fa": "جدید"
+            }
+          },
+          {
+            "value": "MatchedExisting",
+            "label": {
+              "en": "MatchedExisting",
+              "fa": "منطبق با موجود"
+            }
+          },
+          {
+            "value": "DuplicateInBatch",
+            "label": {
+              "en": "DuplicateInBatch",
+              "fa": "تکراری در دسته"
+            }
+          },
+          {
+            "value": "Invalid",
+            "label": {
+              "en": "Invalid",
+              "fa": "نامعتبر"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "action",
+  "key": "employee-export",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Export employees to Excel",
+    "fa": "خروجی اکسل کارکنان"
+  },
+  "description": {
+    "en": "Export employees to Excel",
+    "fa": "خروجی اکسل کارکنان"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Employee",
+      "action": "Export",
+      "args": {}
+    },
+    "success": {
+      "en": "Employees exported.",
+      "fa": "خروجی کارکنان آماده شد."
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "ai-insights-delay-discipline",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delay by discipline",
+    "fa": "تاخیر به تفکیک دیسیپلین"
+  },
+  "description": {
+    "en": "Delay by discipline",
+    "fa": "تاخیر به تفکیک دیسیپلین"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "AiInsights",
+      "action": "DelayByDiscipline"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "kind": "form",
+  "key": "procurement-package-add-communication",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a clarification",
+    "fa": "افزودن شفاف‌سازی"
+  },
+  "description": {
+    "en": "Add a clarification",
+    "fa": "افزودن شفاف‌سازی"
+  },
+  "payload": {
+    "id": "procurement-package-add-communication",
+    "title": {
+      "en": "Add a clarification",
+      "fa": "افزودن شفاف‌سازی"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "procurement-package-add-communication",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "packageId",
+        "label": {
+          "en": "Package id",
+          "fa": "شناسه‌ی بسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "type",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 60
+      },
+      {
+        "name": "subject",
+        "label": {
+          "en": "Subject",
+          "fa": "موضوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 300
+      },
+      {
+        "name": "body",
+        "label": {
+          "en": "Body",
+          "fa": "متن"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 2000,
+        "span": 2
+      },
+      {
+        "name": "vendorId",
+        "label": {
+          "en": "Vendor",
+          "fa": "فروشنده"
+        },
+        "kind": "select",
+        "optionsFrom": "procurement-package-vendors"
+      }
+    ]
+  }
+}

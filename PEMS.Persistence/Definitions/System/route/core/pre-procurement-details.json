@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pre-procurement-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement demand (old address)",
+    "fa": "Procurement demand (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Procurement demand (old address)",
+    "fa": "Procurement demand (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "PreProcurement/Details/{id}",
+    "target": "/p/pre-procurement-details?id={id}",
+    "permanent": false
+  }
+}

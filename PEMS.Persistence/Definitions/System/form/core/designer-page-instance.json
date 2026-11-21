@@ -1,0 +1,113 @@
+{
+  "kind": "form",
+  "key": "designer-page-instance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a component to a page",
+    "fa": "افزودن مؤلفه به صفحه"
+  },
+  "description": {
+    "en": "Add a component to a page",
+    "fa": "افزودن مؤلفه به صفحه"
+  },
+  "payload": {
+    "id": "designer-page-instance",
+    "title": {
+      "en": "Add a component to a page",
+      "fa": "افزودن مؤلفه به صفحه"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "designer-add-page-instance",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ref",
+        "label": {
+          "en": "Definition",
+          "fa": "تعریف"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Definition is required.",
+            "fa": "تعریف الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "appKey:kind:key, for example core:form:department-create",
+          "fa": "appKey:kind:key"
+        }
+      },
+      {
+        "name": "region",
+        "label": {
+          "en": "Region",
+          "fa": "ناحیه"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Region is required.",
+            "fa": "ناحیه الزامی است."
+          }
+        },
+        "maxLength": 60
+      },
+      {
+        "name": "id",
+        "label": {
+          "en": "Instance id",
+          "fa": "شناسه نمونه"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Instance id is required.",
+            "fa": "شناسه نمونه الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "component",
+        "label": {
+          "en": "Component",
+          "fa": "مؤلفه"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Component is required.",
+            "fa": "مؤلفه الزامی است."
+          }
+        },
+        "maxLength": 100,
+        "placeholder": {
+          "en": "a key of the component catalog, or def:<component definition>",
+          "fa": "کلید مؤلفه"
+        }
+      },
+      {
+        "name": "options",
+        "label": {
+          "en": "Options (JSON)",
+          "fa": "گزینه‌ها (JSON)"
+        },
+        "kind": "textArea",
+        "maxLength": 100000,
+        "span": 2
+      }
+    ]
+  }
+}

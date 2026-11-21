@@ -1,0 +1,42 @@
+{
+  "kind": "action",
+  "key": "tq-raise",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Raise a TQ / TSR / RFI",
+    "fa": "ثبت TQ / TSR / RFI"
+  },
+  "description": {
+    "en": "Raise a TQ / TSR / RFI",
+    "fa": "ثبت TQ / TSR / RFI"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TechnicalQuery",
+      "action": "Raise",
+      "args": {
+        "queryType": "field:queryType",
+        "subject": "field:subject",
+        "description": "field:description",
+        "projectId": "field:projectId",
+        "disciplineId": "field:disciplineId",
+        "relatedDocumentId": "field:relatedDocumentId",
+        "relatedEquipmentId": "field:relatedEquipmentId",
+        "requiredResponseDate": "field:requiredResponseDate",
+        "priority": "field:priority",
+        "raisedByEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "Raised.",
+      "fa": "ثبت شد."
+    },
+    "redirect": "/p/technical-queries"
+  }
+}

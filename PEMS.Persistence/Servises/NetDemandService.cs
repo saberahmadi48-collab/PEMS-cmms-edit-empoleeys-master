@@ -19,12 +19,15 @@ public class NetDemandService : INetDemandService
     private readonly INetDemandCollector _collector;
     private readonly IUsableStockService _stock;
     private readonly IPermissionService _permissions;
+    private readonly IIncomingSupplyProvider? _incoming;
 
-    public NetDemandService(INetDemandCollector collector, IUsableStockService stock, IPermissionService permissions)
+    /// <param name="incoming">SCRUM-473: open PO lines as incoming supply. Without it the result stays a stock-only estimate (IncomingSupplyNotModeled).</param>
+    public NetDemandService(INetDemandCollector collector, IUsableStockService stock, IPermissionService permissions, IIncomingSupplyProvider? incoming = null)
     {
         _collector = collector;
         _stock = stock;
         _permissions = permissions;
+        _incoming = incoming;
     }
 
     public async Task<NetDemandReport> CalculateAsync(NetDemandScope scope, NetDemandCaller caller, CancellationToken ct = default)
@@ -51,6 +54,9 @@ public class NetDemandService : INetDemandService
             .Concat(demand.Excluded.Where(e => e.WarehouseId.HasValue).Select(e => new StockKey(e.MaterialItemId, e.WarehouseId!.Value)))
             .Distinct().ToList();
         var stock = (await _stock.GetUsableStockAsync(keys, ct)).ToDictionary(s => new StockKey(s.MaterialItemId, s.WarehouseId));
+        var incoming = _incoming == null
+            ? null
+            : await _incoming.GetIncomingSupplyAsync(keys.Select(k => k.MaterialItemId).Distinct().ToList(), ct);
 
         var groupKeys = demand.Lines.Select(l => (l.MaterialItemId, l.WarehouseId))
             .Concat(demand.Excluded.Select(e => (e.MaterialItemId, e.WarehouseId)))
@@ -76,11 +82,22 @@ public class NetDemandService : INetDemandService
             UsableStockResult? s = null;
             if (warehouseId.HasValue) stock.TryGetValue(new StockKey(materialId, warehouseId.Value), out s);
 
+            var levelIssues = warehouseId.HasValue && itemLevel.TryGetValue(materialId, out var inherited) ? inherited : null;
+            decimal? known = null;
+            if (incoming != null && warehouseId.HasValue)
+            {
+                var key = new StockKey(materialId, warehouseId.Value);
+                known = incoming.QuantityFor(key);
+                var incomingIssues = incoming.IssuesFor(key);
+                if (incomingIssues.Count > 0) levelIssues = (levelIssues ?? new List<NetDemandIssue>()).Concat(incomingIssues).ToList();
+            }
+
             var input = new NetDemandInput(
                 materialId, warehouseId, s,
                 demand.Lines.Where(l => l.MaterialItemId == materialId && l.WarehouseId == warehouseId).ToList(),
                 demand.Excluded.Where(e => e.MaterialItemId == materialId && e.WarehouseId == warehouseId).ToList(),
-                warehouseId.HasValue && itemLevel.TryGetValue(materialId, out var inherited) ? inherited : null);
+                levelIssues,
+                known);
 
             results.Add(NetDemandCalculator.Calculate(input));
         }

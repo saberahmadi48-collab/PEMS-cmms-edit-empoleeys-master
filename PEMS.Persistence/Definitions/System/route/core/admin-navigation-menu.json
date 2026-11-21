@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-navigation-menu",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Menu (old address)",
+    "fa": "منو (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Menu (old address)",
+    "fa": "منو (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/NavigationMenu/{*rest}",
+    "target": "/p/navigation-menu",
+    "permanent": false
+  }
+}

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PEMS.Persistence.Identity;
@@ -14,9 +15,8 @@ namespace PEMS.Web.Security;
 /// </summary>
 public static class IdentitySeeder
 {
-    public const string DefaultAdminUserName = "admin";
-    public const string DefaultAdminEmail = "admin@pems.local";
-    public const string DefaultAdminPassword = "Admin@12345";
+    // The administrator comes from settings (Seed:Admin:UserName / Email in env/<name>.env, Seed:Admin:Password in
+    // env/<name>.secrets.env); nothing is hard-coded here.
 
 
     public static async Task SeedAsync(IServiceProvider services)
@@ -67,11 +67,19 @@ public static class IdentitySeeder
         if (userManager.Users.Any())
             return;
 
+        var seedAdmin = AdminSeedSettings.From(services.GetRequiredService<IConfiguration>());
+        if (seedAdmin is null)
+        {
+            logger.LogWarning("No administrator was seeded: define Seed:Admin:UserName, Seed:Admin:Email and Seed:Admin:Password " +
+                              "(Seed__Admin__* in env/<name>.env and env/<name>.secrets.env).");
+            return;
+        }
+
 
         var adminUser = new ApplicationUser
         {
-            UserName = DefaultAdminUserName,
-            Email = DefaultAdminEmail,
+            UserName = seedAdmin.UserName,
+            Email = seedAdmin.Email,
             EmailConfirmed = true,
             FullName = "System Administrator",
             IsActive = true,
@@ -83,7 +91,7 @@ public static class IdentitySeeder
 
         var createResult = await userManager.CreateAsync(
             adminUser,
-            DefaultAdminPassword);
+            seedAdmin.Password);
 
         if (!createResult.Succeeded)
         {
@@ -98,6 +106,20 @@ public static class IdentitySeeder
 
         logger.LogWarning(
             "کاربر System Admin پیش‌فرض ساخته شد. Username: {UserName} — لطفاً بلافاصله بعد از اولین ورود رمز عبور پیش‌فرض را تغییر دهید.",
-            DefaultAdminUserName);
+            seedAdmin.UserName);
+    }
+}
+
+/// <summary>Administrator account to seed on an empty database; null when any of the three settings is missing.</summary>
+public sealed record AdminSeedSettings(string UserName, string Email, string Password)
+{
+    public static AdminSeedSettings? From(IConfiguration configuration)
+    {
+        var userName = configuration["Seed:Admin:UserName"];
+        var email = configuration["Seed:Admin:Email"];
+        var password = configuration["Seed:Admin:Password"];
+        return string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password)
+            ? null
+            : new AdminSeedSettings(userName, email, password);
     }
 }

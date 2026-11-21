@@ -1,0 +1,34 @@
+{
+  "kind": "data-source",
+  "key": "pc-report-summary",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue report: Summary",
+    "fa": "گزارش کاتالوگ قطعه: Summary"
+  },
+  "description": {
+    "en": "Part Catalogue report: Summary",
+    "fa": "گزارش کاتالوگ قطعه: Summary"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueReport",
+      "action": "Summary",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "period": "param:period",
+        "from": "param:from",
+        "to": "param:to",
+        "sectionId": "param:sectionId",
+        "requestType": "param:requestType",
+        "status": "param:status",
+        "employeeId": "param:employeeId",
+        "equipmentId": "param:equipmentId"
+      }
+    }
+  }
+}

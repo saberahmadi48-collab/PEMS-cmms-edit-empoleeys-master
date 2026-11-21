@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-bulk", Category = "list", Icon = "bi-check2-square")]
+<div @attributes="Options.Attributes" class="@ListMarkup.Css("lp-bulk", Options.CssClass)" data-lp-bulk="@Options.Name" data-count-text="@Options.CountText" hidden="hidden"><span aria-live="polite" class="lp-bulk-count" data-lp-bulk-count=""></span>@ChildContent</div>
+@code {
+    [Parameter, EditorRequired] public ListBulkOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

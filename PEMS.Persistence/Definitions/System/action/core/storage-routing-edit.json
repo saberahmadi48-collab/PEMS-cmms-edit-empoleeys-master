@@ -1,0 +1,52 @@
+{
+  "kind": "action",
+  "key": "storage-routing-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit storage route",
+    "fa": "ویرایش قانون مسیریابی ذخیره‌سازی"
+  },
+  "description": {
+    "en": "Edit storage route",
+    "fa": "ویرایش قانون مسیریابی ذخیره‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StorageRoute",
+      "action": "Update",
+      "args": {
+        "id": "field:id",
+        "request": {
+          "Module": "field:module",
+          "DocumentType": "field:documentType",
+          "StorageProviderId": "field:storageProviderId",
+          "RelativeRootPath": "field:relativeRootPath",
+          "IsEnabled": "field:isEnabled",
+          "IsDefault": "field:isDefault",
+          "Priority": "field:priority"
+        },
+        "modifiedBy": "context:userName"
+      },
+      "load": {
+        "entity": "StorageRoute",
+        "map": {
+          "module": "Module",
+          "documentType": "DocumentType",
+          "storageProviderId": "StorageProviderId",
+          "relativeRootPath": "RelativeRootPath",
+          "isEnabled": "IsEnabled",
+          "isDefault": "IsDefault",
+          "priority": "Priority"
+        }
+      }
+    },
+    "success": {
+      "en": "Storage route saved.",
+      "fa": "قانون مسیریابی ذخیره‌سازی ذخیره شد."
+    },
+    "redirect": "/p/storage-routing"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "kind": "form",
+  "key": "team-position-move",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move a position",
+    "fa": "جابه‌جایی سمت"
+  },
+  "description": {
+    "en": "Move a position",
+    "fa": "جابه‌جایی سمت"
+  },
+  "payload": {
+    "id": "team-position-move",
+    "title": {
+      "en": "Move a position",
+      "fa": "جابه‌جایی سمت"
+    },
+    "submitLabel": {
+      "en": "Move",
+      "fa": "جابه‌جایی"
+    },
+    "actionKey": "team-position-move",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "positionId",
+        "label": {
+          "en": "Position id",
+          "fa": "شناسه سمت"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Position id is required.",
+            "fa": "شناسه سمت الزامی است."
+          }
+        }
+      },
+      {
+        "name": "returnTeamId",
+        "label": {
+          "en": "Current team id",
+          "fa": "شناسه تیم فعلی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Current team id is required.",
+            "fa": "شناسه تیم فعلی الزامی است."
+          }
+        }
+      },
+      {
+        "name": "newTeamId",
+        "label": {
+          "en": "New team",
+          "fa": "تیم جدید"
+        },
+        "kind": "select",
+        "optionsFrom": "team-team-nodes",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "New team is required.",
+            "fa": "تیم جدید الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

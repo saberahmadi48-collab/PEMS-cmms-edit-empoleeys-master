@@ -1,0 +1,85 @@
+{
+  "kind": "form",
+  "key": "team-position-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a position",
+    "fa": "ساخت سمت"
+  },
+  "description": {
+    "en": "Create a position",
+    "fa": "ساخت سمت"
+  },
+  "payload": {
+    "id": "team-position-create",
+    "title": {
+      "en": "Create a position",
+      "fa": "ساخت سمت"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ساخت"
+    },
+    "actionKey": "team-position-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "teamId",
+        "label": {
+          "en": "Team id",
+          "fa": "شناسه تیم"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Team id is required.",
+            "fa": "شناسه تیم الزامی است."
+          }
+        }
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Title is required.",
+            "fa": "عنوان الزامی است."
+          }
+        },
+        "maxLength": 150
+      },
+      {
+        "name": "sortOrder",
+        "label": {
+          "en": "Sort order",
+          "fa": "ترتیب"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Sort order is required.",
+            "fa": "ترتیب الزامی است."
+          }
+        }
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "text",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

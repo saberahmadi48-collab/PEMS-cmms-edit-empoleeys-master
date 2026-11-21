@@ -1,0 +1,19 @@
+@page
+@inject Ledger Ledger
+@inject VendorKeyStore Keys
+@inject VendorSettings Settings
+@{
+    ViewData["Title"] = "Home";
+    var licences = Ledger.Licences();
+}
+<h1>PEMS vendor tool</h1>
+<p>Operator: <strong>@Settings.OperatorName</strong>. Runs on this owner computer only; the signing key is stored encrypted and unlocked per issue with a passphrase.</p>
+<div class="card">
+    <p>Customers: @Ledger.Customers().Count &middot; Licences issued: @licences.Count &middot; Active: @licences.Count(l => l.Status == "active") &middot; Keys: @Keys.List().Count</p>
+    <p>Audit chain: @(Ledger.VerifyAuditChain() ? "intact" : "BROKEN - investigate before issuing")</p>
+</div>
+<ol>
+    <li><a asp-page="/Keys">Create a signing key</a> (once, then follow docs/process/KEY_MANAGEMENT.md).</li>
+    <li><a asp-page="/Customers">Register the customer</a> after checking identity.</li>
+    <li><a asp-page="/Issue">Import the customer's .pemsreq and issue the .pemslic</a>.</li>
+</ol>

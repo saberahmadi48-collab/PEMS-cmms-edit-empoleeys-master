@@ -1,0 +1,121 @@
+{
+  "kind": "form",
+  "key": "designer-form-field",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a form field",
+    "fa": "افزودن فیلد فرم"
+  },
+  "description": {
+    "en": "Add a form field",
+    "fa": "افزودن فیلد فرم"
+  },
+  "payload": {
+    "id": "designer-form-field",
+    "title": {
+      "en": "Add a form field",
+      "fa": "افزودن فیلد فرم"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "designer-add-form-field",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ref",
+        "label": {
+          "en": "Definition",
+          "fa": "تعریف"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Definition is required.",
+            "fa": "تعریف الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "appKey:kind:key, for example core:form:department-create",
+          "fa": "appKey:kind:key"
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "kind",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "text",
+        "maxLength": 40,
+        "placeholder": {
+          "en": "text, textArea, select, date, number, checkbox",
+          "fa": "text"
+        }
+      },
+      {
+        "name": "titleEn",
+        "label": {
+          "en": "Label (English)",
+          "fa": "برچسب (انگلیسی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Label (English) is required.",
+            "fa": "برچسب (انگلیسی) الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "titleFa",
+        "label": {
+          "en": "Label (Persian)",
+          "fa": "برچسب (فارسی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Label (Persian) is required.",
+            "fa": "برچسب (فارسی) الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "required",
+        "label": {
+          "en": "Required (true or false)",
+          "fa": "اجباری (true یا false)"
+        },
+        "kind": "text",
+        "maxLength": 5
+      }
+    ]
+  }
+}

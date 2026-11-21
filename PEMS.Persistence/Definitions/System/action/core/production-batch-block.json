@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "production-batch-block",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Block the batch",
+    "fa": "توقف بچ"
+  },
+  "description": {
+    "en": "Block the batch",
+    "fa": "توقف بچ"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "BlockBatch",
+      "args": {
+        "productionBatchId": "field:id",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The batch was blocked.",
+      "fa": "بچ متوقف شد."
+    },
+    "redirect": "/ProductionRun/BatchDetails/{id}"
+  }
+}

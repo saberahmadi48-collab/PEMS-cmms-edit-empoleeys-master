@@ -1,0 +1,37 @@
+{
+  "kind": "component",
+  "key": "entity-barcode",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode of a record",
+    "fa": "بارکد رکورد"
+  },
+  "description": {
+    "en": "The barcode SVG of the record whose id is the request id (the barcode endpoint renders it), shown with the file preview.",
+    "fa": "تصویر بارکد رکورد."
+  },
+  "payload": {
+    "parameters": {
+      "id": {
+        "type": "string",
+        "required": true
+      },
+      "title": {
+        "type": "text",
+        "description": "The accessible name"
+      }
+    },
+    "instances": [
+      {
+        "id": "barcode",
+        "component": "file-preview",
+        "options": {
+          "id": "${id}",
+          "src": "/Barcode/Svg/{{params.id|url}}",
+          "title": "${title}"
+        }
+      }
+    ]
+  }
+}

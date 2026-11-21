@@ -68,10 +68,10 @@ From the repo root, in your own terminal (this uses the `PEMSDbContextFactory` e
 ```powershell
 $env:ConnectionStrings__PEMSConnection = "Server=tcp:pems-uat-sqlserver.database.windows.net,1433;Database=PEMSDB-UAT;User ID=pemsuatadmin;Password=<YOUR-OWN-STRONG-PASSWORD>;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 
-dotnet ef dbcontext info --project PEMS.Persistence --startup-project PEMS.Web
+dotnet ef dbcontext info --project PEMS.Migrations --startup-project PEMS.Web
 # ^ MUST print "Database name: PEMSDB-UAT" — if it still says PEMSDB, stop, do not proceed
 
-dotnet ef database update --project PEMS.Persistence --startup-project PEMS.Web
+dotnet ef database update --project PEMS.Migrations --startup-project PEMS.Web
 
 Remove-Item Env:\ConnectionStrings__PEMSConnection
 ```

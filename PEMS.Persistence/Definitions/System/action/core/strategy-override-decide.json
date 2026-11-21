@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "strategy-override-decide",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Decide an override",
+    "fa": "تصمیم درباره‌ی Override"
+  },
+  "description": {
+    "en": "Decide an override",
+    "fa": "تصمیم درباره‌ی Override"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceStrategy",
+      "action": "DecideOverride",
+      "args": {
+        "assignmentId": "field:assignmentId",
+        "approve": "field:approve",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "The override decision was recorded.",
+      "fa": "تصمیم درباره‌ی Override ثبت شد."
+    },
+    "redirect": "/MaintenanceStrategy/Details/{strategyId}"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "help-articles-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help articles",
+    "fa": "Help articles"
+  },
+  "description": {
+    "en": "Help articles",
+    "fa": "Help articles"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Help",
+      "action": "AdminArticles"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "work-request-advance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Next status (legacy)",
+    "fa": "وضعیت بعدی (قدیمی)"
+  },
+  "description": {
+    "en": "Next status (legacy)",
+    "fa": "وضعیت بعدی (قدیمی)"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkRequestPage",
+      "action": "AdvanceStatus",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "id": "field:id",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The status was changed.",
+      "fa": "وضعیت تغییر کرد."
+    },
+    "redirect": "/WorkRequest/Details/{id}"
+  }
+}

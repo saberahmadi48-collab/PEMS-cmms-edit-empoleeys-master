@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "production-run-hold",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Hold the run",
+    "fa": "تعلیق اجرا"
+  },
+  "description": {
+    "en": "Hold the run",
+    "fa": "تعلیق اجرا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "Hold",
+      "args": {
+        "productionRunId": "field:id",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The run was held.",
+      "fa": "اجرا معلق شد."
+    },
+    "redirect": "/ProductionRun/Details/{id}"
+  }
+}

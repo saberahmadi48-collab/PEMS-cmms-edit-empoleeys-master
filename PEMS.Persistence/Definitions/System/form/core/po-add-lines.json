@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "po-add-lines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add the lines of an MR",
+    "fa": "افزودن اقلام یک MR"
+  },
+  "description": {
+    "en": "Add the lines of an MR",
+    "fa": "افزودن اقلام یک MR"
+  },
+  "payload": {
+    "id": "po-add-lines",
+    "title": {
+      "en": "Add the lines of an MR",
+      "fa": "افزودن اقلام یک MR"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "po-add-lines",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Order id",
+          "fa": "شناسه‌ی سفارش"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "mrId",
+        "label": {
+          "en": "MR",
+          "fa": "MR"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "po-requisitions"
+      }
+    ]
+  }
+}

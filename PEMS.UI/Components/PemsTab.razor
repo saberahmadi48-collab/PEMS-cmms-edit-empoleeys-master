@@ -1,0 +1,21 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("tab", Category = "navigation", Icon = "bi-segmented-nav")]
+<li class="nav-item" role="presentation">@FrameMarkup.Element("button", Css, Options.PageClass, Attrs, ChildContent, Options.Disabled)</li>
+@code {
+    [Parameter, EditorRequired] public TabOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string Css => string.Join(" ", new[] { "nav-link", Options.Active ? "active" : null, Options.Css }.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+    /// <summary>The switch attributes first, then the page's own (a page <c>type</c> or <c>data-bs-*</c> attribute wins).</summary>
+    private IReadOnlyDictionary<string, object> Attrs
+    {
+        get
+        {
+            var all = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            if (Options.Attributes is not null) foreach (var (k, v) in Options.Attributes) all[k] = v;
+            if (!all.ContainsKey("data-bs-toggle")) all["data-bs-toggle"] = "tab";
+            if (!all.ContainsKey("data-bs-target") && !string.IsNullOrEmpty(Options.Target)) all["data-bs-target"] = "#" + Options.Target.TrimStart('#');
+            if (!all.ContainsKey("type")) all["type"] = "button";
+            return all;
+        }
+    }
+}

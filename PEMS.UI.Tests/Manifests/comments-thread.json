@@ -1,0 +1,146 @@
+{
+  "key": "comments-thread",
+  "component": "PEMS.UI.Components.PemsCommentsThread",
+  "category": "data",
+  "icon": "bi-chat-left-text",
+  "nameKey": "component.comments-thread",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "comments": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "author": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            },
+            "when": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "status": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "statusTone": {
+              "type": "string"
+            },
+            "actionLabel": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "actionUrl": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "replies": {
+              "type": "array",
+              "items": {
+                "$ref": "#/properties/comments/items"
+              }
+            }
+          },
+          "required": [
+            "author",
+            "text"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "empty": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "empty"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "CommentsThreadOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "thread",
+    "comments": [
+      {
+        "author": "A. Rezaei",
+        "text": "Please attach the drawing.",
+        "when": "2026-11-10T09:30:00Z",
+        "status": "Answered",
+        "statusTone": "success",
+        "actionLabel": "Reply",
+        "actionUrl": "/x/reply/1",
+        "replies": [
+          {
+            "author": "M. Karimi",
+            "text": "Attached.",
+            "when": "2026-11-11T10:00:00Z"
+          }
+        ]
+      },
+      {
+        "author": "S. Hosseini",
+        "text": "Second question",
+        "when": "2026-11-12T08:00:00Z",
+        "status": "Open",
+        "statusTone": "warning"
+      }
+    ],
+    "empty": {
+      "en": "No comments yet",
+      "fa": "هنوز نظری نیست"
+    }
+  }
+}

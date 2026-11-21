@@ -1,0 +1,86 @@
+{
+  "key": "menu",
+  "component": "PEMS.UI.Components.PemsMenu",
+  "category": "navigation",
+  "icon": "bi-three-dots-vertical",
+  "nameKey": "component.menu",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "label": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "href": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "label",
+            "href"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "label",
+      "items"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "MenuOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "label": {
+      "en": "Actions",
+      "fa": "عملیات"
+    },
+    "items": [
+      {
+        "label": {
+          "en": "Edit",
+          "fa": "ویرایش"
+        },
+        "href": "/x/edit"
+      }
+    ]
+  }
+}

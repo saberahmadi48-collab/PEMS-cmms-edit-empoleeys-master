@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-departments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Departments, admin area (old address)",
+    "fa": "دپارتمان‌ها، ناحیه مدیریت (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Departments, admin area (old address)",
+    "fa": "دپارتمان‌ها، ناحیه مدیریت (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/Department/{*rest}",
+    "target": "/p/departments",
+    "permanent": false
+  }
+}

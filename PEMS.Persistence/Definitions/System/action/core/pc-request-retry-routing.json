@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "pc-request-retry-routing",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Retry the routing",
+    "fa": "تلاش مجدد مسیریابی"
+  },
+  "description": {
+    "en": "Retry the routing",
+    "fa": "تلاش مجدد مسیریابی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "RetryRouting",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "The routing was retried.",
+      "fa": "مسیریابی دوباره انجام شد."
+    },
+    "redirect": "/p/pc-request-details?id={id}"
+  }
+}

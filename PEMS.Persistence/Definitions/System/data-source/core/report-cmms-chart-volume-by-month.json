@@ -1,0 +1,31 @@
+{
+  "kind": "data-source",
+  "key": "report-cmms-chart-volume-by-month",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cmms chart: Volume by month",
+    "fa": "نمودار cmms: حجم به تفکیک ماه"
+  },
+  "description": {
+    "en": "Cmms chart: Volume by month",
+    "fa": "نمودار cmms: حجم به تفکیک ماه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Cmms",
+      "args": {
+        "status": "param:status",
+        "priority": "param:priority",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      },
+      "where": {
+        "key": "VolumeByMonth"
+      }
+    }
+  }
+}

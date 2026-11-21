@@ -1,0 +1,54 @@
+{
+  "kind": "form",
+  "key": "mmd-move-group",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MoveGroup",
+    "fa": "MoveGroup"
+  },
+  "description": {
+    "en": "MoveGroup",
+    "fa": "MoveGroup"
+  },
+  "payload": {
+    "id": "mmd-move-group",
+    "title": {
+      "en": "MoveGroup",
+      "fa": "MoveGroup"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-move-group",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "maintenanceGroupId",
+        "label": {
+          "en": "Maintenance group id",
+          "fa": "maintenanceGroupId"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "mmd-groups-choices"
+      },
+      {
+        "name": "newParentMaintenanceGroupId",
+        "label": {
+          "en": "New parent maintenance group id",
+          "fa": "newParentMaintenanceGroupId"
+        },
+        "kind": "select",
+        "optionsFrom": "mmd-groups-choices"
+      }
+    ]
+  }
+}

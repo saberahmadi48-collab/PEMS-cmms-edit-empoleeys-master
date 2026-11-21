@@ -1,0 +1,40 @@
+{
+  "kind": "action",
+  "key": "work-order-add-required-skill",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add required skill",
+    "fa": "افزودن مهارت موردنیاز"
+  },
+  "description": {
+    "en": "Add required skill",
+    "fa": "افزودن مهارت موردنیاز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderSkill",
+      "action": "Add",
+      "sectionGuard": {
+        "section": "RequiredSkills",
+        "action": "Add",
+        "workOrderId": "field:workOrderId",
+        "recordRef": "field:skillId",
+        "audit": "SkillId={skillId}; Level={minimumProficiencyLevel}; PlannedHours={plannedHours}"
+      },
+      "args": {
+        "workOrderId": "field:workOrderId",
+        "skillId": "field:skillId",
+        "minimumProficiencyLevel": "field:minimumProficiencyLevel",
+        "plannedHours": "field:plannedHours"
+      }
+    },
+    "success": {
+      "en": "The required skill was added.",
+      "fa": "مهارت موردنیاز اضافه شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

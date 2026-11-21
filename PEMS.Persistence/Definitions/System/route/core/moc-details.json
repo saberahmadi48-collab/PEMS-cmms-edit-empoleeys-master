@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "moc-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MOC details (old address)",
+    "fa": "MOC details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "MOC details (old address)",
+    "fa": "MOC details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MOC/Details/{id}",
+    "target": "/p/moc-details?id={id}",
+    "permanent": false
+  }
+}

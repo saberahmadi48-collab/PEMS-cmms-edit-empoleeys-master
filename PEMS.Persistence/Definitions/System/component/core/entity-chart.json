@@ -1,0 +1,80 @@
+{
+  "kind": "component",
+  "key": "entity-chart",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Chart over a data source",
+    "fa": "نمودار روی منبع داده"
+  },
+  "description": {
+    "en": "A bar, horizontal bar, line or donut chart whose numbers come from the rows of a grid data source, read with the permission of the source.",
+    "fa": "نمودار میله‌ای، خطی یا حلقه‌ای از ردیف‌های یک منبع داده."
+  },
+  "payload": {
+    "parameters": {
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "The url of the grid data source: /d/{key}"
+      },
+      "labelField": {
+        "type": "string",
+        "required": true,
+        "description": "The row property of the labels"
+      },
+      "series": {
+        "type": "array",
+        "required": true,
+        "description": "The series: { field, name, color }"
+      },
+      "kind": {
+        "type": "string",
+        "default": "bar",
+        "description": "bar, hbar, line or donut"
+      },
+      "stacked": {
+        "type": "boolean",
+        "default": false
+      },
+      "top": {
+        "type": "number",
+        "default": 50,
+        "description": "At most this many rows (200)"
+      },
+      "sort": {
+        "type": "string",
+        "description": "Sort of the rows, e.g. -count"
+      },
+      "ariaLabel": {
+        "type": "text",
+        "required": true,
+        "description": "The accessible description of the chart"
+      },
+      "emptyText": {
+        "type": "text",
+        "description": "Shown when there are no rows"
+      }
+    },
+    "instances": [
+      {
+        "id": "chart",
+        "component": "chart",
+        "options": {},
+        "bindings": {
+          "chart": {
+            "source": "${url}",
+            "labelField": "${labelField}",
+            "series": "${series}",
+            "kind": "${kind}",
+            "stacked": "${stacked}",
+            "top": "${top}",
+            "sort": "${sort}",
+            "ariaLabel": "${ariaLabel}",
+            "emptyText": "${emptyText}"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "kind": "action",
+  "key": "material-categories-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create material category",
+    "fa": "ایجاد دسته‌بندی مواد"
+  },
+  "description": {
+    "en": "Create material category",
+    "fa": "ایجاد دسته‌بندی مواد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "MaterialCategory",
+      "map": {
+        "code": "Code",
+        "name": "Name",
+        "parentCategoryId": "ParentCategoryId",
+        "description": "Description"
+      },
+      "required": [
+        "Code",
+        "Name"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "Code"
+          ],
+          "message": {
+            "en": "This code already exists.",
+            "fa": "این کد از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Material category created.",
+      "fa": "دسته‌بندی مواد ایجاد شد."
+    },
+    "redirect": "/p/material-categories"
+  }
+}

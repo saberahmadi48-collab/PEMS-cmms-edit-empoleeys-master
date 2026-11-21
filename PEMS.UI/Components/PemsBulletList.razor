@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("bullet-list", Category = "display", Icon = "bi-list-ul")]
+@FrameMarkup.Element(Options.Ordered ? "ol" : "ul", Options.Css ?? "", Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public BulletListOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

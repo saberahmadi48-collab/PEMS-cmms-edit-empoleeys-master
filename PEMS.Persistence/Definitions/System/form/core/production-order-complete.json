@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "production-order-complete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Complete the order",
+    "fa": "تکمیل سفارش"
+  },
+  "description": {
+    "en": "Complete the order",
+    "fa": "تکمیل سفارش"
+  },
+  "payload": {
+    "id": "production-order-complete",
+    "title": {
+      "en": "Complete the order",
+      "fa": "تکمیل سفارش"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-order-complete",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Order id",
+          "fa": "شناسه‌ی سفارش"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

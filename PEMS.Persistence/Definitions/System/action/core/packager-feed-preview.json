@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "packager-feed-preview",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Preview a feed package",
+    "fa": "پیش‌نمایش بسته تغذیه داده"
+  },
+  "description": {
+    "en": "What the feed package would contain, before it is signed and downloaded",
+    "fa": "محتوای بسته پیش از امضا و دریافت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Packager",
+      "action": "PreviewFeed",
+      "args": {
+        "toVersion": "field:toVersion",
+        "entity": "field:entity",
+        "mode": "field:mode",
+        "rowsJson": "field:rows",
+        "keyFields": "field:keyFields"
+      }
+    },
+    "success": {
+      "en": "The preview was made.",
+      "fa": "پیش‌نمایش ساخته شد."
+    }
+  }
+}

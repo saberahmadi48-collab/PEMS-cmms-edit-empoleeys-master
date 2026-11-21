@@ -1,0 +1,139 @@
+{
+  "kind": "page",
+  "key": "performance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Performance testing",
+    "fa": "تست عملکرد"
+  },
+  "description": {
+    "en": "What the k6 performance suite is and how to run it (page definition)",
+    "fa": "راهنمای مجموعه تست عملکرد k6 (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "performance",
+    "regions": {
+      "content": [
+        {
+          "id": "performance-notes",
+          "component": "content-blocks",
+          "options": {
+            "id": "performance-notes",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 2,
+                "text": {
+                  "en": "k6 Performance Suite",
+                  "fa": "k6 Performance Suite"
+                }
+              },
+              {
+                "type": "text",
+                "text": {
+                  "en": "k6 is a load and performance testing tool, usually used for HTTP/API load, stress and soak testing. It is not part of the ASP.NET application and is not visible in the UI by default, because so far it is only mentioned in docs/PERFORMANCE_AUDIT_V1.md as a future plan.",
+                  "fa": "k6 یک ابزار تست بار و سنجش عملکرد است که معمولاً برای HTTP/API load، stress و soak testing استفاده می‌شود. این ابزار بخشی از خود اپلیکیشن ASP.NET نیست و در پروژه‌ی ما به‌صورت پیش‌فرض در UI دیده نمی‌شود، چون تا الان فقط در مستند docs/PERFORMANCE_AUDIT_V1.md به عنوان یک برنامه‌ی آینده‌نگر ذکر شده است."
+                }
+              },
+              {
+                "type": "alert",
+                "tone": "warning",
+                "title": {
+                  "en": "Current status:",
+                  "fa": "وضعیت فعلی:"
+                },
+                "text": {
+                  "en": "k6 is not installed or implemented in the project, and the real performance-tests/ folder does not exist yet. This page only records the status and the first-run guide.",
+                  "fa": "k6 در پروژه نصب/پیاده‌سازی نشده است و پوشه‌ی واقعی performance-tests/ هم هنوز وجود ندارد. این صفحه فقط برای ثبت وضعیت و راهنمای اجرای اولیه اضافه شده است."
+                }
+              },
+              {
+                "type": "heading",
+                "level": 3,
+                "text": {
+                  "en": "What k6 does",
+                  "fa": "چیزی که k6 انجام می‌دهد"
+                }
+              },
+              {
+                "type": "list",
+                "items": [
+                  {
+                    "en": "Load testing and ramping up the number of users",
+                    "fa": "تست بار و بالا رفتن تعداد کاربرها"
+                  },
+                  {
+                    "en": "Measuring P50/P95/P99 latency",
+                    "fa": "سنجش P50/P95/P99 latency"
+                  },
+                  {
+                    "en": "Stress and spike testing",
+                    "fa": "stress و spike testing"
+                  },
+                  {
+                    "en": "Checking 5xx errors, timeouts and resource use",
+                    "fa": "بررسی 5xx و timeout و مصرف منابع"
+                  },
+                  {
+                    "en": "Collecting data for the API and login/dashboard/search",
+                    "fa": "کسب داده برای API و login/dashboard/search"
+                  }
+                ]
+              },
+              {
+                "type": "heading",
+                "level": 3,
+                "text": {
+                  "en": "Suggested first run",
+                  "fa": "پیشنهاد اجرای اولیه"
+                }
+              },
+              {
+                "type": "code",
+                "text": {
+                  "en": "k6 run --vus 10 --duration 30s ./performance-tests/smoke.js",
+                  "fa": "k6 run --vus 10 --duration 30s ./performance-tests/smoke.js"
+                }
+              },
+              {
+                "type": "text",
+                "css": "text-muted small",
+                "text": {
+                  "en": "There is no real k6 script in this project yet, but this path is prepared for a future run.",
+                  "fa": "در این پروژه هنوز اسکریپت واقعی k6 وجود ندارد، اما این مسیر برای اجرای آینده آماده می‌شود."
+                }
+              },
+              {
+                "type": "heading",
+                "level": 3,
+                "text": {
+                  "en": "Suggested scenarios",
+                  "fa": "Scenarios پیشنهادی"
+                }
+              },
+              {
+                "type": "list",
+                "items": [
+                  {
+                    "en": "Baseline: 1, 5, 10 users",
+                    "fa": "Baseline: 1, 5, 10 کاربران"
+                  },
+                  {
+                    "en": "Load: 25, 50, 100 users",
+                    "fa": "Load: 25, 50, 100 کاربران"
+                  },
+                  {
+                    "en": "Stress / Spike: 150 to 500 users and back to normal",
+                    "fa": "Stress / Spike: 150 تا 500 و بازگشت به حالت عادی"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

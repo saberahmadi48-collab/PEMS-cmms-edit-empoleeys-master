@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "report-engineering",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering report (old address)",
+    "fa": "گزارش مهندسی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Engineering report (old address)",
+    "fa": "گزارش مهندسی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Report/Engineering",
+    "target": "/p/report-engineering",
+    "permanent": false
+  }
+}

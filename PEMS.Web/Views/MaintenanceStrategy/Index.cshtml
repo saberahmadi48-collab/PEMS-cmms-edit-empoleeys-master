@@ -1,182 +1,182 @@
-﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.MaintenanceStrategyListDto>
+@model PEMS.Web.ViewModels.StrategyIndexViewModel
 @using Microsoft.Extensions.Localization
+@using PEMS.Domain.Common
+@using PEMS.Web.Helpers
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
+@{
+    var filter = Model.Filter;
+    var q = filter.Search;
+    int? equipmentId = filter.EquipmentId, classId = filter.EquipmentClassId;
+    string? status = filter.Status, type = filter.StrategyType;
+    var className = Model.Classes.FirstOrDefault(c => c.Id == classId)?.Text;
+    var filterCount = (equipmentId.HasValue ? 1 : 0) + (classId.HasValue ? 1 : 0) + (string.IsNullOrEmpty(status) ? 0 : 1) + (string.IsNullOrEmpty(type) ? 0 : 1);
 
-<div class="content-card mb-3">
-    <div class="row g-2 align-items-end">
-        <div class="col-md-5">
-            <label class="form-label small">@Localizer["فیلتر بر اساس تجهیز"]</label>
-            <div class="d-flex gap-2">
-                <input type="text" class="form-control form-control-sm" id="strategyFilterSearch"
-                       placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]" value="@ViewBag.SelectedEquipmentLabel"
-                       data-pems-search data-search-type="Equipment" autocomplete="off" />
-                @if (ViewBag.SelectedEquipmentId != null)
-                {
-                    <a asp-action="Index" class="btn btn-outline-danger btn-sm" title="@Localizer["حذف فیلتر"]"><i class="bi bi-x-lg"></i></a>
-                }
-            </div>
-            <script>
-                document.getElementById('strategyFilterSearch').addEventListener('pems:search-select', function (e) {
-                    if (e.detail) window.location.href = '@Url.Action("Index")?equipmentId=' + e.detail.id;
-                });
-            </script>
-        </div>
-        <div class="col-md-7 text-end">
-            <a asp-action="BulkCreate" class="btn btn-sm btn-outline-primary">
-                <i class="bi bi-collection"></i> @Localizer["تعریف دسته‌جمعی برای چند تجهیز"]
-            </a>
-            <button type="button" class="btn btn-sm btn-pems-solid" data-bs-toggle="modal" data-bs-target="#createStrategyModal">
-                <i class="bi bi-plus-lg"></i> New Strategy
-            </button>
-        </div>
-    </div>
-</div>
-
-<p class="text-muted small">
-    طبق RCM (SAE JA1011): هر استراتژی باید به یک حالت خرابی مشخص وصل باشه و طبقه‌بندی پیامدش
-    (ایمنی/زیست‌محیطی/تولیدی/اقتصادی) مشخص باشه - نه فقط یک برچسب کلی.
-</p>
-
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('MaintenanceStrategy')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise pems-grid-table" data-grid-key="MaintenanceStrategy">
-        <thead>
-            <tr>
-                <th data-col-key="equipment" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Equipment"]</th>
-                <th data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">@Localizer["Type"]</th>
-                <th data-col-key="failureMode" data-resizable="true" data-min-width="100" data-max-width="220" style="width:140px">@Localizer["Failure Mode"]</th>
-                <th data-col-key="consequence" data-resizable="true" data-min-width="90" data-max-width="180" style="width:120px">@Localizer["پیامد"]</th>
-                <th data-col-key="justification" data-resizable="true" data-min-width="160" data-max-width="400" style="width:260px">@Localizer["توجیه"]</th>
-                <th data-col-key="actions" data-resizable="false" style="width:190px"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var s in Model.Items)
-            {
-                <tr>
-                    <td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@s.EquipmentId">@s.EquipmentTagNumber</a></td>
-                    <td><span class="badge bg-secondary">@s.StrategyType</span></td>
-                    <td class="small">@s.FailureModeCode</td>
-                    <td>
-                        <span class="badge @(s.ConsequenceCategory == "Safety" ? "bg-danger" : s.ConsequenceCategory == "Environmental" ? "bg-warning text-dark" : "bg-info text-dark")">
-                            @s.ConsequenceCategory
-                        </span>
-                    </td>
-                    <td class="small text-muted">@s.Justification</td>
-                    <td class="text-end">
-                        <a asp-controller="MaintenancePlan" asp-action="Create" asp-route-strategyId="@s.MaintenanceStrategyId" class="btn btn-sm btn-outline-primary">
-                            <i class="bi bi-calendar-plus"></i> Create Plan
-                        </a>
-                        <form asp-action="Deactivate" method="post" class="d-inline">
-                            <input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-slash-circle"></i></button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4">No maintenance strategies defined yet.</p> }
-
-    @{
-        var qsParts = new List<string>();
-        if (ViewBag.SelectedEquipmentId != null) qsParts.Add($"equipmentId={ViewBag.SelectedEquipmentId}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "MaintenanceStrategy",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('MaintenanceStrategy');
-        });
-    </script>
+    var qs = new List<string>();
+    if (equipmentId.HasValue) qs.Add($"equipmentId={equipmentId}");
+    if (classId.HasValue) qs.Add($"classId={classId}");
+    if (!string.IsNullOrEmpty(status)) qs.Add($"status={status}");
+    if (!string.IsNullOrEmpty(type)) qs.Add($"type={type}");
+    if (!string.IsNullOrEmpty(q)) qs.Add($"q={Uri.EscapeDataString(q)}");
 }
 
-<div class="modal fade" id="createStrategyModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form asp-action="Create" method="post">
-                <div class="modal-header"><h6 class="modal-title">New Maintenance Strategy (RCM)</h6></div>
-                <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label class="form-label">@Localizer["Equipment"]</label>
-                            <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]"
-                                   data-pems-search data-search-type="Equipment" data-search-hidden="#strategyEquipmentIdHidden" autocomplete="off" required />
-                            <input type="hidden" name="equipmentId" id="strategyEquipmentIdHidden" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Strategy Type"]</label>
-                            <select name="strategyType" class="form-select" required>
-                                <option>@Localizer["Preventive"]</option>
-                                <option>@Localizer["Predictive"]</option>
-                                <option>@Localizer["CBM"]</option>
-                                <option>@Localizer["Corrective"]</option>
-                                <option value="RunToFailure">@Localizer["Run-to-Failure"]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Failure Mode (ISO 14224)"]</label>
-                            <select name="failureModeCode" class="form-select">
-                                <option value="">@Localizer["-- انتخاب --"]</option>
-                                <option>@Localizer["Leakage"]</option><option>@Localizer["Fracture"]</option><option>@Localizer["Vibration"]</option>
-                                <option>@Localizer["Overheating"]</option><option>@Localizer["Blockage"]</option><option>@Localizer["ElectricalFault"]</option>
-                                <option>@Localizer["Other"]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Consequence Category (RCM)"]</label>
-                            <select name="consequenceCategory" class="form-select" required>
-                                <option value="Safety">@Localizer["Safety"]</option>
-                                <option value="Environmental">@Localizer["Environmental"]</option>
-                                <option value="Operational" selected>@Localizer["Operational"]</option>
-                                <option value="Economic">@Localizer["Economic"]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">@Localizer["Recommended Trigger Type"]</label>
-                            <select name="recommendedTriggerType" class="form-select">
-                                <option value="Calendar">@Localizer["Calendar"]</option>
-                                <option value="Meter">@Localizer["Meter"]</option>
-                                <option value="Both">@Localizer["Both"]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Frequency (راهنما)"]</label>
-                            <select name="frequency" class="form-select">
-                                <option>@Localizer["Daily"]</option><option>@Localizer["Weekly"]</option><option>@Localizer["Monthly"]</option>
-                                <option>@Localizer["Quarterly"]</option><option>@Localizer["Yearly"]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6"><label class="form-label">@Localizer["Start Date"]</label><input name="startDate" type="date" class="form-control" /></div>
-                        <div class="col-12">
-                            <label class="form-label">@Localizer["Justification (چرا این استراتژی؟)"]</label>
-                            <textarea name="justification" class="form-control" rows="2" placeholder="طبق RCM: چرا این استراتژی برای این حالت خرابی مناسبه"></textarea>
-                        </div>
-                        <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="2"></textarea></div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
+
+@* SCRUM-337 W2: built from the PEMS.UI list-page component. The filter card became the search plus the filters dropdown;
+   coverage, the failure-mode catalogue and bulk assignment moved into the "more" menu; the page note became the tool tip
+   of the title. Permissions (CanApprove / CanCreate / CanEdit) are unchanged. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Ms_Title"]" heading-title="@Localizer["Rcm_IndexHint"]" total="@Model.Page.TotalCount">
+            <pems-list-search id="msSearchForm" action="@Url.Action("Index")" input-id="msQuickSearch" name="q" value="@q"
+                              placeholder="@Localizer["Rcm_Search"]">
+                @if (equipmentId.HasValue) { <input type="hidden" name="equipmentId" value="@equipmentId" /> }
+                @if (classId.HasValue) { <input type="hidden" name="classId" value="@classId" /> }
+                @if (!string.IsNullOrEmpty(status)) { <input type="hidden" name="status" value="@status" /> }
+                @if (!string.IsNullOrEmpty(type)) { <input type="hidden" name="type" value="@type" /> }
+            </pems-list-search>
+
+            <pems-list-tools search-for="msSearchForm">
+                <pems-list-filters form-id="msFilterForm" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index", new { q })">
+                    <input type="hidden" name="q" value="@q" />
+                    <div>
+                        <label class="lp-lbl" for="strategyFilterSearch">@Localizer["Rcm_FilterByEquipment"]</label>
+                        <pems-input scale="small" type="text" id="strategyFilterSearch" placeholder="@Localizer["Rcm_SearchEquipmentPlaceholder"]" value="@Model.SelectedEquipmentLabel" data-pems-search data-search-type="Equipment" autocomplete="off" />
+                        <input type="hidden" name="equipmentId" id="strategyFilterEquipmentId" value="@equipmentId" />
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                    <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                    <div>
+                        <label class="lp-lbl" for="msFilterClass">@Localizer["Rcm_EquipmentClass"]</label>
+                        <pems-select scale="small" id="msFilterClass" name="classId">
+                            <option value="">@Localizer["Rcm_All"]</option>
+                            @foreach (var c in Model.Classes) { <option value="@c.Id" selected="@(classId == c.Id)">@c.Text</option> }
+                        </pems-select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="msFilterStatus">@Localizer["Rcm_Status"]</label>
+                        <pems-select scale="small" id="msFilterStatus" name="status">
+                            <option value="">@Localizer["Rcm_AllLive"]</option>
+                            @foreach (var s in RcmCodes.Status.All) { <option value="@s" selected="@(status == s)">@Localizer.Label("Status", s)</option> }
+                        </pems-select>
+                    </div>
+                    <div>
+                        <label class="lp-lbl" for="msFilterType">@Localizer["Rcm_StrategyType"]</label>
+                        <pems-select scale="small" id="msFilterType" name="type">
+                            <option value="">@Localizer["Rcm_All"]</option>
+                            @foreach (var t in RcmCodes.StrategyType.All) { <option value="@t" selected="@(type == t)">@Localizer.Label("StrategyType", t)</option> }
+                        </pems-select>
+                    </div>
+                </pems-list-filters>
+                <pems-list-menu id="msMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">
+                    <pems-bullet><pems-link class="dropdown-item" asp-action="Coverage"><pems-icon name="bi-pie-chart" aria-hidden="true" /> @Localizer["Rcm_Coverage"]</pems-link></pems-bullet>
+                    <pems-bullet><pems-link class="dropdown-item" asp-controller="FailureModeCatalog" asp-action="Index"><pems-icon name="bi-journal-text" aria-hidden="true" /> @Localizer["Rcm_FailureModeCatalog"]</pems-link></pems-bullet>
+                    @if (Model.CanApprove)
+                    {
+                        <pems-bullet><pems-link class="dropdown-item" asp-action="BulkCreate"><pems-icon name="bi-collection" aria-hidden="true" /> @Localizer["Rcm_BulkAssign"]</pems-link></pems-bullet>
+                    }
+                </pems-list-menu>
+                <pems-list-reset-columns grid-key="MaintenanceStrategy" />
+                @if (Model.CanCreate)
+                {
+                    <pems-list-new href="@Url.Action("Create")" text="@Localizer["Rcm_NewStrategy"]" />
+                }
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-chips reset-href="@Url.Action("Index", new { q })">
+            @if (!string.IsNullOrEmpty(q))
+            { <pems-list-chip label="@Localizer["Search"]" value="@q" remove-href="@Url.Action("Index", new { equipmentId, classId, status, type })" /> }
+            @if (equipmentId.HasValue)
+            { <pems-list-chip label="@Localizer["Equipment"]" value="@Model.SelectedEquipmentLabel" remove-href="@Url.Action("Index", new { q, classId, status, type })" /> }
+            @if (classId.HasValue)
+            { <pems-list-chip label="@Localizer["Rcm_EquipmentClass"]" value="@className" remove-href="@Url.Action("Index", new { q, equipmentId, status, type })" /> }
+            @if (!string.IsNullOrEmpty(status))
+            { <pems-list-chip label="@Localizer["Rcm_Status"]" value="@Localizer.Label("Status", status)" remove-href="@Url.Action("Index", new { q, equipmentId, classId, type })" /> }
+            @if (!string.IsNullOrEmpty(type))
+            { <pems-list-chip label="@Localizer["Rcm_StrategyType"]" value="@Localizer.Label("StrategyType", type)" remove-href="@Url.Action("Index", new { q, equipmentId, classId, status })" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="MaintenanceStrategy" empty="@(!Model.Page.Items.Any())" empty-text="@Localizer["Rcm_NoStrategies"]"
+                             filtered="@(filterCount > 0 || !string.IsNullOrEmpty(q))" clear-href="@Url.Action("Index")">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-170" data-col-key="class" data-resizable="true" data-min-width="110" data-max-width="240">@Localizer["Rcm_EquipmentClass"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="type" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Rcm_StrategyType"]</pems-table-header>
+                        <pems-table-header class="pems-w-180" data-col-key="failureMode" data-resizable="true" data-min-width="120" data-max-width="260">@Localizer["Rcm_FailureMode"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="consequence" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Rcm_Consequence"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="frequency" data-resizable="true" data-min-width="80" data-max-width="160">@Localizer["Rcm_Frequency"]</pems-table-header>
+                        <pems-table-header class="pems-w-120" data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="160">@Localizer["Rcm_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-80" data-col-key="tags" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Rcm_Tags"]</pems-table-header>
+                        <pems-table-header data-col-key="justification" data-resizable="true" data-min-width="160" data-max-width="400" class="vs-hide-md pems-w-260">@Localizer["Rcm_Justification"]</pems-table-header>
+                        <pems-table-header class="pems-w-90" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var s in Model.Page.Items)
+                    {
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="small">
+                                @if (!string.IsNullOrEmpty(s.EquipmentClassName))
+                                {
+                                    <div>@s.EquipmentClassName</div>
+                                }
+                                @if (!string.IsNullOrEmpty(s.EquipmentTagNumber))
+                                {
+                                    <div class="text-muted"><pems-link asp-controller="MaintenanceStrategy" asp-action="Tag" asp-route-equipmentId="@s.EquipmentId">@s.EquipmentTagNumber</pems-link></div>
+                                }
+                                @if (string.IsNullOrEmpty(s.EquipmentClassName) && string.IsNullOrEmpty(s.EquipmentTagNumber)) { <span class="text-muted">-</span> }
+                            </pems-table-cell>
+                            <pems-table-cell><span class="vs-pill vs-pill--neutral">@Localizer.Label("StrategyType", s.StrategyType)</span></pems-table-cell>
+                            <pems-table-cell class="small">
+                                @if (!string.IsNullOrEmpty(s.FailureModeName)) { @RcmDisplay.Name(s.FailureModeName, s.FailureModeNameFa) }
+                                else if (!string.IsNullOrEmpty(s.FailureModeCode)) { <span class="text-warning" title="@Localizer["Rcm_NotInCatalog"]">@s.FailureModeCode <pems-icon name="bi-exclamation-triangle" aria-hidden="true" /></span> }
+                                else { <span class="text-danger">@Localizer["Rcm_MissingFailureMode"]</span> }
+                            </pems-table-cell>
+                            <pems-table-cell>
+                                <pems-badge tone="@RcmDisplay.ConsequenceBadge(s.ConsequenceCategory)">@Localizer.Label("Consequence", s.ConsequenceCategory)</pems-badge>
+                                @if (s.IsHiddenFailure && s.ConsequenceCategory != "Hidden") { <pems-badge tone="dark" title="@Localizer["Rcm_HiddenFailure"]">H</pems-badge> }
+                            </pems-table-cell>
+                            <pems-table-cell class="small">@Localizer.Label("Frequency", s.Frequency)</pems-table-cell>
+                            <pems-table-cell>
+                                <pems-badge tone="@RcmDisplay.StatusBadge(s.Status)">@Localizer.Label("Status", s.Status)</pems-badge>
+                                <div class="small text-muted">v@(s.VersionNumber)</div>
+                                @if (s.ReviewOverdue) { <div class="small text-danger"><pems-icon name="bi-clock-history" aria-hidden="true" /> @Localizer["Rcm_ReviewOverdue"]</div> }
+                            </pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@s.AssignedTagCount</span></pems-table-cell>
+                            <pems-table-cell class="small text-muted vs-hide-md">@(string.IsNullOrWhiteSpace(s.Justification) ? "-" : (s.Justification!.Length > 140 ? s.Justification[..140] + "…" : s.Justification))</pems-table-cell>
+                            <pems-table-cell class="lp-actions">
+                                <pems-link asp-action="Details" asp-route-id="@s.MaintenanceStrategyId" class="lp-act lp-act--always" title="@Localizer["Lp_Details"]" aria-label="@Localizer["Lp_Details"]"><pems-icon name="bi-eye" aria-hidden="true" /></pems-link>
+                                @if (Model.CanEdit && s.Status != "Retired" && s.Status != "Superseded")
+                                {
+                                    <pems-link asp-action="Edit" asp-route-id="@s.MaintenanceStrategyId" class="lp-act lp-act--always" title="@Localizer["Rcm_Edit"]" aria-label="@Localizer["Rcm_Edit"]"><pems-icon name="bi-pencil" aria-hidden="true" /></pems-link>
+                                }
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page.Page,
+                    TotalPages = Model.Page.TotalPages,
+                    TotalCount = Model.Page.TotalCount,
+                    PageSize = Model.Page.PageSize,
+                    GridKey = "MaintenanceStrategy",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.Join("&", qs)
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+    <script src="~/js/views/maintenancestrategy-index.js" asp-append-version="true"></script>
+}

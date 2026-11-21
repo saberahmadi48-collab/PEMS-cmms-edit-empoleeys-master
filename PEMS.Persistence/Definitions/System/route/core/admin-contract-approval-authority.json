@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-contract-approval-authority",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contract approval authority (old address)",
+    "fa": "اختیار تأیید قرارداد (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Contract approval authority (old address)",
+    "fa": "اختیار تأیید قرارداد (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/ContractApprovalAuthority/{*rest}",
+    "target": "/p/contract-approval-authority",
+    "permanent": false
+  }
+}

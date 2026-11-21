@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "report-procurement-pipeline-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement pipeline rows",
+    "fa": "ردیف‌های خط لوله تدارکات"
+  },
+  "description": {
+    "en": "Procurement pipeline rows",
+    "fa": "ردیف‌های خط لوله تدارکات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "ProcurementPipeline",
+      "args": {
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      }
+    }
+  }
+}

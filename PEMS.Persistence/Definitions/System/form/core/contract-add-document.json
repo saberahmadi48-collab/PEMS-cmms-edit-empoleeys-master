@@ -1,0 +1,101 @@
+{
+  "kind": "form",
+  "key": "contract-add-document",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a contract document",
+    "fa": "افزودن سند قرارداد"
+  },
+  "description": {
+    "en": "Add a contract document",
+    "fa": "افزودن سند قرارداد"
+  },
+  "payload": {
+    "id": "contract-add-document",
+    "title": {
+      "en": "Add a contract document",
+      "fa": "افزودن سند قرارداد"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "contract-add-document",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "contractId",
+        "label": {
+          "en": "Contract id",
+          "fa": "شناسه‌ی قرارداد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "documentNo",
+        "label": {
+          "en": "Document no",
+          "fa": "شماره سند"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 300
+      },
+      {
+        "name": "documentType",
+        "label": {
+          "en": "Document type",
+          "fa": "نوع سند"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "clauseReference",
+        "label": {
+          "en": "Clause reference",
+          "fa": "ارجاع بند"
+        },
+        "kind": "text",
+        "maxLength": 100
+      }
+    ]
+  }
+}

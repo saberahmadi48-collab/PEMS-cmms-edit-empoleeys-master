@@ -1,0 +1,95 @@
+{
+  "kind": "page",
+  "key": "authorization-audit-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Authorization audit details",
+    "fa": "جزئیات ممیزی دسترسی"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "authorization-audit-record",
+      "url": "/d/authorization-audit-grid",
+      "idField": "authorizationAuditLogId",
+      "fields": [
+        {
+          "key": "authorizationAuditLogId",
+          "label": {
+            "en": "Id",
+            "fa": "شناسه"
+          },
+          "type": "number"
+        },
+        {
+          "key": "timestamp",
+          "label": {
+            "en": "When",
+            "fa": "زمان"
+          },
+          "type": "datetime"
+        },
+        {
+          "key": "user",
+          "label": {
+            "en": "User",
+            "fa": "کاربر"
+          }
+        },
+        {
+          "key": "resourceName",
+          "label": {
+            "en": "Resource",
+            "fa": "منبع"
+          }
+        },
+        {
+          "key": "actionName",
+          "label": {
+            "en": "Action",
+            "fa": "عملیات"
+          }
+        },
+        {
+          "key": "resourceId",
+          "label": {
+            "en": "Resource id",
+            "fa": "شناسه‌ی منبع"
+          }
+        },
+        {
+          "key": "decision",
+          "label": {
+            "en": "Decision",
+            "fa": "تصمیم"
+          }
+        },
+        {
+          "key": "reason",
+          "label": {
+            "en": "Reason",
+            "fa": "دلیل"
+          }
+        },
+        {
+          "key": "ipAddress",
+          "label": {
+            "en": "IP address",
+            "fa": "نشانی IP"
+          }
+        }
+      ],
+      "backUrl": "/p/authorization-audit",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      }
+    }
+  }
+}

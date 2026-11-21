@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "teams-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance teams",
+    "fa": "تیم‌های نگهداری"
+  },
+  "description": {
+    "en": "Maintenance teams",
+    "fa": "تیم‌های نگهداری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Team",
+      "action": "List",
+      "args": {}
+    }
+  }
+}

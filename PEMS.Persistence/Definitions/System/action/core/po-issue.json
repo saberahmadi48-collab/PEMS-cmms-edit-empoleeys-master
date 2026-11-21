@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "po-issue",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Issue the order",
+    "fa": "صدور سفارش"
+  },
+  "description": {
+    "en": "Issue the order",
+    "fa": "صدور سفارش"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "Issue",
+      "args": {
+        "poId": "field:id"
+      },
+      "guard": {
+        "resource": "PurchaseOrder",
+        "action": "Approve",
+        "resourceId": "field:id",
+        "mode": "strict"
+      }
+    },
+    "success": {
+      "en": "The purchase order was issued.",
+      "fa": "سفارش خرید صادر شد."
+    },
+    "redirect": "/p/purchase-order-details?id={id}"
+  }
+}

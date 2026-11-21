@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "organization-department-consistency-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Department consistency",
+    "fa": "Department consistency"
+  },
+  "description": {
+    "en": "Department consistency rows",
+    "fa": "Department consistency rows"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Organization",
+      "action": "DepartmentConsistency"
+    }
+  }
+}

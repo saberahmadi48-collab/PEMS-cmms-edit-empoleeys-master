@@ -27,7 +27,11 @@ import { check, sleep } from 'k6';
 import { Counter, Trend, Rate } from 'k6/metrics';
 
 const BASE = __ENV.BASE_URL || 'http://localhost:5089';
-const PASSWORD = 'LoadTest#2026';
+// SCRUM-17: no password in source; use the one given to tools/LoadTestSeed (k6 run -e PEMS_LOADTEST_PASSWORD=...).
+const PASSWORD = __ENV.PEMS_LOADTEST_PASSWORD;
+if (!PASSWORD) {
+    throw new Error('Set PEMS_LOADTEST_PASSWORD (k6 run -e PEMS_LOADTEST_PASSWORD=...).');
+}
 const GENERAL_USER_COUNT = 200;
 const ADMIN_USER_COUNT = 10;
 
@@ -59,6 +63,9 @@ const auditLogTrend = new Trend('pems_audit_log_duration', true);
 const loginFailures = new Counter('pems_login_failures');
 
 export const options = {
+    // SCRUM-535: keep the login cookie across iterations; k6 clears the cookie jar on every iteration by default, which makes the
+    // one-login-per-VU session fail with 401 from the second iteration on.
+    noCookiesReset: true,
     scenarios: {
         general_users: {
             executor: 'ramping-vus',

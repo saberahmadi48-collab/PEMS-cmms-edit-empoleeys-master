@@ -1,0 +1,115 @@
+{
+  "kind": "page",
+  "key": "definition-kinds",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Definition kinds and storage",
+    "fa": "انواع تعریف و حجم ذخیره"
+  },
+  "description": {
+    "en": "Every registered kind with its owner, counts and published size",
+    "fa": "هر نوع ثبت‌شده با مالک، شمار و حجم"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "definition-kinds",
+    "permission": "Definitions.View",
+    "template": "entity-list",
+    "args": {
+      "id": "definition-kinds",
+      "url": "/d/definition-kinds-grid",
+      "idField": "kind",
+      "columns": [
+        {
+          "key": "kind",
+          "header": {
+            "en": "Kind",
+            "fa": "نوع"
+          },
+          "width": 160
+        },
+        {
+          "key": "owner",
+          "header": {
+            "en": "Owner",
+            "fa": "مالک"
+          },
+          "width": 120
+        },
+        {
+          "key": "definitions",
+          "header": {
+            "en": "Definitions",
+            "fa": "تعریف‌ها"
+          },
+          "width": 120,
+          "type": "number"
+        },
+        {
+          "key": "published",
+          "header": {
+            "en": "Published",
+            "fa": "منتشرشده"
+          },
+          "width": 120,
+          "type": "number"
+        },
+        {
+          "key": "drafts",
+          "header": {
+            "en": "Drafts",
+            "fa": "پیش‌نویس‌ها"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "versions",
+          "header": {
+            "en": "Versions",
+            "fa": "نسخه‌ها"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "payloadBytes",
+          "header": {
+            "en": "Published bytes",
+            "fa": "حجم منتشرشده"
+          },
+          "width": 150,
+          "type": "number"
+        }
+      ]
+    },
+    "regions": {
+      "kpis": [
+        {
+          "id": "size",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/definition-kinds-grid",
+            "labelField": "kind",
+            "series": [
+              {
+                "field": "payloadBytes",
+                "name": {
+                  "en": "Published bytes",
+                  "fa": "حجم منتشرشده"
+                }
+              }
+            ],
+            "kind": "hbar",
+            "sort": "-payloadBytes",
+            "ariaLabel": {
+              "en": "Published definition size by kind",
+              "fa": "حجم تعریف‌ها بر اساس نوع"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,21 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("error-state", Category = "feedback", Icon = "bi-exclamation-octagon")]
+@inject IPemsLocale Locale
+<div class="pems-state pems-state--error" role="alert">
+    <p class="pems-state__title">@Locale.Text(Options.Title)</p>
+    @if (Options.Description is not null)
+    {
+        <p class="pems-state__text">@Locale.Text(Options.Description)</p>
+    }
+    @if (Options.Detail is not null)
+    {
+        <p class="pems-state__detail">@Locale.Text(Options.Detail)</p>
+    }
+    @if (Options.Action is not null)
+    {
+        <PemsButton Options="@(new ButtonOptions { Label = Options.Action.Label, Tone = Tone.Neutral, Skin = ComponentSkin.Pems, Href = Options.Action.Href })" />
+    }
+</div>
+@code {
+    [Parameter, EditorRequired] public ErrorStateOptions Options { get; set; } = default!;
+}

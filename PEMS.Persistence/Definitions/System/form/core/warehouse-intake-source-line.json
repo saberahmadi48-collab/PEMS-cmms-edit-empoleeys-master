@@ -1,0 +1,90 @@
+{
+  "kind": "form",
+  "key": "warehouse-intake-source-line",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Source one line",
+    "fa": "تأمین یک قلم"
+  },
+  "description": {
+    "en": "Source one line",
+    "fa": "تأمین یک قلم"
+  },
+  "payload": {
+    "id": "warehouse-intake-source-line",
+    "title": {
+      "en": "Source one line",
+      "fa": "تأمین یک قلم"
+    },
+    "submitLabel": {
+      "en": "Source",
+      "fa": "تأمین"
+    },
+    "actionKey": "warehouse-intake-source-line",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "workOrderId",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه‌ی دستور کار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "workOrderMaterialId",
+        "label": {
+          "en": "Material line id",
+          "fa": "شناسه‌ی قلم"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "warehouseId",
+        "label": {
+          "en": "Supplying warehouse",
+          "fa": "انبار تأمین‌کننده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "warehouse-intake-warehouses"
+      },
+      {
+        "name": "quantity",
+        "label": {
+          "en": "Quantity to source",
+          "fa": "مقدار تأمین"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

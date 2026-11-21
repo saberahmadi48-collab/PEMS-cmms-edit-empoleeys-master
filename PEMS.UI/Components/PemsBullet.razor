@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("bullet", Category = "display", Icon = "bi-dot")]
+@FrameMarkup.Element("li", Options.Css ?? "", Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public BulletOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

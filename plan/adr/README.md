@@ -1,0 +1,28 @@
+# Architecture decision records (ADR)
+
+One short file per significant decision, so that the reason survives the people who took it. Created under plan row #2 (SCRUM-14).
+
+- Use [TEMPLATE.md](TEMPLATE.md) for a new ADR; copy it to `NNNN-short-name.md` with the next free number and add a row below.
+- Record only decisions that are already taken or approved by the owner. Facts that are not documented are written as "not recorded", never guessed.
+- A decision is changed by a **new** ADR that supersedes the old one (set the old status to `Superseded by ADR-NNNN`); small dated updates go in the ADR's *Amendments* section.
+- Instructions rule 4 (no new static module without an ADR) and guideline chapter 01 section 1 point here.
+- English only, no secrets.
+
+| ADR | Decision | Status | Date | Decided by | Plan rows | Explained in |
+|---|---|---|---|---|---|---|
+| [0001](0001-hybrid-storage-for-user-built-entities.md) | Hybrid storage: real tables for user-built entities, JSON column for custom fields on existing entities | Accepted | 2026-10-18 | Hamid Maleki (owner, Member A) | #4 | [04-platform-direction](../../docs/guidelines/04-platform-direction.md) |
+| [0002](0002-razor-with-separate-pems-ui-library.md) | Keep Razor; reusable component library as the separate Razor Class Library `PEMS.UI` (component technology still gated by spike #319) | Accepted | 2026-10-18 (refined 2026-10-23) | Hamid Maleki (owner, Member A) | #5 | [COMPONENT_LIBRARY_PLAN](../../docs/design/COMPONENT_LIBRARY_PLAN.md) |
+| [0003](0003-code-first-database.md) | Fully code-first database; migrator installs and updates | Accepted | 2026-10-22 | Hamid Maleki (owner, Member A) | #309 (Instructions rules 6, 23) | [CODE_FIRST_DATABASE](../../docs/deployment/CODE_FIRST_DATABASE.md) |
+| [0004](0004-environment-and-secrets-files.md) | Settings in `env/<name>.env`, secrets only in `env/<name>.secrets.env` or environment variables | Accepted | 2026-10-23 | Hamid Maleki (owner, Member A) | #315 (Instructions rule 24) | [env/README](../../env/README.md) |
+| [0005](0005-licensing-threat-model-and-vm-policy.md) | Casual-copy defense plus contract/EULA, no hardware token; VMs and Docker allowed with extra protection | Accepted | 2026-10-18 | Hamid Maleki (owner, Member A) | #96, #97 | [04-platform-direction](../../docs/guidelines/04-platform-direction.md) |
+| [0006](0006-demo-and-staging-branch-policy.md) | Long-lived `demo` branch, product changes only on `main`; staging branch added and `dev` retired 2026-10-25 | Accepted (amended 2026-10-25) | 2026-10-18 | Hamid Maleki (owner, Member A) | #300 (Instructions rule 18) | [DEPLOYMENT_README](../../docs/deployment/DEPLOYMENT_README.md) |
+| [0007](0007-component-technology-static-razor-components.md) | Component technology: static Razor components with a Tag Helper facade (spike result, fallback per class) | Accepted | 2026-10-27 | Hamid Maleki (owner, Member A) | #319 (SCRUM-23), unblocks #320, #321 | [COMPONENT_LIBRARY_PLAN](../../docs/design/COMPONENT_LIBRARY_PLAN.md) |
+| [0008](0008-component-texts-are-inputs-translatable-text.md) | Component texts are inputs: `TranslatableText` (JSON map of language slug to text), data only formatted, one locale service | Accepted | 2026-10-27 | Hamid Maleki (owner, Member A) | #386 (SCRUM-416), follow-ups #387-#389 | [02-ui-and-components](../../docs/guidelines/02-ui-and-components.md) |
+| [0009](0009-rest-api-standard.md) | REST API standard: resource-oriented JSON under `/api/v1`, ETag/If-Match, RFC 9457 errors, offset paging for grids and cursor paging for exports and large tables, OpenAPI 3.1 contract | Accepted (amended 2026-10-28: decimals are numbers) | 2026-10-28 | Hamid Maleki (owner, Member A) | #431 (SCRUM-431), applies to #12, #195, #434-#436 | [08-rest-api-standard](../../docs/guidelines/08-rest-api-standard.md) |
+| [0010](0010-metadata-registry-definition-envelope.md) | Metadata registry: one definition envelope (versions, publish, rollback, shipped vs customer, cache stamp) for everything defined | Accepted | 2026-10-28 | Hamid Maleki (owner, Member A) | #338 (SCRUM-25), #10, #11, #13, #28 | [METADATA_REGISTRY_DESIGN](../../docs/architecture/METADATA_REGISTRY_DESIGN.md) |
+| [0011](0011-ui-definition-model.md) | UI definition model: pages, layouts, component instances, data sources and actions are definitions in the same envelope | Accepted | 2026-10-28 | Hamid Maleki (owner, Member A) | #430 (SCRUM-430), used by #433-#440, #44, #57, #20, #387 | [METADATA_REGISTRY_DESIGN](../../docs/architecture/METADATA_REGISTRY_DESIGN.md) |
+| [0012](0012-main-host-platform.md) | Main host platform: Windows/IIS for the shared main host, Linux and Docker as the second supported install, one artifact | Proposed | 2026-11-03 (proposal) | not yet approved | #287 (SCRUM-305) | [DEPLOYMENT_README.md](../../docs/deployment/DEPLOYMENT_README.md) |
+| [0013](0013-ui-component-registry.md) | UI component registry: code reaches components only through registry keys (UiKeys, facade attribute, drift tests) | Accepted | 2026-11-05 | Hamid Maleki (owner) | #506 (SCRUM-506), used by #387, #438 | [02-ui-and-components](../../docs/guidelines/02-ui-and-components.md) |
+| [0016](0016-field-ownership-platform-and-application.md) | Field ownership: a form field is platform (ours, changed by updates) or application (the customer's, never touched) | Accepted | 2026-11-06 | the owner | #515, #798 | [04-platform-direction](../../docs/guidelines/04-platform-direction.md) |
+
+ADR-0001 to ADR-0006 were approved by Member A (Hamid Maleki) on 2026-10-27; each file carries an "Approved by" line. ADR-0007 was approved the same day, after the SCRUM-23 spike.

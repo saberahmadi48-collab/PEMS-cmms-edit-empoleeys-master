@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-sod-policy",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Separation of duties (old address)",
+    "fa": "تفکیک وظایف (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Separation of duties (old address)",
+    "fa": "تفکیک وظایف (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/SoDPolicy/{*rest}",
+    "target": "/p/sod-policies",
+    "permanent": false
+  }
+}

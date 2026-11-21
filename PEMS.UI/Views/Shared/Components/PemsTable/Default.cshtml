@@ -1,0 +1,28 @@
+@model PEMS.UI.Rendering.PemsTableModel
+@inject PEMS.UI.Abstractions.IPemsLocale Locale
+<table class="pems-table" id="@Model.View.Id">
+    <caption class="pems-table__caption">@Locale.Text(Model.View.Title)</caption>
+    <thead>
+        <tr>
+            @foreach (var c in Model.View.Columns)
+            {
+                <th scope="col" class="pems-align-@c.Alignment.ToString().ToLowerInvariant()">@Locale.Text(c.Header)</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Rows.Count == 0 && Locale.Text(Model.EmptyText ?? Model.View.EmptyText).Length > 0)
+        {
+            <tr><td colspan="@Model.View.Columns.Count" class="pems-table__empty">@Locale.Text(Model.EmptyText ?? Model.View.EmptyText)</td></tr>
+        }
+        @foreach (var row in Model.Rows)
+        {
+            <tr>
+                @foreach (var c in Model.View.Columns)
+                {
+                    <td class="pems-align-@c.Alignment.ToString().ToLowerInvariant()">@PEMS.UI.Components.TableCells.Text(Locale, c, row)</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

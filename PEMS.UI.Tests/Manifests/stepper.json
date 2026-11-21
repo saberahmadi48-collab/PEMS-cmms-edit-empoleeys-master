@@ -1,0 +1,102 @@
+{
+  "key": "stepper",
+  "component": "PEMS.UI.Components.PemsStepper",
+  "category": "navigation",
+  "icon": "bi-diagram-2",
+  "nameKey": "component.stepper",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "label": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "steps": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "state": {
+              "enum": [
+                "done",
+                "current",
+                "upcoming"
+              ]
+            }
+          },
+          "required": [
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "label",
+      "steps"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "StepperOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "label": {
+      "en": "Stages",
+      "fa": "مراحل"
+    },
+    "steps": [
+      {
+        "label": {
+          "en": "Draft",
+          "fa": "پیش‌نویس"
+        },
+        "state": "done"
+      },
+      {
+        "label": {
+          "en": "Review",
+          "fa": "بررسی"
+        },
+        "state": "current"
+      },
+      {
+        "label": {
+          "en": "Approved",
+          "fa": "تأیید"
+        }
+      }
+    ]
+  }
+}

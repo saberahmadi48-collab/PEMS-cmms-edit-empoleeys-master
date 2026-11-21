@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mmd-toggle-maintenance-type-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleMaintenanceTypeActive",
+    "fa": "وضعیت Maintenance Type به‌روزرسانی شد."
+  },
+  "description": {
+    "en": "ToggleMaintenanceTypeActive",
+    "fa": "وضعیت Maintenance Type به‌روزرسانی شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "ToggleMaintenanceTypeActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "وضعیت Maintenance Type به‌روزرسانی شد.",
+      "fa": "وضعیت Maintenance Type به‌روزرسانی شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

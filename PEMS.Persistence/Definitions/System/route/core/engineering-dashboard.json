@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "engineering-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering Dashboard (old address)",
+    "fa": "داشبورد مهندسی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Engineering Dashboard (old address)",
+    "fa": "داشبورد مهندسی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "EngineeringDashboard/{*rest}",
+    "target": "/p/engineering-dashboard",
+    "permanent": false
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "isolation-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add isolation point",
+    "fa": "ثبت نقطه‌ی ایزوله‌سازی"
+  },
+  "description": {
+    "en": "Add isolation point",
+    "fa": "ثبت نقطه‌ی ایزوله‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Isolation",
+      "action": "Create",
+      "args": {
+        "permitId": "field:permitId",
+        "energyType": "field:energyType",
+        "location": "field:location",
+        "normalState": "field:normalState",
+        "requiredIsolationState": "field:requiredIsolationState",
+        "isolationMethod": "field:isolationMethod",
+        "equipmentId": "field:equipmentId"
+      }
+    },
+    "success": {
+      "en": "The isolation point was recorded.",
+      "fa": "نقطه‌ی ایزوله‌سازی ثبت شد."
+    },
+    "redirect": "/Permit/Details/{permitId}",
+    "permission": "LOTO.Create"
+  }
+}

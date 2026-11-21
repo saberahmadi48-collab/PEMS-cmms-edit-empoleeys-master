@@ -1,0 +1,39 @@
+{
+  "kind": "data-source",
+  "key": "definition-grants-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Role grants of definitions",
+    "fa": "مجوزهای نقش برای تعریف‌ها"
+  },
+  "description": {
+    "en": "Which role may or may not open which definition",
+    "fa": "کدام نقش کدام تعریف را باز کند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "permission": "Definitions.View",
+    "parameters": {
+      "entity": "DefinitionGrant",
+      "fields": [
+        "DefinitionGrantId",
+        "Kind",
+        "DefinitionKey",
+        "RoleName",
+        "Effect",
+        "Reason",
+        "CreatedBy",
+        "CreatedDate"
+      ],
+      "search": [
+        "DefinitionKey",
+        "RoleName"
+      ],
+      "sort": [
+        "-CreatedDate"
+      ]
+    }
+  }
+}

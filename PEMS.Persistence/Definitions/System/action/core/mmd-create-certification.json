@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "mmd-create-certification",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateCertification",
+    "fa": "گواهینامه ساخته شد."
+  },
+  "description": {
+    "en": "CreateCertification",
+    "fa": "گواهینامه ساخته شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "CreateCertification",
+      "args": {
+        "name": "field:name",
+        "disciplineId": "field:disciplineId",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "گواهینامه ساخته شد.",
+      "fa": "گواهینامه ساخته شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "kind": "form",
+  "key": "vendor-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New vendor",
+    "fa": "فروشنده‌ی جدید"
+  },
+  "description": {
+    "en": "New vendor",
+    "fa": "فروشنده‌ی جدید"
+  },
+  "payload": {
+    "id": "vendor-create",
+    "title": {
+      "en": "New vendor",
+      "fa": "فروشنده‌ی جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "vendor-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 200,
+        "span": 2
+      },
+      {
+        "name": "vendorCode",
+        "label": {
+          "en": "Vendor code",
+          "fa": "کد فروشنده"
+        },
+        "kind": "text",
+        "maxLength": 50
+      },
+      {
+        "name": "country",
+        "label": {
+          "en": "Country",
+          "fa": "کشور"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "contactName",
+        "label": {
+          "en": "Contact name",
+          "fa": "نام رابط"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "contactEmail",
+        "label": {
+          "en": "Contact email",
+          "fa": "ایمیل رابط"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "contactPhone",
+        "label": {
+          "en": "Contact phone",
+          "fa": "تلفن رابط"
+        },
+        "kind": "text",
+        "maxLength": 50
+      }
+    ]
+  }
+}

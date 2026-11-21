@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "workflow-validate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Validate a version",
+    "fa": "اعتبارسنجی نسخه"
+  },
+  "description": {
+    "en": "Validate a version",
+    "fa": "اعتبارسنجی نسخه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "Validate",
+      "args": {
+        "versionId": "field:id"
+      }
+    },
+    "success": {
+      "en": "The workflow is valid.",
+      "fa": "گردش‌کار معتبر است."
+    },
+    "redirect": "/p/workflow-management"
+  }
+}

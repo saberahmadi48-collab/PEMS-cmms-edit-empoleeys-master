@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "help-standard-unpublish",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Unpublish a standard reference",
+    "fa": "لغو انتشار مرجع"
+  },
+  "description": {
+    "en": "Unpublish a standard reference",
+    "fa": "لغو انتشار مرجع"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "StandardSetPublished",
+      "args": {
+        "standardId": "field:id",
+        "isPublished": "literal:false"
+      }
+    },
+    "success": {
+      "en": "Standard reference unpublished.",
+      "fa": "انتشار مرجع لغو شد."
+    },
+    "redirect": "/p/help-standards"
+  }
+}

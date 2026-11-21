@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "mmd-toggle-group-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleGroupActive",
+    "fa": "ToggleGroupActive"
+  },
+  "description": {
+    "en": "ToggleGroupActive",
+    "fa": "ToggleGroupActive"
+  },
+  "payload": {
+    "id": "mmd-toggle-group-active",
+    "title": {
+      "en": "ToggleGroupActive",
+      "fa": "ToggleGroupActive"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-toggle-group-active",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "id"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,28 +1,18 @@
-﻿@model ErrorViewModel
+@model ErrorViewModel
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = Localizer["Error_Title"].Value;
 }
 
-<p class="h4 text-danger">Error.</p>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
-
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
-
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>@Localizer["Development"]</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>@Localizer["Development"]</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>@Localizer["Development"]</strong>
-    and restarting the app.
-</p>
+<pems-content-card css="pems-s-1cca82b5">
+    <pems-heading level="4" class="text-danger"><pems-icon name="bi-exclamation-octagon" /> @Localizer["Error_Title"]</pems-heading>
+    <pems-text>@Localizer["Error_Message"]</pems-text>
+    @if (Model.ShowRequestId)
+    {
+        <pems-text class="small text-muted">@Localizer["Error_RequestId"]: <code>@Model.RequestId</code></pems-text>
+    }
+    <pems-button tone="neutral" size="small" outline="true" as="a" href="javascript:history.back()">@Localizer["Rcm_Back"]</pems-button>
+    <pems-button tone="primary" size="small" as="a" href="/">@Localizer["Error_Home"]</pems-button>
+</pems-content-card>

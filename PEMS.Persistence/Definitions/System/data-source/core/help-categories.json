@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "help-categories",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help categories",
+    "fa": "دسته‌های راهنما"
+  },
+  "description": {
+    "en": "Help categories",
+    "fa": "دسته‌های راهنما"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Help",
+      "action": "Categories",
+      "args": {
+        "culture": "context:culture"
+      }
+    }
+  }
+}

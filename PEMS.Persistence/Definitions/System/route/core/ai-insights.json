@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "ai-insights",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering Copilot (old address)",
+    "fa": "همیار مهندسی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Engineering Copilot (old address)",
+    "fa": "همیار مهندسی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "AIInsights/{*rest}",
+    "target": "/p/ai-insights",
+    "permanent": false
+  }
+}

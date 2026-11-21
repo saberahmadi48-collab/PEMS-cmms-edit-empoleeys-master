@@ -5,66 +5,41 @@
 @* طبق «PEMS — Enterprise Barcode System» بند «UI»: یک پارتیال مشترک برای تب Barcode - روی هر
    صفحه‌ی Details موجودی که ازش استفاده کند (Equipment/MaterialItem/...) بدون تکرار کد. *@
 
-<div class="content-card">
+<pems-content-card>
     @if (Model.ActiveBarcode == null)
     {
-        <p class="text-muted small">No active barcode for this record yet.</p>
+        <pems-text class="text-muted small">No active barcode for this record yet.</pems-text>
         @if (Model.CanManage)
         {
-            <form asp-controller="Barcode" asp-action="Generate" asp-area="" method="post" class="d-flex gap-2 align-items-end">
-                <input type="hidden" name="targetType" value="@Model.TargetType" />
-                <input type="hidden" name="targetId" value="@Model.TargetId" />
-                <div>
-                    <label class="form-label small mb-0">@Localizer["Symbology"]</label>
-                    <select name="symbology" class="form-select form-select-sm">
-                        <option value="Code128">@Localizer["Code128"]</option>
-                        <option value="QR">QR</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-pems-solid btn-sm"><i class="bi bi-upc-scan"></i> Generate Barcode</button>
-            </form>
+            <pems-button as="a" tone="primary" size="small" href="/f/barcode-generate?targetType=@Model.TargetType&targetId=@Model.TargetId"><pems-icon name="bi-upc-scan" /> Generate Barcode</pems-button>
         }
     }
     else
     {
         var b = Model.ActiveBarcode;
-        <div class="row g-3 align-items-center">
-            <div class="col-md-3 text-center">
-                <img src="@Url.Action("Svg", "Barcode", new { area = "", id = b.BarcodeIdentityId })" alt="barcode" style="max-width:100%;" />
+        <pems-row gap="3" css="align-items-center">
+            <pems-col md="3" css="text-center">
+                <img class="pems-maxw-100pct" src="/x/barcode-svg?id=@b.BarcodeIdentityId" alt="barcode" />
                 <div class="small mt-1" dir="ltr"><code>@b.Code</code></div>
-            </div>
-            <div class="col-md-9">
-                <div class="row g-2 small mb-2">
-                    <div class="col-md-3"><strong>@Localizer["Symbology"]</strong><div>@b.Symbology</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Status"]</strong><div><span class="badge @(b.Status == "Active" ? "bg-success" : "bg-secondary")">@b.Status</span></div></div>
-                    <div class="col-md-3"><strong>@Localizer["Prints"]</strong><div>@b.PrintCount</div></div>
-                    <div class="col-md-3"><strong>@Localizer["Created"]</strong><div>@b.CreatedDate.ToString("yyyy-MM-dd")</div></div>
-                </div>
+            </pems-col>
+            <pems-col md="9">
+                <pems-row gap="2" css="small mb-2">
+                    <pems-col md="3"><strong>@Localizer["Symbology"]</strong><div>@b.Symbology</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Status"]</strong><div><pems-badge tone="@(b.Status == "Active" ? "success" : "neutral")">@b.Status</pems-badge></div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Prints"]</strong><div>@b.PrintCount</div></pems-col>
+                    <pems-col md="3"><strong>@Localizer["Created"]</strong><div>@PemsDates.Date(b.CreatedDate)</div></pems-col>
+                </pems-row>
 
                 @if (Model.CanManage)
                 {
-                    <div class="d-flex flex-wrap gap-2">
-                        <form asp-controller="Barcode" asp-action="Print" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
-                            <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-printer"></i> Print Label</button>
-                        </form>
-                        <form asp-controller="Barcode" asp-action="Disable" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
-                            <input type="hidden" name="targetType" value="@Model.TargetType" />
-                            <input type="hidden" name="targetId" value="@Model.TargetId" />
-                            <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('Disable this barcode?')">Disable</button>
-                        </form>
-                        <form asp-controller="Barcode" asp-action="Revoke" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
-                            <input type="hidden" name="targetType" value="@Model.TargetType" />
-                            <input type="hidden" name="targetId" value="@Model.TargetId" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Revoke this barcode? It can never be reactivated.')">@Localizer["Revoke"]</button>
-                        </form>
-                        <form asp-controller="Barcode" asp-action="Replace" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
-                            <input type="hidden" name="targetType" value="@Model.TargetType" />
-                            <input type="hidden" name="targetId" value="@Model.TargetId" />
-                            <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Revoke this barcode and generate a new one for the same record?')">Replace</button>
-                        </form>
-                    </div>
+                    <pems-flex wrap="true" gap="2">
+                        <pems-button as="a" tone="primary" size="small" outline="true" href="/f/barcode-print?id=@b.BarcodeIdentityId"><pems-icon name="bi-printer" /> Print Label</pems-button>
+                        <pems-button as="a" tone="neutral" size="small" outline="true" href="/f/barcode-disable?id=@b.BarcodeIdentityId">Disable</pems-button>
+                        <pems-button as="a" tone="danger" size="small" outline="true" href="/f/barcode-revoke?id=@b.BarcodeIdentityId">@Localizer["Revoke"]</pems-button>
+                        <pems-button as="a" tone="warning" size="small" outline="true" href="/f/barcode-replace?id=@b.BarcodeIdentityId">Replace</pems-button>
+                    </pems-flex>
                 }
-            </div>
-        </div>
+            </pems-col>
+        </pems-row>
     }
-</div>
+</pems-content-card>

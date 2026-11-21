@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "pc-request-equipment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue request: Equipment",
+    "fa": "درخواست کاتالوگ قطعه: Equipment"
+  },
+  "description": {
+    "en": "Part Catalogue request: Equipment",
+    "fa": "درخواست کاتالوگ قطعه: Equipment"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "Equipment",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "id": "param:id"
+      }
+    }
+  }
+}

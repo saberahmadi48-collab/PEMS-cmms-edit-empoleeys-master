@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "store-requisition-lines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Store requisition lines",
+    "fa": "اقلام درخواست انبار"
+  },
+  "description": {
+    "en": "Store requisition lines",
+    "fa": "اقلام درخواست انبار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StoreRequisition",
+      "action": "Lines",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -26,4 +26,16 @@ public class ApplicationUser : IdentityUser<int>
     // طبق درخواست: کاربرانی که با رمز پیش‌فرض ساخته می‌شوند (مثلاً هنگام ساخت خودکار از
     // Employee) باید در اولین ورود مجبور به تغییر رمز شوند.
     public bool MustChangePassword { get; set; } = false;
+
+    /// <summary>
+    /// SCRUM-354: انقضای رمز موقتِ صادرشده در ریست حساب مدیر (UTC). فقط وقتی با MustChangePassword=true همراه باشد معنا دارد؛
+    /// بعد از این زمان ورود با همان رمز موقت رد می‌شود و باید مدیر دیگری دوباره ریست کند. null = رمز موقت ندارد (یا قبلاً تغییر داده شده).
+    /// </summary>
+    public DateTime? TemporaryPasswordExpiresAt { get; set; }
+
+    /// <summary>
+    /// SCRUM-354: بعد از ریست حساب مدیر، passkeyها و کلید authenticator پاک شده‌اند و کاربر باید MFA را دوباره ثبت کند.
+    /// اجبار واقعی ثبت‌نام در ورود با MFA (SCRUM-188 / SCRUM-206) اعمال می‌شود؛ تا آن زمان این پرچم فقط وضعیت را نگه می‌دارد.
+    /// </summary>
+    public bool MfaEnrollmentRequired { get; set; }
 }

@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("stat-grid", Category = "display", Icon = "bi-grid-3x2")]
+@FrameMarkup.Element("div", string.IsNullOrWhiteSpace(Options.Css) ? "admin-kpi-grid" : "admin-kpi-grid " + Options.Css.Trim(), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public StatGridOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

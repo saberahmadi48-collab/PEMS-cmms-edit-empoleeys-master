@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "tender-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New tender",
+    "fa": "مناقصه جدید"
+  },
+  "description": {
+    "en": "New tender",
+    "fa": "مناقصه جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Tender",
+      "action": "Create",
+      "args": {
+        "procurementPackageId": "field:procurementPackageId",
+        "title": "field:title",
+        "issueDate": "field:issueDate",
+        "responseDeadline": "field:responseDeadline",
+        "requiresVendorQualification": "field:requiresVendorQualification",
+        "technicalRequirements": "field:technicalRequirements",
+        "commercialRequirements": "field:commercialRequirements",
+        "inspectionRequirements": "field:inspectionRequirements",
+        "contractualRequirements": "field:contractualRequirements"
+      }
+    },
+    "success": {
+      "en": "The tender was created.",
+      "fa": "مناقصه ایجاد شد."
+    },
+    "redirect": "/p/tenders"
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "kind": "page",
+  "key": "intake",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI Intake Queue",
+    "fa": "صف دریافت هوشمند"
+  },
+  "description": {
+    "en": "Uploaded files that are not classified or routed yet, or wait for a human decision (page definition)",
+    "fa": "فایل‌های بارگذاری‌شده‌ای که هنوز طبقه‌بندی یا مسیریابی نشده‌اند یا منتظر تأیید انسانی‌اند (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "intake",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "intake-filters",
+            "resetUrl": "/p/intake",
+            "fields": [
+              {
+                "name": "stage",
+                "label": {
+                  "en": "Stage",
+                  "fa": "مرحله"
+                },
+                "kind": "select",
+                "value": "{{params.stage}}",
+                "options": [
+                  {
+                    "value": "Uploaded",
+                    "label": {
+                      "en": "Uploaded",
+                      "fa": "بارگذاری‌شده"
+                    }
+                  },
+                  {
+                    "value": "Classifying",
+                    "label": {
+                      "en": "Classifying",
+                      "fa": "در حال طبقه‌بندی"
+                    }
+                  },
+                  {
+                    "value": "PendingEngineeringReview",
+                    "label": {
+                      "en": "PendingEngineeringReview",
+                      "fa": "در انتظار بررسی مهندسی"
+                    }
+                  },
+                  {
+                    "value": "PendingManualClassification",
+                    "label": {
+                      "en": "PendingManualClassification",
+                      "fa": "در انتظار طبقه‌بندی دستی"
+                    }
+                  },
+                  {
+                    "value": "Routed",
+                    "label": {
+                      "en": "Routed",
+                      "fa": "مسیریابی‌شده"
+                    }
+                  },
+                  {
+                    "value": "Rejected",
+                    "label": {
+                      "en": "Rejected",
+                      "fa": "ردشده"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "queue",
+          "component": "data-grid",
+          "options": {
+            "id": "queue",
+            "url": "/d/intake-queue?f.stage={{params.stage|url}}",
+            "idField": "attachmentId",
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 300
+              },
+              {
+                "key": "project",
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "width": 180
+              },
+              {
+                "key": "aiStatus",
+                "header": {
+                  "en": "AI status",
+                  "fa": "وضعیت هوش مصنوعی"
+                },
+                "width": 140
+              },
+              {
+                "key": "stage",
+                "header": {
+                  "en": "Stage",
+                  "fa": "مرحله"
+                },
+                "width": 200
+              },
+              {
+                "key": "routedModule",
+                "header": {
+                  "en": "Routed to",
+                  "fa": "مسیریابی به"
+                },
+                "width": 130
+              },
+              {
+                "key": "confidence",
+                "header": {
+                  "en": "Confidence",
+                  "fa": "اطمینان"
+                },
+                "width": 110
+              },
+              {
+                "key": "predictedCategory",
+                "header": {
+                  "en": "Category",
+                  "fa": "دسته"
+                },
+                "width": 160
+              },
+              {
+                "key": "suggestedModule",
+                "header": {
+                  "en": "Suggested module",
+                  "fa": "ماژول پیشنهادی"
+                },
+                "width": 150
+              },
+              {
+                "key": "uploadDate",
+                "header": {
+                  "en": "Uploaded",
+                  "fa": "بارگذاری"
+                },
+                "width": 150,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "review",
+                    "label": {
+                      "en": "Review",
+                      "fa": "بررسی"
+                    },
+                    "url": "/p/intake-review?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    }
+  }
+}

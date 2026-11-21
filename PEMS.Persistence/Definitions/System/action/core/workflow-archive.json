@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "workflow-archive",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Archive a definition",
+    "fa": "بایگانی تعریف"
+  },
+  "description": {
+    "en": "Archive a definition",
+    "fa": "بایگانی تعریف"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "Archive",
+      "args": {
+        "definitionId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Definition archived.",
+      "fa": "تعریف بایگانی شد."
+    },
+    "redirect": "/p/workflow-management"
+  }
+}

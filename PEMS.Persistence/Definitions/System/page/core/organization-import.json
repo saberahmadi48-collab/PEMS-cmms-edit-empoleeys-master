@@ -1,0 +1,76 @@
+{
+  "kind": "page",
+  "key": "organization-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Organization Import",
+    "fa": "ایمپورت ساختار سازمانی"
+  },
+  "description": {
+    "en": "Organization import start page (page definition)",
+    "fa": "صفحه‌ی شروع ایمپورت ساختار سازمانی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "organization-import",
+    "regions": {
+      "content": [
+        {
+          "id": "intro",
+          "component": "content-blocks",
+          "options": {
+            "id": "intro",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 5,
+                "text": {
+                  "en": "Organization Import",
+                  "fa": "ایمپورت ساختار سازمانی"
+                }
+              },
+              {
+                "type": "text",
+                "text": {
+                  "en": "Controlled import of the organization structure. The whole file is validated first; any error means nothing is saved. No manager, department or employee is ever guessed or created.",
+                  "fa": "ایمپورت کنترل‌شده‌ی ساختار سازمانی. کل فایل ابتدا اعتبارسنجی می‌شود؛ هر خطا یعنی هیچ چیز ذخیره نمی‌شود. هیچ مدیر، دپارتمان یا کارمندی حدس زده یا ساخته نمی‌شود."
+                }
+              },
+              {
+                "type": "text",
+                "text": {
+                  "en": "Required columns: PositionCode and PositionTitle (or Position). Optional: Department (blank = no department; if given it must already exist), ParentPositionCode, EmployeePersonnelCode, IsPrimary, AssignmentType (Primary/Secondary), EffectiveFrom, EffectiveTo.",
+                  "fa": "ستون‌های الزامی: PositionCode و PositionTitle (یا Position). اختیاری: Department (خالی = بدون دپارتمان؛ اگر پر باشد باید از قبل موجود باشد)، ParentPositionCode، EmployeePersonnelCode، IsPrimary، AssignmentType (Primary/Secondary)، EffectiveFrom، EffectiveTo."
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/organization-import-template",
+                "text": {
+                  "en": "Download template",
+                  "fa": "دانلود قالب"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/organization-import",
+                "text": {
+                  "en": "Validate file",
+                  "fa": "اعتبارسنجی فایل"
+                }
+              },
+              {
+                "type": "text",
+                "text": {
+                  "en": "Rejected: unknown parent/employee/department, duplicate codes, self-parent, cycles, inactive holders, invalid dates, duplicate primary positions, positions already held by someone else.",
+                  "fa": "رد می‌شود: مافوق/کارمند/دپارتمان ناشناخته، کد تکراری، والدِ خود، دور، دارنده‌ی غیرفعال، تاریخ نامعتبر، سمت اصلیِ تکراری، سمتی که دارنده‌ی دیگری دارد."
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

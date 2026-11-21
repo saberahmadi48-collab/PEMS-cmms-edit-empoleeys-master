@@ -1,0 +1,80 @@
+{
+  "kind": "page",
+  "key": "permission-matrix",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permission matrix",
+    "fa": "ماتریس مجوز"
+  },
+  "description": {
+    "en": "Roles whose permissions can be edited (page definition)",
+    "fa": "نقش‌هایی که مجوزهایشان قابل ویرایش است (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "permission-matrix",
+    "template": "entity-list",
+    "args": {
+      "id": "permission-matrix",
+      "url": "/d/permission-matrix-roles",
+      "idField": "name",
+      "columns": [
+        {
+          "key": "name",
+          "header": {
+            "en": "Role",
+            "fa": "نقش"
+          },
+          "width": 260
+        },
+        {
+          "key": "displayName",
+          "header": {
+            "en": "Display name",
+            "fa": "نام نمایشی"
+          },
+          "width": 240
+        },
+        {
+          "key": "domain",
+          "header": {
+            "en": "Domain",
+            "fa": "حوزه"
+          },
+          "width": 160
+        },
+        {
+          "key": "category",
+          "header": {
+            "en": "Category",
+            "fa": "دسته"
+          },
+          "width": 160
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 200,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit permissions",
+                "fa": "ویرایش مجوزها"
+              },
+              "url": "/f/permission-matrix-edit/{id}",
+              "method": "get"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "mrs-import-commit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Commit rows",
+    "fa": "تأیید ردیف‌ها"
+  },
+  "description": {
+    "en": "Commit rows",
+    "fa": "تأیید ردیف‌ها"
+  },
+  "payload": {
+    "id": "mrs-import-commit",
+    "title": {
+      "en": "Commit rows",
+      "fa": "تأیید ردیف‌ها"
+    },
+    "submitLabel": {
+      "en": "Commit",
+      "fa": "تأیید"
+    },
+    "actionKey": "mrs-import-commit",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه‌ی دسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "rowIds",
+        "label": {
+          "en": "Row ids, separated by commas",
+          "fa": "شناسه‌ی ردیف‌ها، با ویرگول"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

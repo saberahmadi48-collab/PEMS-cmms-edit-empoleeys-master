@@ -72,6 +72,8 @@ command line, images are built `--pull=false` from a local base, the package man
 Release id = `UTC timestamp-commit[-dirty]`; image `pems-web:rel-<id>`. The previous image/container is always kept: the first release keeps the original hand-started container as
 `pems-web-pre-<id>` (stopped), later releases roll back to the previous `pems-web:rel-*` image. Old images are never pruned automatically.
 
+**An update never touches accounts** (owner decision 2026-10-27, SCRUM-410): the kit swaps the container and runs the schema migration only. The application seeds the administrator only on an empty user table, so after any `deploy.ps1` action (also Rollback and Reapply) the administrators keep their passwords. Only a fresh install or an explicit database reset restarts the first-install flow (forced password change). Details and the manual check M-14: [DEPLOYMENT_README.md](DEPLOYMENT_README.md) section 9.
+
 ## 4. Persistence (verified)
 
 * `wwwroot/uploads` → volume `pems-uploads`; logs → `pems-logs`; **`filestore` → `pems-filestore`**; **DataProtection keys → `pems-dpkeys`** (`/root/.aspnet/DataProtection-Keys`).

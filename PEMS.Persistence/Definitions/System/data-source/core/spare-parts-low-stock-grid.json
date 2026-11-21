@@ -1,0 +1,51 @@
+{
+  "kind": "data-source",
+  "key": "spare-parts-low-stock-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Spare parts at or below the reorder point rows",
+    "fa": "ردیف‌های قطعات در نقطه‌ی سفارش یا کمتر"
+  },
+  "description": {
+    "en": "The rows of the spare parts grid",
+    "fa": "ردیف‌های جدول قطعات یدکی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "SparePart",
+      "fields": [
+        "PartNumber",
+        "PartName",
+        "Manufacturer",
+        "Model",
+        "Unit",
+        "QuantityOnHand",
+        "MinStockLevel",
+        "ReorderPoint",
+        "StorageLocation"
+      ],
+      "search": [
+        "PartNumber",
+        "PartName",
+        "Manufacturer",
+        "StorageLocation"
+      ],
+      "where": {
+        "IsActive": true
+      },
+      "presets": {
+        "lowStock": {
+          "left": "QuantityOnHand",
+          "op": "lte",
+          "right": "ReorderPoint"
+        }
+      },
+      "apply": [
+        "lowStock"
+      ]
+    }
+  }
+}

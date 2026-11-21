@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "irn-resolve-hold",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Resolve the hold",
+    "fa": "رفع تعلیق"
+  },
+  "description": {
+    "en": "Resolve the hold",
+    "fa": "رفع تعلیق"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Irn",
+      "action": "ResolveHold",
+      "args": {
+        "irnReceiptLineId": "field:lineId",
+        "accepted": "field:accepted",
+        "rejected": "field:rejected",
+        "notes": "field:notes"
+      }
+    },
+    "success": {
+      "en": "The hold was resolved.",
+      "fa": "تعلیق رفع شد."
+    },
+    "redirect": "/p/irn-details?id={id}"
+  }
+}

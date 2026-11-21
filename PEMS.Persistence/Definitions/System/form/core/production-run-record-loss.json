@@ -1,0 +1,93 @@
+{
+  "kind": "form",
+  "key": "production-run-record-loss",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record a loss",
+    "fa": "ثبت افت"
+  },
+  "description": {
+    "en": "Record a loss",
+    "fa": "ثبت افت"
+  },
+  "payload": {
+    "id": "production-run-record-loss",
+    "title": {
+      "en": "Record a loss",
+      "fa": "ثبت افت"
+    },
+    "submitLabel": {
+      "en": "Record",
+      "fa": "ثبت"
+    },
+    "actionKey": "production-run-record-loss",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "productionRunId",
+        "label": {
+          "en": "Run id",
+          "fa": "شناسه‌ی اجرا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "quantity",
+        "label": {
+          "en": "Quantity",
+          "fa": "مقدار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "uomId",
+        "label": {
+          "en": "Unit",
+          "fa": "واحد"
+        },
+        "kind": "select",
+        "optionsFrom": "production-uoms"
+      },
+      {
+        "name": "lossCategory",
+        "label": {
+          "en": "Category",
+          "fa": "دسته"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "production-loss-categories"
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

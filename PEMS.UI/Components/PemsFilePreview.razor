@@ -1,0 +1,25 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("file-preview", Category = "content", Icon = "bi-file-earmark-richtext")]
+@inject IPemsLocale Locale
+@* SCRUM-530: a file shown inline in the page. The source is a same-site preview URL (Files/Preview/{id}, SCRUM-202), which
+   serves PDF, images and text inline under its own Content-Security-Policy and downloads every other type. No source: the
+   empty text. Styles: pems-ui.css (pems-file-preview*). *@
+@if (string.IsNullOrWhiteSpace(Src))
+{
+    <div class="pems-file-preview pems-file-preview--empty" id="@Id">@Locale.Text(EmptyText)</div>
+}
+else
+{
+    <div class="pems-file-preview" id="@Id">
+        <iframe class="pems-file-preview__frame" src="@Src" title="@Locale.Text(Title)" loading="lazy" referrerpolicy="same-origin"></iframe>
+    </div>
+}
+@code {
+    /// <summary>The preview URL, same site only (a relative path such as /Files/Preview/12).</summary>
+    [Parameter] public string? Src { get; set; }
+    /// <summary>The accessible name of the frame (the file name).</summary>
+    [Parameter] public TranslatableText? Title { get; set; }
+    /// <summary>Shown when there is no source.</summary>
+    [Parameter] public TranslatableText? EmptyText { get; set; }
+    [Parameter] public string? Id { get; set; }
+}

@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "work-order-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject work order",
+    "fa": "رد Work Order"
+  },
+  "description": {
+    "en": "Reject work order",
+    "fa": "رد Work Order"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrder",
+      "action": "AdvanceStatus",
+      "args": {
+        "workOrderId": "field:id",
+        "nextStatus": "literal:Rejected",
+        "reason": "field:reason",
+        "changedByEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Work order rejected.",
+      "fa": "Work Order رد شد."
+    },
+    "redirect": "/WorkOrder/Details/{id}",
+    "permission": "WorkOrder.Approve"
+  }
+}

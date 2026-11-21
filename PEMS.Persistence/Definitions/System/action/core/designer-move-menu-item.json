@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "designer-move-menu-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move a menu item",
+    "fa": "جابه‌جایی آیتم منو"
+  },
+  "description": {
+    "en": "Move a menu item",
+    "fa": "جابه‌جایی آیتم منو"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The item was moved in the draft.",
+      "fa": "آیتم در پیش‌نویس جابه‌جا شد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "MoveMenuItem",
+      "args": {
+        "reference": "field:ref",
+        "itemKey": "field:itemKey",
+        "parent": "field:parent",
+        "order": "field:order",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

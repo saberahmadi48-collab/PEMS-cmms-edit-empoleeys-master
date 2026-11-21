@@ -1,0 +1,77 @@
+{
+  "kind": "form",
+  "key": "job-plan-add-skill",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a required skill",
+    "fa": "افزودن مهارت لازم"
+  },
+  "description": {
+    "en": "Add a required skill",
+    "fa": "افزودن مهارت لازم"
+  },
+  "payload": {
+    "id": "job-plan-add-skill",
+    "title": {
+      "en": "Add a required skill",
+      "fa": "افزودن مهارت لازم"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "job-plan-add-skill",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "jobPlanId",
+        "label": {
+          "en": "Job plan id",
+          "fa": "شناسه‌ی طرح کار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "skillId",
+        "label": {
+          "en": "Skill",
+          "fa": "مهارت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "job-plan-skills"
+      },
+      {
+        "name": "minimumProficiencyLevel",
+        "label": {
+          "en": "Minimum proficiency",
+          "fa": "حداقل تسلط"
+        },
+        "kind": "text",
+        "maxLength": 50
+      },
+      {
+        "name": "plannedHours",
+        "label": {
+          "en": "Planned hours",
+          "fa": "ساعت برنامه‌ریزی‌شده"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

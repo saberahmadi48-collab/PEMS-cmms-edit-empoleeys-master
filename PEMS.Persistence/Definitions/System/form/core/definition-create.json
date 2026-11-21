@@ -1,0 +1,144 @@
+{
+  "kind": "form",
+  "key": "definition-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New definition",
+    "fa": "تعریف جدید"
+  },
+  "description": {
+    "en": "New definition",
+    "fa": "تعریف جدید"
+  },
+  "payload": {
+    "id": "definition-create",
+    "title": {
+      "en": "New definition",
+      "fa": "تعریف جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "definition-create",
+    "permission": "Definitions.Create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "kind",
+        "label": {
+          "en": "Kind",
+          "fa": "نوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Kind is required.",
+            "fa": "نوع الزامی است."
+          }
+        },
+        "maxLength": 60,
+        "placeholder": {
+          "en": "page, form, action, data-source, component, route, layout, menu",
+          "fa": "page, form, action, ..."
+        }
+      },
+      {
+        "name": "key",
+        "label": {
+          "en": "Key",
+          "fa": "کلید"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "pattern": {
+            "en": "Lower-case letters, digits and . _ - only.",
+            "fa": "فقط حروف کوچک، عدد و . _ -"
+          }
+        },
+        "maxLength": 200,
+        "pattern": "[a-z0-9][a-z0-9._-]*"
+      },
+      {
+        "name": "appKey",
+        "label": {
+          "en": "App",
+          "fa": "برنامه"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "placeholder": {
+          "en": "core",
+          "fa": "core"
+        }
+      },
+      {
+        "name": "titleEn",
+        "label": {
+          "en": "Title (English)",
+          "fa": "عنوان (انگلیسی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Title (English) is required.",
+            "fa": "عنوان (انگلیسی) الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "titleFa",
+        "label": {
+          "en": "Title (Persian)",
+          "fa": "عنوان (فارسی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Title (Persian) is required.",
+            "fa": "عنوان (فارسی) الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "payload",
+        "label": {
+          "en": "Payload (JSON)",
+          "fa": "بار (JSON)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Payload (JSON) is required.",
+            "fa": "بار (JSON) الزامی است."
+          }
+        },
+        "maxLength": 1000000,
+        "span": 2,
+        "helpText": {
+          "en": "The JSON payload of the definition, checked by the kind when you save.",
+          "fa": "بار JSON تعریف؛ هنگام ذخیره توسط نوع آن بررسی می‌شود."
+        }
+      },
+      {
+        "name": "changeSummary",
+        "label": {
+          "en": "What this version is",
+          "fa": "این نسخه چیست"
+        },
+        "kind": "text",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

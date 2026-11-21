@@ -1,0 +1,92 @@
+{
+  "kind": "form",
+  "key": "job-plan-add-task",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a task",
+    "fa": "افزودن مرحله"
+  },
+  "description": {
+    "en": "Add a task",
+    "fa": "افزودن مرحله"
+  },
+  "payload": {
+    "id": "job-plan-add-task",
+    "title": {
+      "en": "Add a task",
+      "fa": "افزودن مرحله"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "job-plan-add-task",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "jobPlanId",
+        "label": {
+          "en": "Job plan id",
+          "fa": "شناسه‌ی طرح کار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "taskNumber",
+        "label": {
+          "en": "Task number",
+          "fa": "شماره‌ی مرحله"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      },
+      {
+        "name": "estimatedDurationMinutes",
+        "label": {
+          "en": "Minutes",
+          "fa": "دقیقه"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

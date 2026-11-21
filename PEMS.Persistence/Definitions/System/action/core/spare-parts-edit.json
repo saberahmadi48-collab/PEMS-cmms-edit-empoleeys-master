@@ -1,0 +1,43 @@
+{
+  "kind": "action",
+  "key": "spare-parts-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit spare part",
+    "fa": "ویرایش قطعه‌ی یدکی"
+  },
+  "description": {
+    "en": "Edit spare part",
+    "fa": "ویرایش قطعه‌ی یدکی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.update",
+    "parameters": {
+      "entity": "SparePart",
+      "map": {
+        "partNumber": "PartNumber",
+        "partName": "PartName",
+        "manufacturer": "Manufacturer",
+        "model": "Model",
+        "unit": "Unit",
+        "storageLocation": "StorageLocation",
+        "quantityOnHand": "QuantityOnHand",
+        "minStockLevel": "MinStockLevel",
+        "reorderPoint": "ReorderPoint",
+        "description": "Description"
+      },
+      "required": [
+        "PartNumber",
+        "PartName"
+      ],
+      "unique": []
+    },
+    "success": {
+      "en": "Spare part saved.",
+      "fa": "قطعه‌ی یدکی ذخیره شد."
+    },
+    "redirect": "/p/spare-parts"
+  }
+}

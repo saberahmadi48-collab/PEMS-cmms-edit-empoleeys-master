@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "my-profile",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My Profile (old address)",
+    "fa": "پروفایل من (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "My Profile (old address)",
+    "fa": "پروفایل من (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MyProfile/{*rest}",
+    "target": "/p/my-profile",
+    "permanent": false
+  }
+}

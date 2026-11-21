@@ -1,0 +1,474 @@
+{
+  "key": "data-view",
+  "component": "PEMS.UI.Components.PemsDataView",
+  "category": "data",
+  "icon": "bi-kanban",
+  "nameKey": "component.data-view",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "url": {
+        "type": "string"
+      },
+      "view": {
+        "type": "string"
+      },
+      "fields": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "subtitle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "badge": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "image": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "date": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "end": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "parent": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "group": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "title"
+        ],
+        "additionalProperties": false
+      },
+      "texts": {
+        "type": "object",
+        "properties": {
+          "loading": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "empty": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "error": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "more": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "today": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "previous": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "next": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "jalali": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "gregorian": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "uncategorized": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "moreItems": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "collapse": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "expand": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        },
+        "required": [
+          "loading",
+          "empty",
+          "error",
+          "more",
+          "today",
+          "previous",
+          "next",
+          "jalali",
+          "gregorian",
+          "uncategorized",
+          "moreItems"
+        ],
+        "additionalProperties": false
+      },
+      "groups": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": "string"
+            },
+            "label": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "tone": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "value",
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "calendar": {
+        "type": "string"
+      },
+      "weekStart": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "itemUrl": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "moveUrl": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageSize": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "height": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "id",
+      "url",
+      "view",
+      "fields",
+      "texts"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "DataViewOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "tasks-board",
+    "url": "/Tasks/Grid",
+    "view": "kanban",
+    "fields": {
+      "id": "id",
+      "title": "title",
+      "subtitle": "owner",
+      "badge": "priority",
+      "date": "due",
+      "group": "status"
+    },
+    "groups": [
+      {
+        "value": "Open",
+        "label": {
+          "en": "Open",
+          "fa": "باز"
+        },
+        "tone": "primary"
+      },
+      {
+        "value": "InProgress",
+        "label": {
+          "en": "In progress",
+          "fa": "در حال انجام"
+        },
+        "tone": "warning"
+      },
+      {
+        "value": "Done",
+        "label": {
+          "en": "Done",
+          "fa": "انجام شد"
+        },
+        "tone": "success"
+      }
+    ],
+    "calendar": "jalali",
+    "weekStart": 6,
+    "itemUrl": "/Tasks/Details/{id}",
+    "moveUrl": "/Tasks/Move",
+    "pageSize": 50,
+    "texts": {
+      "loading": {
+        "en": "Loading",
+        "fa": "در حال بارگذاری"
+      },
+      "empty": {
+        "en": "Nothing here",
+        "fa": "موردی نیست"
+      },
+      "error": {
+        "en": "Could not load",
+        "fa": "بارگذاری نشد"
+      },
+      "more": {
+        "en": "More",
+        "fa": "بیشتر"
+      },
+      "today": {
+        "en": "Today",
+        "fa": "امروز"
+      },
+      "previous": {
+        "en": "Previous",
+        "fa": "قبلی"
+      },
+      "next": {
+        "en": "Next",
+        "fa": "بعدی"
+      },
+      "jalali": {
+        "en": "Jalali",
+        "fa": "شمسی"
+      },
+      "gregorian": {
+        "en": "Gregorian",
+        "fa": "میلادی"
+      },
+      "uncategorized": {
+        "en": "Other",
+        "fa": "سایر"
+      },
+      "moreItems": {
+        "en": "+{0} more",
+        "fa": "{0}+ مورد دیگر"
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Identity;
 using PEMS.WorkflowPlatform.Entities;
@@ -12,12 +13,26 @@ namespace PEMS.Persistence.Context;
 public class PEMSDbContext
     : IdentityDbContext<ApplicationUser, ApplicationRole, int>, IWorkflowDbContext
 {
+    /// <summary>Assembly that holds the migrations (project PEMS.Migrations), so this assembly changes only with its own code.</summary>
+    public const string MigrationsAssemblyName = "PEMS.Migrations";
+
     public PEMSDbContext(DbContextOptions<PEMSDbContext> options)
         : base(options)
     {
 
     }
 
+
+    /// <summary>
+    /// Points every relational provider configuration (host, tests, tools) at the migrations assembly unless the caller already chose one,
+    /// so a plain UseSqlServer(...) finds the migrations and no call site has to know where they live.
+    /// </summary>
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        var relational = optionsBuilder.Options.Extensions.OfType<RelationalOptionsExtension>().FirstOrDefault();
+        if (relational is { MigrationsAssembly: null })
+            ((IDbContextOptionsBuilderInfrastructure)optionsBuilder).AddOrUpdateExtension(relational.WithMigrationsAssembly(MigrationsAssemblyName));
+    }
 
     // این دو مقدار توسط یک Middleware ساده در PEMS.Web ابتدای هر Request از روی کاربر لاگین‌شده
     // پر می‌شوند (نه از طریق IHttpContextAccessor داخل خود Persistence، تا وابستگی اضافه به
@@ -27,6 +42,9 @@ public class PEMSDbContext
 
 
     public DbSet<AuditLog> AuditLogs { get; set; }
+    public DbSet<DatabaseUpdateRun> DatabaseUpdateRuns { get; set; }
+    public DbSet<LicenseSealRecord> LicenseSeals { get; set; }
+    public DbSet<LicenseEventRecord> LicenseEvents { get; set; }
     public DbSet<RolePermission> RolePermissions { get; set; }
 
     // طبق سند RBAC-ABAC Authorization Architecture (فاز ۱): مدل داده‌ی هسته‌ی مجوزدهی عمومی -
@@ -43,6 +61,12 @@ public class PEMSDbContext
     // طبق سند «PEMS Phase 6 — User Module & Navigation Visibility Architecture»: تنها Entity
     // تازه‌ی این فاز - استثنای دستیِ Visibility، عمداً جدا از مدل داده‌ی Authorization بالا
     public DbSet<NavigationVisibilityOverride> NavigationVisibilityOverrides { get; set; }
+    public DbSet<DefinitionGrant> DefinitionGrants { get; set; }   // SCRUM-591
+    public DbSet<AppliedPackage> AppliedPackages { get; set; }   // SCRUM-807, 814
+    public DbSet<GridSavedView> GridSavedViews { get; set; }   // SCRUM-793
+
+    // سایدبار داده‌محور (مدیریت توسط SystemAdmin؛ قاعده‌ی نمایش آیتم‌های سیستمی از کد)
+    public DbSet<NavigationMenuItem> NavigationMenuItems { get; set; }
 
     public DbSet<AIDocumentClassification> AIDocumentClassifications { get; set; }
     public DbSet<DocumentTagLink> DocumentTagLinks { get; set; }
@@ -58,6 +82,12 @@ public class PEMSDbContext
     // OnModelCreating با ToTable("Users") مشخص شده) تا هیچ Migration/داده‌ی موجودی خراب نشود.
     public DbSet<User> LegacyUsers { get; set; }
     public DbSet<Discipline> Disciplines { get; set; }
+
+    // Definition store (SCRUM-434)
+    public DbSet<PEMS.Domain.Entities.Definitions.Definition> Definitions { get; set; }
+    public DbSet<PEMS.Domain.Entities.Definitions.DefinitionVersion> DefinitionVersions { get; set; }
+    public DbSet<PEMS.Domain.Entities.Definitions.DefinitionReference> DefinitionReferences { get; set; }
+    public DbSet<PEMS.Domain.Entities.Definitions.DefinitionStamp> DefinitionStamps { get; set; }
     public DbSet<DocumentTypeCode> DocumentTypeCodes { get; set; }
     public DbSet<VendorDocumentTypologyCode> VendorDocumentTypologyCodes { get; set; }
     public DbSet<Department> Departments { get; set; }
@@ -110,6 +140,8 @@ public class PEMSDbContext
 
 
     public DbSet<MaintenanceStrategy> MaintenanceStrategies { get; set; }
+    public DbSet<MaintenanceStrategyAssignment> MaintenanceStrategyAssignments { get; set; }
+    public DbSet<MaintenanceStrategyHistory> MaintenanceStrategyHistories { get; set; }
     public DbSet<MaintenancePlan> MaintenancePlans { get; set; }
     public DbSet<WorkOrder> WorkOrders { get; set; }
     public DbSet<MaintenanceHistory> MaintenanceHistories { get; set; }
@@ -151,6 +183,8 @@ public class PEMSDbContext
     public DbSet<PartCatalogueApproverAssignment> PartCatalogueApproverAssignments { get; set; }
     public DbSet<PartCatalogueOrgLink> PartCatalogueOrgLinks { get; set; }
     public DbSet<PartCatalogueRequest> PartCatalogueRequests { get; set; }
+    public DbSet<PartCatalogueSettings> PartCatalogueSettings { get; set; }
+    public DbSet<KpiTarget> KpiTargets { get; set; }
     public DbSet<PartCatalogueRequestEquipment> PartCatalogueRequestEquipment { get; set; }
     public DbSet<PartCatalogueRequestAttribute> PartCatalogueRequestAttributes { get; set; }
     public DbSet<PartCatalogueRequestNote> PartCatalogueRequestNotes { get; set; }
@@ -164,6 +198,9 @@ public class PEMSDbContext
     public DbSet<MrsImportRow> MrsImportRows { get; set; }
     public DbSet<MrsImportRowMetadata> MrsImportRowMetadata { get; set; }
     public DbSet<NumberingSequence> NumberingSequences { get; set; }
+
+    // SCRUM-40: الگوهای شماره‌گذاری که مدیر سامانه تعیین می‌کند
+    public DbSet<NumberingScheme> NumberingSchemes { get; set; }
 
     // طبق ممیزی Material Management (Gap A) + Step 1/Step 2: IRN - سند رسمی دریافت مادی،
     // جدا از MrsImportBatch/Row (که مکانیزم Import اکسل است).
@@ -242,6 +279,11 @@ public class PEMSDbContext
 
     public DbSet<MaterialRequisition> MaterialRequisitions { get; set; }
     public DbSet<MaterialRequisitionItem> MaterialRequisitionItems { get; set; }
+    // SCRUM-471: pre-procurement items
+    public DbSet<ProcurementDemand> ProcurementDemands { get; set; }
+    // SCRUM-470: purchase-order lines and the PO authority table
+    public DbSet<PurchaseOrderLine> PurchaseOrderLines { get; set; }
+    public DbSet<PurchaseOrderAuthorityRule> PurchaseOrderAuthorityRules { get; set; }
     public DbSet<MaterialRequisitionQuotation> MaterialRequisitionQuotations { get; set; }
 
     public DbSet<AIExtractedTag> AIExtractedTags { get; set; }
@@ -401,6 +443,7 @@ public class PEMSDbContext
 
     // طبق PEMS_CMMS_ARCHITECTURE.md بخش ۸: تاریخچه‌ی تغییر وضعیت WorkOrder (چه‌کسی/چه‌زمانی/چرا)
     public DbSet<WorkOrderStatusHistory> WorkOrderStatusHistories { get; set; }
+    public DbSet<WorkOrderChangeLog> WorkOrderChangeLogs { get; set; }
 
     // ==============================================================================
     // Workflow Platform (فاز A) - این DbSet ها اینترفیس IWorkflowDbContext (تعریف‌شده در
@@ -436,11 +479,40 @@ public class PEMSDbContext
 
     public DbSet<LetterStar> LetterStars { get; set; }
 
+    public DbSet<LetterTemplate> LetterTemplates { get; set; }
+
+    public DbSet<LetterApprovalStep> LetterApprovalSteps { get; set; }
+    public DbSet<LetterVersion> LetterVersions { get; set; }
+    public DbSet<LetterViewLog> LetterViewLogs { get; set; }
+    public DbSet<LetterNumberSequence> LetterNumberSequences { get; set; }
+
     public DbSet<LetterRecipient> LetterRecipients { get; set; }
+    public DbSet<CorrespondentParty> CorrespondentParties { get; set; }
+    public DbSet<LetterLink> LetterLinks { get; set; }
+
+    // کارتابل نامه‌نگاری: وضعیت شخصی (سطل/آرشیو)، تفویض، قانون مسیریابی، گروه مخاطبین، یادآور، تنظیمات
+    public DbSet<LetterUserState> LetterUserStates { get; set; }
+    public DbSet<LetterDelegation> LetterDelegations { get; set; }
+    public DbSet<LetterRoutingRule> LetterRoutingRules { get; set; }
+    public DbSet<LetterContactGroup> LetterContactGroups { get; set; }
+    public DbSet<LetterContactGroupMember> LetterContactGroupMembers { get; set; }
+    public DbSet<LetterReminder> LetterReminders { get; set; }
+    public DbSet<LetterUserSetting> LetterUserSettings { get; set; }
 
     public DbSet<Tag> Tags { get; set; }
     public DbSet<LetterTag> LetterTags { get; set; }
     public DbSet<TaskItem> TaskItems { get; set; }
+
+    // Task Manager (فضا، طرح وضعیت، Sprint، نظر، پیوند، ناظر) - روی همان TaskItem، نه موجودیت موازی
+    public DbSet<WorkSpace> WorkSpaces { get; set; }
+    public DbSet<WorkSpaceMember> WorkSpaceMembers { get; set; }
+    public DbSet<WorkItemType> WorkItemTypes { get; set; }
+    public DbSet<WorkItemStatus> WorkItemStatuses { get; set; }
+    public DbSet<WorkItemStatusTransition> WorkItemStatusTransitions { get; set; }
+    public DbSet<Sprint> Sprints { get; set; }
+    public DbSet<WorkItemComment> WorkItemComments { get; set; }
+    public DbSet<WorkItemLink> WorkItemLinks { get; set; }
+    public DbSet<WorkItemWatcher> WorkItemWatchers { get; set; }
 
     public DbSet<Meeting> Meetings { get; set; }
     public DbSet<MeetingAttendee> MeetingAttendees { get; set; }
@@ -462,6 +534,9 @@ public class PEMSDbContext
     public DbSet<Tender> Tenders { get; set; }
     public DbSet<TenderInvitedVendor> TenderInvitedVendors { get; set; }
     public DbSet<Bid> Bids { get; set; }
+
+    // SCRUM-429: ارسال ایمیلی دعوت‌نامه‌ی مناقصه (سابقه‌ی ارسال)
+    public DbSet<TenderInvitationDispatch> TenderInvitationDispatches { get; set; }
     public DbSet<BidEvaluation> BidEvaluations { get; set; }
     public DbSet<BidNegotiation> BidNegotiations { get; set; }
     public DbSet<ContractNTP> ContractNTPs { get; set; }
@@ -469,12 +544,50 @@ public class PEMSDbContext
 
     public DbSet<DisciplineTask> DisciplineTasks { get; set; }
 
+    /// <summary>رویدادهای امنیتی بازیابی حساب مدیر (SCRUM-357)؛ فقط‌افزودنی.</summary>
+    public DbSet<SecurityEvent> SecurityEvents { get; set; }
+
+    /// <summary>کدهای بازیابی یکبارمصرف حساب مدیر (SCRUM-355)؛ فقط هش، فقط‌افزودنی.</summary>
+    public DbSet<AdminRecoveryCode> AdminRecoveryCodes { get; set; }
+
+    /// <summary>Replaced password hashes for the password-history rule (SCRUM-412); hashes only.</summary>
+    public DbSet<PasswordHistoryEntry> PasswordHistory { get; set; }
+
+
+    /// <summary>
+    /// SecurityEvent فقط‌افزودنی است: ویرایش یا حذف رد می‌شود. تنها فیلد قابل تغییر ForwardedToSiemAt است (علامت تحویل به SIEM، SCRUM-212).
+    /// </summary>
+    private void EnforceSecurityEventAppendOnly()
+    {
+        foreach (var entry in ChangeTracker.Entries<SecurityEvent>())
+        {
+            if (entry.State == EntityState.Deleted)
+                throw new InvalidOperationException("SecurityEvent records are append-only and cannot be deleted.");
+
+            if (entry.State == EntityState.Modified &&
+                entry.Properties.Any(p => p.IsModified && p.Metadata.Name != nameof(SecurityEvent.ForwardedToSiemAt)))
+                throw new InvalidOperationException("SecurityEvent records are append-only and cannot be modified.");
+        }
+
+        // SCRUM-355: کد بازیابی حذف نمی‌شود و هش/نمک/مالک آن عوض نمی‌شود؛ فقط مصرف یا ابطال (یک بار، از null) ثبت می‌شود.
+        foreach (var entry in ChangeTracker.Entries<AdminRecoveryCode>())
+        {
+            if (entry.State == EntityState.Deleted)
+                throw new InvalidOperationException("Recovery code records are append-only and cannot be deleted.");
+
+            if (entry.State == EntityState.Modified && entry.Properties.Any(p => p.IsModified &&
+                    (p.Metadata.Name is not (nameof(AdminRecoveryCode.UsedAtUtc) or nameof(AdminRecoveryCode.RevokedAtUtc)) || p.OriginalValue != null)))
+                throw new InvalidOperationException("Recovery code records can only be marked used or revoked once.");
+        }
+    }
 
 
     public override int SaveChanges()
     {
         // Phase 1 Hardening: نسخه‌ی Published/Retired گردش‌کار تغییرناپذیر است (ساختار، مراحل، گذارها)
         WorkflowVersionImmutabilityGuard.Enforce(this);
+
+        EnforceSecurityEventAppendOnly();
 
         ApplyCreatedDate();
 
@@ -495,6 +608,8 @@ public class PEMSDbContext
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await WorkflowVersionImmutabilityGuard.EnforceAsync(this, cancellationToken);
+
+        EnforceSecurityEventAppendOnly();
 
         ApplyCreatedDate();
 
@@ -552,8 +667,16 @@ public class PEMSDbContext
         public string Action = string.Empty;
         public string? ChangedFieldsSummary;
         public string? KnownKeyValue;
+        // SCRUM-553: a changed foreign key that points at a row inserted in the same save holds EF's temporary key until the
+        // save; its new value is read after the save (name, old value). The values of an inserted security record likewise.
+        public List<(string Name, string Old)> AfterSave = new();
+        public bool ValuesAfterSave;
     }
 
+
+    private static readonly HashSet<string> NeverAuditedProperties = new(StringComparer.Ordinal) { "SecurityStamp", "ConcurrencyStamp", "RowVersion", "PayloadJson" };
+    private static readonly HashSet<string> MaskedAuditProperties = new(StringComparer.Ordinal) { "PasswordHash" };
+    private static readonly HashSet<string> SecuritySensitiveEntities = new(StringComparer.Ordinal) { "ApplicationUser", "IdentityUserRole`1", "RoleAssignment", "RolePermissionGrant", "ApplicationRole" };
 
     private List<PendingAudit> PrepareAuditEntries()
     {
@@ -580,6 +703,8 @@ public class PEMSDbContext
             };
 
             string? changedSummary = null;
+            var deferred = new List<(string Name, string Old)>();
+            var valuesAfterSave = false;
 
             if (entry.State == EntityState.Modified)
             {
@@ -588,19 +713,37 @@ public class PEMSDbContext
                 foreach (var prop in entry.Properties)
                 {
                     if (!prop.IsModified) continue;
+                    // E24: مقادیر محرمانه/فنی هرگز در ممیزی ذخیره نمی‌شوند (قبلاً هش رمز قبل→بعد در ChangedFieldsSummary می‌ماند)
+                    if (NeverAuditedProperties.Contains(prop.Metadata.Name)) continue;
 
                     var oldVal = prop.OriginalValue?.ToString() ?? "null";
+                    if (prop.IsTemporary) { deferred.Add((prop.Metadata.Name, oldVal)); continue; }
                     var newVal = prop.CurrentValue?.ToString() ?? "null";
 
                     if (oldVal == newVal) continue;
 
+                    if (MaskedAuditProperties.Contains(prop.Metadata.Name)) { changes.Add($"{prop.Metadata.Name}: [changed]"); continue; }
+
                     changes.Add($"{prop.Metadata.Name}: {oldVal} -> {newVal}");
                 }
 
-                if (changes.Count == 0)
+                if (changes.Count == 0 && deferred.Count == 0)
                     continue; // چیزی واقعاً تغییر نکرده، نیازی به ثبت نیست
 
-                changedSummary = string.Join(" | ", changes);
+                changedSummary = changes.Count == 0 ? null : string.Join(" | ", changes);
+            }
+
+            // E24: ایجاد/حذف موجودیت‌های امنیتی (کاربر، نقش کاربر، تخصیص نقش، مجوز نقش) مقدار فیلدهای غیرمحرمانه را هم ثبت می‌کند (چه کسی/چه چیزی/چه زمانی)
+            if (entry.State == EntityState.Added && SecuritySensitiveEntities.Contains(entityName))
+                valuesAfterSave = true;   // SCRUM-553: keys and foreign keys are real only after the save
+            else if (entry.State != EntityState.Modified && SecuritySensitiveEntities.Contains(entityName))
+            {
+                var values = entry.Properties
+                    .Where(pr => pr.Metadata.ClrType.IsPrimitive || pr.Metadata.ClrType == typeof(string) || pr.Metadata.ClrType == typeof(int?) || pr.Metadata.ClrType == typeof(bool?) || pr.Metadata.ClrType == typeof(DateTime) || pr.Metadata.ClrType == typeof(DateTime?))
+                    .Where(pr => !NeverAuditedProperties.Contains(pr.Metadata.Name) && !MaskedAuditProperties.Contains(pr.Metadata.Name))
+                    .Select(pr => $"{pr.Metadata.Name}={(entry.State == EntityState.Deleted ? pr.OriginalValue : pr.CurrentValue)}");
+                changedSummary = string.Join("; ", values);
+                if (changedSummary.Length > 1000) changedSummary = changedSummary[..1000];
             }
 
             string? knownKey = null;
@@ -619,7 +762,9 @@ public class PEMSDbContext
                 EntityName = entityName,
                 Action = action,
                 ChangedFieldsSummary = changedSummary,
-                KnownKeyValue = knownKey
+                KnownKeyValue = knownKey,
+                AfterSave = deferred,
+                ValuesAfterSave = valuesAfterSave
             });
         }
 
@@ -641,12 +786,27 @@ public class PEMSDbContext
                     keyValue = p.Entry.Property(pk.Properties[0].Name).CurrentValue?.ToString();
             }
 
+            var summary = p.ChangedFieldsSummary;
+            if (p.AfterSave.Count > 0)
+            {
+                var resolved = p.AfterSave.Select(d => $"{d.Name}: {d.Old} -> {p.Entry.Property(d.Name).CurrentValue?.ToString() ?? "null"}");
+                summary = string.Join(" | ", (summary == null ? Enumerable.Empty<string>() : new[] { summary }).Concat(resolved));
+            }
+            if (p.ValuesAfterSave)
+            {
+                summary = string.Join("; ", p.Entry.Properties
+                    .Where(pr => pr.Metadata.ClrType.IsPrimitive || pr.Metadata.ClrType == typeof(string) || pr.Metadata.ClrType == typeof(int?) || pr.Metadata.ClrType == typeof(bool?) || pr.Metadata.ClrType == typeof(DateTime) || pr.Metadata.ClrType == typeof(DateTime?))
+                    .Where(pr => !NeverAuditedProperties.Contains(pr.Metadata.Name) && !MaskedAuditProperties.Contains(pr.Metadata.Name))
+                    .Select(pr => $"{pr.Metadata.Name}={pr.CurrentValue}"));
+                if (summary.Length > 1000) summary = summary[..1000];
+            }
+
             AuditLogs.Add(new AuditLog
             {
                 EntityName = p.EntityName,
                 EntityKeyValue = keyValue ?? "",
                 Action = p.Action,
-                ChangedFieldsSummary = p.ChangedFieldsSummary,
+                ChangedFieldsSummary = summary,
                 UserId = CurrentUserId,
                 UserName = CurrentUserName,
                 Timestamp = DateTime.Now

@@ -1,3 +1,4 @@
+using PEMS.Tests.TestSupport;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
@@ -11,7 +12,7 @@ public class SiteWideUiSystemTests
 {
     private static string Root() => Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Here())!, "..", ".."));
     private static string Here([CallerFilePath] string p = "") => p;
-    private static string Web(params string[] parts) => File.ReadAllText(Path.Combine(new[] { Root(), "PEMS.Web" }.Concat(parts).ToArray()));
+    private static string Web(params string[] parts) => SourceTree.Text(Path.Combine(new[] { Root(), "PEMS.Web" }.Concat(parts).ToArray()));
 
     [Fact]
     public void Layout_LoadsUnifiedLayer_AfterAdminCss_AndSharedScript()
@@ -77,19 +78,25 @@ public class SiteWideUiSystemTests
             Assert.Contains($"for=\"{name}\"", view);
             Assert.Contains($"id=\"{name}\"", view);
         }
+        // SCRUM-59: the Letter partial is an adapter over the one editor of PEMS.UI; the editor code lives in pems-rte.js
         var rte = Web("Views", "Shared", "_RichTextEditorScripts.cshtml");
-        Assert.Contains("nameToolbar", rte);
-        Assert.Contains("aria-label", rte);
-        Assert.Contains("insertBefore(container", rte); // editor sits inside its field, not detached below the card
+        Assert.Contains("data-pems-rte-for=\"@Model\"", rte);
+        Assert.Contains("data-pems-rte-label=\"@Localizer[\"Rte_Editor\"]\"", rte);
+        Assert.Contains("pems-rte.js", rte);
+        Assert.DoesNotContain("<script>", rte);            // no inline editor code any more
+        var js = SourceTree.Text(Path.Combine(Root(), "PEMS.UI", "wwwroot", "pems-rte.js"));
+        Assert.Contains("nameToolbar", js);
+        Assert.Contains("aria-label", js);
+        Assert.Contains("insertBefore(holder, textarea.nextSibling)", js); // editor sits inside its field, not detached below the card
     }
 
     [Fact]
     public void AdminHeroes_DoNotRepeatPageTitleOrCarryDecorativeIcon()
     {
         var dir = Path.Combine(Root(), "PEMS.Web", "Areas", "Admin", "Views");
-        foreach (var f in Directory.EnumerateFiles(dir, "*.cshtml", SearchOption.AllDirectories))
+        foreach (var f in SourceTree.Files(dir, "*.cshtml"))
         {
-            var t = File.ReadAllText(f);
+            var t = SourceTree.Text(f);
             var i = t.IndexOf("admin-hero", StringComparison.Ordinal);
             if (i < 0) continue;
             var seg = t.Substring(i, Math.Min(700, t.Length - i));
@@ -108,7 +115,7 @@ public class SiteWideUiSystemTests
         var rx = new System.Text.RegularExpressions.Regex(@"ViewData\[""Title""\]\s*=\s*""([^""$]+)""\s*;");
         var missing = new List<string>();
         foreach (var f in Directory.EnumerateFiles(Path.Combine(Root(), "PEMS.Web", "Controllers"), "*.cs"))
-            foreach (System.Text.RegularExpressions.Match m in rx.Matches(File.ReadAllText(f)))
+            foreach (System.Text.RegularExpressions.Match m in rx.Matches(SourceTree.Text(f)))
             {
                 var t = m.Groups[1].Value;
                 if (!System.Text.RegularExpressions.Regex.IsMatch(t, "[\u0600-\u06FF]") && !fa.Contains(t)) missing.Add(t);

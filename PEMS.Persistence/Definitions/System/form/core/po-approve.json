@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "po-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve the order",
+    "fa": "تأیید سفارش"
+  },
+  "description": {
+    "en": "Approve the order",
+    "fa": "تأیید سفارش"
+  },
+  "payload": {
+    "id": "po-approve",
+    "title": {
+      "en": "Approve the order",
+      "fa": "تأیید سفارش"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "po-approve",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Order id",
+          "fa": "شناسه‌ی سفارش"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

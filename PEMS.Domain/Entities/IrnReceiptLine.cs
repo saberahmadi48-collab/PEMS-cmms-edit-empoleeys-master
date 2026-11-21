@@ -35,7 +35,39 @@ public class IrnReceiptLine : BaseEntity
 
     public string? Notes { get; set; }
 
+    // ---- SCRUM-473: receiving against the PO line (null for a receipt without a PO line, e.g. an old or a manual IRN)
+    public int? PurchaseOrderLineId { get; set; }
+    public PurchaseOrderLine? PurchaseOrderLine { get; set; }
+
+    /// <summary>
+    /// D6b (owner 2026-10-30): what happens to the rejected quantity (RejectedQuantity + HoldRejectedQuantity) on the PO line.
+    /// Null = not decided yet, treated as <see cref="IrnRejectionActions.Replace"/> (the line stays open for a replacement).
+    /// </summary>
+    public string? RejectionAction { get; set; }
+    public DateTime? RejectionDecidedAt { get; set; }
+    public string? RejectionDecidedByUserName { get; set; }
+
+    /// <summary>D7 (owner 2026-10-30): the Warehouse Manager resolves the Hold quantity; the two parts add up to HoldQuantity.</summary>
+    public decimal? HoldAcceptedQuantity { get; set; }
+    public decimal? HoldRejectedQuantity { get; set; }
+    public DateTime? HoldResolvedAt { get; set; }
+    public string? HoldResolvedByUserName { get; set; }
+    public string? HoldResolutionNotes { get; set; }
+
+    public bool HasOpenHold => (HoldQuantity ?? 0m) > 0m && HoldResolvedAt == null;
+
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedDate { get; set; } = DateTime.Now;
+}
+
+/// <summary>SCRUM-473 / D6b: the buyer's decision on a rejected quantity.</summary>
+public static class IrnRejectionActions
+{
+    /// <summary>The vendor replaces the goods: the quantity reopens on the PO line (the default).</summary>
+    public const string Replace = "Replace";
+    /// <summary>The PO line is closed short by the rejected quantity.</summary>
+    public const string CloseShort = "CloseShort";
+
+    public static readonly string[] All = { Replace, CloseShort };
 }

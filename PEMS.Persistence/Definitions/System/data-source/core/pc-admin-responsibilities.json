@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-admin-responsibilities",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin: Responsibilities",
+    "fa": "مدیریت کاتالوگ قطعه: Responsibilities"
+  },
+  "description": {
+    "en": "Part Catalogue admin: Responsibilities",
+    "fa": "مدیریت کاتالوگ قطعه: Responsibilities"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "Responsibilities",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId"
+      }
+    }
+  }
+}

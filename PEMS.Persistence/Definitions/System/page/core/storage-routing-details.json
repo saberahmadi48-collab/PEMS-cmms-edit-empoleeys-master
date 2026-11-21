@@ -1,0 +1,87 @@
+{
+  "kind": "page",
+  "key": "storage-routing-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Storage routing details",
+    "fa": "جزئیات مسیریابی ذخیره‌سازی"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "storage-routing-record",
+      "url": "/d/storage-routing-grid",
+      "idField": "storageRouteId",
+      "fields": [
+        {
+          "key": "module",
+          "label": {
+            "en": "Module",
+            "fa": "ماژول"
+          }
+        },
+        {
+          "key": "documentType",
+          "label": {
+            "en": "Document type",
+            "fa": "نوع سند"
+          }
+        },
+        {
+          "key": "provider",
+          "label": {
+            "en": "Storage provider",
+            "fa": "ارائه‌دهنده‌ی ذخیره‌سازی"
+          }
+        },
+        {
+          "key": "relativeRootPath",
+          "label": {
+            "en": "Relative root",
+            "fa": "مسیر نسبی"
+          }
+        },
+        {
+          "key": "isEnabled",
+          "label": {
+            "en": "Enabled",
+            "fa": "فعال"
+          },
+          "type": "bool"
+        },
+        {
+          "key": "isDefault",
+          "label": {
+            "en": "Default",
+            "fa": "پیش‌فرض"
+          },
+          "type": "bool"
+        },
+        {
+          "key": "priority",
+          "label": {
+            "en": "Priority",
+            "fa": "اولویت"
+          },
+          "type": "number"
+        }
+      ],
+      "backUrl": "/p/storage-routing",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/storage-routing-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

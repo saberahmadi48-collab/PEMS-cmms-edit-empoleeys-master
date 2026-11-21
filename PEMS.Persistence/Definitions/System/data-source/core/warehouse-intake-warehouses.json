@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "warehouse-intake-warehouses",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Supplying warehouses",
+    "fa": "انبارهای تأمین‌کننده"
+  },
+  "description": {
+    "en": "Supplying warehouses",
+    "fa": "انبارهای تأمین‌کننده"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "WarehouseIntake",
+      "action": "Warehouses",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

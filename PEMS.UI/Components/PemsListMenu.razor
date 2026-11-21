@@ -1,0 +1,16 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-menu", Category = "list", Icon = "bi-three-dots-vertical")]
+<div @attributes="Options.Attributes" class="@ListMarkup.Css("dropdown", Options.CssClass)"><PemsListIconTool Options="@Tool" /><ul aria-labelledby="@(string.IsNullOrEmpty(Options.Id) ? null : Options.Id)" class="dropdown-menu dropdown-menu-end lp-menu">@ChildContent</ul></div>
+@code {
+    [Parameter, EditorRequired] public ListMenuOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private ListIconToolOptions Tool
+    {
+        get
+        {
+            var a = new Dictionary<string, string> { ["data-bs-toggle"] = "dropdown", ["aria-expanded"] = "false" };
+            if (!string.IsNullOrEmpty(Options.Id)) a["id"] = Options.Id;
+            return new ListIconToolOptions { Icon = Options.Icon, Label = Options.Label, Attributes = a };
+        }
+    }
+}

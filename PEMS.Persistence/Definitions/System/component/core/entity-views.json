@@ -1,0 +1,303 @@
+{
+  "kind": "component",
+  "key": "entity-views",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Views of records",
+    "fa": "نماهای رکورد"
+  },
+  "description": {
+    "en": "Cards, status board, calendar, timeline, gantt or tree over one data source, chosen by the view parameter of the request; a model gets a view by a setting, with no code.",
+    "fa": "کارت، تابلو، تقویم، خط زمان، گانت یا درخت روی یک منبع داده؛ نما با پارامتر view انتخاب می‌شود."
+  },
+  "payload": {
+    "parameters": {
+      "id": {
+        "type": "string",
+        "required": true,
+        "description": "The id of the views (prefix of each view)"
+      },
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "The url of the rows: /d/{key} of a grid data source"
+      },
+      "fields": {
+        "type": "object",
+        "required": true,
+        "description": "The row properties the views show: id, title, subtitle, badge, date, end, parent, group"
+      },
+      "groups": {
+        "type": "array",
+        "description": "Kanban columns: { value, label, tone }"
+      },
+      "moveUrl": {
+        "type": "string",
+        "description": "Kanban: a card move posts { id, to } here (an /a/{action} works)"
+      },
+      "itemUrl": {
+        "type": "string",
+        "description": "The link of a row; {id} is replaced"
+      },
+      "calendar": {
+        "type": "string",
+        "description": "gregorian or jalali"
+      },
+      "texts": {
+        "type": "object",
+        "default": {
+          "loading": {
+            "en": "Loading",
+            "fa": "در حال بارگذاری"
+          },
+          "empty": {
+            "en": "Nothing here",
+            "fa": "موردی نیست"
+          },
+          "error": {
+            "en": "Could not load",
+            "fa": "بارگذاری نشد"
+          },
+          "more": {
+            "en": "More",
+            "fa": "بیشتر"
+          },
+          "today": {
+            "en": "Today",
+            "fa": "امروز"
+          },
+          "previous": {
+            "en": "Previous",
+            "fa": "قبلی"
+          },
+          "next": {
+            "en": "Next",
+            "fa": "بعدی"
+          },
+          "jalali": {
+            "en": "Jalali",
+            "fa": "شمسی"
+          },
+          "gregorian": {
+            "en": "Gregorian",
+            "fa": "میلادی"
+          },
+          "uncategorized": {
+            "en": "Other",
+            "fa": "سایر"
+          },
+          "moreItems": {
+            "en": "+{0} more",
+            "fa": "{0}+ مورد دیگر"
+          }
+        },
+        "description": "The texts of the views"
+      },
+      "kanban": {
+        "type": "boolean",
+        "default": false
+      },
+      "calendarView": {
+        "type": "boolean",
+        "default": false
+      },
+      "timeline": {
+        "type": "boolean",
+        "default": false
+      },
+      "gantt": {
+        "type": "boolean",
+        "default": false
+      },
+      "tree": {
+        "type": "boolean",
+        "default": false
+      }
+    },
+    "regions": {
+      "header": [
+        {
+          "id": "switch-cards",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Cards",
+              "fa": "کارت‌ها"
+            },
+            "tone": "neutral",
+            "href": "?view=cards"
+          }
+        },
+        {
+          "id": "switch-kanban",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Board",
+              "fa": "تابلو"
+            },
+            "tone": "neutral",
+            "href": "?view=kanban"
+          },
+          "if": "${kanban}"
+        },
+        {
+          "id": "switch-calendar",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Calendar",
+              "fa": "تقویم"
+            },
+            "tone": "neutral",
+            "href": "?view=calendar"
+          },
+          "if": "${calendarView}"
+        },
+        {
+          "id": "switch-timeline",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Timeline",
+              "fa": "خط زمان"
+            },
+            "tone": "neutral",
+            "href": "?view=timeline"
+          },
+          "if": "${timeline}"
+        },
+        {
+          "id": "switch-gantt",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Gantt",
+              "fa": "گانت"
+            },
+            "tone": "neutral",
+            "href": "?view=gantt"
+          },
+          "if": "${gantt}"
+        },
+        {
+          "id": "switch-tree",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Tree",
+              "fa": "درخت"
+            },
+            "tone": "neutral",
+            "href": "?view=tree"
+          },
+          "if": "${tree}"
+        }
+      ],
+      "content": [
+        {
+          "id": "view-cards",
+          "component": "data-view",
+          "visible": "not (params.view in ['kanban', 'calendar', 'timeline', 'gantt', 'tree'])",
+          "options": {
+            "id": "${id}-cards",
+            "url": "${url}",
+            "view": "cards",
+            "fields": "${fields}",
+            "texts": "${texts}",
+            "groups": "${groups}",
+            "moveUrl": "${moveUrl}",
+            "itemUrl": "${itemUrl}",
+            "calendar": "${calendar}"
+          }
+        },
+        {
+          "id": "view-kanban",
+          "component": "data-view",
+          "visible": "params.view == 'kanban'",
+          "options": {
+            "id": "${id}-kanban",
+            "url": "${url}",
+            "view": "kanban",
+            "fields": "${fields}",
+            "texts": "${texts}",
+            "groups": "${groups}",
+            "moveUrl": "${moveUrl}",
+            "itemUrl": "${itemUrl}",
+            "calendar": "${calendar}"
+          },
+          "if": "${kanban}"
+        },
+        {
+          "id": "view-calendar",
+          "component": "data-view",
+          "visible": "params.view == 'calendar'",
+          "options": {
+            "id": "${id}-calendar",
+            "url": "${url}",
+            "view": "calendar",
+            "fields": "${fields}",
+            "texts": "${texts}",
+            "groups": "${groups}",
+            "moveUrl": "${moveUrl}",
+            "itemUrl": "${itemUrl}",
+            "calendar": "${calendar}"
+          },
+          "if": "${calendarView}"
+        },
+        {
+          "id": "view-timeline",
+          "component": "data-view",
+          "visible": "params.view == 'timeline'",
+          "options": {
+            "id": "${id}-timeline",
+            "url": "${url}",
+            "view": "timeline",
+            "fields": "${fields}",
+            "texts": "${texts}",
+            "groups": "${groups}",
+            "moveUrl": "${moveUrl}",
+            "itemUrl": "${itemUrl}",
+            "calendar": "${calendar}"
+          },
+          "if": "${timeline}"
+        },
+        {
+          "id": "view-gantt",
+          "component": "data-view",
+          "visible": "params.view == 'gantt'",
+          "options": {
+            "id": "${id}-gantt",
+            "url": "${url}",
+            "view": "gantt",
+            "fields": "${fields}",
+            "texts": "${texts}",
+            "groups": "${groups}",
+            "moveUrl": "${moveUrl}",
+            "itemUrl": "${itemUrl}",
+            "calendar": "${calendar}"
+          },
+          "if": "${gantt}"
+        },
+        {
+          "id": "view-tree",
+          "component": "data-view",
+          "visible": "params.view == 'tree'",
+          "options": {
+            "id": "${id}-tree",
+            "url": "${url}",
+            "view": "tree",
+            "fields": "${fields}",
+            "texts": "${texts}",
+            "groups": "${groups}",
+            "moveUrl": "${moveUrl}",
+            "itemUrl": "${itemUrl}",
+            "calendar": "${calendar}"
+          },
+          "if": "${tree}"
+        }
+      ]
+    }
+  }
+}

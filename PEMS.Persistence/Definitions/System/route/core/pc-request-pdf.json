@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-request-pdf",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue request PDF (old address)",
+    "fa": "Part Catalogue request PDF (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue request PDF (old address)",
+    "fa": "Part Catalogue request PDF (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueRequest/ExportPdf/{id}",
+    "target": "/x/pc-request-pdf?id={id}",
+    "permanent": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "contract-add-document",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a contract document",
+    "fa": "افزودن سند قرارداد"
+  },
+  "description": {
+    "en": "Add a contract document",
+    "fa": "افزودن سند قرارداد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ContractPage",
+      "action": "AddDocument",
+      "args": {
+        "userId": "context:userId",
+        "ip": "context:ip",
+        "contractId": "field:contractId",
+        "documentNo": "field:documentNo",
+        "title": "field:title",
+        "documentType": "field:documentType",
+        "clauseReference": "field:clauseReference"
+      }
+    },
+    "success": {
+      "en": "The contract document was recorded.",
+      "fa": "سند قرارداد ثبت شد."
+    },
+    "redirect": "/Contract/Details/{contractId}"
+  }
+}

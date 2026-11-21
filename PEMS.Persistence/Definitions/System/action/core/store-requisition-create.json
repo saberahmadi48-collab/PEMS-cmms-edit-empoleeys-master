@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "store-requisition-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New store requisition",
+    "fa": "درخواست انبار جدید"
+  },
+  "description": {
+    "en": "New store requisition",
+    "fa": "درخواست انبار جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StoreRequisition",
+      "action": "Create",
+      "args": {
+        "warehouseId": "field:warehouseId",
+        "purpose": "field:purpose",
+        "workOrderId": "field:workOrderId"
+      }
+    },
+    "success": {
+      "en": "The store requisition was created.",
+      "fa": "درخواست انبار ساخته شد."
+    },
+    "redirect": "/p/store-requisitions"
+  }
+}

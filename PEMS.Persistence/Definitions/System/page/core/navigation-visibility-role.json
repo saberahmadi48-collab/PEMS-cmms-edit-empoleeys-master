@@ -1,0 +1,80 @@
+{
+  "kind": "page",
+  "key": "navigation-visibility-role",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Navigation seen by a role",
+    "fa": "ناوبری قابل مشاهده برای یک نقش"
+  },
+  "description": {
+    "en": "Type the exact role name in the Role filter (page definition)",
+    "fa": "نام دقیق نقش را در فیلتر بنویسید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "navigation-visibility-role",
+    "template": "entity-list",
+    "args": {
+      "id": "navigation-visibility-role",
+      "url": "/d/navigation-visibility-role-rows",
+      "idField": "node",
+      "columns": [
+        {
+          "key": "roleName",
+          "header": {
+            "en": "Role (type the exact name)",
+            "fa": "نقش (نام دقیق)"
+          },
+          "width": 240
+        },
+        {
+          "key": "node",
+          "header": {
+            "en": "Node",
+            "fa": "گره"
+          },
+          "width": 280
+        },
+        {
+          "key": "defaultVisible",
+          "header": {
+            "en": "Default",
+            "fa": "پیش‌فرض"
+          },
+          "width": 110,
+          "type": "bool",
+          "filterable": false
+        },
+        {
+          "key": "override",
+          "header": {
+            "en": "Override",
+            "fa": "استثنا"
+          },
+          "width": 140,
+          "filterable": false
+        },
+        {
+          "key": "effectiveVisible",
+          "header": {
+            "en": "Effective",
+            "fa": "مؤثر"
+          },
+          "width": 110,
+          "type": "bool",
+          "filterable": false
+        },
+        {
+          "key": "source",
+          "header": {
+            "en": "Source",
+            "fa": "منبع"
+          },
+          "width": 300,
+          "filterable": false
+        }
+      ]
+    }
+  }
+}

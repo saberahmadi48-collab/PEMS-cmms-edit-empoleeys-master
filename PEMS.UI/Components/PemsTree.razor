@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("tree", Category = "navigation", Icon = "bi-diagram-3")]
+<ul @attributes="Options.Attributes" class="@ListMarkup.Css("pems-tree", Options.CssClass)" role="tree" aria-label="@(string.IsNullOrEmpty(Options.Label) ? null : Options.Label)" data-pems-tree="" data-pems-tree-remember="@(string.IsNullOrEmpty(Options.RememberKey) ? null : Options.RememberKey)">@ChildContent</ul>
+@code {
+    [Parameter, EditorRequired] public TreeOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

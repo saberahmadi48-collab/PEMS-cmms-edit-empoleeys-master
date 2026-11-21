@@ -1,0 +1,128 @@
+{
+  "key": "workflow-history",
+  "component": "PEMS.UI.Components.PemsWorkflowHistory",
+  "category": "data",
+  "icon": "bi-clock-history",
+  "nameKey": "component.workflow-history",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "entries": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "detail": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "actor": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "comment": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "when": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "tone": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "title"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "id": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "empty": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "empty"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "WorkflowHistoryOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "wf-history",
+    "entries": [
+      {
+        "title": "Approved",
+        "detail": "Review → Approval",
+        "actor": "A. Rezaei",
+        "comment": "Looks good",
+        "when": "2026-11-10T09:30:00Z",
+        "tone": "success"
+      },
+      {
+        "title": "Returned",
+        "detail": "Review → Draft",
+        "actor": "M. Karimi",
+        "when": "2026-11-09T14:00:00Z",
+        "tone": "warning"
+      }
+    ],
+    "empty": {
+      "en": "No history yet",
+      "fa": "هنوز تاریخچه‌ای نیست"
+    }
+  }
+}

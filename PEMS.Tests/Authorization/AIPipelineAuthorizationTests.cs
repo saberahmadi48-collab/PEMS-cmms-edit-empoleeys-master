@@ -100,59 +100,6 @@ public class AIPipelineAuthorizationTests
         public Task RecordCommentResponseAsync(int commentId, string responseText) => Task.CompletedTask;
     }
 
-    // ================= AIExtraction =================
-
-    [Fact]
-    public async Task AIExtraction_ApproveExtractedTag_WithoutPermission_ReturnsForbid_DoesNotApprove()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(AIExtraction_ApproveExtractedTag_WithoutPermission_ReturnsForbid_DoesNotApprove), role: SystemRoles.Viewer);
-        var service = new FakeDocumentAIIngestionService();
-        var controller = new AIExtractionController(ctx, service, user, perms).WithTempData();
-
-        var result = await controller.ApproveExtractedTag(1, 1, 1);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(service.ApproveTagCalled);
-    }
-
-    [Fact]
-    public async Task AIExtraction_ApproveExtractedTag_WithPermission_Approves()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(AIExtraction_ApproveExtractedTag_WithPermission_Approves), role: SystemRoles.MaintenanceEngineer);
-        var service = new FakeDocumentAIIngestionService();
-        var controller = new AIExtractionController(ctx, service, user, perms).WithTempData();
-
-        var result = await controller.ApproveExtractedTag(1, 1, 1);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(service.ApproveTagCalled);
-    }
-
-    [Fact]
-    public async Task AIExtraction_RejectExtractedTag_WithoutPermission_ReturnsForbid_DoesNotReject()
-    {
-        // Viewer has View only (no Create) on AIExtraction - Reject requires "Create"
-        var (ctx, perms, user) = await CreateInfra(nameof(AIExtraction_RejectExtractedTag_WithoutPermission_ReturnsForbid_DoesNotReject), role: SystemRoles.Viewer);
-        var service = new FakeDocumentAIIngestionService();
-        var controller = new AIExtractionController(ctx, service, user, perms).WithTempData();
-
-        var result = await controller.RejectExtractedTag(1, 1);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(service.RejectTagCalled);
-    }
-
-    [Fact]
-    public async Task AIExtraction_Index_WithoutViewPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(AIExtraction_Index_WithoutViewPermission_ReturnsForbid), role: null);
-        var controller = new AIExtractionController(ctx, new FakeDocumentAIIngestionService(), user, perms).WithTempData();
-
-        var result = await controller.Index();
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
     // ================= TableExtraction =================
 
     [Fact]

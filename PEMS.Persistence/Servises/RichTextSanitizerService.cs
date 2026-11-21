@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using AngleSharp.Dom;
 using Ganss.Xss;
 using PEMS.Application.Interfaces;
 
@@ -29,10 +30,38 @@ public class RichTextSanitizerService : IRichTextSanitizerService
         }
 
         _sanitizer.AllowedAttributes.Clear();
-        foreach (var attr in new[] { "style", "class", "href", "target", "dir", "align", "color", "size", "face", "colspan", "rowspan", "src", "alt", "width", "height" })
+        foreach (var attr in new[] { "style", "class", "href", "target", "rel", "dir", "align", "color", "size", "face", "colspan", "rowspan", "src", "alt", "width", "height" })
         {
             _sanitizer.AllowedAttributes.Add(attr);
         }
+
+        // SCRUM-59: links and images only to http(s), mailto or a relative URL of PEMS (no javascript:, data:, vbscript:)
+        _sanitizer.AllowedSchemes.Clear();
+        foreach (var scheme in new[] { "http", "https", "mailto" })
+        {
+            _sanitizer.AllowedSchemes.Add(scheme);
+        }
+
+        _sanitizer.PostProcessNode += (_, e) =>
+        {
+            if (e.Node is not IElement element) return;
+
+            // SCRUM-59: only the editor's own classes (ql-align-right, ql-direction-rtl, ql-indent-1, ql-font-tahoma, ...). Any other class
+            // could pull page CSS into stored content (for example a full-screen overlay that imitates a login form).
+            var classes = element.GetAttribute("class");
+            if (classes is not null)
+            {
+                var kept = classes.Split(' ', StringSplitOptions.RemoveEmptyEntries).Where(IsEditorClass).ToArray();
+                if (kept.Length == 0) element.RemoveAttribute("class");
+                else element.SetAttribute("class", string.Join(' ', kept));
+            }
+
+            // a link that opens a new window must not get a handle on PEMS (reverse tabnabbing)
+            if (element.LocalName == "a" && element.HasAttribute("target"))
+            {
+                element.SetAttribute("rel", "noopener noreferrer");
+            }
+        };
 
         _sanitizer.AllowedCssProperties.Clear();
         foreach (var css in new[]
@@ -44,6 +73,10 @@ public class RichTextSanitizerService : IRichTextSanitizerService
             _sanitizer.AllowedCssProperties.Add(css);
         }
     }
+
+    private static readonly Regex EditorClass = new("^ql-[a-z0-9-]{1,40}$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+    private static bool IsEditorClass(string name) => EditorClass.IsMatch(name);
 
     public string Sanitize(string? html)
     {

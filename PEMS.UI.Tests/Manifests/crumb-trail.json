@@ -1,0 +1,48 @@
+{
+  "key": "crumb-trail",
+  "component": "PEMS.UI.Components.PemsCrumbTrail",
+  "category": "navigation",
+  "icon": "bi-chevron-double-right",
+  "nameKey": "component.crumb-trail",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "CrumbTrailOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {}
+}

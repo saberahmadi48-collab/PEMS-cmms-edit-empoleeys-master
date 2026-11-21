@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "barcodes-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode (index) (old address)",
+    "fa": "Barcode (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Barcode (index) (old address)",
+    "fa": "Barcode (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Barcode/Index",
+    "target": "/p/barcodes",
+    "permanent": false
+  }
+}

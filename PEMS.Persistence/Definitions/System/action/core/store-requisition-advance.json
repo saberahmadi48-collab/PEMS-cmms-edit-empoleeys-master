@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "store-requisition-advance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Advance",
+    "fa": "Advance"
+  },
+  "description": {
+    "en": "Advance",
+    "fa": "Advance"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StoreRequisition",
+      "action": "Advance",
+      "args": {
+        "id": "field:id",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The status was changed.",
+      "fa": "وضعیت تغییر کرد."
+    },
+    "redirect": "/p/store-requisition-details?id={id}"
+  }
+}

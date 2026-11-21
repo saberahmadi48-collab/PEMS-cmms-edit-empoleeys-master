@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "tender-record-evaluation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record bid evaluation",
+    "fa": "ثبت ارزیابی پیشنهاد"
+  },
+  "description": {
+    "en": "Record bid evaluation",
+    "fa": "ثبت ارزیابی پیشنهاد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Tender",
+      "action": "RecordBidEvaluation",
+      "args": {
+        "bidId": "field:bidId",
+        "evaluationType": "field:evaluationType",
+        "evaluatorEmployeeId": "context:employeeId",
+        "decision": "field:decision",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "The evaluation was recorded.",
+      "fa": "ارزیابی ثبت شد."
+    },
+    "redirect": "/Tender/Details/{tenderId}"
+  }
+}

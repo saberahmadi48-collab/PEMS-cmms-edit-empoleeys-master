@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-organization-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Organization import (old address)",
+    "fa": "ایمپورت ساختار سازمانی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Organization import (old address)",
+    "fa": "ایمپورت ساختار سازمانی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/OrganizationImport/{*rest}",
+    "target": "/p/organization-import",
+    "permanent": false
+  }
+}

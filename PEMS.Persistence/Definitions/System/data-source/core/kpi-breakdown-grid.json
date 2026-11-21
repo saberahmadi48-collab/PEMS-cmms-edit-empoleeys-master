@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "kpi-breakdown-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Executive KPI breakdown",
+    "fa": "ریز داشبورد مدیریتی"
+  },
+  "description": {
+    "en": "Executive KPI breakdown",
+    "fa": "ریز داشبورد مدیریتی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Kpi",
+      "action": "Breakdown",
+      "args": {
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      }
+    }
+  }
+}

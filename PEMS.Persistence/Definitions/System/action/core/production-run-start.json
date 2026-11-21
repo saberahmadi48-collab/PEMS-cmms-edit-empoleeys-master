@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "production-run-start",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Start the run",
+    "fa": "شروع اجرا"
+  },
+  "description": {
+    "en": "Start the run",
+    "fa": "شروع اجرا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionRun",
+      "action": "Start",
+      "args": {
+        "productionRunId": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The run started.",
+      "fa": "اجرا شروع شد."
+    },
+    "redirect": "/ProductionRun/Details/{id}"
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "kind": "page",
+  "key": "definition-storage",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Definition storage",
+    "fa": "حجم ذخیره تعریف‌ها"
+  },
+  "description": {
+    "en": "The definitions that take the most space; versions are kept forever",
+    "fa": "تعریف‌های پرحجم؛ نسخه‌ها همیشه نگهداری می‌شوند"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "definition-storage",
+    "permission": "Definitions.View",
+    "template": "entity-list",
+    "args": {
+      "id": "definition-storage",
+      "url": "/d/definition-largest-grid",
+      "idField": "ref",
+      "columns": [
+        {
+          "key": "kind",
+          "header": {
+            "en": "Kind",
+            "fa": "نوع"
+          },
+          "width": 110
+        },
+        {
+          "key": "key",
+          "header": {
+            "en": "Key",
+            "fa": "کلید"
+          },
+          "width": 260
+        },
+        {
+          "key": "versions",
+          "header": {
+            "en": "Versions",
+            "fa": "نسخه‌ها"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "totalBytes",
+          "header": {
+            "en": "All versions, bytes",
+            "fa": "حجم همه نسخه‌ها"
+          },
+          "width": 170,
+          "type": "number"
+        }
+      ]
+    },
+    "regions": {
+      "content": [
+        {
+          "id": "growth-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "growth-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Growth per month",
+                  "fa": "رشد در هر ماه"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "growth",
+          "component": "data-grid",
+          "options": {
+            "id": "definition-growth",
+            "url": "/d/definition-growth-grid",
+            "idField": "month",
+            "pageSize": 24,
+            "height": 260,
+            "columns": [
+              {
+                "key": "month",
+                "header": {
+                  "en": "Month",
+                  "fa": "ماه"
+                },
+                "width": 120
+              },
+              {
+                "key": "versions",
+                "header": {
+                  "en": "Versions created",
+                  "fa": "نسخه‌های ایجادشده"
+                },
+                "width": 160,
+                "type": "number"
+              },
+              {
+                "key": "bytes",
+                "header": {
+                  "en": "Payload bytes",
+                  "fa": "حجم داده"
+                },
+                "width": 160,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "health-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "health-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Store health: policy, size warning and cache",
+                  "fa": "وضعیت ذخیره: سیاست، هشدار حجم و حافظه نهان"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "health",
+          "component": "data-grid",
+          "options": {
+            "id": "definition-health",
+            "url": "/d/definition-health-grid",
+            "idField": "metric",
+            "pageSize": 20,
+            "height": 320,
+            "columns": [
+              {
+                "key": "metric",
+                "header": {
+                  "en": "Measure",
+                  "fa": "شاخص"
+                },
+                "width": 200
+              },
+              {
+                "key": "value",
+                "header": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                },
+                "width": 160
+              },
+              {
+                "key": "note",
+                "header": {
+                  "en": "Note",
+                  "fa": "توضیح"
+                },
+                "width": 420
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "kind": "form",
+  "key": "maintenance-groups-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit maintenance group",
+    "fa": "ویرایش گروه تعمیراتی"
+  },
+  "description": {
+    "en": "Edit maintenance group",
+    "fa": "ویرایش گروه تعمیراتی"
+  },
+  "payload": {
+    "id": "maintenance-groups-edit",
+    "title": {
+      "en": "Edit maintenance group",
+      "fa": "ویرایش گروه تعمیراتی"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "maintenance-groups-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "owner": "platform",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "maxLength": 30,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Code is required.",
+            "fa": "کد الزامی است."
+          }
+        },
+        "readOnly": true
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Discipline is required.",
+            "fa": "دیسیپلین الزامی است."
+          }
+        },
+        "optionsFrom": "maintenance-groups-discipline-id-options"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

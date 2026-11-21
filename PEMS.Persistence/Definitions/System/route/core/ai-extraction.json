@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "ai-extraction",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI Extraction (old address)",
+    "fa": "استخراج هوش مصنوعی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "AI Extraction (old address)",
+    "fa": "استخراج هوش مصنوعی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "AIExtraction",
+    "target": "/p/ai-extraction",
+    "permanent": false
+  }
+}

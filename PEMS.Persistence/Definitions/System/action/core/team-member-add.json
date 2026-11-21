@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "team-member-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a member",
+    "fa": "افزودن عضو"
+  },
+  "description": {
+    "en": "Add a member",
+    "fa": "افزودن عضو"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Team",
+      "action": "AddMember",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "teamId": "field:teamId",
+        "employeeId": "field:employeeId",
+        "roleId": "field:roleId"
+      }
+    },
+    "success": {
+      "en": "Member added.",
+      "fa": "عضو افزوده شد."
+    },
+    "redirect": "/p/team-details?teamId={teamId}"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "navigation-visibility-nodes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Navigation nodes",
+    "fa": "گره‌های ناوبری"
+  },
+  "description": {
+    "en": "The rows of the visibility matrix",
+    "fa": "ردیف‌های ماتریس نمایش"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "NavigationVisibility",
+      "action": "Nodes",
+      "value": "node",
+      "label": "label"
+    }
+  }
+}

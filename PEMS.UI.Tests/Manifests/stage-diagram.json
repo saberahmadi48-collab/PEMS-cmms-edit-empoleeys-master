@@ -1,0 +1,86 @@
+{
+  "key": "stage-diagram",
+  "component": "PEMS.UI.Components.PemsStageDiagram",
+  "category": "navigation",
+  "icon": "bi-diagram-3",
+  "nameKey": "component.stage-diagram",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "variant": {
+        "type": "string"
+      },
+      "steps": {
+        "type": [
+          "array",
+          "null"
+        ],
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string"
+            },
+            "icon": {
+              "type": "string"
+            },
+            "state": {
+              "enum": [
+                "pending",
+                "current",
+                "done",
+                "rejected"
+              ]
+            },
+            "role": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "default": null
+            }
+          },
+          "required": [
+            "label",
+            "icon",
+            "state"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "StageDiagramOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "variant": "wf",
+    "steps": [
+      {
+        "label": "Draft",
+        "icon": "bi-pencil",
+        "state": "done",
+        "role": "Author"
+      },
+      {
+        "label": "Review",
+        "icon": "bi-eye",
+        "state": "current",
+        "role": "Reviewer"
+      },
+      {
+        "label": "Approved",
+        "icon": "bi-check2",
+        "state": "pending"
+      }
+    ]
+  }
+}

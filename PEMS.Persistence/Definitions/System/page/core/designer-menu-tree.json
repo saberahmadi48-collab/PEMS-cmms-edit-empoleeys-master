@@ -1,0 +1,163 @@
+{
+  "kind": "page",
+  "key": "designer-menu-tree",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Menu tree",
+    "fa": "درخت منو"
+  },
+  "description": {
+    "en": "The items of a menu as a tree with move, re-parent and remove",
+    "fa": "درخت آیتم‌های منو"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "designer-menu-tree",
+    "permission": "Definitions.View",
+    "regions": {
+      "header": [
+        {
+          "id": "move",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Move under another item",
+              "fa": "جابه‌جایی زیر آیتم دیگر"
+            },
+            "tone": "primary",
+            "href": "/f/designer-move-menu-item?ref={{params.ref|url}}"
+          }
+        }
+      ],
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "menu-tree-filters",
+            "resetUrl": "/p/designer-menu-tree",
+            "fields": [
+              {
+                "name": "ref",
+                "label": {
+                  "en": "Menu (app:menu:key)",
+                  "fa": "منو (برنامه:menu:کلید)"
+                },
+                "kind": "text",
+                "value": "{{params.ref}}"
+              },
+              {
+                "name": "draft",
+                "label": {
+                  "en": "Show the draft (1)",
+                  "fa": "نمایش پیش‌نویس (۱)"
+                },
+                "kind": "text",
+                "value": "{{params.draft}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "tree",
+          "component": "data-grid",
+          "options": {
+            "id": "menu-tree",
+            "url": "/d/menu-tree-grid?f.ref=eq:{{params.ref|url}}&f.draft=eq:{{params.draft|url}}",
+            "idField": "id",
+            "pageSize": 200,
+            "height": 420,
+            "columns": [
+              {
+                "key": "title",
+                "header": {
+                  "en": "Item",
+                  "fa": "آیتم"
+                },
+                "width": 320
+              },
+              {
+                "key": "key",
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                },
+                "width": 200
+              },
+              {
+                "key": "parent",
+                "header": {
+                  "en": "Parent",
+                  "fa": "والد"
+                },
+                "width": 180
+              },
+              {
+                "key": "order",
+                "header": {
+                  "en": "Order",
+                  "fa": "ترتیب"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "target",
+                "header": {
+                  "en": "Opens",
+                  "fa": "مقصد"
+                },
+                "width": 240
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 240,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "up",
+                    "label": {
+                      "en": "Up",
+                      "fa": "بالا"
+                    },
+                    "url": "/a/designer-move-up",
+                    "method": "post"
+                  },
+                  {
+                    "key": "down",
+                    "label": {
+                      "en": "Down",
+                      "fa": "پایین"
+                    },
+                    "url": "/a/designer-move-down",
+                    "method": "post"
+                  },
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/a/designer-remove-row",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Remove this item from the draft?",
+                      "fa": "این آیتم از پیش‌نویس حذف شود؟"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

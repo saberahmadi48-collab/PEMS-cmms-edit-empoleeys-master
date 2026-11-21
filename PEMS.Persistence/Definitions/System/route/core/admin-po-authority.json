@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-po-authority",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "PO authority (old address)",
+    "fa": "اختیار سفارش خرید (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "PO authority (old address)",
+    "fa": "اختیار سفارش خرید (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/PurchaseOrderAuthority/{*rest}",
+    "target": "/p/po-authority",
+    "permanent": false
+  }
+}

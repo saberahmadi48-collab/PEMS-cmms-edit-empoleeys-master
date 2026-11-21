@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "po-release-inspection",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Release the inspection",
+    "fa": "آزادسازی بازرسی"
+  },
+  "description": {
+    "en": "Release the inspection",
+    "fa": "آزادسازی بازرسی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "ReleaseInspection",
+      "args": {
+        "purchaseOrderLineId": "field:lineId",
+        "inspectionTestPlanId": "field:inspectionTestPlanId"
+      }
+    },
+    "success": {
+      "en": "The inspection was released.",
+      "fa": "بازرسی آزاد شد."
+    },
+    "redirect": "/p/purchase-order-details?id={id}"
+  }
+}

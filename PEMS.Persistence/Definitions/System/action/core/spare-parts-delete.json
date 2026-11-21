@@ -1,0 +1,28 @@
+{
+  "kind": "action",
+  "key": "spare-parts-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Deactivate",
+    "fa": "غیرفعال کردن"
+  },
+  "description": {
+    "en": "Deactivate",
+    "fa": "غیرفعال کردن"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.delete",
+    "parameters": {
+      "entity": "SparePart",
+      "deny": [],
+      "deactivate": "IsActive"
+    },
+    "success": {
+      "en": "Spare part deactivated.",
+      "fa": "قطعه‌ی یدکی غیرفعال شد."
+    },
+    "redirect": "/p/spare-parts"
+  }
+}

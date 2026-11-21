@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "ai-tag-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve an extracted tag",
+    "fa": "تأیید تگ استخراج‌شده"
+  },
+  "description": {
+    "en": "Approve an extracted tag",
+    "fa": "تأیید تگ استخراج‌شده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "AiExtraction",
+      "action": "ApproveTag",
+      "args": {
+        "extractedTagId": "field:extractedTagId",
+        "equipmentId": "field:equipmentId"
+      }
+    },
+    "success": {
+      "en": "Tag approved and linked to equipment.",
+      "fa": "تگ تأیید و به تجهیز وصل شد."
+    },
+    "redirect": "/p/ai-extraction-review?id={attachmentId}"
+  }
+}

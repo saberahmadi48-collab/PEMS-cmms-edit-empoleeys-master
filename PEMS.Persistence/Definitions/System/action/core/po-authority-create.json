@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "po-authority-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create authority level",
+    "fa": "ایجاد سطح اختیار"
+  },
+  "description": {
+    "en": "Create authority level",
+    "fa": "ایجاد سطح اختیار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PoAuthority",
+      "action": "Save",
+      "args": {
+        "input": {
+          "id": "literal:",
+          "level": "field:level",
+          "minAmount": "field:minAmount",
+          "maxAmount": "field:maxAmount",
+          "currency": "field:currency",
+          "approverRole": "field:approverRole",
+          "description": "field:description",
+          "isActive": "field:isActive"
+        }
+      }
+    },
+    "success": {
+      "en": "Authority level created.",
+      "fa": "سطح اختیار ایجاد شد."
+    },
+    "redirect": "/p/po-authority"
+  }
+}

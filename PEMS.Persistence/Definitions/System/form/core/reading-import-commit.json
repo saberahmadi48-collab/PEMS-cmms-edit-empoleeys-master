@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "reading-import-commit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Commit the batch (inserts real records)",
+    "fa": "تأیید دسته (رکورد واقعی درج می‌کند)"
+  },
+  "description": {
+    "en": "Commit the batch (inserts real records)",
+    "fa": "تأیید دسته (رکورد واقعی درج می‌کند)"
+  },
+  "payload": {
+    "id": "reading-import-commit",
+    "title": {
+      "en": "Commit the batch (inserts real records)",
+      "fa": "تأیید دسته (رکورد واقعی درج می‌کند)"
+    },
+    "submitLabel": {
+      "en": "Commit",
+      "fa": "تأیید"
+    },
+    "actionKey": "reading-import-commit",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه‌ی دسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

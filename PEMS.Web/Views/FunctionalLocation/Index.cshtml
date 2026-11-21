@@ -1,171 +1,156 @@
 @model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.FunctionalLocationListDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var pickerList = (List<PEMS.Application.DTOs.FunctionalLocationPickerItemDto>)ViewBag.PickerList;
 }
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <button type="button" class="btn btn-pems-solid btn-sm" data-bs-toggle="modal" data-bs-target="#createFlModal">
-        <i class="bi bi-plus-lg"></i> @Localizer["New Functional Location"]
-    </button>
-</div>
-<p class="text-muted small">
-    طبق CMMS Production Baseline v1 بند ۶: ساختار سلسله‌مراتبی محل نصب تجهیزات (Plant / Area /
-    Unit / ...). Equipment و Asset برای اتصال واقعی (نه متن آزاد) از همین لیست استفاده می‌کنند.
-</p>
-
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success py-2 px-3 small">@TempData["Message"]</div>
-}
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger py-2 px-3 small">@TempData["Error"]</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
 }
 
-<div class="content-card">
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('FunctionalLocation')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="pems-grid-scroll">
-    <table class="table table-enterprise pems-grid-table mb-0" data-grid-key="FunctionalLocation">
-        <thead>
-            <tr>
-                <th data-col-key="code" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Code"]</th>
-                <th data-col-key="name" data-resizable="true" data-min-width="120" data-max-width="280">@Localizer["Name"]</th>
-                <th data-col-key="path" data-resizable="true" data-min-width="160" data-max-width="400">Path</th>
-                <th data-col-key="plant" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Plant"]</th>
-                <th data-col-key="area" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Area"]</th>
-                <th data-col-key="unit" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Unit"]</th>
-                <th data-col-key="equipment" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Equipment"]</th>
-                <th data-col-key="asset" data-resizable="true" data-min-width="60" data-max-width="100">Asset</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var fl in Model.Items)
-            {
-                <tr>
-                    <td class="small fw-bold">@fl.Code</td>
-                    <td class="small">@fl.Name</td>
-                    <td class="small text-muted">@fl.PathBreadcrumb</td>
-                    <td class="small">@(fl.Plant ?? "-")</td>
-                    <td class="small">@(fl.Area ?? "-")</td>
-                    <td class="small">@(fl.Unit ?? "-")</td>
-                    <td class="small">@fl.EquipmentCount</td>
-                    <td class="small">@fl.AssetCount</td>
-                    <td>
-                        <button type="button" class="btn btn-sm btn-outline-secondary edit-fl-btn"
-                                data-id="@fl.FunctionalLocationId" data-code="@fl.Code" data-name="@fl.Name"
-                                data-parentid="@fl.ParentId" data-plant="@fl.Plant" data-area="@fl.Area" data-unit="@fl.Unit">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Items.Any()) { <p class="text-muted text-center py-4 mb-0">@Localizer["هنوز هیچ Functional Location ثبت نشده."]</p> }
+@* SCRUM-337 W2: built from the PEMS.UI list-page component. The page note (the plant / area / unit hierarchy that
+   equipment and assets link to) became the tool tip of the title; create and edit stay modals. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "FunctionalLocation",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = ""
-    })
-</div>
+    <pems-list-panel>
 
-<div class="modal fade" id="createFlModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
-        <form asp-action="Create" method="post">
-            <div class="modal-header"><h6 class="modal-title">@Localizer["New Functional Location"]</h6></div>
-            <div class="modal-body">
-                <div class="row g-2 mb-2">
-                    <div class="col-6"><label class="form-label small">@Localizer["Code"]</label><input name="code" class="form-control form-control-sm" placeholder="U100-CW-PUMP" required /></div>
-                    <div class="col-6"><label class="form-label small">@Localizer["Name"]</label><input name="name" class="form-control form-control-sm" required /></div>
-                </div>
-                <div class="mb-2">
-                    <label class="form-label small">@Localizer["Parent"]</label>
-                    <select name="parentId" class="form-select form-select-sm">
+        <pems-list-toolbar heading="@Localizer["Fl_Title"]" heading-title="@Localizer["Fl_Hint"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-reset-columns grid-key="FunctionalLocation" />
+                <pems-list-new modal="createFlModal" text="@Localizer["Fl_New"]" />
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="FunctionalLocation" empty="@(!Model.Items.Any())" empty-text="@Localizer["Fl_Empty"]">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header class="pems-w-150" data-col-key="code" data-resizable="true" data-min-width="100" data-max-width="200">@Localizer["Fl_Code"]</pems-table-header>
+                        <pems-table-header class="pems-w-180" data-col-key="name" data-resizable="true" data-min-width="120" data-max-width="280">@Localizer["Eq_Name"]</pems-table-header>
+                        <pems-table-header data-col-key="path" data-resizable="true" data-min-width="160" data-max-width="400" class="vs-hide-md pems-w-260">@Localizer["Fl_Path"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="plant" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Fl_Plant"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="area" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Area"]</pems-table-header>
+                        <pems-table-header class="pems-w-100" data-col-key="unit" data-resizable="true" data-min-width="80" data-max-width="140">@Localizer["Fl_Unit"]</pems-table-header>
+                        <pems-table-header class="pems-w-90" data-col-key="equipment" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Equipment"]</pems-table-header>
+                        <pems-table-header class="pems-w-80" data-col-key="asset" data-resizable="true" data-min-width="60" data-max-width="100">@Localizer["Cm_TabAsset"]</pems-table-header>
+                        <pems-table-header class="pems-w-60" data-col-key="actions" data-resizable="false"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var fl in Model.Items)
+                    {
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell class="lp-no"><span class="vs-num">@fl.Code</span></pems-table-cell>
+                            <pems-table-cell class="small">@fl.Name</pems-table-cell>
+                            <pems-table-cell class="small text-muted vs-hide-md"><span class="vs-title-cell" title="@fl.PathBreadcrumb">@fl.PathBreadcrumb</span></pems-table-cell>
+                            <pems-table-cell class="small">@(fl.Plant ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(fl.Area ?? "-")</pems-table-cell>
+                            <pems-table-cell class="small">@(fl.Unit ?? "-")</pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@fl.EquipmentCount</span></pems-table-cell>
+                            <pems-table-cell><span class="vs-num">@fl.AssetCount</span></pems-table-cell>
+                            <pems-table-cell class="lp-actions">
+                                <pems-button plain="true" type="button" css="lp-act lp-act--always edit-fl-btn" title="@Localizer["Edit"]" aria-label="@Localizer["Edit"]"
+                                        data-id="@fl.FunctionalLocationId" data-code="@fl.Code" data-name="@fl.Name"
+                                        data-parentid="@fl.ParentId" data-plant="@fl.Plant" data-area="@fl.Area" data-unit="@fl.Unit">
+                                    <pems-icon name="bi-pencil" aria-hidden="true" />
+                                </pems-button>
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "FunctionalLocation",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = ""
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+<pems-modal id="createFlModal" tabindex="-1">
+        <pems-form asp-action="Create" method="post">
+            <pems-modal-header>@Localizer["Fl_New"]</pems-modal-header>
+            <pems-modal-body>
+                <pems-row gap="2" css="mb-2">
+                    <pems-col span="6"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" placeholder="U100-CW-PUMP" required /></pems-col>
+                    <pems-col span="6"><pems-label css="small">@Localizer["Name"]</pems-label><pems-input scale="small" name="name" required /></pems-col>
+                </pems-row>
+                <pems-form-group css="mb-2">
+                    <pems-label css="small">@Localizer["Parent"]</pems-label>
+                    <pems-select scale="small" name="parentId">
                         <option value="">@Localizer["-- none (root) --"]</option>
                         @foreach (var p in pickerList)
                         {
                             <option value="@p.FunctionalLocationId">@p.PathBreadcrumb</option>
                         }
-                    </select>
-                </div>
-                <div class="row g-2 mb-2">
-                    <div class="col-4"><label class="form-label small">@Localizer["Plant"]</label><input name="plant" class="form-control form-control-sm" /></div>
-                    <div class="col-4"><label class="form-label small">@Localizer["Area"]</label><input name="area" class="form-control form-control-sm" /></div>
-                    <div class="col-4"><label class="form-label small">@Localizer["Unit"]</label><input name="unit" class="form-control form-control-sm" /></div>
-                </div>
-                <div class="mb-2"><label class="form-label small">@Localizer["Description"]</label><textarea name="description" class="form-control form-control-sm" rows="2"></textarea></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Create"]</button>
-            </div>
-        </form>
-    </div></div>
-</div>
+                    </pems-select>
+                </pems-form-group>
+                <pems-row gap="2" css="mb-2">
+                    <pems-col span="4"><pems-label css="small">@Localizer["Plant"]</pems-label><pems-input scale="small" name="plant" /></pems-col>
+                    <pems-col span="4"><pems-label css="small">@Localizer["Area"]</pems-label><pems-input scale="small" name="area" /></pems-col>
+                    <pems-col span="4"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" name="unit" /></pems-col>
+                </pems-row>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Description"]</pems-label><pems-textarea scale="small" name="description" rows="2"></pems-textarea></pems-form-group>
+            </pems-modal-body>
+            <pems-modal-footer>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["Create"]</pems-button>
+            </pems-modal-footer>
+        </pems-form>
+    </pems-modal>
 
-<div class="modal fade" id="editFlModal" tabindex="-1">
-    <div class="modal-dialog"><div class="modal-content">
-        <form asp-action="Edit" method="post">
+<pems-modal id="editFlModal" tabindex="-1">
+        <pems-form asp-action="Edit" method="post">
             <input type="hidden" name="id" id="editFlId" />
-            <div class="modal-header"><h6 class="modal-title">Edit Functional Location</h6></div>
-            <div class="modal-body">
-                <div class="row g-2 mb-2">
-                    <div class="col-6"><label class="form-label small">@Localizer["Code"]</label><input name="code" id="editFlCode" class="form-control form-control-sm" required /></div>
-                    <div class="col-6"><label class="form-label small">@Localizer["Name"]</label><input name="name" id="editFlName" class="form-control form-control-sm" required /></div>
-                </div>
-                <div class="mb-2">
-                    <label class="form-label small">@Localizer["Parent"]</label>
-                    <select name="parentId" id="editFlParentId" class="form-select form-select-sm">
+            <pems-modal-header>@Localizer["Fl_Edit"]</pems-modal-header>
+            <pems-modal-body>
+                <pems-row gap="2" css="mb-2">
+                    <pems-col span="6"><pems-label css="small">@Localizer["Code"]</pems-label><pems-input scale="small" name="code" id="editFlCode" required /></pems-col>
+                    <pems-col span="6"><pems-label css="small">@Localizer["Name"]</pems-label><pems-input scale="small" name="name" id="editFlName" required /></pems-col>
+                </pems-row>
+                <pems-form-group css="mb-2">
+                    <pems-label css="small">@Localizer["Parent"]</pems-label>
+                    <pems-select scale="small" name="parentId" id="editFlParentId">
                         <option value="">@Localizer["-- none (root) --"]</option>
                         @foreach (var p in pickerList)
                         {
                             <option value="@p.FunctionalLocationId">@p.PathBreadcrumb</option>
                         }
-                    </select>
-                </div>
-                <div class="row g-2 mb-2">
-                    <div class="col-4"><label class="form-label small">@Localizer["Plant"]</label><input name="plant" id="editFlPlant" class="form-control form-control-sm" /></div>
-                    <div class="col-4"><label class="form-label small">@Localizer["Area"]</label><input name="area" id="editFlArea" class="form-control form-control-sm" /></div>
-                    <div class="col-4"><label class="form-label small">@Localizer["Unit"]</label><input name="unit" id="editFlUnit" class="form-control form-control-sm" /></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Save"]</button>
-            </div>
-        </form>
-    </div></div>
-</div>
+                    </pems-select>
+                </pems-form-group>
+                <pems-row gap="2" css="mb-2">
+                    <pems-col span="4"><pems-label css="small">@Localizer["Plant"]</pems-label><pems-input scale="small" name="plant" id="editFlPlant" /></pems-col>
+                    <pems-col span="4"><pems-label css="small">@Localizer["Area"]</pems-label><pems-input scale="small" name="area" id="editFlArea" /></pems-col>
+                    <pems-col span="4"><pems-label css="small">@Localizer["Unit"]</pems-label><pems-input scale="small" name="unit" id="editFlUnit" /></pems-col>
+                </pems-row>
+            </pems-modal-body>
+            <pems-modal-footer>
+                <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button>
+            </pems-modal-footer>
+        </pems-form>
+    </pems-modal>
+
+);
+</script>
+}
 
 @section Scripts {
-<script>
-PemsDataGrid.initColumnResize('FunctionalLocation');
-document.querySelectorAll('.edit-fl-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-        document.getElementById('editFlId').value = btn.dataset.id;
-        document.getElementById('editFlCode').value = btn.dataset.code;
-        document.getElementById('editFlName').value = btn.dataset.name;
-        document.getElementById('editFlParentId').value = btn.dataset.parentid || '';
-        document.getElementById('editFlPlant').value = btn.dataset.plant || '';
-        document.getElementById('editFlArea').value = btn.dataset.area || '';
-        document.getElementById('editFlUnit').value = btn.dataset.unit || '';
-        new bootstrap.Modal(document.getElementById('editFlModal')).show();
-    });
-});
-</script>
+<script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+<script src="~/js/views/functionallocation-index.js" asp-append-version="true"></script>
 }

@@ -1,0 +1,8 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("form-frame", Category = "forms", Icon = "bi-ui-checks-grid")]
+<form class="@ClassValue" @attributes="Options.Attributes">@ChildContent</form>
+@code {
+    [Parameter, EditorRequired] public FormFrameOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string? ClassValue => string.Join(" ", new[] { Options.Css, Options.PageClass }.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim())) is { Length: > 0 } c ? c : null;
+}

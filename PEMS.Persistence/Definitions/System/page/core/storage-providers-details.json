@@ -1,0 +1,94 @@
+{
+  "kind": "page",
+  "key": "storage-providers-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Storage providers details",
+    "fa": "جزئیات ارائه‌دهندگان ذخیره‌سازی"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "storage-providers-record",
+      "url": "/d/storage-providers-grid",
+      "idField": "storageProviderId",
+      "fields": [
+        {
+          "key": "name",
+          "label": {
+            "en": "Name",
+            "fa": "نام"
+          }
+        },
+        {
+          "key": "code",
+          "label": {
+            "en": "Code",
+            "fa": "کد"
+          }
+        },
+        {
+          "key": "providerType",
+          "label": {
+            "en": "Type",
+            "fa": "نوع"
+          }
+        },
+        {
+          "key": "rootPath",
+          "label": {
+            "en": "Root path",
+            "fa": "مسیر ریشه"
+          }
+        },
+        {
+          "key": "isEnabled",
+          "label": {
+            "en": "Enabled",
+            "fa": "فعال"
+          },
+          "type": "bool"
+        },
+        {
+          "key": "isDefault",
+          "label": {
+            "en": "Default",
+            "fa": "پیش‌فرض"
+          },
+          "type": "bool"
+        },
+        {
+          "key": "lastHealthStatus",
+          "label": {
+            "en": "Health",
+            "fa": "وضعیت سلامت"
+          }
+        },
+        {
+          "key": "lastHealthCheckAt",
+          "label": {
+            "en": "Checked",
+            "fa": "آخرین بررسی"
+          },
+          "type": "datetime"
+        }
+      ],
+      "backUrl": "/p/storage-providers",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/storage-providers-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

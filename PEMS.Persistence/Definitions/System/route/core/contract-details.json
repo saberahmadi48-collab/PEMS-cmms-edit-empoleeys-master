@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "contract-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contract details (old address)",
+    "fa": "Contract details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Contract details (old address)",
+    "fa": "Contract details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Contract/Details/{id}",
+    "target": "/p/contract-details?id={id}",
+    "permanent": false
+  }
+}

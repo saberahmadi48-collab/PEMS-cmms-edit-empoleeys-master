@@ -1,0 +1,47 @@
+{
+  "kind": "action",
+  "key": "spare-parts-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create spare part",
+    "fa": "ایجاد قطعه‌ی یدکی"
+  },
+  "description": {
+    "en": "Create spare part",
+    "fa": "ایجاد قطعه‌ی یدکی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "SparePart",
+      "map": {
+        "partNumber": "PartNumber",
+        "partName": "PartName",
+        "manufacturer": "Manufacturer",
+        "model": "Model",
+        "unit": "Unit",
+        "storageLocation": "StorageLocation",
+        "quantityOnHand": "QuantityOnHand",
+        "minStockLevel": "MinStockLevel",
+        "reorderPoint": "ReorderPoint",
+        "description": "Description"
+      },
+      "required": [
+        "PartNumber",
+        "PartName"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": []
+    },
+    "success": {
+      "en": "Spare part created.",
+      "fa": "قطعه‌ی یدکی ایجاد شد."
+    },
+    "redirect": "/p/spare-parts"
+  }
+}

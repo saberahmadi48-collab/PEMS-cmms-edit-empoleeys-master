@@ -26,6 +26,8 @@ public class AttachmentSearchProvider : ISearchableEntityProvider
 
     public string EntityType => "Attachment";
     public string DisplayName => "پیوست‌ها";
+    // SCRUM-64 security contract: the rule of the page the results open.
+    public SearchAccessRule Access => SearchAccessRule.AnyUser(rowScope: "parent engineering document discipline and parent letter confidentiality");
 
     public AttachmentSearchProvider(PEMSDbContext context, IAccessControlService accessControlService,
         IPermissionService permissionService, ICurrentUserContext currentUser)

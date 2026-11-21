@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "mmd-create-maintenance-activity",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateMaintenanceActivity",
+    "fa": "Maintenance Activity ساخته شد."
+  },
+  "description": {
+    "en": "CreateMaintenanceActivity",
+    "fa": "Maintenance Activity ساخته شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "CreateMaintenanceActivity",
+      "args": {
+        "code": "field:code",
+        "name": "field:name",
+        "nameFa": "field:nameFa",
+        "maintenanceGroupId": "field:maintenanceGroupId",
+        "maintenanceTypeId": "field:maintenanceTypeId",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "Maintenance Activity ساخته شد.",
+      "fa": "Maintenance Activity ساخته شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

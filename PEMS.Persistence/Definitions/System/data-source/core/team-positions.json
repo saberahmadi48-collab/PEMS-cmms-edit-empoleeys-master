@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "team-positions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Team positions",
+    "fa": "سمت‌های تیم"
+  },
+  "description": {
+    "en": "Team positions",
+    "fa": "سمت‌های تیم"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Team",
+      "action": "Positions",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "teamId": "param:teamId"
+      }
+    }
+  }
+}

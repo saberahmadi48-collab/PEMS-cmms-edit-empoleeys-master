@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "cmms-readiness",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CMMS readiness (old address)",
+    "fa": "آمادگی CMMS (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "CMMS readiness (old address)",
+    "fa": "آمادگی CMMS (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "CmmsReadiness",
+    "target": "/p/cmms-readiness",
+    "permanent": false
+  }
+}

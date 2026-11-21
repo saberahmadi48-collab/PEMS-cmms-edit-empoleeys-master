@@ -1,0 +1,81 @@
+{
+  "kind": "page",
+  "key": "component-catalog",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Component catalog",
+    "fa": "فهرست مؤلفه‌ها"
+  },
+  "description": {
+    "en": "Every component of the library with its options and a sample (page definition)",
+    "fa": "همه مؤلفه‌های کتابخانه"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "component-catalog",
+    "template": "entity-list",
+    "args": {
+      "id": "component-catalog",
+      "url": "/d/component-catalog-grid",
+      "idField": "key",
+      "viewsKey": "component-catalog",
+      "columns": [
+        {
+          "key": "key",
+          "header": {
+            "en": "Key",
+            "fa": "کلید"
+          },
+          "width": 200
+        },
+        {
+          "key": "category",
+          "header": {
+            "en": "Category",
+            "fa": "دسته"
+          },
+          "width": 140
+        },
+        {
+          "key": "icon",
+          "header": {
+            "en": "Icon",
+            "fa": "نماد"
+          },
+          "width": 160
+        },
+        {
+          "key": "parameters",
+          "header": {
+            "en": "Parameters (* required)",
+            "fa": "پارامترها (* الزامی)"
+          },
+          "width": 320
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 160,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "details",
+              "label": {
+                "en": "Details",
+                "fa": "جزئیات"
+              },
+              "url": "/p/component-catalog-details?id={id}",
+              "method": "get"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

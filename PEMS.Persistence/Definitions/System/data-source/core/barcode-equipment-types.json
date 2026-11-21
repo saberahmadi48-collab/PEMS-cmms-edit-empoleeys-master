@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "barcode-equipment-types",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment types",
+    "fa": "انواع تجهیز"
+  },
+  "description": {
+    "en": "Equipment types",
+    "fa": "انواع تجهیز"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Barcode",
+      "action": "EquipmentTypes",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

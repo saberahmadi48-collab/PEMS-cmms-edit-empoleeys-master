@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "eng-dash-summary",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering dashboard totals",
+    "fa": "جمع‌های داشبورد مهندسی"
+  },
+  "description": {
+    "en": "Engineering dashboard totals",
+    "fa": "جمع‌های داشبورد مهندسی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EngineeringDashboard",
+      "action": "Summary",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "minRevisionCount": "param:minRevisionCount"
+      }
+    }
+  }
+}

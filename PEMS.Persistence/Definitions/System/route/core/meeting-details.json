@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "meeting-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Meeting details (old address)",
+    "fa": "Meeting details (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Meeting details (old address)",
+    "fa": "Meeting details (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Meeting/Details/{id}",
+    "target": "/p/meeting-details?id={id}",
+    "permanent": false
+  }
+}

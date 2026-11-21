@@ -1,0 +1,205 @@
+@model PEMS.Web.ViewModels.StrategyDetailsViewModel
+@using Microsoft.Extensions.Localization
+@using PEMS.Domain.Common
+@using PEMS.Web.Helpers
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var s = Model.Strategy;
+    var i = s.Input;
+    var usable = s.Status is "Approved" or "Active";
+    var live = s.IsActive && s.Status != "Retired" && s.Status != "Superseded";
+}
+
+<pems-flex justify="between" align="center" css="mb-3">
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-diagram-3" /> @(string.IsNullOrWhiteSpace(i.Title) ? Localizer["Rcm_Strategy"].Value : i.Title)
+        <pems-badge tone="@RcmDisplay.StatusBadge(s.Status)" css="ms-2">@Localizer.Label("Status", s.Status)</pems-badge>
+        <pems-badge tone="light">v@(s.VersionNumber)</pems-badge>
+    </pems-heading>
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["Rcm_Back"]</pems-button>
+</pems-flex>
+
+@await Html.PartialAsync("_RcmErrors", Model.Errors)
+
+@if (Model.AssignReport.Any())
+{
+    <pems-content-card css="mb-3">
+        <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_AssignReport"]</pems-heading>
+        <pems-data-table data="@(DataRows.Of(Model.AssignReport, c_ => c_.Add(((Localizer["Rcm_Tag"])?.ToString() ?? ""), row => (object?)((row[0]))).Add(((Localizer["Rcm_SkipReason"])?.ToString() ?? ""), row => (object?)(DataCell.Group((row[1] == "NotFound" ? Localizer["Rcm_Bulk_NotFound"].Value : Localizer["Rcm_Bulk_" + row[1]].Value), " ", (row.Length > 2 && int.TryParse(row[2], out var otherId) ? (object?)DataCell.Link(Url.Action("Details", null, new { id = otherId }), "#", otherId) : null))), css: "small")))" dense="true" />
+    </pems-content-card>
+}
+
+<pems-content-card css="mb-3">
+    <pems-info-grid>
+        <pems-info-item label="@Localizer["Rcm_EquipmentClass"]">@(s.EquipmentClassName)</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_StrategyType"]"><pems-badge tone="neutral">@Localizer.Label("StrategyType", i.StrategyType)</pems-badge></pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_FailureMode"]">@RcmDisplay.Name(s.FailureModeName, s.FailureModeNameFa)</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_Consequence"]"><pems-badge tone="@RcmDisplay.ConsequenceBadge(i.ConsequenceCategory)">@Localizer.Label("Consequence", i.ConsequenceCategory)</pems-badge>@if (i.IsHiddenFailure) { <pems-badge tone="dark">@Localizer["Rcm_HiddenFailure"]</pems-badge> }</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_TaskType"]">@Localizer.Label("TaskType", i.TaskType)</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_OwnerDiscipline"]">@(s.OwnerDisciplineName)</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_Frequency"]">@Localizer.Label("Frequency", i.Frequency) @(i.DefaultIntervalDays.HasValue ? $"({i.DefaultIntervalDays} d)" : "")</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_Source"]">@Localizer.Label("Source", i.Source)</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_FunctionalFailure"]">@(i.FunctionalFailure)</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_FailureEffect"]">@(i.FailureEffect)</pems-info-item>
+        @if (i.StrategyType is "CBM" or "Predictive")
+        {
+            <pems-info-item label="@Localizer["Rcm_CbmParameter"]">@i.CbmParameter @i.ThresholdUnit</pems-info-item>
+            <pems-info-item label="@Localizer["Rcm_AlarmThreshold"] / @Localizer["Rcm_TripThreshold"]">@i.AlarmThreshold / @i.TripThreshold</pems-info-item>
+            <pems-info-item label="@Localizer["Rcm_PfInterval"]">@i.PfIntervalDays</pems-info-item>
+            <pems-info-item label="@Localizer["Rcm_InspectionInterval"]">@i.InspectionIntervalDays</pems-info-item>
+        }
+        <pems-info-item label="@Localizer["Rcm_Justification"]" wide>@i.Justification</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_ReviewDate"]">@(PemsDates.Date(i.ReviewDate))</pems-info-item>
+        <pems-info-item label="@Localizer["Rcm_ApprovedBy"]">@(s.ApprovedBy) @(PemsDates.Date(s.ApprovedAt))</pems-info-item>
+        @if (!string.IsNullOrEmpty(s.LegacyEquipmentTag))
+        {
+            <pems-info-item label="@Localizer["Rcm_LegacyTag"]"><pems-link asp-action="Tag" asp-route-equipmentId="@s.LegacyEquipmentId">@s.LegacyEquipmentTag</pems-link></pems-info-item>
+        }
+    </pems-info-grid>
+
+    <pems-flex wrap="true" gap="2" css="mt-3">
+        @if (Model.CanEdit && live)
+        {
+            <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Edit" asp-route-id="@s.MaintenanceStrategyId"><pems-icon name="bi-pencil" /> @(usable ? Localizer["Rcm_NewVersion"] : Localizer["Rcm_Edit"])</pems-button>
+        }
+        @if (Model.CanEdit && s.Status == "Draft")
+        {
+            <pems-form action="/a/strategy-submit" method="post" class="d-inline">
+                <input type="hidden" name="id" value="@s.MaintenanceStrategyId" />
+                <pems-button tone="none" size="small" css="btn-primary"><pems-icon name="bi-send" /> @Localizer["Rcm_SubmitForReview"]</pems-button>
+            </pems-form>
+        }
+        @if (Model.CanApprove && s.Status == "InReview")
+        {
+            <pems-form action="/a/strategy-review" method="post"><pems-flex inline="true" gap="2">
+                <input type="hidden" name="id" value="@s.MaintenanceStrategyId" />
+                <pems-input class="pems-w-220" scale="small" name="comment" placeholder="@Localizer["Rcm_Comment"]" />
+                <pems-button tone="success" size="small" name="approve" value="true"><pems-icon name="bi-check2" /> @Localizer["Rcm_Approve"]</pems-button>
+                <pems-button tone="danger" size="small" outline="true" name="approve" value="false"><pems-icon name="bi-x" /> @Localizer["Rcm_Reject"]</pems-button>
+            </pems-flex></pems-form>
+            @if (Model.IsAuthorOrSubmitter) { <span class="small text-muted align-self-center">@Localizer["Rcm_SodNotice"]</span> }
+        }
+        @if (Model.CanApprove && s.Status == "Approved")
+        {
+            <pems-form action="/a/strategy-activate" method="post"><pems-flex inline="true" gap="2" align="center">
+                <input type="hidden" name="id" value="@s.MaintenanceStrategyId" />
+                <pems-check-row css="small mb-0"><pems-input kind="check" type="checkbox" name="moveAssignments" value="true" checked id="mv" /><label class="form-check-label" for="mv">@Localizer["Rcm_MoveAssignments"]</label></pems-check-row>
+                <pems-button tone="success" size="small"><pems-icon name="bi-lightning" /> @Localizer["Rcm_Activate"]</pems-button>
+            </pems-flex></pems-form>
+        }
+        @if (Model.CanApprove && live)
+        {
+            <pems-form action="/a/strategy-retire" method="post" class="d-inline" data-pems-confirm="@Localizer["Rcm_ConfirmRetire"]">
+                <input type="hidden" name="id" value="@s.MaintenanceStrategyId" />
+                <pems-button tone="danger" size="small" outline="true"><pems-icon name="bi-slash-circle" /> @Localizer["Rcm_Retire"]</pems-button>
+            </pems-form>
+        }
+    </pems-flex>
+</pems-content-card>
+
+@if (s.Versions.Count > 1)
+{
+    <pems-content-card css="mb-3">
+        <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_Versions"]</pems-heading>
+        <pems-flex wrap="true" gap="2">
+            @foreach (var v in s.Versions)
+            {
+                <pems-link asp-action="Details" asp-route-id="@v.MaintenanceStrategyId" class="text-decoration-none">
+                    <pems-badge tone="@RcmDisplay.StatusBadge(v.Status)" css="@(v.MaintenanceStrategyId == s.MaintenanceStrategyId ? "border border-3 border-warning" : "")">v@(v.VersionNumber) · @Localizer.Label("Status", v.Status)</pems-badge>
+                </pems-link>
+            }
+        </pems-flex>
+    </pems-content-card>
+}
+
+<pems-content-card css="mb-3">
+    <pems-flex justify="between" align="center" css="mb-2">
+        <pems-heading level="6" class="small fw-bold mb-0">@Localizer["Rcm_AssignedTags"] (@s.Assignments.Count)</pems-heading>
+        @if (Model.CanApprove && usable)
+        {
+            <pems-flex gap="2">
+                <pems-form action="/a/strategy-assign" method="post"><pems-flex gap="2">
+                    <input type="hidden" name="id" value="@s.MaintenanceStrategyId" />
+                    <pems-input class="pems-w-260" scale="small" type="text" placeholder="@Localizer["Rcm_SearchEquipmentPlaceholder"]" data-pems-search data-search-type="Equipment" data-search-hidden="#assignEquipmentId" autocomplete="off" required />
+                    <input type="hidden" name="equipmentId" id="assignEquipmentId" />
+                    <pems-button tone="primary" size="small" outline="true">@Localizer["Rcm_AssignTag"]</pems-button>
+                </pems-flex></pems-form>
+                <pems-button tone="primary" size="small" outline="true" as="a" asp-action="BulkCreate" asp-route-strategyId="@s.MaintenanceStrategyId" asp-route-classId="@i.EquipmentClassId"><pems-icon name="bi-collection" /> @Localizer["Rcm_BulkAssign"]</pems-button>
+            </pems-flex>
+        }
+    </pems-flex>
+    @if (!usable) { <pems-text class="small text-muted">@Localizer["Rcm_AssignRequiresApproval"]</pems-text> }
+    <pems-table-scroll>
+        @{
+            var rows_63 = s.Assignments;
+            var cell_63_6 = DataCell.Template(rows_63, @<text>@{ var a = item; }
+                        @if (a.OverrideStatus != "None")
+                        {
+                            <div><pems-badge tone="info">@Localizer.Label("OverrideStatus", a.OverrideStatus)</pems-badge> @(a.OverrideIntervalDays.HasValue ? a.OverrideIntervalDays + " d" : "")</div>
+                            <div class="text-muted">@a.OverrideJustification</div>
+                            @if (a.OverrideStatus == "Pending" && Model.CanApprove)
+                            {
+                                <pems-form class="mt-1" action="/a/strategy-override-decide" method="post"><pems-flex gap="1">
+                                    <input type="hidden" name="assignmentId" value="@a.AssignmentId" /><input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
+                                    <pems-input scale="small" name="comment" placeholder="@Localizer["Rcm_Comment"]" />
+                                    <pems-button tone="success" size="small" name="approve" value="true">✓</pems-button>
+                                    <pems-button tone="danger" size="small" outline="true" name="approve" value="false">✗</pems-button>
+                                </pems-flex></pems-form>
+                            }
+                        }
+                        else if (Model.CanEdit && usable)
+                        {
+                            <pems-button tone="neutral" size="small" outline="true" css="py-0" type="button" data-bs-toggle="modal" data-bs-target="#overrideModal" data-assignment="@a.AssignmentId" data-tag="@a.Equipment.Tag">@Localizer["Rcm_RequestOverride"]</pems-button>
+                        }
+                    </text>);
+            var cell_63_7 = DataCell.Template(rows_63, @<text>@{ var a = item; }
+                        @if (Model.CanApprove)
+                        {
+                            <pems-form action="/a/strategy-unassign" method="post" class="d-inline" data-pems-confirm="@Localizer["Rcm_ConfirmUnassign"]">
+                                <input type="hidden" name="assignmentId" value="@a.AssignmentId" /><input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
+                                <pems-button tone="danger" size="small" outline="true" css="py-0"><pems-icon name="bi-x-lg" /></pems-button>
+                            </pems-form>
+                        }
+                    </text>);
+        }
+        <pems-data-table data="@(DataRows.Of(rows_63, c_ => c_.Add(((Localizer["Rcm_Tag"])?.ToString() ?? ""), a => (object?)(DataCell.LinkClass(Url.Action("Tag", null, new { equipmentId = a.Equipment.EquipmentId }), "fw-bold", a.Equipment.Tag))).Add(((Localizer["Rcm_EquipmentName"])?.ToString() ?? ""), a => (object?)(a.Equipment.Name), css: "small").Add(((Localizer["Rcm_EquipmentClass"])?.ToString() ?? ""), a => (object?)((a.Equipment.EquipmentClassName ?? "-")), css: "small").Add(((Localizer["Rcm_AreaUnit"])?.ToString() ?? ""), a => (object?)((a.Equipment.Area ?? "-")), css: "small").Add(((Localizer["Rcm_Criticality"])?.ToString() ?? ""), a => (object?)(DataCell.Badge(RcmDisplay.CriticalityBadge(a.Equipment.CriticalityClass), (Localizer.Label("Criticality", a.Equipment.CriticalityClass))))).Add(((Localizer["Rcm_Plans"])?.ToString() ?? ""), a => (object?)(DataCell.Group(a.PlanCount, " ", (usable && a.PlanCount == 0 && i.StrategyType is not ("RunToFailure" or "Corrective" or "Redesign") ? (object?)DataCell.LinkClass(Url.Action("Create", "MaintenancePlan", new { assignmentId = a.AssignmentId }), "ms-1", DataCell.Icon("bi-calendar-plus")) : null))), css: "small").Add(((Localizer["Rcm_Override"])?.ToString() ?? ""), a => (object?)cell_63_6(a), css: "small").Add("", a => (object?)cell_63_7(a), css: "text-end")))" dense="true" css="align-middle" />
+        @if (!s.Assignments.Any()) { <pems-text class="text-muted small text-center py-2">@Localizer["Rcm_NoAssignments"]</pems-text> }
+    </pems-table-scroll>
+</pems-content-card>
+
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_PlansByVersion"]</pems-heading>
+    @{
+        var rows_64 = s.Plans;
+        var cell_64_3 = DataCell.Template(rows_64, @<text>@{ var p = item; }v@(p.StrategyVersion) @if (p.OutOfSync) { <pems-badge tone="warning" title="@Localizer["Rcm_PlanOutOfSync"]">@Localizer["Rcm_OutOfSync"]</pems-badge> }</text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_64, c_ => c_.Add(((Localizer["Rcm_PlanNumber"])?.ToString() ?? ""), p => (object?)(p.PlanNumber)).Add(((Localizer["Rcm_Tag"])?.ToString() ?? ""), p => (object?)(p.Tag)).Add(((Localizer["Rcm_Title"])?.ToString() ?? ""), p => (object?)(p.Title), css: "small").Add(((Localizer["Rcm_Version"])?.ToString() ?? ""), p => (object?)cell_64_3(p))))" dense="true" />
+    @if (!s.Plans.Any()) { <pems-text class="text-muted small text-center py-2">@Localizer["Rcm_NoPlans"]</pems-text> }
+</pems-content-card>
+
+<pems-content-card>
+    <pems-heading level="6" class="small fw-bold">@Localizer["Rcm_History"]</pems-heading>
+    <pems-data-table data="@(DataRows.Of(s.History, c_ => c_.Add(((Localizer["Rcm_When"])?.ToString() ?? ""), h => (object?)((PemsDates.DateTime(h.Timestamp))), css: "small text-nowrap").Add(((Localizer["Rcm_Who"])?.ToString() ?? ""), h => (object?)(h.ActorName), css: "small").Add(((Localizer["Rcm_Action"])?.ToString() ?? ""), h => (object?)(DataCell.Group((Localizer.Label("HistoryAction", h.Action)), " ", (h.FromStatus != null || h.ToStatus != null ? (object?)DataCell.Span("text-muted", "(", h.FromStatus, " → ", h.ToStatus, ")") : null))), css: "small").Add(((Localizer["Rcm_Version"])?.ToString() ?? ""), h => (object?)(DataCell.Group("v", h.VersionNumber)), css: "small").Add(((Localizer["Rcm_Changes"])?.ToString() ?? ""), h => (object?)(DataCell.Group(DataCell.Span("mb-0 pems-s-121f7751", h.ChangesSummary).WithTag("pre"), h.Comment)), css: "small")))" dense="true" />
+</pems-content-card>
+
+<pems-modal id="overrideModal" tabindex="-1">
+            <pems-form action="/a/strategy-override-request" method="post">
+                <input type="hidden" name="strategyId" value="@s.MaintenanceStrategyId" />
+                <input type="hidden" name="assignmentId" id="overrideAssignmentId" />
+                <pems-modal-header>@Localizer["Rcm_RequestOverride"] — <span id="overrideTag"></span></pems-modal-header>
+                <pems-modal-body>
+                    <pems-text class="small text-muted">@Localizer["Rcm_OverrideHint"]</pems-text>
+                    <pems-form-group css="mb-2"><pems-label>@Localizer["Rcm_OverrideInterval"]</pems-label><pems-input name="overrideIntervalDays" type="number" min="1" /></pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label>@Localizer["Rcm_OverrideTaskNote"]</pems-label><pems-textarea name="overrideTaskNote" rows="2" maxlength="1000"></pems-textarea></pems-form-group>
+                    <pems-form-group css="mb-2"><pems-label>@Localizer["Rcm_Justification"] *</pems-label><pems-textarea name="overrideJustification" rows="2" minlength="20" required maxlength="1000"></pems-textarea></pems-form-group>
+                </pems-modal-body>
+                <pems-modal-footer>
+                    <pems-button tone="neutral" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+                    <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+                </pems-modal-footer>
+            </pems-form>
+        </pems-modal>
+
+@section Scripts {
+    <script src="~/js/views/maintenancestrategy-details.js" asp-append-version="true"></script>
+}

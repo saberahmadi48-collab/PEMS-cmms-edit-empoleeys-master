@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "ai-extraction-tags",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI extracted tags",
+    "fa": "تگ‌های استخراج‌شده"
+  },
+  "description": {
+    "en": "AI extracted tags",
+    "fa": "تگ‌های استخراج‌شده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "AiExtraction",
+      "action": "Tags",
+      "args": {
+        "attachmentId": "param:id"
+      }
+    }
+  }
+}

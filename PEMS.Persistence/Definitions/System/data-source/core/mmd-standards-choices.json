@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "mmd-standards-choices",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Standards",
+    "fa": "Standards"
+  },
+  "description": {
+    "en": "Standards",
+    "fa": "Standards"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "StandardsChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

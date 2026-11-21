@@ -1,0 +1,31 @@
+{
+  "kind": "data-source",
+  "key": "report-procurement-chart-by-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement chart: By status",
+    "fa": "نمودار procurement: بر اساس وضعیت"
+  },
+  "description": {
+    "en": "Procurement chart: By status",
+    "fa": "نمودار procurement: بر اساس وضعیت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Procurement",
+      "args": {
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      },
+      "where": {
+        "key": "ByStatus"
+      }
+    }
+  }
+}

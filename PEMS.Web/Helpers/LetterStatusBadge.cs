@@ -9,7 +9,7 @@ public static class LetterStatusBadge
 {
     public static string CssClass(string? status) => status switch
     {
-        "Draft" => "bg-secondary",
+        "Draft" or "Archived" => "bg-secondary",
         "PendingApproval" or "UnderReview" => "bg-warning text-dark",
         "ReturnedForRevision" => "bg-orange text-dark",
         "Approved" => "bg-info text-dark",

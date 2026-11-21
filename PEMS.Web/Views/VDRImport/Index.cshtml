@@ -7,7 +7,7 @@
 }
 
 
-<div class="vs-page">
+<pems-page-shell kind="workspace">
 
 <div class="vs-stepper">
     <div class="vs-stepper__item vs-stepper__item--active"><span class="vs-stepper__num">1</span>@Localizer["Vs_StepUpload"]</div>
@@ -15,58 +15,34 @@
     <div class="vs-stepper__item "><span class="vs-stepper__num">3</span>@Localizer["Vs_StepCommit"]</div>
 </div>
 
-<div class="content-card mb-3" style="max-width:700px;">
-    <p class="text-muted small">@Localizer["Vs_ImportSub"]</p>
-    <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
-        <div class="col-md-5">
-            <label class="form-label small">@Localizer["Vs_Project"]</label>
-            <select name="projectId" class="form-select" required>
+<pems-content-card css="mb-3 pems-s-bcaa1805">
+    <pems-text class="text-muted small">@Localizer["Vs_ImportSub"]</pems-text>
+    <pems-form asp-action="Upload" method="post" enctype="multipart/form-data"><pems-row gap="2" css="align-items-end">
+        <pems-col md="5">
+            <pems-label css="small">@Localizer["Vs_Project"]</pems-label>
+            <pems-select name="projectId" required>
                 @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-            </select>
-        </div>
-        <div class="col-md-5">
-            <label class="form-label small">@Localizer["Vs_ExcelFile"]</label>
-            <input type="file" name="file" class="form-control" accept=".xlsx" required />
-        </div>
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-cloud-upload"></i> @Localizer["Vs_Upload"]</button>
-        </div>
-    </form>
-</div>
+            </pems-select>
+        </pems-col>
+        <pems-col md="5">
+            <pems-label css="small">@Localizer["Vs_ExcelFile"]</pems-label>
+            <pems-uploader name="file" accept=".xlsx" required />
+        </pems-col>
+        <pems-col md="2">
+            <pems-button tone="primary" css="w-100" type="submit"><pems-icon name="bi-cloud-upload" /> @Localizer["Vs_Upload"]</pems-button>
+        </pems-col>
+    </pems-row></pems-form>
+</pems-content-card>
 
-<div class="content-card">
-    <h6 class="mb-3">@Localizer["Vs_RecentImports"]</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead><tr><th>@Localizer["Vs_File"]</th><th>@Localizer["Vs_Project"]</th><th>@Localizer["Vs_Date"]</th><th>@Localizer["Total"]</th><th>@Localizer["Vs_Valid"]</th><th>@Localizer["Vs_Warning"]</th><th>@Localizer["Vs_Error"]</th><th>@Localizer["Vs_Duplicate"]</th><th>@Localizer["Status"]</th><th></th></tr></thead>
-        <tbody>
-            @foreach (var b in Model)
-            {
-                <tr>
-                    <td>@b.FileName</td>
-                    <td>@b.ProjectName</td>
-                    <td>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td>@b.RowsTotal</td>
-                    <td><span class="badge bg-success">@b.RowsValid</span></td>
-                    <td><span class="badge bg-warning text-dark">@b.RowsWarning</span></td>
-                    <td><span class="badge bg-danger">@b.RowsError</span></td>
-                    <td><span class="badge bg-secondary">@b.RowsDuplicate</span></td>
-                    <td><span class="badge @(b.Status == "Committed" ? "bg-success" : "bg-secondary")">@b.Status</span></td>
-                    <td>
-                        @if (b.Status == "Staged")
-                        {
-                            <a asp-action="Review" asp-route-batchId="@b.VDRImportBatchId" class="btn btn-sm btn-outline-primary">Review</a>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4">@Localizer["Vs_NoImports"]</p> }
-</div>
+<pems-content-card>
+    <pems-heading level="6" class="mb-3">@Localizer["Vs_RecentImports"]</pems-heading>
+    <pems-table-scroll css="table-scroll-area pems-s-8da1c6e6">
+    <pems-data-table data="@(DataRows.Of(Model, c_ => c_.Add(((Localizer["Vs_File"])?.ToString() ?? ""), b => (object?)(b.FileName)).Add(((Localizer["Vs_Project"])?.ToString() ?? ""), b => (object?)(b.ProjectName)).Add(((Localizer["Vs_Date"])?.ToString() ?? ""), b => (object?)((PemsDates.DateTime(b.ImportDate)))).Add(((Localizer["Total"])?.ToString() ?? ""), b => (object?)(b.RowsTotal)).Add(((Localizer["Vs_Valid"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("success", b.RowsValid))).Add(((Localizer["Vs_Warning"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("warning", b.RowsWarning))).Add(((Localizer["Vs_Error"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("danger", b.RowsError))).Add(((Localizer["Vs_Duplicate"])?.ToString() ?? ""), b => (object?)(DataCell.Badge("neutral", b.RowsDuplicate))).Add(((Localizer["Status"])?.ToString() ?? ""), b => (object?)(DataCell.Badge(b.Status == "Committed" ? "success" : "neutral", b.Status))).Add("", b => (object?)((b.Status == "Staged" ? (object?)DataCell.ButtonLink(Url.Action("Review", null, new { batchId = b.VDRImportBatchId }), "primary", "small", true, null, "Review") : null)))))" />
+    </pems-table-scroll>
+    @if (!Model.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["Vs_NoImports"]</pems-text> }
+</pems-content-card>
 
-</div>
+</pems-page-shell>
 
 @{ ViewData["Title"] = Localizer["Vs_ImportTitle"].Value; }
 @section Styles {

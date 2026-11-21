@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "organization-departments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Departments",
+    "fa": "Departments"
+  },
+  "description": {
+    "en": "Departments",
+    "fa": "Departments"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Organization",
+      "action": "DepartmentOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

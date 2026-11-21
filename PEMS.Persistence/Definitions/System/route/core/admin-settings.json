@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-settings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Settings, admin area (old address)",
+    "fa": "تنظیمات، ناحیه مدیریت (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Settings, admin area (old address)",
+    "fa": "تنظیمات، ناحیه مدیریت (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/Settings/{*rest}",
+    "target": "/p/settings",
+    "permanent": false
+  }
+}

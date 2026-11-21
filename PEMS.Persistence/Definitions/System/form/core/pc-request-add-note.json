@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "pc-request-add-note",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a note",
+    "fa": "افزودن یادداشت"
+  },
+  "description": {
+    "en": "Add a note",
+    "fa": "افزودن یادداشت"
+  },
+  "payload": {
+    "id": "pc-request-add-note",
+    "title": {
+      "en": "Add a note",
+      "fa": "افزودن یادداشت"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "pc-request-add-note",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Request id",
+          "fa": "شناسه‌ی درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "text",
+        "label": {
+          "en": "Note",
+          "fa": "یادداشت"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 2000
+      }
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "maintenance-plan-record-meter",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record a meter reading",
+    "fa": "ثبت قرائت Meter"
+  },
+  "description": {
+    "en": "Record a meter reading",
+    "fa": "ثبت قرائت Meter"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenancePlanPage",
+      "action": "RecordMeterReading",
+      "args": {
+        "planId": "field:planId",
+        "currentReading": "field:currentReading"
+      }
+    },
+    "success": {
+      "en": "The meter reading was recorded.",
+      "fa": "قرائت Meter ثبت شد."
+    },
+    "redirect": "/p/maintenance-plans"
+  }
+}

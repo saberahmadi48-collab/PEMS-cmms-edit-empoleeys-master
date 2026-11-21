@@ -16,23 +16,31 @@ public interface IProductionOrderService
 
     Task<ProductionDashboardDto> GetDashboardAsync();
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Create", "Production.Create")]
     Task<(bool Success, string? Error, int? ProductionOrderId)> CreateAsync(
         int materialItemId, decimal plannedQuantity, int? uomId, int productionWorkCenterId,
         DateTime? plannedStartDate, DateTime? plannedFinishDate, int? equipmentId,
         int? responsibleEmployeeId, string? notes, int? createdByEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Plan", "Production.Edit")]
     Task<(bool Success, string? Error)> PlanAsync(int productionOrderId, int? actorEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Release", "Production.Approve")]
     Task<(bool Success, string? Error)> ReleaseAsync(int productionOrderId, int? actorEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Hold", "Production.Hold")]
     Task<(bool Success, string? Error)> HoldAsync(int productionOrderId, string reason, int? actorEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Resume", "Production.ReleaseHold")]
     Task<(bool Success, string? Error)> ResumeAsync(int productionOrderId, int? actorEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Cancel", "Production.Delete")]
     Task<(bool Success, string? Error)> CancelAsync(int productionOrderId, string reason, int? actorEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Complete", "Production.Approve")]
     Task<(bool Success, string? Error)> CompleteAsync(int productionOrderId, int? actorEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Close", "Production.Approve")]
     Task<(bool Success, string? Error)> CloseAsync(int productionOrderId, int? actorEmployeeId);
 
     /// <summary>

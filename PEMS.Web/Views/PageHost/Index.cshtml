@@ -1,0 +1,3 @@
+@model PEMS.Web.Definitions.RenderedPage
+@* SCRUM-438: the page is whatever its definition says; the markup was written by PageRenderer from the layout and the component instances (every component encodes its own output). *@
+@Html.Raw(Model.Html)

@@ -1,0 +1,1009 @@
+{
+  "kind": "page",
+  "key": "employee-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employee details",
+    "fa": "جزئیات کارمند"
+  },
+  "description": {
+    "en": "One employee: profile, account, skills, qualifications, certifications, labor rates and team history (page definition)",
+    "fa": "یک کارمند: پروفایل، حساب، مهارت‌ها، صلاحیت‌ها، گواهینامه‌ها، نرخ دستمزد و تاریخچه تیم (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "employee-details",
+    "regions": {
+      "content": [
+        {
+          "id": "t-name",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Employee",
+              "fa": "کارمند"
+            },
+            "icon": "bi-person"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "fullName"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-status",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Status",
+              "fa": "وضعیت"
+            },
+            "icon": "bi-circle-fill"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "status"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-code",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Personnel code",
+              "fa": "کد پرسنلی"
+            },
+            "icon": "bi-hash"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "personnelCode"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-position",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Title on file",
+              "fa": "عنوان ثبت‌شده"
+            },
+            "icon": "bi-briefcase"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "position"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-org-position",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Organizational position",
+              "fa": "سمت سازمانی"
+            },
+            "icon": "bi-diagram-3"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "organizationalPosition"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-department",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Department",
+              "fa": "دپارتمان"
+            },
+            "icon": "bi-building"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "department"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-discipline",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Discipline",
+              "fa": "دیسیپلین"
+            },
+            "icon": "bi-gear"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "discipline"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-supervisor",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Team supervisor",
+              "fa": "سرپرست تیم"
+            },
+            "icon": "bi-people"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "teamSupervisor"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-manager",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Direct manager",
+              "fa": "مدیر مستقیم"
+            },
+            "icon": "bi-person-badge"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "directManager"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-hire",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Hire date",
+              "fa": "تاریخ استخدام"
+            },
+            "icon": "bi-calendar"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "hireDate"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-type",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Personnel type",
+              "fa": "نوع پرسنل"
+            },
+            "icon": "bi-person-vcard"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "personnelType"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-location",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Location",
+              "fa": "مکان"
+            },
+            "icon": "bi-geo-alt"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "location"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-shift",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Shift",
+              "fa": "شیفت"
+            },
+            "icon": "bi-clock"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "shift"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-email",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Email",
+              "fa": "ایمیل"
+            },
+            "icon": "bi-envelope"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "email"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-phone",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Phone",
+              "fa": "تلفن"
+            },
+            "icon": "bi-phone"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "phone"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-address",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Home address",
+              "fa": "نشانی منزل"
+            },
+            "icon": "bi-house"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "homeAddress"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-team",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Current team",
+              "fa": "تیم فعلی"
+            },
+            "icon": "bi-people"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "currentTeam"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-team-role",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Role in team",
+              "fa": "نقش در تیم"
+            },
+            "icon": "bi-person-gear"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "teamRole"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-since",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Member since",
+              "fa": "عضو از"
+            },
+            "icon": "bi-calendar-check"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "memberSince"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-account",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "System account",
+              "fa": "حساب کاربری"
+            },
+            "icon": "bi-shield-lock"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "accountUser"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-account-status",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Account status",
+              "fa": "وضعیت حساب"
+            },
+            "icon": "bi-toggle-on"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "accountStatus"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-account-roles",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Account roles",
+              "fa": "نقش‌های حساب"
+            },
+            "icon": "bi-key"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/employee-profile?f.id={{params.id|url}}",
+              "first": true,
+              "map": {
+                "value": "accountRoles"
+              }
+            }
+          }
+        },
+        {
+          "id": "back",
+          "component": "content-blocks",
+          "options": {
+            "id": "back",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/employees",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "edit",
+          "component": "content-blocks",
+          "options": {
+            "id": "edit",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/employee-edit/{{params.id|url}}",
+                "text": {
+                  "en": "Edit the profile",
+                  "fa": "ویرایش پروفایل"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "position",
+          "component": "content-blocks",
+          "options": {
+            "id": "position",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/employee-position?employeeId={{params.id|url}}",
+                "text": {
+                  "en": "Set the organizational position",
+                  "fa": "تعیین سمت سازمانی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-skills",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-skills",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Skills",
+                  "fa": "مهارت‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "add-skill",
+          "component": "content-blocks",
+          "options": {
+            "id": "add-skill",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/employee-skill-add?employeeId={{params.id|url}}",
+                "text": {
+                  "en": "Add a skill",
+                  "fa": "افزودن مهارت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "skills",
+          "component": "data-grid",
+          "options": {
+            "id": "skills",
+            "url": "/d/employee-skills?f.id={{params.id|url}}",
+            "idField": "employeeSkillId",
+            "columns": [
+              {
+                "key": "skill",
+                "header": {
+                  "en": "Skill",
+                  "fa": "مهارت"
+                },
+                "width": 240
+              },
+              {
+                "key": "proficiency",
+                "header": {
+                  "en": "Proficiency",
+                  "fa": "سطح"
+                },
+                "width": 140
+              },
+              {
+                "key": "certifiedDate",
+                "header": {
+                  "en": "Certified",
+                  "fa": "تاریخ گواهی"
+                },
+                "width": 140
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/a/employee-skill-remove",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Remove this item?",
+                      "fa": "این مورد حذف شود؟"
+                    }
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 260
+          }
+        },
+        {
+          "id": "h-quals",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-quals",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Qualifications",
+                  "fa": "صلاحیت‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "add-qual",
+          "component": "content-blocks",
+          "options": {
+            "id": "add-qual",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/employee-qualification-add?employeeId={{params.id|url}}",
+                "text": {
+                  "en": "Add a qualification",
+                  "fa": "افزودن صلاحیت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "qualifications",
+          "component": "data-grid",
+          "options": {
+            "id": "qualifications",
+            "url": "/d/employee-qualifications?f.id={{params.id|url}}",
+            "idField": "employeeQualificationId",
+            "columns": [
+              {
+                "key": "qualification",
+                "header": {
+                  "en": "Qualification",
+                  "fa": "صلاحیت"
+                },
+                "width": 240
+              },
+              {
+                "key": "issuer",
+                "header": {
+                  "en": "Issuer",
+                  "fa": "صادرکننده"
+                },
+                "width": 180
+              },
+              {
+                "key": "issueDate",
+                "header": {
+                  "en": "Issued",
+                  "fa": "صدور"
+                },
+                "width": 120
+              },
+              {
+                "key": "expiryDate",
+                "header": {
+                  "en": "Expires",
+                  "fa": "انقضا"
+                },
+                "width": 120
+              },
+              {
+                "key": "expiry",
+                "header": {
+                  "en": "Expiry status",
+                  "fa": "وضعیت انقضا"
+                },
+                "width": 130
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/a/employee-qualification-remove",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Remove this item?",
+                      "fa": "این مورد حذف شود؟"
+                    }
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 260
+          }
+        },
+        {
+          "id": "h-certs",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-certs",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Certifications",
+                  "fa": "گواهینامه‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "add-cert",
+          "component": "content-blocks",
+          "options": {
+            "id": "add-cert",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/employee-certification-add?employeeId={{params.id|url}}",
+                "text": {
+                  "en": "Add a certification",
+                  "fa": "افزودن گواهینامه"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "certifications",
+          "component": "data-grid",
+          "options": {
+            "id": "certifications",
+            "url": "/d/employee-certifications?f.id={{params.id|url}}",
+            "idField": "employeeCertificationId",
+            "columns": [
+              {
+                "key": "certification",
+                "header": {
+                  "en": "Certification",
+                  "fa": "گواهینامه"
+                },
+                "width": 240
+              },
+              {
+                "key": "certificateNumber",
+                "header": {
+                  "en": "Number",
+                  "fa": "شماره"
+                },
+                "width": 140
+              },
+              {
+                "key": "issuer",
+                "header": {
+                  "en": "Issuer",
+                  "fa": "صادرکننده"
+                },
+                "width": 180
+              },
+              {
+                "key": "issueDate",
+                "header": {
+                  "en": "Issued",
+                  "fa": "صدور"
+                },
+                "width": 120
+              },
+              {
+                "key": "expiryDate",
+                "header": {
+                  "en": "Expires",
+                  "fa": "انقضا"
+                },
+                "width": 120
+              },
+              {
+                "key": "expiry",
+                "header": {
+                  "en": "Expiry status",
+                  "fa": "وضعیت انقضا"
+                },
+                "width": 130
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    },
+                    "url": "/a/employee-certification-remove",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Remove this item?",
+                      "fa": "این مورد حذف شود؟"
+                    }
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 260
+          }
+        },
+        {
+          "id": "h-rates",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-rates",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Labor rates",
+                  "fa": "نرخ دستمزد"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "add-rate",
+          "component": "content-blocks",
+          "options": {
+            "id": "add-rate",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/employee-labor-rate?employeeId={{params.id|url}}",
+                "text": {
+                  "en": "Set a new labor rate",
+                  "fa": "ثبت نرخ دستمزد جدید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "rates",
+          "component": "data-grid",
+          "options": {
+            "id": "rates",
+            "url": "/d/employee-labor-rates?f.id={{params.id|url}}",
+            "idField": "effectiveFrom",
+            "columns": [
+              {
+                "key": "rateType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "rate",
+                "header": {
+                  "en": "Rate",
+                  "fa": "نرخ"
+                },
+                "width": 140
+              },
+              {
+                "key": "currency",
+                "header": {
+                  "en": "Currency",
+                  "fa": "واحد پول"
+                },
+                "width": 100
+              },
+              {
+                "key": "effectiveFrom",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 120
+              },
+              {
+                "key": "effectiveTo",
+                "header": {
+                  "en": "To",
+                  "fa": "تا"
+                },
+                "width": 120
+              }
+            ],
+            "pageSize": 10,
+            "height": 260
+          }
+        },
+        {
+          "id": "h-team",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-team",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Team history",
+                  "fa": "تاریخچه تیم"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "team-history",
+          "component": "data-grid",
+          "options": {
+            "id": "team-history",
+            "url": "/d/employee-team-history?f.id={{params.id|url}}",
+            "idField": "joinedDate",
+            "columns": [
+              {
+                "key": "team",
+                "header": {
+                  "en": "Team",
+                  "fa": "تیم"
+                },
+                "width": 200
+              },
+              {
+                "key": "role",
+                "header": {
+                  "en": "Role",
+                  "fa": "نقش"
+                },
+                "width": 160
+              },
+              {
+                "key": "supervisor",
+                "header": {
+                  "en": "Supervisor",
+                  "fa": "سرپرست"
+                },
+                "width": 180
+              },
+              {
+                "key": "joinedDate",
+                "header": {
+                  "en": "Joined",
+                  "fa": "عضویت"
+                },
+                "width": 120
+              },
+              {
+                "key": "leftDate",
+                "header": {
+                  "en": "Left",
+                  "fa": "خروج"
+                },
+                "width": 120
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              }
+            ],
+            "pageSize": 10,
+            "height": 260
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "production-batch-unblock",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Unblock the batch",
+    "fa": "رفع توقف بچ"
+  },
+  "description": {
+    "en": "Unblock the batch",
+    "fa": "رفع توقف بچ"
+  },
+  "payload": {
+    "id": "production-batch-unblock",
+    "title": {
+      "en": "Unblock the batch",
+      "fa": "رفع توقف بچ"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-batch-unblock",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه‌ی بچ"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

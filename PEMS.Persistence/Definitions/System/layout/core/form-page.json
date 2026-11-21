@@ -1,0 +1,41 @@
+{
+  "kind": "layout",
+  "key": "form-page",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "fa": "صفحه فرم",
+    "en": "Form page"
+  },
+  "description": {
+    "fa": "ورود یا ویرایش اطلاعات یک رکورد",
+    "en": "Entry or edit of one record"
+  },
+  "payload": {
+    "root": {
+      "tag": "div",
+      "css": "vs-page",
+      "children": [
+        {
+          "region": "header"
+        },
+        {
+          "region": "messages"
+        },
+        {
+          "tag": "section",
+          "css": "content-card",
+          "children": [
+            {
+              "region": "content",
+              "required": true
+            },
+            {
+              "region": "actions"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

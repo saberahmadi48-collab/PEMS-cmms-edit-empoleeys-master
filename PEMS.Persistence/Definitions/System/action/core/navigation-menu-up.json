@@ -1,0 +1,27 @@
+{
+  "kind": "action",
+  "key": "navigation-menu-up",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move up",
+    "fa": "بالا"
+  },
+  "description": {
+    "en": "Move up",
+    "fa": "بالا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "NavigationMenu",
+      "action": "Move",
+      "args": {
+        "key": "field:id",
+        "up": "literal:true"
+      }
+    },
+    "redirect": "/p/navigation-menu"
+  }
+}

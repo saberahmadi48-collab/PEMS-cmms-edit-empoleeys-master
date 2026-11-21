@@ -1,0 +1,55 @@
+{
+  "kind": "form",
+  "key": "organization-assignment-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit an assignment",
+    "fa": "ویرایش تخصیص"
+  },
+  "description": {
+    "en": "Edit an assignment",
+    "fa": "ویرایش تخصیص"
+  },
+  "payload": {
+    "id": "organization-assignment-edit",
+    "title": {
+      "en": "Edit an assignment",
+      "fa": "ویرایش تخصیص"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "organization-assignment-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "isPrimary",
+        "label": {
+          "en": "Primary position",
+          "fa": "سمت اصلی"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "startDate",
+        "label": {
+          "en": "Start date",
+          "fa": "تاریخ شروع"
+        },
+        "kind": "date",
+        "required": true
+      },
+      {
+        "name": "endDate",
+        "label": {
+          "en": "End date",
+          "fa": "تاریخ پایان"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}

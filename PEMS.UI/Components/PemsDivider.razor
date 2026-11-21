@@ -1,0 +1,6 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("divider", Category = "display", Icon = "bi-dash-lg")]
+@FrameMarkup.Element("hr", Options.Css ?? "", Options.PageClass, Options.Attributes, null)
+@code {
+    [Parameter, EditorRequired] public DividerOptions Options { get; set; } = default!;
+}

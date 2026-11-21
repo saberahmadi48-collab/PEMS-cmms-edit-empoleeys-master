@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "home-disciplines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline performance",
+    "fa": "عملکرد دیسیپلین‌ها"
+  },
+  "description": {
+    "en": "Discipline performance",
+    "fa": "عملکرد دیسیپلین‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Home",
+      "action": "Disciplines",
+      "args": {}
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "eng-dash-attention",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Management attention queue",
+    "fa": "صف توجه مدیریت"
+  },
+  "description": {
+    "en": "Management attention queue",
+    "fa": "صف توجه مدیریت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EngineeringDashboard",
+      "action": "AttentionQueue",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "minRevisionCount": "param:minRevisionCount"
+      }
+    }
+  }
+}

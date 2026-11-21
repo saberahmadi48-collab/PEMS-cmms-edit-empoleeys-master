@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "eng-dash-most-rejected",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Most rejected documents",
+    "fa": "پربرگشت‌ترین مدارک"
+  },
+  "description": {
+    "en": "Most rejected documents",
+    "fa": "پربرگشت‌ترین مدارک"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EngineeringDashboard",
+      "action": "MostRejected",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "minRevisionCount": "param:minRevisionCount"
+      }
+    }
+  }
+}

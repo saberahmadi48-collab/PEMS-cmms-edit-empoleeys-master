@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "work-requests-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work requests (index) (old address)",
+    "fa": "Work requests (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Work requests (index) (old address)",
+    "fa": "Work requests (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "WorkRequest/Index",
+    "target": "/p/work-requests",
+    "permanent": false
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "kind": "form",
+  "key": "designer-instance-option",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set an option of a component",
+    "fa": "تنظیم گزینه یک مؤلفه"
+  },
+  "description": {
+    "en": "Set an option of a component",
+    "fa": "تنظیم گزینه یک مؤلفه"
+  },
+  "payload": {
+    "id": "designer-instance-option",
+    "title": {
+      "en": "Set an option of a component",
+      "fa": "تنظیم گزینه یک مؤلفه"
+    },
+    "submitLabel": {
+      "en": "Apply to the draft",
+      "fa": "اعمال بر پیش‌نویس"
+    },
+    "actionKey": "designer-instance-option",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ref",
+        "label": {
+          "en": "Page",
+          "fa": "صفحه"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Page is required.",
+            "fa": "صفحه الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "appKey:page:key, for example core:page:home",
+          "fa": "appKey:page:key, for example core:page:home"
+        }
+      },
+      {
+        "name": "instanceId",
+        "label": {
+          "en": "Component id on the page",
+          "fa": "شناسه مؤلفه در صفحه"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Component id on the page is required.",
+            "fa": "شناسه مؤلفه در صفحه الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "option",
+        "label": {
+          "en": "Option (see the component catalog for its options and sample)",
+          "fa": "گزینه (فهرست مؤلفه‌ها)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Option (see the component catalog for its options and sample) is required.",
+            "fa": "گزینه (فهرست مؤلفه‌ها) الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "valueJson",
+        "label": {
+          "en": "Value (JSON; empty removes the option)",
+          "fa": "مقدار (JSON؛ خالی = حذف)"
+        },
+        "kind": "textArea",
+        "maxLength": 4000,
+        "span": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "kind": "component",
+  "key": "entity-file-preview",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "File preview of a record",
+    "fa": "پیش‌نمایش فایل رکورد"
+  },
+  "description": {
+    "en": "The preview of a file whose same-site preview url is a property of a data source row (permission-checked). PDF, images and text show inline.",
+    "fa": "پیش‌نمایش فایلی که نشانی آن ویژگی یک ردیف است."
+  },
+  "payload": {
+    "parameters": {
+      "id": {
+        "type": "string",
+        "required": true
+      },
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "The grid data source: /d/{key}"
+      },
+      "idField": {
+        "type": "string",
+        "required": true
+      },
+      "srcField": {
+        "type": "string",
+        "required": true,
+        "description": "The row property that holds the preview url (/Files/Preview/12)"
+      },
+      "titleField": {
+        "type": "string",
+        "description": "The row property that holds the file name"
+      }
+    },
+    "instances": [
+      {
+        "id": "file",
+        "component": "file-preview",
+        "options": {
+          "id": "${id}"
+        },
+        "bindings": {
+          "record": {
+            "source": "${url}",
+            "idField": "${idField}",
+            "id": "{{params.id}}",
+            "map": {
+              "src": "${srcField}",
+              "title": "${titleField}"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

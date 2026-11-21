@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "tender-close-bidding",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close bidding",
+    "fa": "بستن دریافت پیشنهاد"
+  },
+  "description": {
+    "en": "Close bidding",
+    "fa": "بستن دریافت پیشنهاد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Tender",
+      "action": "CloseBidding",
+      "args": {
+        "tenderId": "field:tenderId"
+      }
+    },
+    "success": {
+      "en": "Bidding was closed.",
+      "fa": "دریافت پیشنهاد بسته شد."
+    },
+    "redirect": "/Tender/Details/{tenderId}"
+  }
+}

@@ -1,9 +1,13 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
+using PEMS.Application.Exceptions;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
+using PEMS.Web.Resources;
 using PEMS.Web.Security;
 
 namespace PEMS.Web.Controllers;
@@ -14,15 +18,20 @@ public class TransmittalController : Controller
     private readonly PEMSDbContext _context;
     private readonly IPermissionService _permissionService;
     private readonly ICurrentUserService _currentUser;
+    private readonly IStringLocalizer<SharedResource>? _localizer;
 
     public TransmittalController(ITransmittalService service, PEMSDbContext context,
-        IPermissionService permissionService, ICurrentUserService currentUser)
+        IPermissionService permissionService, ICurrentUserService currentUser, IStringLocalizer<SharedResource>? localizer = null)
     {
         _service = service;
         _context = context;
         _permissionService = permissionService;
         _currentUser = currentUser;
+        _localizer = localizer;
     }
+
+    // SCRUM-540: messages follow the page language
+    private string T(string key) => _localizer?[key].Value ?? key;
 
     // طبق «PEMS — Global Grid Hardening» P1: قبلاً کل جدول Transmittals دوبار (یک‌بار برای
     // فهرست، یک‌بار برای دیکشنری SupersededBy) بدون Skip/Take بارگذاری می‌شد. این Grid فیلتری
@@ -70,8 +79,9 @@ public class TransmittalController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(string transmittalNo, int projectId, string from, string to,
-        string purpose, string? description, List<int> documentIds,
+    public async Task<IActionResult> Create([Display(Name = "Transmittal code")] string transmittalNo,
+        int projectId, [Display(Name = "From")] string from, [Display(Name = "To")] string to,
+        [Display(Name = "Purpose")] string purpose, string? description, List<int> documentIds,
         bool responseRequired, List<string>? recipientName, List<string>? recipientType,
         List<string>? recipientOrganization, List<bool>? recipientResponseRequired)
     {
@@ -99,9 +109,9 @@ public class TransmittalController : Controller
             (recipients.Count == 0 && string.IsNullOrWhiteSpace(to)))
         {
             if (documentIds == null || !documentIds.Any())
-                ModelState.AddModelError(string.Empty, "Please select at least one document.");
+                ModelState.AddModelError(string.Empty, T("Please select at least one document."));
             if (recipients.Count == 0 && string.IsNullOrWhiteSpace(to))
-                ModelState.AddModelError(string.Empty, "Please add at least one recipient.");
+                ModelState.AddModelError(string.Empty, T("Please add at least one recipient."));
 
             await LoadCreateViewBagsAsync();
             ViewData["Title"] = "New Transmittal";
@@ -114,12 +124,18 @@ public class TransmittalController : Controller
             var id = await _service.CreateAsync(transmittalNo, projectId, from, to, purpose, description,
                 documentIds!, responseRequired, recipients);
 
-            TempData["Message"] = "Transmittal created successfully";
+            TempData["Message"] = T("Transmittal created successfully");
             return RedirectToAction(nameof(Details), new { id });
         }
-        catch (InvalidOperationException ex)
+        catch (PemsException ex) when (ex.Code is "transmittal-code-required" or "transmittal-code-duplicate" or "transmittal-documents-held")
         {
-            ModelState.AddModelError(string.Empty, ex.Message);
+            var key = ex.Code switch
+            {
+                "transmittal-code-required" => "Transmittal_CreateCodeRequired",
+                "transmittal-code-duplicate" => "Transmittal_CreateCodeDuplicate",
+                _ => "Transmittal_CreateDocumentsHeld"
+            };
+            ModelState.AddModelError(string.Empty, T(key));
             await LoadCreateViewBagsAsync();
             ViewData["Title"] = "New Transmittal";
             ViewData["Section"] = "Engineering Management";

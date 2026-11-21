@@ -1,0 +1,48 @@
+{
+  "kind": "form",
+  "key": "workflow-binding-change",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change the version of a binding",
+    "fa": "تغییر نسخه‌ی اتصال"
+  },
+  "description": {
+    "en": "Change the version of a binding",
+    "fa": "تغییر نسخه‌ی اتصال"
+  },
+  "payload": {
+    "id": "workflow-binding-change",
+    "title": {
+      "en": "Change the version of a binding",
+      "fa": "تغییر نسخه‌ی اتصال"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "workflow-binding-change",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "targetVersionId",
+        "label": {
+          "en": "Target version id",
+          "fa": "شناسه‌ی نسخه‌ی مقصد"
+        },
+        "kind": "number",
+        "required": true,
+        "min": 1
+      },
+      {
+        "name": "confirmed",
+        "label": {
+          "en": "I confirm the running instances may be affected",
+          "fa": "تأیید می‌کنم نمونه‌های در حال اجرا ممکن است متأثر شوند"
+        },
+        "kind": "switch"
+      }
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+@(await Html.RenderComponentAsync<PemsDescriptorHost>(RenderMode.Static, new
+{
+    Key = "table",
+    Parameters = (IDictionary<string, object?>)new Dictionary<string, object?> { ["View"] = SpikeData.Table, ["Rows"] = SpikeData.Rows(5) }
+}))

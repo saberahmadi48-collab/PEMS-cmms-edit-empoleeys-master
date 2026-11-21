@@ -1,0 +1,92 @@
+{
+  "kind": "form",
+  "key": "organization-import-confirm",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Confirm the organization import",
+    "fa": "تأیید ایمپورت ساختار سازمانی"
+  },
+  "description": {
+    "en": "Confirm the organization import",
+    "fa": "تأیید ایمپورت ساختار سازمانی"
+  },
+  "payload": {
+    "id": "organization-import-confirm",
+    "title": {
+      "en": "Confirm the organization import",
+      "fa": "تأیید ایمپورت ساختار سازمانی"
+    },
+    "submitLabel": {
+      "en": "Confirm and save",
+      "fa": "تأیید و ذخیره"
+    },
+    "actionKey": "organization-import-confirm",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "positionsCreated",
+        "label": {
+          "en": "Positions created",
+          "fa": "سمت‌های ایجادشده"
+        },
+        "kind": "number",
+        "readOnly": true
+      },
+      {
+        "name": "positionsUpdated",
+        "label": {
+          "en": "Positions updated",
+          "fa": "سمت‌های به‌روزشده"
+        },
+        "kind": "number",
+        "readOnly": true
+      },
+      {
+        "name": "assignmentsCreated",
+        "label": {
+          "en": "Assignments created",
+          "fa": "تخصیص‌های ایجادشده"
+        },
+        "kind": "number",
+        "readOnly": true
+      },
+      {
+        "name": "assignmentsUpdated",
+        "label": {
+          "en": "Assignments updated",
+          "fa": "تخصیص‌های به‌روزشده"
+        },
+        "kind": "number",
+        "readOnly": true
+      },
+      {
+        "name": "unchanged",
+        "label": {
+          "en": "Unchanged",
+          "fa": "بدون تغییر"
+        },
+        "kind": "number",
+        "readOnly": true
+      },
+      {
+        "name": "warnings",
+        "label": {
+          "en": "Warnings",
+          "fa": "هشدارها"
+        },
+        "kind": "textArea",
+        "readOnly": true
+      },
+      {
+        "name": "confirm",
+        "label": {
+          "en": "Save the validated organization structure",
+          "fa": "ساختار سازمانی اعتبارسنجی‌شده ذخیره شود"
+        },
+        "kind": "switch"
+      }
+    ]
+  }
+}

@@ -1,0 +1,430 @@
+{
+  "kind": "page",
+  "key": "executive-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Executive Dashboard",
+    "fa": "داشبورد مدیریتی"
+  },
+  "description": {
+    "en": "The management dashboard: the Bklit dashboards bundle mounted by the script-island component (page definition)",
+    "fa": "داشبورد مدیریتی: بسته داشبوردها که با کامپوننت script-island سوار می‌شود (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "executive-dashboard",
+    "permission": "EngineeringDocuments.View",
+    "regions": {
+      "content": [
+        {
+          "id": "executive",
+          "component": "script-island",
+          "options": {
+            "id": "executive-root",
+            "bootId": "exec-boot",
+            "module": "/dist/dashboards/dashboards.js",
+            "styles": [
+              "/dist/dashboards/dashboards.css"
+            ],
+            "css": "bk-scope exec-host",
+            "values": {
+              "dataUrl": "/ExecutiveDashboard/Data"
+            },
+            "links": {
+              "Engineering": "/EngineeringDocuments",
+              "EngRejected": "/EngineeringDocuments?status=Rejected",
+              "EngReturned": "/EngineeringDocuments?status=Rejected",
+              "EngInReview": "/EngineeringDocuments?status=Submitted%2CChecked",
+              "EngOverdue": "/EngineeringDocuments",
+              "Vdr": "/VDR",
+              "Procurement": "/MaterialRequisition",
+              "Transmittals": "/Transmittal",
+              "Cmms": "/WorkOrder",
+              "Correspondence": "/Letter",
+              "Reports": "/p/report-correspondence"
+            },
+            "i18n": {
+              "Exec_AllProjects": {
+                "en": "All projects",
+                "fa": "همه‌ی پروژه‌ها"
+              },
+              "Exec_AttentionNone": {
+                "en": "Nothing needs attention right now.",
+                "fa": "اکنون موردی نیازمند توجه نیست."
+              },
+              "Exec_AttentionSub": {
+                "en": "Ordered by severity; each item opens the matching list",
+                "fa": "به ترتیب شدت؛ هر مورد فهرست مربوطه را باز می‌کند"
+              },
+              "Exec_AttentionTitle": {
+                "en": "Needs management attention",
+                "fa": "نیازمند توجه مدیریت"
+              },
+              "Exec_Attn_CriticalWorkOrders": {
+                "en": "Critical work orders",
+                "fa": "دستور کارهای بحرانی"
+              },
+              "Exec_Attn_EngInReview": {
+                "en": "Documents currently in review",
+                "fa": "مدارک در حال بازبینی"
+              },
+              "Exec_Attn_EngOverdue": {
+                "en": "Documents past their planned date",
+                "fa": "مدارک با تاریخ برنامه‌ریزی گذشته"
+              },
+              "Exec_Attn_EngRejected": {
+                "en": "Documents rejected and waiting for rework",
+                "fa": "مدارک ردشده در انتظار اصلاح"
+              },
+              "Exec_Attn_EngReturned": {
+                "en": "Documents returned with client comments (CO/AC)",
+                "fa": "مدارک بازگشته با کامنت کارفرما (CO/AC)"
+              },
+              "Exec_Attn_LetterResponseOverdue": {
+                "en": "Letters with an overdue response",
+                "fa": "نامه‌های دارای مهلت پاسخ گذشته"
+              },
+              "Exec_Attn_MrDraft": {
+                "en": "Material requisitions still in draft",
+                "fa": "درخواست‌های مواد هنوز پیش‌نویس"
+              },
+              "Exec_Attn_ReferralOverdue": {
+                "en": "Referrals past their due date",
+                "fa": "ارجاعات با مهلت گذشته"
+              },
+              "Exec_Attn_VdrOverdue": {
+                "en": "Vendor documents overdue",
+                "fa": "مدارک فروشنده با تاخیر"
+              },
+              "Exec_Attn_VdrResubmission": {
+                "en": "Vendor documents waiting for resubmission",
+                "fa": "مدارک فروشنده در انتظار ارسال مجدد"
+              },
+              "Exec_Bids": {
+                "en": "Bids",
+                "fa": "پیشنهادها"
+              },
+              "Exec_Bucket_Approved": {
+                "en": "Approved",
+                "fa": "تاییدشده"
+              },
+              "Exec_Bucket_Draft": {
+                "en": "Draft",
+                "fa": "پیش‌نویس"
+              },
+              "Exec_Bucket_InReview": {
+                "en": "In review",
+                "fa": "در بازبینی"
+              },
+              "Exec_Bucket_Other": {
+                "en": "Other",
+                "fa": "سایر"
+              },
+              "Exec_Bucket_Returned": {
+                "en": "Rejected / returned",
+                "fa": "ردشده / بازگشته"
+              },
+              "Exec_Contracts": {
+                "en": "Contracts",
+                "fa": "قراردادها"
+              },
+              "Exec_Cumulative": {
+                "en": "Cumulative issued",
+                "fa": "جمع تجمعی صدور"
+              },
+              "Exec_DisciplineSub": {
+                "en": "The ten largest disciplines by document count",
+                "fa": "ده دیسیپلین بزرگ بر اساس تعداد مدرک"
+              },
+              "Exec_DisciplineTitle": {
+                "en": "Progress by discipline",
+                "fa": "پیشرفت به‌تفکیک دیسیپلین"
+              },
+              "Exec_Documents": {
+                "en": "Documents",
+                "fa": "مدارک"
+              },
+              "Exec_IssuedInMonth": {
+                "en": "Issued this month",
+                "fa": "صادرشده در این ماه"
+              },
+              "Exec_Items": {
+                "en": "Items",
+                "fa": "آیتم‌ها"
+              },
+              "Exec_KpiApproved": {
+                "en": "Approved / issued",
+                "fa": "تاییدشده / صادرشده"
+              },
+              "Exec_KpiApprovedSub": {
+                "en": "{approved} of {total} documents",
+                "fa": "{approved} از {total} مدرک"
+              },
+              "Exec_KpiDocuments": {
+                "en": "Engineering documents",
+                "fa": "مدارک مهندسی"
+              },
+              "Exec_KpiDocumentsSub": {
+                "en": "Projects: {projects}",
+                "fa": "پروژه‌ها: {projects}"
+              },
+              "Exec_KpiEquipment": {
+                "en": "Equipment register",
+                "fa": "فهرست تجهیزات"
+              },
+              "Exec_KpiEquipmentSub": {
+                "en": "{open} open work orders · {critical} critical",
+                "fa": "{open} دستور کار باز · {critical} بحرانی"
+              },
+              "Exec_KpiInReview": {
+                "en": "In review",
+                "fa": "در بازبینی"
+              },
+              "Exec_KpiInReviewSub": {
+                "en": "{draft} still in draft",
+                "fa": "{draft} هنوز پیش‌نویس"
+              },
+              "Exec_KpiProcurement": {
+                "en": "Purchase orders",
+                "fa": "سفارش‌های خرید"
+              },
+              "Exec_KpiProcurementSub": {
+                "en": "{mr} open material requisitions",
+                "fa": "{mr} درخواست مواد باز"
+              },
+              "Exec_KpiProcurementValue": {
+                "en": "{value} · {mr} open MRs",
+                "fa": "{value} · {mr} MR باز"
+              },
+              "Exec_KpiRevisions": {
+                "en": "Revisions",
+                "fa": "رویژن‌ها"
+              },
+              "Exec_KpiRevisionsSub": {
+                "en": "{avg} per document on average",
+                "fa": "میانگین {avg} به‌ازای هر مدرک"
+              },
+              "Exec_KpiRework": {
+                "en": "Needs rework",
+                "fa": "نیازمند اصلاح"
+              },
+              "Exec_KpiReworkSub": {
+                "en": "{rejected} rejected · {commented} returned with comments",
+                "fa": "{rejected} ردشده · {commented} بازگشته با کامنت"
+              },
+              "Exec_Letters": {
+                "en": "Letters",
+                "fa": "نامه‌ها"
+              },
+              "Exec_LoadError": {
+                "en": "The dashboard data could not be loaded. Try refreshing.",
+                "fa": "داده‌های داشبورد بارگذاری نشد. دوباره بروزرسانی کنید."
+              },
+              "Exec_Loading": {
+                "en": "Loading dashboard…",
+                "fa": "در حال بارگذاری داشبورد…"
+              },
+              "Exec_MaterialRequisitions": {
+                "en": "Material requisitions",
+                "fa": "درخواست مواد"
+              },
+              "Exec_Mr_Closed": {
+                "en": "Closed",
+                "fa": "بسته"
+              },
+              "Exec_Mr_Draft": {
+                "en": "Draft",
+                "fa": "پیش‌نویس"
+              },
+              "Exec_NavTitle": {
+                "en": "Executive Dashboard",
+                "fa": "داشبورد مدیریتی"
+              },
+              "Exec_NoData": {
+                "en": "No data yet",
+                "fa": "هنوز داده‌ای نیست"
+              },
+              "Exec_NotApproved": {
+                "en": "Not approved",
+                "fa": "تایید نشده"
+              },
+              "Exec_Ntps": {
+                "en": "NTPs issued",
+                "fa": "ابلاغ شروع (NTP)"
+              },
+              "Exec_OpenWorkOrders": {
+                "en": "Open work orders",
+                "fa": "دستور کارهای باز"
+              },
+              "Exec_OtherProjects": {
+                "en": "Other projects ({count})",
+                "fa": "سایر پروژه‌ها ({count})"
+              },
+              "Exec_OtherTitle": {
+                "en": "Other indicators",
+                "fa": "سایر شاخص‌ها"
+              },
+              "Exec_Packages": {
+                "en": "Packages",
+                "fa": "پکیج‌ها"
+              },
+              "Exec_PressureSub": {
+                "en": "Documents re-issued most often",
+                "fa": "مدارکی که بیشترین بار بازصادر شده‌اند"
+              },
+              "Exec_PressureTitle": {
+                "en": "Revision pressure",
+                "fa": "فشار رویژن"
+              },
+              "Exec_ProcurementSub": {
+                "en": "Pipeline counts and material requisitions by status",
+                "fa": "شمارش مراحل خرید و درخواست مواد به‌تفکیک وضعیت"
+              },
+              "Exec_ProcurementTitle": {
+                "en": "Procurement",
+                "fa": "خرید"
+              },
+              "Exec_Project": {
+                "en": "Project",
+                "fa": "پروژه"
+              },
+              "Exec_ProjectsSub": {
+                "en": "Largest projects and their approval share",
+                "fa": "بزرگ‌ترین پروژه‌ها و سهم تایید"
+              },
+              "Exec_ProjectsTitle": {
+                "en": "Projects by documents",
+                "fa": "پروژه‌ها بر اساس مدارک"
+              },
+              "Exec_PurchaseOrders": {
+                "en": "Purchase orders",
+                "fa": "سفارش‌های خرید"
+              },
+              "Exec_QDiscipline": {
+                "en": "Has a discipline",
+                "fa": "دیسیپلین دارد"
+              },
+              "Exec_QIssued": {
+                "en": "Has an issued revision",
+                "fa": "رویژن صادرشده دارد"
+              },
+              "Exec_QPlanned": {
+                "en": "Has a planned date",
+                "fa": "تاریخ برنامه‌ریزی دارد"
+              },
+              "Exec_QPlannedNote": {
+                "en": "No document has a planned date, so schedule variance and overdue counts cannot be measured. Fill planned dates in the MDR to unlock them.",
+                "fa": "هیچ مدرکی تاریخ برنامه‌ریزی ندارد؛ پس انحراف زمان‌بندی و تاخیر قابل اندازه‌گیری نیست. تاریخ برنامه را در MDR وارد کنید."
+              },
+              "Exec_QResponse": {
+                "en": "Has a client response code",
+                "fa": "کد پاسخ کارفرما دارد"
+              },
+              "Exec_QualitySub": {
+                "en": "How much of the register supports each metric",
+                "fa": "چه بخشی از رجیستر از هر شاخص پشتیبانی می‌کند"
+              },
+              "Exec_QualityTitle": {
+                "en": "Data completeness",
+                "fa": "کامل بودن داده"
+              },
+              "Exec_Refresh": {
+                "en": "Refresh",
+                "fa": "بروزرسانی"
+              },
+              "Exec_ResponsesOverdue": {
+                "en": "Overdue responses and referrals",
+                "fa": "پاسخ‌ها و ارجاعات معوق"
+              },
+              "Exec_ResponsesSub": {
+                "en": "Most frequent codes in the register",
+                "fa": "پرتکرارترین کدها در رجیستر"
+              },
+              "Exec_ResponsesTitle": {
+                "en": "Client response codes",
+                "fa": "کدهای پاسخ کارفرما"
+              },
+              "Exec_SectionsFailed": {
+                "en": "Some sections could not be read ({sections}); the rest is shown.",
+                "fa": "برخی بخش‌ها خوانده نشد ({sections})؛ بقیه نمایش داده می‌شود."
+              },
+              "Exec_StatusSub": {
+                "en": "{total} engineering documents",
+                "fa": "{total} مدرک مهندسی"
+              },
+              "Exec_StatusTitle": {
+                "en": "Document status",
+                "fa": "وضعیت مدارک"
+              },
+              "Exec_Subtitle": {
+                "en": "Live portfolio view across engineering, vendors, procurement and operations",
+                "fa": "نمای زنده‌ی پرتفوی در مهندسی، فروشندگان، خرید و بهره‌برداری"
+              },
+              "Exec_Tenders": {
+                "en": "Tenders",
+                "fa": "مناقصه‌ها"
+              },
+              "Exec_TimelineSub": {
+                "en": "{from} to {to} · {total} revisions issued",
+                "fa": "{from} تا {to} · {total} رویژن صادرشده"
+              },
+              "Exec_TimelineTitle": {
+                "en": "Revision issuance over time",
+                "fa": "روند صدور رویژن‌ها در طول زمان"
+              },
+              "Exec_Title": {
+                "en": "Executive Dashboard",
+                "fa": "داشبورد مدیریتی"
+              },
+              "Exec_Transmittals": {
+                "en": "Transmittals sent",
+                "fa": "ترنسمیتال‌های ارسال‌شده"
+              },
+              "Exec_Unassigned": {
+                "en": "Unassigned",
+                "fa": "بدون دیسیپلین"
+              },
+              "Exec_Updated": {
+                "en": "Updated {time}",
+                "fa": "بروزرسانی {time}"
+              },
+              "Exec_VdrOverdue": {
+                "en": "Overdue vendor documents",
+                "fa": "مدارک فروشنده معوق"
+              },
+              "Exec_VdrSub": {
+                "en": "{total} items · {submissions} submissions",
+                "fa": "{total} آیتم · {submissions} ارسال"
+              },
+              "Exec_VdrTitle": {
+                "en": "Vendor documents (VDR)",
+                "fa": "مدارک فروشندگان (VDR)"
+              },
+              "Exec_Wf_Closed": {
+                "en": "Closed",
+                "fa": "بسته"
+              },
+              "Exec_Wf_PendingResubmission": {
+                "en": "Pending resubmission",
+                "fa": "منتظر ارسال مجدد"
+              },
+              "Exec_Wf_Submitted": {
+                "en": "Submitted",
+                "fa": "ارسال‌شده"
+              },
+              "Exec_Wf_UnderReview": {
+                "en": "Under review",
+                "fa": "در حال بازبینی"
+              }
+            },
+            "note": {
+              "en": "Executive Dashboard",
+              "fa": "داشبورد مدیریتی"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

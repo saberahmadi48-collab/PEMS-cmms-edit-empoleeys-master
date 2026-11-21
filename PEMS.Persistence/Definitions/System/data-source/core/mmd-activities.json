@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mmd-activities",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance activities",
+    "fa": "فعالیت‌های نگهداری"
+  },
+  "description": {
+    "en": "Maintenance activities",
+    "fa": "فعالیت‌های نگهداری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "Activities"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "kind": "data-source",
+  "key": "warehouses-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Warehouses rows",
+    "fa": "ردیف‌های انبارها"
+  },
+  "description": {
+    "en": "The rows of the warehouses grid",
+    "fa": "ردیف‌های جدول انبارها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "Warehouse",
+      "fields": [
+        "Code",
+        "Name",
+        "Description",
+        "IsActive"
+      ],
+      "search": [
+        "Code",
+        "Name",
+        "Description"
+      ]
+    }
+  }
+}

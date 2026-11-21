@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "production-batch-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the batch",
+    "fa": "رد بچ"
+  },
+  "description": {
+    "en": "Reject the batch",
+    "fa": "رد بچ"
+  },
+  "payload": {
+    "id": "production-batch-reject",
+    "title": {
+      "en": "Reject the batch",
+      "fa": "رد بچ"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-batch-reject",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه‌ی بچ"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      }
+    ]
+  }
+}

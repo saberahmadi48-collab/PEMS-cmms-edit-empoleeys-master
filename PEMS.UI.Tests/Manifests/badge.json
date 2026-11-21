@@ -1,0 +1,84 @@
+{
+  "key": "badge",
+  "component": "PEMS.UI.Components.PemsBadge",
+  "category": "display",
+  "icon": "bi-tag",
+  "nameKey": "component.badge",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "label": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "tone": {
+        "enum": [
+          "neutral",
+          "primary",
+          "danger",
+          "success",
+          "warning",
+          "info",
+          "light",
+          "dark",
+          null
+        ]
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "skin": {
+        "enum": [
+          "bootstrap",
+          "pems"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "label"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "BadgeOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "label": {
+      "en": "Active",
+      "fa": "فعال"
+    },
+    "tone": "success"
+  }
+}

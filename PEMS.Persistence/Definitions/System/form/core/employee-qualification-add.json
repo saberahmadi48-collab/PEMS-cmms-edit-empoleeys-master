@@ -1,0 +1,92 @@
+{
+  "kind": "form",
+  "key": "employee-qualification-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a qualification",
+    "fa": "افزودن صلاحیت"
+  },
+  "description": {
+    "en": "Add a qualification to an employee",
+    "fa": "افزودن صلاحیت به کارمند"
+  },
+  "payload": {
+    "id": "employee-qualification-add",
+    "title": {
+      "en": "Qualification",
+      "fa": "صلاحیت"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "employee-qualification-add",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "employeeId",
+        "label": {
+          "en": "Employee id",
+          "fa": "شناسه کارمند"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Employee id is required.",
+            "fa": "شناسه کارمند الزامی است."
+          }
+        }
+      },
+      {
+        "name": "qualificationId",
+        "label": {
+          "en": "Qualification",
+          "fa": "صلاحیت"
+        },
+        "kind": "select",
+        "optionsFrom": "employee-qualification-choices",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Qualification is required.",
+            "fa": "صلاحیت الزامی است."
+          }
+        }
+      },
+      {
+        "name": "issuer",
+        "label": {
+          "en": "Issuer",
+          "fa": "صادرکننده"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "issueDate",
+        "label": {
+          "en": "Issue date",
+          "fa": "تاریخ صدور"
+        },
+        "kind": "date",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Issue date is required.",
+            "fa": "تاریخ صدور الزامی است."
+          }
+        }
+      },
+      {
+        "name": "expiryDate",
+        "label": {
+          "en": "Expiry date",
+          "fa": "تاریخ انقضا"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}

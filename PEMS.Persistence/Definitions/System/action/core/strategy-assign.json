@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "strategy-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign a tag to the strategy",
+    "fa": "تخصیص تگ به استراتژی"
+  },
+  "description": {
+    "en": "Assign a tag to the strategy",
+    "fa": "تخصیص تگ به استراتژی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceStrategy",
+      "action": "Assign",
+      "args": {
+        "id": "field:id",
+        "equipmentId": "field:equipmentId"
+      }
+    },
+    "success": {
+      "en": "The tag was assigned.",
+      "fa": "تگ تخصیص داده شد."
+    },
+    "redirect": "/MaintenanceStrategy/Details/{id}"
+  }
+}

@@ -1,0 +1,55 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("tabs", Category = "navigation", Icon = "bi-segmented-nav")]
+@inject IPemsLocale Locale
+@if (Options.Skin == ComponentSkin.Bootstrap)
+{
+    <ul class="nav nav-tabs mb-3" id="@Options.Id" role="tablist" aria-label="@Locale.Text(Options.Label)">
+        @foreach (var item in Options.Items)
+        {
+            <li class="nav-item" role="presentation">
+                <button type="button" role="tab" id="@(Options.Id)-tab-@item.Key" class="@LinkClass(item.Key)" data-bs-toggle="tab" data-bs-target="#@(Options.Id)-panel-@item.Key"
+                        aria-controls="@(Options.Id)-panel-@item.Key" aria-selected="@Selected(item.Key)">@Locale.Text(item.Label)</button>
+            </li>
+        }
+    </ul>
+    <div class="tab-content">
+        @foreach (var item in Options.Items)
+        {
+            <div role="tabpanel" id="@(Options.Id)-panel-@item.Key" class="@PaneClass(item.Key)" aria-labelledby="@(Options.Id)-tab-@item.Key">
+                @if (item.Content is not null)
+                {
+                    <p>@Locale.Text(item.Content)</p>
+                }
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="pems-tabs" id="@Options.Id" data-pems-tabs>
+        <div class="pems-tabs__list" role="tablist" aria-label="@Locale.Text(Options.Label)">
+            @foreach (var item in Options.Items)
+            {
+                <button type="button" role="tab" id="@(Options.Id)-tab-@item.Key" class="pems-tabs__tab" aria-controls="@(Options.Id)-panel-@item.Key"
+                        aria-selected="@Selected(item.Key)" tabindex="@(item.Key == Current ? 0 : -1)">@Locale.Text(item.Label)</button>
+            }
+        </div>
+        @foreach (var item in Options.Items)
+        {
+            <div role="tabpanel" id="@(Options.Id)-panel-@item.Key" class="pems-tabs__panel" aria-labelledby="@(Options.Id)-tab-@item.Key" hidden="@(item.Key != Current)">
+                @if (item.Content is not null)
+                {
+                    <p>@Locale.Text(item.Content)</p>
+                }
+            </div>
+        }
+    </div>
+}
+@code {
+    [Parameter, EditorRequired] public TabsOptions Options { get; set; } = default!;
+    /// <summary>The selected tab: the requested one when it exists, else the first.</summary>
+    private string? Current => Options.Items.Any(i => i.Key == Options.Active) ? Options.Active : Options.Items.FirstOrDefault()?.Key;
+    private string Selected(string key) => key == Current ? "true" : "false";
+    private string LinkClass(string key) => key == Current ? "nav-link active" : "nav-link";
+    private string PaneClass(string key) => key == Current ? "tab-pane fade show active" : "tab-pane fade";
+}

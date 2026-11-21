@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "maintenance-plan-generate-wo",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate a work order from the plan",
+    "fa": "ساخت دستورکار از برنامه"
+  },
+  "description": {
+    "en": "Generate a work order from the plan",
+    "fa": "ساخت دستورکار از برنامه"
+  },
+  "payload": {
+    "id": "maintenance-plan-generate-wo",
+    "title": {
+      "en": "Generate a work order from the plan",
+      "fa": "ساخت دستورکار از برنامه"
+    },
+    "submitLabel": {
+      "en": "Generate",
+      "fa": "ساخت"
+    },
+    "actionKey": "maintenance-plan-generate-wo",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "planId",
+        "label": {
+          "en": "Plan id",
+          "fa": "شناسه‌ی برنامه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

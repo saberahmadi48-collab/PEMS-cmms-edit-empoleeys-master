@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "workflow-discard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discard a draft",
+    "fa": "حذف پیش‌نویس"
+  },
+  "description": {
+    "en": "Discard a draft",
+    "fa": "حذف پیش‌نویس"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "Discard",
+      "args": {
+        "versionId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Draft discarded.",
+      "fa": "پیش‌نویس حذف شد."
+    },
+    "redirect": "/p/workflow-management"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "pc-request-notes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue request: Notes",
+    "fa": "درخواست کاتالوگ قطعه: Notes"
+  },
+  "description": {
+    "en": "Part Catalogue request: Notes",
+    "fa": "درخواست کاتالوگ قطعه: Notes"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "Notes",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "id": "param:id"
+      }
+    }
+  }
+}

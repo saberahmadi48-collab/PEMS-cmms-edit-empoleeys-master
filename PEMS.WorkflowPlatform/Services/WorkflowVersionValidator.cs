@@ -14,14 +14,17 @@ public class WorkflowVersionValidator : IWorkflowVersionValidator
     private readonly IWorkflowActionRegistry _registry;
     private readonly IWorkflowConditionEvaluator _conditions;
     private readonly IWorkflowReferenceCatalog? _catalog;
+    private readonly IWorkflowModuleContractRegistry? _contracts;
 
     public WorkflowVersionValidator(IWorkflowDbContext db, IWorkflowActionRegistry? registry = null,
-        IWorkflowConditionEvaluator? conditions = null, IWorkflowReferenceCatalog? catalog = null)
+        IWorkflowConditionEvaluator? conditions = null, IWorkflowReferenceCatalog? catalog = null,
+        IWorkflowModuleContractRegistry? contracts = null)
     {
         _db = db;
         _registry = registry ?? new WorkflowActionRegistry();
         _conditions = conditions ?? new WorkflowConditionEvaluator();
         _catalog = catalog;
+        _contracts = contracts;
     }
 
     private static WorkflowValidationIssue Err(string code, string msg, int? stage = null, int? tr = null)
@@ -43,6 +46,7 @@ public class WorkflowVersionValidator : IWorkflowVersionValidator
         Structural(result, stages, transitions, stageIds);
         await SecurityAsync(result, stages, transitions, ct);
         Runtime(result, definition, stages, transitions);
+        Contract(result, definition, stages, transitions);
         await BindingAsync(result, definition, ct);
         return result;
     }
@@ -189,6 +193,44 @@ public class WorkflowVersionValidator : IWorkflowVersionValidator
             if (s.IsEscalatable && s.TimeoutHours == null)
                 r.Issues.Add(Warn("ESCALATION_NO_SLA", $"مرحله‌ی «{s.Name}» Escalation‌پذیر است ولی مهلتی ندارد.", s.WorkflowStageId));
         }
+    }
+
+    /// <summary>
+    /// SCRUM-103: قرارداد ماژول (آنچه کد ماژول از تعریف انتظار دارد). بدون قرارداد ثبت‌شده (فرآیند ساخته‌شده توسط کاربر) چیزی بررسی نمی‌شود.
+    /// </summary>
+    private void Contract(WorkflowValidationResult r, WorkflowDefinition def, List<WorkflowStage> stages, List<WorkflowTransition> transitions)
+    {
+        var contract = _contracts?.Find(def.Module, def.Category);
+        if (contract == null) return;
+
+        var byId = stages.ToDictionary(s => s.WorkflowStageId);
+        string? NameOf(int? id) => id.HasValue && byId.TryGetValue(id.Value, out var s) ? s.Name : null;
+
+        foreach (var action in contract.RequiredActions)
+            if (!transitions.Any(t => t.ActionType == action))
+                r.Issues.Add(Err("CONTRACT_ACTION_MISSING",
+                    $"ماژول «{def.Module}» اکشن «{action}» را اجرا می‌کند؛ دست‌کم یک گذار با این اکشن لازم است."));
+
+        foreach (var req in contract.RequiredStages)
+        {
+            var stage = stages.FirstOrDefault(s => s.Name == req.Name);
+            if (stage == null)
+                r.Issues.Add(Err("CONTRACT_STAGE_MISSING",
+                    $"ماژول «{def.Module}» به مرحله‌ای با نام «{req.Name}» وابسته است؛ نام آن را تغییر ندهید و حذفش نکنید (برچسب نمایشی آزاد است)."));
+            else if (req.StageType != null && stage.StageType != req.StageType)
+                r.Issues.Add(Err("CONTRACT_STAGE_TYPE",
+                    $"مرحله‌ی «{req.Name}» باید از نوع {req.StageType} باشد (ماژول «{def.Module}» شرکت‌کننده‌های آن را پویا تعیین می‌کند).", stage.WorkflowStageId));
+        }
+
+        foreach (var req in contract.RequiredTransitions)
+            if (!transitions.Any(t => t.ActionType == req.ActionType && NameOf(t.FromStageId) == req.FromStage && NameOf(t.ToStageId) == req.ToStage))
+                r.Issues.Add(Err("CONTRACT_TRANSITION_MISSING",
+                    $"ماژول «{def.Module}» به گذار «{req.FromStage ?? "شروع"}» --{req.ActionType}--> «{req.ToStage ?? "پایان"}» وابسته است."));
+
+        if (contract.RequiresBusinessStatus)
+            foreach (var s in stages.Where(s => string.IsNullOrWhiteSpace(s.BusinessStatus)))
+                r.Issues.Add(Err("CONTRACT_BUSINESS_STATUS_MISSING",
+                    $"وضعیت رکورد «{def.Module}» از BusinessStatus مرحله خوانده می‌شود؛ مرحله‌ی «{s.Name}» BusinessStatus ندارد.", s.WorkflowStageId));
     }
 
     private async Task BindingAsync(WorkflowValidationResult r, WorkflowDefinition def, CancellationToken ct)

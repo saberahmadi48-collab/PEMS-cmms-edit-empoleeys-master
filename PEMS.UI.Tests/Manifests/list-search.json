@@ -1,0 +1,87 @@
+{
+  "key": "list-search",
+  "component": "PEMS.UI.Components.PemsListSearch",
+  "category": "list",
+  "icon": "bi-search",
+  "nameKey": "component.list-search",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "action": {
+        "type": "string"
+      },
+      "inputId": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "value": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "placeholder": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "searchType": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "liveFilter": {
+        "type": "boolean"
+      },
+      "searchText": {
+        "type": "string"
+      },
+      "searchCloseText": {
+        "type": "string"
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ListSearchOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "id": "s",
+    "action": "/docs",
+    "inputId": "q",
+    "searchText": "Search",
+    "searchCloseText": "Close"
+  }
+}

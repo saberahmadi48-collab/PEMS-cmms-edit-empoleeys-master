@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mrq-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "All quotations (MRQ)",
+    "fa": "همه‌ی استعلام‌ها (MRQ)"
+  },
+  "description": {
+    "en": "All quotations (MRQ)",
+    "fa": "همه‌ی استعلام‌ها (MRQ)"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaterialRequisition",
+      "action": "AllQuotations"
+    }
+  }
+}

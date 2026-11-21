@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "pc-request-xlsx",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue request form (Excel)",
+    "fa": "فرم درخواست کاتالوگ قطعه (Excel)"
+  },
+  "description": {
+    "en": "Part Catalogue request form (Excel)",
+    "fa": "فرم درخواست کاتالوگ قطعه (Excel)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "ExportXlsx",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "id": "param:id"
+      },
+      "disposition": "attachment"
+    }
+  }
+}

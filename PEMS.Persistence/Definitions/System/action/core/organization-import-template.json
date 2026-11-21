@@ -1,0 +1,22 @@
+{
+  "kind": "action",
+  "key": "organization-import-template",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Download the organization import template",
+    "fa": "دریافت قالب ایمپورت ساختار سازمانی"
+  },
+  "description": {
+    "en": "Download the organization import template",
+    "fa": "دریافت قالب ایمپورت ساختار سازمانی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "OrganizationImport",
+      "action": "Template"
+    }
+  }
+}

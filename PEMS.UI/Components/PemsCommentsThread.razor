@@ -1,0 +1,28 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("comments-thread", Category = "data", Icon = "bi-chat-left-text")]
+@inject IPemsLocale Locale
+@if (Options.Comments.Count == 0)
+{
+    <div @attributes="Options.Attributes" class="@Join("pems-thread pems-thread--empty text-muted", Options.Css, Options.PageClass)" id="@Options.Id">@Locale.Text(Options.Empty)</div>
+}
+else
+{
+    <ul @attributes="Options.Attributes" class="@Join("pems-thread", Options.Css, Options.PageClass)" id="@Options.Id">
+        @foreach (var c in Options.Comments.OrderBy(x => x.When)) { @Comment(c, false) }
+    </ul>
+}
+@code {
+    [Parameter, EditorRequired] public CommentsThreadOptions Options { get; set; } = default!;
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+
+    private RenderFragment Comment(ThreadComment c, bool reply) => @<li class="@(reply ? "pems-thread__item pems-thread__item--reply" : "pems-thread__item")">
+        <div class="pems-thread__head">
+            <strong class="pems-thread__author">@c.Author</strong>
+            <time class="pems-thread__when" datetime="@c.When.ToString("s")">@PEMS.UI.PemsDates.DateTime(c.When)</time>
+            @if (!string.IsNullOrWhiteSpace(c.Status)) { <span class="@("pems-thread__status pems-thread__status--" + c.StatusTone)">@c.Status</span> }
+        </div>
+        <div class="pems-thread__text">@c.Text</div>
+        @if (!string.IsNullOrWhiteSpace(c.ActionUrl) && !string.IsNullOrWhiteSpace(c.ActionLabel)) { <a class="pems-thread__action" href="@c.ActionUrl">@c.ActionLabel</a> }
+        @if (c.Replies.Count > 0) { <ul class="pems-thread__replies">@foreach (var r in c.Replies.OrderBy(x => x.When)) { @Comment(r, true) }</ul> }
+    </li>;
+}

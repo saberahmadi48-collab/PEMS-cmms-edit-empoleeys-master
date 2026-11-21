@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "kpi-targets-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "KPI targets",
+    "fa": "اهداف شاخص‌ها"
+  },
+  "description": {
+    "en": "KPI targets",
+    "fa": "اهداف شاخص‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Kpi",
+      "action": "Targets"
+    }
+  }
+}

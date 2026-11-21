@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "pre-procurement-projects",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Projects",
+    "fa": "پروژه‌ها"
+  },
+  "description": {
+    "en": "Projects",
+    "fa": "پروژه‌ها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PreProcurement",
+      "action": "Projects",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

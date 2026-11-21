@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "crew-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New crew",
+    "fa": "گروه جدید"
+  },
+  "description": {
+    "en": "New crew",
+    "fa": "گروه جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "CrewAdmin",
+      "action": "CreateCrew",
+      "args": {
+        "userId": "context:userId",
+        "userName": "context:userName",
+        "employeeId": "context:employeeId",
+        "userRoles": "context:roles",
+        "ip": "context:ip",
+        "code": "field:code",
+        "name": "field:name",
+        "workOrderId": "field:workOrderId"
+      }
+    },
+    "success": {
+      "en": "The crew was created.",
+      "fa": "Crew ساخته شد."
+    },
+    "redirect": "/p/crews"
+  }
+}

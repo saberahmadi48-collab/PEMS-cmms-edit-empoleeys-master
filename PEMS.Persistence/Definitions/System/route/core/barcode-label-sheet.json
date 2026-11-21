@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "barcode-label-sheet",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode label sheet (old address)",
+    "fa": "Barcode label sheet (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Barcode label sheet (old address)",
+    "fa": "Barcode label sheet (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Barcode/BulkLabelSheet",
+    "target": "/x/barcode-label-sheet",
+    "permanent": false
+  }
+}

@@ -3,160 +3,136 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<pems-flex justify="between" align="center" css="mb-3">
     <div>
-        <h5 class="mb-0">@Model.ITPNumber &mdash; @Model.Title</h5>
+        <pems-heading level="5" class="mb-0">@Model.ITPNumber &mdash; @Model.Title</pems-heading>
         <span class="text-muted small">@Model.QCDiscipline?.Name @(Model.Equipment != null ? " | " + Model.Equipment.TagNumber : "")</span>
     </div>
-    <div class="d-flex align-items-center gap-2">
-        <span class="badge @(Model.Status == "Active" ? "bg-success" : Model.Status == "Draft" ? "bg-secondary" : "bg-info") fs-6">@Model.Status</span>
+    <pems-flex align="center" gap="2">
+        <pems-badge tone="none" css="@(Model.Status == "Active" ? "bg-success" : Model.Status == "Draft" ? "bg-secondary" : "bg-info") fs-6">@Model.Status</pems-badge>
         @if (Model.Status == "Draft")
         {
-            <form asp-action="ItpApprove" method="post">
+            <pems-form asp-action="ItpApprove" method="post">
                 <input type="hidden" name="id" value="@Model.InspectionTestPlanId" />
-                <button class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> Approve &amp; Activate</button>
-            </form>
+                <pems-button tone="success" size="small"><pems-icon name="bi-check-lg" /> Approve &amp; Activate</pems-button>
+            </pems-form>
         }
-    </div>
-</div>
+    </pems-flex>
+</pems-flex>
 
-<div class="content-card mb-3">
-    <div class="row">
-        <div class="col-md-4"><strong>Reference:</strong> @Model.ReferenceCodeStandard</div>
-        <div class="col-md-4"><strong>Revision:</strong> @Model.Revision</div>
-        <div class="col-md-4"><strong>Approved:</strong> @(Model.ApprovedDate?.ToString("yyyy-MM-dd") ?? "-")</div>
+<pems-content-card css="mb-3">
+    <pems-row>
+        <pems-col md="4"><strong>Reference:</strong> @Model.ReferenceCodeStandard</pems-col>
+        <pems-col md="4"><strong>Revision:</strong> @Model.Revision</pems-col>
+        <pems-col md="4"><strong>Approved:</strong> @(PemsDates.Date(Model.ApprovedDate) ?? "-")</pems-col>
         @if (Model.ProcurementPackage != null)
         {
-            <div class="col-md-4 mt-2"><strong>@Localizer["Package"]:</strong> <a asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@Model.ProcurementPackageId">@Model.ProcurementPackage.PackageNumber</a></div>
+            <pems-col md="4" css="mt-2"><strong>@Localizer["Package"]:</strong> <pems-link href="/p/procurement-package-details?id=@Model.ProcurementPackageId">@Model.ProcurementPackage.PackageNumber</pems-link></pems-col>
         }
         @if (Model.Contract != null)
         {
-            <div class="col-md-4 mt-2"><strong>@Localizer["Contract"]:</strong> <a asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.Contract.ContractNo</a></div>
+            <pems-col md="4" css="mt-2"><strong>@Localizer["Contract"]:</strong> <pems-link href="/p/contract-details?id=@Model.ContractId">@Model.Contract.ContractNo</pems-link></pems-col>
         }
-    </div>
+    </pems-row>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
     {
-        <p class="mt-2 mb-0 text-muted small">@Model.Description</p>
+        <pems-text class="mt-2 mb-0 text-muted small">@Model.Description</pems-text>
     }
-</div>
+</pems-content-card>
 
-<div class="content-card mb-3">
-    <h6 class="mb-3">Line Items</h6>
-    <table class="table table-enterprise mb-0">
-        <thead>
-            <tr><th>#</th><th>@Localizer["Activity"]</th><th>@Localizer["Discipline"]</th><th>@Localizer["Category"]</th><th>@Localizer["Acceptance Criteria"]</th><th>@Localizer["Responsible"]</th><th>@Localizer["Status"]</th><th>@Localizer["Actions"]</th></tr>
-        </thead>
-        <tbody>
-            @foreach (var li in Model.LineItems.OrderBy(x => x.SequenceNo))
-            {
-                <tr>
-                    <td>@li.SequenceNo</td>
-                    <td class="small">@li.Activity</td>
-                    <td class="small">@li.QCDiscipline?.Name</td>
-                    <td>
-                        <span class="badge bg-secondary" title="H=Hold, W=Witness, R=Review, S=Surveillance, M=Monitor">@li.InspectionCategory</span>
-                    </td>
-                    <td class="small">@li.AcceptanceCriteria</td>
-                    <td class="small">@li.ResponsibleParty</td>
-                    <td>
-                        <span class="badge @(li.Status == "Passed" ? "bg-success" : li.Status == "Failed" ? "bg-danger" : li.Status == "Notified" ? "bg-info" : "bg-light text-dark")">@li.Status</span>
-                        @if (li.NotifiedDate.HasValue)
-                        {
-                            <div class="text-muted small">اعلان: @li.NotifiedDate.Value.ToString("yyyy-MM-dd HH:mm")</div>
-                        }
-                    </td>
-                    <td class="d-flex flex-column gap-1">
+<pems-content-card css="mb-3">
+    <pems-heading level="6" class="mb-3">Line Items</pems-heading>
+    @{
+        var rows_70 = Model.LineItems.OrderBy(x => x.SequenceNo);
+        var cell_70_3 = DataCell.Template(rows_70, @<text>@{ var li = item; }
+                        <pems-badge tone="neutral" title="H=Hold, W=Witness, R=Review, S=Surveillance, M=Monitor">@li.InspectionCategory</pems-badge>
+                    </text>);
+        var cell_70_7 = DataCell.Template(rows_70, @<text>@{ var li = item; }<pems-flex dir="column" gap="1">
                         @if (li.InspectionCategory == "H" && li.Status == "Pending")
                         {
-                            <form asp-action="ItpNotifyHoldPoint" method="post">
+                            <pems-form asp-action="ItpNotifyHoldPoint" method="post">
                                 <input type="hidden" name="lineItemId" value="@li.ITPLineItemId" />
                                 <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
-                                <button class="btn btn-warning btn-sm w-100"><i class="bi bi-bell"></i> Notify Hold Point</button>
-                            </form>
+                                <pems-button tone="warning" size="small" css="w-100"><pems-icon name="bi-bell" /> Notify Hold Point</pems-button>
+                            </pems-form>
                         }
                         @if (li.Status != "Passed" && li.Status != "Failed")
                         {
-                            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#inspectModal_@li.ITPLineItemId">
-                                <i class="bi bi-clipboard-check"></i> Perform Inspection
-                            </button>
+                            <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#inspectModal" data-fill-lineitemid="@li.ITPLineItemId" data-fill-activity="@li.Activity">
+                                <pems-icon name="bi-clipboard-check" /> Perform Inspection
+                            </pems-button>
                         }
-                    </td>
-                </tr>
+                    </pems-flex></text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_70, c_ => c_.Add("#", li => (object?)(li.SequenceNo)).Add(((Localizer["Activity"])?.ToString() ?? ""), li => (object?)(li.Activity), css: "small").Add(((Localizer["Discipline"])?.ToString() ?? ""), li => (object?)(li.QCDiscipline?.Name), css: "small").Add(((Localizer["Category"])?.ToString() ?? ""), li => (object?)cell_70_3(li)).Add(((Localizer["Acceptance Criteria"])?.ToString() ?? ""), li => (object?)(li.AcceptanceCriteria), css: "small").Add(((Localizer["Responsible"])?.ToString() ?? ""), li => (object?)(li.ResponsibleParty), css: "small").Add(((Localizer["Status"])?.ToString() ?? ""), li => (object?)(DataCell.Group(DataCell.Badge("none", li.Status, (li.Status == "Passed" ? "bg-success" : li.Status == "Failed" ? "bg-danger" : li.Status == "Notified" ? "bg-info" : "bg-light text-dark")), " ", (li.NotifiedDate.HasValue ? (object?)DataCell.Span("text-muted small", "اعلان: ", (PemsDates.DateTime(li.NotifiedDate.Value))).WithTag("div") : null)))).Add(((Localizer["Actions"])?.ToString() ?? ""), li => (object?)cell_70_7(li))))" css="mb-0" />
+</pems-content-card>
 
-                <div class="modal fade" id="inspectModal_@li.ITPLineItemId" tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form asp-action="ItpPerformInspection" method="post">
-                                <input type="hidden" name="lineItemId" value="@li.ITPLineItemId" />
-                                <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
-                                <div class="modal-header"><h6 class="modal-title">Perform Inspection - @li.Activity</h6></div>
-                                <div class="modal-body">
-                                    <div class="mb-2">
-                                        <label class="form-label small">@Localizer["Result"]</label>
-                                        <select name="result" class="form-select form-select-sm" required>
-                                            <option value="Acceptable">Acceptable</option>
-                                            <option value="Reject">@Localizer["Reject"]</option>
-                                            <option value="Warning">@Localizer["Warning"]</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-2">
-                                        <label class="form-label small">@Localizer["Inspector"]</label>
-                                        <input name="inspector" class="form-control form-control-sm" />
-                                    </div>
-                                    <div class="mb-2">
-                                        <label class="form-label small">@Localizer["Notes"]</label>
-                                        <textarea name="description" class="form-control form-control-sm" rows="2"></textarea>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
-                                    <button type="submit" class="btn btn-pems-solid btn-sm">Save Result</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            }
-        </tbody>
-    </table>
-</div>
-
-<div class="content-card">
-    <h6 class="mb-3"><i class="bi bi-plus-lg"></i> Add Line Item</h6>
-    <form asp-action="ItpAddLineItem" method="post">
+<pems-content-card>
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-plus-lg" /> Add Line Item</pems-heading>
+    <pems-form asp-action="ItpAddLineItem" method="post">
         <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
-        <div class="row g-3">
-            <div class="col-md-6"><label class="form-label small">@Localizer["Activity"]</label><input name="activity" class="form-control form-control-sm" required /></div>
-            <div class="col-md-3">
-                <label class="form-label small">@Localizer["Discipline"]</label>
-                <select name="qcDisciplineId" class="form-select form-select-sm" required>
+        <pems-row gap="3">
+            <pems-col md="6"><pems-label css="small">@Localizer["Activity"]</pems-label><pems-input scale="small" name="activity" required /></pems-col>
+            <pems-col md="3">
+                <pems-label css="small">@Localizer["Discipline"]</pems-label>
+                <pems-select scale="small" name="qcDisciplineId" required>
                     @foreach (var d in (IEnumerable<PEMS.Domain.Entities.QCDiscipline>)ViewBag.QCDisciplines)
                     {
                         <option value="@d.QCDisciplineId">@d.Name</option>
                     }
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label small">@Localizer["Category"]</label>
-                <select name="inspectionCategory" class="form-select form-select-sm">
+                </pems-select>
+            </pems-col>
+            <pems-col md="3">
+                <pems-label css="small">@Localizer["Category"]</pems-label>
+                <pems-select scale="small" name="inspectionCategory">
                     <option value="H">H - Hold Point</option>
                     <option value="W">W - Witness Point</option>
                     <option value="R">R - Review Only</option>
                     <option value="S">S - Surveillance/Random</option>
                     <option value="M">M - Monitor</option>
-                </select>
-            </div>
-            <div class="col-md-6"><label class="form-label small">@Localizer["Acceptance Criteria"]</label><input name="acceptanceCriteria" class="form-control form-control-sm" /></div>
-            <div class="col-md-3"><label class="form-label small">Reference Code</label><input name="referenceCodeStandard" class="form-control form-control-sm" /></div>
-            <div class="col-md-3">
-                <label class="form-label small">Responsible Party</label>
-                <select name="responsibleParty" class="form-select form-select-sm">
+                </pems-select>
+            </pems-col>
+            <pems-col md="6"><pems-label css="small">@Localizer["Acceptance Criteria"]</pems-label><pems-input scale="small" name="acceptanceCriteria" /></pems-col>
+            <pems-col md="3"><pems-label css="small">Reference Code</pems-label><pems-input scale="small" name="referenceCodeStandard" /></pems-col>
+            <pems-col md="3">
+                <pems-label css="small">Responsible Party</pems-label>
+                <pems-select scale="small" name="responsibleParty">
                     <option>Contractor</option><option>@Localizer["Client"]</option><option>ThirdParty</option>
-                </select>
-            </div>
-        </div>
-        <div class="mt-3">
-            <button type="submit" class="btn btn-pems-solid btn-sm">@Localizer["Add"]</button>
-        </div>
-    </form>
-</div>
+                </pems-select>
+            </pems-col>
+        </pems-row>
+        <pems-action-bar css="mt-3">
+            <pems-button tone="primary" size="small" type="submit">@Localizer["Add"]</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>
+
+    <pems-modal id="inspectModal" tabindex="-1">
+    <pems-form asp-action="ItpPerformInspection" method="post">
+    <input type="hidden" name="lineItemId" value="" />
+    <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
+    <pems-modal-header>Perform Inspection - <span data-fill-text="activity"></span></pems-modal-header>
+    <pems-modal-body>
+    <pems-form-group css="mb-2">
+    <pems-label css="small">@Localizer["Result"]</pems-label>
+    <pems-select scale="small" name="result" required>
+    <option value="Acceptable">Acceptable</option>
+    <option value="Reject">@Localizer["Reject"]</option>
+    <option value="Warning">@Localizer["Warning"]</option>
+    </pems-select>
+    </pems-form-group>
+    <pems-form-group css="mb-2">
+    <pems-label css="small">@Localizer["Inspector"]</pems-label>
+    <pems-input scale="small" name="inspector" />
+    </pems-form-group>
+    <pems-form-group css="mb-2">
+    <pems-label css="small">@Localizer["Notes"]</pems-label>
+    <pems-textarea scale="small" name="description" rows="2"></pems-textarea>
+    </pems-form-group>
+    </pems-modal-body>
+    <pems-modal-footer>
+    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Cancel"]</pems-button>
+    <pems-button tone="primary" size="small" type="submit">Save Result</pems-button>
+    </pems-modal-footer>
+    </pems-form>
+    </pems-modal>

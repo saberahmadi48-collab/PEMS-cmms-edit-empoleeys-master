@@ -1,0 +1,33 @@
+{
+  "kind": "data-source",
+  "key": "material-categories-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material categories rows",
+    "fa": "ردیف‌های دسته‌بندی‌های مواد"
+  },
+  "description": {
+    "en": "The rows of the material categories grid",
+    "fa": "ردیف‌های جدول دسته‌بندی‌های مواد"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "MaterialCategory",
+      "fields": [
+        "Code",
+        "Name",
+        "Description",
+        "ParentCategoryId",
+        "IsActive"
+      ],
+      "search": [
+        "Code",
+        "Name",
+        "Description"
+      ]
+    }
+  }
+}

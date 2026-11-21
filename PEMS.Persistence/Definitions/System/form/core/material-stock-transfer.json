@@ -1,0 +1,100 @@
+{
+  "kind": "form",
+  "key": "material-stock-transfer",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Transfer stock",
+    "fa": "انتقال بین انبارها"
+  },
+  "description": {
+    "en": "Transfer stock",
+    "fa": "انتقال بین انبارها"
+  },
+  "payload": {
+    "id": "material-stock-transfer",
+    "title": {
+      "en": "Transfer stock",
+      "fa": "انتقال بین انبارها"
+    },
+    "submitLabel": {
+      "en": "Transfer",
+      "fa": "ثبت انتقال"
+    },
+    "actionKey": "material-stock-transfer",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "materialItemId",
+        "label": {
+          "en": "Material id",
+          "fa": "شناسه‌ی ماده"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "fromWarehouseId",
+        "label": {
+          "en": "From warehouse",
+          "fa": "از انبار"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "material-item-warehouses"
+      },
+      {
+        "name": "toWarehouseId",
+        "label": {
+          "en": "To warehouse",
+          "fa": "به انبار"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "material-item-warehouses"
+      },
+      {
+        "name": "quantity",
+        "label": {
+          "en": "Quantity",
+          "fa": "مقدار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

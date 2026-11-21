@@ -1,0 +1,190 @@
+{
+  "kind": "page",
+  "key": "storage-providers",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Storage providers",
+    "fa": "ارائه‌دهندگان ذخیره‌سازی"
+  },
+  "description": {
+    "en": "Storage providers list (page definition)",
+    "fa": "فهرست ارائه‌دهندگان ذخیره‌سازی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "storage-providers",
+    "template": "entity-list",
+    "args": {
+      "id": "storage-providers",
+      "url": "/d/storage-providers-grid",
+      "idField": "storageProviderId",
+      "viewsKey": "storage-providers",
+      "columns": [
+        {
+          "key": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 200
+        },
+        {
+          "key": "code",
+          "header": {
+            "en": "Code",
+            "fa": "کد"
+          },
+          "width": 120
+        },
+        {
+          "key": "providerType",
+          "header": {
+            "en": "Type",
+            "fa": "نوع"
+          },
+          "width": 120
+        },
+        {
+          "key": "rootPath",
+          "header": {
+            "en": "Root path",
+            "fa": "مسیر ریشه"
+          },
+          "width": 260
+        },
+        {
+          "key": "isEnabled",
+          "header": {
+            "en": "Enabled",
+            "fa": "فعال"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "isDefault",
+          "header": {
+            "en": "Default",
+            "fa": "پیش‌فرض"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "lastHealthStatus",
+          "header": {
+            "en": "Health",
+            "fa": "وضعیت سلامت"
+          },
+          "width": 120
+        },
+        {
+          "key": "lastHealthCheckAt",
+          "header": {
+            "en": "Checked",
+            "fa": "آخرین بررسی"
+          },
+          "width": 170,
+          "type": "datetime"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/storage-providers-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "delete",
+              "label": {
+                "en": "Remove",
+                "fa": "حذف"
+              },
+              "url": "/a/storage-providers-delete",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Remove this record?",
+                "fa": "این رکورد حذف شود؟"
+              }
+            },
+            {
+              "key": "test",
+              "label": {
+                "en": "Test connection",
+                "fa": "آزمون اتصال"
+              },
+              "url": "/a/storage-providers-test",
+              "method": "post",
+              "confirm": {
+                "en": "Test the connection now?",
+                "fa": "اتصال همین حالا آزموده شود؟"
+              }
+            },
+            {
+              "key": "set-default",
+              "label": {
+                "en": "Set as default",
+                "fa": "تنظیم به‌عنوان پیش‌فرض"
+              },
+              "url": "/a/storage-providers-set-default",
+              "method": "post",
+              "confirm": {
+                "en": "Make this the default provider?",
+                "fa": "این ارائه‌دهنده پیش‌فرض شود؟"
+              },
+              "showWhen": "row.isDefault == false"
+            },
+            {
+              "key": "enable",
+              "label": {
+                "en": "Enable",
+                "fa": "فعال‌سازی"
+              },
+              "url": "/a/storage-providers-enable",
+              "method": "post",
+              "confirm": {
+                "en": "Enable this provider?",
+                "fa": "این ارائه‌دهنده فعال شود؟"
+              },
+              "showWhen": "row.isEnabled == false"
+            },
+            {
+              "key": "disable",
+              "label": {
+                "en": "Disable",
+                "fa": "غیرفعال‌سازی"
+              },
+              "url": "/a/storage-providers-disable",
+              "method": "post",
+              "confirm": {
+                "en": "Disable this provider?",
+                "fa": "این ارائه‌دهنده غیرفعال شود؟"
+              },
+              "showWhen": "row.isEnabled == true"
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/storage-providers-create",
+      "newLabel": {
+        "en": "New storage provider",
+        "fa": "ارائه‌دهنده‌ی ذخیره‌سازی جدید"
+      }
+    }
+  }
+}

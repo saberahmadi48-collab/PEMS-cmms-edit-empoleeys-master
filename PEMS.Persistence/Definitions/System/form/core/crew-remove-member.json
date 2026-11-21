@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "crew-remove-member",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a crew member",
+    "fa": "خروج عضو"
+  },
+  "description": {
+    "en": "Remove a crew member",
+    "fa": "خروج عضو"
+  },
+  "payload": {
+    "id": "crew-remove-member",
+    "title": {
+      "en": "Remove a crew member",
+      "fa": "خروج عضو"
+    },
+    "submitLabel": {
+      "en": "Remove",
+      "fa": "خروج"
+    },
+    "actionKey": "crew-remove-member",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "crewMemberId",
+        "label": {
+          "en": "Member id",
+          "fa": "شناسه‌ی عضو"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

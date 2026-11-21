@@ -1,20 +1,31 @@
 @model PEMS.Application.DTOs.HelpVisualRenderDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     var roots = PEMS.Web.Helpers.HelpVisualTreeBuilder.BuildRoots(Model);
+
+    // SCRUM-337 TreeView: the read-only help tree (decision tree, entity relationships) is a <pems-tree>: branches open and close
+    // and the keyboard moves through it. One recursive local function (async: it writes tag helpers) instead of a partial per node,
+    // because a nested <pems-tree-item> must run inside its parent to be counted as its child.
+    async Task RenderNode(PEMS.Web.Models.HelpNodeTreeItem node, int depth)
+    {
+        if (depth > 40) { return; }
+        <pems-tree-item label="@node.Label">
+            <pems-tree-label>
+                @if (!string.IsNullOrWhiteSpace(node.IncomingEdgeLabel))
+                {
+                    <span class="pems-help-tree-edge-label"><pems-icon name="bi-arrow-return-right" aria-hidden="true" /> @node.IncomingEdgeLabel</span>
+                }
+                <pems-icon css="@node.IconCssClass" aria-hidden="true" /> @node.Label
+            </pems-tree-label>
+            @foreach (var child in node.Children) { await RenderNode(child, depth + 1); }
+        </pems-tree-item>
+    }
 }
 
-<style>
-    .pems-help-node-tree ul { list-style: none; padding-inline-start: 1.5rem; margin: 0; }
-    .pems-help-node-tree > ul { padding-inline-start: 0; }
-    .pems-help-node-tree .pems-help-tree-label { display: flex; align-items: center; gap: .4rem; padding: .25rem 0; }
-    .pems-help-node-tree .pems-help-tree-edge-label { font-size: .78rem; color: var(--pems-text-muted, #6c757d); padding-inline-start: .2rem; }
-</style>
-
 <div class="pems-help-node-tree">
-    <ul>
-        @foreach (var root in roots)
-        {
-            @await Html.PartialAsync("_HelpNodeTreeItem", root)
-        }
-    </ul>
+    <pems-tree label="@Model.Caption" toggle-label="@Localizer["Ct_ToggleBranch"]">
+        @foreach (var root in roots) { await RenderNode(root, 0); }
+    </pems-tree>
 </div>

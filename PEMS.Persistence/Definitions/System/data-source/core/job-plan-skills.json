@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "job-plan-skills",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Skills",
+    "fa": "مهارت‌ها"
+  },
+  "description": {
+    "en": "Skills",
+    "fa": "مهارت‌ها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "JobPlanPage",
+      "action": "SkillChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

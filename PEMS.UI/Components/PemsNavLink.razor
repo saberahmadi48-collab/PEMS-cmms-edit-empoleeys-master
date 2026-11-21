@@ -1,0 +1,16 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("nav-link", Category = "navigation", Icon = "bi-link-45deg")]
+@if (Options.Item)
+{
+    <li class="nav-item">@Link</li>
+}
+else
+{
+    @Link
+}
+@code {
+    [Parameter, EditorRequired] public NavLinkOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string Css => string.Join(" ", new[] { "nav-link", Options.Sub ? "nav-subitem" : null, Options.Active ? "active" : null, Options.Css }.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+    private RenderFragment Link => FrameMarkup.Element("a", Css, Options.PageClass, Options.Attributes, ChildContent);
+}

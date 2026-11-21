@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "job-plan-equipment-classes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment classes",
+    "fa": "کلاس‌های تجهیز"
+  },
+  "description": {
+    "en": "Equipment classes",
+    "fa": "کلاس‌های تجهیز"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "JobPlanPage",
+      "action": "EquipmentClassChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

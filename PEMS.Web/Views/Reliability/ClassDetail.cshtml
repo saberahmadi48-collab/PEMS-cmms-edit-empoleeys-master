@@ -3,40 +3,40 @@
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0">@Model.Name <code class="small">@Model.Code</code></h5>
-    <a asp-action="Index" class="small">@Localizer["← Fleet Reliability"]</a>
-</div>
+<pems-flex justify="between" align="center" css="mb-3">
+    <pems-heading level="5" class="mb-0">@Model.Name <code class="small">@Model.Code</code></pems-heading>
+    <pems-link asp-action="Index" class="small">@Localizer["← Fleet Reliability"]</pems-link>
+</pems-flex>
 
-<div class="content-card">
-    <div class="row g-3 text-center">
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@Model.EquipmentPopulation</div>
+<pems-content-card>
+    <pems-row gap="3" css="text-center">
+        <pems-col md="2">
+            <pems-metric>@Model.EquipmentPopulation</pems-metric>
             <div class="text-muted small">@Localizer["Population"]</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@Model.EquipmentWithFailureHistory</div>
+        </pems-col>
+        <pems-col md="2">
+            <pems-metric>@Model.EquipmentWithFailureHistory</pems-metric>
             <div class="text-muted small">With Failure History</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@Model.FailureCount</div>
+        </pems-col>
+        <pems-col md="2">
+            <pems-metric>@Model.FailureCount</pems-metric>
             <div class="text-muted small">@Localizer["Total Failures"]</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@Model.TotalDowntimeHours.ToString("N1")h</div>
+        </pems-col>
+        <pems-col md="2">
+            <pems-metric>@Model.TotalDowntimeHours.ToString("N1")h</pems-metric>
             <div class="text-muted small">@Localizer["Total Downtime"]</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@(Model.AverageMTBFHours.HasValue ? $"{Model.AverageMTBFHours.Value:N1}h" : "N/A")</div>
+        </pems-col>
+        <pems-col md="2">
+            <pems-metric>@(Model.AverageMTBFHours.HasValue ? $"{Model.AverageMTBFHours.Value:N1}h" : "N/A")</pems-metric>
             <div class="text-muted small">Avg MTBF (n=@Model.MTBFSampleSize)</div>
-        </div>
-        <div class="col-md-2">
-            <div class="fs-4 fw-bold">@(Model.AverageMTTRHours.HasValue ? $"{Model.AverageMTTRHours.Value:N1}h" : "N/A")</div>
+        </pems-col>
+        <pems-col md="2">
+            <pems-metric>@(Model.AverageMTTRHours.HasValue ? $"{Model.AverageMTTRHours.Value:N1}h" : "N/A")</pems-metric>
             <div class="text-muted small">Avg MTTR (n=@Model.MTTRSampleSize)</div>
-        </div>
-    </div>
+        </pems-col>
+    </pems-row>
     @if (Model.EquipmentWithFailureHistory == 0)
     {
-        <p class="text-muted text-center py-3 mb-0 mt-3 border-top">این کلاس هنوز هیچ تاریخچه‌ی خرابی معتبری ندارد - همه‌ی معیارها N/A هستند تا داده‌ی واقعی وارد شود.</p>
+        <pems-text class="text-muted text-center py-3 mb-0 mt-3 border-top">این کلاس هنوز هیچ تاریخچه‌ی خرابی معتبری ندارد - همه‌ی معیارها N/A هستند تا داده‌ی واقعی وارد شود.</pems-text>
     }
-</div>
+</pems-content-card>

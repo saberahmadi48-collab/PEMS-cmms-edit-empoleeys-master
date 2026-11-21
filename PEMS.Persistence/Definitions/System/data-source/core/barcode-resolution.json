@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "barcode-resolution",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode resolution",
+    "fa": "نتیجه‌ی شناسایی بارکد"
+  },
+  "description": {
+    "en": "Barcode resolution",
+    "fa": "نتیجه‌ی شناسایی بارکد"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Barcode",
+      "action": "Resolve",
+      "args": {
+        "code": "param:code",
+        "expectedTargetType": "param:expectedTargetType",
+        "expectedTargetId": "param:expectedTargetId"
+      }
+    }
+  }
+}

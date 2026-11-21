@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "production-order-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New production order",
+    "fa": "سفارش تولید جدید"
+  },
+  "description": {
+    "en": "New production order",
+    "fa": "سفارش تولید جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionOrder",
+      "action": "Create",
+      "args": {
+        "materialItemId": "field:materialItemId",
+        "plannedQuantity": "field:plannedQuantity",
+        "uomId": "field:uomId",
+        "productionWorkCenterId": "field:productionWorkCenterId",
+        "plannedStartDate": "field:plannedStartDate",
+        "plannedFinishDate": "field:plannedFinishDate",
+        "equipmentId": "field:equipmentId",
+        "responsibleEmployeeId": "field:responsibleEmployeeId",
+        "notes": "field:notes",
+        "createdByEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The production order was created.",
+      "fa": "سفارش تولید ایجاد شد."
+    },
+    "redirect": "/p/production-orders"
+  }
+}

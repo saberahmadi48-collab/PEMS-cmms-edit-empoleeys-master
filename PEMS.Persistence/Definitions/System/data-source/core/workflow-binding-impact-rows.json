@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "workflow-binding-impact-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Binding impact",
+    "fa": "Binding impact"
+  },
+  "description": {
+    "en": "Binding impact rows",
+    "fa": "Binding impact rows"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "BindingImpact",
+      "args": {
+        "bindingId": "param:bindingId",
+        "targetVersionId": "param:targetVersionId"
+      }
+    }
+  }
+}

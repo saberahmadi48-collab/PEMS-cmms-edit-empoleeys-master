@@ -1,0 +1,3 @@
+@using Microsoft.AspNetCore.Components.Forms
+@* Test-only: does the framework's <AntiforgeryToken/> work inside a statically rendered component? See ADR-0007. *@
+<form method="post"><AntiforgeryToken /></form>

@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "mmd-toggle-equipment-class-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleEquipmentClassActive",
+    "fa": "ToggleEquipmentClassActive"
+  },
+  "description": {
+    "en": "ToggleEquipmentClassActive",
+    "fa": "ToggleEquipmentClassActive"
+  },
+  "payload": {
+    "id": "mmd-toggle-equipment-class-active",
+    "title": {
+      "en": "ToggleEquipmentClassActive",
+      "fa": "ToggleEquipmentClassActive"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-toggle-equipment-class-active",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "id"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

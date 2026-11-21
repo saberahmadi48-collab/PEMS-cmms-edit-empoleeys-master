@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "contract-approval-authority-required-approver-role-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approver role options",
+    "fa": "گزینه‌های نقش تأییدکننده"
+  },
+  "description": {
+    "en": "Choices for approver role",
+    "fa": "گزینه‌ها برای نقش تأییدکننده"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "entity-options",
+    "parameters": {
+      "entity": "ApplicationRole",
+      "value": "Name",
+      "label": "Name"
+    }
+  }
+}

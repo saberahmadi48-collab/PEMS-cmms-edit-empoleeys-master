@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "strategy-retire",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Retire the strategy",
+    "fa": "بایگانی استراتژی"
+  },
+  "description": {
+    "en": "Retire the strategy",
+    "fa": "بایگانی استراتژی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceStrategy",
+      "action": "Retire",
+      "args": {
+        "id": "field:id",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "The strategy was retired.",
+      "fa": "استراتژی بایگانی شد."
+    },
+    "redirect": "/MaintenanceStrategy/Details/{id}"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "action",
+  "key": "permit-respond-approval",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Respond to the approval step",
+    "fa": "پاسخ به مرحله‌ی تأیید"
+  },
+  "description": {
+    "en": "Respond to the approval step",
+    "fa": "پاسخ به مرحله‌ی تأیید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PermitPage",
+      "action": "RespondApproval",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "ip": "context:ip",
+        "userAgent": "context:userAgent",
+        "id": "field:id",
+        "decision": "field:decision",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "Your response was recorded.",
+      "fa": "نظر شما ثبت شد."
+    },
+    "redirect": "/Permit/Details/{id}",
+    "stepUp": {
+      "resource": "Permit",
+      "action": "RespondApproval"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "isolation-mark-isolated",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark isolation point isolated",
+    "fa": "ایزوله شدن نقطه"
+  },
+  "description": {
+    "en": "Mark isolation point isolated",
+    "fa": "ایزوله شدن نقطه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Isolation",
+      "action": "AdvanceStatus",
+      "args": {
+        "isolationPointId": "field:id",
+        "nextStatus": "literal:Isolated",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId",
+        "lockNumber": "field:lockNumber",
+        "tagNumber": "field:tagNumber"
+      }
+    },
+    "success": {
+      "en": "The point was isolated.",
+      "fa": "نقطه ایزوله شد."
+    },
+    "redirect": "/Permit/Details/{permitId}",
+    "permission": "LOTO.Isolate"
+  }
+}

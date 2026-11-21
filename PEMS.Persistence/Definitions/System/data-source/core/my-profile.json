@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "my-profile",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My profile",
+    "fa": "پروفایل من"
+  },
+  "description": {
+    "en": "My profile",
+    "fa": "پروفایل من"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MyProfile",
+      "action": "Profile",
+      "args": {
+        "userName": "context:userName"
+      }
+    }
+  }
+}

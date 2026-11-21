@@ -1,0 +1,308 @@
+{
+  "kind": "page",
+  "key": "mr-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MR details",
+    "fa": "جزئیات MR"
+  },
+  "description": {
+    "en": "One MR with items and quotations; change its status, add a quotation, create a purchase order (page definition)",
+    "fa": "یک MR با اقلام و استعلام‌ها؛ تغییر وضعیت، افزودن استعلام، ساخت سفارش خرید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "mr-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "mr-record",
+            "fields": [
+              {
+                "key": "mrNumber",
+                "label": {
+                  "en": "MR number",
+                  "fa": "شماره MR"
+                },
+                "mono": true
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "discipline",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "equipmentTag",
+                "label": {
+                  "en": "Equipment tag",
+                  "fa": "تگ تجهیز"
+                },
+                "mono": true
+              },
+              {
+                "key": "requiredDate",
+                "label": {
+                  "en": "Required date",
+                  "fa": "تاریخ نیاز"
+                },
+                "type": "date"
+              },
+              {
+                "key": "responsible",
+                "label": {
+                  "en": "Responsible",
+                  "fa": "مسئول"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/mr-detail",
+              "idField": "mrId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mr-change-status?mrId={{params.id}}",
+                "text": {
+                  "en": "Change the status",
+                  "fa": "تغییر وضعیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/mr-add-quotation?mrId={{params.id}}",
+                "text": {
+                  "en": "Add a quotation (MRQ)",
+                  "fa": "افزودن استعلام (MRQ)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/po-create-from-mr?mrId={{params.id}}",
+                "text": {
+                  "en": "Create a purchase order (when the MR may feed one)",
+                  "fa": "ساخت سفارش خرید (وقتی MR مجاز است)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/material-requisitions",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "items",
+          "component": "def:related-table",
+          "options": {
+            "id": "items",
+            "title": {
+              "en": "Items",
+              "fa": "اقلام"
+            },
+            "url": "/d/mr-items?f.id={{params.id|url}}",
+            "idField": "mrItemId",
+            "columns": [
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 320
+              },
+              {
+                "key": "partNumber",
+                "header": {
+                  "en": "Part no",
+                  "fa": "شماره قطعه"
+                },
+                "width": 160
+              },
+              {
+                "key": "quantity",
+                "header": {
+                  "en": "Qty",
+                  "fa": "تعداد"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "unit",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 80
+              },
+              {
+                "key": "inCatalogue",
+                "header": {
+                  "en": "In the catalogue",
+                  "fa": "در فهرست"
+                },
+                "width": 120,
+                "type": "bool"
+              }
+            ]
+          }
+        },
+        {
+          "id": "quotations",
+          "component": "def:related-table",
+          "options": {
+            "id": "quotations",
+            "title": {
+              "en": "Quotations (MRQ)",
+              "fa": "استعلام‌ها (MRQ)"
+            },
+            "url": "/d/mr-quotations?f.id={{params.id|url}}",
+            "idField": "mrqId",
+            "columns": [
+              {
+                "key": "mrqNumber",
+                "header": {
+                  "en": "MRQ",
+                  "fa": "MRQ"
+                },
+                "width": 130
+              },
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 180
+              },
+              {
+                "key": "inquiryDate",
+                "header": {
+                  "en": "Inquiry",
+                  "fa": "تاریخ استعلام"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "quotedAmount",
+                "header": {
+                  "en": "Amount",
+                  "fa": "مبلغ"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "currency",
+                "header": {
+                  "en": "Currency",
+                  "fa": "ارز"
+                },
+                "width": 80
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "technical",
+                "header": {
+                  "en": "Technical",
+                  "fa": "فنی"
+                },
+                "width": 120
+              },
+              {
+                "key": "commercial",
+                "header": {
+                  "en": "Commercial",
+                  "fa": "بازرگانی"
+                },
+                "width": 120
+              },
+              {
+                "key": "approval",
+                "header": {
+                  "en": "Approval",
+                  "fa": "تأیید"
+                },
+                "width": 120
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 140,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "evaluate",
+                    "label": {
+                      "en": "Evaluate",
+                      "fa": "ارزیابی"
+                    },
+                    "url": "/f/mr-update-quotation?mrId={{params.id}}&mrqId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "MaterialRequisition.View"
+  }
+}

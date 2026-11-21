@@ -1,0 +1,23 @@
+@namespace PEMS.UI.Components
+@inject IPemsLocale Locale
+@* Measurement only: one component instance per cell. Not used by pages; see ADR-0007 for the cost. *@
+<table class="pems-table">
+    <thead>
+        <tr>@foreach (var c in View.Columns) { <th scope="col">@Locale.Text(c.Header)</th> }</tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Rows)
+        {
+            <tr>
+                @foreach (var c in View.Columns)
+                {
+                    <PemsTableCell Text="@TableCells.Text(Locale, c, row)" Alignment="c.Alignment" />
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+    [Parameter, EditorRequired] public ViewDescriptor View { get; set; } = default!;
+    [Parameter] public IReadOnlyList<IReadOnlyDictionary<string, object?>> Rows { get; set; } = [];
+}

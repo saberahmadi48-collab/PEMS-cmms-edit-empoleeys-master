@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "inspection-raise-work-request",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Raise a work request",
+    "fa": "ایجاد درخواست کار"
+  },
+  "description": {
+    "en": "Raise a work request",
+    "fa": "ایجاد درخواست کار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Inspection",
+      "action": "RaiseWorkRequest",
+      "args": {
+        "employeeId": "context:employeeId",
+        "inspectionRecordId": "field:inspectionRecordId"
+      }
+    },
+    "success": {
+      "en": "The work request was created.",
+      "fa": "Work Request ساخته شد."
+    },
+    "redirect": "/Equipment/Details/{equipmentId}"
+  }
+}

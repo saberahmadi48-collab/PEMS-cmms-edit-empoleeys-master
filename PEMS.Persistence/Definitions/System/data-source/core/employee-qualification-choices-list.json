@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "employee-qualification-choices-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Qualifications",
+    "fa": "صلاحیت‌ها"
+  },
+  "description": {
+    "en": "Qualifications",
+    "fa": "صلاحیت‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Employee",
+      "action": "QualificationChoices",
+      "args": {}
+    }
+  }
+}

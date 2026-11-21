@@ -1,0 +1,115 @@
+{
+  "kind": "page",
+  "key": "quick-setup",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Quick Setup",
+    "fa": "راه‌اندازی سریع"
+  },
+  "description": {
+    "en": "How ready the system is for operational use (page definition)",
+    "fa": "آمادگی سیستم برای استفاده عملیاتی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "quick-setup",
+    "permission": "Setup.View",
+    "regions": {
+      "content": [
+        {
+          "id": "steps",
+          "component": "data-grid",
+          "options": {
+            "id": "quick-setup",
+            "url": "/d/quick-setup-grid",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "title",
+                "header": {
+                  "en": "Step",
+                  "fa": "مرحله"
+                },
+                "width": 240
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "What it is",
+                  "fa": "توضیح"
+                },
+                "width": 420
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 200
+              },
+              {
+                "key": "missing",
+                "header": {
+                  "en": "Missing",
+                  "fa": "کمبودها"
+                },
+                "width": 300
+              },
+              {
+                "key": "actionLabel",
+                "header": {
+                  "en": "Next",
+                  "fa": "اقدام"
+                },
+                "width": 200
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "{raw.url}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 50,
+            "height": 560
+          }
+        },
+        {
+          "id": "import",
+          "component": "content-blocks",
+          "options": {
+            "id": "import",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/import-center",
+                "text": {
+                  "en": "Import Center",
+                  "fa": "مرکز ایمپورت"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

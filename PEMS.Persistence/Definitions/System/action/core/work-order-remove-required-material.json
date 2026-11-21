@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "work-order-remove-required-material",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove required material",
+    "fa": "حذف متریال موردنیاز"
+  },
+  "description": {
+    "en": "Remove required material",
+    "fa": "حذف متریال موردنیاز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderMaterial",
+      "action": "Remove",
+      "sectionGuard": {
+        "section": "RequiredMaterials",
+        "action": "Remove",
+        "workOrderId": "field:workOrderId",
+        "recordRef": "field:workOrderMaterialId",
+        "beforeFromResult": true
+      },
+      "args": {
+        "workOrderMaterialId": "field:workOrderMaterialId",
+        "workOrderId": "field:workOrderId"
+      }
+    },
+    "success": {
+      "en": "The required material was removed.",
+      "fa": "متریال موردنیاز حذف شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

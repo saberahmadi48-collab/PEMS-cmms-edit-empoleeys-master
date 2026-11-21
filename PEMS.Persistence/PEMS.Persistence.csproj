@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Configurations\" />
-    <Folder Include="Migrations\" />
     <Folder Include="UnitOfWork\" />
     <Folder Include="Seed\" />
   </ItemGroup>
@@ -30,9 +29,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- SCRUM-572: the definition files ship next to the application as definitions/{kind}/{appKey}/{key}.json (hot-reloaded, ADR-0014) -->
+    <Content Include="Definitions\System\**\*.json" Link="definitions-system\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PEMS.AI\PEMS.AI.csproj" />
     <ProjectReference Include="..\PEMS.Application\PEMS.Application.csproj" />
     <ProjectReference Include="..\PEMS.Domain\PEMS.Domain.csproj" />
+    <ProjectReference Include="..\PEMS.Licensing\PEMS.Licensing.csproj" />
     <ProjectReference Include="..\PEMS.Shared\PEMS.Shared.csproj" />
     <ProjectReference Include="..\PEMS.WorkflowPlatform\PEMS.WorkflowPlatform.csproj" />
     <ProjectReference Include="..\PEMS.Infrastructure\PEMS.Infrastructure.csproj" />
@@ -40,7 +45,6 @@
 
   <ItemGroup>
     <!-- مرجع‌های IFS ماژول Part Catalogue (Seed ایدمپوتنت): داخل Assembly تا مسیر فایل/Deploy مسئله نشود -->
-    <EmbeddedResource Include="Seed\Data\PartCatalogue\*.xlsx" LogicalName="PEMS.Seed.PartCatalogue.%(Filename)%(Extension)" />
-  </ItemGroup>
+    <EmbeddedResource Include="Seed\Data\PartCatalogue\*.xlsx" LogicalName="PEMS.Seed.PartCatalogue.%(Filename)%(Extension)" />  </ItemGroup>
 
 </Project>

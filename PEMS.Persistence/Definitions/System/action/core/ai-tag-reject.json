@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "ai-tag-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject an extracted tag",
+    "fa": "رد تگ استخراج‌شده"
+  },
+  "description": {
+    "en": "Reject an extracted tag",
+    "fa": "رد تگ استخراج‌شده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "AiExtraction",
+      "action": "RejectTag",
+      "args": {
+        "extractedTagId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Tag rejected.",
+      "fa": "تگ رد شد."
+    }
+  }
+}

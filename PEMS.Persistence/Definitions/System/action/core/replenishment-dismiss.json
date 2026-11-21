@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "replenishment-dismiss",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Dismiss a recommendation",
+    "fa": "رد توصیه"
+  },
+  "description": {
+    "en": "Dismiss a recommendation",
+    "fa": "رد توصیه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Replenishment",
+      "action": "Dismiss",
+      "args": {
+        "id": "field:id",
+        "reason": "field:reason"
+      },
+      "guard": {
+        "resource": "ReplenishmentRecommendation",
+        "action": "Edit",
+        "resourceId": "field:id",
+        "mode": "strict"
+      }
+    },
+    "success": {
+      "en": "The recommendation was dismissed.",
+      "fa": "توصیه رد شد."
+    },
+    "redirect": "/p/replenishment-details?id={id}"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "procurement-package-unlinked-mrs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MRs without a package",
+    "fa": "MRهای بدون بسته"
+  },
+  "description": {
+    "en": "MRs without a package",
+    "fa": "MRهای بدون بسته"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "ProcurementPackage",
+      "action": "UnlinkedMrs",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

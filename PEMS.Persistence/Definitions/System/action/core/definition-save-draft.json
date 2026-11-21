@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "definition-save-draft",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save draft",
+    "fa": "ذخیره پیش‌نویس"
+  },
+  "description": {
+    "en": "Save draft",
+    "fa": "ذخیره پیش‌نویس"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The draft was saved.",
+      "fa": "پیش‌نویس ذخیره شد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Definition",
+      "action": "SaveDraft",
+      "args": {
+        "kind": "field:kind",
+        "key": "field:key",
+        "appKey": "field:appKey",
+        "payloadJson": "field:payload",
+        "changeSummary": "field:changeSummary",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

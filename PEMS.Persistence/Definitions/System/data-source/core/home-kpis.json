@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "home-kpis",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Home dashboard counts",
+    "fa": "شمارنده‌های داشبورد"
+  },
+  "description": {
+    "en": "Home dashboard counts",
+    "fa": "شمارنده‌های داشبورد"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Home",
+      "action": "Kpis",
+      "args": {}
+    }
+  }
+}

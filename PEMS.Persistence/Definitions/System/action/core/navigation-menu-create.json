@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "navigation-menu-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a custom link",
+    "fa": "افزودن پیوند سفارشی"
+  },
+  "description": {
+    "en": "Add a custom link",
+    "fa": "افزودن پیوند سفارشی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "NavigationMenu",
+      "action": "AddLink",
+      "args": {
+        "input": {
+          "ParentKey": "field:parentKey",
+          "TitleEn": "field:titleEn",
+          "TitleFa": "field:titleFa",
+          "Icon": "field:icon",
+          "Area": "field:area",
+          "Controller": "field:controller",
+          "Action": "field:action",
+          "RequiredPermission": "field:requiredPermission"
+        }
+      }
+    },
+    "redirect": "/p/navigation-menu"
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "kind": "page",
+  "key": "discipline-workspaces",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline workspaces",
+    "fa": "فضای کاری دیسیپلین‌ها"
+  },
+  "description": {
+    "en": "Discipline workspaces list (page definition)",
+    "fa": "فهرست فضای کاری دیسیپلین‌ها (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "discipline-workspaces",
+    "permission": "DisciplineWorkspace.View",
+    "template": "entity-list",
+    "args": {
+      "id": "discipline-workspaces",
+      "url": "/d/discipline-workspaces-grid",
+      "idField": "disciplineId",
+      "columns": [
+        {
+          "key": "code",
+          "header": {
+            "en": "Code",
+            "fa": "کد"
+          },
+          "width": 110
+        },
+        {
+          "key": "name",
+          "header": {
+            "en": "Discipline",
+            "fa": "دیسیپلین"
+          },
+          "width": 260
+        },
+        {
+          "key": "documentsCount",
+          "header": {
+            "en": "Documents",
+            "fa": "اسناد"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "pendingDocumentsCount",
+          "header": {
+            "en": "Pending",
+            "fa": "در انتظار"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "equipmentCount",
+          "header": {
+            "en": "Equipment",
+            "fa": "تجهیزات"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "vDRItemsCount",
+          "header": {
+            "en": "VDR",
+            "fa": "VDR"
+          },
+          "width": 90,
+          "type": "number"
+        },
+        {
+          "key": "openTasksCount",
+          "header": {
+            "en": "Open tasks",
+            "fa": "وظایف باز"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "overdueTasksCount",
+          "header": {
+            "en": "Overdue",
+            "fa": "معوق"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 140,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "open",
+              "label": {
+                "en": "Open workspace",
+                "fa": "باز کردن فضای کاری"
+              },
+              "url": "/p/discipline-workspace?id={id}",
+              "method": "get"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

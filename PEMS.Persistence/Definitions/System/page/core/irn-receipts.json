@@ -1,0 +1,197 @@
+{
+  "kind": "page",
+  "key": "irn-receipts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Incoming Receipts (IRN)",
+    "fa": "رسیدهای ورودی (IRN)"
+  },
+  "description": {
+    "en": "Material receipts with the QC and disposition gate (page definition)",
+    "fa": "رسید مواد با گیت QC و Disposition (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "irn-receipts",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "irn-filters",
+            "resetUrl": "/p/irn-receipts",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Draft",
+                    "label": {
+                      "en": "Draft",
+                      "fa": "پیش‌نویس"
+                    }
+                  },
+                  {
+                    "value": "Submitted",
+                    "label": {
+                      "en": "Submitted",
+                      "fa": "ارسال‌شده"
+                    }
+                  },
+                  {
+                    "value": "PendingApproval",
+                    "label": {
+                      "en": "PendingApproval",
+                      "fa": "در انتظار تأیید"
+                    }
+                  },
+                  {
+                    "value": "Completed",
+                    "label": {
+                      "en": "Completed",
+                      "fa": "تکمیل‌شده"
+                    }
+                  },
+                  {
+                    "value": "Cancelled",
+                    "label": {
+                      "en": "Cancelled",
+                      "fa": "لغوشده"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/irn-create",
+                "text": {
+                  "en": "New incoming receipt",
+                  "fa": "رسید ورودی جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/inventory",
+                "text": {
+                  "en": "Inventory dashboard",
+                  "fa": "داشبورد موجودی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "receipts",
+          "component": "data-grid",
+          "options": {
+            "id": "receipts",
+            "url": "/d/irn-grid?f.status={{params.status|url}}",
+            "idField": "irnReceiptId",
+            "columns": [
+              {
+                "key": "irnNumber",
+                "header": {
+                  "en": "IRN",
+                  "fa": "IRN"
+                },
+                "width": 150
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 150
+              },
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 220
+              },
+              {
+                "key": "warehouse",
+                "header": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                },
+                "width": 110
+              },
+              {
+                "key": "receivedBy",
+                "header": {
+                  "en": "Received by",
+                  "fa": "دریافت‌کننده"
+                },
+                "width": 180
+              },
+              {
+                "key": "receivingDate",
+                "header": {
+                  "en": "Received",
+                  "fa": "تاریخ"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "lineCount",
+                "header": {
+                  "en": "Lines",
+                  "fa": "اقلام"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/irn-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "IRN.View"
+  }
+}

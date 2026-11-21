@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "work-request-locations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Functional locations",
+    "fa": "مکان‌های عملکردی"
+  },
+  "description": {
+    "en": "Functional locations",
+    "fa": "مکان‌های عملکردی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "WorkRequestPage",
+      "action": "LocationChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

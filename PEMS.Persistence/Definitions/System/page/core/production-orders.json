@@ -1,0 +1,253 @@
+{
+  "kind": "page",
+  "key": "production-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production Orders",
+    "fa": "سفارش‌های تولید"
+  },
+  "description": {
+    "en": "Production orders with their status (page definition)",
+    "fa": "سفارش‌های تولید با وضعیت (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "production-orders",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "production-order-filters",
+            "resetUrl": "/p/production-orders",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Draft",
+                    "label": {
+                      "en": "Draft",
+                      "fa": "پیش‌نویس"
+                    }
+                  },
+                  {
+                    "value": "Planned",
+                    "label": {
+                      "en": "Planned",
+                      "fa": "برنامه‌ریزی‌شده"
+                    }
+                  },
+                  {
+                    "value": "Released",
+                    "label": {
+                      "en": "Released",
+                      "fa": "Release‌شده"
+                    }
+                  },
+                  {
+                    "value": "InProgress",
+                    "label": {
+                      "en": "InProgress",
+                      "fa": "در جریان"
+                    }
+                  },
+                  {
+                    "value": "OnHold",
+                    "label": {
+                      "en": "OnHold",
+                      "fa": "معلق"
+                    }
+                  },
+                  {
+                    "value": "Completed",
+                    "label": {
+                      "en": "Completed",
+                      "fa": "تکمیل‌شده"
+                    }
+                  },
+                  {
+                    "value": "Closed",
+                    "label": {
+                      "en": "Closed",
+                      "fa": "بسته‌شده"
+                    }
+                  },
+                  {
+                    "value": "Cancelled",
+                    "label": {
+                      "en": "Cancelled",
+                      "fa": "لغوشده"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "search",
+                "label": {
+                  "en": "Search",
+                  "fa": "جستجو"
+                },
+                "kind": "text",
+                "value": "{{params.search}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/production-order-create",
+                "text": {
+                  "en": "New production order",
+                  "fa": "سفارش تولید جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/production-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "orders",
+          "component": "data-grid",
+          "options": {
+            "id": "orders",
+            "url": "/d/production-orders?f.status={{params.status|url}}&f.search={{params.search|url}}",
+            "idField": "productionOrderId",
+            "columns": [
+              {
+                "key": "orderNumber",
+                "header": {
+                  "en": "Order",
+                  "fa": "سفارش"
+                },
+                "width": 140
+              },
+              {
+                "key": "materialCode",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 140
+              },
+              {
+                "key": "materialDescription",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 240
+              },
+              {
+                "key": "plannedQuantity",
+                "header": {
+                  "en": "Planned",
+                  "fa": "برنامه"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "uom",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 70
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "workCenter",
+                "header": {
+                  "en": "Work center",
+                  "fa": "مرکز کار"
+                },
+                "width": 120
+              },
+              {
+                "key": "plannedStartDate",
+                "header": {
+                  "en": "Start",
+                  "fa": "شروع"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "plannedFinishDate",
+                "header": {
+                  "en": "Finish",
+                  "fa": "پایان"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "runCount",
+                "header": {
+                  "en": "Runs",
+                  "fa": "اجراها"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/production-order-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "Production.View"
+  }
+}

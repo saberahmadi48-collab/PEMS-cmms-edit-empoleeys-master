@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "kpi-chart-top-equipment-by-cost",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "KPI chart: Top equipment by cost",
+    "fa": "نمودار KPI: پرهزینه‌ترین تجهیزات"
+  },
+  "description": {
+    "en": "KPI chart: Top equipment by cost",
+    "fa": "نمودار KPI: پرهزینه‌ترین تجهیزات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Kpi",
+      "action": "Breakdown",
+      "args": {
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      },
+      "where": {
+        "key": "TopEquipmentByCost"
+      }
+    }
+  }
+}

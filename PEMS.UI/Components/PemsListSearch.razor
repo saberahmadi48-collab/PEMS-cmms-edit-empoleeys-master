@@ -1,0 +1,8 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-search", Category = "list", Icon = "bi-search")]
+<form @attributes="Options.Attributes" class="@ListMarkup.Css("lp-search", Options.CssClass)" id="@Options.Id" method="get" action="@(Options.Action ?? "")" role="search" data-lp-search="" data-lp-live-filter="@(Options.LiveFilter ? "" : null)" hidden="hidden"><i aria-hidden="true" class="bi bi-search"></i><input aria-label="@Options.SearchText" autocomplete="off" data-pems-search="@(string.IsNullOrEmpty(Options.SearchType) ? null : "")" data-search-type="@(string.IsNullOrEmpty(Options.SearchType) ? null : Options.SearchType)" id="@Options.InputId" name="@Options.Name" placeholder="@(Options.Placeholder ?? "")" type="search" value="@(Options.Value ?? "")" />@ChildContent<button class="btn btn-sm btn-pems-solid" type="submit">@Options.SearchText</button><PemsListIconTool Options="@Close" /></form>
+@code {
+    [Parameter, EditorRequired] public ListSearchOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private ListIconToolOptions Close => new() { Icon = "bi-x-lg", Label = Options.SearchCloseText, Attributes = new Dictionary<string, string> { ["data-lp-search-close"] = "" } };
+}

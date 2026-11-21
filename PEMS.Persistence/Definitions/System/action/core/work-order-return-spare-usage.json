@@ -1,0 +1,42 @@
+{
+  "kind": "action",
+  "key": "work-order-return-spare-usage",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Return spare part",
+    "fa": "برگشت قطعه"
+  },
+  "description": {
+    "en": "Return spare part",
+    "fa": "برگشت قطعه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderSpare",
+      "action": "ReturnUsage",
+      "sectionGuard": {
+        "section": "SpareParts",
+        "action": "Edit",
+        "workOrderId": "field:workOrderId",
+        "recordRef": "field:maintenanceSpareUsageId",
+        "audit": "ReturnQuantity={returnQuantity}",
+        "reason": "field:reason"
+      },
+      "args": {
+        "maintenanceSpareUsageId": "field:maintenanceSpareUsageId",
+        "workOrderId": "field:workOrderId",
+        "returnQuantity": "field:returnQuantity",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The spare part return was recorded.",
+      "fa": "برگشت قطعه ثبت شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

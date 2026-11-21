@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "meetings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Meetings (old address)",
+    "fa": "Meetings (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Meetings (old address)",
+    "fa": "Meetings (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Meeting",
+    "target": "/p/meetings",
+    "permanent": false
+  }
+}

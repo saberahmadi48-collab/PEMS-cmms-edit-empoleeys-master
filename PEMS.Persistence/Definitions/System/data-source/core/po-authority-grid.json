@@ -1,0 +1,38 @@
+{
+  "kind": "data-source",
+  "key": "po-authority-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "PO authority levels rows",
+    "fa": "ردیف‌های سطوح اختیار سفارش خرید"
+  },
+  "description": {
+    "en": "The rows of the po authority levels grid",
+    "fa": "ردیف‌های جدول سطوح اختیار سفارش خرید"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "PurchaseOrderAuthorityRule",
+      "fields": [
+        "Level",
+        "Currency",
+        "MinAmount",
+        "MaxAmount",
+        "ApproverRole",
+        "Description",
+        "IsActive"
+      ],
+      "search": [
+        "ApproverRole",
+        "Description"
+      ],
+      "sort": [
+        "Level",
+        "Currency"
+      ]
+    }
+  }
+}

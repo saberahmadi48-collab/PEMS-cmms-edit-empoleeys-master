@@ -1,0 +1,44 @@
+{
+  "kind": "action",
+  "key": "warehouses-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit warehouse",
+    "fa": "ویرایش انبار"
+  },
+  "description": {
+    "en": "Edit warehouse",
+    "fa": "ویرایش انبار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.update",
+    "parameters": {
+      "entity": "Warehouse",
+      "map": {
+        "name": "Name",
+        "description": "Description"
+      },
+      "required": [
+        "Name"
+      ],
+      "unique": [
+        {
+          "fields": [
+            "Code"
+          ],
+          "message": {
+            "en": "This code already exists.",
+            "fa": "این کد از قبل وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Warehouse saved.",
+      "fa": "انبار ذخیره شد."
+    },
+    "redirect": "/p/warehouses"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-admin-counts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin: Counts",
+    "fa": "مدیریت کاتالوگ قطعه: Counts"
+  },
+  "description": {
+    "en": "Part Catalogue admin: Counts",
+    "fa": "مدیریت کاتالوگ قطعه: Counts"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "Counts",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId"
+      }
+    }
+  }
+}

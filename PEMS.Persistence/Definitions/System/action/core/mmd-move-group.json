@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "mmd-move-group",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MoveGroup",
+    "fa": "گروه تعمیراتی جابه‌جا شد."
+  },
+  "description": {
+    "en": "MoveGroup",
+    "fa": "گروه تعمیراتی جابه‌جا شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "MoveGroup",
+      "args": {
+        "maintenanceGroupId": "field:maintenanceGroupId",
+        "newParentMaintenanceGroupId": "field:newParentMaintenanceGroupId"
+      }
+    },
+    "success": {
+      "en": "گروه تعمیراتی جابه‌جا شد.",
+      "fa": "گروه تعمیراتی جابه‌جا شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

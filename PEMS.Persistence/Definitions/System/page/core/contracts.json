@@ -1,0 +1,160 @@
+{
+  "kind": "page",
+  "key": "contracts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contracts",
+    "fa": "قراردادها"
+  },
+  "description": {
+    "en": "Contracts with their status and value (page definition)",
+    "fa": "قراردادها با وضعیت و مبلغ (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "contracts",
+    "regions": {
+      "content": [
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/Contract/Create",
+                "text": {
+                  "en": "New contract",
+                  "fa": "قرارداد جدید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "contracts",
+          "component": "data-grid",
+          "options": {
+            "id": "contracts",
+            "url": "/d/contract-list",
+            "idField": "contractId",
+            "columns": [
+              {
+                "key": "contractNo",
+                "header": {
+                  "en": "Contract",
+                  "fa": "قرارداد"
+                },
+                "width": 140
+              },
+              {
+                "key": "project",
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "width": 180
+              },
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 200
+              },
+              {
+                "key": "contractValue",
+                "header": {
+                  "en": "Value",
+                  "fa": "مبلغ"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "currency",
+                "header": {
+                  "en": "Currency",
+                  "fa": "ارز"
+                },
+                "width": 70
+              },
+              {
+                "key": "startDate",
+                "header": {
+                  "en": "Start",
+                  "fa": "شروع"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "endDate",
+                "header": {
+                  "en": "End",
+                  "fa": "پایان"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "purchaseOrdersCount",
+                "header": {
+                  "en": "POs",
+                  "fa": "سفارش"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "requiresInspection",
+                "header": {
+                  "en": "Inspection",
+                  "fa": "بازرسی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/contract-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "Contracts.View"
+  }
+}

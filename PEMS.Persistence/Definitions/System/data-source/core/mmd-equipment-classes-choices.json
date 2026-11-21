@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "mmd-equipment-classes-choices",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "EquipmentClasses",
+    "fa": "EquipmentClasses"
+  },
+  "description": {
+    "en": "EquipmentClasses",
+    "fa": "EquipmentClasses"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "EquipmentClassesChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

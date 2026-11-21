@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "moc-upload-attachment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add an attachment",
+    "fa": "افزودن پیوست"
+  },
+  "description": {
+    "en": "Add an attachment",
+    "fa": "افزودن پیوست"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MocPage",
+      "action": "UploadAttachment",
+      "args": {
+        "employeeId": "context:employeeId",
+        "mocId": "field:mocId",
+        "file": "file:file",
+        "fileName": "field:fileName"
+      },
+      "upload": {
+        "profile": "attachment",
+        "maxFileMb": 20
+      }
+    },
+    "success": {
+      "en": "The attachment was added.",
+      "fa": "پیوست اضافه شد."
+    },
+    "redirect": "/MOC/Details/{mocId}"
+  }
+}

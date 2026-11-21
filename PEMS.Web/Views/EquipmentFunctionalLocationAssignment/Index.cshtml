@@ -1,64 +1,81 @@
 @model List<PEMS.Application.DTOs.EquipmentFunctionalLocationAssignmentBatchSummaryDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
 @inject IStringLocalizer<SharedResource> Localizer
+@{
+    string StatusText(string? s) => VdrUi.Loc(Localizer, "Fla_St_", s);
+}
 
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-controller="Equipment" asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["← Equipment"]</a>
-</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pems-workspace.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" />
+}
 
-<div class="content-card mb-3">
-    <p class="text-muted small">
-        Upload an Excel file with <strong>@Localizer["Equipment Tag"]</strong> / <strong>Functional Location Code</strong>
-        columns (optional <strong>@Localizer["Plant"]</strong>/<strong>@Localizer["Area"]</strong>/<strong>@Localizer["Unit"]</strong> columns are used
-        only to cross-check the resolved Functional Location). Only exact Tag/Code matches are resolved -
-        nothing is written to the live Equipment table until you review the proposed assignments and click
-        Commit. Equipment that already has a different Functional Location is never silently overwritten -
-        replacing an existing assignment always requires an explicit, separate confirmation on the review page.
-    </p>
-    <form asp-action="Upload" method="post" enctype="multipart/form-data" class="row g-2 align-items-end">
-        <div class="col-md-8">
-            <label class="form-label small">Assignment Excel File</label>
-            <input type="file" name="file" class="form-control" accept=".xlsx" required />
-        </div>
-        <div class="col-md-4">
-            <button type="submit" class="btn btn-pems-solid w-100"><i class="bi bi-cloud-upload"></i> @Localizer["Upload"]</button>
-        </div>
-    </form>
-</div>
+@* SCRUM-337 W2b: built from the PEMS.UI list-page component. The page lists the recent assignment batches; the Excel
+   upload (with its rules) opens from the toolbar's Upload button (<pems-list-popover>), and each batch opens its review page. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    @if (TempData["Message"] != null) { <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert> }
+    @if (TempData["Error"] != null) { <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert> }
 
-<div class="content-card">
-    <h6 class="mb-3">Recent Assignment Batches</h6>
-    <div class="table-responsive table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-    <table class="table table-enterprise">
-        <thead>
-            <tr>
-                <th>@Localizer["File"]</th><th>@Localizer["Date"]</th><th>@Localizer["Imported By"]</th><th class="text-end">@Localizer["Total"]</th>
-                <th class="text-end">@Localizer["Exact"]</th><th class="text-end">Already Assigned</th>
-                <th class="text-end">@Localizer["Unresolved"]</th><th class="text-end">@Localizer["Conflicts"]</th>
-                <th>@Localizer["Status"]</th><th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var b in Model)
-            {
-                <tr>
-                    <td>@b.FileName</td>
-                    <td>@b.ImportDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="small">@b.ImportedByName</td>
-                    <td class="text-end">@b.TotalRows</td>
-                    <td class="text-end"><span class="badge bg-success">@b.ExactCount</span></td>
-                    <td class="text-end">@if (b.AlreadyAssignedCount > 0) { <span class="badge bg-warning text-dark">@b.AlreadyAssignedCount</span> } else { @b.AlreadyAssignedCount }</td>
-                    <td class="text-end">@if (b.UnresolvedCount > 0) { <span class="badge bg-danger">@b.UnresolvedCount</span> } else { @b.UnresolvedCount }</td>
-                    <td class="text-end">@if (b.ConflictCount > 0) { <span class="badge bg-danger">@b.ConflictCount</span> } else { @b.ConflictCount }</td>
-                    <td><span class="badge @(b.Status == "Committed" ? "bg-success" : "bg-secondary")">@b.Status</span></td>
-                    <td>
-                        <a asp-action="Review" asp-route-batchId="@b.EquipmentFunctionalLocationAssignmentBatchId" class="btn btn-sm btn-outline-primary">Review</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    @if (!Model.Any()) { <p class="text-muted text-center py-4">No Equipment ↔ Functional Location assignment batches yet.</p> }
-</div>
+    <pems-list-panel>
+
+        <pems-list-toolbar heading="@Localizer["Fla_Title"]" heading-title="@Localizer["Fla_Hint"]" total="@Model.Count">
+            <pems-list-tools>
+                <pems-link class="lp-icon-btn" asp-controller="Equipment" asp-action="Index" title="@Localizer["Fla_Equipment"]" aria-label="@Localizer["Fla_Equipment"]"><pems-icon name="bi-gear-wide-connected" aria-hidden="true" /></pems-link>
+                <pems-list-popover id="flaUpload" icon="bi-cloud-upload" label="@Localizer["Fla_Upload"]" primary="true">
+                    <pems-form asp-action="Upload" method="post" enctype="multipart/form-data">
+                        <pems-text class="text-muted small mb-2">@Localizer["Fla_UploadRules"]</pems-text>
+                        <label class="lp-lbl" for="assignmentFile">@Localizer["Fla_FileLabel"]</label>
+                        <pems-uploader id="assignmentFile" name="file" accept=".xlsx" required />
+                        <div class="lp-fp-foot px-0 pb-0">
+                            <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-cloud-upload" aria-hidden="true" /> @Localizer["Upload"]</pems-button>
+                        </div>
+                    </pems-form>
+                </pems-list-popover>
+            </pems-list-tools>
+        </pems-list-toolbar>
+
+        <pems-list-grid>
+            <pems-list-table empty="@(!Model.Any())" empty-text="@Localizer["Fla_Empty"]">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header>@Localizer["Fla_File"]</pems-table-header>
+                        <pems-table-header class="pems-w-140">@Localizer["Fla_Date"]</pems-table-header>
+                        <pems-table-header class="vs-hide-md">@Localizer["Fla_ImportedBy"]</pems-table-header>
+                        <pems-table-header class="text-end pems-w-80">@Localizer["Fla_Total"]</pems-table-header>
+                        <pems-table-header class="text-end pems-w-80">@Localizer["Fla_Exact"]</pems-table-header>
+                        <pems-table-header class="text-end pems-w-110">@Localizer["Fla_AlreadyAssigned"]</pems-table-header>
+                        <pems-table-header class="text-end pems-w-100">@Localizer["Fla_Unresolved"]</pems-table-header>
+                        <pems-table-header class="text-end pems-w-90">@Localizer["Fla_Conflicts"]</pems-table-header>
+                        <pems-table-header class="pems-w-110">@Localizer["Ed_Status"]</pems-table-header>
+                        <pems-table-header class="pems-w-60"><span class="visually-hidden">@Localizer["Ed_Actions"]</span></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var b in Model)
+                    {
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell><pems-link asp-action="Review" asp-route-batchId="@b.EquipmentFunctionalLocationAssignmentBatchId" class="lp-subject"><span class="vs-title-cell" title="@b.FileName">@b.FileName</span></pems-link></pems-table-cell>
+                            <pems-table-cell class="small"><span class="vs-num">@PemsDates.DateTime(b.ImportDate)</span></pems-table-cell>
+                            <pems-table-cell class="small vs-hide-md">@b.ImportedByName</pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-num">@b.TotalRows</span></pems-table-cell>
+                            <pems-table-cell class="text-end"><span class="vs-pill vs-pill--success">@b.ExactCount</span></pems-table-cell>
+                            <pems-table-cell class="text-end">@if (b.AlreadyAssignedCount > 0) { <span class="vs-pill vs-pill--warning">@b.AlreadyAssignedCount</span> } else { <span class="vs-num">0</span> }</pems-table-cell>
+                            <pems-table-cell class="text-end">@if (b.UnresolvedCount > 0) { <span class="vs-pill vs-pill--danger">@b.UnresolvedCount</span> } else { <span class="vs-num">0</span> }</pems-table-cell>
+                            <pems-table-cell class="text-end">@if (b.ConflictCount > 0) { <span class="vs-pill vs-pill--danger">@b.ConflictCount</span> } else { <span class="vs-num">0</span> }</pems-table-cell>
+                            <pems-table-cell><span class="vs-pill @(b.Status == "Committed" ? "vs-pill--success" : "vs-pill--neutral")">@StatusText(b.Status)</span></pems-table-cell>
+                            <pems-table-cell class="text-end">
+                                <pems-link asp-action="Review" asp-route-batchId="@b.EquipmentFunctionalLocationAssignmentBatchId" class="lp-act lp-act--always" title="@Localizer["Fla_Review"]" aria-label="@Localizer["Fla_Review"]"><pems-icon name="bi-list-check" aria-hidden="true" /></pems-link>
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
+
+@section Scripts {
+    <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script>
+}

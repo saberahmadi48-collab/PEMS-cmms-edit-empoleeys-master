@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("validation-summary", Category = "forms", Icon = "bi-exclamation-octagon")]
+@FrameMarkup.Element("div", string.IsNullOrWhiteSpace(Options.Css) ? "alert alert-danger" : "alert alert-danger " + Options.Css.Trim(), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public ValidationSummaryOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

@@ -1,0 +1,8 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("accordion", Category = "display", Icon = "bi-view-list")]
+<div class="@Css" id="@Options.Id">@ChildContent</div>
+@code {
+    [Parameter, EditorRequired] public AccordionOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string Css => string.IsNullOrWhiteSpace(Options.CssClass) ? "accordion" : "accordion " + Options.CssClass.Trim();
+}

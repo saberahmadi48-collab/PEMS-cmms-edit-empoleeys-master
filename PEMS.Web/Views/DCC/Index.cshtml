@@ -1,123 +1,107 @@
 ﻿@using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <a asp-action="RegisterIncoming" class="btn btn-pems-solid btn-sm">
-        <i class="bi bi-envelope-plus"></i> @Localizer["ثبت مکاتبه‌ی وارده"]
-    </a>
-</div>
+<pems-flex justify="end" align="center" css="mb-2">
+    <pems-button tone="primary" size="small" as="a" asp-action="RegisterIncoming">
+        <pems-icon name="bi-envelope-plus" /> @Localizer["ثبت مکاتبه‌ی وارده"]
+    </pems-button>
+</pems-flex>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-4">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-primary">@ViewBag.PendingIssueCount</div>
-            <div class="text-muted small"><i class="bi bi-send-check"></i> @Localizer["مدارک آماده‌ی صدور (Approved)"]</div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-warning">@ViewBag.UnlinkedIncomingCount</div>
-            <div class="text-muted small"><i class="bi bi-envelope-exclamation"></i> @Localizer["مکاتبات وارده‌ی وصل‌نشده"]</div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="content-card text-center">
-            <a asp-controller="Relationship" asp-action="Index" class="text-decoration-none">
-                <div class="fs-3 fw-bold text-info"><i class="bi bi-diagram-3"></i></div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="4">
+        <pems-kpi-tile icon="bi-send-check" color="blue" label="@Localizer["مدارک آماده‌ی صدور (Approved)"]">@ViewBag.PendingIssueCount</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="4">
+        <pems-kpi-tile tone="warning" icon="bi-envelope-exclamation" color="amber" label="@Localizer["مکاتبات وارده‌ی وصل‌نشده"]">@ViewBag.UnlinkedIncomingCount</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="4">
+        <pems-content-card css="text-center">
+            <pems-link asp-controller="Relationship" asp-action="Index" class="text-decoration-none">
+                <div class="fs-3 fw-bold text-info"><pems-icon name="bi-diagram-3" /></div>
                 <div class="text-muted small">@Localizer["Relationship Explorer"]</div>
-            </a>
-        </div>
-    </div>
-</div>
+            </pems-link>
+        </pems-content-card>
+    </pems-col>
+</pems-row>
 
-<div class="row g-3">
-    <div class="col-md-6">
-        <div class="content-card h-100">
-            <h6 class="mb-3"><i class="bi bi-send-check"></i> @Localizer["مدارک منتظر صدور"]</h6>
+<pems-row gap="3">
+    <pems-col md="6">
+        <pems-content-card css="h-100">
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-send-check" /> @Localizer["مدارک منتظر صدور"]</pems-heading>
             @{
                 var pendingIssueDocs = (IEnumerable<dynamic>)ViewBag.PendingIssueDocs;
             }
             @if (pendingIssueDocs.Any())
             {
-                <ul class="list-unstyled mb-0">
+                <pems-bullet-list class="list-unstyled mb-0">
                     @foreach (var d in pendingIssueDocs)
                     {
-                        <li class="d-flex justify-content-between border-bottom py-1">
-                            <a asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">
+                        <pems-flex as="li" justify="between" css="border-bottom py-1">
+                            <pems-link asp-controller="EngineeringDocuments" asp-action="Details" asp-route-id="@d.DocumentId">
                                 @d.DocumentNo &mdash; @d.Title
-                            </a>
-                            <span class="text-muted small">@(((DateTime?)d.ModifiedDate)?.ToString("yyyy-MM-dd"))</span>
-                        </li>
+                            </pems-link>
+                            <span class="text-muted small">@(PemsDates.Date(((DateTime?)d.ModifiedDate)))</span>
+                        </pems-flex>
                     }
-                </ul>
+                </pems-bullet-list>
             }
             else
             {
-                <p class="text-muted small mb-0">@Localizer["مدرکی در انتظار صدور نیست."]</p>
+                <pems-text class="text-muted small mb-0">@Localizer["مدرکی در انتظار صدور نیست."]</pems-text>
             }
-        </div>
-    </div>
+        </pems-content-card>
+    </pems-col>
 
-    <div class="col-md-6">
-        <div class="content-card h-100 border-warning">
-            <h6 class="mb-3"><i class="bi bi-envelope-exclamation"></i> @Localizer["مکاتبات وارده‌ی وصل‌نشده"]</h6>
+    <pems-col md="6">
+        <pems-content-card css="h-100 border-warning">
+            <pems-heading level="6" class="mb-3"><pems-icon name="bi-envelope-exclamation" /> @Localizer["مکاتبات وارده‌ی وصل‌نشده"]</pems-heading>
             @{
                 var unlinked = (IEnumerable<dynamic>)ViewBag.UnlinkedIncoming;
             }
             @if (unlinked.Any())
             {
-                <ul class="list-unstyled mb-0">
+                <pems-bullet-list class="list-unstyled mb-0">
                     @foreach (var l in unlinked)
                     {
-                        <li class="d-flex justify-content-between border-bottom py-1">
-                            <a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId">
+                        <pems-flex as="li" justify="between" css="border-bottom py-1">
+                            <pems-link asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId">
                                 @l.LetterNumber &mdash; @l.Subject
-                            </a>
+                            </pems-link>
                             <span class="text-muted small">@l.Sender</span>
-                        </li>
+                        </pems-flex>
                     }
-                </ul>
-                <p class="text-muted small mt-2 mb-0">این‌ها هنوز به هیچ مدرک/MR وصل نشده‌اند - روی هرکدام برو و از Relationship Explorer یا ویرایش نامه، لینکش کن.</p>
+                </pems-bullet-list>
+                <pems-text class="text-muted small mt-2 mb-0">این‌ها هنوز به هیچ مدرک/MR وصل نشده‌اند - روی هرکدام برو و از Relationship Explorer یا ویرایش نامه، لینکش کن.</pems-text>
             }
             else
             {
-                <p class="text-muted small mb-0">همه‌ی مکاتبات وارده به یک مدرک/MR وصل شده‌اند.</p>
+                <pems-text class="text-muted small mb-0">همه‌ی مکاتبات وارده به یک مدرک/MR وصل شده‌اند.</pems-text>
             }
-        </div>
-    </div>
-</div>
+        </pems-content-card>
+    </pems-col>
+</pems-row>
 
-<div class="content-card mt-3">
-    <h6 class="mb-3"><i class="bi bi-clock-history"></i> @Localizer["آخرین مکاتبات وارده"]</h6>
+<pems-content-card css="mt-3">
+    <pems-heading level="6" class="mb-3"><pems-icon name="bi-clock-history" /> @Localizer["آخرین مکاتبات وارده"]</pems-heading>
     @{
         var recentIncoming = (IEnumerable<dynamic>)ViewBag.RecentIncoming;
     }
-    <table class="table table-enterprise mb-0">
-        <thead><tr><th>@Localizer["شماره"]</th><th>@Localizer["فرستنده"]</th><th>@Localizer["موضوع"]</th><th>@Localizer["تاریخ"]</th><th>@Localizer["لینک"]</th></tr></thead>
-        <tbody>
-            @foreach (var l in recentIncoming)
-            {
-                <tr>
-                    <td><a asp-controller="Letter" asp-action="Details" asp-route-id="@l.LetterId">@l.LetterNumber</a></td>
-                    <td class="small">@l.Sender</td>
-                    <td class="small">@l.Subject</td>
-                    <td class="small">@(((DateTime)l.LetterDate).ToString("yyyy-MM-dd"))</td>
-                    <td>
+    @{
+        var rows_24 = recentIncoming;
+        var cell_24_4 = DataCell.Template(rows_24, @<text>@{ var l = item; }
                         @if (l.RelatedDocumentId != null)
                         {
-                            <span class="badge bg-success">@Localizer["مدرک"]</span>
+                            <pems-badge tone="success">@Localizer["مدرک"]</pems-badge>
                         }
                         else if (l.RelatedMRId != null)
                         {
-                            <span class="badge bg-success">MR</span>
+                            <pems-badge tone="success">MR</pems-badge>
                         }
                         else
                         {
-                            <span class="badge bg-warning text-dark">@Localizer["وصل‌نشده"]</span>
+                            <pems-badge tone="warning">@Localizer["وصل‌نشده"]</pems-badge>
                         }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+                    </text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_24, c_ => c_.Add(((Localizer["شماره"])?.ToString() ?? ""), l => (object?)(DataCell.Link(Url.Action("Details", "Letter", new { id = l.LetterId }), l.LetterNumber))).Add(((Localizer["فرستنده"])?.ToString() ?? ""), l => (object?)(l.Sender), css: "small").Add(((Localizer["موضوع"])?.ToString() ?? ""), l => (object?)(l.Subject), css: "small").Add(((Localizer["تاریخ"])?.ToString() ?? ""), l => (object?)((PemsDates.Date(((DateTime)l.LetterDate)))), css: "small").Add(((Localizer["لینک"])?.ToString() ?? ""), l => (object?)cell_24_4(l))))" css="mb-0" />
+</pems-content-card>

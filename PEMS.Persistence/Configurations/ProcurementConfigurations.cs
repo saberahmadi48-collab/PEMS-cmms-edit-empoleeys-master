@@ -46,6 +46,31 @@ public class MaterialRequisitionConfiguration : IEntityTypeConfiguration<Materia
     }
 }
 
+/// <summary>SCRUM-428: optional links of an MR item to the registered part it was resolved to (never cascades).</summary>
+public class MaterialRequisitionItemConfiguration : IEntityTypeConfiguration<MaterialRequisitionItem>
+{
+    public void Configure(EntityTypeBuilder<MaterialRequisitionItem> builder)
+    {
+        builder.Ignore(x => x.IsCatalogued);
+
+        builder.HasOne(x => x.MaterialItem)
+            .WithMany()
+            .HasForeignKey(x => x.MaterialItemId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.PartCatalogueRequest)
+            .WithMany()
+            .HasForeignKey(x => x.PartCatalogueRequestId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // SCRUM-471: origin link to the pre-procurement item
+        builder.HasOne(x => x.ProcurementDemand)
+            .WithMany()
+            .HasForeignKey(x => x.ProcurementDemandId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}
+
 public class MaterialRequisitionQuotationConfiguration : IEntityTypeConfiguration<MaterialRequisitionQuotation>
 {
     public void Configure(EntityTypeBuilder<MaterialRequisitionQuotation> builder)
@@ -126,5 +151,34 @@ public class ProcurementApprovalConfiguration : IEntityTypeConfiguration<Procure
             .WithMany(x => x.Approvals)
             .HasForeignKey(x => x.ProcurementPackageId)
             .OnDelete(DeleteBehavior.Cascade);
+    }
+}
+
+/// <summary>SCRUM-471: pre-procurement items. One live item per source (filtered unique index): no double raising, even under concurrency.</summary>
+public class ProcurementDemandConfiguration : IEntityTypeConfiguration<ProcurementDemand>
+{
+    public void Configure(EntityTypeBuilder<ProcurementDemand> builder)
+    {
+        builder.ToTable("ProcurementDemands");
+        builder.HasKey(x => x.ProcurementDemandId);
+
+        builder.Property(x => x.SourceType).HasMaxLength(40).IsRequired();
+        builder.Property(x => x.Status).HasMaxLength(20).IsRequired();
+        builder.Property(x => x.Description).HasMaxLength(500).IsRequired();
+        builder.Property(x => x.Quantity).HasColumnType("decimal(18,3)");
+        builder.Property(x => x.DecisionReason).HasMaxLength(1000);
+        builder.Property(x => x.RaisedByUserName).HasMaxLength(256);
+        builder.Property(x => x.DecidedByUserName).HasMaxLength(256);
+
+        builder.HasIndex(x => new { x.SourceType, x.SourceId }).IsUnique()
+            .HasFilter("[Status] IN ('Open','Converted','Accepted')")
+            .HasDatabaseName("UX_ProcurementDemands_LiveSource");
+        builder.HasIndex(x => x.Status);
+        builder.HasIndex(x => new { x.MaterialItemId, x.WarehouseId });
+
+        builder.HasOne(x => x.MaterialItem).WithMany().HasForeignKey(x => x.MaterialItemId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.Uom).WithMany().HasForeignKey(x => x.UomId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.Warehouse).WithMany().HasForeignKey(x => x.WarehouseId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(x => x.MaterialRequisition).WithMany().HasForeignKey(x => x.MaterialRequisitionId).OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "job-plan-add-material",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a required material",
+    "fa": "افزودن ماده‌ی لازم"
+  },
+  "description": {
+    "en": "Add a required material",
+    "fa": "افزودن ماده‌ی لازم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "JobPlan",
+      "action": "AddRequiredMaterial",
+      "args": {
+        "jobPlanId": "field:jobPlanId",
+        "materialItemId": "field:materialItemId",
+        "requiredQuantity": "field:requiredQuantity"
+      }
+    },
+    "success": {
+      "en": "The material was added.",
+      "fa": "ماده افزوده شد."
+    },
+    "redirect": "/JobPlan/Details/{jobPlanId}"
+  }
+}

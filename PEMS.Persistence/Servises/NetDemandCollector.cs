@@ -47,7 +47,7 @@ public class NetDemandCollector : INetDemandCollector
     private sealed record SrLineRow(int LineId, int RequisitionId, string Number, string Status, int WarehouseId, int MaterialItemId,
         decimal Requested, decimal? Approved, decimal Issued, int? UomId);
     private sealed record ReservationRow(int ReservationId, int RequisitionId, int? LineId, int MaterialItemId, decimal Quantity, decimal Issued);
-    private sealed record WoRow(int Id, int WorkOrderId, string Number, string Status, int MaterialItemId, decimal Required, int? UomId);
+    private sealed record WoRow(int Id, int WorkOrderId, string Number, string Status, int MaterialItemId, decimal Required, int? UomId, string SupplyCode);
     private sealed record UsageRow(int WorkOrderId, int MaterialItemId, decimal Quantity, decimal? Returned);
     private sealed record MaterialRow(int Id, bool IsActive, bool IsStockItem, int? UomId);
 
@@ -84,8 +84,19 @@ public class NetDemandCollector : INetDemandCollector
             .Where(m => m.WorkOrder!.IsActive && !TerminalWorkOrderStatuses.Contains(m.WorkOrder.Status));
         if (materialFilter != null) woQuery = woQuery.Where(m => materialFilter.Contains(m.MaterialItemId));
         var woRows = await woQuery
-            .Select(m => new WoRow(m.WorkOrderMaterialId, m.WorkOrderId, m.WorkOrder!.WorkOrderNumber, m.WorkOrder.Status, m.MaterialItemId, m.RequiredQuantity, m.UomId))
+            .Select(m => new WoRow(m.WorkOrderMaterialId, m.WorkOrderId, m.WorkOrder!.WorkOrderNumber, m.WorkOrder.Status, m.MaterialItemId, m.RequiredQuantity, m.UomId, m.SupplyCode))
             .ToListAsync(ct);
+
+        // SCRUM-472: requisition lines raised by the warehouse intake carry a persisted link to the work-order line they supply.
+        // Their quantity is counted on the requisition side (with its warehouse); the work-order line keeps only what is not sourced yet.
+        var linkedQuery = _ctx.StoreRequisitionLines.AsNoTracking()
+            .Where(l => l.IsActive && l.WorkOrderMaterialId != null && l.StoreRequisition!.IsActive
+                        && !DeadStoreRequisitionStatuses.Contains(l.StoreRequisition.Status));
+        if (materialFilter != null) linkedQuery = linkedQuery.Where(l => materialFilter.Contains(l.MaterialItemId));
+        var sourcedByWoLine = (await linkedQuery
+                .Select(l => new { Id = l.WorkOrderMaterialId!.Value, Qty = l.ApprovedQuantity ?? l.RequestedQuantity })
+                .ToListAsync(ct))
+            .GroupBy(x => x.Id).ToDictionary(g => g.Key, g => g.Sum(x => x.Qty));
 
         var usageQuery = _ctx.MaintenanceSpareUsages.AsNoTracking()
             .Where(u => u.IsActive && u.WorkOrder!.IsActive && !TerminalWorkOrderStatuses.Contains(u.WorkOrder.Status));
@@ -94,6 +105,7 @@ public class NetDemandCollector : INetDemandCollector
 
         var overlapQuery = _ctx.StoreRequisitionLines.AsNoTracking()
             .Where(l => l.IsActive && l.StoreRequisition!.IsActive && l.StoreRequisition.WorkOrderId != null
+                        && l.WorkOrderMaterialId == null   // SCRUM-472: a linked line is a proven relation, not an ambiguous overlap
                         && !DeadStoreRequisitionStatuses.Contains(l.StoreRequisition.Status));
         if (materialFilter != null) overlapQuery = overlapQuery.Where(l => materialFilter.Contains(l.MaterialItemId));
         var overlapPairs = (await overlapQuery.Select(l => new { WorkOrderId = l.StoreRequisition!.WorkOrderId!.Value, l.MaterialItemId }).Distinct().ToListAsync(ct))
@@ -191,6 +203,13 @@ public class NetDemandCollector : INetDemandCollector
                 continue;
             }
 
+            if (row.SupplyCode == WorkOrderMaterialSupplyCodes.DirectPurchase)
+            {
+                excluded.Add(new ExcludedDemand(origin, row.MaterialItemId, null, NetDemandIssueCode.DirectPurchaseNotStockDemand,
+                    "supply code DirectPurchase: bought for the work order, not supplied from stock", row.Required));
+                continue;
+            }
+
             if (!TryMaterial(materials, row.MaterialItemId, origin, null, row.Required, excluded, out var material)) continue;
 
             if (row.Required < 0)
@@ -212,8 +231,13 @@ public class NetDemandCollector : INetDemandCollector
                 continue;
             }
 
-            var remaining = row.Required - consumedByPair.GetValueOrDefault((row.WorkOrderId, row.MaterialItemId));
-            if (remaining <= 0) continue;   // کاملاً مصرف شده
+            // SCRUM-472: quantity already sourced through linked requisition lines is demand on the requisition side.
+            // Consumption normally comes from those same requisitions, so the larger of the two is subtracted, never the sum
+            // (subtracting both would hide a real shortage when the issued spares are also booked as usage).
+            var consumed = consumedByPair.GetValueOrDefault((row.WorkOrderId, row.MaterialItemId));
+            var sourced = sourcedByWoLine.GetValueOrDefault(row.Id);
+            var remaining = row.Required - Math.Max(consumed, sourced);
+            if (remaining <= 0) continue;   // کاملاً مصرف یا از انبار تأمین شده
 
             lines.Add(new DemandLine(origin, row.MaterialItemId, null, remaining, 0m, UnitOf(row.UomId, material)));
         }

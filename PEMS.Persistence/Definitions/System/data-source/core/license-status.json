@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "license-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Licence status",
+    "fa": "وضعیت مجوز"
+  },
+  "description": {
+    "en": "The licence state of this installation",
+    "fa": "وضعیت مجوز این نصب"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Licence",
+      "action": "Status"
+    }
+  }
+}

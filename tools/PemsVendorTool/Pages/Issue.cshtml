@@ -1,0 +1,108 @@
+@page
+@model IssueModel
+@{ ViewData["Title"] = "Issue"; }
+<h1>Issue a licence</h1>
+@if (Model.Error is not null) { <p class="fail">@Model.Error</p> }
+@if (Model.Report is null)
+{
+    <form method="post" asp-page-handler="Validate" enctype="multipart/form-data" class="card">
+        <label for="file">Customer request (.pemsreq)</label>
+        <input id="file" name="file" type="file" required accept=".pemsreq" />
+        <p><button type="submit">Validate request</button></p>
+    </form>
+}
+else
+{
+    <h2>Request checks</h2>
+    <table>
+        <thead><tr><th>Check</th><th>Result</th><th>Detail</th></tr></thead>
+        <tbody>@foreach (var i in Model.Report.Items) { <tr><td>@i.Name</td><td class="@i.Status.ToString().ToLowerInvariant()">@i.Status</td><td>@i.Message</td></tr> }</tbody>
+    </table>
+    @if (Model.Report.Payload is { } p)
+    {
+        <div class="card">
+            <p>Customer <strong>@p.Customer.CustomerRef</strong> (order @p.Customer.OrderRef) &middot; type <strong>@p.RequestType</strong> &middot; Install <code>@p.Install.InstallId</code> (installed @p.Install.InstallTimeUtc.ToString("u"))
+               &middot; fingerprint <code>@p.Fingerprint.FpHash[..8]</code> (@p.Fingerprint.Platform, @p.Fingerprint.Virtualization) &middot; PEMS @p.Product.Version &middot; counter @p.Seal.Counter</p>
+        </div>
+    }
+    @if (!Model.Report.HasFailures)
+    {
+        <form method="post" asp-page-handler="Issue" class="card">
+            <input type="hidden" name="requestText" value="@Model.RequestText" />
+            <h2>Licence terms</h2>
+            <label for="edition">Edition</label><input id="edition" name="edition" required />
+            <label for="modules">Modules (comma separated)</label><input id="modules" name="modules" />
+            <label for="sites">Sites limit (leave empty for none; there is no user limit)</label><input id="sites" name="sites" type="number" min="1" />
+            <label for="type">Type</label>
+            <select id="type" name="type"><option>lifetime</option><option>term</option><option>trial</option><option>demo</option></select>
+            <label for="notBefore">Start (Jalali yyyy/mm/dd; empty = now)</label><input id="notBefore" name="notBefore" placeholder="1405/08/05" />
+            <label for="notAfter">End (Jalali yyyy/mm/dd, valid through that day; term, trial, demo)</label><input id="notAfter" name="notAfter" placeholder="1406/08/04" />
+            <label for="updatesUntil">Maintenance until (Jalali yyyy/mm/dd, optional)</label><input id="updatesUntil" name="updatesUntil" />
+            <label>Allowed deployment</label>
+            <label><input type="checkbox" name="deployment" value="physical" @(Model.Report.Payload!.Fingerprint.Virtualization == "none" ? "checked" : "") /> physical</label>
+            <label><input type="checkbox" name="deployment" value="vm" @(Model.Report.Payload!.Fingerprint.Virtualization is not ("none" or "container") ? "checked" : "") /> vm</label>
+            <label><input type="checkbox" name="deployment" value="container" @(Model.Report.Payload!.Fingerprint.Virtualization == "container" ? "checked" : "") /> container</label>
+            <label for="note">Operator note @(Model.Report.HasWarnings ? "(required: the request has warnings)" : "(optional)")</label>
+            <input id="note" name="note" maxlength="500" @(Model.Report.HasWarnings ? "required" : "") />
+            <label for="keyId">Signing key</label>
+            <select id="keyId" name="keyId">@foreach (var k in Model.Keys.List()) { <option>@k.KeyId</option> }</select>
+            <label for="passphrase">Key passphrase (not stored)</label><input id="passphrase" name="passphrase" type="password" required autocomplete="off" />
+            <p><button type="submit">Sign and issue</button></p>
+        </form>
+    }
+}
+@functions {
+    public class IssueModel : Microsoft.AspNetCore.Mvc.RazorPages.PageModel
+    {
+        public VendorKeyStore Keys { get; }
+        private readonly RequestValidator _validator;
+        private readonly LicenseIssuer _issuer;
+        private readonly VendorSettings _settings;
+        private readonly TimeProvider _time;
+        public ValidationReport? Report { get; private set; }
+        public string? RequestText { get; private set; }
+        public string? Error { get; private set; }
+
+        public IssueModel(VendorKeyStore keys, RequestValidator validator, LicenseIssuer issuer, VendorSettings settings, TimeProvider time)
+        { Keys = keys; _validator = validator; _issuer = issuer; _settings = settings; _time = time; }
+
+        public async Task OnPostValidateAsync(Microsoft.AspNetCore.Http.IFormFile file)
+        {
+            if (file.Length > PEMS.Licensing.Formats.FileFormats.MaxRequestBytes) { Error = "File too large."; return; }
+            using var reader = new StreamReader(file.OpenReadStream());
+            RequestText = await reader.ReadToEndAsync();
+            Report = _validator.Validate(RequestText, _time.GetUtcNow());
+        }
+
+        public Microsoft.AspNetCore.Mvc.IActionResult OnPostIssue(string requestText, string edition, string? modules, int? sites, string type,
+            string? notBefore, string? notAfter, string? updatesUntil, string[] deployment, string? note, string keyId, string passphrase)
+        {
+            var now = _time.GetUtcNow();
+            DateTimeOffset? Parse(string? s, bool end)
+            {
+                if (string.IsNullOrWhiteSpace(s)) return null;
+                if (!PEMS.Licensing.Evaluation.LicenseDates.TryParseJalali(s, out var y, out var m, out var d)) throw new FormatException($"'{s}' is not a Jalali date (yyyy/mm/dd).");
+                return end ? PEMS.Licensing.Evaluation.LicenseDates.EndOfJalaliDayUtc(y, m, d) : PEMS.Licensing.Evaluation.LicenseDates.StartOfJalaliDayUtc(y, m, d);
+            }
+
+            try
+            {
+                var options = new IssueOptions(edition.Trim(),
+                    (modules ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList(),
+                    sites is null ? new Dictionary<string, int>() : new Dictionary<string, int> { ["sites"] = sites.Value },
+                    type, Parse(notBefore, false) ?? now, Parse(notAfter, true), Parse(updatesUntil, true), deployment.ToList(), note);
+                using var signer = Keys.Unlock(keyId, passphrase);
+                var result = _issuer.Issue(requestText, options, signer, _settings.OperatorName);
+                if (!result.Issued) { Report = result.Report; RequestText = requestText; Error = result.Error; return Page(); }
+                return File(System.Text.Encoding.UTF8.GetBytes(result.FileText!), "application/octet-stream", result.LicenceId + ".pemslic");
+            }
+            catch (Exception ex) when (ex is FormatException or System.Security.Cryptography.CryptographicException or FileNotFoundException)
+            {
+                Report = _validator.Validate(requestText, now);
+                RequestText = requestText;
+                Error = ex is System.Security.Cryptography.CryptographicException ? "Wrong passphrase." : ex.Message;
+                return Page();
+            }
+        }
+    }
+}

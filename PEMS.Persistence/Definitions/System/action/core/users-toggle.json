@@ -1,0 +1,26 @@
+{
+  "kind": "action",
+  "key": "users-toggle",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Activate or deactivate a user",
+    "fa": "فعال یا غیرفعال کردن کاربر"
+  },
+  "description": {
+    "en": "Activate or deactivate a user",
+    "fa": "فعال یا غیرفعال کردن کاربر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Users",
+      "action": "ToggleActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "redirect": "/p/users"
+  }
+}

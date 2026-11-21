@@ -1,0 +1,31 @@
+{
+  "kind": "data-source",
+  "key": "pc-duplicate-candidates",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue: duplicate candidates",
+    "fa": "کاتالوگ قطعه: کاندیداهای تکراری"
+  },
+  "description": {
+    "en": "Part Catalogue: duplicate candidates",
+    "fa": "کاتالوگ قطعه: کاندیداهای تکراری"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueDedup",
+      "action": "DuplicateCandidates",
+      "args": {
+        "userRoles": "context:roles",
+        "manufacturerPartNumber": "param:manufacturerPartNumber",
+        "supplierPartNumber": "param:supplierPartNumber",
+        "manufacturerId": "param:manufacturerId",
+        "newManufacturerName": "param:newManufacturerName",
+        "excludeRequestId": "param:excludeRequestId"
+      },
+      "disposition": "inline"
+    }
+  }
+}

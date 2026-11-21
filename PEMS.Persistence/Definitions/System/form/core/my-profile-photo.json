@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "my-profile-photo",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Profile photo",
+    "fa": "عکس پروفایل"
+  },
+  "description": {
+    "en": "Choose a new profile photo",
+    "fa": "انتخاب عکس پروفایل جدید"
+  },
+  "payload": {
+    "id": "my-profile-photo",
+    "title": {
+      "en": "Profile photo",
+      "fa": "عکس پروفایل"
+    },
+    "submitLabel": {
+      "en": "Save photo",
+      "fa": "ذخیره عکس"
+    },
+    "actionKey": "profile-photo-save",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "file",
+        "label": {
+          "en": "Photo (jpg, png, webp)",
+          "fa": "عکس (jpg، png، webp)"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Choose a photo.",
+            "fa": "یک عکس انتخاب کنید."
+          }
+        }
+      }
+    ]
+  }
+}

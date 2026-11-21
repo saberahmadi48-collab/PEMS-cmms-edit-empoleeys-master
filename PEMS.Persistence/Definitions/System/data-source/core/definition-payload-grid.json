@@ -1,0 +1,20 @@
+{
+  "kind": "data-source",
+  "key": "definition-payload-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Parts of a definition",
+    "fa": "اجزای تعریف"
+  },
+  "description": {
+    "en": "Parts of a definition",
+    "fa": "اجزای تعریف"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "definition-payload",
+    "permission": "Definitions.View",
+    "parameters": {}
+  }
+}

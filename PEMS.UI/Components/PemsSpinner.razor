@@ -1,0 +1,16 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("spinner", Category = "feedback", Icon = "bi-arrow-repeat")]
+<div class="@Css" role="status" aria-hidden="true" @attributes="Options.Attributes"></div>
+@code {
+    [Parameter, EditorRequired] public SpinnerOptions Options { get; set; } = default!;
+    private string Css
+    {
+        get
+        {
+            var kind = Options.Grow ? "spinner-grow" : "spinner-border";
+            var size = Options.Size == Size.Small ? " " + kind + "-sm" : "";
+            var tone = Options.Tone is { } t ? " text-" + (t == Tone.Neutral ? "secondary" : t.ToString().ToLowerInvariant()) : "";
+            return kind + size + tone + (string.IsNullOrWhiteSpace(Options.CssClass) ? "" : " " + Options.CssClass.Trim());
+        }
+    }
+}

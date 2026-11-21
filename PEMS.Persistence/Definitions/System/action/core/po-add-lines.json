@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "po-add-lines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add the lines of an MR",
+    "fa": "افزودن اقلام یک MR"
+  },
+  "description": {
+    "en": "Add the lines of an MR",
+    "fa": "افزودن اقلام یک MR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PurchaseOrder",
+      "action": "AddLinesFromRequisition",
+      "args": {
+        "poId": "field:id",
+        "mrId": "field:mrId"
+      }
+    },
+    "success": {
+      "en": "The lines were added.",
+      "fa": "اقلام افزوده شد."
+    },
+    "redirect": "/p/purchase-order-details?id={id}"
+  }
+}

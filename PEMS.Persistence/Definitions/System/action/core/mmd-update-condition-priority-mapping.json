@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "mmd-update-condition-priority-mapping",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "UpdateConditionPriorityMapping",
+    "fa": "نگاشت Condition→Priority به‌روزرسانی شد."
+  },
+  "description": {
+    "en": "UpdateConditionPriorityMapping",
+    "fa": "نگاشت Condition→Priority به‌روزرسانی شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "UpdateConditionPriorityMapping",
+      "args": {
+        "id": "field:id",
+        "priority": "field:priority"
+      }
+    },
+    "success": {
+      "en": "نگاشت Condition→Priority به‌روزرسانی شد.",
+      "fa": "نگاشت Condition→Priority به‌روزرسانی شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

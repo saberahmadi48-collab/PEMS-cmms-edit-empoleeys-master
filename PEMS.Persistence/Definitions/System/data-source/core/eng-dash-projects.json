@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "eng-dash-projects",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering dashboard projects",
+    "fa": "پروژه‌های داشبورد مهندسی"
+  },
+  "description": {
+    "en": "Engineering dashboard projects",
+    "fa": "پروژه‌های داشبورد مهندسی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EngineeringDashboard",
+      "action": "Projects",
+      "args": {}
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "action",
+  "key": "organization-assignment-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit an assignment",
+    "fa": "ویرایش تخصیص"
+  },
+  "description": {
+    "en": "Edit an assignment",
+    "fa": "ویرایش تخصیص"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Organization",
+      "action": "UpdateAssignmentOfPosition",
+      "args": {
+        "positionId": "field:id",
+        "isPrimary": "field:isPrimary",
+        "startDate": "field:startDate",
+        "endDate": "field:endDate"
+      },
+      "load": {
+        "operation": {
+          "model": "Organization",
+          "action": "AssignmentOf",
+          "args": {
+            "positionId": "param:id"
+          }
+        }
+      }
+    },
+    "success": {
+      "en": "Assignment updated.",
+      "fa": "تخصیص به‌روز شد."
+    },
+    "redirect": "/p/organization-positions"
+  }
+}

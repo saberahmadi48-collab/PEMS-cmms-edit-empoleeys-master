@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "intake-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject an intake file",
+    "fa": "رد فایل دریافتی"
+  },
+  "description": {
+    "en": "Reject an intake file",
+    "fa": "رد فایل دریافتی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Intake",
+      "action": "Reject",
+      "args": {
+        "attachmentId": "field:attachmentId",
+        "userId": "context:userId"
+      }
+    },
+    "success": {
+      "en": "The file was rejected and removed from the queue.",
+      "fa": "فایل رد و از صف حذف شد."
+    },
+    "redirect": "/p/intake"
+  }
+}

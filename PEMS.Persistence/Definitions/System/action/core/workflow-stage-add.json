@@ -1,0 +1,45 @@
+{
+  "kind": "action",
+  "key": "workflow-stage-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a stage",
+    "fa": "افزودن مرحله"
+  },
+  "description": {
+    "en": "Add a stage",
+    "fa": "افزودن مرحله"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "SaveStage",
+      "args": {
+        "versionId": "field:id",
+        "stage": {
+          "Name": "field:name",
+          "NameFa": "field:nameFa",
+          "BusinessStatus": "field:businessStatus",
+          "StageOrder": "field:stageOrder",
+          "ResponsibleRole": "field:responsibleRole",
+          "ResponsibleEmployeeId": "field:responsibleEmployeeId",
+          "StageType": "field:stageType",
+          "ApprovalStrategy": "field:approvalStrategy",
+          "MinimumApprovalCount": "field:minimumApprovalCount",
+          "IsMandatory": "field:isMandatory",
+          "TimeoutHours": "field:timeoutHours",
+          "Description": "field:description",
+          "StageId": "literal:0"
+        }
+      }
+    },
+    "success": {
+      "en": "Stage added.",
+      "fa": "مرحله افزوده شد."
+    },
+    "redirect": "/p/workflow-management"
+  }
+}

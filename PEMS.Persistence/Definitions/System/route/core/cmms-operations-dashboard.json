@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "cmms-operations-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CMMS operations dashboard (old address)",
+    "fa": "داشبورد عملیات CMMS (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "CMMS operations dashboard (old address)",
+    "fa": "داشبورد عملیات CMMS (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "CmmsOperations/Dashboard",
+    "target": "/p/cmms-operations",
+    "permanent": false
+  }
+}

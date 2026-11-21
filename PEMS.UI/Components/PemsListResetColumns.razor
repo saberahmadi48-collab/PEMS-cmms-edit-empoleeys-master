@@ -1,0 +1,11 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-reset-columns", Category = "list", Icon = "bi-arrow-counterclockwise")]
+<PemsListIconTool Options="@Tool" />
+@code {
+    [Parameter, EditorRequired] public ListResetColumnsOptions Options { get; set; } = default!;
+    private ListIconToolOptions Tool => new()
+    {
+        Icon = "bi-arrow-counterclockwise", Label = Options.Label, ExtraClass = "lp-hide-xs",
+        Attributes = new Dictionary<string, string> { ["data-lp-reset-columns"] = Options.GridKey }
+    };
+}

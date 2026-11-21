@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-admin-commodity-groups",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin commodity groups (old address)",
+    "fa": "Part Catalogue admin commodity groups (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part Catalogue admin commodity groups (old address)",
+    "fa": "Part Catalogue admin commodity groups (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueAdmin/CommodityGroups",
+    "target": "/x/pc-admin-commodity-groups",
+    "permanent": false
+  }
+}

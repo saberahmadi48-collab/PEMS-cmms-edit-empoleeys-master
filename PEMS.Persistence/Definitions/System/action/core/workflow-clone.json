@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "workflow-clone",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Clone a version",
+    "fa": "ایجاد پیش‌نویس"
+  },
+  "description": {
+    "en": "Clone a version",
+    "fa": "ایجاد پیش‌نویس"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkflowManagement",
+      "action": "Clone",
+      "args": {
+        "versionId": "field:id",
+        "summary": "field:summary"
+      }
+    },
+    "success": {
+      "en": "Draft created.",
+      "fa": "پیش‌نویس ایجاد شد."
+    },
+    "redirect": "/p/workflow-management"
+  }
+}

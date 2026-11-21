@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "production-materials",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Materials",
+    "fa": "Materials"
+  },
+  "description": {
+    "en": "Materials",
+    "fa": "Materials"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Production",
+      "action": "MaterialChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

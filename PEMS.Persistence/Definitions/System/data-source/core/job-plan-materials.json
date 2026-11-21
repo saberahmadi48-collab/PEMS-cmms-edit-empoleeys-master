@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "job-plan-materials",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Stock materials",
+    "fa": "مواد انباری"
+  },
+  "description": {
+    "en": "Stock materials",
+    "fa": "مواد انباری"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "JobPlanPage",
+      "action": "MaterialChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

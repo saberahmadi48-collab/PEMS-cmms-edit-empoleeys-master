@@ -1,0 +1,30 @@
+@page
+@model ImportModel
+@{ ViewData["Title"] = "Import"; }
+<h1>Import an already issued licence</h1>
+<p>For licences issued before this ledger existed (plan row #341). The signature must verify with one of this tool's vendor keys; you confirm the customer.</p>
+@if (Model.Message is not null) { <p class="warn">@Model.Message</p> }
+<form method="post" enctype="multipart/form-data" class="card">
+    <label for="file">.pemslic file</label><input id="file" name="file" type="file" required />
+    <label for="customerRef">Customer reference (must exist)</label><input id="customerRef" name="customerRef" required />
+    <p><button type="submit">Import</button></p>
+</form>
+@functions {
+    public class ImportModel : Microsoft.AspNetCore.Mvc.RazorPages.PageModel
+    {
+        private readonly LicenseIssuer _issuer;
+        private readonly VendorKeyStore _keys;
+        private readonly VendorSettings _settings;
+        public string? Message { get; private set; }
+
+        public ImportModel(LicenseIssuer issuer, VendorKeyStore keys, VendorSettings settings) { _issuer = issuer; _keys = keys; _settings = settings; }
+
+        public async Task OnPostAsync(Microsoft.AspNetCore.Http.IFormFile file, string customerRef)
+        {
+            if (file.Length > 64 * 1024) { Message = "File too large."; return; }
+            using var reader = new StreamReader(file.OpenReadStream());
+            var (_, message) = _issuer.Import(await reader.ReadToEndAsync(), customerRef, _keys.ToTrustedKeySet(), _settings.OperatorName);
+            Message = message;
+        }
+    }
+}

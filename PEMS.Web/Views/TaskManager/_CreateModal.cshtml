@@ -1,0 +1,85 @@
+@model PEMS.Application.DTOs.WorkSpaceViewDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var assignees = ViewBag.Assignees as PEMS.Application.DTOs.AssigneeResolutionDto ?? new PEMS.Application.DTOs.AssigneeResolutionDto();
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+    var cleanReturn = System.Text.RegularExpressions.Regex.Replace(returnUrl, @"([?&])create=1&?", "$1").TrimEnd('?', '&');
+}
+@if (Model.CanCreate)
+{
+<pems-modal size="large" id="tmCreateModal" tabindex="-1" aria-labelledby="tmCreateTitle" aria-hidden="true" data-tm-autoopen="@(Context.Request.Query["create"].ToString() == "1" ? "1" : "0")"><pems-form asp-controller="TaskManager" asp-action="Create" method="post" data-pems-dirty-guard data-tm-ctrl-enter>
+            <pems-modal-header level="3" title-css="h6" title-id="tmCreateTitle" close="true" close-label="@Localizer["Tm_Close"]">@Localizer["Tm_Create"] · <span class="tm-key">@Model.Space.Key</span></pems-modal-header>
+            <pems-modal-body>
+                <input type="hidden" name="WorkSpaceId" value="@Model.Space.Id" />
+                <input type="hidden" name="returnUrl" value="@cleanReturn" />
+                <pems-row gap="2">
+                    <pems-col md="8">
+                        <pems-label css="small" for="tmc-title">@Localizer["Tm_Field_Title"] <span class="text-danger" aria-hidden="true">*</span></pems-label>
+                        <pems-input scale="small" id="tmc-title" name="Title" required maxlength="300" autocomplete="off" />
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label css="small" for="tmc-type">@Localizer["Tm_Field_Type"]</pems-label>
+                        <pems-select scale="small" id="tmc-type" name="TypeId">
+                            @foreach (var t in Model.Types.Where(t => !t.IsSubtask))
+                            { <option value="@t.Id">@TaskManagerUi.Name(t.Name, t.NameFa)</option> }
+                        </pems-select>
+                    </pems-col>
+                    <pems-col span="12">
+                        <pems-label css="small" for="tmc-desc">@Localizer["Tm_Field_Description"]</pems-label>
+                        <pems-textarea scale="small" id="tmc-desc" name="Description" rows="4" maxlength="8000"></pems-textarea>
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label css="small" for="tmc-assignee">@Localizer["Tm_Field_Assignee"]</pems-label>
+                        <pems-select scale="small" id="tmc-assignee" name="AssigneeEmployeeId" aria-describedby="tmc-assignee-help">
+                            <option value="">@Localizer["Tm_Unassigned"]</option>
+                            @foreach (var e in assignees.Candidates) { <option value="@e.EmployeeId">@e.Name</option> }
+                        </pems-select>
+                        @if (assignees.State != "RESOLVED")
+                        {
+                            <pems-help-text css="text-warning" id="tmc-assignee-help"><pems-icon name="bi-info-circle" aria-hidden="true" /> @Localizer["Tm_Diag_" + assignees.State]</pems-help-text>
+                        }
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label css="small" for="tmc-priority">@Localizer["Tm_Field_Priority"]</pems-label>
+                        <pems-select scale="small" id="tmc-priority" name="Priority">
+                            @foreach (var p in PEMS.Domain.Entities.TaskItemPriorities.All)
+                            { <option value="@p" selected="@(p == "Normal")">@TaskManagerUi.Priority(Localizer, p)</option> }
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label css="small" for="tmc-sprint">@Localizer["Tm_Field_Sprint"]</pems-label>
+                        <pems-select scale="small" id="tmc-sprint" name="SprintId">
+                            <option value="">@Localizer["Tm_Backlog"]</option>
+                            @foreach (var s in Model.Sprints) { <option value="@s.Id">@s.Name</option> }
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label css="small" for="tmc-start">@Localizer["Tm_Field_StartDate"]</pems-label>
+                        <pems-date id="tmc-start" name="StartDate" scale="small" />
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label css="small" for="tmc-due">@Localizer["Tm_Field_DueDate"]</pems-label>
+                        <pems-date id="tmc-due" name="DueDate" scale="small" />
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label css="small" for="tmc-points">@Localizer["Tm_Field_StoryPoints"]</pems-label>
+                        <pems-input scale="small" id="tmc-points" name="StoryPoints" type="number" min="0" max="1000" step="0.5" />
+                    </pems-col>
+                </pems-row>
+            </pems-modal-body>
+            <pems-modal-footer css="justify-content-between">
+                <pems-check-row>
+                    <pems-input kind="check" type="checkbox" name="createAnother" value="true" id="tmc-another" />
+                    <label class="form-check-label small" for="tmc-another">@Localizer["Tm_CreateAnother"]</label>
+                </pems-check-row>
+                <pems-flex gap="2" align="center">
+                    <span class="small text-muted d-none d-md-inline">@Localizer["Tm_CtrlEnterHint"]</span>
+                    <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-dismiss="modal">@Localizer["Tm_Cancel"]</pems-button>
+                    <pems-button tone="primary" size="small" type="submit">@Localizer["Tm_Create"]</pems-button>
+                </pems-flex>
+            </pems-modal-footer>
+        </pems-form></pems-modal>
+}

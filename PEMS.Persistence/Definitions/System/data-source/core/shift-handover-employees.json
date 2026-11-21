@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "shift-handover-employees",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "People",
+    "fa": "افراد"
+  },
+  "description": {
+    "en": "People",
+    "fa": "افراد"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "ShiftHandoverPage",
+      "action": "EmployeeChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "meeting-mark-attended",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark attendance",
+    "fa": "ثبت حضور"
+  },
+  "description": {
+    "en": "Mark attendance",
+    "fa": "ثبت حضور"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Meeting",
+      "action": "MarkAttended",
+      "args": {
+        "meetingAttendeeId": "field:meetingAttendeeId",
+        "attended": "field:attended"
+      }
+    },
+    "success": {
+      "en": "Attendance was recorded.",
+      "fa": "حضور ثبت شد."
+    },
+    "redirect": "/Meeting/Details/{meetingId}"
+  }
+}

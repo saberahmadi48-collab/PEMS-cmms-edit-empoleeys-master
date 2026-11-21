@@ -7,12 +7,12 @@
 
     string statusClass = Model.Status switch
     {
-        "Approved" => "bg-success",
-        "Issued" => "bg-primary",
-        "Rejected" => "bg-danger",
-        "Submitted" => "bg-warning text-dark",
-        "Draft" => "bg-secondary",
-        _ => "bg-primary"
+        "Approved" => "success",
+        "Issued" => "primary",
+        "Rejected" => "danger",
+        "Submitted" => "warning",
+        "Draft" => "neutral",
+        _ => "primary"
     };
 }
 
@@ -21,76 +21,76 @@
    و وضعیت/رویژن به‌صورت فقط‌خواندنی نشان داده می‌شوند (این‌ها از طریق گردش‌کار جدا مدیریت
    می‌شوند - Submit/Approve/Reject/Create Revision - نه ویرایش مستقیم اینجا). *@
 
-<div class="content-card mb-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+<pems-content-card css="mb-3">
+    <pems-flex justify="between" align="center" wrap="true" gap="2">
         <div>
-            <h5 class="mb-1">Editing: @Model.DocumentNo</h5>
-            <span class="badge @statusClass">@Model.Status</span>
+            <pems-heading level="5" class="mb-1">Editing: @Model.DocumentNo</pems-heading>
+            <pems-badge tone="@statusClass">@Model.Status</pems-badge>
             <span class="text-muted small ms-2">Rev @Model.RevisionNo</span>
-            @if (Model.IsFrozen) { <span class="badge bg-info text-dark ms-1"><i class="bi bi-snow"></i> Frozen</span> }
+            @if (Model.IsFrozen) { <pems-badge tone="info" css="ms-1"><pems-icon name="bi-snow" /> Frozen</pems-badge> }
         </div>
-        <a asp-action="Details" asp-route-id="@Model.DocumentId" class="btn btn-sm btn-outline-secondary">
-            <i class="bi bi-arrow-return-left"></i> Back to Details
-        </a>
-    </div>
-    <p class="text-muted small mb-0 mt-2">
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@Model.DocumentId">
+            <pems-icon name="bi-arrow-return-left" /> Back to Details
+        </pems-button>
+    </pems-flex>
+    <pems-text class="text-muted small mb-0 mt-2">
         Status, revision, and freeze are managed through the document workflow (Submit / Approve / Reject / Create Revision
         on the Details page), not edited directly here.
-    </p>
-</div>
+    </pems-text>
+</pems-content-card>
 
-<form asp-action="Edit" method="post">
+<pems-form asp-action="Edit" method="post">
     <input type="hidden" asp-for="DocumentId" />
 
-    <div class="row g-3">
-        <div class="col-lg-6">
-            <div class="content-card h-100">
-                <h6 class="mb-3">Basic Information</h6>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">@Localizer["Document No"]</label>
-                        <input asp-for="DocumentNo" class="form-control" required />
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">@Localizer["Document Type"]</label>
-                        <input asp-for="DocumentType" class="form-control" required />
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label">@Localizer["Title"]</label>
-                        <input asp-for="Title" class="form-control" required />
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label">@Localizer["Description"]</label>
-                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">@Localizer["Project"]</label>
-                        <select asp-for="ProjectId" asp-items="ViewBag.Projects" class="form-select"></select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">@Localizer["Discipline"]</label>
-                        <select asp-for="DisciplineId" asp-items="ViewBag.Disciplines" class="form-select">
+    <pems-row gap="3">
+        <pems-col lg="6">
+            <pems-content-card css="h-100">
+                <pems-heading level="6" class="mb-3">Basic Information</pems-heading>
+                <pems-row gap="3">
+                    <pems-col md="6">
+                        <pems-label>@Localizer["Document No"]</pems-label>
+                        <pems-input asp-for="DocumentNo" required />
+                    </pems-col>
+                    <pems-col md="6">
+                        <pems-label>@Localizer["Document Type"]</pems-label>
+                        <pems-input asp-for="DocumentType" required />
+                    </pems-col>
+                    <pems-col span="12">
+                        <pems-label>@Localizer["Title"]</pems-label>
+                        <pems-input asp-for="Title" required />
+                    </pems-col>
+                    <pems-col span="12">
+                        <pems-label>@Localizer["Description"]</pems-label>
+                        <pems-textarea asp-for="Description" rows="3"></pems-textarea>
+                    </pems-col>
+                    <pems-col md="6">
+                        <pems-label>@Localizer["Project"]</pems-label>
+                        <pems-select asp-for="ProjectId" asp-items="ViewBag.Projects"></pems-select>
+                    </pems-col>
+                    <pems-col md="6">
+                        <pems-label>@Localizer["Discipline"]</pems-label>
+                        <pems-select asp-for="DisciplineId" asp-items="ViewBag.Disciplines">
                             <option value="">-- Unassigned --</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">@Localizer["Area"]</label>
-                        <input asp-for="Area" class="form-control" />
-                    </div>
-                </div>
-            </div>
-        </div>
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="6">
+                        <pems-label>@Localizer["Area"]</pems-label>
+                        <pems-input asp-for="Area" />
+                    </pems-col>
+                </pems-row>
+            </pems-content-card>
+        </pems-col>
 
-        <div class="col-lg-6">
-            <div class="content-card h-100">
-                <h6 class="mb-3">Engineering Information</h6>
-                <div class="row g-3">
-                    <div class="col-12">
-                        <label class="form-label">@Localizer["Issue Purpose"]</label>
+        <pems-col lg="6">
+            <pems-content-card css="h-100">
+                <pems-heading level="6" class="mb-3">Engineering Information</pems-heading>
+                <pems-row gap="3">
+                    <pems-col span="12">
+                        <pems-label>@Localizer["Issue Purpose"]</pems-label>
                         @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۶.۱: کدهای رسمی IFA/IFR/IFI/FI
                            به‌همراه مقادیر قدیمی این فیلد (برای سازگاری با داده‌ی موجود) - همین لیست دقیقاً در
                            VDR/Details.cshtml (فرم SubmitForReview) هم تکرار شده؛ اگر این‌جا تغییر داد آن‌جا را هم به‌روزرسانی کنید. *@
-                        <select asp-for="IssuePurpose" class="form-select">
+                        <pems-select asp-for="IssuePurpose">
                             <option value="">-- Select --</option>
                             <option value="IFA">@Localizer["IFA - Issued for Approval"]</option>
                             <option value="IFR">@Localizer["IFR - Issue for Review and Comments"]</option>
@@ -99,49 +99,49 @@
                             <option value="For Approval">@Localizer["For Approval (legacy)"]</option>
                             <option value="For Construction">@Localizer["For Construction (legacy)"]</option>
                             <option value="For Information">@Localizer["For Information (legacy)"]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">@Localizer["Prepared By"]</label>
-                        <input asp-for="PreparedBy" class="form-control" />
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">@Localizer["Checked By"]</label>
-                        <input asp-for="CheckedBy" class="form-control" />
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">@Localizer["Approved By"]</label>
-                        <input asp-for="ApprovedBy" class="form-control" />
-                    </div>
-                </div>
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label>@Localizer["Prepared By"]</pems-label>
+                        <pems-input asp-for="PreparedBy" />
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label>@Localizer["Checked By"]</pems-label>
+                        <pems-input asp-for="CheckedBy" />
+                    </pems-col>
+                    <pems-col md="4">
+                        <pems-label>@Localizer["Approved By"]</pems-label>
+                        <pems-input asp-for="ApprovedBy" />
+                    </pems-col>
+                </pems-row>
 
-                <h6 class="mb-3 mt-4">Traceability</h6>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label">Related Equipment <span class="text-muted small">@Localizer["(optional)"]</span></label>
-                        <select asp-for="EquipmentId" asp-items="ViewBag.Equipments" class="form-select">
+                <pems-heading level="6" class="mb-3 mt-4">Traceability</pems-heading>
+                <pems-row gap="3">
+                    <pems-col md="6">
+                        <pems-label>Related Equipment <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
+                        <pems-select asp-for="EquipmentId" asp-items="ViewBag.Equipments">
                             <option value="">@Localizer["-- None --"]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Related Contract <span class="text-muted small">@Localizer["(optional)"]</span></label>
-                        <select asp-for="ContractId" asp-items="ViewBag.Contracts" class="form-select">
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="6">
+                        <pems-label>Related Contract <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
+                        <pems-select asp-for="ContractId" asp-items="ViewBag.Contracts">
                             <option value="">@Localizer["-- None --"]</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Related MR <span class="text-muted small">@Localizer["(optional)"]</span></label>
-                        <select asp-for="RelatedMRId" asp-items="ViewBag.MaterialRequisitions" class="form-select">
+                        </pems-select>
+                    </pems-col>
+                    <pems-col md="6">
+                        <pems-label>Related MR <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
+                        <pems-select asp-for="RelatedMRId" asp-items="ViewBag.MaterialRequisitions">
                             <option value="">@Localizer["-- None --"]</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                        </pems-select>
+                    </pems-col>
+                </pems-row>
+            </pems-content-card>
+        </pems-col>
+    </pems-row>
 
-    <div class="content-card mt-3">
-        <button type="submit" class="btn btn-pems-solid"><i class="bi bi-check-lg"></i> Save Changes</button>
-        <a asp-action="Details" asp-route-id="@Model.DocumentId" class="btn btn-outline-secondary">Cancel</a>
-    </div>
-</form>
+    <pems-content-card css="mt-3">
+        <pems-button tone="primary" type="submit"><pems-icon name="bi-check-lg" /> Save Changes</pems-button>
+        <pems-button tone="neutral" outline="true" as="a" asp-action="Details" asp-route-id="@Model.DocumentId">Cancel</pems-button>
+    </pems-content-card>
+</pems-form>

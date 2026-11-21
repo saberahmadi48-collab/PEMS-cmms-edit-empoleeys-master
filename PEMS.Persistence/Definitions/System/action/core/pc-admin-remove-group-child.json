@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "pc-admin-remove-group-child",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a group map",
+    "fa": "حذف نگاشت گروه"
+  },
+  "description": {
+    "en": "Remove a group map",
+    "fa": "حذف نگاشت گروه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "RemoveGroupChild",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "mapId": "field:mapId"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/p/pc-admin"
+  }
+}

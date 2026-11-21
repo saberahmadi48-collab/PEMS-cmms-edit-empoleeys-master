@@ -1,0 +1,6 @@
+@(await Html.RenderComponentAsync<PemsForm>(RenderMode.Static, new
+{
+    Definition = SpikeData.Form,
+    RequestToken = (string?)ViewData["Token"],
+    RequestTokenName = (string)ViewData["TokenName"]!
+}))

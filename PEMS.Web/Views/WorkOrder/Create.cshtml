@@ -1,42 +1,40 @@
 ﻿@using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-<div class="content-card" style="max-width:700px;">
-    <form asp-action="Create" method="post">
-        <div class="row g-3">
-            <div class="col-12">
-                <label class="form-label">@Localizer["Equipment"]</label>
-                <input type="text" class="form-control" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]"
-                       value="@ViewBag.PreselectedEquipmentLabel"
-                       data-pems-search data-search-type="Equipment" data-search-hidden="#woEquipmentIdHidden" autocomplete="off" />
+<pems-content-card css="pems-s-bcaa1805">
+    <pems-form asp-action="Create" method="post">
+        <pems-row gap="3">
+            <pems-col span="12">
+                <pems-label>@Localizer["Equipment"]</pems-label>
+                <pems-input type="text" placeholder="@Localizer["جستجوی تگ، نام یا سازنده..."]" value="@ViewBag.PreselectedEquipmentLabel" data-pems-search data-search-type="Equipment" data-search-hidden="#woEquipmentIdHidden" autocomplete="off" />
                 <input type="hidden" name="equipmentId" id="woEquipmentIdHidden" value="@ViewBag.PreselectedEquipmentId" />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Type"]</label>
-                <select name="workOrderType" class="form-select" required>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Type"]</pems-label>
+                <pems-select name="workOrderType" required>
                     <option value="Preventive">@Localizer["Preventive"]</option>
                     <option value="Corrective" selected>@Localizer["Corrective"]</option>
                     <option value="Emergency">@Localizer["Emergency"]</option>
                     <option value="Predictive">@Localizer["Predictive"]</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Priority"]</label>
-                <select name="priority" class="form-select" required>
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Priority"]</pems-label>
+                <pems-select name="priority" required>
                     <option value="Low">@Localizer["Low"]</option>
                     <option value="Medium" selected>@Localizer["Medium"]</option>
                     <option value="High">@Localizer["High"]</option>
                     <option value="Critical">@Localizer["Critical"]</option>
-                </select>
-            </div>
-            <div class="col-12"><label class="form-label">@Localizer["Description"]</label><textarea name="description" class="form-control" rows="3" required></textarea></div>
-            <div class="col-12">
-                <div class="alert alert-info small mb-0">@Localizer["تخصیص گروه کاری / مجری پس از برنامه‌ریزی و در مرحله‌ی «تخصیص مجری» انجام می‌شود."]</div>
-            </div>
-        </div>
-        <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">Create Work Order</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
-        </div>
-    </form>
-</div>
+                </pems-select>
+            </pems-col>
+            <pems-col span="12"><pems-label>@Localizer["Description"]</pems-label><pems-textarea name="description" rows="3" required></pems-textarea></pems-col>
+            <pems-col span="12">
+                <pems-alert tone="info" css="small mb-0">@Localizer["تخصیص گروه کاری / مجری پس از برنامه‌ریزی و در مرحله‌ی «تخصیص مجری» انجام می‌شود."]</pems-alert>
+            </pems-col>
+        </pems-row>
+        <pems-action-bar css="mt-4">
+            <pems-button tone="primary" type="submit">Create Work Order</pems-button>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>

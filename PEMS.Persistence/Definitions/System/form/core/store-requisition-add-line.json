@@ -1,0 +1,75 @@
+{
+  "kind": "form",
+  "key": "store-requisition-add-line",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a line",
+    "fa": "افزودن قلم"
+  },
+  "description": {
+    "en": "Add a line",
+    "fa": "افزودن قلم"
+  },
+  "payload": {
+    "id": "store-requisition-add-line",
+    "title": {
+      "en": "Add a line",
+      "fa": "افزودن قلم"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "store-requisition-add-line",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "storeRequisitionId",
+        "label": {
+          "en": "Requisition id",
+          "fa": "شناسه‌ی درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "materialItemId",
+        "label": {
+          "en": "Material",
+          "fa": "ماده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "store-requisition-materials"
+      },
+      {
+        "name": "requestedQuantity",
+        "label": {
+          "en": "Quantity",
+          "fa": "مقدار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

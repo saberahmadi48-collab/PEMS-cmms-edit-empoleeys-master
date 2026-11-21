@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "tender-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tenders",
+    "fa": "مناقصه‌ها"
+  },
+  "description": {
+    "en": "Tenders",
+    "fa": "مناقصه‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TenderPage",
+      "action": "List",
+      "args": {
+        "procurementPackageId": "param:procurementPackageId"
+      }
+    }
+  }
+}

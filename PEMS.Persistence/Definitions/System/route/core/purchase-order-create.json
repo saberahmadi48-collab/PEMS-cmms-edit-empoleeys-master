@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "purchase-order-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New purchase order (old address)",
+    "fa": "New purchase order (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New purchase order (old address)",
+    "fa": "New purchase order (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "PurchaseOrder/Create",
+    "target": "/f/po-create",
+    "permanent": false
+  }
+}

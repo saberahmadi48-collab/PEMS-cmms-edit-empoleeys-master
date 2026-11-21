@@ -1,0 +1,31 @@
+{
+  "kind": "data-source",
+  "key": "pc-admin-preview",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin: resolution preview",
+    "fa": "مدیریت کاتالوگ قطعه: پیش‌نمایش تعیین مسئول"
+  },
+  "description": {
+    "en": "Part Catalogue admin: resolution preview",
+    "fa": "مدیریت کاتالوگ قطعه: پیش‌نمایش تعیین مسئول"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "Preview",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "key": "param:key",
+        "requesterEmployeeId": "param:requesterEmployeeId",
+        "commodityGroupId": "param:commodityGroupId"
+      },
+      "disposition": "inline"
+    }
+  }
+}

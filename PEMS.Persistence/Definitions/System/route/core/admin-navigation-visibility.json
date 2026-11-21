@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-navigation-visibility",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Navigation visibility (old address)",
+    "fa": "نمایش ناوبری (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Navigation visibility (old address)",
+    "fa": "نمایش ناوبری (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/NavigationVisibility/{*rest}",
+    "target": "/p/navigation-visibility",
+    "permanent": false
+  }
+}

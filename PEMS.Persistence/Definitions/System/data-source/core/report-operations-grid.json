@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "report-operations-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Operations report rows",
+    "fa": "ردیف‌های گزارش عملیات"
+  },
+  "description": {
+    "en": "Operations report rows",
+    "fa": "ردیف‌های گزارش عملیات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Report",
+      "action": "Operations",
+      "args": {
+        "periodType": "param:periodType",
+        "anchorOrFrom": "param:anchorOrFrom",
+        "toDate": "param:toDate",
+        "productionWorkCenterId": "param:productionWorkCenterId",
+        "materialItemId": "param:materialItemId"
+      }
+    }
+  }
+}

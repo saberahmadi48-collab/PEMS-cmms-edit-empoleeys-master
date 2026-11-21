@@ -1,0 +1,116 @@
+# PEMS API lint rules (SCRUM-436). The rules of docs/guidelines/08-rest-api-standard.md that can be read from the OpenAPI document.
+# Runs offline against the approved snapshot PEMS.Tests/Api/Snapshots/openapi-v1.json (tools/api-lint/lint.sh); the rules that need the running
+# pipeline (401/403/antiforgery behaviour, permission policy on every action) are xUnit tests in PEMS.Tests/Api.
+extends: ["spectral:oas"]
+
+rules:
+  # Spectral's own recommended rules stay on; the ones below are PEMS rules, all errors.
+  pems-path-form:
+    description: "Rule 1: /api/v1, plural kebab-case nouns in lower case, {id}-style parameters."
+    message: "'{{property}}' is not /api/v1/<kebab-case nouns>/{param}."
+    severity: error
+    given: "$.paths"
+    then:
+      field: "@key"
+      function: pattern
+      functionOptions:
+        match: "^/api/v1(/([a-z0-9]+(-[a-z0-9]+)*|\\{[a-zA-Z]+\\}))+$"
+
+  pems-no-get-actions:
+    description: "Rule 2: a business action is never a GET."
+    message: "A GET path must not contain /actions/."
+    severity: error
+    given: "$.paths[?(@property.match(/\\/actions\\//))]"
+    then:
+      field: get
+      function: falsy
+
+  pems-401-403:
+    description: "Rules 5 and 13: every operation can answer 401 and 403."
+    message: "The operation must document a {{error}} response."
+    severity: error
+    given: "$.paths[*][get,post,put,patch,delete].responses"
+    then:
+      - field: "401"
+        function: truthy
+      - field: "403"
+        function: truthy
+
+  pems-error-bodies-are-problem-json:
+    description: "Rule 8: every 4xx/5xx response is application/problem+json."
+    message: "Error responses must use application/problem+json."
+    severity: error
+    given: "$.paths[*][get,post,put,patch,delete].responses[?(@property.match(/^[45]/))]"
+    then:
+      field: "content.application/problem+json"
+      function: truthy
+
+  pems-write-needs-if-match:
+    description: "Rule 6: PUT, PATCH and DELETE take If-Match and answer 412 and 428."
+    message: "PUT/PATCH/DELETE must declare the If-Match header and the 412 and 428 responses."
+    severity: error
+    given: "$.paths[*][put,patch,delete]"
+    then:
+      - field: parameters
+        function: schema
+        functionOptions:
+          schema:
+            type: array
+            contains:
+              type: object
+              required: [name, in]
+              properties:
+                name: { const: If-Match }
+                in: { const: header }
+      - field: "responses.412"
+        function: truthy
+      - field: "responses.428"
+        function: truthy
+
+  pems-collection-post-is-201:
+    description: "Rule 4: creating on a collection answers 201."
+    message: "POST on a collection must document a 201 response."
+    severity: error
+    given: "$.paths[?(!@property.match(/\\/actions\\//) && !@property.match(/\\/import$/))].post.responses"
+    then:
+      field: "201"
+      function: truthy
+
+  pems-json-names-are-camel-case:
+    description: "Rule 11: JSON property names are camelCase."
+    message: "'{{property}}' is not camelCase."
+    severity: error
+    given: "$.components.schemas[*].properties"
+    then:
+      field: "@key"
+      function: casing
+      functionOptions:
+        type: camel
+
+  pems-security-declared:
+    description: "Rule 14: the document declares how a caller signs in."
+    message: "Declare components.securitySchemes and a global security requirement."
+    severity: error
+    given: "$"
+    then:
+      - field: security
+        function: truthy
+      - field: components.securitySchemes
+        function: truthy
+
+  pems-operation-documented:
+    description: "Every operation has a summary and a description (designers and integrators read them)."
+    message: "The operation needs a {{error}}."
+    severity: error
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      - field: summary
+        function: truthy
+      - field: description
+        function: truthy
+
+  # Recommended rules we turn down because they do not fit the generated document.
+  info-contact: off
+  info-description: warn
+  oas3-api-servers: off
+  operation-tag-defined: off

@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "pre-procurement-accept",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Accept an engineering MR",
+    "fa": "پذیرش MR مهندسی"
+  },
+  "description": {
+    "en": "Accept an engineering MR",
+    "fa": "پذیرش MR مهندسی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PreProcurement",
+      "action": "Accept",
+      "args": {
+        "procurementDemandId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Accepted into procurement.",
+      "fa": "به خرید پذیرفته شد."
+    },
+    "redirect": "/p/pre-procurement-details?id={id}"
+  }
+}

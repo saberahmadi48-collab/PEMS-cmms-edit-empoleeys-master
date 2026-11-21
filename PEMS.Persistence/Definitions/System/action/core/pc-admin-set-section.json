@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "pc-admin-set-section",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set a section",
+    "fa": "تنظیم بخش"
+  },
+  "description": {
+    "en": "Set a section",
+    "fa": "تنظیم بخش"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "SetSection",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "sectionId": "field:sectionId",
+        "requiresSparePartsReview": "field:requiresSparePartsReview",
+        "isActive": "field:isActive"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/p/pc-admin"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "kind": "form",
+  "key": "pre-procurement-convert-new",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add to a new requisition",
+    "fa": "افزودن به MR جدید"
+  },
+  "description": {
+    "en": "Add to a new requisition",
+    "fa": "افزودن به MR جدید"
+  },
+  "payload": {
+    "id": "pre-procurement-convert-new",
+    "title": {
+      "en": "Add to a new requisition",
+      "fa": "افزودن به MR جدید"
+    },
+    "submitLabel": {
+      "en": "Convert",
+      "fa": "تبدیل"
+    },
+    "actionKey": "pre-procurement-convert-new",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Demand id",
+          "fa": "شناسه‌ی تقاضا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "mrNumber",
+        "label": {
+          "en": "MR number (blank = automatic)",
+          "fa": "شماره MR (خالی = خودکار)"
+        },
+        "kind": "text",
+        "maxLength": 50
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "pre-procurement-projects"
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "pre-procurement-disciplines"
+      },
+      {
+        "name": "requiredDate",
+        "label": {
+          "en": "Required date",
+          "fa": "تاریخ نیاز"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

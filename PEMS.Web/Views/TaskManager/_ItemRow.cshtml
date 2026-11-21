@@ -1,0 +1,57 @@
+@model PEMS.Application.DTOs.WorkItemListItemDto
+@using Microsoft.Extensions.Localization
+@using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@inject IStringLocalizer<SharedResource> Localizer
+@{
+    var canRank = ViewData["CanRank"] is true;
+    var showBulk = ViewData["ShowBulk"] is true;
+    var showSpace = ViewData["ShowSpace"] is true;
+    var sprints = ViewData["Sprints"] as List<PEMS.Application.DTOs.SprintDto> ?? new();
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+    var i = Model;
+}
+<pems-table-row class="tm-row @(i.IsOverdue ? "tm-row--overdue" : "") @(!i.IsActive ? "text-muted" : "")" data-tm-id="@i.Id" draggable="@(canRank ? "true" : "false")">
+    @if (showBulk)
+    {
+        <pems-table-cell class="tm-col-check"><pems-input kind="check" type="checkbox" name="ids" value="@i.Id" form="tmBulk" aria-label="@Localizer["Tm_Select"] @(i.Key ?? "#" + i.Id)" data-tm-bulk-item /></pems-table-cell>
+    }
+    <pems-table-cell class="text-nowrap">
+        @if (!string.IsNullOrEmpty(i.TypeIcon)) { <pems-icon css="@i.TypeIcon me-1" title="@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)" aria-hidden="true" /><span class="visually-hidden">@TaskManagerUi.Name(i.TypeName, i.TypeNameFa)</span> }
+        <pems-link asp-controller="Task" asp-action="Details" asp-route-id="@i.Id" class="tm-key">@(i.Key ?? "#" + i.Id)</pems-link>
+    </pems-table-cell>
+    @if (showSpace) { <pems-table-cell class="small">@(i.WorkSpaceKey ?? Localizer["Tm_Personal"].Value)</pems-table-cell> }
+    <pems-table-cell class="tm-title-cell">
+        <pems-link asp-controller="Task" asp-action="Details" asp-route-id="@i.Id" class="text-reset">@i.Title</pems-link>
+        @if (i.ParentKey != null) { <span class="small text-muted ms-1">↳ @i.ParentKey</span> }
+        @if (!i.IsActive) { <pems-badge tone="light" css="ms-1">@Localizer["Tm_Archived"]</pems-badge> }
+    </pems-table-cell>
+    <pems-table-cell><pems-badge tone="@TaskManagerUi.CategoryBadge(i.StatusCategory)">@TaskManagerUi.StatusLabel(Localizer, i)</pems-badge></pems-table-cell>
+    <pems-table-cell class="text-nowrap"><pems-icon css="@TaskManagerUi.PriorityIcon(i.Priority)" aria-hidden="true" /> <span class="small">@TaskManagerUi.Priority(Localizer, i.Priority)</span></pems-table-cell>
+    <pems-table-cell class="small">@(i.AssigneeName ?? Localizer["Tm_Unassigned"].Value)</pems-table-cell>
+    <pems-table-cell class="small text-nowrap">
+        @TaskManagerUi.Date(i.DueDate)
+        @if (i.IsOverdue) { <pems-badge tone="danger" css="ms-1">@Localizer["Overdue"]</pems-badge> }
+    </pems-table-cell>
+    <pems-table-cell class="small text-end">@(i.StoryPoints?.ToString("0.#"))</pems-table-cell>
+    @if (canRank)
+    {
+        <pems-table-cell class="text-nowrap tm-row-actions">
+            <pems-form asp-controller="TaskManager" asp-action="Rank" method="post" class="d-inline">
+                <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="up" value="true" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                <pems-button tone="none" size="small" css="btn-link p-0" title="@Localizer["Tm_MoveUp"]" aria-label="@Localizer["Tm_MoveUp"] @(i.Key)"><pems-icon name="bi-arrow-up" aria-hidden="true" /></pems-button>
+            </pems-form>
+            <pems-form asp-controller="TaskManager" asp-action="Rank" method="post" class="d-inline">
+                <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="up" value="false" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                <pems-button tone="none" size="small" css="btn-link p-0" title="@Localizer["Tm_MoveDown"]" aria-label="@Localizer["Tm_MoveDown"] @(i.Key)"><pems-icon name="bi-arrow-down" aria-hidden="true" /></pems-button>
+            </pems-form>
+            <pems-form asp-controller="TaskManager" asp-action="SetSprint" method="post" class="d-inline">
+                <input type="hidden" name="id" value="@i.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
+                <pems-select scale="small" css="d-inline-block w-auto" name="sprintId" aria-label="@Localizer["Tm_MoveToSprint"] @(i.Key)" data-pems-change="submit-form">
+                    <option value="0" selected="@(i.SprintId == null)">@Localizer["Tm_Backlog"]</option>
+                    @foreach (var s in sprints) { <option value="@s.Id" selected="@(i.SprintId == s.Id)">@s.Name</option> }
+                </pems-select>
+            </pems-form>
+        </pems-table-cell>
+    }
+</pems-table-row>

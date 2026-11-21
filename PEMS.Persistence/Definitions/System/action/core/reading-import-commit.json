@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "reading-import-commit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Commit the batch",
+    "fa": "تأیید دسته"
+  },
+  "description": {
+    "en": "Commit the batch",
+    "fa": "تأیید دسته"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ConditionReadingImport",
+      "action": "Commit",
+      "args": {
+        "batchId": "field:batchId"
+      }
+    },
+    "success": {
+      "en": "The import was committed; the batch shows the counts.",
+      "fa": "ورود داده تأیید شد؛ شمارش‌ها در دسته دیده می‌شود."
+    },
+    "redirect": "/p/reading-import-review?batchId={batchId}"
+  }
+}

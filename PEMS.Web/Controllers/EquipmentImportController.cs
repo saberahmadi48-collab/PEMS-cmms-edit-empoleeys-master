@@ -51,6 +51,7 @@ public class EquipmentImportController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Spreadsheet)]
     public async Task<IActionResult> Upload(IFormFile file, int projectId)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "Create"))
@@ -132,6 +133,7 @@ public class EquipmentImportController : Controller
     // استخراج کامل جدول مثل اکسل)؛ نتیجه برای بازبینی و انتخاب کاربر نشان داده می‌شود
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Pdf)]
     public async Task<IActionResult> ScanPdf(IFormFile file, int projectId)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "Create"))

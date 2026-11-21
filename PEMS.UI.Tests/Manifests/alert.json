@@ -1,0 +1,147 @@
+{
+  "key": "alert",
+  "component": "PEMS.UI.Components.PemsAlert",
+  "category": "feedback",
+  "icon": "bi-exclamation-circle",
+  "nameKey": "component.alert",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "skin": {
+        "enum": [
+          "bootstrap",
+          "pems"
+        ]
+      },
+      "title": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "message": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "tone": {
+        "enum": [
+          "info",
+          "success",
+          "warning",
+          "danger",
+          "primary",
+          "secondary",
+          "light",
+          "none"
+        ]
+      },
+      "traceId": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "traceLabel": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "copyLabel": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "dismissLabel": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "AlertOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "title": {
+      "en": "Could not save",
+      "fa": "ذخیره نشد"
+    },
+    "tone": "danger",
+    "traceId": "00-abc",
+    "copyLabel": {
+      "en": "Copy",
+      "fa": "کپی"
+    }
+  }
+}

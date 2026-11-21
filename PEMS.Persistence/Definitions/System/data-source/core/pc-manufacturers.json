@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-manufacturers",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue lookup: Manufacturers",
+    "fa": "جستجوی کاتالوگ قطعه: Manufacturers"
+  },
+  "description": {
+    "en": "Part Catalogue lookup: Manufacturers",
+    "fa": "جستجوی کاتالوگ قطعه: Manufacturers"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "PartCatalogueLookup",
+      "action": "Manufacturers",
+      "args": {
+        "userRoles": "context:roles",
+        "q": "param:q"
+      },
+      "disposition": "inline"
+    }
+  }
+}

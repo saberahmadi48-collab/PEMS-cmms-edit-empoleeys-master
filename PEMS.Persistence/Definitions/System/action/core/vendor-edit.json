@@ -1,0 +1,48 @@
+{
+  "kind": "action",
+  "key": "vendor-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a vendor",
+    "fa": "ویرایش فروشنده"
+  },
+  "description": {
+    "en": "Edit a vendor",
+    "fa": "ویرایش فروشنده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.update",
+    "parameters": {
+      "entity": "Vendor",
+      "map": {
+        "name": "Name",
+        "vendorCode": "VendorCode",
+        "country": "Country",
+        "contactName": "ContactName",
+        "contactEmail": "ContactEmail",
+        "contactPhone": "ContactPhone"
+      },
+      "required": [
+        "Name"
+      ],
+      "unique": [
+        {
+          "fields": [
+            "Name"
+          ],
+          "message": {
+            "en": "A vendor with this name already exists.",
+            "fa": "فروشنده‌ای با این نام وجود دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "The vendor was updated.",
+      "fa": "فروشنده به‌روز شد."
+    },
+    "redirect": "/p/vendors"
+  }
+}

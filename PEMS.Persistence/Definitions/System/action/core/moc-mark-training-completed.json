@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "moc-mark-training-completed",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark MOC training completed",
+    "fa": "Mark MOC training completed"
+  },
+  "description": {
+    "en": "Mark MOC training completed",
+    "fa": "Mark MOC training completed"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MOC",
+      "action": "MarkTrainingCompleted",
+      "args": {
+        "mocId": "field:mocId",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The training was recorded as completed.",
+      "fa": "آموزش تکمیل‌شده ثبت شد."
+    },
+    "redirect": "/MOC/Details/{mocId}"
+  }
+}

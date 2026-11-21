@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "warehouse-intake-source-line",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Source one line",
+    "fa": "تأمین یک قلم"
+  },
+  "description": {
+    "en": "Source one line",
+    "fa": "تأمین یک قلم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WarehouseIntake",
+      "action": "SourceLine",
+      "args": {
+        "workOrderId": "field:workOrderId",
+        "workOrderMaterialId": "field:workOrderMaterialId",
+        "warehouseId": "field:warehouseId",
+        "quantity": "field:quantity"
+      }
+    },
+    "success": {
+      "en": "The store requisition was raised.",
+      "fa": "درخواست انبار ثبت شد."
+    },
+    "redirect": "/p/warehouse-intake?id={workOrderId}"
+  }
+}

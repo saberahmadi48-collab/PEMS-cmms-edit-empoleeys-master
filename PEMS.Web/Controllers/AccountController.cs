@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Identity;
+using Microsoft.Extensions.Localization;
 using PEMS.Web.Models.Account;
+using PEMS.Web.Resources;
 
 namespace PEMS.Web.Controllers;
 
@@ -17,14 +20,17 @@ public class AccountController : Controller
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly ILogger<AccountController> _logger;
     private readonly IWebAuthnService _webAuthnService;
+    private readonly IStringLocalizer<SharedResource> _t;
 
 
     public AccountController(
         SignInManager<ApplicationUser> signInManager,
         UserManager<ApplicationUser> userManager,
         ILogger<AccountController> logger,
-        IWebAuthnService webAuthnService)
+        IWebAuthnService webAuthnService,
+        IStringLocalizer<SharedResource> localizer)
     {
+        _t = localizer;
         _signInManager = signInManager;
         _userManager = userManager;
         _logger = logger;
@@ -70,7 +76,7 @@ public class AccountController : Controller
         if (string.IsNullOrWhiteSpace(normalizedUserName))
         {
             _logger.LogWarning("Failed login attempt with empty username.");
-            ModelState.AddModelError(string.Empty, "نام کاربری یا رمز عبور نادرست است.");
+            ModelState.AddModelError(string.Empty, _t["Login_Err_Invalid"]);
             return View(model);
         }
 
@@ -85,7 +91,18 @@ public class AccountController : Controller
 
             ModelState.AddModelError(
                 string.Empty,
-                "نام کاربری یا رمز عبور نادرست است.");
+                _t["Login_Err_Invalid"]);
+
+            return View(model);
+        }
+
+        // SCRUM-354: رمز موقتِ ریست حساب مدیر ۲۴ ساعت اعتبار دارد. بعد از آن ورود با همان پیام عمومی رد می‌شود
+        // (تفاوتی بین «رمز غلط» و «رمز موقت منقضی» به بیرون نشان داده نمی‌شود) و مدیر دیگری باید دوباره ریست کند.
+        if (AdminAccountRules.IsTemporaryPasswordExpired(user.MustChangePassword, user.TemporaryPasswordExpiresAt, DateTime.UtcNow))
+        {
+            _logger.LogWarning("Login refused for {UserName}: temporary password expired.", user.UserName);
+
+            ModelState.AddModelError(string.Empty, _t["Login_Err_Invalid"]);
 
             return View(model);
         }
@@ -111,8 +128,8 @@ public class AccountController : Controller
             ModelState.AddModelError(
                 string.Empty,
                 minutesRemaining > 0
-                    ? $"حساب کاربری به دلیل تلاش‌های ناموفق متعدد موقتاً قفل شده است. لطفاً پس از {minutesRemaining} دقیقه مجدداً تلاش کنید."
-                    : "حساب کاربری به دلیل تلاش‌های ناموفق متعدد موقتاً قفل شده است.");
+                    ? _t["Login_Err_LockedMinutes", minutesRemaining]
+                    : _t["Login_Err_Locked"]);
 
             return View(model);
         }
@@ -127,7 +144,7 @@ public class AccountController : Controller
 
             ModelState.AddModelError(
                 string.Empty,
-                "نام کاربری یا رمز عبور نادرست است.");
+                _t["Login_Err_Invalid"]);
 
             return View(model);
         }
@@ -185,11 +202,12 @@ public class AccountController : Controller
         }
 
         user.MustChangePassword = false;
+        user.TemporaryPasswordExpiresAt = null;
         await _userManager.UpdateAsync(user);
 
         await _signInManager.RefreshSignInAsync(user);
 
-        TempData["Message"] = "رمز عبور با موفقیت تغییر کرد.";
+        TempData["Message"] = _t["Password changed successfully."].Value;
         return RedirectToAction("Index", "Home");
     }
 

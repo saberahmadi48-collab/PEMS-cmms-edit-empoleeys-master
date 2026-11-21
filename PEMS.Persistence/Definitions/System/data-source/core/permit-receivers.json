@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "permit-receivers",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "People",
+    "fa": "افراد"
+  },
+  "description": {
+    "en": "People",
+    "fa": "افراد"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PermitPage",
+      "action": "ReceiverChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

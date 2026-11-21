@@ -1,7 +1,10 @@
 ﻿@using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
+@using System.Globalization
 @{
+    // SCRUM-477: the sign-in pages follow the current language like the main layout (Persian = right to left).
+    var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
     // طبق «PEMS Global Three-Theme Design System» (بند ۲۹): صفحه‌ی Login هم باید در هر سه تم
     // بررسی شود. قبلاً این Layout اصلاً data-theme تنظیم نمی‌کرد - auth.css فقط یک قاب برند
     // ثابت (گرادیان navy) داشت. همان Cookie/منطق ThemeController موجود این‌جا هم خوانده می‌شود -
@@ -9,18 +12,29 @@
     var currentTheme = PEMS.Web.Controllers.ThemeController.Normalize(Context.Request.Cookies[PEMS.Web.Controllers.ThemeController.CookieName]);
 }
 <!DOCTYPE html>
-<html lang="en" data-theme="@currentTheme">
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" dir="@(isRtl ? "rtl" : "ltr")" data-theme="@currentTheme" data-bs-theme="@(currentTheme is "turquoise" or "dark" ? "dark" : null)">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PEMS</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @* SCRUM-540: the title is a resource key like in _Layout (a title without a key is shown as written) *@
+    <title>@(string.IsNullOrWhiteSpace(ViewData["Title"]?.ToString()) ? "" : Localizer[ViewData["Title"]!.ToString()!].Value) - PEMS</title>
+    @if (isRtl)
+    {
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" />
+    }
+    else
+    {
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    }
     <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.min.css" />
     @* طبق «PEMS Premium Three-Theme UI/UX Redesign» (بند ۲۸): صفحه‌ی ورود باید ویترین کامل
        هویت Persian Turquoise باشد - برای این کار به همون توکن‌های --pems-*/Glass/Persian
        Geometry سراسری (site.css + pems-glass.css) نیاز دارد، نه یک نسخه‌ی موازی. auth.css بعد
        از این‌ها بارگذاری می‌شود تا سبک‌های اختصاصی خودش (قاب برند) برنده بمانند. *@
+    <link rel="stylesheet" href="~/_content/PEMS.UI/tokens.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/_content/PEMS.UI/pems-ui.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pems-inline-styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/pems-glass.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
 </head>
@@ -30,11 +44,11 @@
 
         <div class="auth-brand">
             <div class="auth-brand-icon">
-                <i class="bi bi-diagram-3-fill"></i>
+                <pems-icon name="bi-diagram-3-fill" />
             </div>
             <div class="auth-brand-text">
-                <h1>@Localizer["PEMS"]</h1>
-                <span>Petrochemical Engineering Management System</span>
+                <pems-heading level="1">@Localizer["PEMS"]</pems-heading>
+                <span>@Localizer["Auth_BrandName"]</span>
             </div>
         </div>
 
@@ -43,13 +57,16 @@
         </div>
 
         <div class="auth-footer">
-            &copy; @DateTime.Now.Year PEMS &mdash; Engineering Command Center
+            &copy; @DateTime.Now.Year PEMS &mdash; @Localizer["Auth_Footer"]
         </div>
 
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/_content/PEMS.UI/pems-form.js" asp-append-version="true"></script>
+    <script src="~/js/pems-actions.js" asp-append-version="true"></script>
+    <script src="~/js/pems-template.js" asp-append-version="true"></script>   @* SCRUM-536: account-login.js clones the login-busy template *@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "pc-admin-approvers",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part Catalogue admin: Step approvers",
+    "fa": "مدیریت کاتالوگ قطعه: Step approvers"
+  },
+  "description": {
+    "en": "Part Catalogue admin: Step approvers",
+    "fa": "مدیریت کاتالوگ قطعه: Step approvers"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "Approvers",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId"
+      }
+    }
+  }
+}

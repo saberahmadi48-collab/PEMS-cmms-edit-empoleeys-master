@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "qualifications-discipline-id-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discipline options",
+    "fa": "گزینه‌های دیسیپلین"
+  },
+  "description": {
+    "en": "Choices for discipline",
+    "fa": "گزینه‌ها برای دیسیپلین"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "entity-options",
+    "parameters": {
+      "entity": "Discipline",
+      "value": "DisciplineId",
+      "label": "Name",
+      "active": "IsActive"
+    }
+  }
+}

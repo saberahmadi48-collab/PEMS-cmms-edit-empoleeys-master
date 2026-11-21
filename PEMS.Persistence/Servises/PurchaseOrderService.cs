@@ -10,9 +10,13 @@ public class PurchaseOrderService : IPurchaseOrderService
 {
     private readonly PEMSDbContext _context;
 
-    public PurchaseOrderService(PEMSDbContext context)
+    private readonly INumberingService _numbering;
+
+    // SCRUM-40: شماره‌گذاری اختیاری در سازنده تا تست‌های تک‌پارامتری سازگار بمانند؛ DI آن را می‌دهد
+    public PurchaseOrderService(PEMSDbContext context, INumberingService? numbering = null)
     {
         _context = context;
+        _numbering = numbering ?? new NumberingService(context);
     }
 
     public async Task<List<PurchaseOrderDto>> GetAllAsync()
@@ -49,6 +53,20 @@ public class PurchaseOrderService : IPurchaseOrderService
     public async Task<int> CreateAsync(string poNumber, int projectId, int vendorId, int? contractId,
         string? description, decimal? value)
     {
+        // P0 / شناسه‌ها: شماره‌ی PO دستی بود، بدون اعتبارسنجی و بدون یکتایی (ایندکس یکتا نیازمند Migration جداگانه است و
+        // این‌جا اضافه نشده). تا آن زمان، بررسی در لایه‌ی سرویس انجام می‌شود (بدون محافظ در برابر رقابت هم‌زمان دقیق).
+        // SCRUM-40: شماره خودکار از الگوی مدیر (شماره‌ی واردشده فقط اگر الگو ورود دستی را مجاز کرده باشد). مسیر Import جداست و دست نمی‌خورد.
+        var normalizedNumber = await _numbering.ResolveNumberAsync("PurchaseOrder", poNumber, projectId);
+        if (normalizedNumber.Length == 0)
+            throw new InvalidOperationException("شماره‌ی سفارش خرید الزامی است.");
+        if (value.HasValue && value.Value < 0)
+            throw new InvalidOperationException("مبلغ سفارش خرید نمی‌تواند منفی باشد.");
+
+        var numberKey = normalizedNumber.ToLower();
+        if (await _context.PurchaseOrders.AnyAsync(x => x.ProjectId == projectId && x.PoNumber.ToLower() == numberKey))
+            throw new InvalidOperationException($"سفارش خریدی با شماره‌ی «{normalizedNumber}» در این پروژه از قبل وجود دارد.");
+
+        poNumber = normalizedNumber;
         var po = new PurchaseOrder
         {
             PoNumber = poNumber,
@@ -79,15 +97,26 @@ public class PurchaseOrderService : IPurchaseOrderService
         if (!po.IsActive)
             throw new InvalidOperationException("Purchase Order غیرفعال است و قابل صدور نیست.");
 
-        if (po.Status != PurchaseOrderStatuses.Draft)
+        // SCRUM-470 (owner decision 2026-10-29): a PO is issued only after approval by the PO authority table
+        // (Draft → Submitted → Approved → Issued); a Draft can no longer be issued directly.
+        if (po.Status != PurchaseOrderStatuses.Approved)
             throw new InvalidOperationException(
-                $"فقط Purchase Order در وضعیت Draft قابل صدور است (وضعیت فعلی: {po.Status}).");
+                $"فقط Purchase Order تأییدشده (Approved) قابل صدور است (وضعیت فعلی: {po.Status}).");
 
         if (string.IsNullOrWhiteSpace(po.PoNumber))
             throw new InvalidOperationException("Purchase Order بدون شماره قابل صدور نیست.");
 
         po.Status = PurchaseOrderStatuses.Issued;
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            // R6: a concurrent Issue changed the row first; a clear message instead of the generic error page
+            _context.ChangeTracker.Clear();
+            throw new InvalidOperationException("این Purchase Order هم‌زمان توسط کاربر دیگری تغییر کرد؛ صفحه را دوباره باز کنید.");
+        }
     }
 
     // Import/Reconciliation-only (نگاه کنید به IPurchaseOrderService): ساخت PO با Issued بدون Approve/SoD است.

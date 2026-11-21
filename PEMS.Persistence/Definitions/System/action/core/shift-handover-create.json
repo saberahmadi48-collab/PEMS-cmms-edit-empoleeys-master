@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "shift-handover-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New shift handover",
+    "fa": "تحویل شیفت جدید"
+  },
+  "description": {
+    "en": "New shift handover",
+    "fa": "تحویل شیفت جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ShiftHandover",
+      "action": "Create",
+      "args": {
+        "outgoingEmployeeId": "field:outgoingEmployeeId",
+        "incomingEmployeeId": "field:incomingEmployeeId",
+        "shiftLabel": "field:shiftLabel",
+        "handoverDate": "field:handoverDate",
+        "notes": "field:notes"
+      }
+    },
+    "success": {
+      "en": "The shift handover was created.",
+      "fa": "تحویل شیفت ساخته شد."
+    },
+    "redirect": "/p/shift-handovers"
+  }
+}

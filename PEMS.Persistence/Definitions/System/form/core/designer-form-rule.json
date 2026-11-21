@@ -1,0 +1,113 @@
+{
+  "kind": "form",
+  "key": "designer-form-rule",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a form rule",
+    "fa": "افزودن قاعده فرم"
+  },
+  "description": {
+    "en": "Add a form rule",
+    "fa": "افزودن قاعده فرم"
+  },
+  "payload": {
+    "id": "designer-form-rule",
+    "title": {
+      "en": "Add a form rule",
+      "fa": "افزودن قاعده فرم"
+    },
+    "submitLabel": {
+      "en": "Add the rule",
+      "fa": "افزودن قاعده"
+    },
+    "actionKey": "designer-form-rule",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ref",
+        "label": {
+          "en": "Definition",
+          "fa": "تعریف"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Definition is required.",
+            "fa": "تعریف الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "appKey:kind:key, for example core:form:department-create",
+          "fa": "appKey:kind:key, for example core:form:department-create"
+        }
+      },
+      {
+        "name": "expression",
+        "label": {
+          "en": "Rule (an expression that must be true)",
+          "fa": "قاعده (عبارتی که باید درست باشد)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Rule (an expression that must be true) is required.",
+            "fa": "قاعده (عبارتی که باید درست باشد) الزامی است."
+          }
+        },
+        "maxLength": 500,
+        "placeholder": {
+          "en": "values.endDate >= values.startDate",
+          "fa": "values.endDate >= values.startDate"
+        },
+        "span": 2
+      },
+      {
+        "name": "field",
+        "label": {
+          "en": "Field that shows the message",
+          "fa": "فیلدی که پیام را نشان می‌دهد"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "messageEn",
+        "label": {
+          "en": "Message (English)",
+          "fa": "پیام (انگلیسی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Message (English) is required.",
+            "fa": "پیام (انگلیسی) الزامی است."
+          }
+        },
+        "maxLength": 300
+      },
+      {
+        "name": "messageFa",
+        "label": {
+          "en": "Message (Persian)",
+          "fa": "پیام (فارسی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Message (Persian) is required.",
+            "fa": "پیام (فارسی) الزامی است."
+          }
+        },
+        "maxLength": 300
+      }
+    ]
+  }
+}

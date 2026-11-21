@@ -21,6 +21,12 @@ public class FunctionalLocationListDto
     public bool IsActive { get; set; }
 }
 
+/// <summary>One node of the tree picker (SCRUM-513): the label, a second line (plant / area / unit) and whether it has children to open.</summary>
+public sealed record TreeNodeDto(int Id, string Label, string? Sub, bool HasChildren);
+
+/// <summary>A page of tree nodes; <see cref="HasMore"/> says there is a next page.</summary>
+public sealed record TreeNodePage(IReadOnlyList<TreeNodeDto> Items, bool HasMore);
+
 public class FunctionalLocationPickerItemDto
 {
     public int FunctionalLocationId { get; set; }

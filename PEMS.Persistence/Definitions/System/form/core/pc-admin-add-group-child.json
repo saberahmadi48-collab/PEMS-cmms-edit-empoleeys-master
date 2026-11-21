@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "pc-admin-add-group-child",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Map a group 2 under a group 1",
+    "fa": "نگاشت گروه ۲ زیر گروه ۱"
+  },
+  "description": {
+    "en": "Map a group 2 under a group 1",
+    "fa": "نگاشت گروه ۲ زیر گروه ۱"
+  },
+  "payload": {
+    "id": "pc-admin-add-group-child",
+    "title": {
+      "en": "Map a group 2 under a group 1",
+      "fa": "نگاشت گروه ۲ زیر گروه ۱"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "pc-admin-add-group-child",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "parentGroupId",
+        "label": {
+          "en": "Group 1 id",
+          "fa": "شناسه‌ی گروه ۱"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "childGroupId",
+        "label": {
+          "en": "Group 2 id",
+          "fa": "شناسه‌ی گروه ۲"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

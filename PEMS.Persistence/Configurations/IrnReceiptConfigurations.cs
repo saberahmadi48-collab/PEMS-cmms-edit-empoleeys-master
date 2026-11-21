@@ -35,6 +35,17 @@ public class IrnReceiptLineConfiguration : IEntityTypeConfiguration<IrnReceiptLi
         builder.Property(x => x.AcceptedQuantity).HasColumnType("decimal(18,3)");
         builder.Property(x => x.RejectedQuantity).HasColumnType("decimal(18,3)");
         builder.Property(x => x.HoldQuantity).HasColumnType("decimal(18,3)");
+        builder.Ignore(x => x.HasOpenHold);
+
+        // SCRUM-473: receiving against the PO line, the buyer's rejection decision (D6b) and the Hold resolution (D7)
+        builder.Property(x => x.RejectionAction).HasMaxLength(20);
+        builder.Property(x => x.RejectionDecidedByUserName).HasMaxLength(256);
+        builder.Property(x => x.HoldAcceptedQuantity).HasColumnType("decimal(18,3)");
+        builder.Property(x => x.HoldRejectedQuantity).HasColumnType("decimal(18,3)");
+        builder.Property(x => x.HoldResolvedByUserName).HasMaxLength(256);
+        builder.Property(x => x.HoldResolutionNotes).HasMaxLength(1000);
+        builder.HasOne(x => x.PurchaseOrderLine).WithMany(x => x.ReceiptLines).HasForeignKey(x => x.PurchaseOrderLineId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasIndex(x => x.PurchaseOrderLineId);
 
         builder.HasOne(x => x.IrnReceipt).WithMany(x => x.Lines).HasForeignKey(x => x.IrnReceiptId).OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(x => x.MaterialItem).WithMany().HasForeignKey(x => x.MaterialItemId).OnDelete(DeleteBehavior.Restrict);

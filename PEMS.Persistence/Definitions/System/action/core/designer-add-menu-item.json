@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "designer-add-menu-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a menu item",
+    "fa": "افزودن آیتم منو"
+  },
+  "description": {
+    "en": "Add a menu item",
+    "fa": "افزودن آیتم منو"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The menu item was added to the draft.",
+      "fa": "آیتم منو به پیش‌نویس افزوده شد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "AddMenuItem",
+      "args": {
+        "reference": "field:ref",
+        "itemKey": "field:itemKey",
+        "parent": "field:parent",
+        "titleEn": "field:titleEn",
+        "titleFa": "field:titleFa",
+        "page": "field:page",
+        "order": "field:order",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

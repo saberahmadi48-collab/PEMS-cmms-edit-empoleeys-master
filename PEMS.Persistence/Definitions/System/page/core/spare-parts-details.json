@@ -1,0 +1,101 @@
+{
+  "kind": "page",
+  "key": "spare-parts-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Spare parts details",
+    "fa": "جزئیات قطعات یدکی"
+  },
+  "description": {
+    "en": "Details of one record (page definition)",
+    "fa": "جزئیات یک رکورد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "template": "entity-details",
+    "args": {
+      "id": "spare-parts-record",
+      "url": "/d/spare-parts-grid",
+      "idField": "sparePartId",
+      "fields": [
+        {
+          "key": "partNumber",
+          "label": {
+            "en": "Part number",
+            "fa": "شماره‌ی قطعه"
+          }
+        },
+        {
+          "key": "partName",
+          "label": {
+            "en": "Name",
+            "fa": "نام"
+          }
+        },
+        {
+          "key": "manufacturer",
+          "label": {
+            "en": "Manufacturer",
+            "fa": "سازنده"
+          }
+        },
+        {
+          "key": "model",
+          "label": {
+            "en": "Model",
+            "fa": "مدل"
+          }
+        },
+        {
+          "key": "unit",
+          "label": {
+            "en": "Unit",
+            "fa": "واحد"
+          }
+        },
+        {
+          "key": "quantityOnHand",
+          "label": {
+            "en": "On hand",
+            "fa": "موجودی"
+          },
+          "type": "number"
+        },
+        {
+          "key": "minStockLevel",
+          "label": {
+            "en": "Minimum",
+            "fa": "حداقل"
+          },
+          "type": "number"
+        },
+        {
+          "key": "reorderPoint",
+          "label": {
+            "en": "Reorder point",
+            "fa": "نقطه‌ی سفارش"
+          },
+          "type": "number"
+        },
+        {
+          "key": "storageLocation",
+          "label": {
+            "en": "Location",
+            "fa": "محل نگهداری"
+          }
+        }
+      ],
+      "backUrl": "/p/spare-parts",
+      "backLabel": {
+        "en": "Back to the list",
+        "fa": "بازگشت به فهرست"
+      },
+      "editUrl": "/f/spare-parts-edit",
+      "editLabel": {
+        "en": "Edit",
+        "fa": "ویرایش"
+      }
+    }
+  }
+}

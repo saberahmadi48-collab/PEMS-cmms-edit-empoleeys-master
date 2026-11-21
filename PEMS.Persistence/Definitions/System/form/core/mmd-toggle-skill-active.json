@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "mmd-toggle-skill-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleSkillActive",
+    "fa": "ToggleSkillActive"
+  },
+  "description": {
+    "en": "ToggleSkillActive",
+    "fa": "ToggleSkillActive"
+  },
+  "payload": {
+    "id": "mmd-toggle-skill-active",
+    "title": {
+      "en": "ToggleSkillActive",
+      "fa": "ToggleSkillActive"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-toggle-skill-active",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "id"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

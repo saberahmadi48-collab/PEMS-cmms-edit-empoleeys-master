@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "ai-spec-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve an extracted specification",
+    "fa": "تأیید مشخصه استخراج‌شده"
+  },
+  "description": {
+    "en": "Approve an extracted specification",
+    "fa": "تأیید مشخصه استخراج‌شده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "AiExtraction",
+      "action": "ApproveSpec",
+      "args": {
+        "extractedSpecificationId": "field:id"
+      }
+    },
+    "success": {
+      "en": "Specification approved.",
+      "fa": "مشخصه تأیید شد."
+    }
+  }
+}

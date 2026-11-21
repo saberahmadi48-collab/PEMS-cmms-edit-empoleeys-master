@@ -1,0 +1,20 @@
+{
+  "kind": "data-source",
+  "key": "definition-diff-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Difference between two versions",
+    "fa": "تفاوت دو نسخه"
+  },
+  "description": {
+    "en": "Difference between two versions",
+    "fa": "تفاوت دو نسخه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "definition-diff",
+    "permission": "Definitions.View",
+    "parameters": {}
+  }
+}

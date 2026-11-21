@@ -1,0 +1,20 @@
+{
+  "kind": "data-source",
+  "key": "definition-kinds-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Definition kinds",
+    "fa": "انواع تعریف"
+  },
+  "description": {
+    "en": "Definition kinds",
+    "fa": "انواع تعریف"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "definition-kinds",
+    "permission": "Definitions.View",
+    "parameters": {}
+  }
+}

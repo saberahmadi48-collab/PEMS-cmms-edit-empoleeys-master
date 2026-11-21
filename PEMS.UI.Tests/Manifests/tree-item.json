@@ -1,0 +1,92 @@
+{
+  "key": "tree-item",
+  "component": "PEMS.UI.Components.PemsTreeItem",
+  "category": "navigation",
+  "icon": "bi-node-plus",
+  "nameKey": "component.tree-item",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "label": {
+        "type": "string"
+      },
+      "key": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "href": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "current": {
+        "type": "boolean"
+      },
+      "countText": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "expanded": {
+        "type": "boolean"
+      },
+      "hasChildren": {
+        "type": "boolean"
+      },
+      "linkClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "toggleName": {
+        "type": "string"
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "labelContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "TreeItemOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "label": "Engineering",
+    "key": "1",
+    "href": "/letters?tag=1",
+    "countText": "4"
+  }
+}

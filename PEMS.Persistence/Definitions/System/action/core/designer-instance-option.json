@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "designer-instance-option",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set an option of a component",
+    "fa": "تنظیم گزینه یک مؤلفه"
+  },
+  "description": {
+    "en": "Set an option of a component",
+    "fa": "تنظیم گزینه یک مؤلفه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "success": {
+      "en": "The option was set in the draft.",
+      "fa": "گزینه در پیش‌نویس تنظیم شد."
+    },
+    "redirect": "/p/definition-workbench",
+    "parameters": {
+      "model": "Designer",
+      "action": "SetInstanceOption",
+      "args": {
+        "reference": "field:ref",
+        "instanceId": "field:instanceId",
+        "option": "field:option",
+        "valueJson": "field:valueJson",
+        "actor": "context:userName"
+      }
+    }
+  }
+}

@@ -285,9 +285,9 @@ All database-mutating tests use `PemsDbContextFactory` (default `PEMSDB_Regressi
 | D3 | WO statuses that count (is `Open` demand?), and whether/what horizon for PM forecast | P3 |
 | D4 | Semantics of `MinimumQuantity/MaximumQuantity/ReorderPoint/ReorderQuantity` ((s,S) vs (s,Q)), safety stock, lead time source | policy top-up in P2/P5 |
 | D5 | UoM conversion and rounding policy (round up to pack size?) | P2 |
-| D6 | Count receipts in QC as incoming? Does a Rejected quantity re-open the PO line? | P7 |
-| D7 | Who resolves `HoldQuantity` and how it re-enters supply | P7 / usable stock |
-| D8 | What an "open PO" is when imported POs have no lines (explicitly out of the calculation?) | P7 |
+| D6 | Count receipts in QC as incoming? Does a Rejected quantity re-open the PO line? | P7 - **decided 2026-10-30 (SCRUM-473):** in QC counts as incoming until the IRN is Closed; the buyer decides replace (default, reopens) or close short |
+| D7 | Who resolves `HoldQuantity` and how it re-enters supply | P7 / usable stock - **decided 2026-10-30 (SCRUM-473):** the Warehouse Manager from My Work; accepted part posted to stock, rejected part follows D6 |
+| D8 | What an "open PO" is when imported POs have no lines (explicitly out of the calculation?) | P7 - **decided 2026-10-30 (SCRUM-473):** out of the calculation; only stock lines of issued POs count |
 | D9 | Owners of View/Review/Convert on recommendations; whether an approval workflow is needed; masking rule for restricted origins; whether SystemAdmin needs an explicit emergency grant | P5, P6 |
 | D10 | Is an MR demand or supply pipeline; scope of "engineering/project demand" | P3/P6 |
 | D12 | Retire or bridge legacy `SparePart` quantities | P1 |

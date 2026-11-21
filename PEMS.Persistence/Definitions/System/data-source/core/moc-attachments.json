@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "moc-attachments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MOC attachments",
+    "fa": "پیوست‌های MOC"
+  },
+  "description": {
+    "en": "MOC attachments",
+    "fa": "پیوست‌های MOC"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MocPage",
+      "action": "Attachments",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

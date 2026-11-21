@@ -16,99 +16,69 @@
     };
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="mb-0"><i class="bi bi-graph-up"></i> @Model.VariableType — @Model.Tag</h5>
-    <div class="d-flex gap-2">
-        <a asp-action="ExportTrend" asp-route-pointId="@Model.ConditionMonitoringPointId" asp-route-range="@selectedRange"
-           asp-route-from="@(selectedRange == "custom" ? Model.FromDate.ToString("yyyy-MM-dd") : null)"
-           asp-route-to="@(selectedRange == "custom" ? Model.ToDate.ToString("yyyy-MM-dd") : null)"
-           class="btn btn-outline-secondary btn-sm"><i class="bi bi-download"></i> @Localizer["Export"]</a>
-        <a asp-action="ConditionMonitoring" asp-route-equipmentId="@equipmentId" class="btn btn-outline-secondary btn-sm">← @Localizer["Condition Monitoring"]</a>
-    </div>
-</div>
+<pems-flex justify="between" align="center" css="mb-3">
+    <pems-heading level="5" class="mb-0"><pems-icon name="bi-graph-up" /> @Model.VariableType — @Model.Tag</pems-heading>
+    <pems-flex gap="2">
+        <pems-button as="a" tone="neutral" size="small" outline="true" asp-action="ExportTrend" asp-route-pointId="@Model.ConditionMonitoringPointId" asp-route-range="@selectedRange" asp-route-from="@(selectedRange == "custom" ? PemsDates.Date(Model.FromDate) : null)" asp-route-to="@(selectedRange == "custom" ? PemsDates.Date(Model.ToDate) : null)"><pems-icon name="bi-download" /> @Localizer["Export"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="ConditionMonitoring" asp-route-equipmentId="@equipmentId">← @Localizer["Condition Monitoring"]</pems-button>
+    </pems-flex>
+</pems-flex>
 
-<div class="content-card mb-3">
-    <form method="get" class="d-flex flex-wrap gap-2 align-items-end">
+<pems-content-card css="mb-3">
+    <pems-form method="get"><pems-flex wrap="true" gap="2" align="end">
         <input type="hidden" name="pointId" value="@Model.ConditionMonitoringPointId" />
         <div>
-            <label class="form-label small mb-0">@Localizer["Range"]</label>
-            <select name="range" class="form-select form-select-sm" onchange="this.form.submit()">
+            <pems-label css="small mb-0">@Localizer["Range"]</pems-label>
+            <pems-select scale="small" name="range" data-pems-change="submit-form">
                 @foreach (var r in new[] { "7", "30", "90", "365" })
                 {
                     <option value="@r" selected="@(r == selectedRange)">@Localizer["Last"] @r @Localizer["days"]</option>
                 }
                 <option value="custom" selected="@(selectedRange == "custom")">@Localizer["Custom"]</option>
-            </select>
+            </pems-select>
         </div>
         @if (selectedRange == "custom")
         {
-            <div><label class="form-label small mb-0">@Localizer["From"]</label><input type="date" name="from" value="@Model.FromDate.ToString("yyyy-MM-dd")" class="form-control form-control-sm" /></div>
-            <div><label class="form-label small mb-0">@Localizer["To"]</label><input type="date" name="to" value="@Model.ToDate.ToString("yyyy-MM-dd")" class="form-control form-control-sm" /></div>
-            <button type="submit" class="btn btn-sm btn-outline-primary">@Localizer["Apply"]</button>
+            <div><pems-label css="small mb-0">@Localizer["From"]</pems-label><pems-date name="from" value="@PemsDates.Date(Model.FromDate)" scale="small" /></div>
+            <div><pems-label css="small mb-0">@Localizer["To"]</pems-label><pems-date name="to" value="@PemsDates.Date(Model.ToDate)" scale="small" /></div>
+            <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Apply"]</pems-button>
         }
-    </form>
+    </pems-flex></pems-form>
     <div class="small text-muted mt-2">
-        @Model.FromDate.ToString("yyyy-MM-dd") → @Model.ToDate.ToString("yyyy-MM-dd") · @Model.TotalInRange readings in range
+        @PemsDates.Date(Model.FromDate) → @PemsDates.Date(Model.ToDate) · @Model.TotalInRange readings in range
         @if (Model.Truncated)
         {
-            <span class="badge text-bg-warning">Truncated — showing first @Model.Points.Count of @Model.TotalInRange; narrow the range to see all</span>
+            <pems-badge tone="warning">Truncated — showing first @Model.Points.Count of @Model.TotalInRange; narrow the range to see all</pems-badge>
         }
     </div>
-</div>
+</pems-content-card>
 
 @if (Model.Points.Any())
 {
-    <div class="content-card mb-3">
-        <canvas id="trendChart" height="80"></canvas>
-    </div>
+    @* SCRUM-337 C2: the shared chart host (Bklit line), not Chart.js *@
+    var trend = BkChartSpec.Line($"{Model.VariableType} — {Model.Tag}", Localizer["هیچ قرائتی در این بازه ثبت نشده."], Model.Points.Select(p => p.ReadingDate), 2,
+        BkSeries.Of($"{Model.VariableType} ({Model.Unit})", Model.Points.Select(p => p.Value), BkChartSpec.Primary));
+    <pems-content-card css="mb-3">
+        <pems-chart spec="@trend" />
+    </pems-content-card>
 }
 
-<div class="content-card">
-    <table class="table table-enterprise table-sm">
-        <thead><tr><th>@Localizer["Date"]</th><th class="text-end">@Localizer["Value"]</th><th>@Localizer["Evaluation"]</th></tr></thead>
-        <tbody>
-            @foreach (var pt in Model.Points.AsEnumerable().Reverse())
-            {
-                <tr class="@(pt.IsAlarm ? "table-danger" : "")">
-                    <td class="small">@pt.ReadingDate.ToString("yyyy-MM-dd HH:mm")</td>
-                    <td class="text-end">@pt.Value @Model.Unit</td>
-                    <td><span class="badge @EvalBadge(pt.EvaluationStatus)">@pt.EvaluationStatus</span></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    @if (!Model.Points.Any()) { <p class="text-muted text-center py-4">@Localizer["هیچ قرائتی در این بازه ثبت نشده."]</p> }
-</div>
+<pems-content-card>
+    @{
+        var rows_77 = Model.Points.AsEnumerable().Reverse();
+        var cell_77_2 = DataCell.Template(rows_77, @<text>@{ var pt = item; }<pems-badge tone="none" css="@EvalBadge(pt.EvaluationStatus)">@pt.EvaluationStatus</pems-badge></text>);
+    }
+    <pems-data-table data="@(DataRows.Of(rows_77, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), pt => (object?)((PemsDates.DateTime(pt.ReadingDate))), css: "small").Add(((Localizer["Value"])?.ToString() ?? ""), pt => (object?)(DataCell.Group(pt.Value, " ", Model.Unit)), css: "text-end", headerCss: "text-end").Add(((Localizer["Evaluation"])?.ToString() ?? ""), pt => (object?)cell_77_2(pt)), rowClass: pt => (pt.IsAlarm ? "table-danger" : "")))" dense="true" />
+    @if (!Model.Points.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["هیچ قرائتی در این بازه ثبت نشده."]</pems-text> }
+</pems-content-card>
 
-@if (Model.Points.Any())
-{
-    @section Scripts {
-        <script src="~/lib/chartjs/chart-4.4.4.umd.min.js"></script>
-        <script src="~/js/pems-charts.js"></script>
-        <script>
-            const labels = @Html.Raw(Json.Serialize(Model.Points.Select(p => p.ReadingDate.ToString("yyyy-MM-dd HH:mm"))));
-            const values = @Html.Raw(Json.Serialize(Model.Points.Select(p => p.Value)));
-            new Chart(document.getElementById('trendChart'), {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: '@Model.VariableType (@Model.Unit)',
-                        data: values,
-                        borderColor: PemsChartColors.primary,
-                        backgroundColor: PemsChartColors.primary,
-                        tension: 0.2,
-                        pointRadius: 2
-                    }]
-                },
-                options: {
-                    scales: {
-                        x: { grid: { color: PemsChartColors.gridColor }, ticks: { color: PemsChartColors.textColor } },
-                        y: { grid: { color: PemsChartColors.gridColor }, ticks: { color: PemsChartColors.textColor } }
-                    },
-                    plugins: { legend: { display: true } }
-                }
-            });
-        </script>
+@section Styles {
+    <partial name="_BkChartStyles" />
+}
+
+@section Scripts {
+    @if (Model.Points.Any())
+    {
+        <partial name="_BkChartScripts" />
     }
 }

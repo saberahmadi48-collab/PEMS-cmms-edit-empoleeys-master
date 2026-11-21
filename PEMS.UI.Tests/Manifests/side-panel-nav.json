@@ -1,0 +1,99 @@
+{
+  "key": "side-panel-nav",
+  "component": "PEMS.UI.Components.PemsSidePanelNav",
+  "category": "navigation",
+  "icon": "bi-layout-sidebar",
+  "nameKey": "component.side-panel-nav",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "label": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "href": {
+              "type": "string"
+            },
+            "count": {
+              "type": [
+                "string",
+                "integer",
+                "null"
+              ],
+              "pattern": "^-?(?:0|[1-9]\\d*)$"
+            },
+            "active": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "label",
+            "href"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "label",
+      "items"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "SidePanelNavOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "label": {
+      "en": "Folders",
+      "fa": "پوشه‌ها"
+    },
+    "items": [
+      {
+        "label": {
+          "en": "Inbox",
+          "fa": "دریافتی"
+        },
+        "href": "/l",
+        "count": 12,
+        "active": true
+      }
+    ]
+  }
+}

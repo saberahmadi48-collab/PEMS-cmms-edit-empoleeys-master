@@ -14,104 +14,64 @@
     };
 }
 
-<div class="d-flex justify-content-end align-items-center gap-2 mb-2">
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@Localizer["← Reliability"]</a>
-</div>
-<p class="text-muted small">
+<pems-flex justify="end" align="center" gap="2" css="mb-2">
+    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["← Reliability"]</pems-button>
+</pems-flex>
+<pems-text class="text-muted small">
     طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §3.8: این داشبورد فقط تجمیع
     (Aggregation) روی داده‌ی واقعی موجود است - هیچ KPI جعلی/شبیه‌سازی‌شده این‌جا نمایش داده نمی‌شود.
-</p>
+</pems-text>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold">@Model.TotalActivePoints</div>
-            <div class="text-muted small">@Localizer["Monitoring Points"]</div>
-            <div class="small text-muted">@Model.PointsWithEvaluationProfile @Localizer["با پروفایل ارزیابی"] · @Model.PointsWithCbmStrategy @Localizer["با استراتژی CBM"]</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-danger">@(Model.CriticalCount + Model.AlarmCount)</div>
-            <div class="text-muted small">@Localizer["Critical"] / @Localizer["Alarm"]</div>
-            <div class="small text-muted">@Model.WarningCount @Localizer["Warning"] · @Model.RequiresEngineeringReviewCount @Localizer["Mark for Engineering Review"]</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold">@Model.OpenFindingCount</div>
-            <div class="text-muted small">@Localizer["Open Findings"]</div>
-            <div class="small text-muted">@Model.LinkedFindingCount @Localizer["Linked"]</div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold @(Model.OverdueCbmPlanCount > 0 ? "text-danger" : "")">@Model.OverdueCbmPlanCount</div>
-            <div class="text-muted small">@Localizer["Overdue"] CBM</div>
-            <div class="small text-muted">@Model.DueSoonCbmPlanCount @Localizer["Due Soon"]</div>
-        </div>
-    </div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="3">
+        <pems-kpi-tile label="@Localizer["Monitoring Points"]" sub="@Model.PointsWithEvaluationProfile @Localizer["با پروفایل ارزیابی"] · @Model.PointsWithCbmStrategy @Localizer["با استراتژی CBM"]">@Model.TotalActivePoints</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="3">
+        <pems-kpi-tile tone="danger" label="@Localizer["Critical"] / @Localizer["Alarm"]" sub="@Model.WarningCount @Localizer["Warning"] · @Model.RequiresEngineeringReviewCount @Localizer["Mark for Engineering Review"]">@(Model.CriticalCount + Model.AlarmCount)</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="3">
+        <pems-kpi-tile label="@Localizer["Open Findings"]" sub="@Model.LinkedFindingCount @Localizer["Linked"]">@Model.OpenFindingCount</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="3">
+        <pems-kpi-tile tone="@(Model.OverdueCbmPlanCount > 0 ? "danger" : "")" label="@Localizer["Overdue"] CBM" sub="@Model.DueSoonCbmPlanCount @Localizer["Due Soon"]">@Model.OverdueCbmPlanCount</pems-kpi-tile>
+    </pems-col>
+</pems-row>
 
-<div class="row g-3">
-    <div class="col-md-6">
-        <div class="content-card">
-            <h6 class="mb-2">@Localizer["Needs Attention"]</h6>
+<pems-row gap="3">
+    <pems-col md="6">
+        <pems-content-card>
+            <pems-heading level="6" class="mb-2">@Localizer["Needs Attention"]</pems-heading>
             @if (Model.AttentionPoints.Count == 0)
             {
-                <p class="text-muted small mb-0">@Localizer["هیچ نقطه‌ی پایشی در حال حاضر نیاز به توجه ندارد."]</p>
+                <pems-text class="text-muted small mb-0">@Localizer["هیچ نقطه‌ی پایشی در حال حاضر نیاز به توجه ندارد."]</pems-text>
             }
             else
             {
-                <table class="table table-sm">
-                    <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Variable"]</th><th>@Localizer["Evaluation"]</th><th>@Localizer["Last Reading"]</th></tr></thead>
-                    <tbody>
-                        @foreach (var p in Model.AttentionPoints)
-                        {
-                            <tr>
-                                <td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@p.EquipmentId">@p.EquipmentTagNumber</a></td>
-                                <td class="small">@p.VariableType — @p.Tag</td>
-                                <td><span class="badge @EvalBadge(p.EvaluationStatus)">@p.EvaluationStatus</span></td>
-                                <td class="small">@(p.LastReadingDate?.ToString("yyyy-MM-dd") ?? "-")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                var rows_72 = Model.AttentionPoints;
+                var cell_72_2 = DataCell.Template(rows_72, @<text>@{ var p = item; }<pems-badge tone="none" css="@EvalBadge(p.EvaluationStatus)">@p.EvaluationStatus</pems-badge></text>);
+                <pems-data-table data="@(DataRows.Of(rows_72, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), p => (object?)(DataCell.Link(Url.Action("Details", "Equipment", new { id = p.EquipmentId }), p.EquipmentTagNumber))).Add(((Localizer["Variable"])?.ToString() ?? ""), p => (object?)(DataCell.Group(p.VariableType, " — ", p.Tag)), css: "small").Add(((Localizer["Evaluation"])?.ToString() ?? ""), p => (object?)cell_72_2(p)).Add(((Localizer["Last Reading"])?.ToString() ?? ""), p => (object?)((PemsDates.Date(p.LastReadingDate) ?? "-")), css: "small")))" dense="true" enterprise="false" />
                 @if (Model.AttentionPointsTruncated)
                 {
                     <div class="small text-muted">@Localizer["فهرست به بالاترین ۵۰ مورد محدود شده است."]</div>
                 }
             }
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="content-card">
-            <h6 class="mb-2">@Localizer["Overdue CBM Plans"]</h6>
+        </pems-content-card>
+    </pems-col>
+    <pems-col md="6">
+        <pems-content-card>
+            <pems-heading level="6" class="mb-2">@Localizer["Overdue CBM Plans"]</pems-heading>
             @if (Model.OverdueCbmPlans.Count == 0)
             {
-                <p class="text-muted small mb-0">@Localizer["هیچ طرح CBM معوقی وجود ندارد."]</p>
+                <pems-text class="text-muted small mb-0">@Localizer["هیچ طرح CBM معوقی وجود ندارد."]</pems-text>
             }
             else
             {
-                <table class="table table-sm">
-                    <thead><tr><th>@Localizer["Tag"]</th><th>@Localizer["Variable"]</th><th>@Localizer["Next Due"]</th><th>@Localizer["Overdue"]</th></tr></thead>
-                    <tbody>
-                        @foreach (var o in Model.OverdueCbmPlans)
-                        {
-                            <tr>
-                                <td><a asp-controller="Equipment" asp-action="Details" asp-route-id="@o.EquipmentId">@o.EquipmentTagNumber</a></td>
-                                <td class="small">@o.VariableType — @o.Tag</td>
-                                <td class="small">@o.NextDueDate.ToString("yyyy-MM-dd")</td>
-                                <td><span class="badge bg-danger">@o.DaysOverdue @Localizer["روز"]</span></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                <pems-data-table data="@(DataRows.Of(Model.OverdueCbmPlans, c_ => c_.Add(((Localizer["Tag"])?.ToString() ?? ""), o => (object?)(DataCell.Link(Url.Action("Details", "Equipment", new { id = o.EquipmentId }), o.EquipmentTagNumber))).Add(((Localizer["Variable"])?.ToString() ?? ""), o => (object?)(DataCell.Group(o.VariableType, " — ", o.Tag)), css: "small").Add(((Localizer["Next Due"])?.ToString() ?? ""), o => (object?)((PemsDates.Date(o.NextDueDate))), css: "small").Add(((Localizer["Overdue"])?.ToString() ?? ""), o => (object?)(DataCell.Badge("danger", DataCell.Group(o.DaysOverdue, " ", Localizer["روز"]))))))" dense="true" enterprise="false" />
                 @if (Model.OverdueCbmPlansTruncated)
                 {
                     <div class="small text-muted">@Localizer["فهرست به بالاترین ۵۰ مورد محدود شده است."]</div>
                 }
             }
-        </div>
-    </div>
-</div>
+        </pems-content-card>
+    </pems-col>
+</pems-row>

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "contract-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contract: Contract",
+    "fa": "قرارداد: Contract"
+  },
+  "description": {
+    "en": "Contract: Contract",
+    "fa": "قرارداد: Contract"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ContractPage",
+      "action": "Head",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

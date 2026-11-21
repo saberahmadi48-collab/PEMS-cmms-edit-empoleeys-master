@@ -1,0 +1,87 @@
+{
+  "key": "modal-header",
+  "component": "PEMS.UI.Components.PemsModalHeader",
+  "category": "overlays",
+  "icon": "bi-card-heading",
+  "nameKey": "component.modal-header",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "level": {
+        "type": [
+          "string",
+          "integer"
+        ],
+        "pattern": "^-?(?:0|[1-9]\\d*)$"
+      },
+      "titleCss": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "titleId": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "close": {
+        "type": "boolean"
+      },
+      "closeLabel": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "closeCss": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "css": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "pageClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "ModalHeaderOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "level": 6,
+    "close": true,
+    "closeLabel": "Close",
+    "css": "py-2"
+  }
+}

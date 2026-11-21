@@ -1,69 +1,63 @@
 ﻿@using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-<div class="d-flex justify-content-end align-items-center mb-2">
-    <div class="d-flex gap-2">
-        <a asp-action="Kpi" class="btn btn-outline-secondary btn-sm"><i class="bi bi-graph-up"></i> KPI Report</a>
-        <a asp-action="ItpCreate" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i> New ITP</a>
-        <a asp-action="NcrCreate" class="btn btn-danger btn-sm"><i class="bi bi-exclamation-triangle"></i> @Localizer["Raise NCR"]</a>
-    </div>
-</div>
+<pems-flex justify="end" align="center" css="mb-2">
+    <pems-flex gap="2">
+        <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Kpi"><pems-icon name="bi-graph-up" /> KPI Report</pems-button>
+        <pems-button tone="primary" size="small" outline="true" as="a" asp-action="ItpCreate"><pems-icon name="bi-plus-lg" /> New ITP</pems-button>
+        <pems-button tone="danger" size="small" as="a" asp-action="NcrCreate"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Raise NCR"]</pems-button>
+    </pems-flex>
+</pems-flex>
 
-<div class="row g-3 mb-3">
-    <div class="col-md-6">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-danger">@ViewBag.OpenNCRCount</div>
-            <div class="text-muted small"><i class="bi bi-exclamation-triangle"></i> @Localizer["NCR باز"]</div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="content-card text-center">
-            <div class="fs-3 fw-bold text-primary">@ViewBag.ActiveITPCount</div>
-            <div class="text-muted small"><i class="bi bi-clipboard-check"></i> @Localizer["ITP فعال"]</div>
-        </div>
-    </div>
-</div>
+<pems-row gap="3" css="mb-3">
+    <pems-col md="6">
+        <pems-kpi-tile tone="danger" icon="bi-exclamation-triangle" color="red" label="@Localizer["NCR باز"]">@ViewBag.OpenNCRCount</pems-kpi-tile>
+    </pems-col>
+    <pems-col md="6">
+        <pems-kpi-tile icon="bi-clipboard-check" color="blue" label="@Localizer["ITP فعال"]">@ViewBag.ActiveITPCount</pems-kpi-tile>
+    </pems-col>
+</pems-row>
 
-<div class="row g-3">
-    <div class="col-md-6">
-        <div class="content-card h-100">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="mb-0">@Localizer["آخرین ITP ها"]</h6>
-                <a asp-action="ItpIndex" class="small">@Localizer["مشاهده همه"]</a>
-            </div>
+<pems-row gap="3">
+    <pems-col md="6">
+        <pems-content-card css="h-100">
+            <pems-flex justify="between" align="center" css="mb-3">
+                <pems-heading level="6" class="mb-0">@Localizer["آخرین ITP ها"]</pems-heading>
+                <pems-link asp-action="ItpIndex" class="small">@Localizer["مشاهده همه"]</pems-link>
+            </pems-flex>
             @{
                 var itps = (IEnumerable<PEMS.Domain.Entities.InspectionTestPlan>)ViewBag.RecentITPs;
             }
-            <ul class="list-unstyled mb-0">
+            <pems-bullet-list class="list-unstyled mb-0">
                 @foreach (var i in itps)
                 {
-                    <li class="d-flex justify-content-between border-bottom py-1">
-                        <a asp-action="ItpDetails" asp-route-id="@i.InspectionTestPlanId">@i.ITPNumber &mdash; @i.Title</a>
-                        <span class="badge @(i.Status == "Active" ? "bg-success" : i.Status == "Draft" ? "bg-secondary" : "bg-info")">@i.Status</span>
-                    </li>
+                    <pems-flex as="li" justify="between" css="border-bottom py-1">
+                        <pems-link asp-action="ItpDetails" asp-route-id="@i.InspectionTestPlanId">@i.ITPNumber &mdash; @i.Title</pems-link>
+                        <pems-badge tone="none" css="@(i.Status == "Active" ? "bg-success" : i.Status == "Draft" ? "bg-secondary" : "bg-info")">@i.Status</pems-badge>
+                    </pems-flex>
                 }
-            </ul>
-        </div>
-    </div>
+            </pems-bullet-list>
+        </pems-content-card>
+    </pems-col>
 
-    <div class="col-md-6">
-        <div class="content-card h-100 border-danger">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="mb-0">@Localizer["آخرین NCR ها"]</h6>
-                <a asp-action="NcrIndex" class="small">@Localizer["مشاهده همه"]</a>
-            </div>
+    <pems-col md="6">
+        <pems-content-card css="h-100 border-danger">
+            <pems-flex justify="between" align="center" css="mb-3">
+                <pems-heading level="6" class="mb-0">@Localizer["آخرین NCR ها"]</pems-heading>
+                <pems-link asp-action="NcrIndex" class="small">@Localizer["مشاهده همه"]</pems-link>
+            </pems-flex>
             @{
                 var ncrs = (IEnumerable<PEMS.Domain.Entities.NonConformanceReport>)ViewBag.RecentNCRs;
             }
-            <ul class="list-unstyled mb-0">
+            <pems-bullet-list class="list-unstyled mb-0">
                 @foreach (var n in ncrs)
                 {
-                    <li class="d-flex justify-content-between border-bottom py-1">
-                        <a asp-action="NcrDetails" asp-route-id="@n.NonConformanceReportId">@n.NCRNumber</a>
-                        <span class="badge @(n.Status == "Closed" ? "bg-success" : n.Severity == "Critical" ? "bg-danger" : "bg-warning text-dark")">@n.Status</span>
-                    </li>
+                    <pems-flex as="li" justify="between" css="border-bottom py-1">
+                        <pems-link asp-action="NcrDetails" asp-route-id="@n.NonConformanceReportId">@n.NCRNumber</pems-link>
+                        <pems-badge tone="@(n.Status == "Closed" ? "success" : n.Severity == "Critical" ? "danger" : "warning")">@n.Status</pems-badge>
+                    </pems-flex>
                 }
-            </ul>
-        </div>
-    </div>
-</div>
+            </pems-bullet-list>
+        </pems-content-card>
+    </pems-col>
+</pems-row>

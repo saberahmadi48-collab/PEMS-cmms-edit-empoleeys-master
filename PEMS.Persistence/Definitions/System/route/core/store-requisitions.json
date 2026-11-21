@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "store-requisitions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Store requisitions (old address)",
+    "fa": "Store requisitions (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Store requisitions (old address)",
+    "fa": "Store requisitions (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/StoreRequisition",
+    "target": "/p/store-requisitions",
+    "permanent": false
+  }
+}

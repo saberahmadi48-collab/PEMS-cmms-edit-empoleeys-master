@@ -1,0 +1,182 @@
+{
+  "kind": "page",
+  "key": "vendors",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendors",
+    "fa": "فروشندگان"
+  },
+  "description": {
+    "en": "Vendors with risk, contracts and VDR load (page definition)",
+    "fa": "فروشندگان با ریسک، قراردادها و بار VDR (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "vendors",
+    "regions": {
+      "content": [
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/vendor-create",
+                "text": {
+                  "en": "New vendor",
+                  "fa": "فروشنده‌ی جدید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "vendors",
+          "component": "data-grid",
+          "options": {
+            "id": "vendors",
+            "url": "/d/vendors-grid",
+            "idField": "vendorId",
+            "columns": [
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 240
+              },
+              {
+                "key": "vendorCode",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 110
+              },
+              {
+                "key": "country",
+                "header": {
+                  "en": "Country",
+                  "fa": "کشور"
+                },
+                "width": 120
+              },
+              {
+                "key": "contactName",
+                "header": {
+                  "en": "Contact",
+                  "fa": "رابط"
+                },
+                "width": 160
+              },
+              {
+                "key": "riskLevel",
+                "header": {
+                  "en": "Risk",
+                  "fa": "ریسک"
+                },
+                "width": 100
+              },
+              {
+                "key": "riskScore",
+                "header": {
+                  "en": "Risk score",
+                  "fa": "امتیاز ریسک"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "contracts",
+                "header": {
+                  "en": "Contracts",
+                  "fa": "قراردادها"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "vdrItems",
+                "header": {
+                  "en": "VDR items",
+                  "fa": "اقلام VDR"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "overdueVdrItems",
+                "header": {
+                  "en": "Overdue VDR",
+                  "fa": "VDR معوق"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "isActive",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 330,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "details",
+                    "label": {
+                      "en": "Details",
+                      "fa": "جزئیات"
+                    },
+                    "url": "/p/vendor-details?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/vendor-edit/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Activate / deactivate",
+                      "fa": "فعال / غیرفعال"
+                    },
+                    "url": "/a/vendor-toggle",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Change the status of this vendor?",
+                      "fa": "وضعیت این فروشنده تغییر کند؟"
+                    }
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "Vendors.View"
+  }
+}

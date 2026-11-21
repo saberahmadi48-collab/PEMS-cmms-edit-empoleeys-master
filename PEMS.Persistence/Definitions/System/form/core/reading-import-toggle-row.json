@@ -1,0 +1,67 @@
+{
+  "kind": "form",
+  "key": "reading-import-toggle-row",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Include or exclude a row",
+    "fa": "شمول یا حذف ردیف"
+  },
+  "description": {
+    "en": "Include or exclude a row",
+    "fa": "شمول یا حذف ردیف"
+  },
+  "payload": {
+    "id": "reading-import-toggle-row",
+    "title": {
+      "en": "Include or exclude a row",
+      "fa": "شمول یا حذف ردیف"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "reading-import-toggle-row",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "rowId",
+        "label": {
+          "en": "Row id",
+          "fa": "شناسه‌ی ردیف"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه‌ی دسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "include",
+        "label": {
+          "en": "Include in the commit",
+          "fa": "شامل در تأیید"
+        },
+        "kind": "checkbox"
+      }
+    ]
+  }
+}

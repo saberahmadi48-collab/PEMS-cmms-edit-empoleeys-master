@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "moc-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Management of change",
+    "fa": "مدیریت تغییر"
+  },
+  "description": {
+    "en": "Management of change",
+    "fa": "مدیریت تغییر"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MocPage",
+      "action": "List",
+      "args": {
+        "riskLevel": "param:riskLevel",
+        "status": "param:status",
+        "projectId": "param:projectId"
+      }
+    }
+  }
+}

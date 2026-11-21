@@ -1,0 +1,101 @@
+{
+  "kind": "page",
+  "key": "authorization-audit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Authorization audit",
+    "fa": "ممیزی دسترسی"
+  },
+  "description": {
+    "en": "Authorization audit list (page definition)",
+    "fa": "فهرست ممیزی دسترسی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "authorization-audit",
+    "template": "entity-list",
+    "args": {
+      "id": "authorization-audit",
+      "url": "/d/authorization-audit-grid",
+      "idField": "authorizationAuditLogId",
+      "viewsKey": "authorization-audit",
+      "columns": [
+        {
+          "key": "authorizationAuditLogId",
+          "header": {
+            "en": "Id",
+            "fa": "شناسه"
+          },
+          "width": 80,
+          "type": "number"
+        },
+        {
+          "key": "timestamp",
+          "header": {
+            "en": "When",
+            "fa": "زمان"
+          },
+          "width": 170,
+          "type": "datetime"
+        },
+        {
+          "key": "user",
+          "header": {
+            "en": "User",
+            "fa": "کاربر"
+          },
+          "width": 150
+        },
+        {
+          "key": "resourceName",
+          "header": {
+            "en": "Resource",
+            "fa": "منبع"
+          },
+          "width": 170
+        },
+        {
+          "key": "actionName",
+          "header": {
+            "en": "Action",
+            "fa": "عملیات"
+          },
+          "width": 120
+        },
+        {
+          "key": "resourceId",
+          "header": {
+            "en": "Resource id",
+            "fa": "شناسه‌ی منبع"
+          },
+          "width": 120
+        },
+        {
+          "key": "decision",
+          "header": {
+            "en": "Decision",
+            "fa": "تصمیم"
+          },
+          "width": 100
+        },
+        {
+          "key": "reason",
+          "header": {
+            "en": "Reason",
+            "fa": "دلیل"
+          },
+          "width": 320
+        },
+        {
+          "key": "ipAddress",
+          "header": {
+            "en": "IP address",
+            "fa": "نشانی IP"
+          },
+          "width": 130
+        }
+      ]
+    }
+  }
+}

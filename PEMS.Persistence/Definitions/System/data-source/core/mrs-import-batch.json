@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "mrs-import-batch",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MRS import batch",
+    "fa": "دسته‌ی ورود MRS"
+  },
+  "description": {
+    "en": "MRS import batch",
+    "fa": "دسته‌ی ورود MRS"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MrsImport",
+      "action": "Batch",
+      "args": {
+        "batchId": "param:batchId"
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "technical-query-respond",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Respond to technical query",
+    "fa": "پاسخ به پرسش فنی"
+  },
+  "description": {
+    "en": "Respond to technical query",
+    "fa": "پاسخ به پرسش فنی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TechnicalQuery",
+      "action": "Respond",
+      "args": {
+        "technicalQueryId": "field:technicalQueryId",
+        "responseText": "field:responseText",
+        "actorEmployeeId": "context:employeeId",
+        "actorDisciplineId": "context:disciplineId",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "The response was recorded.",
+      "fa": "پاسخ ثبت شد."
+    },
+    "redirect": "/TechnicalQuery/Details/{technicalQueryId}"
+  }
+}

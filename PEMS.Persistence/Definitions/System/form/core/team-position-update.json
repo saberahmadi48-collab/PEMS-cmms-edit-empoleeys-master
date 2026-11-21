@@ -1,0 +1,100 @@
+{
+  "kind": "form",
+  "key": "team-position-update",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a position",
+    "fa": "ویرایش سمت"
+  },
+  "description": {
+    "en": "Edit a position",
+    "fa": "ویرایش سمت"
+  },
+  "payload": {
+    "id": "team-position-update",
+    "title": {
+      "en": "Edit a position",
+      "fa": "ویرایش سمت"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "team-position-update",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "positionId",
+        "label": {
+          "en": "Position id",
+          "fa": "شناسه سمت"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Position id is required.",
+            "fa": "شناسه سمت الزامی است."
+          }
+        }
+      },
+      {
+        "name": "returnTeamId",
+        "label": {
+          "en": "Team id",
+          "fa": "شناسه تیم"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Team id is required.",
+            "fa": "شناسه تیم الزامی است."
+          }
+        }
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Title is required.",
+            "fa": "عنوان الزامی است."
+          }
+        },
+        "maxLength": 150
+      },
+      {
+        "name": "sortOrder",
+        "label": {
+          "en": "Sort order",
+          "fa": "ترتیب"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Sort order is required.",
+            "fa": "ترتیب الزامی است."
+          }
+        }
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "text",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

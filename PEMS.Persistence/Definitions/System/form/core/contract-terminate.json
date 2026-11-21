@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "contract-terminate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Terminate",
+    "fa": "فسخ"
+  },
+  "description": {
+    "en": "Terminate",
+    "fa": "فسخ"
+  },
+  "payload": {
+    "id": "contract-terminate",
+    "title": {
+      "en": "Terminate",
+      "fa": "فسخ"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "contract-terminate",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "contractId",
+        "label": {
+          "en": "Contract id",
+          "fa": "شناسه‌ی قرارداد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

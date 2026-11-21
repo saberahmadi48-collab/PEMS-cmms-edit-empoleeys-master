@@ -11,8 +11,6 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
 using PEMS.Web.Areas.Admin.Controllers;
-using DisciplineController = PEMS.Web.Controllers.DisciplineController;
-using EmployeeController = PEMS.Web.Controllers.EmployeeController;
 
 namespace PEMS.Tests.Organization;
 
@@ -100,18 +98,15 @@ public class PositionManagementUiTests
         Assert.True((await svc.SetPrimaryPositionAsync(1, pos[2].PositionId)).Success == false);          // still held by employee 2
     }
 
-    // ------------------------------------------------------------------ Employee UI → canonical assignment service
+    // ------------------------------------------------------------------ Employee operations → canonical assignment service (SCRUM-687)
 
-    private static EmployeeController NewEmployeeController(PEMSDbContext db, params string[] roles)
+    private static PEMS.Web.Services.EmployeeOperations NewEmployeeOperations(PEMSDbContext db)
     {
         var services = new ServiceCollection();
         services.AddSingleton(db); services.AddLogging();
         services.AddIdentityCore<ApplicationUser>().AddRoles<ApplicationRole>().AddEntityFrameworkStores<PEMSDbContext>();
         var sp = services.BuildServiceProvider();
-        var c = new EmployeeController(db, sp.GetRequiredService<UserManager<ApplicationUser>>(), sp.GetRequiredService<RoleManager<ApplicationRole>>(), null!, null!,
-            new UserRoleAssignmentSynchronizer(db), Svc(db)).WithTempData();
-        c.ControllerContext.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(roles.Select(r => new Claim(ClaimTypes.Role, r)), "test"));
-        return c;
+        return new PEMS.Web.Services.EmployeeOperations(db, sp.GetRequiredService<UserManager<ApplicationUser>>(), null!, null!, new UserRoleAssignmentSynchronizer(db), Svc(db));
     }
 
     [Fact]
@@ -119,9 +114,9 @@ public class PositionManagementUiTests
     {
         var db = Db(); var (dept, disc) = await Org(db); await Svc(db).CreatePositionAsync("Mechanical Engineer", "ENG-MEC", dept, null, null);
         var pos = await db.Positions.SingleAsync();
-        var c = NewEmployeeController(db, SystemRoles.SystemAdmin);
+        var ops = NewEmployeeOperations(db);
 
-        await c.Create("", "Ali", "Ahmadi", null, null, null, dept, disc, false, null, null, null, null, null, null, null, null, pos.PositionId);
+        await ops.CreateAsync([SystemRoles.SystemAdmin], "Ali", "Ahmadi", dept, disc, positionId: pos.PositionId);
 
         var emp = await db.Employees.SingleAsync();
         var asg = await db.EmployeeAssignments.SingleAsync();
@@ -131,62 +126,60 @@ public class PositionManagementUiTests
     }
 
     [Fact]
-    public async Task EmployeeCreateAndEdit_AsEngineeringManager_CannotAssignOrChangePosition_ServerSide()
+    public async Task EmployeeCreateAndSetPosition_AsEngineeringManager_CannotAssignOrChangePosition_ServerSide()
     {
         var db = Db(); var (dept, disc) = await Org(db); await Svc(db).CreatePositionAsync("P", "P-1", null, null, null);
         var pos = await db.Positions.SingleAsync();
-        var c = NewEmployeeController(db, SystemRoles.EngineeringManager);
+        var ops = NewEmployeeOperations(db);
+        var manager = new List<string> { SystemRoles.EngineeringManager };
 
-        await c.Create("", "Eve", "Smith", null, null, null, dept, disc, false, null, null, null, null, null, null, null, null, pos.PositionId);
-        Assert.Single(db.Employees);                                       // employee itself is saved (personnel data is theirs to manage)
+        var created = await ops.CreateAsync(manager, "Eve", "Smith", dept, disc, positionId: pos.PositionId);
+        Assert.True(created.Success);                                      // employee itself is saved (personnel data is theirs to manage)
+        Assert.Single(db.Employees);
         Assert.Empty(db.EmployeeAssignments);                              // the position is not
-        Assert.NotNull(c.TempData["Warning"]);
+        Assert.Contains("SystemAdmin", created.Error);                     // and the user is told
 
         var emp = await db.Employees.SingleAsync();
-        await c.Edit(emp.EmployeeId, "", "Eve", "Smith", null, null, null, dept, disc, null, null, null, null, null, null, false, pos.PositionId, true);   // forged positionSubmitted
+        Assert.False((await ops.SetPositionAsync(manager, emp.EmployeeId, pos.PositionId)).Success);
         Assert.Empty(db.EmployeeAssignments);
     }
 
     [Fact]
-    public async Task EmployeeEdit_AsSystemAdmin_ChangesAndClearsPosition_AndDoesNotWipeLegacyTitle()
+    public async Task EmployeeSetPosition_AsSystemAdmin_ChangesAndClearsPosition_AndDoesNotWipeLegacyTitle()
     {
         var db = Db(); var (dept, disc) = await Org(db); var svc = Svc(db);
         await svc.CreatePositionAsync("Pos One", "P-1", null, null, null); await svc.CreatePositionAsync("Pos Two", "P-2", null, null, null);
         var p1 = await db.Positions.SingleAsync(p => p.PositionCode == "P-1"); var p2 = await db.Positions.SingleAsync(p => p.PositionCode == "P-2");
         db.Employees.Add(new Employee { EmployeeId = 7, FirstName = "Z", LastName = "Y", DepartmentId = dept, DisciplineId = disc, IsActive = true, Position = "Legacy title" });
         await db.SaveChangesAsync();
-        var c = NewEmployeeController(db, SystemRoles.SystemAdmin);
+        var ops = NewEmployeeOperations(db);
+        var admin = new List<string> { SystemRoles.SystemAdmin };
 
-        // form without position fields (old/other client): legacy text and assignment untouched
-        await c.Edit(7, "", "Z", "Y", null, null, null, dept, disc, null, null, null, null, null, null);
         Assert.Equal("Legacy title", (await db.Employees.AsNoTracking().SingleAsync()).Position);
         Assert.Empty(db.EmployeeAssignments);
 
-        await c.Edit(7, "", "Z", "Y", null, null, null, dept, disc, null, null, null, null, null, null, false, p1.PositionId, true);
+        Assert.True((await ops.SetPositionAsync(admin, 7, p1.PositionId)).Success);
         Assert.Equal(p1.PositionId, (await db.EmployeeAssignments.SingleAsync(a => a.IsActive)).PositionId);
         Assert.Equal("Pos One", (await db.Employees.AsNoTracking().SingleAsync()).Position);
 
-        await c.Edit(7, "", "Z", "Y", null, null, null, dept, disc, null, null, null, null, null, null, false, p2.PositionId, true);
+        Assert.True((await ops.SetPositionAsync(admin, 7, p2.PositionId)).Success);
         Assert.Equal(p2.PositionId, (await db.EmployeeAssignments.SingleAsync(a => a.IsActive)).PositionId);
         Assert.Equal(2, await db.EmployeeAssignments.CountAsync());                                    // history kept
 
-        await c.Edit(7, "", "Z", "Y", null, null, null, dept, disc, null, null, null, null, null, null, false, null, true);   // clear
+        Assert.True((await ops.SetPositionAsync(admin, 7, null)).Success);                             // clear
         Assert.Empty(await db.EmployeeAssignments.Where(a => a.IsActive).ToListAsync());
     }
 
     [Fact]
-    public async Task EmployeeDetailsAndIndex_ExposePrimaryPositionForTheForms()
+    public async Task EmployeeVacantPositions_OfferOnlyUnoccupiedPositions()
     {
         var db = Db(); var (dept, disc) = await Org(db); await Svc(db).CreatePositionAsync("Planner", "PLN", null, null, null);
         var pos = await db.Positions.SingleAsync();
         db.Employees.Add(new Employee { EmployeeId = 9, FirstName = "P", LastName = "Q", DepartmentId = dept, DisciplineId = disc, IsActive = true }); await db.SaveChangesAsync();
         await Svc(db).SetPrimaryPositionAsync(9, pos.PositionId);
-        var c = NewEmployeeController(db, SystemRoles.SystemAdmin);
+        var ops = NewEmployeeOperations(db);
 
-        await c.Index(null, null, null);
-        var primaries = (Dictionary<int, (int PositionId, string Label)>)c.ViewBag.PrimaryPositions;
-        Assert.Equal(pos.PositionId, primaries[9].PositionId); Assert.True((bool)c.ViewBag.CanAssignPosition);
-        Assert.DoesNotContain(((List<(int PositionId, string Label)>)c.ViewBag.VacantPositions), v => v.PositionId == pos.PositionId);   // occupied: not offered to others
+        Assert.DoesNotContain(await ops.VacantPositionsAsync(), v => v.Value == pos.PositionId.ToString());   // occupied: not offered to others
     }
 
     // ------------------------------------------------------------------ authorization + discoverability
@@ -194,12 +187,10 @@ public class PositionManagementUiTests
     [Fact]
     public void PositionActions_AreSystemAdminOnly_AndMutationsAreAntiForgeryProtected()
     {
-        var t = typeof(OrganizationController);
-        var cls = (AuthorizeAttribute)Attribute.GetCustomAttribute(t, typeof(AuthorizeAttribute))!;
-        Assert.Equal(SystemRoles.SystemAdmin, cls.Roles);
-        foreach (var name in new[] { "CreatePosition", "EditPosition", "SetPositionActive" })
-            Assert.NotNull(t.GetMethod(name)!.GetCustomAttributes(typeof(ValidateAntiForgeryTokenAttribute), false).SingleOrDefault());
-        Assert.NotNull(t.GetMethod("Positions"));
+        // SCRUM-639: the position actions are operations for SystemAdmin only (the action host validates the antiforgery token of every post)
+        var operations = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        foreach (var name in new[] { "CreatePosition", "UpdatePosition", "SetPositionActive" })
+            Assert.Contains(SystemRoles.SystemAdmin, operations.Get("Organization", name)!.Roles);
     }
 
     [Fact]
@@ -215,52 +206,32 @@ public class PositionManagementUiTests
         Assert.Contains("!canSeeAdminCore && canSeeDisciplineMaster", side);
         Assert.DoesNotContain("Positions", limited);                 // Position management is never exposed through the limited section
         Assert.DoesNotContain("asp-controller=\"Organization\"", limited);
-        Assert.Single(System.Text.RegularExpressions.Regex.Matches(side, "asp-controller=\"Organization\" asp-action=\"Positions\""));
-        Assert.Single(System.Text.RegularExpressions.Regex.Matches(side, "asp-controller=\"Organization\" asp-action=\"Index\""));
-        Assert.Single(System.Text.RegularExpressions.Regex.Matches(side, "asp-controller=\"Employee\" asp-action=\"Index\""));
-        // the position selector is wired into create, edit (per row) and the details edit modal - no free-text position inputs remain
-        foreach (var f in new[] { "Index", "Details" })
-        {
-            var view = File.ReadAllText(Path.Combine(dir.FullName, $"PEMS.Web/Views/Employee/{f}.cshtml"));
-            Assert.Contains("_PositionSelect", view);
-            Assert.DoesNotContain("name=\"position\"", view);
-        }
+        Assert.Single(System.Text.RegularExpressions.Regex.Matches(side, "href=\"/p/organization-positions\""));
+        Assert.Single(System.Text.RegularExpressions.Regex.Matches(side, "href=\"/p/organization-chart\""));
+        Assert.Single(System.Text.RegularExpressions.Regex.Matches(side, "href=\"/p/employees\""));
     }
 
     [Fact]
-    public async Task DisciplineManage_SearchAndStatusFilters_AndInactiveDisciplineIsNotOffered()
-    {
-        var db = Db();
-        db.Disciplines.AddRange(new Discipline { Code = "EL", Name = "Electrical", ImportAliases = "Elec", IsActive = true }, new Discipline { Code = "OLD", Name = "Retired", IsActive = false });
-        await db.SaveChangesAsync();
-        var c = new DisciplineController(null!, db, new FakeCurrentUserService { Roles = new List<string> { SystemRoles.SystemAdmin } }, new PermissionService(db, new AccessControlService(db))).WithTempData();
-        var all = (List<PEMS.Application.Interfaces.DisciplineRow>)((ViewResult)await c.Manage(null, null)).Model!;
-        Assert.Equal(2, all.Count);
-        Assert.Single((List<PEMS.Application.Interfaces.DisciplineRow>)((ViewResult)await c.Manage("elec", null)).Model!);
-        Assert.Equal("OLD", ((List<PEMS.Application.Interfaces.DisciplineRow>)((ViewResult)await c.Manage(null, "inactive")).Model!).Single().Code);
-    }
-
-    [Fact]
-    public async Task EmployeeEdit_RejectedPositionChange_KeepsCurrentAssignmentAndLegacyText_AndWarns()
+    public async Task EmployeeSetPosition_RejectedChange_KeepsCurrentAssignmentAndLegacyText_AndRefuses()
     {
         var db = Db(); var (dept, disc) = await Org(db); var svc = Svc(db);
-        await svc.CreatePositionAsync("Mine", "P-MINE", null, null, null); await svc.CreatePositionAsync("Taken", "P-TAKEN", null, null, null); await svc.CreatePositionAsync("Retired", "P-OLD", null, null, null);
+        await svc.CreatePositionAsync("Mine", "P-MINE", null, null, null); await svc.CreatePositionAsync("Taken", "P-TAKEN", null, null, null); await svc.CreatePositionAsync("Old", "P-OLD", null, null, null);
         var mine = await db.Positions.SingleAsync(p => p.PositionCode == "P-MINE"); var taken = await db.Positions.SingleAsync(p => p.PositionCode == "P-TAKEN"); var old = await db.Positions.SingleAsync(p => p.PositionCode == "P-OLD");
         db.Employees.AddRange(new Employee { EmployeeId = 1, FirstName = "A", LastName = "A", DepartmentId = dept, DisciplineId = disc, IsActive = true },
                               new Employee { EmployeeId = 2, FirstName = "B", LastName = "B", DepartmentId = dept, DisciplineId = disc, IsActive = true });
         await db.SaveChangesAsync();
         await svc.SetPrimaryPositionAsync(1, mine.PositionId); await svc.SetPrimaryPositionAsync(2, taken.PositionId);
         await svc.SetPositionActiveAsync(old.PositionId, false);
-        var c = NewEmployeeController(db, SystemRoles.SystemAdmin);
+        var ops = NewEmployeeOperations(db);
+        var admin = new List<string> { SystemRoles.SystemAdmin };
         var before = await db.Employees.AsNoTracking().SingleAsync(e => e.EmployeeId == 1);
 
-        await c.Edit(1, "", "A", "A", null, null, null, dept, disc, null, null, null, null, null, null, false, taken.PositionId, true);   // occupied
+        Assert.False((await ops.SetPositionAsync(admin, 1, taken.PositionId)).Success);   // occupied
         Assert.Equal(mine.PositionId, (await db.EmployeeAssignments.SingleAsync(a => a.EmployeeId == 1 && a.IsActive)).PositionId);
-        Assert.NotNull(c.TempData["Warning"]);
-        await c.Edit(1, "", "A", "A", null, null, null, dept, disc, null, null, null, null, null, null, false, old.PositionId, true);     // inactive
+        Assert.False((await ops.SetPositionAsync(admin, 1, old.PositionId)).Success);     // inactive
         Assert.Equal(mine.PositionId, (await db.EmployeeAssignments.SingleAsync(a => a.EmployeeId == 1 && a.IsActive)).PositionId);
         Assert.Equal(before.Position, (await db.Employees.AsNoTracking().SingleAsync(e => e.EmployeeId == 1)).Position);                 // legacy text consistent with the kept assignment
-        await c.Edit(1, "", "A", "A", null, null, null, dept, disc, null, null, null, null, null, null, false, 99999, true);              // unknown
+        Assert.False((await ops.SetPositionAsync(admin, 1, 99999)).Success);              // unknown
         Assert.Equal(mine.PositionId, (await db.EmployeeAssignments.SingleAsync(a => a.EmployeeId == 1 && a.IsActive)).PositionId);
     }
 

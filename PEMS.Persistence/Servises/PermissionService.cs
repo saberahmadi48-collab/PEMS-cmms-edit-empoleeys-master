@@ -17,7 +17,7 @@ public class PermissionService : IPermissionService
     private static readonly string[] Modules =
     {
         "EngineeringDocuments", "VDR", "Contracts", "Vendors",
-        "MaterialRequisition", "Equipment", "DisciplineWorkspace", "DisciplineMaster", "Correspondence", "WorkOrder",
+        "MaterialRequisition", "Equipment", "DisciplineWorkspace", "DisciplineMaster", "Definitions", "Correspondence", "WorkOrder",
         "StoreRequisition", "WorkRequest", "Inspection", "Transmittal",
         "Task", "FunctionalLocation", "EquipmentCriticality", "JobPlan", "MaintenancePlan",
         "ProcurementPackage",
@@ -291,9 +291,11 @@ public class PermissionService : IPermissionService
 
         await SeedMissingRolesAsync("VDR", new List<RolePermission>
         {
-            New(SystemRoles.EngineeringManager, "VDR", create: true, edit: true, del: true, approve: true),
-            New(SystemRoles.DocumentController, "VDR", create: true, edit: true),
-            New(SystemRoles.DisciplineEngineer, "VDR", edit: true, approve: true),
+            // SCRUM-559 owner decision 2026-11-10: VDR hold / release like Engineering Documents (existing databases: migration Scrum559VdrHoldGrants)
+            New(SystemRoles.EngineeringManager, "VDR", create: true, edit: true, del: true, approve: true, hold: true, releaseHold: true),
+            New(SystemRoles.EngineeringSupervisor, "VDR", hold: true, releaseHold: true),
+            New(SystemRoles.DocumentController, "VDR", create: true, edit: true, hold: true, releaseHold: true),
+            New(SystemRoles.DisciplineEngineer, "VDR", edit: true, approve: true, hold: true),
             // طبق بند ۱۰ ممیزی: Viewer روی MDR/EquipmentImport/MrsImport از قبل دید فقط‌خواندنی
             // دارد؛ برای این‌که لینک VDR Import هم زیر Administration > Import Center برای همون
             // نقش به یک صفحه‌ی 403 ختم نشود، همون سطح فقط‌خواندنی این‌جا هم اضافه شد.
@@ -503,7 +505,11 @@ public class PermissionService : IPermissionService
         await SeedMissingRolesAsync("PurchaseOrder", new List<RolePermission>
         {
             New(SystemRoles.ContractManager, "PurchaseOrder", create: true, edit: true),
-            New(SystemRoles.Viewer, "PurchaseOrder")
+            New(SystemRoles.Viewer, "PurchaseOrder"),
+            // SCRUM-470: RoleCatalog defaults reach only newly created roles, so procurement roles that already exist get their PO rows here
+            // (the buyer builds and submits; Procurement Manager issues approved POs - owner decision 2026-10-30). A row an admin already set is kept.
+            New(RoleCatalog.ProcurementBuyer, "PurchaseOrder", create: true, edit: true),
+            New(RoleCatalog.ProcurementManager, "PurchaseOrder", approve: true)
         });
 
         // ==============================================================================
@@ -602,6 +608,9 @@ public class PermissionService : IPermissionService
         // مادی جدید از بیرون - رفع آن‌ها به یک تغییر امنیتی جدا و کنترل‌شده موکول شده (طبق دستور
         // صریح: بدون بازطراحی امنیتی گسترده در این Step). نقش‌ها هم‌الگو با "InventoryMasterData"
         // موجود (نزدیک‌ترین ماژول قابل‌مقایسه از نظر ریسک مستقیم-موجودی).
+        // به‌روزرسانی مستندات (Procurement P0 / F-04): توضیح بالا تاریخی است. اکنون MaterialItemController سمت سرور
+        // Create را با MaterialItem.Create و Edit/ToggleActive/AdjustStock/TransferStock را با MaterialItem.Edit گیت می‌کند.
+        // مجوز اختصاصی «اصلاح موجودی» و تخصیص آن به نقش‌های انبار (WH.*) تصمیم سیاستی باز است و این Seed تغییر نکرده است.
         await SeedMissingRolesAsync("MaterialItem", new List<RolePermission>
         {
             New(SystemRoles.MaintenanceEngineer, "MaterialItem", create: true, edit: true),

@@ -1,0 +1,47 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("drawer", Category = "overlays", Icon = "bi-layout-sidebar-inset-reverse")]
+@inject IPemsLocale Locale
+@if (Options.Frame)
+{
+    <div id="@Options.Id" class="@FramePanelClass" @attributes="Options.Attributes">@ChildContent</div>
+}
+else if (Options.Skin == ComponentSkin.Bootstrap)
+{
+    <div id="@Options.Id" class="@PanelClass" tabindex="-1" aria-labelledby="@(Options.Id)-title">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="@(Options.Id)-title">@Locale.Text(Options.Title)</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="@Locale.Text(Options.CloseLabel)"></button>
+        </div>
+        <div class="offcanvas-body">
+            @if (Options.Body is not null)
+            {
+                <p>@Locale.Text(Options.Body)</p>
+            }
+            @ChildContent
+        </div>
+    </div>
+}
+else
+{
+    <dialog id="@Options.Id" class="pems-drawer pems-drawer--@Options.Side.ToString().ToLowerInvariant()" aria-labelledby="@(Options.Id)-title" data-pems-dialog>
+        <div class="pems-drawer__panel">
+            <header class="pems-modal__header">
+                <h2 class="pems-modal__title" id="@(Options.Id)-title">@Locale.Text(Options.Title)</h2>
+                <button type="button" class="pems-modal__close" data-pems-close aria-label="@Locale.Text(Options.CloseLabel)"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+            </header>
+            <div class="pems-modal__body">
+                @if (Options.Body is not null)
+                {
+                    <p>@Locale.Text(Options.Body)</p>
+                }
+                @ChildContent
+            </div>
+        </div>
+    </dialog>
+}
+@code {
+    [Parameter, EditorRequired] public DrawerOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string FramePanelClass => string.IsNullOrWhiteSpace(Options.CssClass) ? PanelClass : PanelClass + " " + Options.CssClass.Trim();
+    private string PanelClass => Options.Side == DrawerSide.Start ? "offcanvas offcanvas-start" : "offcanvas offcanvas-end";
+}

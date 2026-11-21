@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "discipline-task-in-progress",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Task in progress",
+    "fa": "وظیفه در جریان"
+  },
+  "description": {
+    "en": "Task in progress",
+    "fa": "وظیفه در جریان"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DisciplineWorkspace",
+      "action": "SetTaskStatus",
+      "args": {
+        "taskId": "field:id",
+        "status": "literal:InProgress"
+      }
+    },
+    "success": {
+      "en": "Status changed.",
+      "fa": "وضعیت تغییر کرد."
+    }
+  }
+}

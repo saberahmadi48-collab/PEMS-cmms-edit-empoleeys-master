@@ -1,0 +1,100 @@
+{
+  "kind": "page",
+  "key": "skills",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Skills",
+    "fa": "مهارت‌ها"
+  },
+  "description": {
+    "en": "Skills list (page definition)",
+    "fa": "فهرست مهارت‌ها (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "skills",
+    "template": "entity-list",
+    "args": {
+      "id": "skills",
+      "url": "/d/skills-grid",
+      "idField": "skillId",
+      "viewsKey": "skills",
+      "columns": [
+        {
+          "key": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 260
+        },
+        {
+          "key": "discipline",
+          "header": {
+            "en": "Discipline",
+            "fa": "دیسیپلین"
+          },
+          "width": 180
+        },
+        {
+          "key": "description",
+          "header": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "width": 320
+        },
+        {
+          "key": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/skills-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "toggle",
+              "label": {
+                "en": "Activate / deactivate",
+                "fa": "فعال / غیرفعال"
+              },
+              "url": "/a/skills-toggle",
+              "method": "post",
+              "confirm": {
+                "en": "Change the status?",
+                "fa": "وضعیت تغییر کند؟"
+              }
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/skills-create",
+      "newLabel": {
+        "en": "New skill",
+        "fa": "مهارت جدید"
+      }
+    }
+  }
+}

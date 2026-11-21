@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "kpi-dashboard-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "KPI dashboard rows",
+    "fa": "ردیف‌های داشبورد KPI"
+  },
+  "description": {
+    "en": "KPI dashboard rows",
+    "fa": "ردیف‌های داشبورد KPI"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Kpi",
+      "action": "Dashboard",
+      "args": {
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      }
+    }
+  }
+}

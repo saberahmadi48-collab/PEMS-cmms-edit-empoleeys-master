@@ -1,0 +1,127 @@
+{
+  "kind": "page",
+  "key": "storage-routing",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Storage routing",
+    "fa": "مسیریابی ذخیره‌سازی"
+  },
+  "description": {
+    "en": "Storage routing list (page definition)",
+    "fa": "فهرست مسیریابی ذخیره‌سازی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "storage-routing",
+    "template": "entity-list",
+    "args": {
+      "id": "storage-routing",
+      "url": "/d/storage-routing-grid",
+      "idField": "storageRouteId",
+      "viewsKey": "storage-routing",
+      "columns": [
+        {
+          "key": "module",
+          "header": {
+            "en": "Module",
+            "fa": "ماژول"
+          },
+          "width": 180
+        },
+        {
+          "key": "documentType",
+          "header": {
+            "en": "Document type",
+            "fa": "نوع سند"
+          },
+          "width": 160
+        },
+        {
+          "key": "provider",
+          "header": {
+            "en": "Storage provider",
+            "fa": "ارائه‌دهنده‌ی ذخیره‌سازی"
+          },
+          "width": 200
+        },
+        {
+          "key": "relativeRootPath",
+          "header": {
+            "en": "Relative root",
+            "fa": "مسیر نسبی"
+          },
+          "width": 200
+        },
+        {
+          "key": "isEnabled",
+          "header": {
+            "en": "Enabled",
+            "fa": "فعال"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "isDefault",
+          "header": {
+            "en": "Default",
+            "fa": "پیش‌فرض"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "priority",
+          "header": {
+            "en": "Priority",
+            "fa": "اولویت"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/storage-routing-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "delete",
+              "label": {
+                "en": "Remove",
+                "fa": "حذف"
+              },
+              "url": "/a/storage-routing-delete",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Remove this record?",
+                "fa": "این رکورد حذف شود؟"
+              }
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/storage-routing-create",
+      "newLabel": {
+        "en": "New storage route",
+        "fa": "قانون مسیریابی ذخیره‌سازی جدید"
+      }
+    }
+  }
+}

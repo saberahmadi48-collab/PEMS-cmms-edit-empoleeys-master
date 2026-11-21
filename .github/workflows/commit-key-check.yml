@@ -1,0 +1,34 @@
+# Jira key check (SCRUM-349 / #335): a pull request must carry SCRUM-<n> in its title, its branch name and every commit subject.
+# Runs on pull_request only: no secrets, no deploy, read-only token, nothing is uploaded. The logic and its tests are in
+# tools/commit-key-check (standard library only). Exempt: merge commits, bot commits and PRs, head branches main/staging/demo.
+
+name: PEMS Jira key check
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  jira-key:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # the commit list of the PR is read with git log base..head
+
+      - name: Tests of the check
+        run: python3 -m unittest discover -s tools/commit-key-check
+
+      - name: Jira key in title, branch and commit subjects
+        env:
+          # passed through env, never interpolated into the script (the title and branch are user input)
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: python3 tools/commit-key-check/check_commit_keys.py

@@ -1,0 +1,100 @@
+{
+  "key": "breadcrumb",
+  "component": "PEMS.UI.Components.PemsBreadcrumb",
+  "category": "navigation",
+  "icon": "bi-chevron-double-right",
+  "nameKey": "component.breadcrumb",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "skin": {
+        "enum": [
+          "bootstrap",
+          "pems"
+        ]
+      },
+      "label": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              ]
+            },
+            "href": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "label",
+      "items"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "BreadcrumbOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "label": {
+      "en": "Path",
+      "fa": "مسیر"
+    },
+    "items": [
+      {
+        "label": {
+          "en": "Home",
+          "fa": "خانه"
+        },
+        "href": "/"
+      },
+      {
+        "label": {
+          "en": "Orders",
+          "fa": "سفارش‌ها"
+        }
+      }
+    ]
+  }
+}

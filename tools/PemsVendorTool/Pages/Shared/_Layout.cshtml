@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - PEMS vendor tool</title>
+    <link rel="stylesheet" href="~/vendor.css" />
+</head>
+<body>
+<header>
+    <strong>PEMS vendor tool</strong>
+    <nav>
+        <a asp-page="/Index">Home</a>
+        <a asp-page="/Customers">Customers</a>
+        <a asp-page="/Issue">Issue</a>
+        <a asp-page="/Ledger">Ledger</a>
+        <a asp-page="/Import">Import</a>
+        <a asp-page="/Keys">Keys</a>
+        <a asp-page="/Audit">Audit</a>
+    </nav>
+</header>
+<main>@RenderBody()</main>
+</body>
+</html>

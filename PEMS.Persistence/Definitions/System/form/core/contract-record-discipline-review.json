@@ -1,0 +1,107 @@
+{
+  "kind": "form",
+  "key": "contract-record-discipline-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record a discipline review",
+    "fa": "ثبت بررسی دیسیپلین"
+  },
+  "description": {
+    "en": "Record a discipline review",
+    "fa": "ثبت بررسی دیسیپلین"
+  },
+  "payload": {
+    "id": "contract-record-discipline-review",
+    "title": {
+      "en": "Record a discipline review",
+      "fa": "ثبت بررسی دیسیپلین"
+    },
+    "submitLabel": {
+      "en": "Record",
+      "fa": "ثبت"
+    },
+    "actionKey": "contract-record-discipline-review",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "contractId",
+        "label": {
+          "en": "Contract id",
+          "fa": "شناسه‌ی قرارداد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "disciplineRole",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "decision",
+        "label": {
+          "en": "Decision",
+          "fa": "تصمیم"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Approved",
+            "label": {
+              "en": "Approved",
+              "fa": "تأیید"
+            }
+          },
+          {
+            "value": "Rejected",
+            "label": {
+              "en": "Rejected",
+              "fa": "رد"
+            }
+          },
+          {
+            "value": "Pending",
+            "label": {
+              "en": "Pending",
+              "fa": "در انتظار"
+            }
+          }
+        ]
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment",
+          "fa": "توضیح"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

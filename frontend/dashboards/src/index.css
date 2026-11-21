@@ -1,0 +1,57 @@
+@import "tailwindcss/theme.css";
+@import "tailwindcss/utilities.css";
+
+/* Map the shadcn/Bklit design tokens onto the PEMS theme tokens, so light / dark / turquoise themes
+   (data-theme on <html>) restyle every chart with no extra code. */
+:root {
+  --background: var(--pems-surface);
+  --foreground: var(--pems-text);
+  --card: var(--pems-surface);
+  --card-foreground: var(--pems-text);
+  --popover: var(--pems-surface);
+  --popover-foreground: var(--pems-text);
+  --muted: var(--pems-surface-hover);
+  --muted-foreground: var(--pems-text-muted);
+  --border: var(--pems-surface-border);
+  --input: var(--pems-surface-border);
+  --ring: var(--pems-focus, var(--pems-primary));
+  --primary: var(--pems-primary);
+  --primary-foreground: #fff;
+  --accent: var(--pems-surface-hover);
+  --accent-foreground: var(--pems-text);
+  --destructive: var(--pems-chart-negative, #ef4444);
+  --radius: 0.75rem;
+
+  --chart-1: var(--pems-chart-primary, #3b82f6);
+  --chart-2: var(--pems-chart-tertiary, #14b8a6);
+  --chart-3: var(--pems-chart-secondary, #a855f7);
+  --chart-4: var(--pems-chart-warning, #f59e0b);
+  --chart-5: var(--pems-chart-negative, #ef4444);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}

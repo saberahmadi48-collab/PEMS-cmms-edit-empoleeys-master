@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "routing-confidence-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI confidence thresholds rows",
+    "fa": "ردیف‌های آستانه‌های اطمینان هوش مصنوعی"
+  },
+  "description": {
+    "en": "The rows of the ai confidence thresholds grid",
+    "fa": "ردیف‌های جدول آستانه‌های اطمینان هوش مصنوعی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "AIConfidenceSettings",
+      "fields": [
+        "HighThreshold",
+        "MediumThreshold",
+        "ModifiedDate"
+      ],
+      "search": []
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "inventory",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Inventory (old address)",
+    "fa": "Inventory (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Inventory (old address)",
+    "fa": "Inventory (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/Inventory/{*rest}",
+    "target": "/p/inventory",
+    "permanent": false
+  }
+}

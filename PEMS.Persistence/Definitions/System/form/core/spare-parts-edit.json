@@ -1,0 +1,135 @@
+{
+  "kind": "form",
+  "key": "spare-parts-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit spare part",
+    "fa": "ویرایش قطعه‌ی یدکی"
+  },
+  "description": {
+    "en": "Edit spare part",
+    "fa": "ویرایش قطعه‌ی یدکی"
+  },
+  "payload": {
+    "id": "spare-parts-edit",
+    "title": {
+      "en": "Edit spare part",
+      "fa": "ویرایش قطعه‌ی یدکی"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "spare-parts-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "partNumber",
+        "label": {
+          "en": "Part number",
+          "fa": "شماره‌ی قطعه"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Part number is required.",
+            "fa": "شماره‌ی قطعه الزامی است."
+          }
+        }
+      },
+      {
+        "name": "partName",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "maxLength": 200,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        }
+      },
+      {
+        "name": "manufacturer",
+        "label": {
+          "en": "Manufacturer",
+          "fa": "سازنده"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "model",
+        "label": {
+          "en": "Model",
+          "fa": "مدل"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "unit",
+        "label": {
+          "en": "Unit",
+          "fa": "واحد"
+        },
+        "kind": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "storageLocation",
+        "label": {
+          "en": "Storage location",
+          "fa": "محل نگهداری"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "quantityOnHand",
+        "label": {
+          "en": "Quantity on hand",
+          "fa": "موجودی"
+        },
+        "kind": "number",
+        "min": 0
+      },
+      {
+        "name": "minStockLevel",
+        "label": {
+          "en": "Minimum stock level",
+          "fa": "حداقل موجودی"
+        },
+        "kind": "number",
+        "min": 0
+      },
+      {
+        "name": "reorderPoint",
+        "label": {
+          "en": "Reorder point",
+          "fa": "نقطه‌ی سفارش مجدد"
+        },
+        "kind": "number",
+        "min": 0
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 1000,
+        "span": 2
+      }
+    ]
+  }
+}

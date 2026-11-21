@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "procurement-package-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New procurement package",
+    "fa": "بسته‌ی تدارکات جدید"
+  },
+  "description": {
+    "en": "New procurement package",
+    "fa": "بسته‌ی تدارکات جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProcurementPackage",
+      "action": "Create",
+      "args": {
+        "packageNumber": "field:packageNumber",
+        "projectId": "field:projectId",
+        "disciplineId": "field:disciplineId",
+        "title": "field:title",
+        "description": "field:description",
+        "userId": "context:userId",
+        "ip": "context:ip"
+      }
+    },
+    "success": {
+      "en": "The package was created.",
+      "fa": "بسته ساخته شد."
+    },
+    "redirect": "/p/procurement-packages"
+  }
+}

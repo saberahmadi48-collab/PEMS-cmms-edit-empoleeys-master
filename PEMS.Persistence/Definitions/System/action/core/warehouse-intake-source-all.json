@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "warehouse-intake-source-all",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Source every open line",
+    "fa": "تأمین همه‌ی اقلام باز"
+  },
+  "description": {
+    "en": "Source every open line",
+    "fa": "تأمین همه‌ی اقلام باز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WarehouseIntake",
+      "action": "SourceAll",
+      "args": {
+        "workOrderId": "field:workOrderId",
+        "warehouseId": "field:warehouseId"
+      }
+    },
+    "success": {
+      "en": "The store requisition was raised.",
+      "fa": "درخواست انبار ثبت شد."
+    },
+    "redirect": "/p/warehouse-intake?id={workOrderId}"
+  }
+}

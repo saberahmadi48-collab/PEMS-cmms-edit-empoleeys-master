@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "dashboard-widget-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Dashboard widget choices",
+    "fa": "ابزارک‌های داشبورد"
+  },
+  "description": {
+    "en": "Dashboard widget choices",
+    "fa": "ابزارک‌های داشبورد"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "DashboardSettings",
+      "action": "WidgetChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

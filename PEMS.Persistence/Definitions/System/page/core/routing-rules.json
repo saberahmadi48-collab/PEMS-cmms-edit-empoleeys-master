@@ -1,0 +1,82 @@
+{
+  "kind": "page",
+  "key": "routing-rules",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI routing rules",
+    "fa": "قواعد مسیریابی هوش مصنوعی"
+  },
+  "description": {
+    "en": "AI routing rules list (page definition)",
+    "fa": "فهرست قواعد مسیریابی هوش مصنوعی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "routing-rules",
+    "template": "entity-list",
+    "args": {
+      "id": "routing-rules",
+      "url": "/d/routing-rules-grid",
+      "idField": "routingRuleId",
+      "viewsKey": "routing-rules",
+      "columns": [
+        {
+          "key": "documentCategory",
+          "header": {
+            "en": "Category",
+            "fa": "دسته"
+          },
+          "width": 220
+        },
+        {
+          "key": "targetModule",
+          "header": {
+            "en": "Target module",
+            "fa": "ماژول مقصد"
+          },
+          "width": 160
+        },
+        {
+          "key": "allowAutoRouting",
+          "header": {
+            "en": "Auto route",
+            "fa": "مسیریابی خودکار"
+          },
+          "width": 130,
+          "type": "bool"
+        },
+        {
+          "key": "description",
+          "header": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "width": 320
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/routing-rules-edit/{id}",
+              "method": "get"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

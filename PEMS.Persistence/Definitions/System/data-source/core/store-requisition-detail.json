@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "store-requisition-detail",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Store requisition",
+    "fa": "درخواست انبار"
+  },
+  "description": {
+    "en": "Store requisition",
+    "fa": "درخواست انبار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StoreRequisition",
+      "action": "Detail",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

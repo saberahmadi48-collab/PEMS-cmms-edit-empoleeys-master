@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "job-plan-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New job plan",
+    "fa": "طرح کار جدید"
+  },
+  "description": {
+    "en": "New job plan",
+    "fa": "طرح کار جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "JobPlan",
+      "action": "Create",
+      "args": {
+        "title": "field:title",
+        "scope": "field:scope",
+        "estimatedDurationHours": "field:estimatedDurationHours",
+        "safetyRequirements": "field:safetyRequirements",
+        "equipmentClassId": "field:equipmentClassId",
+        "permitRequired": "field:permitRequired",
+        "lotoRequired": "field:lotoRequired",
+        "currentUserName": "context:userName"
+      }
+    },
+    "success": {
+      "en": "The job plan was created.",
+      "fa": "Job Plan ساخته شد."
+    },
+    "redirect": "/p/job-plans"
+  }
+}

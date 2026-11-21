@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-routing-rules",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI routing rules (old address)",
+    "fa": "قواعد مسیریابی هوش مصنوعی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "AI routing rules (old address)",
+    "fa": "قواعد مسیریابی هوش مصنوعی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/RoutingRules/{*rest}",
+    "target": "/p/routing-rules",
+    "permanent": false
+  }
+}

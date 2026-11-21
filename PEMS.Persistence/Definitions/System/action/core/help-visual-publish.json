@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "help-visual-publish",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Publish a visual",
+    "fa": "انتشار تصویر"
+  },
+  "description": {
+    "en": "Publish a visual",
+    "fa": "انتشار تصویر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "VisualSetPublished",
+      "args": {
+        "visualId": "field:id",
+        "isPublished": "literal:true"
+      }
+    },
+    "success": {
+      "en": "Visual published.",
+      "fa": "تصویر منتشر شد."
+    },
+    "redirect": "/p/help-admin"
+  }
+}

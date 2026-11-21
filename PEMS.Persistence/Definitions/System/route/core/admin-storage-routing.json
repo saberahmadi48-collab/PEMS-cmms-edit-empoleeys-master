@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-storage-routing",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Storage routing (old address)",
+    "fa": "مسیریابی ذخیره‌سازی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Storage routing (old address)",
+    "fa": "مسیریابی ذخیره‌سازی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/StorageRouting/{*rest}",
+    "target": "/p/storage-routing",
+    "permanent": false
+  }
+}

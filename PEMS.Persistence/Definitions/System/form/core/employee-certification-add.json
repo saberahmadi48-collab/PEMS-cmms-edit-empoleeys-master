@@ -1,0 +1,101 @@
+{
+  "kind": "form",
+  "key": "employee-certification-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a certification",
+    "fa": "افزودن گواهینامه"
+  },
+  "description": {
+    "en": "Add a certification to an employee",
+    "fa": "افزودن گواهینامه به کارمند"
+  },
+  "payload": {
+    "id": "employee-certification-add",
+    "title": {
+      "en": "Certification",
+      "fa": "گواهینامه"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "employee-certification-add",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "employeeId",
+        "label": {
+          "en": "Employee id",
+          "fa": "شناسه کارمند"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Employee id is required.",
+            "fa": "شناسه کارمند الزامی است."
+          }
+        }
+      },
+      {
+        "name": "certificationId",
+        "label": {
+          "en": "Certification",
+          "fa": "گواهینامه"
+        },
+        "kind": "select",
+        "optionsFrom": "employee-certification-choices",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Certification is required.",
+            "fa": "گواهینامه الزامی است."
+          }
+        }
+      },
+      {
+        "name": "certificateNumber",
+        "label": {
+          "en": "Certificate number",
+          "fa": "شماره گواهی"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "issuer",
+        "label": {
+          "en": "Issuer",
+          "fa": "صادرکننده"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "issueDate",
+        "label": {
+          "en": "Issue date",
+          "fa": "تاریخ صدور"
+        },
+        "kind": "date",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Issue date is required.",
+            "fa": "تاریخ صدور الزامی است."
+          }
+        }
+      },
+      {
+        "name": "expiryDate",
+        "label": {
+          "en": "Expiry date",
+          "fa": "تاریخ انقضا"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}

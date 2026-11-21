@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mmd-qualifications",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Qualifications",
+    "fa": "صلاحیت‌ها"
+  },
+  "description": {
+    "en": "Qualifications",
+    "fa": "صلاحیت‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "Qualifications"
+    }
+  }
+}

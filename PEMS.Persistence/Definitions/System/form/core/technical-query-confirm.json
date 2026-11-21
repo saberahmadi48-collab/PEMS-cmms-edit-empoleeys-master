@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "technical-query-confirm",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Confirm and close",
+    "fa": "تأیید و بستن"
+  },
+  "description": {
+    "en": "Confirm and close",
+    "fa": "تأیید و بستن"
+  },
+  "payload": {
+    "id": "technical-query-confirm",
+    "title": {
+      "en": "Confirm and close",
+      "fa": "تأیید و بستن"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "technical-query-confirm",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "technicalQueryId",
+        "label": {
+          "en": "TQ id",
+          "fa": "شناسه‌ی TQ"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

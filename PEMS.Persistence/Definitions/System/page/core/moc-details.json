@@ -1,0 +1,367 @@
+{
+  "kind": "page",
+  "key": "moc-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Management of change",
+    "fa": "مدیریت تغییر"
+  },
+  "description": {
+    "en": "One MOC with its workflow commands (page definition)",
+    "fa": "یک MOC با دستورهای گردش کار (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "moc-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "moc-record",
+            "fields": [
+              {
+                "key": "mocNumber",
+                "label": {
+                  "en": "Number",
+                  "fa": "شماره"
+                }
+              },
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "workflowStage",
+                "label": {
+                  "en": "Workflow stage",
+                  "fa": "مرحله‌ی گردش کار"
+                }
+              },
+              {
+                "key": "changeType",
+                "label": {
+                  "en": "Change type",
+                  "fa": "نوع تغییر"
+                }
+              },
+              {
+                "key": "riskLevel",
+                "label": {
+                  "en": "Risk",
+                  "fa": "ریسک"
+                }
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "wide": true
+              },
+              {
+                "key": "reason",
+                "label": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "wide": true
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "discipline",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "relatedDocument",
+                "label": {
+                  "en": "Related document",
+                  "fa": "سند مرتبط"
+                }
+              },
+              {
+                "key": "relatedEquipment",
+                "label": {
+                  "en": "Related equipment",
+                  "fa": "تجهیز مرتبط"
+                }
+              },
+              {
+                "key": "requestedDate",
+                "label": {
+                  "en": "Requested",
+                  "fa": "درخواست"
+                },
+                "type": "date"
+              },
+              {
+                "key": "temporaryExpiryDate",
+                "label": {
+                  "en": "Temporary until",
+                  "fa": "موقت تا"
+                },
+                "type": "date"
+              },
+              {
+                "key": "riskAssessmentText",
+                "label": {
+                  "en": "Risk assessment",
+                  "fa": "ارزیابی ریسک"
+                },
+                "wide": true
+              },
+              {
+                "key": "riskAssessedDate",
+                "label": {
+                  "en": "Assessed",
+                  "fa": "تاریخ ارزیابی"
+                },
+                "type": "date"
+              },
+              {
+                "key": "approvedDate",
+                "label": {
+                  "en": "Approved",
+                  "fa": "تأیید"
+                },
+                "type": "date"
+              },
+              {
+                "key": "rejectionReason",
+                "label": {
+                  "en": "Rejection reason",
+                  "fa": "دلیل رد"
+                }
+              },
+              {
+                "key": "implementationPlan",
+                "label": {
+                  "en": "Implementation",
+                  "fa": "اجرا"
+                },
+                "wide": true
+              },
+              {
+                "key": "implementedDate",
+                "label": {
+                  "en": "Implemented",
+                  "fa": "تاریخ اجرا"
+                },
+                "type": "date"
+              },
+              {
+                "key": "documentsUpdated",
+                "label": {
+                  "en": "Documents updated",
+                  "fa": "مدارک به‌روز"
+                }
+              },
+              {
+                "key": "updatedDocumentsNote",
+                "label": {
+                  "en": "Documents note",
+                  "fa": "یادداشت مدارک"
+                }
+              },
+              {
+                "key": "trainingRequired",
+                "label": {
+                  "en": "Training required",
+                  "fa": "نیاز به آموزش"
+                }
+              },
+              {
+                "key": "trainingCompleted",
+                "label": {
+                  "en": "Training completed",
+                  "fa": "آموزش تکمیل شد"
+                }
+              },
+              {
+                "key": "closedDate",
+                "label": {
+                  "en": "Closed",
+                  "fa": "بسته شد"
+                },
+                "type": "date"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/moc-head",
+              "idField": "mocId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/moc-assess-risk?mocId={{params.id}}",
+                "text": {
+                  "en": "Assess the risk",
+                  "fa": "ارزیابی ریسک"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/moc-approve?mocId={{params.id}}",
+                "text": {
+                  "en": "Approve",
+                  "fa": "تأیید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/moc-reject?mocId={{params.id}}",
+                "text": {
+                  "en": "Reject",
+                  "fa": "رد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/moc-record-implementation?mocId={{params.id}}",
+                "text": {
+                  "en": "Record the implementation",
+                  "fa": "ثبت اجرا"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/moc-mark-documents-updated?mocId={{params.id}}",
+                "text": {
+                  "en": "Documents updated",
+                  "fa": "مدارک به‌روز شد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/moc-mark-training-completed?mocId={{params.id}}",
+                "text": {
+                  "en": "Training completed",
+                  "fa": "آموزش تکمیل شد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/moc-close?mocId={{params.id}}",
+                "text": {
+                  "en": "Close",
+                  "fa": "بستن"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/moc-upload-attachment?mocId={{params.id}}",
+                "text": {
+                  "en": "Add an attachment",
+                  "fa": "افزودن پیوست"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/mocs",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "attachments",
+          "component": "def:related-table",
+          "options": {
+            "id": "attachments",
+            "title": {
+              "en": "Attachments",
+              "fa": "پیوست‌ها"
+            },
+            "url": "/d/moc-attachments?f.id={{params.id|url}}",
+            "idField": "attachmentId",
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 320
+              },
+              {
+                "key": "fileSize",
+                "header": {
+                  "en": "Size",
+                  "fa": "اندازه"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "uploadDate",
+                "header": {
+                  "en": "Uploaded",
+                  "fa": "بارگذاری"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 140,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "download",
+                    "label": {
+                      "en": "Download",
+                      "fa": "دریافت"
+                    },
+                    "url": "/Files/Download/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

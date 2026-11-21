@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "mmd-create-standard-reference",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateStandardReference",
+    "fa": "Standard Reference ساخته شد."
+  },
+  "description": {
+    "en": "CreateStandardReference",
+    "fa": "Standard Reference ساخته شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "CreateStandardReference",
+      "args": {
+        "code": "field:code",
+        "organization": "field:organization",
+        "standardNumber": "field:standardNumber",
+        "title": "field:title",
+        "category": "field:category",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "Standard Reference ساخته شد.",
+      "fa": "Standard Reference ساخته شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

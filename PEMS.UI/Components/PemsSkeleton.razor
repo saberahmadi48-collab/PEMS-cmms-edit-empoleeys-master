@@ -1,0 +1,16 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("skeleton", Category = "feedback", Icon = "bi-hourglass-split")]
+@inject IPemsLocale Locale
+@* SCRUM-337: the same markup as <pems-skeleton> and PemsSkeleton.show (PemsSkeletonMarkup), so all three look alike. *@
+@((MarkupString)PEMS.UI.TagHelpers.PemsSkeletonMarkup.Build(Kind, Lines, Rows, Cols, Locale.Text(Label), Id))
+@code {
+    /// <summary>text (default), title, card, kpi, table or form.</summary>
+    [Parameter] public string Kind { get; set; } = "text";
+    [Parameter] public int Lines { get; set; } = 3;
+    [Parameter] public int Rows { get; set; } = 5;
+    [Parameter] public int Cols { get; set; } = 4;
+    /// <summary>The id the page gave the placeholder (a script finds it by it); none by default.</summary>
+    [Parameter] public string? Id { get; set; }
+    /// <summary>The accessible name read by screen readers ("Loading ..."); an input like every other text.</summary>
+    [Parameter] public TranslatableText? Label { get; set; }
+}

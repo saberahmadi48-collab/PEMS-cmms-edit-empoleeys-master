@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "maintenance-master-data-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance master data (index) (old address)",
+    "fa": "Maintenance master data (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Maintenance master data (index) (old address)",
+    "fa": "Maintenance master data (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenanceMasterData/Index",
+    "target": "/p/maintenance-master-data",
+    "permanent": false
+  }
+}

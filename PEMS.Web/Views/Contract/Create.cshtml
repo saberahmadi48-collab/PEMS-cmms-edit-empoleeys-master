@@ -6,34 +6,33 @@
     var vendors = (IEnumerable<dynamic>)ViewBag.Vendors;
 }
 
-<div class="content-card" style="max-width:700px;">
-    <form asp-action="Create" method="post">
-        <div class="row g-3">
-            <div class="col-md-6"><label class="form-label">@Localizer["Contract No"]</label><input name="contractNo" class="form-control" required /></div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Project"]</label>
-                <select name="projectId" class="form-select" required>
+<pems-content-card css="pems-s-bcaa1805">
+    <pems-form asp-action="Create" method="post">
+        <pems-row gap="3">
+            <pems-col md="6">@await Component.InvokeAsync("DocumentNumberField", new { documentType = "Contract", name = "contractNo", label = Localizer["Contract No"].Value })</pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Project"]</pems-label>
+                <pems-select name="projectId" required>
                     @foreach (var p in projects) { <option value="@p.ProjectId">@p.ProjectName</option> }
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">@Localizer["Vendor"]</label>
-                <input type="text" class="form-control" placeholder="@Localizer["جستجوی نام وندور..."]"
-                       data-pems-search data-search-type="Vendor" data-search-hidden="#contractVendorIdHidden" autocomplete="off" required />
+                </pems-select>
+            </pems-col>
+            <pems-col md="6">
+                <pems-label>@Localizer["Vendor"]</pems-label>
+                <pems-input type="text" placeholder="@Localizer["جستجوی نام وندور..."]" data-pems-search data-search-type="Vendor" data-search-hidden="#contractVendorIdHidden" autocomplete="off" required />
                 <input type="hidden" name="vendorId" id="contractVendorIdHidden" />
-            </div>
-            <div class="col-md-6"><label class="form-label">@Localizer["Value"]</label><input name="value" type="number" step="0.01" class="form-control" /></div>
-            <div class="col-md-6"><label class="form-label">@Localizer["Start Date"]</label><input name="startDate" type="date" class="form-control" /></div>
-            <div class="col-md-6"><label class="form-label">@Localizer["End Date"]</label><input name="endDate" type="date" class="form-control" /></div>
-            <div class="col-12"><label class="form-label">@Localizer["Scope of Work"]</label><textarea name="scope" class="form-control" rows="3"></textarea></div>
-            <div class="col-12 form-check">
-                <input type="checkbox" name="requiresInspection" value="true" class="form-check-input" id="reqInspection" />
+            </pems-col>
+            <pems-col md="6"><pems-label>@Localizer["Value"]</pems-label><pems-input name="value" type="number" step="0.01" /></pems-col>
+            <pems-col md="6"><pems-label>@Localizer["Start Date"]</pems-label><pems-date name="startDate" /></pems-col>
+            <pems-col md="6"><pems-label>@Localizer["End Date"]</pems-label><pems-date name="endDate" /></pems-col>
+            <pems-col span="12"><pems-label>@Localizer["Scope of Work"]</pems-label><pems-textarea name="scope" rows="3"></pems-textarea></pems-col>
+            <pems-col span="12" css="form-check">
+                <pems-input kind="check" type="checkbox" name="requiresInspection" value="true" id="reqInspection" />
                 <label class="form-check-label" for="reqInspection">@Localizer["Requires Inspection"]</label>
-            </div>
-        </div>
-        <div class="mt-4">
-            <button type="submit" class="btn btn-pems-solid">@Localizer["Save"]</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">@Localizer["Cancel"]</a>
-        </div>
-    </form>
-</div>
+            </pems-col>
+        </pems-row>
+        <pems-action-bar css="mt-4">
+            <pems-button tone="primary" type="submit">@Localizer["Save"]</pems-button>
+            <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
+        </pems-action-bar>
+    </pems-form>
+</pems-content-card>

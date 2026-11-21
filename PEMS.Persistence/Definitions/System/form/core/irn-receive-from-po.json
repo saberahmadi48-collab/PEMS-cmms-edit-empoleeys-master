@@ -1,0 +1,74 @@
+{
+  "kind": "form",
+  "key": "irn-receive-from-po",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Receive against an order line",
+    "fa": "دریافت از خط سفارش"
+  },
+  "description": {
+    "en": "Receive against an order line",
+    "fa": "دریافت از خط سفارش"
+  },
+  "payload": {
+    "id": "irn-receive-from-po",
+    "title": {
+      "en": "Receive against an order line",
+      "fa": "دریافت از خط سفارش"
+    },
+    "submitLabel": {
+      "en": "Receive",
+      "fa": "دریافت"
+    },
+    "actionKey": "irn-receive-from-po",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "IRN id",
+          "fa": "شناسه‌ی IRN"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "purchaseOrderLineId",
+        "label": {
+          "en": "Order line id",
+          "fa": "شناسه‌ی خط سفارش"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "quantity",
+        "label": {
+          "en": "Quantity",
+          "fa": "مقدار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

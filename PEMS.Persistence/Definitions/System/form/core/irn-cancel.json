@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "irn-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel the IRN",
+    "fa": "لغو IRN"
+  },
+  "description": {
+    "en": "Cancel the IRN",
+    "fa": "لغو IRN"
+  },
+  "payload": {
+    "id": "irn-cancel",
+    "title": {
+      "en": "Cancel the IRN",
+      "fa": "لغو IRN"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "irn-cancel",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "IRN id",
+          "fa": "شناسه‌ی IRN"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

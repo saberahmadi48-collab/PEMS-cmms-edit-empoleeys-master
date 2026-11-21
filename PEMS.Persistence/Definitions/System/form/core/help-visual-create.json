@@ -1,0 +1,181 @@
+{
+  "kind": "form",
+  "key": "help-visual-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New help visual (id = article id)",
+    "fa": "تصویر راهنمای جدید"
+  },
+  "description": {
+    "en": "New help visual (id = article id)",
+    "fa": "تصویر راهنمای جدید"
+  },
+  "payload": {
+    "id": "help-visual-create",
+    "title": {
+      "en": "New help visual (id = article id)",
+      "fa": "تصویر راهنمای جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "help-visual-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "visualType",
+        "label": {
+          "en": "Visual type",
+          "fa": "نوع تصویر"
+        },
+        "kind": "select",
+        "required": true,
+        "options": [
+          {
+            "value": "WorkflowDiagram",
+            "label": {
+              "en": "WorkflowDiagram",
+              "fa": "WorkflowDiagram"
+            }
+          },
+          {
+            "value": "ProcessFlowchart",
+            "label": {
+              "en": "ProcessFlowchart",
+              "fa": "ProcessFlowchart"
+            }
+          },
+          {
+            "value": "LifecycleDiagram",
+            "label": {
+              "en": "LifecycleDiagram",
+              "fa": "LifecycleDiagram"
+            }
+          },
+          {
+            "value": "DecisionTree",
+            "label": {
+              "en": "DecisionTree",
+              "fa": "DecisionTree"
+            }
+          },
+          {
+            "value": "StepGuide",
+            "label": {
+              "en": "StepGuide",
+              "fa": "StepGuide"
+            }
+          },
+          {
+            "value": "EntityRelationship",
+            "label": {
+              "en": "EntityRelationship",
+              "fa": "EntityRelationship"
+            }
+          }
+        ]
+      },
+      {
+        "name": "displayOrder",
+        "label": {
+          "en": "Display order",
+          "fa": "ترتیب"
+        },
+        "kind": "number",
+        "min": 0
+      },
+      {
+        "name": "isPublished",
+        "label": {
+          "en": "Published",
+          "fa": "منتشرشده"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "sourceWorkflowModule",
+        "label": {
+          "en": "Real workflow source (WorkflowDiagram)",
+          "fa": "منبع گردش‌کار"
+        },
+        "kind": "select",
+        "optionsFrom": "help-workflow-sources"
+      },
+      {
+        "name": "manualDefinitionText",
+        "label": {
+          "en": "Manual definition (NODE|id|Label EN|Label FA and EDGE|from|to|Label EN|Label FA|kind, one per line)",
+          "fa": "تعریف دستی"
+        },
+        "kind": "textArea",
+        "maxLength": 8000,
+        "span": 2
+      },
+      {
+        "name": "captionEn",
+        "label": {
+          "en": "Caption (English)",
+          "fa": "عنوان (انگلیسی)"
+        },
+        "required": true,
+        "maxLength": 300
+      },
+      {
+        "name": "captionFa",
+        "label": {
+          "en": "Caption (Persian)",
+          "fa": "عنوان (فارسی)"
+        },
+        "required": true,
+        "maxLength": 300
+      },
+      {
+        "name": "legendEn",
+        "label": {
+          "en": "Legend (English)",
+          "fa": "راهنمای نمودار (انگلیسی)"
+        },
+        "maxLength": 1000
+      },
+      {
+        "name": "legendFa",
+        "label": {
+          "en": "Legend (Persian)",
+          "fa": "راهنمای نمودار (فارسی)"
+        },
+        "maxLength": 1000
+      },
+      {
+        "name": "accessibilityDescriptionEn",
+        "label": {
+          "en": "Accessibility description (English)",
+          "fa": "توصیف دسترسی‌پذیری (انگلیسی)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "maxLength": 1000
+      },
+      {
+        "name": "accessibilityDescriptionFa",
+        "label": {
+          "en": "Accessibility description (Persian)",
+          "fa": "توصیف دسترسی‌پذیری (فارسی)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "maxLength": 1000
+      },
+      {
+        "name": "relatedHelpKey",
+        "label": {
+          "en": "Related help key (optional)",
+          "fa": "کلید راهنمای مرتبط"
+        },
+        "maxLength": 200
+      }
+    ]
+  }
+}

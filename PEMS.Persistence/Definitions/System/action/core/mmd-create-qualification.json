@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "mmd-create-qualification",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CreateQualification",
+    "fa": "صلاحیت ساخته شد."
+  },
+  "description": {
+    "en": "CreateQualification",
+    "fa": "صلاحیت ساخته شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceMasterData",
+      "action": "CreateQualification",
+      "args": {
+        "name": "field:name",
+        "disciplineId": "field:disciplineId",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "صلاحیت ساخته شد.",
+      "fa": "صلاحیت ساخته شد."
+    },
+    "redirect": "/p/maintenance-master-data"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "kpi-save-target",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save KPI target",
+    "fa": "ذخیره هدف شاخص"
+  },
+  "description": {
+    "en": "Save KPI target",
+    "fa": "ذخیره هدف شاخص"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Kpi",
+      "action": "SaveTarget",
+      "args": {
+        "key": "field:key",
+        "target": "field:target",
+        "warn": "field:warn"
+      }
+    },
+    "success": {
+      "en": "Target saved.",
+      "fa": "هدف ذخیره شد."
+    },
+    "redirect": "/p/kpi-executive"
+  }
+}

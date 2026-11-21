@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "pc-request-execute",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Decide the current step",
+    "fa": "تصمیم گام جاری"
+  },
+  "description": {
+    "en": "Decide the current step",
+    "fa": "تصمیم گام جاری"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueRequest",
+      "action": "Execute",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "id": "field:id",
+        "action": "field:action",
+        "comment": "field:comment",
+        "partNumber": "field:partNumber"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/p/pc-request-details?id={id}"
+  }
+}

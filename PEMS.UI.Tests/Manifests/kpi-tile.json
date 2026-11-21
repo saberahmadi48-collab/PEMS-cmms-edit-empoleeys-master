@@ -1,0 +1,112 @@
+{
+  "key": "kpi-tile",
+  "component": "PEMS.UI.Components.PemsKpiTile",
+  "category": "display",
+  "icon": "bi-speedometer2",
+  "nameKey": "component.kpi-tile",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "label": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "icon": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "iconClass": {
+        "type": "string"
+      },
+      "sub": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "href": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "hint": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "value": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "compact": {
+        "type": "boolean"
+      },
+      "tone": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
+      }
+    },
+    "required": [
+      "label"
+    ],
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "childContent",
+      "type": "RenderFragment",
+      "kind": "slot",
+      "required": false
+    },
+    {
+      "name": "empty",
+      "type": "Boolean",
+      "kind": "option",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "KpiTileOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "label": "Open",
+    "icon": "bi-tools",
+    "iconClass": "bg-icon-green",
+    "value": "12"
+  }
+}

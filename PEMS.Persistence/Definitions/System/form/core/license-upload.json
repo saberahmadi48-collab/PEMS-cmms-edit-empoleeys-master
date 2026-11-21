@@ -1,0 +1,38 @@
+{
+  "kind": "form",
+  "key": "license-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Licence upload",
+    "fa": "بارگذاری مجوز"
+  },
+  "description": {
+    "en": "Upload a licence file",
+    "fa": "بارگذاری فایل مجوز"
+  },
+  "payload": {
+    "id": "license-upload",
+    "title": {
+      "en": "Upload a licence (.pemslic or .zip)",
+      "fa": "بارگذاری مجوز (‎.pemslic یا ‎.zip)"
+    },
+    "submitLabel": {
+      "en": "Upload",
+      "fa": "بارگذاری"
+    },
+    "actionKey": "license-upload",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "file",
+        "label": {
+          "en": "Licence file",
+          "fa": "فایل مجوز"
+        },
+        "kind": "file",
+        "required": true
+      }
+    ]
+  }
+}

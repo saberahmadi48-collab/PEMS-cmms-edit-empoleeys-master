@@ -1,0 +1,316 @@
+{
+  "kind": "page",
+  "key": "store-requisition-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Store requisition",
+    "fa": "درخواست انبار"
+  },
+  "description": {
+    "en": "One requisition: status flow, lines, quantities and history (page definition)",
+    "fa": "یک درخواست: جریان وضعیت، اقلام، مقدارها و تاریخچه (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "store-requisition-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "sr-record",
+            "fields": [
+              {
+                "key": "requisitionNumber",
+                "label": {
+                  "en": "Number",
+                  "fa": "شماره"
+                },
+                "mono": true
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "nextStatus",
+                "label": {
+                  "en": "Next status",
+                  "fa": "وضعیت بعدی"
+                }
+              },
+              {
+                "key": "warehouse",
+                "label": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                }
+              },
+              {
+                "key": "requestedBy",
+                "label": {
+                  "en": "Requested by",
+                  "fa": "درخواست‌کننده"
+                }
+              },
+              {
+                "key": "approvedBy",
+                "label": {
+                  "en": "Approved by",
+                  "fa": "تأییدکننده"
+                }
+              },
+              {
+                "key": "workOrder",
+                "label": {
+                  "en": "Work order",
+                  "fa": "دستور کار"
+                }
+              },
+              {
+                "key": "requestedDate",
+                "label": {
+                  "en": "Requested",
+                  "fa": "تاریخ درخواست"
+                },
+                "type": "date"
+              },
+              {
+                "key": "purpose",
+                "label": {
+                  "en": "Purpose",
+                  "fa": "هدف"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/store-requisition-detail",
+              "idField": "storeRequisitionId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/store-requisition-advance?id={{params.id}}",
+                "text": {
+                  "en": "Move to the next status",
+                  "fa": "رفتن به وضعیت بعدی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/store-requisition-issue-all?id={{params.id}}",
+                "text": {
+                  "en": "Issue everything that is reserved",
+                  "fa": "تحویل همه‌ی رزرو"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/store-requisition-close-short?id={{params.id}}",
+                "text": {
+                  "en": "Close with a shortage",
+                  "fa": "بستن با کسری"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/store-requisition-reject?id={{params.id}}",
+                "text": {
+                  "en": "Reject",
+                  "fa": "رد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/store-requisition-cancel?id={{params.id}}",
+                "text": {
+                  "en": "Cancel",
+                  "fa": "لغو"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/store-requisition-add-line?storeRequisitionId={{params.id}}",
+                "text": {
+                  "en": "Add a line (Draft only)",
+                  "fa": "افزودن قلم (فقط پیش‌نویس)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/store-requisitions",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "lines",
+          "component": "def:related-table",
+          "options": {
+            "id": "lines",
+            "title": {
+              "en": "Lines",
+              "fa": "اقلام"
+            },
+            "url": "/d/store-requisition-lines?f.id={{params.id|url}}",
+            "idField": "storeRequisitionLineId",
+            "columns": [
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                },
+                "width": 320
+              },
+              {
+                "key": "requested",
+                "header": {
+                  "en": "Requested",
+                  "fa": "درخواستی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "approved",
+                "header": {
+                  "en": "Approved",
+                  "fa": "تأییدشده"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "issued",
+                "header": {
+                  "en": "Issued",
+                  "fa": "تحویل‌شده"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "remaining",
+                "header": {
+                  "en": "Remaining",
+                  "fa": "باقی‌مانده"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 320,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "approve",
+                    "label": {
+                      "en": "Set approved quantity",
+                      "fa": "تعیین مقدار تأییدشده"
+                    },
+                    "url": "/f/store-requisition-set-approved?id={{params.id}}&lineId={id}&approved={raw.requested}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "issue",
+                    "label": {
+                      "en": "Issue this line",
+                      "fa": "تحویل این قلم"
+                    },
+                    "url": "/f/store-requisition-issue-line?id={{params.id}}&lineId={id}&quantity={raw.remaining}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "history",
+          "component": "def:related-table",
+          "options": {
+            "id": "history",
+            "title": {
+              "en": "Status history",
+              "fa": "تاریخچه‌ی وضعیت"
+            },
+            "url": "/d/store-requisition-history?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 160,
+                "type": "date"
+              },
+              {
+                "key": "from",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 130
+              },
+              {
+                "key": "to",
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                },
+                "width": 130
+              },
+              {
+                "key": "by",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 180
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 300
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "StoreRequisition.View"
+  }
+}

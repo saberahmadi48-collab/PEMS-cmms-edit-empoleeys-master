@@ -1,0 +1,97 @@
+{
+  "kind": "component",
+  "key": "entity-import-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Review of an import",
+    "fa": "بازبینی ورود داده"
+  },
+  "description": {
+    "en": "The review step of an import wizard: the staged rows of an import session in a grid, with confirm and cancel actions that run stored actions for the session id of the request.",
+    "fa": "مرحله بازبینی ورود داده"
+  },
+  "payload": {
+    "parameters": {
+      "id": {
+        "type": "string",
+        "required": true
+      },
+      "url": {
+        "type": "string",
+        "required": true,
+        "description": "The grid data source of the staged rows: /d/{key}; it filters by the session"
+      },
+      "idField": {
+        "type": "string",
+        "required": true
+      },
+      "columns": {
+        "type": "array",
+        "required": true
+      },
+      "commitAction": {
+        "type": "string",
+        "required": true,
+        "description": "The key of the action that commits the staged rows"
+      },
+      "commitLabel": {
+        "type": "text",
+        "required": true
+      },
+      "commitConfirm": {
+        "type": "text"
+      },
+      "cancelAction": {
+        "type": "string",
+        "description": "The key of the action that discards the session"
+      },
+      "cancelLabel": {
+        "type": "text"
+      }
+    },
+    "regions": {
+      "toolbar": [
+        {
+          "id": "commit",
+          "component": "action-button",
+          "options": {
+            "action": "${commitAction}",
+            "label": "${commitLabel}",
+            "tone": "success",
+            "confirm": "${commitConfirm}",
+            "values": {
+              "session": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "cancel",
+          "if": "${cancelAction}",
+          "component": "action-button",
+          "options": {
+            "action": "${cancelAction}",
+            "label": "${cancelLabel}",
+            "tone": "neutral",
+            "values": {
+              "session": "{{params.id}}"
+            }
+          }
+        }
+      ],
+      "content": [
+        {
+          "id": "staged",
+          "component": "data-grid",
+          "options": {
+            "id": "${id}",
+            "url": "${url}?f.session=eq:{{params.id|url}}",
+            "idField": "${idField}",
+            "columns": "${columns}",
+            "selectable": false
+          }
+        }
+      ]
+    }
+  }
+}

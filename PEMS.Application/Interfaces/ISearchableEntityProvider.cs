@@ -19,6 +19,10 @@ public interface ISearchableEntityProvider
     // نام قابل‌نمایش برای فهرست انواع موجودیت‌های قابل‌جستجو (مثلاً برای UI انتخاب دامنه‌ی جستجو)
     string DisplayName { get; }
 
+    // SCRUM-64: the security contract - the rule of the page the results open. GlobalSearchService checks it before
+    // SearchAsync runs; the provider itself only applies its row-level scope. No default: a new provider must decide.
+    SearchAccessRule Access { get; }
+
     Task<(List<GlobalSearchResultItemDto> Items, int TotalCount)> SearchAsync(
         string query, int page, int pageSize, int? projectId);
 }

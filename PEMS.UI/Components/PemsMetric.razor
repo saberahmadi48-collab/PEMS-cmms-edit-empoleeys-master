@@ -1,0 +1,7 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("metric", Category = "display", Icon = "bi-123")]
+@FrameMarkup.Element("div", string.IsNullOrWhiteSpace(Options.Css) ? "fs-4 fw-bold" : "fs-4 fw-bold " + Options.Css.Trim(), Options.PageClass, Options.Attributes, ChildContent)
+@code {
+    [Parameter, EditorRequired] public MetricOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

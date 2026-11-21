@@ -1,0 +1,104 @@
+{
+  "kind": "form",
+  "key": "mr-update-quotation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Evaluate a quotation",
+    "fa": "ارزیابی استعلام"
+  },
+  "description": {
+    "en": "Evaluate a quotation",
+    "fa": "ارزیابی استعلام"
+  },
+  "payload": {
+    "id": "mr-update-quotation",
+    "title": {
+      "en": "Evaluate a quotation",
+      "fa": "ارزیابی استعلام"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "mr-update-quotation",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "mrId",
+        "label": {
+          "en": "MR id",
+          "fa": "شناسه‌ی MR"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "mrqId",
+        "label": {
+          "en": "Quotation id",
+          "fa": "شناسه‌ی استعلام"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "technical",
+        "label": {
+          "en": "Technical",
+          "fa": "فنی"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "commercial",
+        "label": {
+          "en": "Commercial",
+          "fa": "بازرگانی"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "approval",
+        "label": {
+          "en": "Approval status",
+          "fa": "وضعیت تأیید"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

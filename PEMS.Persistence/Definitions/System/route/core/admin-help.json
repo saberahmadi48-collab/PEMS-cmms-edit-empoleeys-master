@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-help",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help administration (old address)",
+    "fa": "مدیریت راهنما (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Help administration (old address)",
+    "fa": "مدیریت راهنما (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/Help/{*rest}",
+    "target": "/p/help-admin",
+    "permanent": false
+  }
+}

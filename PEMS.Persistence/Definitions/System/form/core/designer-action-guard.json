@@ -1,0 +1,113 @@
+{
+  "kind": "form",
+  "key": "designer-action-guard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Action guard",
+    "fa": "محافظ کنش"
+  },
+  "description": {
+    "en": "Action guard",
+    "fa": "محافظ کنش"
+  },
+  "payload": {
+    "id": "designer-action-guard",
+    "title": {
+      "en": "Action guard",
+      "fa": "محافظ کنش"
+    },
+    "submitLabel": {
+      "en": "Set the guard",
+      "fa": "تنظیم محافظ"
+    },
+    "actionKey": "designer-action-guard",
+    "permission": "Definitions.Edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ref",
+        "label": {
+          "en": "Definition",
+          "fa": "تعریف"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Definition is required.",
+            "fa": "تعریف الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "placeholder": {
+          "en": "appKey:kind:key, for example core:form:department-create",
+          "fa": "appKey:kind:key, for example core:form:department-create"
+        }
+      },
+      {
+        "name": "resource",
+        "label": {
+          "en": "Resource of the access decision",
+          "fa": "منبع تصمیم دسترسی"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Resource of the access decision is required.",
+            "fa": "منبع تصمیم دسترسی الزامی است."
+          }
+        },
+        "maxLength": 100,
+        "placeholder": {
+          "en": "Production",
+          "fa": "Production"
+        }
+      },
+      {
+        "name": "action",
+        "label": {
+          "en": "Action of the access decision",
+          "fa": "کنش تصمیم دسترسی"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Action of the access decision is required.",
+            "fa": "کنش تصمیم دسترسی الزامی است."
+          }
+        },
+        "maxLength": 100,
+        "placeholder": {
+          "en": "Approve",
+          "fa": "Approve"
+        }
+      },
+      {
+        "name": "resourceId",
+        "label": {
+          "en": "Source of the record id",
+          "fa": "منبع شناسه رکورد"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "placeholder": {
+          "en": "field:id",
+          "fa": "field:id"
+        }
+      },
+      {
+        "name": "mode",
+        "label": {
+          "en": "Mode (sod or strict)",
+          "fa": "حالت (sod یا strict)"
+        },
+        "kind": "text",
+        "maxLength": 10
+      }
+    ]
+  }
+}

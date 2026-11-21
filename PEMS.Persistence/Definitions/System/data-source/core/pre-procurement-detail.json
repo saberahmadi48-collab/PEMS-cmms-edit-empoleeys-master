@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "pre-procurement-detail",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Procurement demand",
+    "fa": "تقاضای خرید"
+  },
+  "description": {
+    "en": "Procurement demand",
+    "fa": "تقاضای خرید"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PreProcurement",
+      "action": "Detail",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

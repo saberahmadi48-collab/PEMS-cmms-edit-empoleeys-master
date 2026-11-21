@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "intake-queue",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI intake queue",
+    "fa": "صف دریافت هوشمند"
+  },
+  "description": {
+    "en": "AI intake queue",
+    "fa": "صف دریافت هوشمند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Intake",
+      "action": "Queue",
+      "args": {
+        "stage": "param:stage"
+      }
+    }
+  }
+}

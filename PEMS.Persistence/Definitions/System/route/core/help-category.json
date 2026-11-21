@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "help-category",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help Center (old address)",
+    "fa": "مرکز راهنما (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Help Center (old address)",
+    "fa": "مرکز راهنما (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Help/Category/{id}",
+    "target": "/p/help?categoryId={id}",
+    "permanent": false
+  }
+}

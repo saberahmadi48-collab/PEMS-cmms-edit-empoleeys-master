@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "pre-procurement-dismiss",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Dismiss or return a demand",
+    "fa": "رد یا برگشت تقاضا"
+  },
+  "description": {
+    "en": "Dismiss or return a demand",
+    "fa": "رد یا برگشت تقاضا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PreProcurement",
+      "action": "Dismiss",
+      "args": {
+        "procurementDemandId": "field:id",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "The demand was dismissed.",
+      "fa": "تقاضا رد شد."
+    },
+    "redirect": "/p/pre-procurement-details?id={id}"
+  }
+}

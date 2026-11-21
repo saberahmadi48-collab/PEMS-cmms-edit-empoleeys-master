@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "storage-routing-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create storage route",
+    "fa": "ایجاد قانون مسیریابی ذخیره‌سازی"
+  },
+  "description": {
+    "en": "Create storage route",
+    "fa": "ایجاد قانون مسیریابی ذخیره‌سازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StorageRoute",
+      "action": "Create",
+      "args": {
+        "request": {
+          "Module": "field:module",
+          "DocumentType": "field:documentType",
+          "StorageProviderId": "field:storageProviderId",
+          "RelativeRootPath": "field:relativeRootPath",
+          "IsEnabled": "field:isEnabled",
+          "IsDefault": "field:isDefault",
+          "Priority": "field:priority"
+        },
+        "createdBy": "context:userName"
+      }
+    },
+    "success": {
+      "en": "Storage route created.",
+      "fa": "قانون مسیریابی ذخیره‌سازی ایجاد شد."
+    },
+    "redirect": "/p/storage-routing"
+  }
+}

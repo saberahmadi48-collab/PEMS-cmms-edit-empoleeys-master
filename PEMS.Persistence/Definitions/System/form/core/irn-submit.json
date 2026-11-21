@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "irn-submit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit for inspection",
+    "fa": "ارسال برای بازرسی"
+  },
+  "description": {
+    "en": "Submit for inspection",
+    "fa": "ارسال برای بازرسی"
+  },
+  "payload": {
+    "id": "irn-submit",
+    "title": {
+      "en": "Submit for inspection",
+      "fa": "ارسال برای بازرسی"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "irn-submit",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "IRN id",
+          "fa": "شناسه‌ی IRN"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "mmd-toggle-evaluation-limit-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ToggleEvaluationLimitActive",
+    "fa": "ToggleEvaluationLimitActive"
+  },
+  "description": {
+    "en": "ToggleEvaluationLimitActive",
+    "fa": "ToggleEvaluationLimitActive"
+  },
+  "payload": {
+    "id": "mmd-toggle-evaluation-limit-active",
+    "title": {
+      "en": "ToggleEvaluationLimitActive",
+      "fa": "ToggleEvaluationLimitActive"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "mmd-toggle-evaluation-limit-active",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "id"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

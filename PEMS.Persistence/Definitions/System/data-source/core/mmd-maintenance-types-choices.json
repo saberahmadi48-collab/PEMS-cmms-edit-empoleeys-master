@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "mmd-maintenance-types-choices",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MaintenanceTypes",
+    "fa": "MaintenanceTypes"
+  },
+  "description": {
+    "en": "MaintenanceTypes",
+    "fa": "MaintenanceTypes"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "MaintenanceTypesChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

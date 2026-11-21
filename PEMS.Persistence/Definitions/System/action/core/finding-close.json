@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "finding-close",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close a finding",
+    "fa": "بستن یافته"
+  },
+  "description": {
+    "en": "Close a finding",
+    "fa": "بستن یافته"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Finding",
+      "action": "Close",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "The finding was closed.",
+      "fa": "یافته بسته شد."
+    },
+    "redirect": "/p/findings?f.equipmentId={equipmentId}"
+  }
+}

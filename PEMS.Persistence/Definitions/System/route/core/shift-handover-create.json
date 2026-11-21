@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "shift-handover-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New shift handover (old address)",
+    "fa": "New shift handover (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New shift handover (old address)",
+    "fa": "New shift handover (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ShiftHandover/Create",
+    "target": "/f/shift-handover-create",
+    "permanent": false
+  }
+}

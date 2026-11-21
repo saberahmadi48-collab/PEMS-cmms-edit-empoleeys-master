@@ -1,0 +1,202 @@
+{
+  "kind": "page",
+  "key": "maintenance-plans",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance Plans",
+    "fa": "برنامه‌های نگهداری"
+  },
+  "description": {
+    "en": "Maintenance plans with their triggers and due dates (page definition)",
+    "fa": "برنامه‌های نگهداری با محرک و سررسید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "maintenance-plans",
+    "regions": {
+      "content": [
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/MaintenancePlan/Create",
+                "text": {
+                  "en": "New plan",
+                  "fa": "برنامه‌ی جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/maintenance-plan-generate-due",
+                "text": {
+                  "en": "Generate every due work order",
+                  "fa": "ساخت همه‌ی دستورکارهای سررسید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "plans",
+          "component": "data-grid",
+          "options": {
+            "id": "plans",
+            "url": "/d/maintenance-plan-list",
+            "idField": "maintenancePlanId",
+            "columns": [
+              {
+                "key": "planNumber",
+                "header": {
+                  "en": "Plan",
+                  "fa": "برنامه"
+                },
+                "width": 130
+              },
+              {
+                "key": "equipmentTag",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 140
+              },
+              {
+                "key": "equipmentName",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 200
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 260
+              },
+              {
+                "key": "criticalityClass",
+                "header": {
+                  "en": "Criticality",
+                  "fa": "بحرانیت"
+                },
+                "width": 100
+              },
+              {
+                "key": "strategyType",
+                "header": {
+                  "en": "Strategy",
+                  "fa": "استراتژی"
+                },
+                "width": 130
+              },
+              {
+                "key": "triggerType",
+                "header": {
+                  "en": "Trigger",
+                  "fa": "محرک"
+                },
+                "width": 90
+              },
+              {
+                "key": "intervalDays",
+                "header": {
+                  "en": "Days",
+                  "fa": "روز"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "nextDueDate",
+                "header": {
+                  "en": "Next due",
+                  "fa": "سررسید بعدی"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "lastExecutionDate",
+                "header": {
+                  "en": "Last done",
+                  "fa": "آخرین اجرا"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "isOverdue",
+                "header": {
+                  "en": "Overdue",
+                  "fa": "دیرکرد"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "nextDueMeterReading",
+                "header": {
+                  "en": "Next meter",
+                  "fa": "Meter بعدی"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 300,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "wo",
+                    "label": {
+                      "en": "Generate work order",
+                      "fa": "ساخت دستورکار"
+                    },
+                    "url": "/f/maintenance-plan-generate-wo?planId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "meter",
+                    "label": {
+                      "en": "Record meter reading",
+                      "fa": "ثبت قرائت Meter"
+                    },
+                    "url": "/f/maintenance-plan-record-meter?planId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "off",
+                    "label": {
+                      "en": "Deactivate",
+                      "fa": "غیرفعال"
+                    },
+                    "url": "/f/maintenance-plan-deactivate?planId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "MaintenancePlan.View"
+  }
+}

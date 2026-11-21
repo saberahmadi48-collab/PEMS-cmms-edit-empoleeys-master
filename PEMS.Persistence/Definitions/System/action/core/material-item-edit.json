@@ -1,0 +1,59 @@
+{
+  "kind": "action",
+  "key": "material-item-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a material",
+    "fa": "ویرایش ماده"
+  },
+  "description": {
+    "en": "Edit a material",
+    "fa": "ویرایش ماده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.update",
+    "parameters": {
+      "entity": "MaterialItem",
+      "map": {
+        "materialCode": "MaterialCode",
+        "materialType": "MaterialType",
+        "description": "Description",
+        "longDescription": "LongDescription",
+        "categoryId": "CategoryId",
+        "disciplineId": "DisciplineId",
+        "uomId": "UomId",
+        "vendorId": "VendorId",
+        "manufacturer": "Manufacturer",
+        "manufacturerPartNumber": "ManufacturerPartNumber",
+        "model": "Model",
+        "size": "Size",
+        "materialGrade": "MaterialGrade",
+        "specification": "Specification",
+        "isStockItem": "IsStockItem",
+        "isCritical": "IsCritical"
+      },
+      "required": [
+        "MaterialCode",
+        "Description"
+      ],
+      "unique": [
+        {
+          "fields": [
+            "MaterialCode"
+          ],
+          "message": {
+            "en": "This material code is already used.",
+            "fa": "این کد ماده قبلاً استفاده شده است."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "The material was updated.",
+      "fa": "ماده به‌روزرسانی شد."
+    },
+    "redirect": "/p/material-items"
+  }
+}

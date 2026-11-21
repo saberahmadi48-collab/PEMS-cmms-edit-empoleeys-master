@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "kpi-chart-equipment-by-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "KPI chart: Equipment by status",
+    "fa": "نمودار KPI: تجهیزات بر اساس وضعیت"
+  },
+  "description": {
+    "en": "KPI chart: Equipment by status",
+    "fa": "نمودار KPI: تجهیزات بر اساس وضعیت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Kpi",
+      "action": "Breakdown",
+      "args": {
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate"
+      },
+      "where": {
+        "key": "EquipmentByStatus"
+      }
+    }
+  }
+}

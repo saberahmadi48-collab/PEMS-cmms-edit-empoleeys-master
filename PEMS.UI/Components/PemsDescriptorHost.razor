@@ -1,0 +1,8 @@
+@namespace PEMS.UI.Components
+@using PEMS.UI.Rendering
+@inject IPemsComponentRegistry Registry
+<DynamicComponent Type="@Registry.Resolve(Key)" Parameters="@Parameters" />
+@code {
+    [Parameter, EditorRequired] public string Key { get; set; } = default!;
+    [Parameter] public IDictionary<string, object?>? Parameters { get; set; }
+}

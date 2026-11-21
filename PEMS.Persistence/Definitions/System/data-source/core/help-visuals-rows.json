@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "help-visuals-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help visuals",
+    "fa": "Help visuals"
+  },
+  "description": {
+    "en": "Help visuals",
+    "fa": "Help visuals"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Help",
+      "action": "Visuals",
+      "args": {
+        "articleId": "param:helpArticleId"
+      }
+    }
+  }
+}

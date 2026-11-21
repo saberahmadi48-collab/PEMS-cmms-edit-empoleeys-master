@@ -1,0 +1,47 @@
+{
+  "kind": "form",
+  "key": "organization-position-hierarchy",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Position code and parent",
+    "fa": "کد و سمت مافوق"
+  },
+  "description": {
+    "en": "Position code and parent",
+    "fa": "کد و سمت مافوق"
+  },
+  "payload": {
+    "id": "organization-position-hierarchy",
+    "title": {
+      "en": "Position code and parent",
+      "fa": "کد و سمت مافوق"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "organization-position-hierarchy",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "positionCode",
+        "label": {
+          "en": "Position code",
+          "fa": "کد سمت"
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "parentPositionId",
+        "label": {
+          "en": "Parent position (blank = root)",
+          "fa": "سمت مافوق (خالی = ریشه)"
+        },
+        "kind": "select",
+        "optionsFrom": "organization-positions-options"
+      }
+    ]
+  }
+}

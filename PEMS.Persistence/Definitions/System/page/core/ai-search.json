@@ -1,0 +1,172 @@
+{
+  "kind": "page",
+  "key": "ai-search",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI search",
+    "fa": "جستجوی هوشمند"
+  },
+  "description": {
+    "en": "Search the engineering documents with the help of the AI model (page definition)",
+    "fa": "جستجوی مدارک مهندسی با کمک مدل هوش مصنوعی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "ai-search",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "ai-search-filters",
+            "resetUrl": "/p/ai-search",
+            "fields": [
+              {
+                "name": "q",
+                "label": {
+                  "en": "Search query",
+                  "fa": "عبارت جستجو"
+                },
+                "kind": "text",
+                "value": "{{params.q}}"
+              },
+              {
+                "name": "discipline",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "kind": "select",
+                "value": "{{params.discipline}}"
+              },
+              {
+                "name": "documentType",
+                "label": {
+                  "en": "Document type",
+                  "fa": "نوع مدرک"
+                },
+                "kind": "select",
+                "value": "{{params.documentType}}"
+              },
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "discipline",
+                "source": "/d/ai-search-disciplines",
+                "valueField": "value"
+              },
+              {
+                "field": "documentType",
+                "source": "/d/ai-search-document-types",
+                "valueField": "value"
+              },
+              {
+                "field": "status",
+                "source": "/d/ai-search-statuses",
+                "valueField": "value"
+              }
+            ]
+          }
+        },
+        {
+          "id": "intro",
+          "component": "content-blocks",
+          "options": {
+            "id": "intro",
+            "blocks": [
+              {
+                "type": "text",
+                "css": "text-muted small",
+                "text": {
+                  "en": "Type a search term, or use the filters, to search across document numbers, titles, descriptions and AI-extracted summaries and tags.",
+                  "fa": "یک عبارت جستجو بنویسید یا از فیلترها استفاده کنید تا در شماره، عنوان، شرح و خلاصه و برچسب‌های استخراج‌شده با هوش مصنوعی جستجو شود."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "results",
+          "component": "data-grid",
+          "options": {
+            "id": "ai-search",
+            "idField": "documentId",
+            "columns": [
+              {
+                "key": "documentNumber",
+                "header": {
+                  "en": "Document no.",
+                  "fa": "شماره مدرک"
+                },
+                "width": 180
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 360
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Why it matched",
+                  "fa": "دلیل تطابق"
+                },
+                "width": 420
+              },
+              {
+                "key": "relevance",
+                "header": {
+                  "en": "Relevance %",
+                  "fa": "ارتباط ٪"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/EngineeringDocuments/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 20,
+            "height": 480,
+            "url": "/d/ai-search-grid?q={{params.q|url}}&f.discipline={{params.discipline|url}}&f.documentType={{params.documentType|url}}&f.status={{params.status|url}}"
+          }
+        }
+      ]
+    }
+  }
+}

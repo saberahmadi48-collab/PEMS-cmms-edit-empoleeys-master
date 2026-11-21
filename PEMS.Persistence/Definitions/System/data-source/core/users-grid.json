@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "users-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Users",
+    "fa": "کاربران"
+  },
+  "description": {
+    "en": "Users",
+    "fa": "کاربران"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Users",
+      "action": "Rows"
+    }
+  }
+}

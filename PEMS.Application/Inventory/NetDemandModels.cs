@@ -60,7 +60,18 @@ public enum NetDemandIssueCode
     // ---- سطح نتیجه
     ReservationExceedsRemainingDemand,
     IncomingSupplyNotModeled,
-    ReorderPolicyNotEvaluated
+    ReorderPolicyNotEvaluated,
+
+    // ---- SCRUM-472 (appended: existing values keep their numbers)
+    /// <summary>The work-order line has supply code DirectPurchase: it is bought for the work order and never netted against stock.</summary>
+    DirectPurchaseNotStockDemand,
+
+    // ---- SCRUM-473 (appended)
+    /// <summary>An open PO line for this material and warehouse has a unit that differs from the material's unit; its incoming quantity
+    /// cannot be counted without a conversion (D5), so the result is not definitive.</summary>
+    IncomingUnitIncompatible,
+    /// <summary>An open stock line of an issued PO for this material has no delivery warehouse; its incoming quantity cannot be placed.</summary>
+    IncomingWarehouseUnknown
 }
 
 public static class NetDemandIssues
@@ -79,6 +90,7 @@ public static class NetDemandIssues
         NetDemandIssueCode.ReservationExceedsRemainingDemand => false,
         NetDemandIssueCode.IncomingSupplyNotModeled => false,
         NetDemandIssueCode.ReorderPolicyNotEvaluated => false,
+        NetDemandIssueCode.DirectPurchaseNotStockDemand => false,   // SCRUM-472: a deliberate choice, not bad data
         _ => true
     };
 }
@@ -187,7 +199,7 @@ public sealed record NetDemandInput(
     IReadOnlyList<DemandLine> Demand,
     IReadOnlyList<ExcludedDemand> Excluded,
     IReadOnlyList<NetDemandIssue>? ItemLevelIssues = null,
-    /// <summary>فقط برای آینده/تست: ورودی معلوم. سرویس‌های نسخه‌ی ۱ همیشه null می‌دهند ⇒ IncomingSupplyStatus.NotModeled.</summary>
+    /// <summary>Incoming supply from open PO lines (SCRUM-473); null when no incoming-supply provider is wired ⇒ IncomingSupplyStatus.NotModeled.</summary>
     decimal? KnownIncomingSupply = null);
 
 public sealed record NetDemandResult(

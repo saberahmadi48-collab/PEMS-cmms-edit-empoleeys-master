@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "production-order-complete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Complete production order",
+    "fa": "تکمیل سفارش تولید"
+  },
+  "description": {
+    "en": "Complete production order",
+    "fa": "تکمیل سفارش تولید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ProductionOrder",
+      "action": "Complete",
+      "guard": {
+        "resource": "Production",
+        "action": "Approve",
+        "resourceId": "field:id",
+        "mode": "sod"
+      },
+      "args": {
+        "productionOrderId": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The order was completed.",
+      "fa": "سفارش تکمیل شد."
+    },
+    "redirect": "/ProductionOrder/Details/{id}"
+  }
+}

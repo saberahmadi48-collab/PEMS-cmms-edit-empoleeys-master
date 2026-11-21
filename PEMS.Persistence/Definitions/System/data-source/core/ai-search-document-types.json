@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "ai-search-document-types",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document types",
+    "fa": "انواع مدرک"
+  },
+  "description": {
+    "en": "Document types",
+    "fa": "انواع مدرک"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "AiSearch",
+      "action": "DocumentTypes"
+    }
+  }
+}

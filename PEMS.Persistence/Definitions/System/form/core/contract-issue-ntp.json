@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "contract-issue-ntp",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Issue the notice to proceed",
+    "fa": "صدور ابلاغ شروع کار (NTP)"
+  },
+  "description": {
+    "en": "Issue the notice to proceed",
+    "fa": "صدور ابلاغ شروع کار (NTP)"
+  },
+  "payload": {
+    "id": "contract-issue-ntp",
+    "title": {
+      "en": "Issue the notice to proceed",
+      "fa": "صدور ابلاغ شروع کار (NTP)"
+    },
+    "submitLabel": {
+      "en": "Issue",
+      "fa": "صدور"
+    },
+    "actionKey": "contract-issue-ntp",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "contractId",
+        "label": {
+          "en": "Contract id",
+          "fa": "شناسه‌ی قرارداد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reference",
+        "label": {
+          "en": "Reference",
+          "fa": "مرجع"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "effectiveStartDate",
+        "label": {
+          "en": "Effective start date",
+          "fa": "تاریخ شروع مؤثر"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}

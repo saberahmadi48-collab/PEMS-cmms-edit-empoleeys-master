@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "ai-extraction-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI Extraction review (old address)",
+    "fa": "بازبینی استخراج (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "AI Extraction review (old address)",
+    "fa": "بازبینی استخراج (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "AIExtraction/Review",
+    "target": "/p/ai-extraction-review",
+    "permanent": false
+  }
+}

@@ -26,9 +26,15 @@ public class MaterialRequisitionService : IMaterialRequisitionService
         ["Issued to Procurement"] = new[] { "Closed" },
     };
 
-    public MaterialRequisitionService(PEMSDbContext context)
+    private readonly INumberingService _numbering;
+    private readonly IPartCatalogueDuplicateService _parts;
+
+    // SCRUM-40/428: شماره‌گذاری و جستجوی قطعه‌ی ثبت‌شده اختیاری در سازنده تا تست‌های تک‌پارامتری سازگار بمانند؛ DI آن‌ها را می‌دهد
+    public MaterialRequisitionService(PEMSDbContext context, INumberingService? numbering = null, IPartCatalogueDuplicateService? parts = null)
     {
         _context = context;
+        _numbering = numbering ?? new NumberingService(context);
+        _parts = parts ?? new PartCatalogueDuplicateService(context);
     }
 
     // طبق سند «PEMS — Global Data Grid Standard» (فاز ۶B - Wave A): قبلاً کل جدول با ۳
@@ -107,7 +113,8 @@ public class MaterialRequisitionService : IMaterialRequisitionService
                 PartNumber = i.PartNumber,
                 Quantity = i.Quantity,
                 Unit = i.Unit,
-                Remarks = i.Remarks
+                Remarks = i.Remarks,
+                IsCatalogued = i.MaterialItemId != null || i.PartCatalogueRequestId != null
             }).ToList(),
             Quotations = mr.Quotations.Select(q => new MRQDto
             {
@@ -135,7 +142,8 @@ public class MaterialRequisitionService : IMaterialRequisitionService
         string description, DateTime? requiredDate, int? responsibleEngineerId, int? relatedDocumentId,
         List<(string desc, string? part, double qty, string? unit)> items)
     {
-        mrNumber = mrNumber?.Trim() ?? string.Empty;
+        // SCRUM-40: شماره خودکار از الگوی مدیر (شماره‌ی واردشده فقط اگر الگو ورود دستی را مجاز کرده باشد)
+        mrNumber = await _numbering.ResolveNumberAsync("MaterialRequisition", mrNumber, projectId, disciplineId);
         if (string.IsNullOrWhiteSpace(mrNumber))
             return (false, "شماره MR الزامی است.", null);
 
@@ -166,14 +174,22 @@ public class MaterialRequisitionService : IMaterialRequisitionService
             CreatedDate = DateTime.Now
         };
 
-        foreach (var item in items.Where(x => !string.IsNullOrWhiteSpace(x.desc)))
+        // SCRUM-428: شماره‌ی قطعه سمت سرور با قطعه‌های ثبت‌شده (کاتالوگ قطعه / Material Master) تطبیق داده می‌شود؛ پیوند فقط از این‌جا ساخته
+        // می‌شود (مرورگر نمی‌تواند آن را جعل کند). ردیفی که شرح ندارد ولی قطعه‌ی ثبت‌شده دارد، شرح و واحد را از خود قطعه می‌گیرد.
+        foreach (var item in items)
         {
+            var part = string.IsNullOrWhiteSpace(item.part) ? null : await _parts.FindRegisteredPartAsync(item.part);
+            var itemDescription = !string.IsNullOrWhiteSpace(item.desc) ? item.desc.Trim() : part?.Description;
+            if (string.IsNullOrWhiteSpace(itemDescription)) continue;
+
             mr.Items.Add(new MaterialRequisitionItem
             {
-                ItemDescription = item.desc,
-                PartNumber = item.part,
+                ItemDescription = itemDescription,
+                PartNumber = part?.PartNumber ?? (string.IsNullOrWhiteSpace(item.part) ? null : item.part.Trim()),
                 Quantity = item.qty,
-                Unit = item.unit
+                Unit = !string.IsNullOrWhiteSpace(item.unit) ? item.unit.Trim() : part?.Unit,
+                MaterialItemId = part?.Source == "MaterialItem" ? part.SourceId : null,
+                PartCatalogueRequestId = part?.Source == "CatalogueRequest" ? part.SourceId : null,
             });
         }
 

@@ -1,0 +1,62 @@
+{
+  "kind": "form",
+  "key": "numbering-vdr-official",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Official number of a VDR item",
+    "fa": "شماره‌ی رسمی مدرک VDR"
+  },
+  "description": {
+    "en": "Official number of a VDR item",
+    "fa": "شماره‌ی رسمی مدرک VDR"
+  },
+  "payload": {
+    "id": "numbering-vdr-official",
+    "title": {
+      "en": "Official number of a VDR item",
+      "fa": "شماره‌ی رسمی مدرک VDR"
+    },
+    "submitLabel": {
+      "en": "Generate",
+      "fa": "تولید شماره"
+    },
+    "actionKey": "numbering-vdr-official",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "vendorCode",
+        "label": {
+          "en": "Vendor code (e.g. FSK)",
+          "fa": "کد فروشنده"
+        },
+        "maxLength": 20
+      },
+      {
+        "name": "plantCode",
+        "label": {
+          "en": "Plant code (e.g. J)",
+          "fa": "کد واحد"
+        },
+        "maxLength": 20
+      },
+      {
+        "name": "unitCode",
+        "label": {
+          "en": "Unit code (e.g. 85)",
+          "fa": "کد یونیت"
+        },
+        "maxLength": 20
+      },
+      {
+        "name": "materialCode",
+        "label": {
+          "en": "Material code",
+          "fa": "کد مواد"
+        },
+        "maxLength": 20
+      }
+    ]
+  }
+}

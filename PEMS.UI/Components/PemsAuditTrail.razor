@@ -1,0 +1,32 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("audit-trail", Category = "data", Icon = "bi-journal-text")]
+@inject IPemsLocale Locale
+@if (Options.Entries.Count == 0)
+{
+    <div @attributes="Options.Attributes" class="@Join("pems-audit pems-audit--empty text-muted", Options.Css, Options.PageClass)" id="@Options.Id">@Locale.Text(Options.Empty)</div>
+}
+else
+{
+    <div @attributes="Options.Attributes" class="@Join("pems-audit", Options.Css, Options.PageClass)" id="@Options.Id">
+        <table class="pems-table">
+            <thead><tr><th scope="col">@Locale.Text(Options.Texts.When)</th><th scope="col">@Locale.Text(Options.Texts.Actor)</th><th scope="col">@Locale.Text(Options.Texts.Field)</th><th scope="col">@Locale.Text(Options.Texts.Change)</th></tr></thead>
+            <tbody>
+                @foreach (var e in Options.Entries.OrderByDescending(x => x.When))
+                {
+                    <tr>
+                        <td><time datetime="@e.When.ToString("s")">@PEMS.UI.PemsDates.DateTime(e.When)</time></td>
+                        <td>@e.Actor</td>
+                        <td>@e.Field</td>
+                        <td><span class="pems-audit__old">@(string.IsNullOrEmpty(e.Old) ? EmptyValue : e.Old)</span> <span aria-hidden="true">@Arrow</span> <span class="pems-audit__new">@(string.IsNullOrEmpty(e.New) ? EmptyValue : e.New)</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+@code {
+    private string EmptyValue => Locale.Text(Options.Texts.EmptyValue);
+    private const string Arrow = "→";
+    [Parameter, EditorRequired] public AuditTrailOptions Options { get; set; } = default!;
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+}

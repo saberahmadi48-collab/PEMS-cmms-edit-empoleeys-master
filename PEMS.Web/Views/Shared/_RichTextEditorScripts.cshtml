@@ -1,148 +1,16 @@
-@using System.Globalization
 @using Microsoft.Extensions.Localization
+@using PEMS.Web.Helpers
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
-@* پارشیال مشترک ادیتور متن غنی (طبق درخواست: "نسخه‌ی کوچک‌شده‌ی Word" برای نامه‌نگاری) -
-   Quill.js: راست‌چین/چپ‌چین واقعی، نوع/اندازه‌ی فونت، رنگ، لیست، تراز، جدول‌بندی با Indent،
-   لینک، Undo/Redo - بدون نیاز به لایسنس (برخلاف نسخه‌های جدید CKEditor 4).
-   Model: id عنصر textarea هدف (بدون #) *@
+@* Letter pages: rich-text editor ("a small Word" for letters) on the textarea whose id is the model (without #).
+   SCRUM-59: an adapter over the one PEMS editor (PEMS.UI/wwwroot/pems-rte.js, Quill vendored): no editor code here.
+   The marker below names the textarea, the image upload URL of Letters and the editor's accessible name; pems-rte.js puts the editor
+   directly under the textarea (inside the field's column, not detached below the card), names every toolbar control (aria-label) and
+   raises 'rte-change' on the textarea. It also brings the toolbar texts and the script, because Letter Details can run in _LayoutEmbed.
+   The server sanitizes the posted HTML (IRichTextSanitizerService). *@
 @model string
-@{
-    var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
-    var editorDivId = Model + "_quillEditor";
-}
 
-<link rel="stylesheet" href="~/lib/quill/quill.snow.min.css" />
-<style>
-    /* explicit height: Quill's default height:100% resolved against a stretched flex column and overflowed onto the controls below */
-    #@editorDivId { height: 240px; min-height: 180px; background: var(--pems-surface, #fff); }
-    #@editorDivId .ql-editor { font-size: 14px; }
-    .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="tahoma"]::before,
-    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="tahoma"]::before { content: 'Tahoma'; font-family: Tahoma; }
-    .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="arial"]::before,
-    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="arial"]::before { content: 'Arial'; font-family: Arial; }
-    .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="times-new-roman"]::before,
-    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="times-new-roman"]::before { content: 'Times New Roman'; font-family: 'Times New Roman'; }
-    .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="b-nazanin"]::before,
-    .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="b-nazanin"]::before { content: 'B Nazanin'; font-family: 'B Nazanin', Tahoma; }
-</style>
-
-<div id="@editorDivId" style="display:none;"></div>
-
-<script src="~/lib/quill/quill.min.js"></script>
-<script>
-    (function () {
-        var targetTextarea = document.getElementById('@Model');
-        var container = document.getElementById('@editorDivId');
-        // The partial is rendered after the form/card, so the editor used to appear detached BELOW the card (full width, outside the form layout).
-        // Move it to sit directly under its textarea so it lives inside the field's own column.
-        targetTextarea.parentNode.insertBefore(container, targetTextarea.nextSibling);
-        container.style.display = '';
-        targetTextarea.style.display = 'none';
-
-        var Font = Quill.import('formats/font');
-        Font.whitelist = ['sans-serif', 'serif', 'monospace', 'tahoma', 'arial', 'times-new-roman', 'b-nazanin'];
-        Quill.register(Font, true);
-
-        var Size = Quill.import('attributors/style/size');
-        Size.whitelist = ['10px', '12px', '14px', '16px', '18px', '20px', '24px', '32px', '40px'];
-        Quill.register(Size, true);
-
-        var quill = new Quill('#@editorDivId', {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    [{ 'font': Font.whitelist }, { 'size': Size.whitelist }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'script': 'sub' }, { 'script': 'super' }],
-                    [{ 'header': [1, 2, 3, false] }],
-                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                    [{ 'indent': '-1' }, { 'indent': '+1' }],
-                    [{ 'direction': 'rtl' }],
-                    [{ 'align': [] }],
-                    ['blockquote', 'link', 'image'],
-                    ['clean']
-                ]
-            }
-        });
-
-        // جهت پیش‌فرض ادیتور طبق زبان فعلی رابط کاربری (فارسی = راست‌چین)
-        var defaultIsRtl = @(isRtl ? "true" : "false");
-        if (defaultIsRtl) {
-            quill.format('direction', 'rtl');
-            quill.format('align', 'right');
-        }
-
-        // آپلود واقعی تصویر به سرور (نه Base64 داخل متن) - دکمه‌ی تصویر توکار Quill را بازنویسی می‌کند
-        quill.getModule('toolbar').addHandler('image', function () {
-            var input = document.createElement('input');
-            input.setAttribute('type', 'file');
-            input.setAttribute('accept', 'image/png,image/jpeg,image/gif,image/webp');
-            input.click();
-
-            input.onchange = function () {
-                var file = input.files[0];
-                if (!file) return;
-
-                var formData = new FormData();
-                formData.append('file', file);
-                var tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
-                if (tokenInput) formData.append('__RequestVerificationToken', tokenInput.value);
-
-                fetch('/Letter/UploadEditorImage', { method: 'POST', body: formData })
-                    .then(function (r) { return r.json(); })
-                    .then(function (data) {
-                        var range = quill.getSelection(true);
-                        quill.insertEmbed(range.index, 'image', data.url);
-                    })
-                    .catch(function () { alert('@Localizer["Rte_UploadFailed"]'); });
-            };
-        });
-
-        // Accessibility: Quill builds an icon-only toolbar with no names. Name every control (localized) and expose the editing area as a labelled textbox.
-        var RTE = {
-            editor: '@Localizer["Rte_Editor"]', bold: '@Localizer["Rte_Bold"]', italic: '@Localizer["Rte_Italic"]', underline: '@Localizer["Rte_Underline"]', strike: '@Localizer["Rte_Strike"]',
-            sub: '@Localizer["Rte_Sub"]', super: '@Localizer["Rte_Super"]', ordered: '@Localizer["Rte_Ordered"]', bullet: '@Localizer["Rte_Bullet"]',
-            outdent: '@Localizer["Rte_IndentLess"]', indent: '@Localizer["Rte_IndentMore"]', direction: '@Localizer["Rte_Direction"]', blockquote: '@Localizer["Rte_Quote"]',
-            link: '@Localizer["Rte_Link"]', image: '@Localizer["Rte_Image"]', clean: '@Localizer["Rte_Clean"]', font: '@Localizer["Rte_Font"]', size: '@Localizer["Rte_Size"]',
-            color: '@Localizer["Rte_Color"]', background: '@Localizer["Rte_Background"]', header: '@Localizer["Rte_Header"]', align: '@Localizer["Rte_Align"]'
-        };
-        (function nameToolbar() {
-            var tb = quill.getModule('toolbar').container;
-            tb.setAttribute('role', 'toolbar'); tb.setAttribute('aria-label', RTE.editor);
-            tb.querySelectorAll('button').forEach(function (b) {
-                var cls = (b.className.match(/ql-([a-z]+)/) || [])[1], val = b.getAttribute('value');
-                var key = cls === 'script' ? (val === 'sub' ? 'sub' : 'super') : cls === 'list' ? (val === 'ordered' ? 'ordered' : 'bullet') : cls === 'indent' ? (val === '-1' ? 'outdent' : 'indent') : cls;
-                if (RTE[key]) { b.setAttribute('aria-label', RTE[key]); b.setAttribute('title', RTE[key]); b.setAttribute('type', 'button'); }
-            });
-            tb.querySelectorAll('.ql-picker').forEach(function (p) {
-                var cls = (p.className.match(/ql-(font|size|color|background|header|align)/) || [])[1];
-                if (!cls || !RTE[cls]) return;
-                var lab = p.querySelector('.ql-picker-label'); if (lab) { lab.setAttribute('aria-label', RTE[cls]); lab.setAttribute('title', RTE[cls]); }
-                p.querySelectorAll('.ql-picker-item').forEach(function (it) { if (!it.getAttribute('aria-label')) it.setAttribute('aria-label', RTE[cls] + ' ' + (it.getAttribute('data-label') || it.getAttribute('data-value') || '')); });
-            });
-            tb.querySelectorAll('select').forEach(function (s) {
-                var cls = (s.className.match(/ql-(font|size|color|background|header|align)/) || [])[1];
-                if (cls && RTE[cls]) s.setAttribute('aria-label', RTE[cls]);
-            });
-            var tip = quill.container.querySelector('.ql-tooltip input'); if (tip) tip.setAttribute('aria-label', RTE.link);
-            quill.root.setAttribute('role', 'textbox'); quill.root.setAttribute('aria-multiline', 'true'); quill.root.setAttribute('aria-label', RTE.editor);
-        })();
-
-        if (targetTextarea.value) {
-            quill.clipboard.dangerouslyPasteHTML(targetTextarea.value);
-        }
-
-        quill.on('text-change', function () {
-            targetTextarea.value = quill.root.innerHTML;
-        });
-
-        var form = targetTextarea.closest('form');
-        if (form) {
-            form.addEventListener('submit', function () {
-                targetTextarea.value = quill.root.innerHTML;
-            });
-        }
-    })();
-</script>
+<span hidden data-pems-rte-for="@Model" data-pems-rte-upload="@Url.Content("~/Letter/UploadEditorImage")" data-pems-rte-label="@Localizer["Rte_Editor"]"
+      data-pems-rte-texts="@RichTextEditorTexts.Json(Localizer)" data-pems-rte-lib="@Url.Content("~/lib/quill/")"></span>
+<link rel="stylesheet" href="~/_content/PEMS.UI/pems-rte.css" asp-append-version="true" />
+<script src="~/_content/PEMS.UI/pems-rte.js" asp-append-version="true"></script>

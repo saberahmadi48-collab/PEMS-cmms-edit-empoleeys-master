@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "production-run-losses",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production: Run losses",
+    "fa": "تولید: Run losses"
+  },
+  "description": {
+    "en": "Production: Run losses",
+    "fa": "تولید: Run losses"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Production",
+      "action": "RunLosses",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

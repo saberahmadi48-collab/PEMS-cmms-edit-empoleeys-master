@@ -1,0 +1,72 @@
+{
+  "kind": "form",
+  "key": "sod-policies-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create separation policy",
+    "fa": "ایجاد سیاست تفکیک وظایف"
+  },
+  "description": {
+    "en": "Create a new separation policy",
+    "fa": "ایجاد سیاست تفکیک وظایف جدید"
+  },
+  "payload": {
+    "id": "sod-policies-create",
+    "title": {
+      "en": "New separation policy",
+      "fa": "سیاست تفکیک وظایف جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "sod-policies-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "permissionAId",
+        "label": {
+          "en": "Permission A",
+          "fa": "مجوز اول"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Permission A is required.",
+            "fa": "مجوز اول الزامی است."
+          }
+        },
+        "optionsFrom": "sod-policies-permission-aid-options"
+      },
+      {
+        "name": "permissionBId",
+        "label": {
+          "en": "Permission B",
+          "fa": "مجوز دوم"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Permission B is required.",
+            "fa": "مجوز دوم الزامی است."
+          }
+        },
+        "optionsFrom": "sod-policies-permission-bid-options"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 500,
+        "span": 2
+      }
+    ]
+  }
+}

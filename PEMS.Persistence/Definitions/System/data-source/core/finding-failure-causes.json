@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "finding-failure-causes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Failure causes",
+    "fa": "علت‌های خرابی"
+  },
+  "description": {
+    "en": "Failure causes",
+    "fa": "علت‌های خرابی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Finding",
+      "action": "FailureCauseChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

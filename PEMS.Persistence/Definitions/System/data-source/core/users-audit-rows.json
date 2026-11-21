@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "users-audit-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Recent authorization decisions of a user",
+    "fa": "تصمیم‌های اخیر مجوزدهی یک کاربر"
+  },
+  "description": {
+    "en": "Recent authorization decisions of a user",
+    "fa": "تصمیم‌های اخیر مجوزدهی یک کاربر"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Users",
+      "action": "AuditRows",
+      "args": {
+        "userId": "param:userId"
+      }
+    }
+  }
+}

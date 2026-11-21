@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "my-work",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My work (old address)",
+    "fa": "کارهای من (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "My work (old address)",
+    "fa": "کارهای من (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MyWork/{*rest}",
+    "target": "/p/my-work",
+    "permanent": false
+  }
+}

@@ -127,7 +127,7 @@ public static class NetDemandCalculator
         }
 
         if (incoming == IncomingSupplyStatus.NotModeled)
-            issues.Add(new NetDemandIssue(NetDemandIssueCode.IncomingSupplyNotModeled, "PO lines / receipt-to-PO-line links are not modeled"));
+            issues.Add(new NetDemandIssue(NetDemandIssueCode.IncomingSupplyNotModeled, "no incoming-supply source (open PO lines) was given"));
 
         ReorderTopUp reorder;
         if (kind is NetDemandResultKind.NotCalculable or NetDemandResultKind.NotComparableNoWarehouse)

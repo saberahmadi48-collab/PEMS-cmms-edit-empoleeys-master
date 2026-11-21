@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "production-order-resume",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Resume the order",
+    "fa": "ازسرگیری سفارش"
+  },
+  "description": {
+    "en": "Resume the order",
+    "fa": "ازسرگیری سفارش"
+  },
+  "payload": {
+    "id": "production-order-resume",
+    "title": {
+      "en": "Resume the order",
+      "fa": "ازسرگیری سفارش"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "production-order-resume",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Order id",
+          "fa": "شناسه‌ی سفارش"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

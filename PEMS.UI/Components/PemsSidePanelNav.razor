@@ -1,0 +1,22 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("side-panel-nav", Category = "navigation", Icon = "bi-layout-sidebar")]
+@inject IPemsLocale Locale
+<nav class="pems-sidenav" aria-label="@Locale.Text(Options.Label)">
+    <ul class="pems-sidenav__list">
+        @foreach (var item in Options.Items)
+        {
+            <li>
+                <a class="@(item.Active ? "pems-sidenav__item pems-sidenav__item--active" : "pems-sidenav__item")" href="@item.Href" aria-current="@(item.Active ? "page" : null)">
+                    <span>@Locale.Text(item.Label)</span>
+                    @if (item.Count is { } n)
+                    {
+                        <span class="pems-sidenav__count">@Locale.Format(n)</span>
+                    }
+                </a>
+            </li>
+        }
+    </ul>
+</nav>
+@code {
+    [Parameter, EditorRequired] public SidePanelNavOptions Options { get; set; } = default!;
+}

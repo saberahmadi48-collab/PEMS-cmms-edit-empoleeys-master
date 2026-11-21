@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "barcode-label-sheet",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Barcode label sheet (PDF)",
+    "fa": "برگه‌ی برچسب بارکد (PDF)"
+  },
+  "description": {
+    "en": "Barcode label sheet (PDF)",
+    "fa": "برگه‌ی برچسب بارکد (PDF)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Barcode",
+      "action": "LabelSheet",
+      "args": {
+        "targetType": "param:targetType",
+        "ids": "param:ids"
+      },
+      "disposition": "attachment"
+    }
+  }
+}

@@ -1,0 +1,442 @@
+{
+  "kind": "page",
+  "key": "mrs-import-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MRS Import Review",
+    "fa": "بررسی ورود MRS"
+  },
+  "description": {
+    "en": "The rows of one batch: filter by match status, commit or reject rows or a whole status (page definition)",
+    "fa": "ردیف‌های یک دسته: فیلتر بر اساس وضعیت تطبیق، تأیید یا رد ردیف‌ها یا یک وضعیت کامل (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "mrs-import-review",
+    "regions": {
+      "content": [
+        {
+          "id": "t-file",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "File",
+              "fa": "فایل"
+            },
+            "icon": "bi-file-earmark-excel"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/mrs-import-batch?f.batchId={{params.batchId|url}}",
+              "first": true,
+              "map": {
+                "value": "sourceFile"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-rows",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Rows",
+              "fa": "ردیف‌ها"
+            },
+            "icon": "bi-list-ol"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/mrs-import-batch?f.batchId={{params.batchId|url}}",
+              "first": true,
+              "map": {
+                "value": "totalRows"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-new",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "New",
+              "fa": "جدید"
+            },
+            "icon": "bi-plus-circle",
+            "tone": "success"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/mrs-import-batch?f.batchId={{params.batchId|url}}",
+              "first": true,
+              "map": {
+                "value": "newCount"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-matched",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Matched",
+              "fa": "منطبق"
+            },
+            "icon": "bi-link-45deg"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/mrs-import-batch?f.batchId={{params.batchId|url}}",
+              "first": true,
+              "map": {
+                "value": "matchedCount"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-dup",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Duplicate in batch",
+              "fa": "تکراری در دسته"
+            },
+            "icon": "bi-files",
+            "tone": "warning"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/mrs-import-batch?f.batchId={{params.batchId|url}}",
+              "first": true,
+              "map": {
+                "value": "duplicateCount"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-invalid",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Invalid",
+              "fa": "نامعتبر"
+            },
+            "icon": "bi-x-octagon",
+            "tone": "danger"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/mrs-import-batch?f.batchId={{params.batchId|url}}",
+              "first": true,
+              "map": {
+                "value": "invalidCount"
+              }
+            }
+          }
+        },
+        {
+          "id": "t-approved",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Approved",
+              "fa": "تأییدشده"
+            },
+            "icon": "bi-check-circle",
+            "tone": "success"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/mrs-import-batch?f.batchId={{params.batchId|url}}",
+              "first": true,
+              "map": {
+                "value": "approvedCount"
+              }
+            }
+          }
+        },
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "mrs-filters",
+            "resetUrl": "/p/mrs-import-review?batchId={{params.batchId}}",
+            "fields": [
+              {
+                "name": "batchId",
+                "label": {
+                  "en": "Batch id",
+                  "fa": "شناسه‌ی دسته"
+                },
+                "kind": "text",
+                "value": "{{params.batchId}}"
+              },
+              {
+                "name": "matchStatus",
+                "label": {
+                  "en": "Match status",
+                  "fa": "وضعیت تطبیق"
+                },
+                "kind": "select",
+                "value": "{{params.matchStatus}}",
+                "options": [
+                  {
+                    "value": "New",
+                    "label": {
+                      "en": "New",
+                      "fa": "جدید"
+                    }
+                  },
+                  {
+                    "value": "MatchedExisting",
+                    "label": {
+                      "en": "MatchedExisting",
+                      "fa": "منطبق با موجود"
+                    }
+                  },
+                  {
+                    "value": "DuplicateInBatch",
+                    "label": {
+                      "en": "DuplicateInBatch",
+                      "fa": "تکراری در دسته"
+                    }
+                  },
+                  {
+                    "value": "Invalid",
+                    "label": {
+                      "en": "Invalid",
+                      "fa": "نامعتبر"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mrs-import-commit?batchId={{params.batchId}}",
+                "text": {
+                  "en": "Commit chosen rows",
+                  "fa": "تأیید ردیف‌های انتخابی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/mrs-import-reject?batchId={{params.batchId}}",
+                "text": {
+                  "en": "Reject chosen rows",
+                  "fa": "رد ردیف‌های انتخابی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/mrs-import-commit-status?batchId={{params.batchId}}&matchStatus={{params.matchStatus}}",
+                "text": {
+                  "en": "Commit every row of the chosen status (whole batch)",
+                  "fa": "تأیید همه‌ی ردیف‌های یک وضعیت (کل دسته)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/mrs-import-reject-status?batchId={{params.batchId}}&matchStatus={{params.matchStatus}}",
+                "text": {
+                  "en": "Reject every row of the chosen status (whole batch)",
+                  "fa": "رد همه‌ی ردیف‌های یک وضعیت (کل دسته)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/mrs-import",
+                "text": {
+                  "en": "Back to the batches",
+                  "fa": "بازگشت به دسته‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "rows",
+          "component": "data-grid",
+          "options": {
+            "id": "rows",
+            "url": "/d/mrs-import-rows?f.batchId={{params.batchId|url}}&f.matchStatus={{params.matchStatus|url}}",
+            "idField": "mrsImportRowId",
+            "columns": [
+              {
+                "key": "mrsNo",
+                "header": {
+                  "en": "MRS no",
+                  "fa": "شماره MRS"
+                },
+                "width": 120
+              },
+              {
+                "key": "itemCode",
+                "header": {
+                  "en": "Item code",
+                  "fa": "کد قلم"
+                },
+                "width": 130
+              },
+              {
+                "key": "supplier",
+                "header": {
+                  "en": "Supplier",
+                  "fa": "تأمین‌کننده"
+                },
+                "width": 160
+              },
+              {
+                "key": "poNo",
+                "header": {
+                  "en": "PO",
+                  "fa": "سفارش"
+                },
+                "width": 100
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 260
+              },
+              {
+                "key": "uom",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 70
+              },
+              {
+                "key": "qtyReceived",
+                "header": {
+                  "en": "Received",
+                  "fa": "دریافتی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "qtyIssued",
+                "header": {
+                  "en": "Issued",
+                  "fa": "تحویلی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "inventory",
+                "header": {
+                  "en": "Inventory",
+                  "fa": "موجودی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "dateReceived",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "warehouse",
+                "header": {
+                  "en": "Warehouse",
+                  "fa": "انبار"
+                },
+                "width": 100
+              },
+              {
+                "key": "matchStatus",
+                "header": {
+                  "en": "Match",
+                  "fa": "تطبیق"
+                },
+                "width": 140
+              },
+              {
+                "key": "matchedMaterial",
+                "header": {
+                  "en": "Matched material",
+                  "fa": "ماده‌ی منطبق"
+                },
+                "width": 140
+              },
+              {
+                "key": "reviewStatus",
+                "header": {
+                  "en": "Review",
+                  "fa": "بررسی"
+                },
+                "width": 110
+              },
+              {
+                "key": "error",
+                "header": {
+                  "en": "Error",
+                  "fa": "خطا"
+                },
+                "width": 220
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 260,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "commit",
+                    "label": {
+                      "en": "Commit this row",
+                      "fa": "تأیید این ردیف"
+                    },
+                    "url": "/f/mrs-import-commit?batchId={{params.batchId}}&rowIds={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "reject",
+                    "label": {
+                      "en": "Reject this row",
+                      "fa": "رد این ردیف"
+                    },
+                    "url": "/f/mrs-import-reject?batchId={{params.batchId}}&rowIds={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 50,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "MrsImport.View"
+  }
+}

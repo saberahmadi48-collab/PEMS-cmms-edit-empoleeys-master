@@ -190,10 +190,10 @@ public class WorkRequestWorkflowTests : IDisposable
         await SeedWorkflowAsync();
         var id = await NewSubmittedAsync();
 
-        Assert.True((await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(1, Requester))).Success);          // Start Review
+        Assert.True((await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(3, Requester))).Success);          // Start Review
         var afterReview = await WrAsync(id);
         Assert.Equal("UnderReview", afterReview.Status);
-        Assert.Equal(1, afterReview.ReviewedById);
+        Assert.Equal(3, afterReview.ReviewedById);
 
         Assert.True((await _svc.ExecuteWorkflowActionAsync(id, "Approve", "ok", Actor(2, Reviewer))).Success);          // Approve
         var approved = await WrAsync(id);
@@ -219,7 +219,7 @@ public class WorkRequestWorkflowTests : IDisposable
     {
         await SeedWorkflowAsync();
         var rejected = await NewSubmittedAsync("r");
-        await _svc.ExecuteWorkflowActionAsync(rejected, "Approve", null, Actor(1, Requester));
+        await _svc.ExecuteWorkflowActionAsync(rejected, "Approve", null, Actor(3, Requester));
         var (ok, err) = await _svc.ExecuteWorkflowActionAsync(rejected, "Reject", "not needed", Actor(2, Reviewer));
         Assert.True(ok, err);
         Assert.Equal("Rejected", (await WrAsync(rejected)).Status);
@@ -254,15 +254,18 @@ public class WorkRequestWorkflowTests : IDisposable
     public async Task Conversion_business_rules_still_apply_when_workflow_allows_it()
     {
         await SeedWorkflowAsync();
-        var (_, _, noEquipment) = await _svc.CreateAsync("No equipment", null, 1, null, null, null, null, "Medium", null);
+        // A2: بدون تجهیز/Asset/Functional Location ثبت نمی‌شود؛ درخواستِ فقط-Functional-Location ثبت می‌شود ولی تبدیل آن به Work Order تجهیز می‌خواهد
+        _ctx.FunctionalLocations.Add(new FunctionalLocation { FunctionalLocationId = 7, Code = "FL-7", Name = "Area 7", IsActive = true });
+        await _ctx.SaveChangesAsync();
+        var (_, _, noEquipment) = await _svc.CreateAsync("No equipment", null, 1, null, null, 7, null, "Medium", null);
         await _svc.SubmitAsync(noEquipment!.Value, Actor(1, Requester));
-        await _svc.ExecuteWorkflowActionAsync(noEquipment.Value, "Approve", null, Actor(1, Requester));
+        await _svc.ExecuteWorkflowActionAsync(noEquipment.Value, "Approve", null, Actor(3, Requester));
         await _svc.ExecuteWorkflowActionAsync(noEquipment.Value, "Approve", null, Actor(2, Reviewer));
         await _svc.ExecuteWorkflowActionAsync(noEquipment.Value, "Approve", null, Actor(2, Reviewer));
 
         var (ok, err, _) = await _svc.ConvertToWorkOrderAsync(noEquipment.Value, "Corrective", "t", Actor(2, Reviewer));
         Assert.False(ok);
-        Assert.Contains("تجهیز", err);
+        Assert.Matches("تجهیز|equipment", err);
         Assert.Equal("Planned", (await WrAsync(noEquipment.Value)).Status);
         Assert.Equal("Running", (await InstanceAsync(noEquipment.Value)).Status);
         Assert.Empty(_ctx.WorkOrders);
@@ -274,10 +277,10 @@ public class WorkRequestWorkflowTests : IDisposable
     {
         await SeedWorkflowAsync();
         var id = await NewSubmittedAsync();
-        await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(1, Requester)); // → UnderReview
+        await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(3, Requester)); // → UnderReview
 
         // Requester فقط Create دارد؛ تأیید نیازمند WorkRequest.Approve است
-        var (ok, err) = await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(1, Requester));
+        var (ok, err) = await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(3, Requester));
         Assert.False(ok);
         Assert.False(string.IsNullOrEmpty(err));
         Assert.Equal("UnderReview", (await WrAsync(id)).Status);
@@ -295,7 +298,7 @@ public class WorkRequestWorkflowTests : IDisposable
     {
         await SeedWorkflowAsync();
         var id = await NewSubmittedAsync();
-        await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(1, Requester)); // → UnderReview
+        await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(3, Requester)); // → UnderReview
         var inst = await InstanceAsync(id);
 
         // فراخوانی مستقیم Runtime با نقش-مجازی جعلی «Permission:WorkRequest.Approve» برای کاربری که مجوز ندارد
@@ -342,7 +345,7 @@ public class WorkRequestWorkflowTests : IDisposable
     {
         await SeedWorkflowAsync();
         var id = await NewSubmittedAsync();
-        await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(1, Requester));
+        await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(3, Requester));
         await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(2, Reviewer));
         await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(2, Reviewer)); // Planned
 
@@ -361,7 +364,7 @@ public class WorkRequestWorkflowTests : IDisposable
     {
         await SeedWorkflowAsync();
         var id = await NewSubmittedAsync();
-        await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(1, Requester)); // UnderReview
+        await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(3, Requester)); // UnderReview
 
         var vm = (await _svc.GetWorkflowViewAsync(id, Actor(2, Reviewer)))!;
         Assert.Equal(new[] { "Submitted", "Under Review", "Approved", "Planned" }, vm.Stages.Select(s => s.Name).ToArray());
@@ -416,7 +419,7 @@ public class WorkRequestWorkflowTests : IDisposable
         });
         await _ctx.SaveChangesAsync();
 
-        var (ok, err) = await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(1, Requester));
+        var (ok, err) = await _svc.ExecuteWorkflowActionAsync(id, "Approve", null, Actor(3, Requester));
         Assert.False(ok);
         Assert.Matches("بیش از یک Instance|more than one workflow instance", err);
         (ok, err) = await _svc.AdvanceStatusAsync(id, "UnderReview", null, 1);
@@ -532,7 +535,7 @@ public class WorkRequestWorkflowTests : IDisposable
         // Work Request A روی v1
         var a = await NewSubmittedAsync("A");
         Assert.Equal(v1.WorkflowVersionId, (await InstanceAsync(a)).WorkflowVersionId);
-        await _svc.ExecuteWorkflowActionAsync(a, "Approve", null, Actor(1, Requester));   // A → UnderReview (v1)
+        await _svc.ExecuteWorkflowActionAsync(a, "Approve", null, Actor(3, Requester));   // A → UnderReview (v1)
 
         // نسخه‌ی 2 با مرحله‌ی جدید، منتشر و برای درخواست‌های جدید Bind می‌شود
         var v2 = await PublishVersion2WithReliabilityReviewAsync(pin: true);
@@ -552,7 +555,7 @@ public class WorkRequestWorkflowTests : IDisposable
         Assert.Equal("بازبینی قابلیت اطمینان", vmB.Stages[2].NameFa);
 
         // B: Submitted → Under Review → Reliability Review
-        Assert.True((await _svc.ExecuteWorkflowActionAsync(b, "Approve", null, Actor(1, Requester))).Success);
+        Assert.True((await _svc.ExecuteWorkflowActionAsync(b, "Approve", null, Actor(3, Requester))).Success);
         var underReviewActions = (await _svc.GetWorkflowViewAsync(b, Actor(2, Reviewer)))!.AvailableActions;
         Assert.Equal("Reliability Review", underReviewActions.Single(x => x.ActionType == "Approve").ToStageName);
         Assert.Equal("Send to Reliability", underReviewActions.Single(x => x.ActionType == "Approve").Label);

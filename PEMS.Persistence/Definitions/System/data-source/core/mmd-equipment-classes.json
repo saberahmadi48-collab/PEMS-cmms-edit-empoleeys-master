@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mmd-equipment-classes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment classes",
+    "fa": "کلاس‌های تجهیز"
+  },
+  "description": {
+    "en": "Equipment classes",
+    "fa": "کلاس‌های تجهیز"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "EquipmentClasses"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "action",
+  "key": "pc-admin-save-responsibility",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a responsibility",
+    "fa": "ذخیره‌ی مسئولیت"
+  },
+  "description": {
+    "en": "Save a responsibility",
+    "fa": "ذخیره‌ی مسئولیت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PartCatalogueAdmin",
+      "action": "SaveResponsibility",
+      "args": {
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userId": "context:userId",
+        "input": {
+          "id": "field:id",
+          "kind": "field:kind",
+          "requiredAction": "field:requiredAction",
+          "roleName": "field:roleName",
+          "scopeType": "field:scopeType",
+          "scopeValue": "field:scopeValue",
+          "managerLevel": "field:managerLevel",
+          "selectionStrategy": "field:selectionStrategy",
+          "isActive": "field:isActive",
+          "positionIds": "field:positionIds"
+        }
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/p/pc-admin"
+  }
+}

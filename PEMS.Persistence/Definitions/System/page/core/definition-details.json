@@ -1,0 +1,236 @@
+{
+  "kind": "page",
+  "key": "definition-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Definition details",
+    "fa": "جزئیات تعریف"
+  },
+  "description": {
+    "en": "One definition and where it is used",
+    "fa": "یک تعریف و محل استفاده"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "definition-details",
+    "permission": "Definitions.View",
+    "template": "entity-details",
+    "args": {
+      "id": "definition-record",
+      "url": "/d/definitions-grid",
+      "idField": "ref",
+      "fields": [
+        {
+          "key": "key",
+          "label": {
+            "en": "Key",
+            "fa": "کلید"
+          },
+          "mono": true
+        },
+        {
+          "key": "kind",
+          "label": {
+            "en": "Kind",
+            "fa": "نوع"
+          },
+          "mono": true
+        },
+        {
+          "key": "appKey",
+          "label": {
+            "en": "App",
+            "fa": "برنامه"
+          },
+          "mono": true
+        },
+        {
+          "key": "title",
+          "label": {
+            "en": "Title",
+            "fa": "عنوان"
+          }
+        },
+        {
+          "key": "origin",
+          "label": {
+            "en": "Origin",
+            "fa": "منشأ"
+          }
+        },
+        {
+          "key": "publishedVersion",
+          "label": {
+            "en": "Published version",
+            "fa": "نسخه منتشرشده"
+          }
+        },
+        {
+          "key": "hasDraft",
+          "label": {
+            "en": "Has a draft",
+            "fa": "پیش‌نویس دارد"
+          },
+          "type": "bool"
+        },
+        {
+          "key": "isCustomized",
+          "label": {
+            "en": "Customised",
+            "fa": "سفارشی"
+          },
+          "type": "bool"
+        },
+        {
+          "key": "revision",
+          "label": {
+            "en": "Revision",
+            "fa": "بازنگری"
+          }
+        },
+        {
+          "key": "createdAt",
+          "label": {
+            "en": "Created",
+            "fa": "ایجاد"
+          },
+          "type": "datetime"
+        }
+      ],
+      "backUrl": "/p/definition-workbench",
+      "backLabel": {
+        "en": "Back to the workbench",
+        "fa": "بازگشت به میز کار"
+      }
+    },
+    "regions": {
+      "content": [
+        {
+          "id": "usages",
+          "component": "data-grid",
+          "options": {
+            "id": "definition-usages",
+            "url": "/d/definition-usages-grid?f.ref=eq:{{params.id|url}}",
+            "idField": "ref",
+            "columns": [
+              {
+                "key": "fromKind",
+                "header": {
+                  "en": "Kind",
+                  "fa": "نوع"
+                },
+                "width": 140
+              },
+              {
+                "key": "fromKey",
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                },
+                "width": 260
+              },
+              {
+                "key": "role",
+                "header": {
+                  "en": "Role",
+                  "fa": "نقش"
+                },
+                "width": 140
+              }
+            ],
+            "selectable": false,
+            "texts": {
+              "search": {
+                "en": "Search",
+                "fa": "جستجو"
+              },
+              "columns": {
+                "en": "Columns",
+                "fa": "ستون‌ها"
+              },
+              "density": {
+                "en": "Density",
+                "fa": "تراکم"
+              },
+              "compact": {
+                "en": "Compact",
+                "fa": "فشرده"
+              },
+              "comfortable": {
+                "en": "Comfortable",
+                "fa": "راحت"
+              },
+              "export": {
+                "en": "Export",
+                "fa": "خروجی"
+              },
+              "views": {
+                "en": "Views",
+                "fa": "نماها"
+              },
+              "saveView": {
+                "en": "Save view",
+                "fa": "ذخیره نما"
+              },
+              "viewName": {
+                "en": "View name",
+                "fa": "نام نما"
+              },
+              "loading": {
+                "en": "Loading",
+                "fa": "در حال بارگذاری"
+              },
+              "empty": {
+                "en": "Not used by another definition",
+                "fa": "تعریف دیگری از آن استفاده نمی‌کند"
+              },
+              "error": {
+                "en": "Could not load",
+                "fa": "بارگذاری نشد"
+              },
+              "rows": {
+                "en": "{0} rows",
+                "fa": "{0} ردیف"
+              },
+              "selected": {
+                "en": "{0} selected",
+                "fa": "{0} انتخاب شد"
+              },
+              "selectAllMatching": {
+                "en": "Select all {0}",
+                "fa": "انتخاب همه {0}"
+              },
+              "clearSelection": {
+                "en": "Clear",
+                "fa": "پاک کردن"
+              },
+              "filter": {
+                "en": "Filter",
+                "fa": "فیلتر"
+              },
+              "delete": {
+                "en": "Delete",
+                "fa": "حذف"
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "id": "history",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "History and export",
+              "fa": "تاریخچه و خروجی"
+            },
+            "tone": "neutral",
+            "href": "/p/definition-history?ref={{params.id|url}}"
+          }
+        }
+      ]
+    }
+  }
+}

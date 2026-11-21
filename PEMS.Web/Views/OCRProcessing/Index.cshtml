@@ -1,135 +1,107 @@
 ﻿@model PEMS.Application.DTOs.PagedResult<PEMS.Application.DTOs.OCRProcessingAttachmentListDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using PEMS.Web.Helpers
+@using Microsoft.AspNetCore.Mvc.Rendering
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     var counts = (Dictionary<string, int>)ViewBag.Counts;
     string GetCount(string key) => counts.TryGetValue(key, out var c) ? c.ToString() : "0";
+    var selected = (string?)ViewBag.SelectedStatus;
+    var filterCount = string.IsNullOrEmpty(selected) ? 0 : 1;
+    var statuses = new[] { "Pending", "Processing", "Completed", "Failed" };
 }
 
+@section Styles { <link rel="stylesheet" href="~/_content/PEMS.UI/pems-list.css" asp-append-version="true" /> }
 
-<div class="row g-3 mb-3">
-    <div class="col-md-3 col-sm-6">
-        <div class="kpi-card">
-            <div class="kpi-icon bg-icon-slate"><i class="bi bi-hourglass"></i></div>
-            <div><div class="kpi-value">@GetCount("Pending")</div><div class="kpi-label">@Localizer["Pending"]</div></div>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="kpi-card">
-            <div class="kpi-icon bg-icon-blue"><i class="bi bi-arrow-repeat"></i></div>
-            <div><div class="kpi-value">@GetCount("Processing")</div><div class="kpi-label">Processing</div></div>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="kpi-card">
-            <div class="kpi-icon bg-icon-green"><i class="bi bi-check-circle"></i></div>
-            <div><div class="kpi-value">@GetCount("Completed")</div><div class="kpi-label">@Localizer["Completed"]</div></div>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6">
-        <div class="kpi-card">
-            <div class="kpi-icon bg-icon-red"><i class="bi bi-x-circle"></i></div>
-            <div><div class="kpi-value">@GetCount("Failed")</div><div class="kpi-label">Failed</div></div>
-        </div>
-    </div>
-</div>
+@* SCRUM-337: built from the PEMS.UI list-page component; the status select became the status filter. The four count tiles stay above the list. *@
+<pems-list-page texts="@ListPageTexts.From(Localizer)">
+    <pems-row gap="3" css="mb-3">
+        <pems-col md="3" sm="6">
+            <pems-kpi-tile icon="bi-hourglass" color="slate" label="@Localizer["Pending"]">@GetCount("Pending")</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="3" sm="6">
+            <pems-kpi-tile icon="bi-arrow-repeat" color="blue" label="Processing">@GetCount("Processing")</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="3" sm="6">
+            <pems-kpi-tile icon="bi-check-circle" color="green" label="@Localizer["Completed"]">@GetCount("Completed")</pems-kpi-tile>
+        </pems-col>
+        <pems-col md="3" sm="6">
+            <pems-kpi-tile icon="bi-x-circle" color="red" label="Failed">@GetCount("Failed")</pems-kpi-tile>
+        </pems-col>
+    </pems-row>
 
-<div class="content-card">
-    <form method="get" class="mb-3">
-        <select name="status" class="form-select form-select-sm" style="max-width:220px;" onchange="this.form.submit()">
-            <option value="">@Localizer["All Statuses"]</option>
-            @foreach (var s in new[] { "Pending", "Processing", "Completed", "Failed" })
-            {
-                <option value="@s" selected="@(s == (string?)ViewBag.SelectedStatus)">@s</option>
-            }
-        </select>
-    </form>
+    <pems-list-panel>
+        <pems-list-toolbar heading="@Localizer["OCR Processing"]" total="@Model.TotalCount">
+            <pems-list-tools>
+                <pems-list-filters form-id="ocrFilter" action="@Url.Action("Index")" count="@filterCount" reset-href="@Url.Action("Index")">
+                    <pems-list-filter-select id="ocrStatus" name="status" label="@Localizer["Status"]" value="@selected"
+                                             all-text="@Localizer["All statuses"]" items="@statuses.Select(s => new SelectListItem(s, s))" />
+                </pems-list-filters>
+                <pems-list-reset-columns grid-key="OCRProcessing" />
+            </pems-list-tools>
+        </pems-list-toolbar>
 
-    <div class="d-flex justify-content-end mb-2">
-        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="PemsDataGrid.resetColumns('OCRProcessing')">
-            <i class="bi bi-arrow-counterclockwise"></i> @Localizer["Reset columns"]
-        </button>
-    </div>
-    <div class="table-responsive pems-grid-scroll table-scroll-area" style="max-height:65vh; overflow-y:auto;">
-        <table class="table table-enterprise pems-grid-table" data-grid-key="OCRProcessing">
-            <thead>
-                <tr>
-                    <th data-col-key="file" data-resizable="true" data-min-width="140" data-max-width="320">@Localizer["File"]</th>
-                    <th data-col-key="document" data-resizable="true" data-min-width="100" data-max-width="220">@Localizer["Document"]</th>
-                    <th data-col-key="type" data-resizable="true" data-min-width="70" data-max-width="140">@Localizer["Type"]</th>
-                    <th data-col-key="size" data-resizable="true" data-min-width="70" data-max-width="120">@Localizer["Size"]</th>
-                    <th data-col-key="status" data-resizable="true" data-min-width="90" data-max-width="180">@Localizer["Status"]</th>
-                    <th data-col-key="summary" data-resizable="true" data-min-width="180" data-max-width="400">Summary / Error</th>
-                    <th data-col-key="uploaded" data-resizable="true" data-min-width="120" data-max-width="200">@Localizer["Uploaded"]</th>
-                    <th data-col-key="actions" data-resizable="false" style="width:90px"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var a in Model.Items)
-                {
-                    <tr>
-                        <td>@a.FileName</td>
-                        <td>@a.DocumentNo</td>
-                        <td>@a.FileExtension</td>
-                        <td>@(a.FileSize / 1024) KB</td>
-                        <td>
-                            @{
-                                var badge = a.AIStatus switch
+        <pems-list-chips reset-href="@Url.Action("Index")">
+            @if (!string.IsNullOrEmpty(selected)) { <pems-list-chip label="@Localizer["Status"]" value="@selected" remove-href="@Url.Action("Index")" /> }
+        </pems-list-chips>
+
+        <pems-list-grid>
+            <pems-list-table grid-key="OCRProcessing" empty="@(!Model.Items.Any())" empty-text="No files uploaded yet."
+                             filtered="@(filterCount > 0)" clear-href="@Url.Action("Index")">
+                <pems-table-head>
+                    <pems-table-row>
+                        <pems-table-header data-col-key="file">@Localizer["File"]</pems-table-header>
+                        <pems-table-header data-col-key="document">@Localizer["Document"]</pems-table-header>
+                        <pems-table-header data-col-key="type">@Localizer["Type"]</pems-table-header>
+                        <pems-table-header data-col-key="size">@Localizer["Size"]</pems-table-header>
+                        <pems-table-header data-col-key="status">@Localizer["Status"]</pems-table-header>
+                        <pems-table-header data-col-key="summary">Summary / Error</pems-table-header>
+                        <pems-table-header data-col-key="uploaded">@Localizer["Uploaded"]</pems-table-header>
+                        <pems-table-header data-col-key="actions"></pems-table-header>
+                    </pems-table-row>
+                </pems-table-head>
+                <pems-table-body>
+                    @foreach (var a in Model.Items)
+                    {
+                        var tone = a.AIStatus switch { "Completed" => "success", "Processing" => "info", "Failed" => "danger", _ => "neutral" };
+                        <pems-table-row class="lp-row">
+                            <pems-table-cell>@a.FileName</pems-table-cell>
+                            <pems-table-cell>@a.DocumentNo</pems-table-cell>
+                            <pems-table-cell>@a.FileExtension</pems-table-cell>
+                            <pems-table-cell>@(a.FileSize / 1024) KB</pems-table-cell>
+                            <pems-table-cell><pems-badge tone="@tone">@a.AIStatus</pems-badge></pems-table-cell>
+                            <pems-table-cell class="small text-muted pems-s-55585d51">
+                                @(a.AIStatus == "Failed" ? a.AIError : a.AISummary)
+                            </pems-table-cell>
+                            <pems-table-cell>@PemsDates.DateTime(a.UploadDate)</pems-table-cell>
+                            <pems-table-cell>
+                                <pems-form asp-action="Retry" asp-route-id="@a.AttachmentId" method="post" class="d-inline">
+                                    <pems-button tone="neutral" size="small" outline="true"><pems-icon name="bi-arrow-repeat" /></pems-button>
+                                </pems-form>
+                                @if (a.AIStatus == "Completed")
                                 {
-                                    "Completed" => "bg-success",
-                                    "Processing" => "bg-info text-dark",
-                                    "Failed" => "bg-danger",
-                                    _ => "bg-secondary"
-                                };
-                            }
-                            <span class="badge @badge">@a.AIStatus</span>
-                        </td>
-                        <td class="small text-muted" style="max-width:260px;">
-                            @(a.AIStatus == "Failed" ? a.AIError : a.AISummary)
-                        </td>
-                        <td>@a.UploadDate.ToString("yyyy-MM-dd HH:mm")</td>
-                        <td>
-                            <form asp-action="Retry" asp-route-id="@a.AttachmentId" method="post" class="d-inline">
-                                <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-repeat"></i></button>
-                            </form>
-                            @if (a.AIStatus == "Completed")
-                            {
-                                <a asp-controller="AIExtraction" asp-action="Review" asp-route-attachmentId="@a.AttachmentId"
-                                   class="btn btn-sm btn-outline-warning"><i class="bi bi-eye"></i></a>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                                    <pems-button tone="warning" size="small" outline="true" as="a" href="@("/p/ai-extraction-review?id=" + a.AttachmentId)"><pems-icon name="bi-eye" /></pems-button>
+                                }
+                            </pems-table-cell>
+                        </pems-table-row>
+                    }
+                </pems-table-body>
+            </pems-list-table>
+            <pems-list-footer>
+                @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
+                {
+                    Page = Model.Page,
+                    TotalPages = Model.TotalPages,
+                    TotalCount = Model.TotalCount,
+                    PageSize = Model.PageSize,
+                    GridKey = "OCRProcessing",
+                    BaseUrl = Url.Action("Index") ?? "",
+                    ExistingQueryString = string.IsNullOrEmpty(selected) ? "" : $"status={Uri.EscapeDataString(selected)}"
+                })
+            </pems-list-footer>
+        </pems-list-grid>
+    </pems-list-panel>
+</pems-list-page>
 
-        @if (!Model.Items.Any())
-        {
-            <p class="text-muted text-center py-4">No files uploaded yet.</p>
-        }
-    </div>
-
-    @{
-        var qsParts = new List<string>();
-        if (!string.IsNullOrEmpty((string?)ViewBag.SelectedStatus)) qsParts.Add($"status={Uri.EscapeDataString((string)ViewBag.SelectedStatus)}");
-    }
-    @await Html.PartialAsync("_Pagination", new PEMS.Web.ViewModels.PaginationViewModel
-    {
-        Page = Model.Page,
-        TotalPages = Model.TotalPages,
-        TotalCount = Model.TotalCount,
-        PageSize = Model.PageSize,
-        GridKey = "OCRProcessing",
-        BaseUrl = Url.Action("Index") ?? "",
-        ExistingQueryString = string.Join("&", qsParts)
-    })
-</div>
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            PemsDataGrid.initColumnResize('OCRProcessing');
-        });
-    </script>
-}
+@section Scripts { <script src="~/_content/PEMS.UI/pems-list.js" asp-append-version="true"></script> }

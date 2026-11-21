@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-workflow-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Workflow management (old address)",
+    "fa": "مدیریت گردش‌کار (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Workflow management (old address)",
+    "fa": "مدیریت گردش‌کار (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Admin/WorkflowManagement/Details/{*rest}",
+    "target": "/p/workflow-details",
+    "permanent": false
+  }
+}

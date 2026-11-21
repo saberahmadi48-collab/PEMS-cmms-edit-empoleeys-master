@@ -1,0 +1,16 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("tree-select", Category = "forms", Icon = "bi-diagram-3")]
+@{ var id = string.IsNullOrWhiteSpace(Options.Id) ? "ts_" + Options.Name.Replace('.', '_').Replace('[', '_').Replace(']', '_') : Options.Id; }
+<div @attributes="Options.Attributes" class="@Join("pems-tree-select", Options.Css, Options.PageClass)" data-pems-tree-select="" data-url="@Options.Url" data-loading="@Options.LoadingText" data-no-results="@Options.NoResultsText" data-more="@Options.MoreText" data-clear="@Options.ClearText" data-placeholder="@Options.Placeholder">
+    <input type="hidden" id="@id" name="@Options.Name" value="@Options.Value" data-pems-tree-select-value="" />
+    <button type="button" class="form-select pems-tree-select__button" aria-haspopup="tree" aria-expanded="false" aria-controls="@(id)_panel" aria-required="@(Options.Required ? "true" : null)" disabled="@Options.Disabled">@(string.IsNullOrEmpty(Options.SelectedText) ? Options.Placeholder : Options.SelectedText)</button>
+    <div class="pems-tree-select__panel" id="@(id)_panel" hidden>
+        <input type="search" class="form-control form-control-sm pems-tree-select__search" aria-label="@Options.SearchLabel" autocomplete="off" />
+        <ul class="pems-tree-select__tree" role="tree" aria-label="@Options.SearchLabel"></ul>
+        <div class="pems-tree-select__status small text-muted" role="status" aria-live="polite"></div>
+    </div>
+</div>
+@code {
+    [Parameter, EditorRequired] public TreeSelectOptions Options { get; set; } = default!;
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+}

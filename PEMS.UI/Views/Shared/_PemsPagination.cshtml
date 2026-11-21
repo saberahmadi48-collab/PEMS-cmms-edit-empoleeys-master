@@ -1,0 +1,68 @@
+@* Pagination footer (Data Grid Standard clauses 3, 7-10, 22). Texts are inputs (PaginationTexts); the row range keeps the
+   current-culture format; the language's digits are applied to displayed numbers only (hrefs and aria-labels stay Latin). *@
+@model PEMS.UI.Abstractions.PaginationView
+@using PEMS.UI.Abstractions
+@inject IPemsLocale Locale
+@{
+    var state = Model.State;
+    var texts = Model.Texts;
+    var isRtl = Locale.IsRightToLeft;
+    // In RTL the visual meaning of previous/next is reversed
+    var prevGlyph = isRtl ? "»" : "«";
+    var nextGlyph = isRtl ? "«" : "»";
+    var hasGridKey = !string.IsNullOrWhiteSpace(state.GridKey);
+    var rangeStart = state.TotalCount == 0 ? 0 : ((state.Page - 1) * Math.Max(state.PageSize, 1)) + 1;
+    var rangeEnd = state.TotalCount == 0 ? 0 : Math.Min(state.Page * Math.Max(state.PageSize, 1), state.TotalCount);
+}
+<div class="pems-grid-footer d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3" dir="@(isRtl ? "rtl" : "ltr")">
+    <div class="d-flex align-items-center gap-3 flex-wrap">
+        <span class="text-muted small">
+            @if (state.TotalCount > 0 && state.PageSize > 0)
+            {
+                @Locale.Digits(string.Format(Locale.Text(texts.ShowingRecords), rangeStart, rangeEnd, state.TotalCount))
+            }
+            else
+            {
+                @Locale.Text(texts.NoResults)
+            }
+        </span>
+
+        @if (hasGridKey)
+        {
+            <div class="pems-grid-pagesize btn-group btn-group-sm" role="group" aria-label="@Locale.Text(texts.RowsPerPage)">
+                <span class="text-muted small align-self-center me-1">@Locale.Text(texts.RowsPerPage):</span>
+                @foreach (var size in state.AllowedPageSizes)
+                {
+                    <a class="btn btn-sm @(size == state.PageSize ? "btn-pems-solid" : "btn-outline-secondary")"
+                       href="@state.BuildPageSizeUrl(size)" aria-label="@size">@Locale.Digits(size.ToString())</a>
+                }
+            </div>
+        }
+    </div>
+
+    @if (state.TotalPages > 1)
+    {
+        <nav aria-label="@Locale.Text(texts.RowsPerPage)">
+            <ul class="pagination pagination-sm mb-0">
+                @{
+                    var start = Math.Max(1, state.Page - 2);
+                    var end = Math.Min(state.TotalPages, state.Page + 2);
+                }
+                @if (state.Page > 1)
+                {
+                    <li class="page-item"><a class="page-link" href="@state.BuildUrl(1)" aria-label="@Locale.Text(texts.FirstPage)">@prevGlyph@prevGlyph</a></li>
+                    <li class="page-item"><a class="page-link" href="@state.BuildUrl(state.Page - 1)" aria-label="@Locale.Text(texts.PreviousPage)">@prevGlyph</a></li>
+                }
+                @for (int p = start; p <= end; p++)
+                {
+                    <li class="page-item @(p == state.Page ? "active" : "")"><a class="page-link" href="@state.BuildUrl(p)">@Locale.Digits(p.ToString())</a></li>
+                }
+                @if (state.Page < state.TotalPages)
+                {
+                    <li class="page-item"><a class="page-link" href="@state.BuildUrl(state.Page + 1)" aria-label="@Locale.Text(texts.NextPage)">@nextGlyph</a></li>
+                    <li class="page-item"><a class="page-link" href="@state.BuildUrl(state.TotalPages)" aria-label="@Locale.Text(texts.LastPage)">@nextGlyph@nextGlyph</a></li>
+                }
+            </ul>
+        </nav>
+    }
+</div>

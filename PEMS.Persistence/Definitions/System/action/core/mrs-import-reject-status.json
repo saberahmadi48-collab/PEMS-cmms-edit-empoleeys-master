@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "mrs-import-reject-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject a whole match status",
+    "fa": "رد یک وضعیت کامل"
+  },
+  "description": {
+    "en": "Reject a whole match status",
+    "fa": "رد یک وضعیت کامل"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MrsImport",
+      "action": "RejectByStatus",
+      "args": {
+        "batchId": "field:batchId",
+        "matchStatus": "field:matchStatus",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The rows of the status were rejected.",
+      "fa": "ردیف‌های این وضعیت رد شدند."
+    },
+    "redirect": "/p/mrs-import-review?batchId={batchId}"
+  }
+}

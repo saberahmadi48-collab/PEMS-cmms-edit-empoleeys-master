@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "production-batch-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Production: Batch",
+    "fa": "تولید: Batch"
+  },
+  "description": {
+    "en": "Production: Batch",
+    "fa": "تولید: Batch"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Production",
+      "action": "BatchHead",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

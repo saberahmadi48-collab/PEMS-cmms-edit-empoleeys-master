@@ -1,0 +1,76 @@
+{
+  "kind": "form",
+  "key": "team-member-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a member",
+    "fa": "افزودن عضو"
+  },
+  "description": {
+    "en": "Add a member",
+    "fa": "افزودن عضو"
+  },
+  "payload": {
+    "id": "team-member-add",
+    "title": {
+      "en": "Add a member",
+      "fa": "افزودن عضو"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "team-member-add",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "teamId",
+        "label": {
+          "en": "Team id",
+          "fa": "شناسه تیم"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Team id is required.",
+            "fa": "شناسه تیم الزامی است."
+          }
+        }
+      },
+      {
+        "name": "employeeId",
+        "label": {
+          "en": "Employee",
+          "fa": "کارمند"
+        },
+        "kind": "select",
+        "optionsFrom": "team-employees",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Employee is required.",
+            "fa": "کارمند الزامی است."
+          }
+        }
+      },
+      {
+        "name": "roleId",
+        "label": {
+          "en": "Role",
+          "fa": "نقش"
+        },
+        "kind": "select",
+        "optionsFrom": "team-maintenance-roles",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Role is required.",
+            "fa": "نقش الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

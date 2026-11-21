@@ -1,0 +1,44 @@
+{
+  "key": "list-chip",
+  "component": "PEMS.UI.Components.PemsListChip",
+  "category": "list",
+  "icon": "bi-tag",
+  "nameKey": "component.list-chip",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "label": {
+        "type": "string"
+      },
+      "value": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "removeHref": {
+        "type": "string"
+      },
+      "removeText": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "ListChipOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "label": "Status",
+    "value": "Open",
+    "removeHref": "/docs",
+    "removeText": "Remove filter"
+  }
+}

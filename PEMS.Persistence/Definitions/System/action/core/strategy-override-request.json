@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "strategy-override-request",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Request an override",
+    "fa": "درخواست Override"
+  },
+  "description": {
+    "en": "Request an override",
+    "fa": "درخواست Override"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceStrategy",
+      "action": "RequestOverride",
+      "args": {
+        "assignmentId": "field:assignmentId",
+        "overrideIntervalDays": "field:overrideIntervalDays",
+        "overrideTaskNote": "field:overrideTaskNote",
+        "overrideJustification": "field:overrideJustification"
+      }
+    },
+    "success": {
+      "en": "The override was requested.",
+      "fa": "درخواست Override ثبت شد."
+    },
+    "redirect": "/MaintenanceStrategy/Details/{strategyId}"
+  }
+}

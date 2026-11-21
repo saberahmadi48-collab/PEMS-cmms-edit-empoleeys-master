@@ -1,0 +1,114 @@
+{
+  "kind": "page",
+  "key": "import-center",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import Center",
+    "fa": "مرکز ایمپورت"
+  },
+  "description": {
+    "en": "All data-import operations in one place (page definition)",
+    "fa": "همه عملیات ایمپورت داده در یک‌جا (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "import-center",
+    "regions": {
+      "content": [
+        {
+          "id": "intro",
+          "component": "content-blocks",
+          "options": {
+            "id": "intro",
+            "blocks": [
+              {
+                "type": "text",
+                "css": "text-muted small",
+                "text": {
+                  "en": "All data-import operations in one place. Each import keeps its own module, file format, validation and review workflow - this page only takes you to it.",
+                  "fa": "همه عملیات ایمپورت داده در یک‌جا. هر ایمپورت ماژول، قالب فایل، اعتبارسنجی و گردش بازبینی خود را حفظ می‌کند؛ این صفحه فقط شما را به آن می‌برد."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "entries",
+          "component": "data-grid",
+          "options": {
+            "id": "import-center",
+            "url": "/d/import-center-grid",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "category",
+                "header": {
+                  "en": "Category",
+                  "fa": "دسته"
+                },
+                "width": 180
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Import",
+                  "fa": "ایمپورت"
+                },
+                "width": 260
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "What it does",
+                  "fa": "توضیح"
+                },
+                "width": 420
+              },
+              {
+                "key": "fileTypes",
+                "header": {
+                  "en": "File types",
+                  "fa": "نوع فایل"
+                },
+                "width": 160
+              },
+              {
+                "key": "flow",
+                "header": {
+                  "en": "Workflow",
+                  "fa": "گردش کار"
+                },
+                "width": 360
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "{raw.url}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 560
+          }
+        }
+      ]
+    }
+  }
+}

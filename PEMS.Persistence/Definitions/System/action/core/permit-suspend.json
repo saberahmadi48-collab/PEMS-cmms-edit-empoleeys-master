@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "permit-suspend",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The permit was suspended.",
+    "fa": "Permit معلق شد."
+  },
+  "description": {
+    "en": "The permit was suspended.",
+    "fa": "Permit معلق شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Permit",
+      "action": "AdvanceStatus",
+      "args": {
+        "permitId": "field:id",
+        "nextStatus": "literal:Suspended",
+        "reason": "field:reason",
+        "changedByEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The permit was suspended.",
+      "fa": "Permit معلق شد."
+    },
+    "redirect": "/Permit/Details/{id}",
+    "permission": "Permit.Suspend"
+  }
+}

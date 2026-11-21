@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "irn-osd",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "OS&D report (old address)",
+    "fa": "OS&D report (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "OS&D report (old address)",
+    "fa": "OS&D report (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Warehouse/IrnReceipt/Osd/{id}",
+    "target": "/p/irn-osd?id={id}",
+    "permanent": false
+  }
+}

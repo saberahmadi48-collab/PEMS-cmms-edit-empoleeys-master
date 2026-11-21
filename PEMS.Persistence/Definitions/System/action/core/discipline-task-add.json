@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "discipline-task-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a discipline task",
+    "fa": "افزودن وظیفه دیسیپلین"
+  },
+  "description": {
+    "en": "Add a discipline task",
+    "fa": "افزودن وظیفه دیسیپلین"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DisciplineWorkspace",
+      "action": "AddTask",
+      "args": {
+        "disciplineId": "field:disciplineId",
+        "title": "field:title",
+        "type": "field:type",
+        "projectId": "field:projectId",
+        "description": "field:description",
+        "responsibleEmployeeId": "field:responsibleEmployeeId",
+        "dueDate": "field:dueDate"
+      }
+    },
+    "success": {
+      "en": "Task added.",
+      "fa": "وظیفه افزوده شد."
+    },
+    "redirect": "/p/discipline-workspace?id={disciplineId}"
+  }
+}

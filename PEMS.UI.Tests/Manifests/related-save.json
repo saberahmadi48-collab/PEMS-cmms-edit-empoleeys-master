@@ -1,0 +1,33 @@
+{
+  "key": "related-save",
+  "component": "PEMS.UI.Components.PemsRelatedSave",
+  "category": "list",
+  "icon": "bi-check2",
+  "nameKey": "component.related-save",
+  "optionsParameter": "Options",
+  "manifestVersion": 1,
+  "options": {
+    "type": "object",
+    "properties": {
+      "formId": {
+        "type": "string"
+      },
+      "label": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
+  },
+  "parameters": [
+    {
+      "name": "options",
+      "type": "RelatedSaveOptions",
+      "kind": "option",
+      "required": true
+    }
+  ],
+  "sample": {
+    "formId": "row1",
+    "label": "Save"
+  }
+}

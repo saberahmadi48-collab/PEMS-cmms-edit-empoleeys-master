@@ -1,0 +1,130 @@
+{
+  "kind": "form",
+  "key": "po-update-line",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a line",
+    "fa": "ویرایش قلم"
+  },
+  "description": {
+    "en": "Edit a line",
+    "fa": "ویرایش قلم"
+  },
+  "payload": {
+    "id": "po-update-line",
+    "title": {
+      "en": "Edit a line",
+      "fa": "ویرایش قلم"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "po-update-line",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Order id",
+          "fa": "شناسه‌ی سفارش"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "lineId",
+        "label": {
+          "en": "Line id",
+          "fa": "شناسه‌ی قلم"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "quantity",
+        "label": {
+          "en": "Quantity",
+          "fa": "تعداد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "unitPrice",
+        "label": {
+          "en": "Unit price",
+          "fa": "قیمت واحد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "requiredDate",
+        "label": {
+          "en": "Required date",
+          "fa": "تاریخ نیاز"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "isStockLine",
+        "label": {
+          "en": "Stock line",
+          "fa": "قلم انباری"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "commodityGroupId",
+        "label": {
+          "en": "Commodity group id",
+          "fa": "شناسه‌ی گروه کالا"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "freeTextReason",
+        "label": {
+          "en": "Reason for a free-text line",
+          "fa": "دلیل قلم آزاد"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "warehouseId",
+        "label": {
+          "en": "Delivery warehouse id",
+          "fa": "شناسه‌ی انبار تحویل"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

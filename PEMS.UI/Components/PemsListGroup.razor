@@ -1,0 +1,8 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("list-group", Category = "display", Icon = "bi-list-ul")]
+<div class="@Css">@ChildContent</div>
+@code {
+    [Parameter, EditorRequired] public ListGroupOptions Options { get; set; } = default!;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    private string Css => "list-group" + (Options.Flush ? " list-group-flush" : "") + (string.IsNullOrWhiteSpace(Options.CssClass) ? "" : " " + Options.CssClass.Trim());
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "data-source",
+  "key": "qualifications-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Qualifications rows",
+    "fa": "ردیف‌های صلاحیت‌ها"
+  },
+  "description": {
+    "en": "The rows of the qualifications grid",
+    "fa": "ردیف‌های جدول صلاحیت‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "Qualification",
+      "fields": [
+        "Name",
+        "Description",
+        "IsActive",
+        "DisciplineId"
+      ],
+      "search": [
+        "Name",
+        "Description"
+      ],
+      "lookups": [
+        {
+          "name": "discipline",
+          "entity": "Discipline",
+          "foreignKey": "DisciplineId",
+          "label": "Name"
+        }
+      ]
+    }
+  }
+}

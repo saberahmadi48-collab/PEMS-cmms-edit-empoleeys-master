@@ -1,0 +1,158 @@
+{
+  "kind": "page",
+  "key": "barcode-bulk",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Bulk generate equipment barcodes",
+    "fa": "ساخت گروهی بارکد تجهیزات"
+  },
+  "description": {
+    "en": "Filter the equipment (a filter is needed), then generate and download the label sheet (page definition)",
+    "fa": "تجهیزات را فیلتر کنید (فیلتر لازم است)، سپس بسازید و برگه‌ی برچسب را بگیرید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "barcode-bulk",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "bulk-filters",
+            "resetUrl": "/p/barcode-bulk",
+            "fields": [
+              {
+                "name": "disciplineId",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "kind": "select",
+                "value": "{{params.disciplineId}}",
+                "options": []
+              },
+              {
+                "name": "equipmentType",
+                "label": {
+                  "en": "Equipment type",
+                  "fa": "نوع تجهیز"
+                },
+                "kind": "select",
+                "value": "{{params.equipmentType}}",
+                "options": []
+              },
+              {
+                "name": "tagSearch",
+                "label": {
+                  "en": "Tag contains",
+                  "fa": "تگ شامل"
+                },
+                "kind": "text",
+                "value": "{{params.tagSearch}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "disciplineId",
+                "source": "/d/barcode-disciplines",
+                "valueField": "value",
+                "labelField": "label"
+              },
+              {
+                "field": "equipmentType",
+                "source": "/d/barcode-equipment-types",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "go",
+          "component": "content-blocks",
+          "options": {
+            "id": "go",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/barcode-bulk-generate",
+                "text": {
+                  "en": "Generate barcodes for chosen equipment ids",
+                  "fa": "ساخت بارکد برای شناسه‌های تجهیز انتخابی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/barcodes",
+                "text": {
+                  "en": "Back",
+                  "fa": "بازگشت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "candidates",
+          "component": "data-grid",
+          "options": {
+            "id": "candidates",
+            "url": "/d/barcode-candidates?f.disciplineId={{params.disciplineId|url}}&f.equipmentType={{params.equipmentType|url}}&f.tagSearch={{params.tagSearch|url}}",
+            "idField": "equipmentId",
+            "columns": [
+              {
+                "key": "equipmentId",
+                "header": {
+                  "en": "Id",
+                  "fa": "شناسه"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 160
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 240
+              },
+              {
+                "key": "equipmentType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 140
+              },
+              {
+                "key": "alreadyBarcoded",
+                "header": {
+                  "en": "Has a barcode",
+                  "fa": "بارکد دارد"
+                },
+                "width": 120,
+                "type": "bool"
+              }
+            ],
+            "pageSize": 50,
+            "height": 480
+          }
+        }
+      ]
+    },
+    "permission": "Barcode.Approve"
+  }
+}

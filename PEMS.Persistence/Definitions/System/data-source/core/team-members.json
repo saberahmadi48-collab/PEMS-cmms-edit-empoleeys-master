@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "team-members",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Team members",
+    "fa": "اعضای تیم"
+  },
+  "description": {
+    "en": "Team members",
+    "fa": "اعضای تیم"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Team",
+      "action": "Members",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName",
+        "teamId": "param:teamId"
+      }
+    }
+  }
+}
